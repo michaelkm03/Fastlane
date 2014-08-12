@@ -195,11 +195,6 @@
     return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:@"Lorem ipsum dolor sit amet" withMedia:NO];
-}
-
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]

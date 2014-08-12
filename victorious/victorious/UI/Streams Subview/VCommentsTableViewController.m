@@ -220,11 +220,6 @@ static NSString* CommentCache           = @"CommentCache";
     return [self.sortedComments count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:@"Lorem ipsum dolor sit amet" withMedia:NO];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
