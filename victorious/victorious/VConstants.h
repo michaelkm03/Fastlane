@@ -18,30 +18,30 @@ typedef NS_ENUM(NSInteger, HTTPStatusCodes)
 
 typedef NS_OPTIONS(NSUInteger, VShareOptions)
 {
-    kVShareNone          = 0,
-    kVShareToTwitter     = 1 << 0,
-    kVShareToFacebook    = 1 << 1
+    VShareNone          = 0,
+    VShareToTwitter     = 1 << 0,
+    VShareToFacebook    = 1 << 1
 };
 
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
-    kVLoopOnce       =   0,
-    kVLoopRepeat     =   1,
-    kVLoopReverse    =   2
+    VLoopOnce       =   0,
+    VLoopRepeat     =   1,
+    VLoopReverse    =   2
 };
 
 typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 {
-    kVPlaybackNormalSpeed   =   0,
-    kVPlaybackHalfSpeed     =   1,
-    kVPlaybackDoubleSpeed   =   2
+    VPlaybackNormalSpeed   =   0,
+    VPlaybackHalfSpeed     =   1,
+    VPlaybackDoubleSpeed   =   2
 };
 
 typedef NS_ENUM(NSUInteger, VCaptionType)
 {
-    kVCaptionTypeNormal = 0,
-    kVCaptionTypeMeme,
-    kVCaptionTypeQuote
+    VCaptionTypeNormal = 0,
+    VCaptionTypeMeme,
+    VCaptionTypeQuote
 };
 
 #pragma mark - UI constants

@@ -767,7 +767,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                       onDestructiveButton:nil
                                                otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
                                       {
-                                          publishViewController.captionType = kVCaptionTypeMeme;
+                                          publishViewController.captionType = VCaptionTypeMeme;
                                           
                                           NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
                                           NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
@@ -780,7 +780,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                       },
                                       NSLocalizedString(@"Quote", nil),  ^(void)
                                       {
-                                          publishViewController.captionType = kVCaptionTypeQuote;
+                                          publishViewController.captionType = VCaptionTypeQuote;
                                           
                                           NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
                                           NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];

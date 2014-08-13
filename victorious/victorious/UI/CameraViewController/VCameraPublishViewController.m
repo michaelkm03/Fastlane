@@ -32,6 +32,8 @@
 #import "VFacebookManager.h"
 #import "VUserManager.h"
 
+#import "NSURL+MediaType.h"
+
 static NSString* kVSaveToCameraRollDisabledKey = @"saveToCameraKey";
 static NSString* kVShareToFacebookDisabledKey  = @"shareToFBKey";
 static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
@@ -147,7 +149,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     _captionType = captionType;
     
-    if (captionType == kVCaptionTypeMeme)
+    if (captionType == VCaptionTypeMeme)
     {
         [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.originalTextViewYConstraint];
@@ -163,7 +165,7 @@ static const CGFloat kShareMargin = 34.0f;
                                    NSStrokeWidthAttributeName : @(-5.0)
                                    } mutableCopy];
     }
-    else if (captionType == kVCaptionTypeQuote)
+    else if (captionType == VCaptionTypeQuote)
     {
         [self.view removeConstraint:self.originalTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
@@ -180,7 +182,7 @@ static const CGFloat kShareMargin = 34.0f;
                                    } mutableCopy];
 
     }
-    else if (captionType == kVCaptionTypeNormal)
+    else if (captionType == VCaptionTypeNormal)
     {
         [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
@@ -299,14 +301,12 @@ static const CGFloat kShareMargin = 34.0f;
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     
-    self.memeButton.selected = self.captionType == kVCaptionTypeMeme;
-    self.captionButton.selected = self.captionType == kVCaptionTypeNormal;
-    self.quoteButton.selected = self.captionType == kVCaptionTypeQuote;
+    self.memeButton.selected = self.captionType == VCaptionTypeMeme;
+    self.captionButton.selected = self.captionType == VCaptionTypeNormal;
+    self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
     
-    NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
     if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
-        || [mediaExtension isEqualToString:VConstantMediaExtensionMOV]
-        || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
+        || [self.mediaURL v_hasVideoExtension])
         self.captionViewHeightConstraint.constant = 0;
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
@@ -314,7 +314,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)setDefaultCaptionText
 {
-    if (self.captionType == kVCaptionTypeNormal)
+    if (self.captionType == VCaptionTypeNormal)
     {
         [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
             NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
@@ -331,7 +331,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
 
     NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
-    if (self.captionType == kVCaptionTypeMeme)
+    if (self.captionType == VCaptionTypeMeme)
     {
         placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
     }
@@ -381,15 +381,15 @@ static const CGFloat kShareMargin = 34.0f;
     
     if ((UIButton*)sender == self.memeButton)
     {
-        self.captionType = kVCaptionTypeMeme;
+        self.captionType = VCaptionTypeMeme;
     }
     else if ((UIButton*)sender == self.quoteButton)
     {
-        self.captionType = kVCaptionTypeQuote;
+        self.captionType = VCaptionTypeQuote;
     }
     else if ((UIButton*)sender == self.captionButton)
     {
-        self.captionType = kVCaptionTypeNormal;
+        self.captionType = VCaptionTypeNormal;
     }
     [self.textView becomeFirstResponder];
 }
@@ -447,7 +447,7 @@ static const CGFloat kShareMargin = 34.0f;
         return;
     }
   
-    if (self.captionType == kVCaptionTypeMeme || self.captionType == kVCaptionTypeQuote)
+    if (self.captionType == VCaptionTypeMeme || self.captionType == VCaptionTypeQuote)
     {
         UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
         
@@ -462,13 +462,13 @@ static const CGFloat kShareMargin = 34.0f;
         }
     }
     
-    VShareOptions shareOptions = self.shareToFacebookView.selected ? kVShareToFacebook : kVShareNone;
-    shareOptions = self.shareToTwitterView.selected ? shareOptions | kVShareToTwitter : shareOptions;
+    VShareOptions shareOptions = self.shareToFacebookView.selected ? VShareToFacebook : VShareNone;
+    shareOptions = self.shareToTwitterView.selected ? shareOptions | VShareToTwitter : shareOptions;
     
     CGFloat playbackSpeed;
-    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+    if (self.playBackSpeed == VPlaybackNormalSpeed)
         playbackSpeed = 1.0;
-    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+    else if (self.playBackSpeed == VPlaybackDoubleSpeed)
         playbackSpeed = 2.0;
     else
         playbackSpeed = 0.5;
@@ -519,15 +519,11 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (self.saveToCameraView.selected && !self.didSelectAssetFromLibrary)
     {
-        NSString *mediaExtension = [self.mediaURL pathExtension];
-        
-        if ([mediaExtension isEqualToString:VConstantMediaExtensionMP4])
+        if ([self.mediaURL v_hasVideoExtension])
         {
             UISaveVideoAtPathToSavedPhotosAlbum([self.mediaURL path], nil, nil, nil);
         }
-        else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG]
-                 || [mediaExtension isEqualToString:VConstantMediaExtensionJPG]
-                 || [mediaExtension isEqualToString:VConstantMediaExtensionJPEG])
+        else if ([self.mediaURL v_hasImageExtension])
         {
             UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
             UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
@@ -574,7 +570,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (self.captionType == kVCaptionTypeMeme)
+    if (self.captionType == VCaptionTypeMeme)
     {
         self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
         
@@ -598,7 +594,7 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
-    else if (self.captionType == kVCaptionTypeQuote)
+    else if (self.captionType == VCaptionTypeQuote)
     {
         CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         
