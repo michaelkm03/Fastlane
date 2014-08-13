@@ -461,8 +461,12 @@ static const char kVideoPlayerKey;
 
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
+    CMTime currentTime = videoPlayer.currentTime;
+    if(CMTIME_IS_INVALID(currentTime) || CMTIME_IS_INDEFINITE(currentTime))
+        return;
+    
     NSDictionary *event = [[VObjectManager sharedManager] dictionaryForSequenceViewWithDate:[NSDate date]
-                                                                                     length:CMTimeGetSeconds(videoPlayer.currentTime)
+                                                                                     length:CMTimeGetSeconds(currentTime)
                                                                                    sequence:self.sequence];
     [[VObjectManager sharedManager] addEvents:@[event] successBlock:nil failBlock:nil];
 }
