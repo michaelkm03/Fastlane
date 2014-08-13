@@ -14,7 +14,6 @@
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"
-#import "VRemixSelectViewController.h"
 #import "VSettingManager.h"
 
 #import <objc/runtime.h>
@@ -319,31 +318,6 @@ static const char kVideoPlayerKey;
             }
         }
     }];
-}
-
-- (IBAction)pressedRemix:(id)sender
-{
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-    {
-        [self forceRotationBackToPortraitOnCompletion:^(void)
-        {
-            [self pressedRemix:sender];
-        }];
-        return;
-    }
-    
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:self.sequence.name value:nil];
-    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
-    [self presentViewController:remixVC animated:YES completion:
-     ^{
-         [self.videoPlayer.player pause];
-     }];
 }
 
 - (IBAction)pressedClose:(id)sender

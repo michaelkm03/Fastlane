@@ -22,6 +22,7 @@
 
 @property (nonatomic)   VPlaybackSpeed  playBackSpeed;
 @property (nonatomic)   VLoopType       playbackLooping;
+@property (nonatomic)   VCaptionType    captionType;
 
 @property (nonatomic)   NSInteger       parentID;
 

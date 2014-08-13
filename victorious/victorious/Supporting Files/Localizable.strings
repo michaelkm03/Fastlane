@@ -22,6 +22,8 @@
 "BackButton"            =   "Back";
 "Exit"                  =   "Exit";
 "Publish"               =   "Publish";
+"Quote"                 =   "Quote";
+"Meme"                  =   "Meme";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";

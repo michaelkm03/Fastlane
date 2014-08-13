@@ -59,7 +59,6 @@
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
 @property (nonatomic, weak) IBOutlet UIButton* secretButton;
 
-@property (nonatomic) VCaptionType captionType;
 @property (nonatomic, strong) VCompositeSnapshotController* snapshotController;
 
 @end
@@ -110,7 +109,6 @@ static const CGFloat kShareMargin = 34.0f;
         button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
     }
     
-    self.captionButton.selected = YES;
     [self setDefaultCaptionText];
     
     self.secretTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
@@ -132,7 +130,69 @@ static const CGFloat kShareMargin = 34.0f;
     [self initShareViews];
 }
 
+- (void)setCaptionType:(VCaptionType)captionType
+{
+    _captionType = captionType;
+    
+    if (captionType == vMemeCaption)
+    {
+        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.originalTextViewYConstraint];
+        [self.view addConstraint:self.memeTextViewYConstraint];
+        
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentCenter;
+        self.typingAttributes = [@{
+                                   NSParagraphStyleAttributeName : paragraphStyle,
+                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
+                                   NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor blackColor],
+                                   NSStrokeWidthAttributeName : @(-5.0)
+                                   } mutableCopy];
+    }
+    else if (captionType == vSecretCaption)
+    {
+        [self.view removeConstraint:self.originalTextViewYConstraint];
+        [self.view removeConstraint:self.memeTextViewYConstraint];
+        [self.view addConstraint:self.secretTextViewYConstraint];
+        
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentCenter;
+        self.typingAttributes = [@{
+                                   NSParagraphStyleAttributeName : paragraphStyle,
+                                   NSFontAttributeName : [UIFont fontWithName:kSecretFont size:20],
+                                   NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeWidthAttributeName : @(0)
+                                   } mutableCopy];
 
+    }
+    else if (captionType == vNormalCaption)
+    {
+        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.memeTextViewYConstraint];
+        [self.view addConstraint:self.originalTextViewYConstraint];
+        
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentLeft;
+        self.typingAttributes = [@{
+                                   NSParagraphStyleAttributeName : paragraphStyle,
+                                   NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
+                                   NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeWidthAttributeName : @(0)
+                                   } mutableCopy];
+    }
+    
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+    self.textView.font = self.typingAttributes[NSFontAttributeName];
+    [self textViewDidChange:self.textView];
+    
+    self.captionPlaceholderLabel.font = self.textView.font;
+    self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
+    
+    [self setDefaultCaptionText];
+}
 
 - (void)initShareViews
 {
@@ -188,6 +248,10 @@ static const CGFloat kShareMargin = 34.0f;
     UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
+    
+    self.memeButton.selected = self.captionType == vMemeCaption;
+    self.captionButton.selected = self.captionType == vNormalCaption;
+    self.secretButton.selected = self.captionType == vSecretCaption;
     
     NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
     if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndSecretEnabled]
@@ -258,75 +322,17 @@ static const CGFloat kShareMargin = 34.0f;
 - (IBAction)changeCaptionType:(id)sender
 {
     for (UIButton* button in self.captionButtons)
-    {
         button.selected = (button == (UIButton*)sender);
-    }
     
     if ((UIButton*)sender == self.memeButton)
-    {
-        [self.view removeConstraint:self.secretTextViewYConstraint];
-        [self.view removeConstraint:self.originalTextViewYConstraint];
-        [self.view addConstraint:self.memeTextViewYConstraint];
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentCenter;
-        self.typingAttributes = [@{
-                                  NSParagraphStyleAttributeName : paragraphStyle,
-                                  NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
-                                  NSForegroundColorAttributeName : [UIColor whiteColor],
-                                  NSStrokeColorAttributeName : [UIColor blackColor],
-                                  NSStrokeWidthAttributeName : @(-5.0)
-                                  } mutableCopy];
-        
         self.captionType = vMemeCaption;
-    }
-    else if ((UIButton*)sender == self.secretButton)
-    {
-        [self.view removeConstraint:self.originalTextViewYConstraint];
-        [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.secretTextViewYConstraint];
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentCenter;
-        self.typingAttributes = [@{
-                                   NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [UIFont fontWithName:kSecretFont size:20],
-                                   NSForegroundColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeWidthAttributeName : @(0)
-                                   } mutableCopy];
-        
-        self.captionType = VSecretCaption;
-        
-    }
-    else if ((UIButton*)sender == self.captionButton)
-    {
-        [self.view removeConstraint:self.secretTextViewYConstraint];
-        [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.originalTextViewYConstraint];
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentLeft;
-        self.typingAttributes = [@{
-                                   NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
-                                   NSForegroundColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeWidthAttributeName : @(0)
-                                   } mutableCopy];
 
+    else if ((UIButton*)sender == self.secretButton)
+        self.captionType = vSecretCaption;
+
+    else if ((UIButton*)sender == self.captionButton)
         self.captionType = vNormalCaption;
-    }
-    
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
-    self.textView.font = self.typingAttributes[NSFontAttributeName];
-    [self textViewDidChange:self.textView];
-    
-    self.captionPlaceholderLabel.font = self.textView.font;
-    self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
-    
-    [self setDefaultCaptionText];
-    
+        
     [self.textView becomeFirstResponder];
 }
 
@@ -384,7 +390,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
   
     
-    if (self.captionType == vMemeCaption || self.captionType == VSecretCaption)
+    if (self.captionType == vMemeCaption || self.captionType == vSecretCaption)
     {
         UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
         
@@ -529,7 +535,7 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
-    else if (self.captionType == VSecretCaption)
+    else if (self.captionType == vSecretCaption)
     {
         CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         
