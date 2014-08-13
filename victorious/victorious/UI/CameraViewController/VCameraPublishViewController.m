@@ -183,8 +183,12 @@ static const CGFloat kShareMargin = 34.0f;
                                    NSStrokeWidthAttributeName : @(0)
                                    } mutableCopy];
     }
+    //This is a hack.  In the event that self.textView.text is an empty string, the attributes of the string won't change.
+    //So we add a non empty string with the attributes first so we are sure to clear the old attribute values, then add the real string.
+    NSString* originalText = self.textView.text;
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"This is going to be replaced" attributes:self.typingAttributes];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:originalText attributes:self.typingAttributes];
     
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
     self.textView.font = self.typingAttributes[NSFontAttributeName];
     [self textViewDidChange:self.textView];
     
