@@ -144,9 +144,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (shareOptions & kVShareToTwitter)
         parameters[@"share_twitter"] = @"1";
 
-    if (type == vMemeCaption)
+    if (type == kVCaptionTypeMeme)
         parameters[@"subcategory"] = @"meme";
-    else if (type == VQuoteCaption)
+    else if (type == kVCaptionTypeQuote)
         parameters[@"subcategory"] = @"secret";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])

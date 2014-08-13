@@ -147,7 +147,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     _captionType = captionType;
     
-    if (captionType == vMemeCaption)
+    if (captionType == kVCaptionTypeMeme)
     {
         [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.originalTextViewYConstraint];
@@ -163,7 +163,7 @@ static const CGFloat kShareMargin = 34.0f;
                                    NSStrokeWidthAttributeName : @(-5.0)
                                    } mutableCopy];
     }
-    else if (captionType == VQuoteCaption)
+    else if (captionType == kVCaptionTypeQuote)
     {
         [self.view removeConstraint:self.originalTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
@@ -180,7 +180,7 @@ static const CGFloat kShareMargin = 34.0f;
                                    } mutableCopy];
 
     }
-    else if (captionType == vNormalCaption)
+    else if (captionType == kVCaptionTypeNormal)
     {
         [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
@@ -299,9 +299,9 @@ static const CGFloat kShareMargin = 34.0f;
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     
-    self.memeButton.selected = self.captionType == vMemeCaption;
-    self.captionButton.selected = self.captionType == vNormalCaption;
-    self.quoteButton.selected = self.captionType == VQuoteCaption;
+    self.memeButton.selected = self.captionType == kVCaptionTypeMeme;
+    self.captionButton.selected = self.captionType == kVCaptionTypeNormal;
+    self.quoteButton.selected = self.captionType == kVCaptionTypeQuote;
     
     NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
     if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
@@ -314,7 +314,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)setDefaultCaptionText
 {
-    if (self.captionType == vNormalCaption)
+    if (self.captionType == kVCaptionTypeNormal)
     {
         [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
             NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
@@ -331,7 +331,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
 
     NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
-    if (self.captionType == vMemeCaption)
+    if (self.captionType == kVCaptionTypeMeme)
     {
         placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
     }
@@ -375,17 +375,22 @@ static const CGFloat kShareMargin = 34.0f;
 - (IBAction)changeCaptionType:(id)sender
 {
     for (UIButton* button in self.captionButtons)
+    {
         button.selected = (button == (UIButton*)sender);
+    }
     
     if ((UIButton*)sender == self.memeButton)
-        self.captionType = vMemeCaption;
-
+    {
+        self.captionType = kVCaptionTypeMeme;
+    }
     else if ((UIButton*)sender == self.quoteButton)
-        self.captionType = VQuoteCaption;
-
+    {
+        self.captionType = kVCaptionTypeQuote;
+    }
     else if ((UIButton*)sender == self.captionButton)
-        self.captionType = vNormalCaption;
-        
+    {
+        self.captionType = kVCaptionTypeNormal;
+    }
     [self.textView becomeFirstResponder];
 }
 
@@ -442,7 +447,7 @@ static const CGFloat kShareMargin = 34.0f;
         return;
     }
   
-    if (self.captionType == vMemeCaption || self.captionType == VQuoteCaption)
+    if (self.captionType == kVCaptionTypeMeme || self.captionType == kVCaptionTypeQuote)
     {
         UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
         
@@ -569,7 +574,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (self.captionType == vMemeCaption)
+    if (self.captionType == kVCaptionTypeMeme)
     {
         self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
         
@@ -593,7 +598,7 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
-    else if (self.captionType == VQuoteCaption)
+    else if (self.captionType == kVCaptionTypeQuote)
     {
         CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         

@@ -39,9 +39,9 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 
 typedef NS_ENUM(NSUInteger, VCaptionType)
 {
-    vNormalCaption = 0,
-    vMemeCaption,
-    VQuoteCaption
+    kVCaptionTypeNormal = 0,
+    kVCaptionTypeMeme,
+    kVCaptionTypeQuote
 };
 
 #pragma mark - UI constants
