@@ -85,6 +85,10 @@
                      {
                          [weakSelf syncScrubber];
                      }];
+
+    
+    // To Ensure That The Navigation Bar is Always Present
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,9 +99,6 @@
     //  Disable iOS 7 Back Gesture
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    
-    // To Ensure That The Navigation Bar is Always Present
-    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
