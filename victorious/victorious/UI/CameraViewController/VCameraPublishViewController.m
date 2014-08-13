@@ -30,7 +30,7 @@
 #import "VSettingManager.h"
 
 #import "VFacebookManager.h"
-
+#import "VUserManager.h"
 
 static NSString* kVSaveToCameraRollDisabledKey = @"saveToCameraKey";
 static NSString* kVShareToFacebookDisabledKey  = @"shareToFBKey";
@@ -191,6 +191,32 @@ static const CGFloat kShareMargin = 34.0f;
                                                           image:[UIImage imageNamed:@"share-btn-twitter"]];
     self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
     self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToTwitterDisabledKey];
+
+    if ([[VFacebookManager sharedFacebookManager] isSessionValid])
+    {
+        self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey] && [[VFacebookManager sharedFacebookManager] isSessionValid];
+    }
+    else if (![[VFacebookManager sharedFacebookManager] isSessionValid])
+    {
+        self.shareToFacebookView.selected = NO;
+        __weak VShareView* weakFBShare = self.shareToFacebookView;
+        
+        self.shareToFacebookView.selectionBlock = ^()
+        {
+            __block BOOL loggedIn = NO;
+            [[VObjectManager sharedManager] attachAccountToTwitterWithForceAccountUpdate:YES
+                                                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 loggedIn = YES;
+                 weakFBShare.selectionBlock = nil;
+             }
+                                                                               failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 loggedIn = NO;
+             }];
+            return loggedIn;
+        };
+    }
     
 //SETUP SAVE TO CAMERA
     self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)

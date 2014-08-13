@@ -30,12 +30,9 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
-                                                        accessSecret:(NSString*)accessSecret
-                                                           twitterId:(NSString*)twitterId
-                                                  forceAccountUpdate:(BOOL)forceAccountUpdate
-                                                    withSuccessBlock:(VSuccessBlock)success
-                                                           failBlock:(VFailBlock)fail;
+- (void)attachAccountToTwitterWithForceAccountUpdate:(BOOL)forceAccountUpdate
+                                        successBlock:(VSuccessBlock)success
+                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
