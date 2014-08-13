@@ -24,7 +24,7 @@
 #import "VShareView.h"
 
 #import "UIImage+ImageCreation.h"
-#import "UIAlertView+VBlocks.h"
+#import "UIActionSheet+VBlocks.h"
 
 #import "VCompositeSnapshotController.h"
 #import "VSettingManager.h"
@@ -404,25 +404,23 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)cancel:(id)sender
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"areYouSure", nil)
-                                                    message:NSLocalizedString(@"contentIsntPublished", nil)
-                                          cancelButtonTitle:NSLocalizedString(@"CancelButton", nil)
-                                             onCancelButton:nil
-                                 otherButtonTitlesAndBlocks:NSLocalizedString(@"Exit", nil), ^(void)
-                          {
-                              [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                           action:@"Camera Publish Cancelled"
-                                                                                            label:nil
-                                                                                            value:nil];
-                              if (self.completion)
-                              {
-                                  self.completion(YES);
-                              }
-                          },
-                          
-                          nil];
-    
-    [alert show];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"contentIsntPublished", nil)
+                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", nil)
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:NSLocalizedString(@"Exit", nil)
+                                                  onDestructiveButton:^(void)
+                                  {
+                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                   action:@"Camera Publish Cancelled"
+                                                                                                    label:nil
+                                                                                                    value:nil];
+                                      if (self.completion)
+                                      {
+                                          self.completion(YES);
+                                      }
+                                  }
+                                           otherButtonTitlesAndBlocks:nil];
+    [actionSheet showInView:self.view];
 }
 
 - (IBAction)hashButtonClicked:(id)sender
