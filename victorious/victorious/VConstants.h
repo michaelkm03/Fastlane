@@ -37,6 +37,13 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
     kVPlaybackDoubleSpeed   =   2
 };
 
+typedef NS_ENUM(NSUInteger, VCaptionType)
+{
+    vNormalCaption = 0,
+    vMemeCaption,
+    VQuoteCaption
+};
+
 #pragma mark - UI constants
 static NSUInteger const VConstantsMessageLength         = 140;
 static NSUInteger const VConstantsPollAnswerLength      = 25;

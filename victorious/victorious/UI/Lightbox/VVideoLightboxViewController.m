@@ -45,10 +45,22 @@
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.clipsToBounds = YES;
     self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.previewImageView.backgroundColor = [UIColor blackColor];
     [self.contentSuperview addSubview:self.previewImageView];
+    
+    CGFloat previewImageAspectRatio;
+    CGSize previewImageSize = self.previewImage.size;
+    if (previewImageSize.height)
+    {
+        previewImageAspectRatio = previewImageSize.width / previewImageSize.height;
+    }
+    else
+    {
+        previewImageAspectRatio = 1;
+    }
     self.previewImageConstraints = [NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView
                                                                               withinView:self.contentSuperview
-                                                                         withAspectRatio:(self.previewImage.size.width / self.previewImage.size.height)];
+                                                                         withAspectRatio:previewImageAspectRatio];
     [self.contentSuperview addConstraints:self.previewImageConstraints];
 }
 

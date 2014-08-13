@@ -17,6 +17,7 @@
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
+#import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
 #import "ChromecastDeviceController.h"
@@ -41,6 +42,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* rightLabels;
 
 @property (nonatomic, weak) IBOutlet    UILabel*    versionString;
+
+- (NSString*)collectDeviceInfo:(id)sender;
 @end
 
 @implementation VSettingsViewController
@@ -279,11 +282,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
+        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
+        
         MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
+        NSString *msgBody = [self collectDeviceInfo:nil];
+        NSString *msgSubj = [NSString stringWithFormat:@"Feedback on %@",[appName capitalizedString]];
+        
+        [mailComposer setSubject:NSLocalizedString(msgSubj,@"Feedback / Help")];
         [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
+        [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];
@@ -298,6 +307,31 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
                                                      otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
         [alert show];
     }
+}
+
+- (NSString*)collectDeviceInfo:(id)sender
+{
+    NSString *userString = @"";
+    VUser *user;
+    
+    // Grab App Version
+    NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+    
+    // Grab UserInfo (if logged in)
+    if ([VObjectManager sharedManager].isAuthorized)
+    {
+        user = [VObjectManager sharedManager].mainUser;
+        userString = [NSString stringWithFormat:@"\nUser ID: %@",user.remoteId];
+    }
+    
+    // Collect All of the Device Information
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    NSString *model = [currentDevice model];
+    NSString *iosVersion = [currentDevice systemVersion];
+    NSString *iosName = [currentDevice systemName];
+    
+    // Return the Compiled String of Variables
+    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice Type: %@\nOS Version: %@ v%@\nApp Version: %@%@",model, iosName, iosVersion, appVersion, userString];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

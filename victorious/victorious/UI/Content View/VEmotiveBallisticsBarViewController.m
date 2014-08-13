@@ -146,15 +146,7 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = [self.voteCountsForDisplay[self.likeVote.remoteId] integerValue] + 1;
-    self.voteCountsForDisplay[self.likeVote.remoteId] = @(voteCount);
-    [self updateVoteCountDisplay];
-    
     [self throwEmotive:self.leftButton toPoint:CGPointMake(x, y)];
-    
-    NSNumber* currentCount = [self.voteCounts objectForKey:self.likeVote.remoteId.stringValue];
-    currentCount = @(currentCount.integerValue + 1);
-    [self.voteCounts setObject:currentCount forKey:self.likeVote.remoteId.stringValue];
 }
 
 - (IBAction)pressedNegativeEmotive:(id)sender
@@ -170,20 +162,11 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = [self.voteCountsForDisplay[self.dislikeVote.remoteId] integerValue] + 1;
-    self.voteCountsForDisplay[self.dislikeVote.remoteId] = @(voteCount);
-    [self updateVoteCountDisplay];
-    
     [self throwEmotive:self.rightButton toPoint:CGPointMake(x, y)];
-    
-    NSNumber* currentCount = [self.voteCounts objectForKey:self.dislikeVote.remoteId.stringValue];
-    currentCount = @(currentCount.integerValue + 1);
-    [self.voteCounts setObject:currentCount forKey:self.dislikeVote.remoteId.stringValue];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer*)recognizer
 {
-    
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
@@ -206,6 +189,28 @@
 
 - (void)throwEmotive:(UIButton*)emotive toPoint:(CGPoint)point
 {
+    
+    if (emotive == self.leftButton)
+    {
+        NSInteger voteCount = [self.voteCountsForDisplay[self.likeVote.remoteId] integerValue] + 1;
+        self.voteCountsForDisplay[self.likeVote.remoteId] = @(voteCount);
+        [self updateVoteCountDisplay];
+        
+        NSNumber* currentCount = [self.voteCounts objectForKey:self.likeVote.remoteId.stringValue];
+        currentCount = @(currentCount.integerValue + 1);
+        [self.voteCounts setObject:currentCount forKey:self.likeVote.remoteId.stringValue];
+    }
+    else if (emotive == self.rightButton)
+    {
+        NSInteger voteCount = [self.voteCountsForDisplay[self.dislikeVote.remoteId] integerValue] + 1;
+        self.voteCountsForDisplay[self.dislikeVote.remoteId] = @(voteCount);
+        [self updateVoteCountDisplay];
+        
+        NSNumber* currentCount = [self.voteCounts objectForKey:self.dislikeVote.remoteId.stringValue];
+        currentCount = @(currentCount.integerValue + 1);
+        [self.voteCounts setObject:currentCount forKey:self.dislikeVote.remoteId.stringValue];
+    }
+    
     UIView *thrownImageSuperview = self.parentViewController.view ?: self.view;
     
     point = [self.target convertPoint:point toView:thrownImageSuperview];

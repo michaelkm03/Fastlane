@@ -34,13 +34,6 @@ extern NSString * const VObjectManagerContentFilterIDKey;
  */
 extern NSString * const VObjectManagerContentIndexKey;
 
-typedef NS_ENUM(NSUInteger, VCaptionType)
-{
-    vNormalCaption = 0,
-    vMemeCaption,
-    VQuoteCaption
-};
-
 @interface VObjectManager (ContentCreation)
 
 - (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID

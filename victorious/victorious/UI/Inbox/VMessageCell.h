@@ -6,19 +6,18 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAbstractCommentCell.h"
+@class VCommentTextAndMediaView;
 
-@class VMessage;
+extern NSString * const kVMessageCellNibName;
 
-static NSString *kMessageCellIdentifier = @"VMessageCell";
-static NSString *kOtherMessageCellIdentifier = @"VOtherMessageCell";
+@interface VMessageCell : UITableViewCell
 
-extern CGFloat const kMessageCellYOffset;
-extern CGFloat const kMessageMediaCellYOffset;
-extern CGFloat const kMessageMinCellHeight;
+@property (nonatomic, weak, readonly) IBOutlet VCommentTextAndMediaView  *commentTextView;
+@property (nonatomic, weak, readonly) IBOutlet UILabel                   *timeLabel;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView               *profileImageView;
+@property (nonatomic, copy)                    void                     (^onProfileImageTapped)();
+@property (nonatomic)                          BOOL                       profileImageOnRight; ///< If YES, the profile image is to the right of the chat bubble
 
-@interface VMessageCell : VAbstractCommentCell
-
-@property (strong, nonatomic) VMessage* message;
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
 
 @end

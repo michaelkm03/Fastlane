@@ -13,7 +13,10 @@
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerViewController.h"
+#import "VCameraPublishViewController.h"
+#import "VMediaPreviewViewController.h"
 #import "VRemixVideoRangeSlider.h"
+#import "UIImage+Cropping.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
@@ -82,6 +85,10 @@
                      {
                          [weakSelf syncScrubber];
                      }];
+
+    
+    // To Ensure That The Navigation Bar is Always Present
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -213,6 +220,75 @@
 - (IBAction)goBack:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(IBAction)takeSnapShotAction:(id)sender
+{
+    NSLog(@"\n\n-----\nTaking An Image Snapshot\n-----\n\n");
+    
+    // Pause the Current Video If It Is Playing
+    if (self.videoPlayerViewController.isPlaying)
+        [self.videoPlayerViewController.player pause];
+
+    // Get the Time of the Current Frame
+    CMTime currentTime = [self.videoPlayerViewController.player currentTime];
+    CMTime actualTime;
+    NSError *error = nil;
+    
+    
+    
+    // Create A File Target
+    NSURL *target = [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSnapShot"] stringByAppendingPathExtension:@"jpg"] isDirectory:NO];
+    [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
+    
+    // Create an AVAssetImageGenerator
+    AVAsset *anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
+    AVAssetImageGenerator *imgGen = [[AVAssetImageGenerator alloc] initWithAsset:anAsset];
+    //imgGen.appliesPreferredTrackTransform = YES;
+
+    // Using The AVAssetImageGenerator, Capture the Video Frame and Store it In A UIImage
+    CGImageRef imgRef = [imgGen copyCGImageAtTime:currentTime actualTime:&actualTime error:&error];
+    UIImage *thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
+    CGImageRelease(imgRef);
+    
+    // Write the Captured Image to Disk
+    [UIImageJPEGRepresentation(thumb, VConstantJPEGCompressionQuality) writeToURL:target atomically:YES];
+    self.targetURL = target;
+    
+    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:target];
+    previewViewController.mediaURL = self.targetURL;
+    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        
+        if (finished)
+        {
+            // Push the Captured Image to the Publish Screen
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.mediaURL = capturedMediaURL;
+            publishViewController.playBackSpeed = self.playBackSpeed;
+            publishViewController.playbackLooping = self.playbackLooping;
+            publishViewController.parentID = self.parentID;
+            publishViewController.previewImage = previewImage;
+            publishViewController.completion = ^(BOOL complete)
+            {
+                if (complete)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            };
+            
+            // Push the Publish Screen onto the Navigation Stack
+            [self.navigationController pushViewController:publishViewController animated:YES];
+
+        }
+    };
+
+    [self.navigationController pushViewController:previewViewController animated:YES];
+    
 }
 
 #pragma mark - Navigation

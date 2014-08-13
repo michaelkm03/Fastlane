@@ -20,6 +20,7 @@
 
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+@property (nonatomic, weak)     IBOutlet    UIButton            *takeImageSnapShotButton;
 
 @property (nonatomic, strong)   NSURL*                          sourceURL;
 @property (nonatomic, strong)   NSURL*                          targetURL;
