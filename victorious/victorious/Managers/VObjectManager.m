@@ -415,6 +415,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
+        sRFC2822DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
         sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
         
         NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
