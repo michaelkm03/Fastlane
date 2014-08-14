@@ -269,6 +269,7 @@
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
 		03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */; };
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
+		03D5C0A119B80F5700B27B4D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03D5C09F19B80F5700B27B4D /* Localizable.strings */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
@@ -840,6 +841,7 @@
 		03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeviceInfo.m; sourceTree = "<group>"; };
 		03CF151E195CFBE600F6477B /* NSArray+VMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VMap.h"; sourceTree = "<group>"; };
 		03CF151F195CFBE600F6477B /* NSArray+VMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VMap.m"; sourceTree = "<group>"; };
+		03D5C0A019B80F5700B27B4D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Localizable.strings; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
 		03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VSolidColor.m"; sourceTree = "<group>"; };
 		03FDA09D197A0AEC00405361 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
@@ -1864,6 +1866,7 @@
 			isa = PBXGroup;
 			children = (
 				03C185CA19B42FE900E27D05 /* InfoPlist.strings */,
+				03C185C419B42FD600E27D05 /* Localizable.strings */,
 			);
 			path = en.lproj;
 			sourceTree = "<group>";
@@ -1910,6 +1913,14 @@
 				03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */,
 			);
 			path = "Device Info";
+			sourceTree = "<group>";
+		};
+		03D5C09E19B80F5700B27B4D /* es.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				03D5C09F19B80F5700B27B4D /* Localizable.strings */,
+			);
+			path = es.lproj;
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
@@ -1973,7 +1984,7 @@
 			isa = PBXGroup;
 			children = (
 				03C185C919B42FE900E27D05 /* en.lproj */,
-				03C185C419B42FD600E27D05 /* Localizable.strings */,
+				03D5C09E19B80F5700B27B4D /* es.lproj */,
 				03C185C519B42FD600E27D05 /* main.m */,
 				03C185C619B42FD600E27D05 /* victorious-Prefix.pch */,
 			);
@@ -2421,6 +2432,7 @@
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
 				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
+				03D5C0A119B80F5700B27B4D /* Localizable.strings in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
@@ -2860,6 +2872,14 @@
 				03C185CB19B42FE900E27D05 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		03D5C09F19B80F5700B27B4D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03D5C0A019B80F5700B27B4D /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		BE171DA11868BE64004E5202 /* InfoPlist.strings */ = {

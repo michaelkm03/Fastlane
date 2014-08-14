@@ -1,0 +1,249 @@
+/* 
+  Localizable.strings
+  victorious
+
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Victorious Inc. All rights reserved.
+*/
+
+
+
+"Home" = "Inicio";
+"Community" = "Comunidad";
+"Inbox" = "Entrada";
+"Comments" = "Comentarios";
+
+"OKButton" = "OK";
+"CancelButton" = "Cancelar";
+"DeleteButton" = "Borrar";
+"ResetButton" = "Restablecer";
+"YesButton" = "Sí";
+"NoButton" = "No";
+"BackButton" = "Atrás";
+
+"TimeSeparator" = ":";
+"InvalidTimePlaceholder" = "-:--";
+
+"SetupButton" = "Configurar";
+"EmailValidation" = "Dirección de email no válida";
+"PasswordValidation" = "La contraseña tiene menos de 8 caracteres";
+"UsernameValidation" = "El nombre de usuario tiene menos de 8 caracteres";
+"AgreeTOS" = "Debes hacer clic confirmando que al menos tienes 13 años y que aceptas los Términos de Servicio";
+"InvalidCredentials" = "Credenciales no válidas";
+"PasswordNotMatching" = "Las contraseñas no coinciden";
+"PollAlreadyAnswered" = "El resultado de la encuesta ya se respondió";
+"LoginFail" = "Falló el inicio de sesión";
+"LoginFailMessage" = "Algo salió mal.";
+"SignupFail" = "No se pudo crear la cuenta";
+"AccountUpdateFail" = "No se pudo actualizar la cuenta";
+"ProfileSaveFail" = "No se pudo guardar la información de tu perfil debido a un error en el servidor";
+"ProfileSave" = "Subiendo tu perfil";
+"ProfileIncomplete" = "Perfil incompleto";
+"ProfileRequired" = "Debes completar tu perfil";
+"ProfileUpdateFailed" = "No se pudo actualizar el perfil";
+
+"WereSorry" = "Lo sentimos";
+"ErrorOccured" = "Por alguna razón no nos podemos conectar con el servidor. ¡Por favor vuelve a intentarlo más tarde!";
+
+"NoEmail" = "No hay cuentas de email";
+"NoEmailDetail" = "No hay cuentas de email. ¿Quieres configurar una ahora?";
+"EmailFail" = "No se pudo enviar el email";
+"SMSFail" = "No se pudo enviar el SMS";
+"CouldNotSend" = "No se envió el mensaje";
+
+"Missing Content" = "¡Vaya!";
+"Missing Content Message" = "¡No podemos encontrar lo que buscas!";
+
+"NoMessagesTitle" = "NO HAY MENSAJES TODAVÍA";
+"NoMessagesMessage" = "¡Puedes enviar mensajes a cualquiera en la aplicación! Solo ve a su perfil y haz clic en el icono de redactar en la esquina superior derecha.";
+
+"NoCommentsTitle" = "¡SE EL PRIMERO EN COMENTAR!";
+"NoCommentsMessage" = "¡Publica comentarios de texto, fotos o videos y ve lo que dicen otros!";
+
+"NoFollowersTitle" = "¡VAYA, VAYA! NADIE TE SIGUE TODAVÍA";
+"NoFollowersMessage" = "Crea tu propio seguimiento compartiendo con la comunidad a través de comentarios, re-mezclando o publicando contenido nuevo.";
+
+"NotFollowingTitle" = "¡OH,OH! NO SIGUES A NADIE TODAVÍA";
+"NotFollowingMessage" = "Sigue a otros para que veas su contenido en tu stream. Es una gran forma de encontrar contenido nuevo o de hacer nuevos amigos.";
+
+"CheckOutContent" = "!Checa esta asombrosa publicación!";
+
+"Facebook" = "Facebook";
+"FacebookDeniedTitle" = "No se puede acceder a tu cuenta de Facebook";
+"FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
+
+"SearchFailed" = "Falló la búsqueda.";
+"ImageDownloadFailed" = "No se pudo descargar la imagen.";
+
+"TwitterDeniedTitle" = "No se puede acceder a tu cuenta de Twitter";
+"TwitterDenied" = "Por favor, autoriza el acceso a tu cuenta de Twitter en Configuración -> Twitter";
+
+"NoTwitterTitle" = "¡No se puede encontrar una cuenta de Twitter!";
+"NoTwitterMessage" = "Por favor, abre la configuración de tu dispositivo y añade una cuenta de Twitter";
+
+"HelpNeeded" = "Necesito ayuda con...";
+
+"ReportInappropriate" = "Reportar inapropiado";
+"ReportedTitle" = "¡Lo tengo!";
+"ReportContentMessage" = "Este contenido se revisará en las próximas 24 horas";
+"ReportCommentMessage" = "Este comentario se revisará en las próximas 24 horas";
+"ReportUserMessage" = "Este usuario será revisado en las próximas 24 horas";
+
+"BlockUser" = "Bloquear usuario";
+"CopyProfileURL" = "Copiar URL del perfil";
+
+"Create a Video Post" = "Crear una publicación de video";
+"Create an Image Post" = "Crear una publicación de imagen";
+"Create a Poll" = "Crear una encuesta";
+
+"NEW POLL" = "Encuesta nueva";
+"Ask a question..." = "Hacer una pregunta...";
+"Vote this" = "Votar por esto";
+"Vote that" = "Votar por eso";
+"Create Poll" = "Crear una encuesta";
+
+"TranscodingMediaTitle" = "Transcodificando lo que subiste";
+"TranscodingMediaBody" = "La transcodificación de lo que subiste se está llevando más tiempo de lo normal. Aparecerá una vez que terminemos.";
+"PollUploadTitle" = "No se pudo subir la encuesta";
+"PollUploadBody" = "No se pudo subir la encuesta al servidor";
+
+"UploadFailedTitle" = "No se pudo subir el medio";
+
+"UploadError" = "Error en la subida";
+"UploadErrorBody" = "Algo salió mal y no pudimos completar la subida en este momento.";
+
+"FollowError" = "Hubo un error al seguir a este usuario.";
+"UnfollowError" = "Hubo un error al dejar de seguir a este usuario.";
+
+"Normal" = "Normal";
+
+"PublishUpload" = "Tu contenido se está subiendo.";
+
+"PublishSucceeded" = "Se publicó satisfactoriamente";
+"PublishSucceededDetail" = "Tu medio se envió al servidor";
+
+"PublishDescriptionRequired" = "Se requiere una descripción";
+"PublishDescription" = "Tienes que ingresar una descripción de tu medio.";
+
+"ReplaceVideo" = "Reemplazar video";
+
+"VideoPlayFailed" = "No se pudo reproducir el video";
+"See More" = "Ver más";
+"..." = "...";
+
+"PostWillExpire" = "La publicación caducará";
+"CancelExpiration" = "¿Cancelar la caducidad?";
+"CancelExirationConfirm" = "¿Estás seguro que quieres cancelar la configuración de una fecha de caducidad?";
+
+"Now" = "Ahora";
+"SecondsAgo" = "%ds";
+"MinuteAgo" = "1m";
+"MinutesAgo" = "%dm";
+"HourAgo" = "1h";
+"HoursAgo" = "%dh";
+"Yesterday" = "1d";
+"DaysAgo" = "%dd";
+"LastWeek" = "1sem";
+"WeeksAgo" = "%dsem";
+"LastMonth" = "1mes";
+"MonthsAgo" = "%dmeses";
+"LastYear" = "1año";
+"YearsAgo" = "%daños";
+
+"Minute" = "Minuto";
+"Hour" = "Hora";
+"Day" = "Día";
+"Week" = "Semana";
+"Month" = "Mes";
+
+"Minutes" = "Minutos";
+"Hours" = "Horas";
+"Days" = "Días";
+"Weeks" = "Semanas";
+"Months" = "Meses";
+
+"JustAMoment" = "Un momento";
+"LocatingVideo" = "Localizando video...";
+"DownloadingVideo" = "Descargando video...";
+
+"SegmentDownloadFail" = "No se pudo obtener el video";
+
+"TryAgain" = "Por favor inténtalo más tarde.";
+
+"ExpiresOn" = "Expira el %@";
+
+"me" = "Yo";
+
+"editProfileButton" = "Editar perfil";
+"followers" = "Seguidores";
+"following" = "Siguiendo a";
+"follow" = "Seguir";
+
+"ResetPassword" = "Restablecer contraseña";
+"ResetPasswordPrompt" = "Por favor ingresa tu dirección de email";
+"ResetPasswordPlaceholder" = "Dirección de email";
+
+"EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña";
+"EnterCodeTitle" = "INGRESAR CÓDIGO";
+"ResendEmail" = "Volver a enviar email";
+
+"EmailNotFound" = "No se encontró esa dirección de email. Verifica que estás usando la cuenta de email que usaste para crear esta cuenta.";
+"Thanks" = "¡Gracias!";
+"CannotVerify" = "No se puede verificar la cuenta";
+"IncorrectCode" = "El código que se usó para verificar la cuenta no es correcto.";
+
+"IncorrectOldPassword" = "La contraseña actual no es correcta.";
+
+"Search for an image" = "Buscar una imagen";
+"Pull up for more..." = "Jalar más...";
+"No results" = "Sin resultados";
+
+"InviteYourFriends" = "¡Invita a tus amigos!";
+"InviteUsingEmail" = "Invita usando un email";
+"InviteUsingSMS" = "Invita usando un SMS";
+"InviteFriendsSubject" = "Invita amigos";
+"InviteFriendsBody" = "Invita........................";
+
+"FindContacts" = "Busca e invita a los amigos de tus contactos";
+"Access Your Contacts" = "Ve a tus contactos";
+
+"AccessContactsDenied" = "Para buscar amigos usando tu directorio, por favor autoriza el acceso en Configuración -> Privacidad -> Contactos";
+"AccessContactsRestricted" = "No se puede acceder a tus contactos debido a restricciones en tu dispositivo.";
+
+"FindFBFriends" = "Añade a tus amigos de Facebook conectando tu cuenta";
+"Connect to Facebook" = "Conéctate a Facebook";
+
+"FindTwitterFriends" = "Añade a tus amigos de Twitter conectando tu cuenta";
+"Connect to Twitter" = "Conéctate a Twitter";
+
+"FindInstagramFriends" = "Añade a tus amigos de Instagram";
+"Connect to Instagram" = "Conéctate a Instagram";
+
+"Logout" = "Cerrar sesión";
+"Login" = "Iniciar sesión";
+
+"UserBannedTitle" = "¡Oh, oh!";
+"UserBannedMessage" = "Desafortunadamente, eres un miembro excluido de la comunidad. Todavía podrás ver contenido, pero no podrás publicar o interactuar con otros.";
+
+"AddDescription" = "Añade una descripción... y no olvides los #hashtags";
+"AddDescriptionAnchor" = "#hashtags";
+
+"NotConnected" = "Sin conexión";
+"ConnectedTo" = "Conectado a %@";
+
+"Version" = "Versión %@";
+
+"ToSText" = "Términos de Servicio";
+"ToSAgreement" = "Tengo al menos 13 años y acepto los Términos de Servicio";
+
+"NoFriends" = "Sin coincidencias";
+"NoFriendsDetail" = "No pudimos encontrar a ninguno de tus amigos que use nuestra aplicación. ¡Adelante, ve e invítalos!";
+
+
+"Report/Flag" = "Reporte/Bandera";
+"CreatedBy" = "CREADO POR";
+"remixes" = "re-mezclas";
+"reposts" = "re-publicaciones";
+"comments" = "comentarios";
+
+"leaveACommentFormat" = "Deja un comentario en %@";
