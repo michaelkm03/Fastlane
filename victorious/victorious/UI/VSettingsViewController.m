@@ -295,8 +295,10 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
-        [self presentViewController:mailComposer animated:YES completion:nil];
-        [[VThemeManager sharedThemeManager] applyStyling];
+        [self presentViewController:mailComposer animated:YES completion:
+         ^{
+            [[VThemeManager sharedThemeManager] applyStyling];
+        }];
     }
     else
     {

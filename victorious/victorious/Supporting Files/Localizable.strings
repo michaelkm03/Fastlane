@@ -73,7 +73,14 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
-"CheckOutContent"       =   "Check out this awesome post!";
+"OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
+"OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
+"UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
+"UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
+"UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
+"EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
+
 
 "Facebook"              =   "Facebook";
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
