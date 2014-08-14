@@ -210,7 +210,6 @@
         currentCount = @(currentCount.integerValue + 1);
         [self.voteCounts setObject:currentCount forKey:self.dislikeVote.remoteId.stringValue];
     }
-
     
     UIView *thrownImageSuperview = self.parentViewController.view ?: self.view;
     

@@ -18,10 +18,13 @@
 #import "VContentInfoViewController.h"
 
 #import "VCommentsContainerViewController.h"
+#import "VCameraPublishViewController.h"
 
 #import "VHashTagContainerViewController.h"
 
 #import "VHashTagStreamViewController.h"
+
+#import "VRemixSelectViewController.h"
 
 #import "UIImageView+Blurring.h"
 
@@ -694,7 +697,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [self loadImage]; // load the video thumbnail
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
-        [self showRemixButton];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -707,8 +709,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     else //Default case: we assume it's an image and hope it works out
     {
         [self loadImage];
-        [self hideRemixButton];
     }
+    
+    [self showRemixButton];
 }
 
 #pragma mark - Quiz
@@ -718,6 +721,80 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Button Actions
+- (IBAction)pressedRemix:(id)sender
+{
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+    {
+        [self forceRotationBackToPortraitOnCompletion:^(void)
+         {
+             [self pressedRemix:sender];
+         }];
+        return;
+    }
+    
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    NSString* label = [self.sequence.remoteId.stringValue stringByAppendingPathComponent:self.sequence.name];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+    
+    if ([self.currentAsset isVideo])
+    {
+        UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
+        [self presentViewController:remixVC animated:YES completion:
+         ^{
+             [self.videoPlayer.player pause];
+         }];
+    }
+    else
+    {
+        UINavigationController * __weak weakNav = self.navigationController;
+        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+        publishViewController.previewImage = self.previewImage.image;
+        publishViewController.parentID = self.sequence.remoteId.integerValue;
+        publishViewController.completion = ^(BOOL complete)
+        {
+            [weakNav popViewControllerAnimated:YES];
+        };
+        
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                           onCancelButton:nil
+                                                   destructiveButtonTitle:nil
+                                                      onDestructiveButton:nil
+                                               otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                      {
+                                          publishViewController.captionType = VCaptionTypeMeme;
+                                          
+                                          NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
+                                          NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                          NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                          if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                          {
+                                              publishViewController.mediaURL = tempFile;
+                                              [weakNav pushViewController:publishViewController animated:YES];
+                                          }
+                                      },
+                                      NSLocalizedString(@"Quote", nil),  ^(void)
+                                      {
+                                          publishViewController.captionType = VCaptionTypeQuote;
+                                          
+                                          NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
+                                          NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                          NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                          if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                          {
+                                              publishViewController.mediaURL = tempFile;
+                                              [weakNav pushViewController:publishViewController animated:YES];
+                                          }
+                                      }, nil];
+        [actionSheet showInView:self.view];
+    }
+}
+
 - (IBAction)pressedBack:(id)sender
 {
     void (^goBack)() = ^(void)

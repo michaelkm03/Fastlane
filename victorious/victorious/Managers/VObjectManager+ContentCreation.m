@@ -129,7 +129,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
-                               shouldRemoveMedia:(BOOL)shouldRemoveMedia
 {
     if (!mediaUrl)
         return nil;
@@ -140,14 +139,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"expires_at"] = expiresAt;
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
-    if (shareOptions & kVShareToFacebook)
+    if (shareOptions & VShareToFacebook)
         parameters[@"share_facebook"] = @"1";
-    if (shareOptions & kVShareToTwitter)
+    if (shareOptions & VShareToTwitter)
         parameters[@"share_twitter"] = @"1";
 
-    if (type == vMemeCaption)
+    if (type == VCaptionTypeMeme)
         parameters[@"subcategory"] = @"meme";
-    else if (type == VSecretCaption)
+    else if (type == VCaptionTypeQuote)
         parameters[@"subcategory"] = @"secret";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
@@ -204,10 +203,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (NSString*)stringForLoopType:(VLoopType)type
 {
-    if (type == kVLoopRepeat)
+    if (type == VLoopRepeat)
         return @"loop";
     
-    if (type == kVLoopReverse)
+    if (type == VLoopReverse)
         return @"reverse";
 
     return @"once";

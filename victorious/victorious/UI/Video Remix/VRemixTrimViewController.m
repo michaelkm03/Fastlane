@@ -46,8 +46,8 @@
     [super viewDidLoad];
 	
     self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
-    self.playBackSpeed = kVPlaybackNormalSpeed;
-    self.playbackLooping = kVLoopOnce;
+    self.playBackSpeed = VPlaybackNormalSpeed;
+    self.playbackLooping = VLoopOnce;
     
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];

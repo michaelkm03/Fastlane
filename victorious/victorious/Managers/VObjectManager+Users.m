@@ -16,7 +16,11 @@
 #import "VUser.h"
 #import "VUser+RestKit.h"
 
+#import "TWAPIManager.h"
+
 #import "VConstants.h"
+
+@import Accounts;
 
 @interface VObjectManager (UserProperties)
 @property (nonatomic, strong) VSuccessBlock fullSuccess;
@@ -100,11 +104,13 @@
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+                                                  forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
     
-    NSDictionary *parameters = @{@"facebook_access_token":   accessToken ?: @""};
+    NSDictionary *parameters = @{@"facebook_access_token":  accessToken ?: @"",
+                                 @"force_update":           [NSNumber numberWithBool:forceAccountUpdate]};
     
     return [self POST:@"/api/socialconnect/facebook"
                object:nil
@@ -113,22 +119,64 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
-                                                        accessSecret:(NSString*)accessSecret
-                                                           twitterId:(NSString*)twitterId
-                                                    withSuccessBlock:(VSuccessBlock)success
-                                                           failBlock:(VFailBlock)fail
+- (void)attachAccountToTwitterWithForceAccountUpdate:(BOOL)forceAccountUpdate
+                                        successBlock:(VSuccessBlock)success
+                                           failBlock:(VFailBlock)fail
 {
+    //Just fail without the network call if we aren't logged in
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        if (fail)
+            fail(nil, nil);
+        return;
+    }
     
-    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
-                                 @"access_secret":  accessSecret ?: @"",
-                                 @"twitter_id":     twitterId ?: @""};
+    ACAccountStore* account = [[ACAccountStore alloc] init];
+    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
-    return [self POST:@"/api/socialconnect/twitter"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail];
+    NSArray *accounts = [account accountsWithAccountType:accountType];
+    ACAccount *twitterAccount = [accounts lastObject];
+    
+    if (!twitterAccount)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return;
+    }
+    
+    TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
+    [twitterApiManager performReverseAuthForAccount:twitterAccount
+                                        withHandler:^(NSData *responseData, NSError *error)
+     {
+         if (fail)
+         {
+             if (fail)
+             {
+                 fail(nil, error);
+             }
+             return;
+         }
+         
+         NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+         NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+         
+         NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
+         NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+         NSString* twitterId = [parsedData objectForKey:@"user_id"];
+         
+         NSDictionary *parameters = @{@"access_token":   oauthToken ?: @"",
+                                      @"access_secret":  tokenSecret ?: @"",
+                                      @"twitter_id":     twitterId ?: @"",
+                                      @"force_update":   [NSNumber numberWithBool:forceAccountUpdate]};
+         
+         [self POST:@"/api/socialconnect/twitter"
+             object:nil
+         parameters:parameters
+       successBlock:success
+          failBlock:fail];
+     }];
 }
 
 #pragma mark - Following
