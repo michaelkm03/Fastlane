@@ -406,9 +406,9 @@ static const CGFloat kShareMargin = 34.0f;
 - (IBAction)cancel:(id)sender
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"contentIsntPublished", nil)
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", nil)
+                                                    cancelButtonTitle:NSLocalizedString(@"Stay", @"")
                                                        onCancelButton:nil
-                                               destructiveButtonTitle:NSLocalizedString(@"Exit", nil)
+                                               destructiveButtonTitle:NSLocalizedString(@"Close", @"")
                                                   onDestructiveButton:^(void)
                                   {
                                       [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
