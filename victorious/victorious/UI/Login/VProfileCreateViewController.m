@@ -425,12 +425,39 @@
     if (isValid)
         return YES;
     
+    // Identify Which Form Field is Missing
+    NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
+    
+    if (!self.usernameTextField.text.length > 0)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.locationTextField.text.length > 0)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredLoc", @"")];
+    }
+    
+    if (!self.updatedProfileImage)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredPhoto", @"")];
+    }
+
+    if (![self.agreeSwitch isOn])
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredToS", @"")];
+    }
+    
+    
+    // Show Error Message
     UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                       message:NSLocalizedString(@"ProfileRequired", @"")
+                                                       message:errorMsg
                                                       delegate:nil
                                              cancelButtonTitle:nil
                                              otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
     [alert show];
+
+    [self.activityIndicator stopAnimating];
     
     return NO;
 }
