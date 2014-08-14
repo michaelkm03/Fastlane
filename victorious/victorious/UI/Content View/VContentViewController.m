@@ -269,6 +269,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[VThemeManager sharedThemeManager] applyStyling];
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -859,9 +865,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedShare:(id)sender
 {
-    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
-
-    UIImage* previewImage = self.previewImage.image ?: self.leftPollThumbnail;
+    //Remove the styling for the mail view.
+    [[VThemeManager sharedThemeManager] removeStyling];
     
     NSString* shareText;
     if ([self.sequence.user isOwner])
@@ -895,12 +900,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         }
     }
     
+    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
                                                                   shareText,
-                                                                  previewImage, [NSURL URLWithString:self.sequence.shareUrlPath] ?: [NSNull null]]
+                                                                  [NSURL URLWithString:self.sequence.shareUrlPath] ?: [NSNull null]]
                                           applicationActivities:@[fbActivity]];
-    
+    NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     
     [self.navigationController presentViewController:activityViewController
