@@ -45,15 +45,20 @@ static NSString* const VFacebookActivityType = @"com.victorious.facebook";
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
     VSequence* sequence;
+    NSURL* shareUrl;
     for (id item in activityItems)
     {
         if ([item isKindOfClass:[VSequence class]])
         {
             sequence = item;
         }
+        if ([item isKindOfClass:[NSURL class]])
+        {
+            shareUrl = item;
+        }
     }
     
-    [[VFacebookManager sharedFacebookManager] shareLink:[NSURL URLWithString:sequence.shareUrlPath]
+    [[VFacebookManager sharedFacebookManager] shareLink:shareUrl
                                             description:sequence.sequenceDescription
                                                    name:sequence.name
                                              previewUrl:nil];

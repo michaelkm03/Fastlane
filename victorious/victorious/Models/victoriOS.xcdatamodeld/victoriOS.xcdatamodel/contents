@@ -99,6 +99,7 @@
     <entity name="Node" representedClassName="VNode" syncable="YES">
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" indexed="YES" syncable="YES"/>
+        <attribute name="shareUrlPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
         <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
         <relationship name="nodeAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
@@ -146,7 +147,6 @@
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="shareUrlPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceFilter" inverseName="sequences" inverseEntity="SequenceFilter" syncable="YES"/>
@@ -210,12 +210,12 @@
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="208"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
+        <element name="Node" positionX="817" positionY="-180" width="128" height="148"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-181" width="128" height="448"/>
+        <element name="Sequence" positionX="1060" positionY="-181" width="128" height="433"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1314" positionY="-342" width="128" height="358"/>

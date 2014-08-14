@@ -873,30 +873,30 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         if ([self.sequence isPoll])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name, self.sequence.shareUrlPath];
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
         }
         else if ([self.sequence isVideo])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name, self.sequence.shareUrlPath];
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
         }
         else
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name, self.sequence.shareUrlPath];
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
         }
     }
     else
     {
         if ([self.sequence isPoll])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), self.sequence.shareUrlPath];
+            shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
         }
         else if ([self.sequence isVideo])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), self.sequence.shareUrlPath];
+            shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
         }
         else
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), self.sequence.shareUrlPath];
+            shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
         }
     }
     
@@ -904,7 +904,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
                                                                   shareText,
-                                                                  [NSURL URLWithString:self.sequence.shareUrlPath] ?: [NSNull null]]
+                                                                  [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null]]
                                           applicationActivities:@[fbActivity]];
     NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
