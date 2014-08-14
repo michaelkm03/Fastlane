@@ -298,9 +298,10 @@ static const CGFloat kShareMargin = 34.0f;
     self.navigationController.navigationBar.translucent = YES;
 
     UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
-    
+
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
     self.captionButton.selected = self.captionType == VCaptionTypeNormal;
     self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
