@@ -35,10 +35,11 @@
                                   @"game_status"    :   VSelectorName(gameStatus),
 //                                  @"expires_at"     :   VSelectorName(expiresAt),
                                   @"parent_user_id" :   VSelectorName(parentUserId),
+                                  @"share_url"      :   VSelectorName(shareUrlPath),
                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
                                   @"sequence_counts.remixes"    : VSelectorName(remixCount),
-                                  @"sequence_counts.reposts"    : VSelectorName(repostCount)
+                                  @"sequence_counts.reposts"    : VSelectorName(repostCount),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

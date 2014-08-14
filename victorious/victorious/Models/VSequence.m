@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 8/7/14.
+//  Created by Will Long on 8/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -25,6 +25,7 @@
 @dynamic gameStatus;
 @dynamic isComplete;
 @dynamic name;
+@dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
 @dynamic previewImage;
 @dynamic releasedAt;
@@ -33,7 +34,7 @@
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
-@dynamic nameEmbeddedInContent;
+@dynamic shareUrlPath;
 @dynamic comments;
 @dynamic filters;
 @dynamic nodes;

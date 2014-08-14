@@ -46,6 +46,8 @@
 
 #import "VElapsedTimeFormatter.h"
 
+#import "VUser+Fetcher.h"
+
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
 #import "VSettingManager.h"
@@ -859,13 +861,44 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
 
-    NSURL* deeplinkURL = [[VDeeplinkManager sharedManager] contentDeeplinkForSequence:self.sequence];
     UIImage* previewImage = self.previewImage.image ?: self.leftPollThumbnail;
+    
+    NSString* shareText;
+    if ([self.sequence.user isOwner])
+    {
+        if ([self.sequence isPoll])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name, self.sequence.shareUrlPath];
+        }
+        else if ([self.sequence isVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name, self.sequence.shareUrlPath];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name, self.sequence.shareUrlPath];
+        }
+    }
+    else
+    {
+        if ([self.sequence isPoll])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), self.sequence.shareUrlPath];
+        }
+        else if ([self.sequence isVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), self.sequence.shareUrlPath];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), self.sequence.shareUrlPath];
+        }
+    }
     
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
-                                                                  NSLocalizedString(@"CheckOutContent", nil),
-                                                                  previewImage, deeplinkURL]
+                                                                  shareText,
+                                                                  previewImage, [NSURL URLWithString:self.sequence.shareUrlPath] ?: [NSNull null]]
                                           applicationActivities:@[fbActivity]];
     
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];

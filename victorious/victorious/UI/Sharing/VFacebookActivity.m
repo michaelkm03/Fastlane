@@ -44,19 +44,25 @@ static NSString* const VFacebookActivityType = @"com.victorious.facebook";
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
+    VSequence* sequence;
+    NSString* description;
     for (id item in activityItems)
     {
         if ([item isKindOfClass:[VSequence class]])
         {
-            VSequence* sequence = item;
-            NSURL* previewUrl = [NSURL URLWithString:sequence.previewImage];
-            
-            [[VFacebookManager sharedFacebookManager] shareLink:previewUrl
-                                                    description:@""
-                                                           name:sequence.sequenceDescription
-                                                     previewUrl:previewUrl];
+            sequence = item;
+        }
+        else if ([item isKindOfClass:[NSString class]])
+        {
+            description = item;
         }
     }
+    NSURL* previewUrl = [NSURL URLWithString:sequence.previewImage];
+    
+    [[VFacebookManager sharedFacebookManager] shareLink:[NSURL URLWithString:@"google.com"]//sequence.shareUrlPath]
+                                            description:description
+                                                   name:sequence.name
+                                             previewUrl:previewUrl];
 }
 
 + (UIActivityCategory)activityCategory

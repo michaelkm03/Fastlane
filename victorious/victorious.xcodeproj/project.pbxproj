@@ -275,6 +275,7 @@
 		BE9181EB1909D38A0071E7AF /* VSequenceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */; };
 		BEA08E0019992DF7002A7494 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEA08DFD19992DF7002A7494 /* Impact.ttf */; };
 		BEA08E081999309D002A7494 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEA08E071999309D002A7494 /* PTSans-Narrow.ttf */; };
+		BEA08E81199C2D21006A488D /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA08E80199C2D21006A488D /* VSequence.m */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
 		BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF5E187F21770014C3EF /* VTableViewCell.m */; };
@@ -310,7 +311,6 @@
 		BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */; };
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
-		BEF185E519883899007FB4BC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E419883899007FB4BC /* VSequence.m */; };
 		BEF185E719884C13007FB4BC /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E619884C13007FB4BC /* VConstants.m */; };
 		BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */; };
 		BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */; };
@@ -832,6 +832,8 @@
 		BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceFilter.m; sourceTree = "<group>"; };
 		BEA08DFD19992DF7002A7494 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		BEA08E071999309D002A7494 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
+		BEA08E7F199C2D21006A488D /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		BEA08E80199C2D21006A488D /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA5BF57187E7E8E0014C3EF /* VObjectManager+DirectMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DirectMessaging.h"; sourceTree = "<group>"; };
@@ -896,8 +898,6 @@
 		BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPollAnswerBarViewController.h; path = "UI/Content View/VPollAnswerBarViewController.h"; sourceTree = "<group>"; };
 		BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPollAnswerBarViewController.m; path = "UI/Content View/VPollAnswerBarViewController.m"; sourceTree = "<group>"; };
 		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
-		BEF185E319883899007FB4BC /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
-		BEF185E419883899007FB4BC /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEF185E619884C13007FB4BC /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
 		BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VReposterTableViewController.h; path = "UI/Content Info/VReposterTableViewController.h"; sourceTree = "<group>"; };
 		BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VReposterTableViewController.m; path = "UI/Content Info/VReposterTableViewController.m"; sourceTree = "<group>"; };
@@ -1815,6 +1815,8 @@
 			isa = PBXGroup;
 			children = (
 				BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */,
+				BEA08E7F199C2D21006A488D /* VSequence.h */,
+				BEA08E80199C2D21006A488D /* VSequence.m */,
 				DB58EF4E1994174900D2A07F /* VNotification.h */,
 				DB58EF4F1994174900D2A07F /* VNotification.m */,
 				DB58EF4B199403B400D2A07F /* VUser.h */,
@@ -1829,8 +1831,6 @@
 				BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */,
 				BE89ECD919105DB8009DD407 /* VAnswer.h */,
 				BE89ECDA19105DB8009DD407 /* VAnswer.m */,
-				BEF185E319883899007FB4BC /* VSequence.h */,
-				BEF185E419883899007FB4BC /* VSequence.m */,
 				BE24782A193E735A0074191C /* VConversation.h */,
 				BE24782B193E735A0074191C /* VConversation.m */,
 				BE89D98E1921907200D97E7F /* VCommentFilter.h */,
@@ -2458,7 +2458,6 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				035C2D751940071B0023FC05 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
-				BEF185E519883899007FB4BC /* VSequence.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
@@ -2696,6 +2695,7 @@
 				BE4055AD18A41F1F00092AE1 /* main.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
 				BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */,
+				BEA08E81199C2D21006A488D /* VSequence.m in Sources */,
 				03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
