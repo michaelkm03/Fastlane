@@ -41,7 +41,7 @@
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileRequired"       =   "You must complete your profile.";
+"ProfileRequired"       =   "Please provide the following:\n- Photo\n- Name\n- Location\n- Agree to our terms\n\n*populate only those items which are not provided";
 "ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";
