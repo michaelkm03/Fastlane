@@ -94,7 +94,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
     RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = nil;
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
@@ -115,7 +114,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [fetchRequest setFetchBatchSize:50];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:context
+                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
                                                  sectionNameKeyPath:nil
                                                           cacheName:fetchRequest.entityName];
 }

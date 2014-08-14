@@ -18,29 +18,6 @@
 
 @implementation VObjectManager (Comment)
 
-- (VComment*)commentForID:(NSInteger)commentId
-{
-    VComment* comment = [self.objectCache objectForKey:[@"comment" stringByAppendingString:@(commentId).stringValue]];
-    if (comment)
-        return comment;
-    
-    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VComment entityName]];
-    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"remoteId == %@", commentId];
-    [request setPredicate:idFilter];
-    NSError *error = nil;
-    comment = [[context executeFetchRequest:request error:&error] firstObject];
-    if (error != nil)
-    {
-        VLog(@"Error occured in commentForId: %@", error);
-    }
-    
-    if (comment)
-        [self.objectCache setObject:comment forKey:[@"comment" stringByAppendingString:comment.remoteId.stringValue]];
-    
-    return comment;
-}
-
 - (RKManagedObjectRequestOperation *)fetchFiltedRealtimeCommentForAssetId:(NSInteger)assetId
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
@@ -72,11 +49,25 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    VComment* comment = (VComment*)[self objectForID:@(commentID) idKey:kRemoteIdKey entityName:[VComment entityName]];
+    __block VComment *comment = nil;
+    NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
+    [context performBlockAndWait:^(void)
+    {
+        comment = (VComment*)[self objectForID:@(commentID)
+                                         idKey:kRemoteIdKey
+                                    entityName:[VComment entityName]
+                          managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
+    }];
+    
     if (comment)
     {
         if (success)
-            success(nil, nil, @[comment]);
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                success(nil, nil, @[comment]);
+            });
+        }
         
         return nil;
     }

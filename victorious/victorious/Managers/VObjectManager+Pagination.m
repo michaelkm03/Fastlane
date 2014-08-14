@@ -72,20 +72,23 @@
 {
     //Remove the old filters
     NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
-
-    NSError *error = nil;
-    NSArray* objects = [context executeFetchRequest:request error:&error];
-    if (error != nil)
+    [context performBlock:^(void)
     {
-        VLog(@"Error occured in sequence filter fetch: %@", error);
-    }
-    
-    for (NSManagedObject* object in objects)
-    {
-        [object.managedObjectContext deleteObject:object];
-    }
-    [context saveToPersistentStore:nil];
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
+        
+        NSError *error = nil;
+        NSArray* objects = [context executeFetchRequest:request error:&error];
+        if (error != nil)
+        {
+            VLog(@"Error occured in sequence filter fetch: %@", error);
+        }
+        
+        for (NSManagedObject* object in objects)
+        {
+            [object.managedObjectContext deleteObject:object];
+        }
+        [context save:nil];
+    }];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -107,7 +110,6 @@
                           successBlock:fullSuccess
                              failBlock:fail];
 }
-
 
 #pragma mark - Comment
 - (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
@@ -629,7 +631,7 @@
     //Check core data
     if (!filter)
     {
-        NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+        NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
         NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
         [request setPredicate:predicate];
@@ -646,7 +648,7 @@
     if (!filter || [filter isFault] || ![[[filter entity] name] isEqualToString:entityName])
     {
         filter = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                               inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
+                                               inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         filter.filterAPIPath = path;
         
         [filter.managedObjectContext saveToPersistentStore:nil];

@@ -347,12 +347,12 @@
 - (NSManagedObject*)objectForID:(NSNumber*)objectID
                           idKey:(NSString*)idKey
                      entityName:(NSString*)entityName
+           managedObjectContext:(NSManagedObjectContext *)context
 {
     NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
         return object;
     
-    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
     [request setPredicate:idFilter];

@@ -33,13 +33,24 @@
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    VUser* user = (VUser*)[self objectForID:userId
-                                      idKey:kRemoteIdKey
-                                 entityName:[VUser entityName]];
+    __block VUser *user = nil;
+    NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
+    [context performBlockAndWait:^(void)
+    {
+        user = (VUser*)[self objectForID:userId
+                                   idKey:kRemoteIdKey
+                              entityName:[VUser entityName]
+                    managedObjectContext:context];
+    }];
     if (user)
     {
         if (success)
-            success(nil, nil, @[user]);
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                success(nil, nil, @[user]);
+            });
+        }
         
         return nil;
     }
@@ -57,24 +68,37 @@
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    __block NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
+    NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
     NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
     
     //this removes duplicates
     for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
     {
-        VUser* user = (VUser*)[self objectForID:userID
-                                          idKey:kRemoteIdKey
-                                     entityName:[VUser entityName]];
+        __block VUser *user = nil;
+        NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
+        [context performBlockAndWait:^(void)
+        {
+            user = (VUser*)[self objectForID:userID
+                                       idKey:kRemoteIdKey
+                                  entityName:[VUser entityName]
+                        managedObjectContext:context];
+        }];
         if (user)
+        {
             [loadedUsers addObject:user];
+        }
         else
+        {
             [unloadedUserIDs addObject:userID.stringValue];
+        }
     }
     
     if (![unloadedUserIDs count])
     {
-        success(nil, nil, loadedUsers);
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            success(nil, nil, loadedUsers);
+        });
         return nil;
     }
     
@@ -86,7 +110,9 @@
         }
         
         if (success)
+        {
             success(operation, fullResponse, loadedUsers);
+        }
     };
     
     NSString *path = [@"/api/userinfo/fetch/" stringByAppendingString:unloadedUserIDs[0]];
