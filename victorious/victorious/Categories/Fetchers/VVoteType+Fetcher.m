@@ -28,10 +28,11 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
     return [self voteAtIndex:VVoteTypeDislike];
 }
 
-+(VVoteType*)voteAtIndex:(NSInteger)index
++ (VVoteType *)voteAtIndex:(NSInteger)index
 {
+    NSAssert([NSThread isMainThread], @"voteAtIndex needs to be called on the main thread");
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VVoteType entityName]];
-    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
     [request setSortDescriptors:@[sortDescriptor]];
 

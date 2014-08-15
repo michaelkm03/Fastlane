@@ -55,7 +55,6 @@
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
     RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VMessage entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
@@ -67,7 +66,7 @@
     [fetchRequest setFetchBatchSize:20]; //[self currentFilter].perPageNumber.integerValue];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:context
+                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
                                                  sectionNameKeyPath:nil
                                                           cacheName:fetchRequest.entityName];
 }

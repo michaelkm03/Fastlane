@@ -45,7 +45,7 @@
         {
             VConversation *newConversation = [NSEntityDescription
                                               insertNewObjectForEntityForName:[VConversation entityName]
-                                              inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+                                              inManagedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
             
             NSManagedObjectID* objectID = [user objectID];
             if (objectID)
