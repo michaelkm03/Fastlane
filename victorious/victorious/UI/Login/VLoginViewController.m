@@ -286,6 +286,16 @@
     self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
+-(BOOL)partialAccountExists
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountEmail] != nil || [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountPassword] != nil )
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (IBAction)emailClicked:(id)sender
 {
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
@@ -293,7 +303,19 @@
 
 - (IBAction)signup:(id)sender
 {
-    [self performSegueWithIdentifier:@"toSignup" sender:self];
+    // Check if We Already Have A Partially Created Account
+    if ([self partialAccountExists])
+    {
+        // Go to Part II of Sign-up
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"toSignup" sender:self];
+    }
+    
+
+    
 }
 
 - (IBAction)closeButtonClicked:(id)sender
@@ -316,6 +338,12 @@
     {
         VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeTwitter;
+        profileViewController.profile = self.profile;
+    }
+    else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
+    {
+        VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
 }

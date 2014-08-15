@@ -43,7 +43,12 @@
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileRequired"       =   "You must complete your profile.";
+"ProfileRequired"       =   "Please provide the following:";
+"ProfileRequiredPhoto"  =   "Profile image";
+"ProfileRequiredName"   =   "Name";
+"ProfileRequiredLoc"    =   "Location";
+"ProfileRequiredToS"    =   "Agree to our terms";
+"ProfileRequiredTagLine"=   "Your tagline";
 "ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";

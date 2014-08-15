@@ -91,6 +91,11 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChangeInTextView:) name:UITextViewTextDidChangeNotification object:textInput];
     }
+    
+    if ([textInput isKindOfClass:[UITextField class]])
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChangeInTextView:) name:UITextFieldTextDidChangeNotification object:textInput];
+    }
 }
 
 - (void)stopObservingTextInput:(id)textInput

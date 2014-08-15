@@ -44,8 +44,13 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
     VCaptionTypeQuote
 };
 
+#pragma mark - Account Creation Contstants
+static NSString*  const kNewAccountEmail    = @"email";
+static NSString*  const kNewAccountPassword = @"password";
+
 #pragma mark - UI constants
 static NSUInteger const VConstantsMessageLength         = 140;
+static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
 static NSUInteger const VConstantsInputAccessoryHeight  = 44.0;
 

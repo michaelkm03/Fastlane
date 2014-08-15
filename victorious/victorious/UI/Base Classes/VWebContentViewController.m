@@ -2,7 +2,7 @@
 //  VWebContentViewController.m
 //  victorious
 //
-//  Created by Gary Philipp on 1/29/14.
+//  Recreated by Lawrence H. Leach on 08/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -10,18 +10,25 @@
 #import "VThemeManager.h"
 
 @interface VWebContentViewController ()
-@property (weak, nonatomic) IBOutlet UIWebView* webView;
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
 @end
 
 @implementation VWebContentViewController
+
++ (instancetype)webContentViewController
+{
+    VWebContentViewController *webviewVC = [[self alloc] initWithNibName:@"webContentView" bundle:nil];
+    return webviewVC;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;
     self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
     
