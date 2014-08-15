@@ -12,6 +12,9 @@
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VUserManager.h"
+
+#import "VContentInputAccessoryView.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"
@@ -33,6 +36,7 @@
 @property (nonatomic, weak) IBOutlet UILabel*               tagLinePlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet UIImageView*           profileImageView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic, strong) CLLocationManager*            locationManager;
 @property (nonatomic, strong) CLGeocoder*                   geoCoder;
@@ -44,6 +48,7 @@
 @property (nonatomic, strong)   NSURL*                      updatedProfileImage;
 
 @property (nonatomic, strong)   UIBarButtonItem*            countDownLabel;
+@property (nonatomic, strong)   UIBarButtonItem*            usernameCountDownLabel;
 
 @end
 
@@ -70,12 +75,15 @@
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.usernameTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.loginType != kVLoginTypeEmail)
         self.usernameTextField.text = self.profile.name;
-    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
+
     
     self.locationTextField.delegate = self;
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.locationTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.profile.location)
         self.locationTextField.text = self.profile.location;
     else
@@ -88,13 +96,17 @@
     }
     
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.tagLinePlaceholderLabel.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    [self.tagLinePlaceholderLabel setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
+
 
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.taglineTextView setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     self.taglineTextView.text = self.profile.tagline;
     if ([self respondsToSelector:@selector(textViewDidChange:)])
         [self textViewDidChange:self.taglineTextView];
+    
+    // Create Accessory Views
     [self createInputAccessoryView];
     
     self.agreementText.delegate = self;
@@ -143,6 +155,13 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -158,7 +177,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationPortrait;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -176,6 +195,27 @@
         [self.taglineTextView becomeFirstResponder];
     
     return NO;
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    BOOL ans = YES;
+    if (textField == self.usernameTextField)
+    {
+        if (self.usernameTextField.text.length == VConstantsUsernameMaxLength)
+        {
+            ans = NO;
+        }
+    }
+    
+    return ans;
+}
+
+-(void)characterCountdown:(id)sender
+{
+    
+    self.usernameCountDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength - self.usernameTextField.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
 }
 
 #pragma mark - UITextViewDelegate
@@ -199,6 +239,15 @@
         [textView resignFirstResponder];
         return NO;
     }
+    
+    if (textView == self.taglineTextView)
+    {
+        if (self.taglineTextView.text.length == VConstantsMessageLength)
+        {
+            return NO;
+        }
+    }
+
     
     return YES;
 }
@@ -256,8 +305,7 @@
     {
         if (!error)
         {
-            VWebContentViewController* webContentVC = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VWebContentViewController class])
-                                                                                     owner:self options:nil] objectAtIndex:0];
+            VWebContentViewController *webContentVC = [VWebContentViewController webContentViewController];
             webContentVC.htmlString = htmlString;
             webContentVC.title = NSLocalizedString(@"ToSText", @"");
             [self.navigationController pushViewController:webContentVC animated:YES];
@@ -286,31 +334,83 @@
             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
 
         [locationDictionary setObject:[[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
-        self.locationTextField.text = ABCreateStringWithAddressDictionary(locationDictionary, NO);
+        NSString *city = [locationDictionary valueForKey:@"City"];
+        NSString *state = [locationDictionary valueForKey:@"State"];
+        self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
     }];
 }
+
+#pragma mark - State
+
+- (void)didSignUpWithUser:(VUser*)mainUser
+{
+    self.profile = mainUser;
+    
+    NSString *email = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountEmail];
+    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountPassword];
+
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:email
+                                                     password:password
+                                                         name:self.usernameTextField.text
+                                              profileImageURL:self.updatedProfileImage
+                                                     location:self.locationTextField.text
+                                                      tagline:self.taglineTextView.text
+                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         
+         [self dismissViewControllerAnimated:YES
+                                  completion:^{
+                                      [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNewAccountEmail];
+                                      [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNewAccountPassword];
+                                      [self.activityIndicator stopAnimating];
+                                  }];
+     }
+                                                    failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+     }];
+
+}
+
+- (void)didFailWithError:(NSError*)error
+{
+    
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
+    
+    // Stop Activity Indicator
+    [self.activityIndicator stopAnimating];
+}
+
 
 #pragma mark - Actions
 
 - (IBAction)done:(id)sender
 {
+    // Let the User Know Something Is Happening
+    [self.activityIndicator startAnimating];
+    
     if ([self shouldCreateProfile])
     {
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                         password:nil
-                                                             name:self.usernameTextField.text
-                                                  profileImageURL:self.updatedProfileImage
-                                                         location:self.locationTextField.text
-                                                          tagline:self.taglineTextView.text
-                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        NSString *email = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountEmail];
+        NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountPassword];
+        
+        [[VUserManager sharedInstance] createEmailAccount:email
+                                                 password:password
+                                                 userName:email
+                                             onCompletion:^(VUser *user, BOOL created)
          {
-             //[self performSegueWithIdentifier:@"toFollowFriends" sender:self];
-             [self dismissViewControllerAnimated:YES completion:nil];
+             [self didSignUpWithUser:user];
          }
-                                                        failBlock:^(NSOperation* operation, NSError* error)
+                                                  onError:^(NSError *error)
          {
-             VLog(@"Failed with error: %@", error);
+             [self didFailWithError:error];
          }];
+
     }
 }
 
@@ -318,19 +418,45 @@
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.taglineTextView.text.length > 0) &&
                          (self.updatedProfileImage) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
         return YES;
     
+    // Identify Which Form Field is Missing
+    NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
+    
+    if (!self.usernameTextField.text.length > 0)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.locationTextField.text.length > 0)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredLoc", @"")];
+    }
+    
+    if (!self.updatedProfileImage)
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredPhoto", @"")];
+    }
+
+    if (![self.agreeSwitch isOn])
+    {
+        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredToS", @"")];
+    }
+    
+    
+    // Show Error Message
     UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                       message:NSLocalizedString(@"ProfileRequired", @"")
+                                                       message:errorMsg
                                                       delegate:nil
                                              cancelButtonTitle:nil
                                              otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
     [alert show];
+
+    [self.activityIndicator stopAnimating];
     
     return NO;
 }
@@ -372,21 +498,16 @@
 
 - (void)createInputAccessoryView
 {
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, VConstantsInputAccessoryHeight)];
-    
-    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:nil
-                                                          action:nil];
-    
-    [self.countDownLabel setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.71 alpha:1.0]} forState:UIControlStateNormal];
+    VContentInputAccessoryView *taglineInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    taglineInputAccessory.textInputView = self.taglineTextView;
+    taglineInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    self.taglineTextView.inputAccessoryView = taglineInputAccessory;
 
-    toolbar.items = @[flexibleSpace, self.countDownLabel];
-    self.taglineTextView.inputAccessoryView = toolbar;
+    VContentInputAccessoryView *nameInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    nameInputAccessory.textInputView = self.usernameTextField;
+    nameInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    nameInputAccessory.maxCharacterLength = VConstantsUsernameMaxLength;
+    self.usernameTextField.inputAccessoryView = nameInputAccessory;
 }
 
 @end

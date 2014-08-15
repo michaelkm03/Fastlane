@@ -18,16 +18,20 @@
 #import "VContentInfoViewController.h"
 
 #import "VCommentsContainerViewController.h"
+#import "VCameraPublishViewController.h"
 
 #import "VHashTagContainerViewController.h"
 
 #import "VHashTagStreamViewController.h"
+
+#import "VRemixSelectViewController.h"
 
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
 #import "VRealtimeCommentViewController.h"
+#import "VLoginViewController.h"
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
@@ -41,6 +45,8 @@
 #import "UIActionSheet+VBlocks.h"
 
 #import "VElapsedTimeFormatter.h"
+
+#import "VUser+Fetcher.h"
 
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
@@ -261,6 +267,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.orAnimator = nil;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[VThemeManager sharedThemeManager] applyStyling];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -563,6 +575,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     else
         [self loadNextAsset];
     
+    //This is a safety feature to disable sharing if we do not recieve a share URL from the server.
+    self.shareButton.userInteractionEnabled = self.currentNode.shareUrlPath && self.currentNode.shareUrlPath.length;
+    self.shareButton.tintColor =  self.shareButton.userInteractionEnabled ? [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor] : [UIColor grayColor];
     self.interactionManager.node = currentNode;
 }
 
@@ -693,7 +708,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [self loadImage]; // load the video thumbnail
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
-        [self showRemixButton];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -706,8 +720,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     else //Default case: we assume it's an image and hope it works out
     {
         [self loadImage];
-        [self hideRemixButton];
     }
+    
+    [self showRemixButton];
 }
 
 #pragma mark - Quiz
@@ -717,6 +732,80 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Button Actions
+- (IBAction)pressedRemix:(id)sender
+{
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+    {
+        [self forceRotationBackToPortraitOnCompletion:^(void)
+         {
+             [self pressedRemix:sender];
+         }];
+        return;
+    }
+    
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    NSString* label = [self.sequence.remoteId.stringValue stringByAppendingPathComponent:self.sequence.name];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+    
+    if ([self.currentAsset isVideo])
+    {
+        UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
+        [self presentViewController:remixVC animated:YES completion:
+         ^{
+             [self.videoPlayer.player pause];
+         }];
+    }
+    else
+    {
+        UINavigationController * __weak weakNav = self.navigationController;
+        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+        publishViewController.previewImage = self.previewImage.image;
+        publishViewController.parentID = self.sequence.remoteId.integerValue;
+        publishViewController.completion = ^(BOOL complete)
+        {
+            [weakNav popViewControllerAnimated:YES];
+        };
+        
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                           onCancelButton:nil
+                                                   destructiveButtonTitle:nil
+                                                      onDestructiveButton:nil
+                                               otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                      {
+                                          publishViewController.captionType = VCaptionTypeMeme;
+                                          
+                                          NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
+                                          NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                          NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                          if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                          {
+                                              publishViewController.mediaURL = tempFile;
+                                              [weakNav pushViewController:publishViewController animated:YES];
+                                          }
+                                      },
+                                      NSLocalizedString(@"Quote", nil),  ^(void)
+                                      {
+                                          publishViewController.captionType = VCaptionTypeQuote;
+                                          
+                                          NSData *filteredImageData = UIImageJPEGRepresentation(self.previewImage.image, VConstantJPEGCompressionQuality);
+                                          NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                          NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                          if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                          {
+                                              publishViewController.mediaURL = tempFile;
+                                              [weakNav pushViewController:publishViewController animated:YES];
+                                          }
+                                      }, nil];
+        [actionSheet showInView:self.view];
+    }
+}
+
 - (IBAction)pressedBack:(id)sender
 {
     void (^goBack)() = ^(void)
@@ -779,17 +868,49 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedShare:(id)sender
 {
-    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
-
-    NSURL* deeplinkURL = [[VDeeplinkManager sharedManager] contentDeeplinkForSequence:self.sequence];
-    UIImage* previewImage = self.previewImage.image ?: self.leftPollThumbnail;
+    //Remove the styling for the mail view.
+    [[VThemeManager sharedThemeManager] removeStyling];
     
+    NSString* shareText;
+    if ([self.sequence.user isOwner])
+    {
+        if ([self.sequence isPoll])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
+        }
+        else if ([self.sequence isVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
+        }
+    }
+    else
+    {
+        if ([self.sequence isPoll])
+        {
+            shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
+        }
+        else if ([self.sequence isVideo])
+        {
+            shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+        }
+        else
+        {
+            shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
+        }
+    }
+    
+    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
-                                                                  NSLocalizedString(@"CheckOutContent", nil),
-                                                                  previewImage, deeplinkURL]
+                                                                  shareText,
+                                                                  [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null]]
                                           applicationActivities:@[fbActivity]];
-    
+    NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     
     [self.navigationController presentViewController:activityViewController
@@ -802,6 +923,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedRepost:(id)sender
 {
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
@@ -810,7 +937,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Repost", nil),  ^(void)
                                   {
                                       [[VObjectManager sharedManager] repostNode:self.currentNode
-                                                                 withDescription:self.sequence.name
+                                                                        withName:self.sequence.name
                                                                     successBlock:nil
                                                                        failBlock:nil];
                                   }, nil];
@@ -1081,11 +1208,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-#warning this should probably be removed (along with hashtag container / table view)  Leaving until lawrence can double check.
-//    VHashTagContainerViewController *container = [[VHashTagContainerViewController alloc] init];
-//    container.sequence = self.sequence;
-//    container.hashTag = tag;
-    
     VStreamContainerViewController* container =[VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     
     [self.navigationController pushViewController:container animated:YES];

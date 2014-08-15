@@ -26,14 +26,13 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+                                                   forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
-                                                        accessSecret:(NSString*)accessSecret
-                                                           twitterId:(NSString*)twitterId
-                                                    withSuccessBlock:(VSuccessBlock)success
-                                                           failBlock:(VFailBlock)fail;
+- (void)attachAccountToTwitterWithForceAccountUpdate:(BOOL)forceAccountUpdate
+                                        successBlock:(VSuccessBlock)success
+                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
@@ -68,4 +67,9 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
 - (RKManagedObjectRequestOperation *)followUsers:(NSArray /* VUser */ *)users
                                 withSuccessBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+
 @end

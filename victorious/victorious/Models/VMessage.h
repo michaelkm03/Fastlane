@@ -2,14 +2,14 @@
 //  VMessage.h
 //  victorious
 //
-//  Created by Will Long on 5/29/14.
+//  Created by Lawrence Leach on 8/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VConversation, VUser;
+@class VConversation, VNotification, VUser;
 
 @interface VMessage : NSManagedObject
 
@@ -23,5 +23,6 @@
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VConversation *lastMessageInverse;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VNotification *notification;
 
 @end

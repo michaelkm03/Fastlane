@@ -13,17 +13,16 @@
 @property (nonatomic, strong)   UIImage*    previewImage;
 @property (nonatomic, strong)   NSURL*      mediaURL;
 
-@property (nonatomic)           BOOL          useTwitter;
-@property (nonatomic)           BOOL          useFacebook;
-
 @property (nonatomic, weak) IBOutlet    UITextView*     textView;
 
 @property (nonatomic, strong)   NSString*     expirationDateString;
 
 @property (nonatomic)   VPlaybackSpeed  playBackSpeed;
 @property (nonatomic)   VLoopType       playbackLooping;
+@property (nonatomic)   VCaptionType    captionType;
 
 @property (nonatomic)   NSInteger       parentID;
+@property (nonatomic) BOOL didSelectAssetFromLibrary;
 
 /**
  This block will be called when the user has finished publishing

@@ -53,6 +53,7 @@ extern NSString * const VObjectManagerContentIndexKey;
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                     captionType:(VCaptionType)type
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
@@ -60,8 +61,7 @@ extern NSString * const VObjectManagerContentIndexKey;
                                     shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-                               shouldRemoveMedia:(BOOL)shouldRemoveMedia;
+                                       failBlock:(VFailBlock)fail;
 
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
@@ -93,7 +93,7 @@ Creates a new realtime comment
                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                                 withDescription:(NSString*)description
+                                        withName:(NSString*)name
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 

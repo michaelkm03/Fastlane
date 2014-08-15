@@ -6,39 +6,26 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
 
-#import "VConstants.h"
-#import "VMessage.h"
-#import "VUser+RestKit.h"
-#import "NSDate+timeSince.h"
-#import "UIButton+VImageLoading.h"
-#import "UIImage+ImageCreation.h"
-#import "VThemeManager.h"
-#import "VObjectManager.h"
-#import "NSString+VParseHelp.h"
+NSString * const kVMessageCellNibName = @"VMessageCell";
 
-@import MediaPlayer;
+static const CGFloat      kMinimumCellHeight    = 71.0f;
+static const UIEdgeInsets kTextInsets           = { 24.0f, 74.0f, 24.0f, 32.0f };
+static NSString * const   kChatBubbleArrowLeft  = @"ChatBubbleArrowLeft";
+static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
-CGFloat const kMessageMinCellHeight = 60;
-CGFloat const kMessageCellYOffset = 41;
-CGFloat const kMessageMediaCellYOffset = 238;
-CGFloat const kChatBubbleInset = 12;
-CGFloat const kChatBubbleArrowPadding = 9;
-CGFloat const kProfilePadding = 27;
+@interface VMessageCell ()
 
-NSString* const kChatBubbleRightImage = @"ChatBubbleRight";
-NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
-
-@interface VMessageCell()
-
-@property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mediaTopConstraint;
-
-@property (strong, nonatomic) NSLayoutConstraint* chatBottomConstraint;
+@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubbleArrow;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIView                   *profileImageSuperview; ///< The superview for both profileImageView and timeLabel
+@property (nonatomic, strong)                   NSArray                  *resettableConstraints; ///< Constraints that are set in -updateConstraints
 
 @end
 
@@ -47,86 +34,142 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.message = self.message;
+    self.chatBubble.image = [[[UIImage imageNamed:@"ChatBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
 }
 
-- (void)setMessage:(VMessage *)message
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
-    self.mpController = nil;
-    
-    _message = message;
-    
-    self.dateLabel.text = [message.postedAt timeSince];
-    self.nameLabel.text = message.user.name;
-    self.messageLabel.text = message.text;
-    self.mediaUrl = ![message.mediaPath isEmpty] ? [NSURL URLWithString:message.mediaPath] : nil;
-    self.previewImageUrl = ![message.thumbnailPath isEmpty] ? [NSURL URLWithString:message.thumbnailPath] : nil;
-    self.user = message.user;
-    if ([self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
+                kTextInsets.top +
+                kTextInsets.bottom,
+               kMinimumCellHeight);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.commentTextView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
+    [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
+}
+
+- (void)updateConstraints
+{
+    if (!self.resettableConstraints)
     {
-        self.chatBubble.transform = CGAffineTransformMakeScale(-1, 1);
+        if (self.profileImageOnRight)
+        {
+            self.resettableConstraints = @[
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubbleArrow
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:0.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.profileImageSuperview
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:20.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:62.0f],
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:20.0f],
+            ];
+        }
+        else
+        {
+            self.resettableConstraints = @[
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubbleArrow
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:0.0f],
+                [NSLayoutConstraint constraintWithItem:self.profileImageSuperview
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:20.0f],
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:62.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                toItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:20.0f],
+            ];
+        }
+        [self.contentView addConstraints:self.resettableConstraints];
+    }
+    [super updateConstraints];
+}
+
+- (UIColor *)alternateChatBubbleTintColor
+{
+    return [UIColor colorWithRed:0.914f green:0.914f blue:0.914f alpha:1.0f];
+}
+
+- (IBAction)profileImageTapped:(UIButton *)sender
+{
+    if (self.onProfileImageTapped)
+    {
+        self.onProfileImageTapped();
+    }
+}
+
+- (void)setProfileImageOnRight:(BOOL)profileImageOnRight
+{
+    _profileImageOnRight = profileImageOnRight;
+    if (self.resettableConstraints)
+    {
+        [self.contentView removeConstraints:self.resettableConstraints];
+        self.resettableConstraints = nil;
+    }
+    [self setNeedsUpdateConstraints];
+    if (profileImageOnRight)
+    {
+        self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowRight] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.chatBubble.tintColor = [self alternateChatBubbleTintColor];
+        self.chatBubbleArrow.tintColor = [self alternateChatBubbleTintColor];
     }
     else
     {
-        self.chatBubble.transform = CGAffineTransformMakeScale(1, 1);
+        self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowLeft] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.chatBubble.tintColor = [UIColor whiteColor];
+        self.chatBubbleArrow.tintColor = [UIColor whiteColor];
     }
-    
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
-    if (self.previewImageUrl)
-    {
-        self.playButton.hidden = !([[self.mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8]);
-        self.mediaPreview.hidden = NO;
-        [self.mediaPreview setImageWithURL:self.previewImageUrl
-                          placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-    }
-    else
-    {
-        self.mediaUrl = nil;
-        self.mediaPreview.hidden = YES;
-        self.playButton.hidden = YES;
-    }
-    
-    CGFloat mediaWidth = self.mediaPreview.hidden ? 0 : self.mediaPreview.bounds.size.width;
-    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
-    self.messageHeightConstraint.constant = size.height;
-    self.messageWidthConstraint.constant = MAX(size.width, mediaWidth);
-    
-    UIView* bottomConstrainer = self.previewImageUrl ? self.mediaPreview : self.messageLabel;
-    [self removeConstraint:self.chatBottomConstraint];
-    self.chatBottomConstraint = [NSLayoutConstraint constraintWithItem:self.chatBubble
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:bottomConstrainer
-                                                             attribute:NSLayoutAttributeBottom
-                                                            multiplier:1.0
-                                                              constant:kChatBubbleInset];
-    [self addConstraint:self.chatBottomConstraint];
-    
-    UIView* topConstrainer = self.messageLabel.text.length ? self.messageLabel : self.chatBubble;
-    NSInteger topConstrainerAttribute = self.messageLabel.text.length ? NSLayoutAttributeBottom : NSLayoutAttributeTop;
-    
-    [self removeConstraint:self.mediaTopConstraint];
-    self.mediaTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaPreview
-                                                             attribute:NSLayoutAttributeTop
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:topConstrainer
-                                                             attribute:topConstrainerAttribute
-                                                            multiplier:1.0
-                                                              constant:kChatBubbleInset];
-    [self addConstraint:self.mediaTopConstraint];
-    
-    CGFloat height = self.messageHeightConstraint.constant + (kChatBubbleInset * 2);
-    height += self.previewImageUrl ? self.mediaPreview.frame.size.height + kChatBubbleInset: 0;
-    
-    CGFloat yOffset = self.previewImageUrl ? kMessageMediaCellYOffset : kMessageCellYOffset;
-    height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
-    
-    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
-    [self.parentTableViewController.tableView layoutIfNeeded];
+}
+
+- (void)prepareForReuse
+{
+    self.chatBubble.tintColor = [UIColor whiteColor];
+    [self.commentTextView resetView];
+    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    self.profileImageOnRight = NO;
 }
 
 @end

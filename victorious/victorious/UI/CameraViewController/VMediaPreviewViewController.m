@@ -23,6 +23,7 @@ static       NSString * const kNibName           = @"MediaPreview";
 @property (nonatomic, weak) IBOutlet UIImageView *deleteButton;
 @property (nonatomic, weak) IBOutlet UIImageView *deleteConfirmationButton;
 @property (nonatomic, weak) IBOutlet UIButton    *doneButton;
+@property (nonatomic, weak) IBOutlet UIButton    *closeButton;
 
 @end
 
@@ -56,10 +57,15 @@ static       NSString * const kNibName           = @"MediaPreview";
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     UIImage *doneButtonImage = [self.doneButton imageForState:UIControlStateNormal];
     doneButtonImage = [doneButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.doneButton setImage:doneButtonImage forState:UIControlStateNormal];
     self.doneButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+
+    UIImage* closeButtonImage =[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.closeButton setImage:closeButtonImage forState:UIControlStateNormal];
 }
 
 - (void)viewDidLayoutSubviews
@@ -124,11 +130,13 @@ static       NSString * const kNibName           = @"MediaPreview";
         return;
     }
 
+    self.doneButton.userInteractionEnabled = NO;
     [self willComplete];
     if (self.completionBlock)
     {
         self.completionBlock(YES, [self previewImage], self.mediaURL);
     }
+    self.doneButton.userInteractionEnabled = YES;
 }
 
 - (IBAction)deleteTapped:(id)sender
@@ -162,6 +170,12 @@ static       NSString * const kNibName           = @"MediaPreview";
 - (IBAction)deleteConfirmationTapped:(id)sender
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)backTapped:(id)sender
+{
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pressed Back" label:nil value:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

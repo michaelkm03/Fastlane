@@ -48,8 +48,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
 
-@property (nonatomic)                   BOOL                didSelectAssetFromLibrary;
-
 @property (nonatomic, copy)             NSString*           videoQuality;
 
 @end
@@ -661,20 +659,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
     previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        NSString *mediaExtension = [capturedMediaURL pathExtension];
-        if (!self.didSelectAssetFromLibrary)
-        {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMP4])
-            {
-                UISaveVideoAtPathToSavedPhotosAlbum([capturedMediaURL path], nil, nil, nil);
-            }
-            else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG])
-            {
-                UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:capturedMediaURL]];
-                UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
-            }
-        }
-
         if (!finished)
         {
             [[NSFileManager defaultManager] removeItemAtURL:contentURL error:nil];
@@ -690,6 +674,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         }
     };
 
+    previewViewController.didSelectAssetFromLibrary = self.didSelectAssetFromLibrary;
     [self.navigationController pushViewController:previewViewController animated:YES];
 }
 

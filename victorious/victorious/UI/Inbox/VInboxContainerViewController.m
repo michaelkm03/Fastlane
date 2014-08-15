@@ -11,10 +11,17 @@
 
 #import "VConstants.h"
 
+typedef enum {
+    vFilterBy_Messages = 0,
+    vFilterBy_Notifications = 1
+
+} vFilterBy;
+
 @interface VInboxContainerViewController ()
 @property (weak, nonatomic) IBOutlet UIView* noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel* noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel* noMessagesMessageLabel;
+
 @end
 
 @implementation VInboxContainerViewController
@@ -33,19 +40,14 @@
 {
     [super viewWillAppear:animated];
     self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
+    [self.filterControls setSelectedSegmentIndex:vFilterBy_Messages];
 }
 
-//- (IBAction)changedFilterControls:(id)sender
-//{
-//    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
-//    {
-//        [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
-//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-//    }
-//    
-//    [super changedFilterControls:sender];
-//    
-//    self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
-//}
+- (IBAction)changedFilterControls:(id)sender
+{
+    
+    [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
+    
+}
 
 @end

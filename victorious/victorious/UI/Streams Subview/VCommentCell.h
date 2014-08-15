@@ -6,20 +6,18 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VAbstractCommentCell.h"
+@class VCommentTextAndMediaView;
 
-@class VComment;
-//@class VMessage;
+extern NSString * const kVCommentCellNibName;
 
-static NSString *kCommentCellIdentifier = @"VCommentCell";
-static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
+@interface VCommentCell : UITableViewCell
 
-extern CGFloat const kCommentCellYOffset;
-extern CGFloat const kCommentMediaCellYOffset;
-extern CGFloat const kCommentMinCellHeight;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel                   *usernameLabel;
+@property (nonatomic, weak, readonly)  IBOutlet VCommentTextAndMediaView  *commentTextView;
+@property (nonatomic, weak, readonly)  IBOutlet UILabel                   *timeLabel;
+@property (nonatomic, weak, readonly)  IBOutlet UIImageView               *profileImageView;
+@property (nonatomic, copy)                     void                     (^onProfileImageTapped)();
 
-@interface VCommentCell : VAbstractCommentCell
-
-@property (strong, nonatomic) VComment* comment;
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
 
 @end

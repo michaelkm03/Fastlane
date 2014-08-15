@@ -12,7 +12,7 @@
 "Community"             =   "Community";
 "Inbox"                 =   "Inbox";
 "Comments"              =   "Comments";
-
+"Remixes"               =   "Remixes";
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
@@ -20,6 +20,10 @@
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
 "BackButton"            =   "Back";
+"Exit"                  =   "Exit";
+"Publish"               =   "Publish";
+"Quote"                 =   "Quote";
+"Meme"                  =   "Meme";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -39,7 +43,12 @@
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileRequired"       =   "You must complete your profile.";
+"ProfileRequired"       =   "Please provide the following:";
+"ProfileRequiredPhoto"  =   "Profile image";
+"ProfileRequiredName"   =   "Name";
+"ProfileRequiredLoc"    =   "Location";
+"ProfileRequiredToS"    =   "Agree to our terms";
+"ProfileRequiredTagLine"=   "Your tagline";
 "ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";
@@ -69,7 +78,14 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
-"CheckOutContent"       =   "Check out this awesome post!";
+"OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
+"OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
+"UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
+"UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
+"UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
+"EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
+
 
 "Facebook"              =   "Facebook";
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
@@ -80,6 +96,9 @@
 
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
+
+"CameraRollDeniedTitle"    =   "Could Not Access Your Photos";
+"CameraRollDenied"         =   "Please grant access to your photos and microphone in Settings -> Privacy.";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
@@ -129,8 +148,8 @@
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
 
-"PublishDescriptionRequired" = "Description Required";
-"PublishDescription"    =   "You need to enter a description for your media.";
+"PublishDescriptionRequired" = "Text Needed";
+"PublishDescription"    =   "Please enter the caption for your content.";
 
 "ReplaceVideo"          =   "Replace Video";
 
@@ -234,6 +253,7 @@
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
+"InsertTextHere"        =   "Insert Text Here";
 
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
@@ -260,3 +280,11 @@
 "remixedFromFormat"       =   "Remix from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
+
+"facebook"              =   "facebook";
+"twitter"               =   "twitter";
+"tumblr"                =   "tumblr";
+"saveToLibrary"         =   "save to library";
+
+"areYouSure"            =   "Are You Sure?";
+"contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";

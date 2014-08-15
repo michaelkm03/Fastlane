@@ -7,6 +7,7 @@
 //
 
 #import "VTableContainerViewController.h"
+#import "VUserSearchViewController.h"
 
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -87,6 +88,15 @@
 {
     [self.sideMenuViewController presentMenuViewController];
 }
+
+#pragma mark - Content Creation
+
+- (IBAction)userSearchAction:(id)sender
+{
+    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    [self.navigationController pushViewController:userSearch animated:YES];
+}
+
 
 #pragma mark - Header
 

@@ -2,7 +2,7 @@
 //  VNode.h
 //  victorious
 //
-//  Created by Will Long on 1/8/14.
+//  Created by Will Long on 8/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSString * shareUrlPath;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
 @property (nonatomic, retain) VNodeAction *nodeAction;

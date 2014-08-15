@@ -12,15 +12,15 @@
 
 NSArray* VOwnerCategories()
 {
-    return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory];
+    return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory];
 }
 NSArray* VUGCCategories()
 {
-    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCImageRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory];
+    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCImageRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory];
 }
 NSArray* VImageCategories()
 {
-    return @[kVUGCImageCategory,kVUGCImageRepostCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory];
+    return @[kVUGCImageCategory,kVUGCImageRepostCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVUGCImageMemeCategory,kVUGCImageQuoteCategory,kVOwnerImageMemeCategory,kVOwnerImageQuoteCategory];
 }
 NSArray* VVideoCategories()
 {

@@ -18,27 +18,39 @@ typedef NS_ENUM(NSInteger, HTTPStatusCodes)
 
 typedef NS_OPTIONS(NSUInteger, VShareOptions)
 {
-    kVShareNone          = 0,
-    kVShareToTwitter     = 1 << 0,
-    kVShareToFacebook    = 1 << 1
+    VShareNone          = 0,
+    VShareToTwitter     = 1 << 0,
+    VShareToFacebook    = 1 << 1
 };
 
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
-    kVLoopOnce       =   0,
-    kVLoopRepeat     =   1,
-    kVLoopReverse    =   2
+    VLoopOnce       =   0,
+    VLoopRepeat     =   1,
+    VLoopReverse    =   2
 };
 
 typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 {
-    kVPlaybackNormalSpeed   =   0,
-    kVPlaybackHalfSpeed     =   1,
-    kVPlaybackDoubleSpeed   =   2
+    VPlaybackNormalSpeed   =   0,
+    VPlaybackHalfSpeed     =   1,
+    VPlaybackDoubleSpeed   =   2
 };
+
+typedef NS_ENUM(NSUInteger, VCaptionType)
+{
+    VCaptionTypeNormal = 0,
+    VCaptionTypeMeme,
+    VCaptionTypeQuote
+};
+
+#pragma mark - Account Creation Contstants
+static NSString*  const kNewAccountEmail    = @"email";
+static NSString*  const kNewAccountPassword = @"password";
 
 #pragma mark - UI constants
 static NSUInteger const VConstantsMessageLength         = 140;
+static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
 static NSUInteger const VConstantsInputAccessoryHeight  = 44.0;
 
@@ -105,6 +117,8 @@ static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 static NSString*   const   kVOwnerPollCategory          = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory         = @"owner_image";
 static NSString*   const   kVOwnerImageRepostCategory   = @"owner_image_repost";
+static NSString*   const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
+static NSString*   const   kVOwnerImageMemeCategory     = @"owner_image_meme";
 static NSString*   const   kVOwnerVideoCategory         = @"owner_video";
 static NSString*   const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString*   const   kVOwnerVideoRepostCategory 	= @"owner_video_repost";
@@ -112,6 +126,8 @@ static NSString*   const   kVOwnerVideoRepostCategory 	= @"owner_video_repost";
 static NSString*   const   kVUGCPollCategory            = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory           = @"ugc_image";
 static NSString*   const   kVUGCImageRepostCategory     = @"ugc_image_repost";
+static NSString*   const   kVUGCImageQuoteCategory      = @"ugc_image_secret";
+static NSString*   const   kVUGCImageMemeCategory       = @"ugc_image_meme";
 static NSString*   const   kVUGCVideoCategory           = @"ugc_video";
 static NSString*   const   kVUGCVideoRemixCategory      = @"ugc_video_remix";
 static NSString*   const   kVUGCVideoRepostCategory     = @"ugc_video_repost";

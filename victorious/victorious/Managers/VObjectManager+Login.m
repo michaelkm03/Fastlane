@@ -293,32 +293,35 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     //Delete all conversations / pollresults for the user!
     NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-    
-    NSFetchRequest * allConversations = [[NSFetchRequest alloc] init];
-    [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
-    [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-    
-    NSArray * conversations = [context executeFetchRequest:allConversations error:nil];
-    for (NSManagedObject* conversation in conversations) {
-        [context deleteObject:conversation];
-    }
-    
-    NSFetchRequest * allPollResults = [[NSFetchRequest alloc] init];
-    [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
-    [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-    
-    NSArray * pollResults = [context executeFetchRequest:allPollResults error:nil];
-    for (NSManagedObject* pollResult in pollResults) {
-        [context deleteObject:pollResult];
-    }
-    
-    //Nuke and refetch the user so we don't have their access token / person info
-    NSNumber* remoteID = self.mainUser.remoteId;
-    [context deleteObject:[context objectWithID:self.mainUser.objectID]];
-    [self fetchUser:remoteID withSuccessBlock:nil failBlock:nil];
-    
-    NSError *saveError = nil;
-    [context saveToPersistentStore:&saveError];
+    [context performBlockAndWait:^(void)
+    {
+        NSFetchRequest * allConversations = [[NSFetchRequest alloc] init];
+        [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+        [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        
+        NSArray * conversations = [context executeFetchRequest:allConversations error:nil];
+        for (NSManagedObject* conversation in conversations)
+        {
+            [context deleteObject:conversation];
+        }
+        
+        NSFetchRequest * allPollResults = [[NSFetchRequest alloc] init];
+        [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
+        [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        
+        NSArray * pollResults = [context executeFetchRequest:allPollResults error:nil];
+        for (NSManagedObject* pollResult in pollResults)
+        {
+            [context deleteObject:pollResult];
+        }
+        
+        //Nuke and refetch the user so we don't have their access token / person info
+        NSNumber* remoteID = self.mainUser.remoteId;
+        [context deleteObject:[context objectWithID:self.mainUser.objectID]];
+        [self fetchUser:remoteID withSuccessBlock:nil failBlock:nil];
+        
+        [context save:nil];
+    }];
     
     //Log out no matter what
     self.mainUser = nil;

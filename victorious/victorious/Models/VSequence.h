@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 7/29/14.
+//  Created by Will Long on 8/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -21,23 +21,24 @@
 @property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * isComplete;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
+@property (nonatomic, retain) NSNumber * parentUserId;
 @property (nonatomic, retain) id previewImage;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * remixCount;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSNumber * parentUserId;
-@property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) NSSet *nodes;
+@property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) VUser *parentUser;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

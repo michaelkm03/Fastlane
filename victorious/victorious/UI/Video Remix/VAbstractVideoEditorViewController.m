@@ -45,6 +45,9 @@
                                                                                      views:NSDictionaryOfVariableBindings(videoPlayerView)]];
     [self.videoPlayerViewController didMoveToParentViewController:self];
     [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
+    
+    // Set the Alpha for the Snapshot Button
+    self.takeImageSnapShotButton.alpha = 1.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -77,11 +80,11 @@
     {
         switch (self.playBackSpeed)
         {
-            case kVPlaybackHalfSpeed:
+            case VPlaybackHalfSpeed:
                 self.videoPlayerViewController.player.rate = 0.5f;
                 break;
                 
-            case kVPlaybackDoubleSpeed:
+            case VPlaybackDoubleSpeed:
                 self.videoPlayerViewController.player.rate = 2.0f;
                 break;
                 
@@ -111,21 +114,21 @@
 
 - (IBAction)playbackRateClicked:(id)sender
 {
-    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+    if (self.playBackSpeed == VPlaybackNormalSpeed)
     {
-        self.playBackSpeed = kVPlaybackDoubleSpeed;
+        self.playBackSpeed = VPlaybackDoubleSpeed;
         self.videoPlayerViewController.player.rate = 2.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
-    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+    else if (self.playBackSpeed == VPlaybackDoubleSpeed)
     {
-        self.playBackSpeed = kVPlaybackHalfSpeed;
+        self.playBackSpeed = VPlaybackHalfSpeed;
         self.videoPlayerViewController.player.rate = 0.5;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
-    else if (self.playBackSpeed == kVPlaybackHalfSpeed)
+    else if (self.playBackSpeed == VPlaybackHalfSpeed)
     {
-        self.playBackSpeed = kVPlaybackNormalSpeed;
+        self.playBackSpeed = VPlaybackNormalSpeed;
         self.videoPlayerViewController.player.rate = 1.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
@@ -133,15 +136,15 @@
 
 - (IBAction)playbackLoopingClicked:(id)sender
 {
-    if (self.playbackLooping == kVLoopOnce)
+    if (self.playbackLooping == VLoopOnce)
     {
-        self.playbackLooping = kVLoopRepeat;
+        self.playbackLooping = VLoopRepeat;
         self.videoPlayerViewController.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
-    else if (self.playbackLooping == kVLoopRepeat)
+    else if (self.playbackLooping == VLoopRepeat)
     {
-        self.playbackLooping = kVLoopOnce;
+        self.playbackLooping = VLoopOnce;
         self.videoPlayerViewController.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }

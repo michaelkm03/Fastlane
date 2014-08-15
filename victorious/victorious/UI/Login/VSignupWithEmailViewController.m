@@ -24,6 +24,8 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation VSignupWithEmailViewController
@@ -186,52 +188,39 @@
     return YES;
 }
 
-#pragma mark - State
-
-- (void)didSignUpWithUser:(VUser*)mainUser
-{
-    self.profile = mainUser;
-
-    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
-}
-
-- (void)didFailWithError:(NSError*)error
-{
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
-}
-
 #pragma mark - Actions
 
 - (IBAction)signup:(id)sender
 {
+    [self.activityIndicator startAnimating];
+    
     [[self view] endEditing:YES];
 
     if (YES == [self shouldSignUpWithEmailAddress:self.emailTextField.text
                                          password:self.passwordTextField.text])
     {
-        
-        [[VUserManager sharedInstance] createEmailAccount:self.emailTextField.text
-                                                 password:self.passwordTextField.text
-                                                 userName:self.emailTextField.text
-                                             onCompletion:^(VUser *user, BOOL created)
-         {
-             [self didSignUpWithUser:user];
-         }
-                                                  onError:^(NSError *error)
-         {
-             [self didFailWithError:error];
-         }];
+        [self saveUserDetails];
     }
 }
 
 - (IBAction)cancel:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - Saving User Details
+
+-(void)saveUserDetails
+{
+    // Turn off Activity Indicator
+    [self.activityIndicator stopAnimating];
+
+    // Store the New Account Information Temporarily in NSUserDefaults
+    [[NSUserDefaults standardUserDefaults] setObject:self.emailTextField.text forKey:kNewAccountEmail];
+    [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text forKey:kNewAccountPassword];
+    
+    // Go to Part II of Sign-up
+    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
 }
 
 #pragma mark - UITextFieldDelegate

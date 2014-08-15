@@ -27,6 +27,7 @@
 #import "VMessage+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
+#import "VNotification+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -100,6 +101,7 @@
     [self addResponseDescriptorsFromArray:[VConversation descriptors]];
     [self addResponseDescriptorsFromArray:[VMessage descriptors]];
     [self addResponseDescriptorsFromArray:[VComment descriptors]];
+    [self addResponseDescriptorsFromArray:[VNotification descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
@@ -345,12 +347,12 @@
 - (NSManagedObject*)objectForID:(NSNumber*)objectID
                           idKey:(NSString*)idKey
                      entityName:(NSString*)entityName
+           managedObjectContext:(NSManagedObjectContext *)context
 {
     NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
         return object;
     
-    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
     [request setPredicate:idFilter];
@@ -413,6 +415,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
+        sRFC2822DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
         sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
         
         NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];

@@ -19,7 +19,8 @@
 
 - (NSManagedObject*)objectForID:(NSNumber*)objectID
                           idKey:(NSString*)idKey
-                     entityName:(NSString*)entityName;
+                     entityName:(NSString*)entityName
+           managedObjectContext:(NSManagedObjectContext *)context;
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
                                   object:(id)object

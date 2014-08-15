@@ -8,6 +8,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VCommentsTableViewController.h"
+#import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
 
@@ -16,9 +17,13 @@
 
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Comment.h"
+#import "VUser.h"
+#import "VUserProfileViewController.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "NSDate+timeSince.h"
 #import "NSString+VParseHelp.h"
+#import "NSURL+MediaType.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -34,7 +39,7 @@
 
 @import Social;
 
-@interface VCommentsTableViewController () //<UINavigationControllerDelegate>
+@interface VCommentsTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
@@ -42,7 +47,7 @@
 
 @end
 
-static NSString* CommentCache = @"CommentCache";
+static NSString* CommentCache           = @"CommentCache";
 
 @implementation VCommentsTableViewController
 
@@ -50,10 +55,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     [super viewDidLoad];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kCommentCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kOtherCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
+         forCellReuseIdentifier:kVCommentCellNibName];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
@@ -205,125 +208,6 @@ static NSString* CommentCache = @"CommentCache";
 //        [self.bottomRefreshIndicator startAnimating];
     }
 }
-//TODO: this is dead code?
-- (IBAction)shareSequence:(id)sender
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSURL* deepLink = [NSURL URLWithString:@"http://www.google.com"];
-    UIImage* image = [UIImage imageNamed:@"avatar.jpg"];
-    NSString* text = @"Some text";
-    NSArray* itemsToShare = @[deepLink, image, text];
-
-    UIActivityViewController*   activityViewController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare
-                                                                                           applicationActivities:nil];
-    activityViewController.modalTransitionStyle =   UIModalTransitionStyleCoverVertical;
-    activityViewController.completionHandler    =   ^(NSString *activityType, BOOL completed)
-    {
-        if (completed)
-        {
-            //  send server
-        }
-    };
-    
-    [self presentViewController:activityViewController animated:YES completion:nil];
-}
-//TODO: this is dead code?
-- (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-    //    if (comment.vote = @"dislike")
-    //    {
-    //        [self unvoteComment:comment];
-    //        return;
-    //    }
-    
-    [[VObjectManager sharedManager] likeComment:comment
-                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                   {
-                                       //TODO:set upvote flag
-                                   }
-                                      failBlock:^(NSOperation* operation, NSError* error)
-                                      {
-                                          VLog(@"Failed to like comment %@", comment);
-                                      }];
-}
-//TODO: this is dead code?
-- (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-//    if (comment.vote = @"dislike")
-//    {
-//        [self unvoteComment:comment];
-//        return;
-//    }
-    
-    [[VObjectManager sharedManager] dislikeComment:comment
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                   {
-                                       //TODO:set dislike flag)
-                                   }
-                                         failBlock:^(NSOperation* operation, NSError* error)
-                                      {
-                                          VLog(@"Failed to dislike comment %@", comment);
-                                      }];
-}
-//TODO: this is dead code?
-- (void)unvoteComment:(VComment*)comment
-{
-    [[VObjectManager sharedManager] unvoteComment:comment
-                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                      {
-                                          //TODO:update UI)
-                                      }
-                                        failBlock:^(NSOperation* operation, NSError* error)
-                                         {
-                                             VLog(@"Failed to dislike comment %@", comment);
-                                         }];
-}
-
-//TODO: this is dead code?
-- (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-    [[VObjectManager sharedManager] flagComment:comment
-                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                       {
-                                           //TODO:set flagged flag)
-                                       }
-                                      failBlock:^(NSOperation* operation, NSError* error)
-                                          {
-                                              VLog(@"Failed to flag comment %@", comment);
-                                          }];
-}
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -336,34 +220,47 @@ static NSString* CommentCache = @"CommentCache";
     return [self.sortedComments count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    return [comment.mediaUrl length] ? kEstimatedCommentRowWithMediaHeight : kEstimatedCommentRowHeight;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-
-    CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
-    CGFloat height = textSize.height;
-    CGFloat yOffset = [comment hasMedia] ? kCommentMediaCellYOffset : kCommentCellYOffset;
-    height = MAX(height + yOffset, kCommentMinCellHeight);
-
-    return height;
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-    
+    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    [(VCommentCell*)cell setComment:comment];
-    ((VCommentCell*)cell).parentTableViewController = self;
     
-    [cell setNeedsLayout];
-    [cell layoutIfNeeded];
+    cell.timeLabel.text = [comment.postedAt timeSince];
+    cell.usernameLabel.text = comment.user.name;
+    cell.commentTextView.text = comment.text;
+    if (comment.hasMedia)
+    {
+        cell.commentTextView.hasMedia = YES;
+        cell.commentTextView.mediaThumbnailView.hidden = NO;
+        [cell.commentTextView.mediaThumbnailView setImageWithURL:comment.previewImageURL];
+        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
+        {
+            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
+            cell.commentTextView.playIcon.hidden = NO;
+        }
+    }
+    else
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = YES;
+    }
+    
+    NSURL *pictureURL = [NSURL URLWithString:comment.user.pictureUrl];
+    if (pictureURL)
+    {
+        [cell.profileImageView setImageWithURL:pictureURL];
+    }
+    cell.onProfileImageTapped = ^(void)
+    {
+        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    };
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }
@@ -388,9 +285,6 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
-    //TODO: remove thumbs up and down if we are not going to use them
-//    NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
-//    NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -427,32 +321,6 @@ static NSString* CommentCache = @"CommentCache";
          }];
     }
                                            otherButtonTitlesAndBlocks:
-//                                  thumbUpTitle, ^(void)
-//    {
-//        [[VObjectManager sharedManager] likeComment:comment
-//                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//        {
-//            //TODO:update UI)
-//            VLog(@"resultObjects: %@", resultObjects);
-//        }
-//                                          failBlock:^(NSOperation* operation, NSError* error)
-//        {
-//            VLog(@"Failed to dislike comment %@", comment);
-//        }];
-//    },
-//                                  thumbDownTitle, ^(void)
-//    {
-//        [[VObjectManager sharedManager] dislikeComment:comment
-//                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//        {
-//            //TODO:set dislike flag)
-//            VLog(@"resultObjects: %@", resultObjects);
-//        }
-//                                             failBlock:^(NSOperation* operation, NSError* error)
-//        {
-//            VLog(@"Failed to dislike comment %@", comment);
-//        }];
-//    },
                                   reply, ^(void)
     {
         [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
