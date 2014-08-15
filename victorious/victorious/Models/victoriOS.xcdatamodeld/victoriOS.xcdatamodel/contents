@@ -55,7 +55,7 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="CommentFilter" representedClassName="VCommentFilter" parentEntity="AbstractFilter" syncable="YES">
-        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="filters" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="filters" inverseEntity="Comment" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" parentEntity="AbstractFilter" syncable="YES">
         <attribute name="other_interlocutor_user_id" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>

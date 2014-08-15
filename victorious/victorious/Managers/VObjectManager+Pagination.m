@@ -130,16 +130,13 @@
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            
             //If this is the first page, break the relationship to all the old objects.
-            
             if ([filter.currentPageNumber isEqualToNumber:@(0)])
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
-                NSArray* filteredSequences = [[filter.comments allObjects] filteredArrayUsingPredicate:tempFilter];
-                [filter removeComments:[NSSet setWithArray:filteredSequences]];
+                NSOrderedSet* filteredComments = [filter.comments filteredOrderedSetUsingPredicate:tempFilter];
+                [filter removeComments:filteredComments];
             }
-            
             
             for (VComment* comment in resultObjects)
             {
