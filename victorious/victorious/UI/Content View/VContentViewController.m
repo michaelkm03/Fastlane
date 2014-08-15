@@ -575,6 +575,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     else
         [self loadNextAsset];
     
+    //This is a safety feature to disable sharing if we do not recieve a share URL from the server.
+    self.shareButton.userInteractionEnabled = self.currentNode.shareUrlPath && self.currentNode.shareUrlPath.length;
+    self.shareButton.tintColor =  self.shareButton.userInteractionEnabled ? [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor] : [UIColor grayColor];
     self.interactionManager.node = currentNode;
 }
 
