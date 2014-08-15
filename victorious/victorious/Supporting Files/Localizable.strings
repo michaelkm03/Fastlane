@@ -97,6 +97,9 @@
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
 
+"CameraRollDeniedTitle"    =   "Could Not Access Your Photos";
+"CameraRollDenied"         =   "Please grant access to your photos and microphone in Settings -> Privacy.";
+
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
 
