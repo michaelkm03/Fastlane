@@ -221,36 +221,32 @@ static const CGFloat kShareMargin = 34.0f;
     self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
     if ([[VFacebookManager sharedFacebookManager] isSessionValid])
         self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey] && [[VFacebookManager sharedFacebookManager] isSessionValid];
-//    else if (![[VFacebookManager sharedFacebookManager] isSessionValid])
-//    {
-//        self.shareToFacebookView.selected = NO;
-//        __weak VShareView* weakFBShare = self.shareToFacebookView;
-//        
-//        self.shareToFacebookView.selectionBlock = ^()
-//        {
-//            __block BOOL loggedIn = NO;
-//            [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
-//                                                              onSuccess:^
-//             {
-//                 [[VObjectManager sharedManager] attachAccountToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-//                                                               forceAccountUpdate:YES
-//                                                                 withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//                 {
-//                     loggedIn = YES;
-//                     weakFBShare.selectionBlock = nil;
-//                 }
-//                                                                        failBlock:^(NSOperation* operation, NSError* error)
-//                 {
-//                     loggedIn = NO;
-//                 }];
-//             }
-//                                                              onFailure:^(NSError *error)
-//             {
+    else if (![[VFacebookManager sharedFacebookManager] isSessionValid])
+    {
+        self.shareToFacebookView.selected = NO;
+        __weak VShareView* weakFBShare = self.shareToFacebookView;
+        
+        self.shareToFacebookView.selectionBlock = ^()
+        {
+            __block BOOL loggedIn = NO;
+            [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
+                                                              onSuccess:^
+             {
+//                 [[VFacebookManager sharedFacebookManager] accessToken]
+#warning We need to complete the FB share flow once the backend is done.
+//                 Success logic
+//                 loggedIn = YES;
+//                 weakFBShare.selectionBlock = nil;
+//                 Fail Logic
 //                 loggedIn = NO;
-//             }];
-//            return loggedIn;
-//        };
-//    }
+             }
+                                                              onFailure:^(NSError *error)
+             {
+                 loggedIn = NO;
+             }];
+            return loggedIn;
+        };
+    }
 
 //SETUP TWITTER SHARE
     self.shareToTwitterView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"twitter", nil)
