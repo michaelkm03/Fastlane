@@ -14,6 +14,7 @@
 #import "VSettingManager.h"
 #import "VUserManager.h"
 
+#import "VContentInputAccessoryView.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"
@@ -78,7 +79,6 @@
     if (self.loginType != kVLoginTypeEmail)
         self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
-    [self.usernameTextField addTarget:self action:@selector(characterCountdown:) forControlEvents:UIControlEventEditingChanged];
 
     
     self.locationTextField.delegate = self;
@@ -108,7 +108,6 @@
     
     // Create Accessory Views
     [self createInputAccessoryView];
-    [self createUsernameInputAccessoryView];
     
     self.agreementText.delegate = self;
     self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
@@ -499,40 +498,16 @@
 
 - (void)createInputAccessoryView
 {
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, VConstantsInputAccessoryHeight)];
-    
-    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:nil
-                                                          action:nil];
-    
-    [self.countDownLabel setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.71 alpha:1.0]} forState:UIControlStateNormal];
-    
-    toolbar.items = @[flexibleSpace, self.countDownLabel];
-    self.taglineTextView.inputAccessoryView = toolbar;
-}
+    VContentInputAccessoryView *taglineInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    taglineInputAccessory.textInputView = self.taglineTextView;
+    taglineInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    self.taglineTextView.inputAccessoryView = taglineInputAccessory;
 
-- (void)createUsernameInputAccessoryView
-{
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, VConstantsInputAccessoryHeight)];
-    
-    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    self.usernameCountDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength) numberStyle:NSNumberFormatterDecimalStyle]
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:nil
-                                                          action:nil];
-    
-    [self.usernameCountDownLabel setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.71 alpha:1.0]} forState:UIControlStateNormal];
-
-    toolbar.items = @[flexibleSpace, self.usernameCountDownLabel];
-    self.usernameTextField.inputAccessoryView = toolbar;
+    VContentInputAccessoryView *nameInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    nameInputAccessory.textInputView = self.usernameTextField;
+    nameInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    nameInputAccessory.maxCharacterLength = VConstantsUsernameMaxLength;
+    self.usernameTextField.inputAccessoryView = nameInputAccessory;
 }
 
 @end
