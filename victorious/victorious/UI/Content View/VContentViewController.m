@@ -222,6 +222,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+
+    [[VThemeManager sharedThemeManager] applyStyling];
     
     if  ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {

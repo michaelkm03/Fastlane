@@ -77,8 +77,6 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
         self.mediaContainerView.hidden = CGRectIntersectsRect(self.mediaContainerView.frame, self.tableView.frame);
     }];
     
-    [[VThemeManager sharedThemeManager] applyStyling];
-    
     UIColor* secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
