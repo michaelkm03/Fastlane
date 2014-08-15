@@ -272,6 +272,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [[VThemeManager sharedThemeManager] applyStyling];
 }
 
