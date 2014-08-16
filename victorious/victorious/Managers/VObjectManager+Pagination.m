@@ -133,11 +133,11 @@
             //If this is the first page, break the relationship to all the old objects.
             if ([filter.currentPageNumber isEqualToNumber:@(0)])
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"mediaType CONTAINS %@", kTemporaryContentStatus];
                 NSOrderedSet* filteredComments = [filter.comments filteredOrderedSetUsingPredicate:tempFilter];
-                [filter removeComments:filteredComments];
+                filter.comments = filteredComments;
             }
-            
+
             NSMutableOrderedSet *comments = [filter.comments mutableCopy];
             for (VComment* comment in resultObjects)
             {
