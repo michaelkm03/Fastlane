@@ -138,11 +138,13 @@
                 [filter removeComments:filteredComments];
             }
             
+            NSMutableOrderedSet *comments = [filter.comments mutableCopy];
             for (VComment* comment in resultObjects)
             {
                 VComment* commentInContext = (VComment*)[filter.managedObjectContext objectWithID:comment.objectID];
-                [filter addCommentsObject:commentInContext];
+                [comments addObject:commentInContext];
             }
+            filter.comments = comments;
             
             if (success)
                 success(operation, fullResponse, resultObjects);

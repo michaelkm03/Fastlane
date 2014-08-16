@@ -36,6 +36,8 @@
 
 #import "VNoContentView.h"
 
+#import "VCommentFilter.h"
+
 
 @import Social;
 
@@ -44,6 +46,7 @@
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
 @property (nonatomic, strong) UIImageView* backgroundImageView;
+@property (nonatomic, strong) VCommentFilter* filter;
 
 @end
 
@@ -73,7 +76,8 @@ static NSString* CommentCache           = @"CommentCache";
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    
+    self.filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+
     [self setHasComments:self.sequence.commentCount.integerValue];
     
     self.title = sequence.name;
@@ -97,7 +101,7 @@ static NSString* CommentCache           = @"CommentCache";
 - (void)sortComments
 {
     [self.sequence.managedObjectContext refreshObject:self.sequence mergeChanges:YES];
-    self.sortedComments = [self.sequence.comments allObjects];
+    self.sortedComments = [self.filter.comments array];
     //If theres no sorted comments, this is our first batch so animate in.
     if (![self.sortedComments count])
     {
@@ -132,7 +136,7 @@ static NSString* CommentCache           = @"CommentCache";
 - (void)sortCommentsByDate
 {
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-    self.sortedComments = [[self.sequence.comments allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+    self.sortedComments = [[self.filter.comments array] sortedArrayUsingDescriptors:@[sortDescriptor]];
     [self.tableView reloadData];
 }
 
@@ -169,9 +173,8 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
-                                                  loadNextPageOfCommentFilter:filter
+                                                  loadNextPageOfCommentFilter:self.filter
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
                                                       [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
@@ -190,9 +193,8 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (void)loadNextPageAction
 {
-    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
-                                                  loadNextPageOfCommentFilter:filter
+                                                  loadNextPageOfCommentFilter:self.filter
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
                                                       [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
