@@ -11,6 +11,7 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
 
+#import "VPaginationManager.h"
 #import "VUser.h"
 #import "VSequence.h"
 #import "VComment.h"
@@ -28,68 +29,11 @@
 
 #import "NSString+VParseHelp.h"
 
-@interface VFilterCache : NSCache
-+ (VFilterCache *)sharedCache;
-//- (VSequenceFilter *)sequenceFilterForPath:(NSString*)path;
-- (VAbstractFilter*)filterForPath:(NSString *)path entityName:(NSString*)entityName;
-@end
-
-
 @implementation VObjectManager (Pagination)
-
-+ (dispatch_queue_t)paginationDispatchQueue
-{
-    static dispatch_queue_t paginationDispatchQueue;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        paginationDispatchQueue = dispatch_queue_create("org.restkit.network.object-request-operation-queue", DISPATCH_QUEUE_CONCURRENT);
-    });
-    
-    return paginationDispatchQueue;
-}
-
-- (void)unlockPageFilters
-{
-    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VAbstractFilter entityName]];
-    
-    NSError *error = nil;
-    NSArray* objects = [context executeFetchRequest:request error:&error];
-    if (error != nil)
-    {
-        VLog(@"Error occured in sequence filter fetch: %@", error);
-    }
-    
-    for (VAbstractFilter* filter in objects)
-    {
-        filter.updating = @(NO);
-    }
-    [context saveToPersistentStore:nil];
-}
 
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
-    //Remove the old filters
-    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlock:^(void)
-    {
-        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
-        
-        NSError *error = nil;
-        NSArray* objects = [context executeFetchRequest:request error:&error];
-        if (error != nil)
-        {
-            VLog(@"Error occured in sequence filter fetch: %@", error);
-        }
-        
-        for (NSManagedObject* object in objects)
-        {
-            [object.managedObjectContext deleteObject:object];
-        }
-        [context save:nil];
-    }];
-    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if (success)
@@ -116,30 +60,38 @@
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    filter.currentPageNumber = @(0);
-    return [self loadNextPageOfCommentFilter:filter
-                                successBlock:success
-                                   failBlock:fail];
+    return [self loadCommentFilter:filter
+                     shouldRefresh:YES
+                      successBlock:success
+                         failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
                                                     successBlock:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail
 {
+    return [self loadCommentFilter:filter
+                     shouldRefresh:NO
+                      successBlock:success
+                         failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadCommentFilter:(VCommentFilter*)filter
+                                         shouldRefresh:(BOOL)refresh
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            
-            //If this is the first page, break the relationship to all the old objects.
-            
-            if ([filter.currentPageNumber isEqualToNumber:@(0)])
+            //If this is a refresh, break the relationship to all the old objects.
+            if (refresh)
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
                 NSArray* filteredSequences = [[filter.comments allObjects] filteredArrayUsingPredicate:tempFilter];
                 [filter removeComments:[NSSet setWithArray:filteredSequences]];
             }
-            
             
             for (VComment* comment in resultObjects)
             {
@@ -148,7 +100,9 @@
             }
             
             if (success)
+            {
                 success(operation, fullResponse, resultObjects);
+            }
         };
         
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -176,50 +130,71 @@
         }
     };
     
-    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 #pragma mark - Notifications
 
 - (RKManagedObjectRequestOperation *)refreshListOfNotificationsWithSuccessBlock:(VSuccessBlock)success
-                                                                   failBlock:(VFailBlock)fail
+                                                                      failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/notification_list"
-                                                                 entityName:[VAbstractFilter entityName]];
-    listFilter.currentPageNumber = @(0);
-    return [self loadNextPageOfNotificationsListWithSuccessBlock:success
-                                                      failBlock:fail];
+    return [self loadNotificationsListShouldRefresh:YES successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
-                                                                          failBlock:(VFailBlock)fail
+                                                                           failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/notification_list"
-                                                                 entityName:[VAbstractFilter entityName]];
-    
-    
-    return [self loadNextPageOfFilter:listFilter successBlock:success failBlock:fail];
+    return [self loadNotificationsListShouldRefresh:NO successBlock:success failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)loadNotificationsListShouldRefresh:(BOOL)refresh
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail
+{
+    NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    __block RKManagedObjectRequestOperation *requestOperation = nil;
+    [context performBlockAndWait:^(void)
+    {
+        VAbstractFilter *listFilter = [self.paginationManager filterForPath:@"/api/message/notification_list"
+                                                                 entityName:[VAbstractFilter entityName]
+                                                       managedObjectContext:context];
+        if (refresh)
+        {
+            requestOperation = [self.paginationManager refreshFilter:listFilter successBlock:success failBlock:fail];
+        }
+        else
+        {
+            requestOperation = [self.paginationManager loadNextPageOfFilter:listFilter successBlock:success failBlock:fail];
+        }
+    }];
+    return requestOperation;
+}
 
 #pragma mark - Conversations
 
 - (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
                                                                    failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
-                                                                 entityName:[VAbstractFilter entityName]];
-    listFilter.currentPageNumber = @(0);
-    return [self loadNextPageOfConversationListWithSuccessBlock:success
-                                                      failBlock:fail];
+    return [self loadConversationListShouldRefresh:YES withSuccessBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
                                                                           failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
-                                                                 entityName:[VAbstractFilter entityName]];
-    
+    return [self loadConversationListShouldRefresh:NO withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadConversationListShouldRefresh:(BOOL)refresh
+                                                      withSuccessBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSManagedObjectContext* context;
@@ -231,9 +206,13 @@
             
             //Sometimes we get -1 for the current logged in user
             if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
+            {
                 conversation.lastMessage.user = self.mainUser;
+            }
             else if (conversation.lastMessage && !conversation.lastMessage.user)
+            {
                 [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
+            }
             
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
@@ -249,35 +228,58 @@
         [context saveToPersistentStore:nil];
         
         if ([nonExistantUsers count])
+        {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:success
                                              failBlock:fail];
-        
+        }
         else if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
-    return [self loadNextPageOfFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
+    NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    __block RKManagedObjectRequestOperation *requestOperation = nil;
+    [context performBlockAndWait:^(void)
+    {
+        VAbstractFilter* listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
+        if (refresh)
+        {
+            requestOperation = [self.paginationManager refreshFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
+        }
+        else
+        {
+            requestOperation = [self.paginationManager loadNextPageOfFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
+        }
+    }];
+     
+    return requestOperation;
 }
 
 #pragma mark - Message
+
 - (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
-    conversation.currentPageNumber = @(0);
-    return [self loadNextPageOfConversation:conversation
-                               successBlock:success
-                                  failBlock:fail];
+    return [self loadConversation:conversation shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation*)conversation
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
+    return [self loadConversation:conversation shouldRefresh:NO successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadConversation:(VConversation*)conversation
+                                        shouldRefresh:(BOOL)refresh
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
+{
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        
         for (VMessage* message in resultObjects)
         {
             VMessage* messageInContext = (VMessage*)[conversation.managedObjectContext objectWithID:message.objectID];
@@ -287,85 +289,121 @@
         if (success)
             success(operation, fullResponse, resultObjects);
     };
-
-    return [self loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
+    
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 #pragma mark - Following
+
 - (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self followerFilterForUser:user];
-    filter.currentPageNumber = @(0);
-    return [self loadNextPageOfFollowersForUser:user
-                               successBlock:success
-                                  failBlock:fail];
+    return [self loadFollowersForUser:user shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
+    return [self loadFollowersForUser:user shouldRefresh:NO successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser*)user
+                                            shouldRefresh:(BOOL)refresh
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
+{
     VAbstractFilter* filter = [self followerFilterForUser:user];
     
+    NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
+        VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
+        
+        //If this is a refresh, break the relationship to all the old objects.
+        if (refresh)
         {
             [user removeFollowers:user.followers];
         }
         
         for (VUser* follower in resultObjects)
         {
-            VUser* followerInContext = (VUser*)[user.managedObjectContext objectWithID:follower.objectID];
-            [user addFollowersObject:followerInContext];
+            [user addFollowersObject:follower];
         }
         
         if (success)
             success(operation, fullResponse, resultObjects);
     };
     
-    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 - (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self followingFilterForUser:user];
-    filter.currentPageNumber = @(0);
-    return [self loadNextPageOfFollowingsForUser:user
-                                    successBlock:success
-                                       failBlock:fail];
+    return [self loadFollowingsForUser:user shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
+    return [self loadFollowingsForUser:user shouldRefresh:NO successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadFollowingsForUser:(VUser*)user
+                                             shouldRefresh:(BOOL)refresh
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail
+{
     VAbstractFilter* filter = [self followingFilterForUser:user];
     
+    NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
+        VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
+        
+        //If this is a refresh, break the relationship to all the old objects.
+        if (refresh)
         {
             [user removeFollowing:user.followers];
         }
         
         for (VUser* follower in resultObjects)
         {
-            VUser* followerInContext = (VUser*)[user.managedObjectContext objectWithID:follower.objectID];
-            [user addFollowingObject:followerInContext];
+            [user addFollowingObject:follower];
         }
         
         if (success)
             success(operation, fullResponse, resultObjects);
     };
     
-    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 #pragma mark - Repost
@@ -384,6 +422,14 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence*)sequence
                                                          successBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
+{
+    return [self loadRepostersForSequence:sequence shouldRefresh:NO successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadRepostersForSequence:(VSequence*)sequence
+                                                shouldRefresh:(BOOL)refresh
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail
 {
     VAbstractFilter* filter = [self repostFilterForSequence:sequence];
     
@@ -405,7 +451,14 @@
             success(operation, fullResponse, resultObjects);
     };
     
-    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 #pragma mark - Sequence
@@ -413,23 +466,27 @@
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    filter.currentPageNumber = @(0);
-    return [self loadNextPageOfSequenceFilter:filter
-                                 successBlock:success
-                                    failBlock:fail];
+    return [self loadSequenceFilter:filter isRefresh:YES successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail
 {
+    return [self loadSequenceFilter:filter isRefresh:NO successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadSequenceFilter:(VSequenceFilter*)filter
+                                              isRefresh:(BOOL)refresh
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
+{
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            
             //If this is the first page, break the relationship to all the old objects.
-            if ([filter.currentPageNumber isEqualToNumber:@(0)])
+            if (refresh)
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
                 NSOrderedSet* filteredSequences = [filter.sequences filteredOrderedSetUsingPredicate:tempFilter];
@@ -445,7 +502,9 @@
             filter.sequences = sequences;
         
             if (success)
+            {
                 success(operation, fullResponse, resultObjects);
+            }
         };
         
         //Don't complete the fetch until we have the users
@@ -480,98 +539,49 @@
         }
     };
 
-    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter*)filter
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail
-{
-    //If the filter is in the middle of an update, ignore other calls to update
-    __block BOOL updating;
-    dispatch_barrier_sync([VObjectManager paginationDispatchQueue],  ^(void)
-                          {
-                              updating = filter.updating.boolValue;
-                              if (!updating)
-                              {
-                                  filter.updating = @(YES);
-                                  [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
-                              }
-                          });
-    if (updating)
+    if (refresh)
     {
-        if (fail)
-            fail(nil, nil);
-        return nil;
+        return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
     }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    else
     {
-        if (success)
-            success(operation, fullResponse, resultObjects);
-        
-        dispatch_sync([VObjectManager paginationDispatchQueue], ^
-                      {
-                          filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
-                          filter.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
-                          filter.updating = [NSNumber numberWithBool:NO];
-                          [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
-                      });
-        
-        [filter.managedObjectContext saveToPersistentStore:nil];
-    };
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        if (fail)
-            fail(operation, error);
-        
-        dispatch_sync([VObjectManager paginationDispatchQueue], ^
-        {
-            filter.updating = @(NO);
-            [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
-        });
-    };
-    
-    NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
-    if (nextPageNumber > filter.maxPageNumber.integerValue)
-        nextPageNumber = filter.maxPageNumber.integerValue;
-    
-    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%ld/%ld", (long)nextPageNumber, (long)filter.perPageNumber.integerValue];
-    
-    return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
+        return [self.paginationManager loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+    }
 }
 
 #pragma mark - Filter Fetchers
 - (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence
 {
     NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* categoryString = [categories componentsJoinedByString:@","];
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }
 
 - (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }
 
 - (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }
 
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
@@ -580,81 +590,38 @@
     
     NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence
 {
     NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
-    return (VCommentFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VCommentFilter entityName]];
+    return (VCommentFilter*)[self.paginationManager filterForPath:apiPath entityName:[VCommentFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
 - (VAbstractFilter*)followerFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
-    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
+    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VAbstractFilter*)followingFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
-    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
+    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VAbstractFilter*)repostFilterForSequence:(VSequence*)sequence
 {
     NSString* apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
-    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
+    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
-@end
-
-@implementation VFilterCache
-
-+ (VFilterCache *)sharedCache
+- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    static VFilterCache *sequenceFilterCache = nil;
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^
-                  {
-                      sequenceFilterCache = [[VFilterCache alloc] init];
-                  });
-    
-    return sequenceFilterCache;
-}
-
-- (VAbstractFilter*)filterForPath:(NSString *)path entityName:(NSString*)entityName
-{
-    //Check cache
-    VAbstractFilter* filter =[self objectForKey:path];
-    
-    //Check core data
-    if (!filter)
-    {
-        NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
-        [request setPredicate:predicate];
-        NSError *error = nil;
-        filter = [[context executeFetchRequest:request error:&error] firstObject];
-        if (error != nil)
-        {
-            filter = nil;
-            VLog(@"Error occured in sequence filter fetch: %@", error);
-        }
-    }
-    
-    //Create a new one if it doesn't exist, is faulted, or is the wrong entity type
-    if (!filter || [filter isFault] || ![[[filter entity] name] isEqualToString:entityName])
-    {
-        filter = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                               inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-        filter.filterAPIPath = path;
-        
-        [filter.managedObjectContext saveToPersistentStore:nil];
-    }
-    
-    return filter;
+    return [self.paginationManager filterForPath:@"/api/message/conversation_list"
+                                      entityName:[VAbstractFilter entityName]
+                            managedObjectContext:managedObjectContext];
 }
 
 @end

@@ -117,7 +117,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
-    [[VObjectManager sharedManager] unlockPageFilters];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -133,7 +132,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
-    [[VObjectManager sharedManager] unlockPageFilters];
 }
 
 @end
