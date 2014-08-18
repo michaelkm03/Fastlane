@@ -11,6 +11,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
+#import "VPaginationManager.h"
 #import "VRootViewController.h"
 
 #import "VConstants.h"
@@ -31,6 +32,12 @@
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
+@interface VObjectManager ()
+
+@property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
+
+@end
+
 @implementation VObjectManager
 
 @synthesize mainUser;
@@ -46,6 +53,7 @@
 #endif
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
+    manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
