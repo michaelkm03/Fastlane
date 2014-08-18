@@ -326,7 +326,9 @@
     NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
+        
         //If this is a refresh, break the relationship to all the old objects.
         if (refresh)
         {
@@ -376,6 +378,7 @@
     NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
         
         //If this is a refresh, break the relationship to all the old objects.
