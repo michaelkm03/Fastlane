@@ -609,16 +609,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Hse-9j-fRh">
-                                <rect key="frame" x="150" y="241" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="vcf-6i-p2X"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="Hse-9j-fRh" id="GC7-0N-0b6"/>
                         <outlet property="cancelButton" destination="7P1-3N-TQ4" id="blr-6P-d4Z"/>
                         <outlet property="confirmPasswordTextField" destination="g23-E6-rHp" id="zEl-Hc-hM7"/>
                         <outlet property="emailTextField" destination="A3z-ra-4Af" id="3dT-ET-3fa"/>
@@ -837,6 +832,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5Xf-nJ-jHn"/>
+        <segue reference="671-FK-1wm"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -24,7 +24,6 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -192,12 +191,10 @@
 
 - (IBAction)signup:(id)sender
 {
-    [self.activityIndicator startAnimating];
-    
     [[self view] endEditing:YES];
 
-    if (YES == [self shouldSignUpWithEmailAddress:self.emailTextField.text
-                                         password:self.passwordTextField.text])
+    if ([self shouldSignUpWithEmailAddress:self.emailTextField.text
+                                  password:self.passwordTextField.text])
     {
         [self saveUserDetails];
     }
@@ -212,9 +209,6 @@
 
 -(void)saveUserDetails
 {
-    // Turn off Activity Indicator
-    [self.activityIndicator stopAnimating];
-
     // Store the New Account Information Temporarily in NSUserDefaults
     [[NSUserDefaults standardUserDefaults] setObject:self.emailTextField.text forKey:kNewAccountEmail];
     [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text forKey:kNewAccountPassword];
