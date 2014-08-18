@@ -90,9 +90,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     // Set Profile data
     self.nameLabel.text = self.user.name;
     self.locationLabel.text = self.user.location;
-    
-    if (self.user.tagline && self.user.tagline.length)
-        self.taglineLabel.text = self.user.tagline;
+    self.taglineLabel.text = self.user.tagline;
     
     __block VLargeNumberFormatter* largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
