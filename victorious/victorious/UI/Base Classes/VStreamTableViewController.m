@@ -612,7 +612,7 @@
 {
     if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
         self.tableDataSource.count &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.currentFilter] &&
+        ![self.tableDataSource isFilterLoading] &&
         scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
         [self loadNextPageAction];

@@ -29,5 +29,6 @@
 - (NSUInteger)count;
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
 - (void)loadNextPageWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
+- (BOOL)isFilterLoading; ///< Returns YES if the filter is currently being loaded from the server
 
 @end
