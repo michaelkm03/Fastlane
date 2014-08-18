@@ -23,6 +23,4 @@
 - (void)registerCells;
 - (IBAction)refresh:(UIRefreshControl *)sender;
 
-- (void)loadNextPageAction;
-
 @end

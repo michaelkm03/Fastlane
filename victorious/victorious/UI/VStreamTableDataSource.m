@@ -9,6 +9,7 @@
 #import "NSIndexSet+Map.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
+#import "VPaginationManager.h"
 #import "VSequenceFilter.h"
 #import "VStreamTableDataSource.h"
 
@@ -17,6 +18,7 @@ static char KVOContext;
 @interface VStreamTableDataSource ()
 
 @property (nonatomic) BOOL insertingContent;
+@property (nonatomic) BOOL isLoading;
 
 @end
 
@@ -77,6 +79,7 @@ static char KVOContext;
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
+    self.isLoading = YES;
     [[VObjectManager sharedManager] refreshSequenceFilter:self.filter
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -84,6 +87,7 @@ static char KVOContext;
         {
             successBlock();
         }
+        self.isLoading = NO;
     }
                                                 failBlock:^(NSOperation* operation, NSError* error)
     {
@@ -91,11 +95,13 @@ static char KVOContext;
         {
             failureBlock(error);
         }
+        self.isLoading = NO;
     }];
 }
 
 - (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
+    self.isLoading = YES;
     [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:self.filter
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -103,6 +109,7 @@ static char KVOContext;
         {
             successBlock();
         }
+        self.isLoading = NO;
     }
                                                        failBlock:^(NSOperation* operation, NSError* error)
     {
@@ -110,7 +117,13 @@ static char KVOContext;
         {
             failureBlock(error);
         }
+        self.isLoading = NO;
     }];
+}
+
+- (BOOL)isFilterLoading
+{
+    return self.isLoading || [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.filter];
 }
 
 #pragma mark - UITableViewDataSource methods

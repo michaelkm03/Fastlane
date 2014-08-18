@@ -98,7 +98,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     if (self.isMe)
         self.navigationItem.title = NSLocalizedString(@"me", "");
     else
-        self.navigationItem.title = self.profile.name ? [@"@" stringByAppendingString:self.profile.name] : @"Profile";
+        self.navigationItem.title = self.profile.name ? self.profile.name : @"Profile";
     
     [super viewDidLoad];
    

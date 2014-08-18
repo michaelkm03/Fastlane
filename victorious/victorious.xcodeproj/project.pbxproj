@@ -14,6 +14,7 @@
 		031D86C51947BBB600CDB814 /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */; };
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
 		032C9B471929C113002FB447 /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */; };
+		0333B5D519A171510024B0DE /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0333B5D419A171510024B0DE /* VPaginationManager.m */; };
 		0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */; };
 		03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BEE192D284100403FB1 /* VLightboxDisplayAnimator.m */; };
 		03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF0192D284100403FB1 /* VLightboxViewController.m */; };
@@ -359,6 +360,8 @@
 		032948A91970BE2E00208FBA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		032C9B451929C113002FB447 /* VObjectManager+ImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ImageSearch.h"; sourceTree = "<group>"; };
 		032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
+		0333B5D319A171510024B0DE /* VPaginationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginationManager.h; sourceTree = "<group>"; };
+		0333B5D419A171510024B0DE /* VPaginationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPaginationManager.m; sourceTree = "<group>"; };
 		0345285219244E9700D0B1D1 /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActivityIndicatorView.h; path = UI/VActivityIndicatorView.h; sourceTree = "<group>"; };
 		0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActivityIndicatorView.m; path = UI/VActivityIndicatorView.m; sourceTree = "<group>"; };
 		03484BED192D284100403FB1 /* VLightboxDisplayAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDisplayAnimator.h; sourceTree = "<group>"; };
@@ -1984,6 +1987,8 @@
 				BE9181DA19098E280071E7AF /* VObjectManager+Pagination.m */,
 				BE2E5B731914201A003282A6 /* VObjectManager+ContentCreation.h */,
 				BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */,
+				0333B5D319A171510024B0DE /* VPaginationManager.h */,
+				0333B5D419A171510024B0DE /* VPaginationManager.m */,
 			);
 			name = VObjectManager;
 			sourceTree = "<group>";
@@ -2552,6 +2557,7 @@
 				BE31757C19257592007DAC76 /* VStreamContainerViewController.m in Sources */,
 				03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
+				0333B5D519A171510024B0DE /* VPaginationManager.m in Sources */,
 				0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
