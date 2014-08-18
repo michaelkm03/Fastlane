@@ -38,6 +38,11 @@
 
 +(NSDictionary*)detectHashTags:(NSString*)fieldText
 {
+    if (!fieldText)
+    {
+        return @{};
+    }
+    
     BOOL haveTag = NO;
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     NSError *error = nil;
