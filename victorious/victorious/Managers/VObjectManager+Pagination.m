@@ -243,9 +243,7 @@
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        VAbstractFilter* listFilter = [self.paginationManager filterForPath:@"/api/message/conversation_list"
-                                                                entityName:[VAbstractFilter entityName]
-                                                       managedObjectContext:context];
+        VAbstractFilter* listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
         if (refresh)
         {
             requestOperation = [self.paginationManager refreshFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
@@ -614,6 +612,13 @@
 {
     NSString* apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
     return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
+}
+
+- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    return [self.paginationManager filterForPath:@"/api/message/conversation_list"
+                                      entityName:[VAbstractFilter entityName]
+                            managedObjectContext:managedObjectContext];
 }
 
 @end

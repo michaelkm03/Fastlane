@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 
-@class VSequenceFilter, VCommentFilter, VSequence, VConversation;
+@class VAbstractFilter, VSequenceFilter, VCommentFilter, VSequence, VConversation;
 
 @interface VObjectManager (Pagination)
 
@@ -78,5 +78,6 @@
 - (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
+- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
