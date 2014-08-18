@@ -164,7 +164,7 @@ static VLargeNumberFormatter* largeNumberFormatter;
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
         NSString *text = self.sequence.name;
-        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForCellText]];
+        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"") attributes:[self attributesForCellText]];
         self.hashTags = [VHashTags detectHashTags:text];
         if ([self.hashTags count] > 0) {
             newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
