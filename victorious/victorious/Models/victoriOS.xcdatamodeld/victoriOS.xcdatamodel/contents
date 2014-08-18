@@ -5,7 +5,6 @@
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
-        <attribute name="updating" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
     </entity>
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -200,7 +199,7 @@
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="990" positionY="-747" width="128" height="118"/>
+        <element name="AbstractFilter" positionX="990" positionY="-747" width="128" height="105"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="630" positionY="-414" width="128" height="148"/>
