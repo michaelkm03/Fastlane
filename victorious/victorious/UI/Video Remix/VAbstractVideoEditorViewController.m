@@ -150,6 +150,22 @@
     }
 }
 
+-(void)setPlaybackLooping:(VLoopType)playbackLooping
+{
+    _playbackLooping = playbackLooping;
+
+    if (self.playbackLooping == VLoopOnce)
+    {
+        self.videoPlayerViewController.shouldLoop = NO;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
+    }
+    else if (self.playbackLooping == VLoopRepeat)
+    {
+        self.videoPlayerViewController.shouldLoop = YES;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
+    }
+}
+
 #pragma mark - Animations
 
 - (void)startAnimation
