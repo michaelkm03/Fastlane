@@ -7,7 +7,7 @@
         <!--Navigation Controller-->
         <scene sceneID="j2C-VY-b1j">
             <objects>
-                <navigationController definesPresentationContext="YES" id="Lsc-qm-Ib8" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="Lsc-qm-Ib8" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iY4-Q6-wl4">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -162,7 +162,6 @@
                         <segue destination="WjX-TR-OnL" kind="push" identifier="toSignup" id="9EH-It-qvD"/>
                         <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithTwitter" id="Dbj-pL-bxH"/>
                         <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithFacebook" id="L0J-p9-vsT"/>
-                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithEmail" id="5Xf-nJ-jHn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -372,10 +371,25 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSe-Ez-hDV" userLabel="Back Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="oWo-jp-9dG"/>
+                                            <constraint firstAttribute="width" constant="56" id="v3O-v4-vyy"/>
+                                        </constraints>
+                                        <state key="normal" image="cameraButtonBack">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="back:" destination="a0y-4a-uKe" eventType="touchUpInside" id="Wuq-u7-Dwi"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="A8K-lD-yg5" firstAttribute="top" secondItem="Lrg-TW-8uF" secondAttribute="top" id="OuM-Iv-S40"/>
+                                    <constraint firstItem="uSe-Ez-hDV" firstAttribute="leading" secondItem="Lrg-TW-8uF" secondAttribute="leading" id="bBV-hd-TBU"/>
+                                    <constraint firstItem="uSe-Ez-hDV" firstAttribute="top" secondItem="Lrg-TW-8uF" secondAttribute="top" id="hHs-x4-bZf"/>
                                     <constraint firstItem="A8K-lD-yg5" firstAttribute="leading" secondItem="Lrg-TW-8uF" secondAttribute="leading" constant="92" id="lnF-Yf-spF"/>
                                     <constraint firstItem="A8K-lD-yg5" firstAttribute="centerX" secondItem="Lrg-TW-8uF" secondAttribute="centerX" id="osA-mT-YNz"/>
                                 </constraints>
@@ -465,10 +479,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="wxP-ck-7Ly">
-                                <rect key="frame" x="150" y="150" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -517,7 +527,6 @@
                     <navigationItem key="navigationItem" id="flR-8t-hJ7"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="wxP-ck-7Ly" id="IBu-Qg-nOw"/>
                         <outlet property="agreeSwitch" destination="aAM-6y-jy7" id="j9w-kN-5Pj"/>
                         <outlet property="agreementText" destination="EGg-eb-7Dm" id="FOD-cg-woF"/>
                         <outlet property="doneButton" destination="9Wi-As-OwD" id="AdC-3g-M03"/>

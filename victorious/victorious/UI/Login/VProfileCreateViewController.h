@@ -13,4 +13,8 @@
 @interface VProfileCreateViewController : UIViewController
 @property (nonatomic, assign)   VLoginType      loginType;
 @property (nonatomic, strong)   VUser*          profile;
+
+@property (nonatomic, strong)   NSString*       accountEmail;
+@property (nonatomic, strong)   NSString*       accountPassword;
+
 @end

@@ -132,12 +132,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    
-    self.navigationItem.hidesBackButton = YES;
+    self.navigationController.navigationBarHidden = YES;
 
     [self.usernameTextField becomeFirstResponder];
     [self.locationManager startMonitoringSignificantLocationChanges];
@@ -156,11 +151,6 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
 
 }
 
@@ -345,12 +335,9 @@
 - (void)didSignUpWithUser:(VUser*)mainUser
 {
     self.profile = mainUser;
-    
-    NSString *email = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountEmail];
-    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountPassword];
 
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:email
-                                                     password:password
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:self.accountEmail
+                                                     password:self.accountPassword
                                                          name:self.usernameTextField.text
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
@@ -360,9 +347,8 @@
          
          [self dismissViewControllerAnimated:YES
                                   completion:^{
-                                      [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNewAccountEmail];
-                                      [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNewAccountPassword];
-                                      [self.activityIndicator stopAnimating];
+                                      [MBProgressHUD hideHUDForView:self.view
+                                                           animated:YES];
                                   }];
      }
                                                     failBlock:^(NSOperation* operation, NSError* error)
@@ -397,12 +383,9 @@
     
     if ([self shouldCreateProfile])
     {
-        NSString *email = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountEmail];
-        NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kNewAccountPassword];
-        
-        [[VUserManager sharedInstance] createEmailAccount:email
-                                                 password:password
-                                                 userName:email
+        [[VUserManager sharedInstance] createEmailAccount:self.accountEmail
+                                                 password:self.accountPassword
+                                                 userName:self.accountEmail
                                              onCompletion:^(VUser *user, BOOL created)
          {
              [self didSignUpWithUser:user];
@@ -478,6 +461,11 @@
     };
     [navigationController pushViewController:cameraViewController animated:NO];
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (IBAction)back:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Navigation
