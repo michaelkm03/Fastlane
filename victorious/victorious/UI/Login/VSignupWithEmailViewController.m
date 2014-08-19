@@ -73,12 +73,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Stop being the navigation controller's delegate
-    if (self.navigationController.delegate == self)
-    {
-        self.navigationController.delegate = nil;
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -196,25 +190,14 @@
     if ([self shouldSignUpWithEmailAddress:self.emailTextField.text
                                   password:self.passwordTextField.text])
     {
-        [self saveUserDetails];
+        // Go to Part II of Sign-up
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
     }
 }
 
 - (IBAction)cancel:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - Saving User Details
-
--(void)saveUserDetails
-{
-    // Store the New Account Information Temporarily in NSUserDefaults
-    [[NSUserDefaults standardUserDefaults] setObject:self.emailTextField.text forKey:kNewAccountEmail];
-    [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text forKey:kNewAccountPassword];
-    
-    // Go to Part II of Sign-up
-    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -255,6 +238,8 @@
         VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.accountEmail = self.emailTextField.text;
+        profileViewController.accountPassword = self.passwordTextField.text;
     }
 }
 
