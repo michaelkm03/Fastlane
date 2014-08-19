@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-@class VSequence, VUser;
+@class VSequence, VUser, VComment;
 
 @protocol VCommentsTableViewControllerDelegate;
 
@@ -17,6 +17,7 @@
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 
 - (void)setHasComments:(BOOL)hasComments;
+- (void)addedNewComment:(VComment*)comment;
 
 @end
 

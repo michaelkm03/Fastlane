@@ -132,10 +132,8 @@
     {
         NSLog(@"%@", resultObjects);
         [progressHUD hide:YES];
-        
-        [self.sequence.managedObjectContext saveToPersistentStore:nil];
-        [(VCommentsTableViewController*)self.conversationTableViewController setHasComments:YES];
-        [self.conversationTableViewController.tableView reloadData];
+    
+        [((VCommentsTableViewController*)self.conversationTableViewController) addedNewComment:[resultObjects firstObject]];
     };
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)

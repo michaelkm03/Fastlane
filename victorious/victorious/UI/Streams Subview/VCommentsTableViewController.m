@@ -115,6 +115,14 @@ static NSString* CommentCache           = @"CommentCache";
     }
 }
 
+- (void)addedNewComment:(VComment*)comment
+{
+    [self setHasComments:YES];
+    [self.tableView reloadData];
+    NSIndexPath* pathForComment = [NSIndexPath indexPathForRow:[self.filter.comments indexOfObject:comment] inSection:0];
+    [self.tableView scrollToRowAtIndexPath:pathForComment atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)refresh:(UIRefreshControl *)sender
