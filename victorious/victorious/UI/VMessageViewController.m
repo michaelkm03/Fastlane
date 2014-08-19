@@ -37,7 +37,7 @@
     
     UIImage*    defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     
-    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.profileImagePathOriginal ?: self.conversation.user.pictureUrl]
                                     placeholderImage:defaultBackgroundImage];
     
     self.tableView.backgroundView = backgroundImageView;
@@ -156,7 +156,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:message.user.pictureUrl];
+    NSURL *pictureURL = [NSURL URLWithString:message.user.profileImagePathSmall ?: message.user.pictureUrl];
     if (pictureURL)
     {
         [cell.profileImageView setImageWithURL:pictureURL];

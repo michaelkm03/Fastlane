@@ -2,7 +2,7 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Lawrence Leach on 8/7/14.
+//  Created by Will Long on 8/19/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -24,6 +24,8 @@
 @dynamic location;
 @dynamic name;
 @dynamic pictureUrl;
+@dynamic profileImagePathOriginal;
+@dynamic profileImagePathSmall;
 @dynamic remoteId;
 @dynamic tagline;
 @dynamic token;
@@ -34,11 +36,11 @@
 @dynamic followers;
 @dynamic following;
 @dynamic messages;
+@dynamic notifications;
 @dynamic pollResults;
 @dynamic postedSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
 @dynamic unreadConversation;
-@dynamic notifications;
 
 @end

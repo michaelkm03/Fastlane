@@ -194,7 +194,7 @@ static NSString* CommentCache           = @"CommentCache";
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:comment.user.pictureUrl];
+    NSURL *pictureURL = [NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl];
     if (pictureURL)
     {
         [cell.profileImageView setImageWithURL:pictureURL];
