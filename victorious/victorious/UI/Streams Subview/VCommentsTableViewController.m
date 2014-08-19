@@ -119,14 +119,13 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
-                                                  loadNextPageOfCommentFilter:self.filter
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshCommentFilter:self.filter
+                                                                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
                                                   }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                                                            failBlock:^(NSOperation* operation, NSError* error)
                                                   {
                                                       [self.refreshControl endRefreshing];
                                                   }];
@@ -246,10 +245,9 @@ static NSString* CommentCache           = @"CommentCache";
                                           failBlock:^(NSOperation* operation, NSError* error)
          {
              VLog(@"Failed to flag comment %@", comment);
-             
-             //TODO: we may want to remove this later.
-             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
+            
+             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                           otherButtonTitles:nil];
@@ -269,19 +267,6 @@ static NSString* CommentCache           = @"CommentCache";
     [actionSheet showInView:window];
 }
 
-#pragma mark - Navigation
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
-    if ([segue.identifier isEqualToString:@"toComposeMessage"])
-    {
-//        ((VComposeMessageViewController *)segue.destinationViewController).delegate = self;
-    }
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {    
     //Whenever we leave this view we need to tell the server what was read.
@@ -298,17 +283,6 @@ static NSString* CommentCache           = @"CommentCache";
     self.newlyReadComments = nil;
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-}
-
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return NO;
-    }
-    
-    return YES;
 }
 
 @end
