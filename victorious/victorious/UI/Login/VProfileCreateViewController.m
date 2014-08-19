@@ -136,13 +136,22 @@
     
     self.navigationController.navigationBarHidden = YES;
 
-    [self.usernameTextField becomeFirstResponder];
+
     [self.locationManager startMonitoringSignificantLocationChanges];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.view endEditing:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.usernameTextField becomeFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
@@ -492,12 +501,6 @@
     taglineInputAccessory.textInputView = self.taglineTextView;
     taglineInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.taglineTextView.inputAccessoryView = taglineInputAccessory;
-
-    VContentInputAccessoryView *nameInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
-    nameInputAccessory.textInputView = self.usernameTextField;
-    nameInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
-    nameInputAccessory.maxCharacterLength = VConstantsUsernameMaxLength;
-    self.usernameTextField.inputAccessoryView = nameInputAccessory;
 }
 
 @end
