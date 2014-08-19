@@ -13,6 +13,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VUserManager.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 #import "VContentInputAccessoryView.h"
 
@@ -36,7 +37,6 @@
 @property (nonatomic, weak) IBOutlet UILabel*               tagLinePlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet UIImageView*           profileImageView;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic, strong) CLLocationManager*            locationManager;
 @property (nonatomic, strong) CLGeocoder*                   geoCoder;
@@ -382,8 +382,8 @@
                                                  otherButtonTitles:nil];
     [alert show];
     
-    // Stop Activity Indicator
-    [self.activityIndicator stopAnimating];
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
 }
 
 
@@ -392,7 +392,8 @@
 - (IBAction)done:(id)sender
 {
     // Let the User Know Something Is Happening
-    [self.activityIndicator startAnimating];
+    [MBProgressHUD showHUDAddedTo:self.view
+                         animated:YES];
     
     if ([self shouldCreateProfile])
     {
@@ -456,7 +457,8 @@
                                              otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
     [alert show];
 
-    [self.activityIndicator stopAnimating];
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
     
     return NO;
 }
