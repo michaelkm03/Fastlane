@@ -354,8 +354,11 @@
                                                     failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
+         
+         [MBProgressHUD hideHUDForView:self.view
+                              animated:YES];
      }];
-
+    
 }
 
 - (void)didFailWithError:(NSError*)error
