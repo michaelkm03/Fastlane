@@ -9,4 +9,7 @@
 #import "VWebContentViewController.h"
 
 @interface VTOSViewController : VWebContentViewController
+
+@property (nonatomic, assign) BOOL wantsStatusBar; // Defaults to YES
+
 @end

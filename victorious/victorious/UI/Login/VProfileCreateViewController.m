@@ -24,7 +24,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 
-#import "VWebContentViewController.h"
+#import "VTOSViewController.h"
 
 @import CoreLocation;
 @import AddressBookUI;
@@ -58,6 +58,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -242,6 +244,8 @@
     return YES;
 }
 
+#pragma mark - Notification Handlers
+
 - (void)keyboardWasShown:(NSNotification *)notification
 {
     // Get the size of the keyboard.
@@ -291,16 +295,10 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
-    {
-        if (!error)
-        {
-            VWebContentViewController *webContentVC = [VWebContentViewController webContentViewController];
-            webContentVC.htmlString = htmlString;
-            webContentVC.title = NSLocalizedString(@"ToSText", @"");
-            [self.navigationController pushViewController:webContentVC animated:YES];
-        }
-    }];
+    VTOSViewController *termsOfServiceVC = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    termsOfServiceVC.wantsStatusBar = NO;
+    [self.navigationController pushViewController:termsOfServiceVC animated:YES];
 }
 
 #pragma mark - CCLocationManagerDelegate
@@ -358,7 +356,6 @@
          [MBProgressHUD hideHUDForView:self.view
                               animated:YES];
      }];
-    
 }
 
 - (void)didFailWithError:(NSError*)error
@@ -399,6 +396,28 @@
          }];
 
     }
+}
+
+- (IBAction)takePicture:(id)sender
+{
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        if (finished && capturedMediaURL)
+        {
+            self.profileImageView.image = previewImage;
+            self.updatedProfileImage = capturedMediaURL;
+        }
+    };
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (IBAction)back:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldCreateProfile
@@ -447,28 +466,6 @@
                          animated:YES];
     
     return NO;
-}
-
-- (IBAction)takePicture:(id)sender
-{
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (finished && capturedMediaURL)
-        {
-            self.profileImageView.image = previewImage;
-            self.updatedProfileImage = capturedMediaURL;
-        }
-    };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (IBAction)back:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Navigation

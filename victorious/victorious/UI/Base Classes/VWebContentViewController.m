@@ -10,15 +10,33 @@
 #import "VThemeManager.h"
 
 @interface VWebContentViewController ()
-@property (nonatomic, weak) IBOutlet UIWebView* webView;
+
+@property (nonatomic, weak, readwrite) IBOutlet UIWebView* webView;
+@property (nonatomic, strong, readwrite) UIActivityIndicatorView *activitiyIndicator;
+
 @end
 
 @implementation VWebContentViewController
+
+#pragma mark - Factory Methods
 
 + (instancetype)webContentViewController
 {
     VWebContentViewController *webviewVC = [[self alloc] initWithNibName:@"webContentView" bundle:nil];
     return webviewVC;
+}
+
+#pragma mark - UIViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if (!self.activitiyIndicator) {
+        self.activitiyIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.activitiyIndicator.center = self.view.center;
+        [self.view addSubview:self.activitiyIndicator];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -28,47 +46,15 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;
     self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
     
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
     
-    self.webView.delegate    =   self;
-    if (self.htmlString)
-    {
-        [self.webView loadHTMLString:self.htmlString baseURL:nil];
-    }
-    else if (self.urlKeyPath)
-    {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:self.urlKeyPath]];
-    }
-}
-
-- (void)setHtmlString:(NSString *)htmlString
-{
-    if ([_htmlString isEqualToString:htmlString])
-        return;
+    self.webView.delegate = self;
     
-    _htmlString = htmlString;
-    [self.webView loadHTMLString:_htmlString baseURL:nil];
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    // report the error inside the webview
-    NSString* errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
-    [self.webView loadHTMLString:errorString baseURL:nil];
+    if (self.urlToView) {
+        NSURLRequest *requestWithURL = [NSURLRequest requestWithURL:self.urlToView];
+        [self.webView loadRequest:requestWithURL];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -92,6 +78,30 @@
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self.activitiyIndicator startAnimating];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activitiyIndicator stopAnimating];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activitiyIndicator stopAnimating];
+    
+    // report the error inside the webview
+    NSString* errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
+    [self.webView loadHTMLString:errorString baseURL:nil];
 }
 
 @end
