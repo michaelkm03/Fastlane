@@ -343,27 +343,32 @@
 {
     self.profile = mainUser;
 
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
+    
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+    
     [[VObjectManager sharedManager] updateVictoriousWithEmail:self.accountEmail
                                                      password:self.accountPassword
                                                          name:self.usernameTextField.text
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
                                                       tagline:self.taglineTextView.text
-                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                 successBlock:nil
+                                                    failBlock:^(NSOperation *operation, NSError *error)
      {
-         
-         [self dismissViewControllerAnimated:YES
-                                  completion:^{
-                                      [MBProgressHUD hideHUDForView:self.view
-                                                           animated:YES];
-                                  }];
-     }
-                                                    failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed with error: %@", error);
-         
-         [MBProgressHUD hideHUDForView:self.view
-                              animated:YES];
+         VLog(@"Failed with error: %@ Retrying...", error);
+         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.accountEmail
+                                                          password:self.accountPassword
+                                                              name:self.usernameTextField.text
+                                                   profileImageURL:self.updatedProfileImage
+                                                          location:self.locationTextField.text
+                                                           tagline:self.taglineTextView.text
+                                                      successBlock:nil
+                                                         failBlock:^(NSOperation *operation, NSError *error) {
+                                                             VLog(@"Failed with error: %@", error);
+                                                         }];
      }];
 }
 
