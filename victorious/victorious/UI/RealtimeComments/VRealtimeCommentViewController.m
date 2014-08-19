@@ -149,7 +149,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         xCenter += imageHeight / 2;
         
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
-        [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
+        [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 
         [self.progressBackgroundView addSubview:progressBarImage];
@@ -203,7 +203,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
     self.commentLabel.text = currentComment.text;

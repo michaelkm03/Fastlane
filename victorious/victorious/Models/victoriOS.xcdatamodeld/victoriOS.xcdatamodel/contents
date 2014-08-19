@@ -170,6 +170,8 @@
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileImagePathOriginal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileImagePathSmall" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
@@ -217,7 +219,7 @@
         <element name="Sequence" positionX="1060" positionY="-181" width="128" height="433"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1314" positionY="-342" width="128" height="358"/>
+        <element name="User" positionX="1314" positionY="-324" width="128" height="388"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="666" positionY="-585" width="128" height="103"/>
     </elements>

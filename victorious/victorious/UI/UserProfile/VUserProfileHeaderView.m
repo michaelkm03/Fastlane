@@ -83,7 +83,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     
     UIImage* defaultBackgroundImage = self.profileImageView.image ? self.profileImageView.image
     : [UIImage imageNamed:@"profileGenericUser"];
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.user.pictureUrl]
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.user.profileImagePathOriginal ?: self.user.pictureUrl]
                           placeholderImage:defaultBackgroundImage];
     
     

@@ -2,7 +2,7 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Lawrence Leach on 8/7/14.
+//  Created by Will Long on 8/19/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -18,6 +18,8 @@
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * pictureUrl;
+@property (nonatomic, retain) NSString * profileImagePathOriginal;
+@property (nonatomic, retain) NSString * profileImagePathSmall;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
@@ -28,12 +30,12 @@
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSSet *messages;
+@property (nonatomic, retain) VNotification *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
-@property (nonatomic, retain) VNotification *notifications;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)

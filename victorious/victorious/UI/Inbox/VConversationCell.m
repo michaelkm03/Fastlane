@@ -56,7 +56,7 @@ CGFloat const kVConversationCellHeight = 71;
     
     self.usernameLabel.text  = conversation.user.name;
     
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:conversation.user.pictureUrl]
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
     
