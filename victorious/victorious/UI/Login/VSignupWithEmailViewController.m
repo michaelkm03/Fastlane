@@ -16,6 +16,7 @@
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
+#import "VRegistrationModel.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -24,7 +25,7 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
-
+@property (nonatomic, strong)   VRegistrationModel* registrationModel;
 @end
 
 @implementation VSignupWithEmailViewController
@@ -61,6 +62,7 @@
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
 
+    self.registrationModel = [[VRegistrationModel alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -238,8 +240,9 @@
         VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
-        profileViewController.accountEmail = self.emailTextField.text;
-        profileViewController.accountPassword = self.passwordTextField.text;
+        self.registrationModel.email = self.emailTextField.text;
+        self.registrationModel.password = self.passwordTextField.text;
+        profileViewController.registrationModel = self.registrationModel;
     }
 }
 

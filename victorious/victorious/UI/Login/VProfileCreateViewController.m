@@ -45,8 +45,6 @@
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel* agreementText;
 @property (nonatomic, weak) IBOutlet    UIButton*           doneButton;
 
-@property (nonatomic, strong)   NSURL*                      updatedProfileImage;
-
 @property (nonatomic, strong)   UIBarButtonItem*            countDownLabel;
 @property (nonatomic, strong)   UIBarButtonItem*            usernameCountDownLabel;
 
@@ -64,6 +62,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self updateWithRegistrationModel];
 
     self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
     
@@ -104,7 +104,9 @@
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.taglineTextView setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
-    self.taglineTextView.text = self.profile.tagline;
+    if (self.profile.tagline) {
+        self.taglineTextView.text = self.profile.tagline;
+    }
     if ([self respondsToSelector:@selector(textViewDidChange:)])
         [self textViewDidChange:self.taglineTextView];
     
@@ -136,13 +138,19 @@
     
     self.navigationController.navigationBarHidden = YES;
 
-
     [self.locationManager startMonitoringSignificantLocationChanges];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self.view endEditing:YES];
 }
@@ -151,7 +159,12 @@
 {
     [super viewDidAppear:animated];
     
-    [self.usernameTextField becomeFirstResponder];
+    if (!self.registrationModel.username) {
+        [self.usernameTextField becomeFirstResponder];
+    } else if (!self.registrationModel.taglineText) {
+        [self.taglineTextView becomeFirstResponder];
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
@@ -203,7 +216,9 @@
     BOOL ans = YES;
     if (textField == self.usernameTextField)
     {
-        if (self.usernameTextField.text.length == VConstantsUsernameMaxLength)
+        NSString *resultingString = [textField.text stringByReplacingCharactersInRange:range
+                                                                            withString:string];
+        if (resultingString.length > VConstantsUsernameMaxLength)
         {
             ans = NO;
         }
@@ -223,6 +238,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    self.registrationModel.taglineText = self.taglineTextView.text;
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
     self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.taglineTextView.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
@@ -240,15 +256,6 @@
         [textView resignFirstResponder];
         return NO;
     }
-    
-    if (textView == self.taglineTextView)
-    {
-        if (self.taglineTextView.text.length == VConstantsMessageLength)
-        {
-            return NO;
-        }
-    }
-
     
     return YES;
 }
@@ -349,22 +356,22 @@
     [self dismissViewControllerAnimated:YES
                              completion:nil];
     
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:self.accountEmail
-                                                     password:self.accountPassword
-                                                         name:self.usernameTextField.text
-                                              profileImageURL:self.updatedProfileImage
-                                                     location:self.locationTextField.text
-                                                      tagline:self.taglineTextView.text
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
+                                                     password:self.registrationModel.password
+                                                         name:self.registrationModel.username
+                                              profileImageURL:self.registrationModel.profileImageURL
+                                                     location:self.registrationModel.locationText
+                                                      tagline:self.registrationModel.taglineText
                                                  successBlock:nil
                                                     failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@ Retrying...", error);
-         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.accountEmail
-                                                          password:self.accountPassword
-                                                              name:self.usernameTextField.text
-                                                   profileImageURL:self.updatedProfileImage
-                                                          location:self.locationTextField.text
-                                                           tagline:self.taglineTextView.text
+         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
+                                                          password:self.registrationModel.password
+                                                              name:self.registrationModel.username
+                                                   profileImageURL:self.registrationModel.profileImageURL
+                                                          location:self.registrationModel.locationText
+                                                           tagline:self.registrationModel.taglineText
                                                       successBlock:nil
                                                          failBlock:^(NSOperation *operation, NSError *error) {
                                                              VLog(@"Failed with error: %@", error);
@@ -397,9 +404,9 @@
     
     if ([self shouldCreateProfile])
     {
-        [[VUserManager sharedInstance] createEmailAccount:self.accountEmail
-                                                 password:self.accountPassword
-                                                 userName:self.accountEmail
+        [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
+                                                 password:self.registrationModel.password
+                                                 userName:self.registrationModel.email
                                              onCompletion:^(VUser *user, BOOL created)
          {
              [self didSignUpWithUser:user];
@@ -422,7 +429,8 @@
         if (finished && capturedMediaURL)
         {
             self.profileImageView.image = previewImage;
-            self.updatedProfileImage = capturedMediaURL;
+            self.registrationModel.selectedImage = previewImage;
+            self.registrationModel.profileImageURL = capturedMediaURL;
         }
     };
     [navigationController pushViewController:cameraViewController animated:NO];
@@ -438,7 +446,7 @@
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.updatedProfileImage) &&
+                         (self.registrationModel.profileImageURL) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -457,7 +465,7 @@
         [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.updatedProfileImage)
+    if (!self.registrationModel.profileImageURL)
     {
         [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
@@ -506,6 +514,27 @@
     taglineInputAccessory.textInputView = self.taglineTextView;
     taglineInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.taglineTextView.inputAccessoryView = taglineInputAccessory;
+}
+
+- (void)updateWithRegistrationModel
+{
+    self.usernameTextField.text = self.registrationModel.username;
+    self.locationTextField.text = self.registrationModel.locationText;
+    self.taglineTextView.text = self.registrationModel.taglineText;
+    if (self.registrationModel.selectedImage) {
+        self.profileImageView.image = self.registrationModel.selectedImage;
+    }
+}
+
+#pragma mark - Notification Handlers
+
+- (void)textFieldDidChange:(NSNotification *)notification
+{
+    if (notification.object == self.usernameTextField) {
+        self.registrationModel.username = self.usernameTextField.text;
+    } else if (notification.object == self.locationTextField) {
+        self.registrationModel.locationText = self.locationTextField.text;
+    }
 }
 
 @end

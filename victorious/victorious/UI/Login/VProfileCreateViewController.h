@@ -7,14 +7,13 @@
 //
 
 #import "VLoginViewController.h"
+#import "VRegistrationModel.h"
 
 @class VUser;
 
 @interface VProfileCreateViewController : UIViewController
 @property (nonatomic, assign)   VLoginType      loginType;
 @property (nonatomic, strong)   VUser*          profile;
-
-@property (nonatomic, strong)   NSString*       accountEmail;
-@property (nonatomic, strong)   NSString*       accountPassword;
+@property (nonatomic, strong)   VRegistrationModel *registrationModel;
 
 @end
