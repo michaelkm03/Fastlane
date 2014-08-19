@@ -11,7 +11,6 @@
 #import "NSURL+MediaType.h"
 #import "UIButton+VImageLoading.h"
 #import "UIImage+ImageEffects.h"
-#import "UIImageView+Blurring.h"
 #import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
 #import "VKeyboardBarViewController.h"
@@ -31,16 +30,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    
-    UIImage*    defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
-    
-    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.profileImagePathOriginal ?: self.conversation.user.pictureUrl]
-                                    placeholderImage:defaultBackgroundImage];
-    
-    self.tableView.backgroundView = backgroundImageView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

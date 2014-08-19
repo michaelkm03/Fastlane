@@ -6,12 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
 #import "VObjectManager.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
+#import "VThemeManager.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
 
@@ -20,6 +23,9 @@
 #import "MBProgressHUD.h"
 
 @interface VMessageContainerViewController ()
+
+@property (nonatomic, weak) UIImageView *backgroundImageView;
+
 @end
 
 @implementation VMessageContainerViewController
@@ -44,6 +50,14 @@
                                                                       action:@selector(flagConversation:)];
     
     self.navigationItem.rightBarButtonItems =  [@[flagButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
+
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backgroundImageView.backgroundColor = [UIColor redColor];
+    [self.view insertSubview:backgroundImageView atIndex:0];
+    self.backgroundImageView = backgroundImageView;
+    [self createBackgroundImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,6 +114,25 @@
 {
     _conversation = conversation;
     ((VMessageViewController*)self.conversationTableViewController).conversation = conversation;
+    if ([self isViewLoaded])
+    {
+        [self createBackgroundImage];
+    }
+}
+
+- (void)createBackgroundImage
+{
+    UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
+    
+    if (self.conversation)
+    {
+        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+                                                  placeholderImage:defaultBackgroundImage];
+    }
+    else
+    {
+        self.backgroundImageView.image = defaultBackgroundImage;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
