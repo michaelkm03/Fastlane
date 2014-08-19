@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VPaginationManager.h"
 #import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
 #import "VStreamTableViewController+ContentCreation.h"
@@ -138,7 +139,7 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
-    if (!self.tableDataSource.count && !self.tableDataSource.filter.updating.boolValue)
+    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.tableDataSource.filter])
     {
         [self refresh:nil];
     }
@@ -611,7 +612,7 @@
 {
     if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
         self.tableDataSource.count &&
-        ![[[self currentFilter] updating] boolValue] &&
+        ![self.tableDataSource isFilterLoading] &&
         scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
         [self loadNextPageAction];

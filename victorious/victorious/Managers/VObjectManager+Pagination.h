@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 
-@class VSequenceFilter, VCommentFilter, VSequence, VConversation;
+@class VAbstractFilter, VSequenceFilter, VCommentFilter, VSequence, VConversation;
 
 @interface VObjectManager (Pagination)
 
@@ -70,10 +70,7 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
                                                                            failBlock:(VFailBlock)fail;
 
-
-
 #pragma mark Filters
-- (void)unlockPageFilters;
 - (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
@@ -81,5 +78,6 @@
 - (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
+- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end

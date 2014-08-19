@@ -248,9 +248,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
      {
          VLog(@"Failed to flag sequence %@", self.sequence);
          
-         //TODO: we may want to remove this later.
-         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                message:NSLocalizedString(@"ReportContentMessage", @"")
+         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                message:NSLocalizedString(@"ErrorOccured", @"")
                                                                delegate:nil
                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                       otherButtonTitles:nil];

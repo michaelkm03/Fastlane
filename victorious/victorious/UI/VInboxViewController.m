@@ -19,6 +19,7 @@
 #import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VPaginationManager.h"
 #import "VThemeManager.h"
 
 #import "VNoContentView.h"
@@ -257,8 +258,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
 }
 
-
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -285,6 +284,26 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
 //        
 //        [subview setConversation:conversation];
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:[[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
+    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
+        [[self.fetchedResultsController sections][0] numberOfObjects] &&
+        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
+    //Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 

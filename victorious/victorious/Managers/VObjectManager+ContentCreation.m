@@ -444,8 +444,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [userInContext addCommentsObject:tempComment];
     
     VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
-    [(VCommentFilter*)[tempComment.managedObjectContext objectWithID:filter.objectID] addCommentsObject:tempComment];
-    
+    NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithObject:[filter.managedObjectContext objectWithID:tempComment.objectID]];
+    [comments addObjectsFromArray:filter.comments.array];
+    filter.comments = comments;
     [tempComment.managedObjectContext saveToPersistentStore:nil];
     
     return tempComment;

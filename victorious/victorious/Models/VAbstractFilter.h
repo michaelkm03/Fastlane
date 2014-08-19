@@ -16,6 +16,5 @@
 @property (nonatomic, retain) NSString * filterAPIPath;
 @property (nonatomic, retain) NSNumber * maxPageNumber;
 @property (nonatomic, retain) NSNumber * perPageNumber;
-@property (nonatomic, retain) NSNumber * updating;
 
 @end

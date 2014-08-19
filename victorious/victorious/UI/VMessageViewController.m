@@ -21,6 +21,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager.h"
+#import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
@@ -91,29 +92,12 @@
                                                      failBlock:fail];
 }
 
-- (void)delayedRefresh
-{
-    return; // TODO
-    
-    double delayInSeconds = 1.0f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
-                   {
-                       if (self.isViewLoaded && self.view.window)
-                       {
-                           [self loadNextPageAction];
-                       }
-                   });
-}
-
 - (void)loadNextPageAction
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"Failed to load next page: %@", error.localizedDescription);
         [self.refreshControl endRefreshing];
-        
-        [self delayedRefresh];
     };
     
     NSInteger preRefreshCount = self.fetchedResultsController.fetchedObjects.count;
@@ -133,7 +117,6 @@
         [[VObjectManager sharedManager] markConversationAsRead:self.conversation
                                                   successBlock:nil
                                                      failBlock:fail];
-        [self delayedRefresh];
     };
     
     [[VObjectManager sharedManager] refreshMessagesForConversation:self.conversation
@@ -199,6 +182,25 @@
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
          forCellReuseIdentifier:kVMessageCellNibName];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.conversation.currentPageNumber.intValue < self.conversation.maxPageNumber.intValue &&
+        [[self.fetchedResultsController sections][0] numberOfObjects] &&
+        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.conversation] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
+    //Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
+    }
 }
 
 @end

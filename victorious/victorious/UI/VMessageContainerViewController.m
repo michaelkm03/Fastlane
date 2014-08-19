@@ -83,9 +83,8 @@
                                        {
                                            VLog(@"Failed to flag conversation %@", self.conversation);
                                            
-                                           //TODO: we may want to remove this later.
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
+                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                                                  message:NSLocalizedString(@"ErrorOccured", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                         otherButtonTitles:nil];
