@@ -135,7 +135,7 @@
         
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
         [(VCommentsTableViewController*)self.conversationTableViewController setHasComments:YES];
-        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+        [self.conversationTableViewController.tableView reloadData];
     };
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
