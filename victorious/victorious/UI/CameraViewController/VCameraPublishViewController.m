@@ -49,9 +49,6 @@ static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 
 @property (nonatomic, weak) IBOutlet    UILabel*        shareToLabel;
 
-@property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
-@property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
-
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel* captionPlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
@@ -220,22 +217,30 @@ static const CGFloat kShareMargin = 34.0f;
     self.shareToFacebookView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"facebook", nil)
                                                           image:[UIImage imageNamed:@"share-btn-fb"]];
     self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
-    if ([[VFacebookManager sharedFacebookManager] isSessionValid])
-        self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey] && [[VFacebookManager sharedFacebookManager] isSessionValid];
-    else if (![[VFacebookManager sharedFacebookManager] isSessionValid])
+    if ([[VFacebookManager sharedFacebookManager] grantedPublishPermission])
+    {
+        self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
+    }
+    else
     {
         self.shareToFacebookView.selected = NO;
         __weak VShareView* weakFBShare = self.shareToFacebookView;
         
         self.shareToFacebookView.selectionBlock = ^()
         {
-            [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
-                                                              onSuccess:^
+            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
              {
                  weakFBShare.selectionBlock = nil;
                  weakFBShare.selected = YES;
              }
-                                                              onFailure:nil];
+                                                              onFailure:^(NSError *error)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FacebookDeniedTitle", nil)
+                                                                message:NSLocalizedString(@"FacebookDenied", nil)
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
+                [alert show];
+            }];
             return NO;
         };
     }
@@ -477,6 +482,8 @@ static const CGFloat kShareMargin = 34.0f;
     else
         playbackSpeed = 0.5;
     
+    __block BOOL facebookSelected = self.shareToFacebookView.selected;
+    
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                             captionType:self.captionType
@@ -495,7 +502,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
         [alert show];
         
-        if (self.facebookButton.selected)
+        if (facebookSelected)
         {
             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
             [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
