@@ -92,36 +92,40 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sharing
 
-- (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
-                                         shareType:(NSString*)type
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
+                                                 accessToken:(NSString*)accessToken
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
 {
-    NSDictionary* parameters = @{@"sequence_id": sequence.remoteId.stringValue ?: [NSNull null],
-                                 @"shared_to":type ?: [NSNull null]
+    NSDictionary* parameters = @{@"sequence_id": @(sequenceId),
+                                 @"access_token":accessToken
                                  };
     
-    return [self POST:@"/api/sequence/share"
+    return [self POST:@"/api/share/facebook"
                object:nil
            parameters:parameters
          successBlock:success
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail
-{
-    return [self shareSequence:sequence shareType:@"twitter" successBlock:success failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
+                                                 accessToken:(NSString*)accessToken
+                                                      secret:(NSString*)secret
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    return [self shareSequence:sequence shareType:@"facebook" successBlock:success failBlock:fail];
+    NSDictionary* parameters = @{@"sequence_id": @(sequenceId),
+                                 @"access_token":accessToken,
+                                 @"access_secret":secret
+                                 };
+    
+    return [self POST:@"/api/share/twitter"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+    
 }
-
 #pragma mark - Sequence Vote Methods
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
                                         voteTypes:(NSArray*)voteTypes

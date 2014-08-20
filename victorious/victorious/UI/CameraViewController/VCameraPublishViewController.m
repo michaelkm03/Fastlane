@@ -16,6 +16,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Sequence.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
@@ -228,23 +229,14 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.shareToFacebookView.selectionBlock = ^()
         {
-            __block BOOL loggedIn = NO;
             [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
                                                               onSuccess:^
              {
-//                 [[VFacebookManager sharedFacebookManager] accessToken]
-#warning We need to complete the FB share flow once the backend is done.
-//                 Success logic
-//                 loggedIn = YES;
-//                 weakFBShare.selectionBlock = nil;
-//                 Fail Logic
-//                 loggedIn = NO;
+                 weakFBShare.selectionBlock = nil;
+                 weakFBShare.selected = YES;
              }
-                                                              onFailure:^(NSError *error)
-             {
-                 loggedIn = NO;
-             }];
-            return loggedIn;
+                                                              onFailure:nil];
+            return NO;
         };
     }
 
@@ -502,6 +494,21 @@ static const CGFloat kShareMargin = 34.0f;
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
         [alert show];
+        
+        if (self.facebookButton.selected)
+        {
+            NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+            [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
+                                                        accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 VLog(@"Succeeded with objects: %@", resultObjects);
+             }
+                                                          failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 VLog(@"Failed with error: %@", error);
+             }];
+        }
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
