@@ -251,6 +251,39 @@ static const CGFloat kShareMargin = 34.0f;
                                                           image:[UIImage imageNamed:@"share-btn-twitter"]];
     self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
     self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToTwitterDisabledKey];
+    if ([[VTwitterManager sharedManager] isLoggedIn])
+    {
+        self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
+    }
+    else
+    {
+        self.shareToTwitterView.selected = NO;
+        __weak VShareView* weakTwitterShare = self.shareToTwitterView;
+        
+        self.shareToTwitterView.selectionBlock = ^()
+        {
+            __weak VTwitterManager* manager = [VTwitterManager sharedManager];
+            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:nil
+                                                               completionBlock:^
+            {
+                if ([manager isLoggedIn])
+                {
+                    weakTwitterShare.selectionBlock = nil;
+                    weakTwitterShare.selected = YES;
+                }
+                else
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", nil)
+                                                                    message:NSLocalizedString(@"TwitterDenied", nil)
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+            }];
+            
+            return NO;
+        };
+    }
     
 //SETUP SAVE TO CAMERA
     self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
