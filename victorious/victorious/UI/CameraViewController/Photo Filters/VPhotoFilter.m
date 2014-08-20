@@ -8,6 +8,7 @@
 
 #import "CIImage+VImage.h"
 #import "VPhotoFilter.h"
+#import "VPhotoFilterComponent.h"
 
 @implementation VPhotoFilter
 
@@ -28,14 +29,9 @@
 {
     CGRect canvas = CGRectMake(0, 0, sourceImage.size.width * sourceImage.scale, sourceImage.size.height * sourceImage.scale);
     CIImage *filteredImage = [CIImage v_imageWithUImage:sourceImage];
-    for (CIFilter *filter in self.components)
+    for (id<VPhotoFilterComponent> filter in self.components)
     {
-        [filter setValue:filteredImage forKey:kCIInputImageKey];
-        if ([[filter inputKeys] containsObject:kCIInputCenterKey])
-        {
-            [filter setValue:[CIVector vectorWithCGPoint:CGPointMake(CGRectGetMidX(canvas), CGRectGetMidY(canvas))] forKeyPath:kCIInputCenterKey];
-        }
-        filteredImage = filter.outputImage;
+        filteredImage = [filter imageByFilteringImage:filteredImage size:canvas.size orientation:sourceImage.imageOrientation];
     }
     
     CIContext *context = [CIContext contextWithOptions:@{}];
