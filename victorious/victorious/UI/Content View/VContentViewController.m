@@ -52,6 +52,7 @@
 #import "VDeeplinkManager.h"
 #import "VSettingManager.h"
 
+static const CGFloat kMaximumNoCaptionContentViewOffset     = 134.0f;
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
@@ -511,12 +512,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (CGFloat)contentMediaViewOffset
 {
-    return MIN(kMaximumContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
+    CGFloat currentContentViewOffset = self.sequence.nameEmbeddedInContent.boolValue ? kMaximumNoCaptionContentViewOffset : kMaximumContentViewOffset;
+    return MIN(currentContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
 }
 
-+ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence*)sequence
 {
-    return MIN(kMaximumContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
+    CGFloat currentContentViewOffset = sequence.nameEmbeddedInContent.boolValue ? kMaximumNoCaptionContentViewOffset : kMaximumContentViewOffset;
+    return MIN(currentContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
 }
 
 #pragma mark -
@@ -538,6 +541,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.backgroundImage setBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                 placeholderImage:placeholderImage
                                        tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+
+    self.descriptionLabel.hidden = _sequence.nameEmbeddedInContent.boolValue;
+    
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
 }

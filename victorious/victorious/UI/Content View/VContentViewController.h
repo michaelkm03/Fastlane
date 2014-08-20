@@ -58,6 +58,6 @@
  Guesses what the result of calling -contentMediaViewOffset
  will probably be with the given bounds.
  */
-+ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds;
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence*)sequence;
 
 @end
