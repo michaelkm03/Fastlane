@@ -266,8 +266,7 @@
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
     
-    
-    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds];
+    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
     if (tableView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
     {
         [self.navigationController pushViewController:self.contentViewController animated:YES];
