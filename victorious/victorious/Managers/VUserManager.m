@@ -84,7 +84,9 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     [self loginViaFacebookWithStoredToken:NO onCompletion:completion onError:errorBlock];
 }
 
-- (void)loginViaFacebookWithStoredToken:(BOOL)stored onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaFacebookWithStoredToken:(BOOL)stored
+                           onCompletion:(VUserManagerLoginCompletionBlock)completion
+                                onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     void (^successBlock)() = ^(void)
     {
@@ -94,7 +96,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
-                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook forKey:kLastLoginTypeUserDefaultsKey];
+                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
+                                                           forKey:kLastLoginTypeUserDefaultsKey];
                 if (completion)
                 {
                     completion(user, created);

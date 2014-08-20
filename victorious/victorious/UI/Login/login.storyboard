@@ -529,6 +529,7 @@
                     <connections>
                         <outlet property="agreeSwitch" destination="aAM-6y-jy7" id="j9w-kN-5Pj"/>
                         <outlet property="agreementText" destination="EGg-eb-7Dm" id="FOD-cg-woF"/>
+                        <outlet property="backButton" destination="uSe-Ez-hDV" id="sRf-Hq-JPG"/>
                         <outlet property="doneButton" destination="9Wi-As-OwD" id="AdC-3g-M03"/>
                         <outlet property="locationTextField" destination="pDv-b6-X4m" id="4pT-rE-Jfi"/>
                         <outlet property="profileImageView" destination="IgQ-W8-D43" id="sjL-el-raS"/>

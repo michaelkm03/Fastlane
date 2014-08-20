@@ -310,6 +310,8 @@
     {
         VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeFaceBook;
+        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
@@ -317,6 +319,7 @@
         VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
+        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {

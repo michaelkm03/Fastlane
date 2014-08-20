@@ -31,6 +31,8 @@
 
 @interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+
 @property (nonatomic, weak) IBOutlet UITextField*           usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField*           locationTextField;
 @property (nonatomic, weak) IBOutlet UITextView*            taglineTextView;
@@ -130,6 +132,10 @@
     self.doneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+        self.backButton.hidden = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -401,6 +407,11 @@
     // Let the User Know Something Is Happening
     [MBProgressHUD showHUDAddedTo:self.view
                          animated:YES];
+
+    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+        [self didSignUpWithUser:self.profile];
+        return;
+    }
     
     if ([self shouldCreateProfile])
     {
