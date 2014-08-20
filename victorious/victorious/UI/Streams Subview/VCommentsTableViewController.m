@@ -74,7 +74,8 @@ static NSString* CommentCache           = @"CommentCache";
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
     [self.tableView reloadData];
     
-    if (self.needsRefresh) {
+    if (self.needsRefresh)
+    {
         [self.refreshControl beginRefreshing];
         
         [UIView animateWithDuration:0.5f
@@ -82,9 +83,10 @@ static NSString* CommentCache           = @"CommentCache";
              usingSpringWithDamping:0.8f
               initialSpringVelocity:1.0f
                             options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
-                         } completion:nil];
+                         animations:^
+        {
+            self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
+        } completion:nil];
     }
 }
 
