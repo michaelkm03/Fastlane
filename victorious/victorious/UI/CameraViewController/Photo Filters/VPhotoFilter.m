@@ -40,7 +40,7 @@
     
     CIContext *context = [CIContext contextWithOptions:@{}];
     CGImageRef finishedImage = [context createCGImage:filteredImage fromRect:canvas];
-    UIImage *retVal = [UIImage imageWithCGImage:finishedImage];
+    UIImage *retVal = [UIImage imageWithCGImage:finishedImage scale:sourceImage.scale orientation:sourceImage.imageOrientation];
     CGImageRelease(finishedImage);
     return retVal;
 }
