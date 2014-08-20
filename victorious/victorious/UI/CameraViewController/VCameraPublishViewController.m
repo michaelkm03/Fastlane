@@ -458,6 +458,16 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
+    
+    if (self.textView.text.length < 2) {
+        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                           message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil] ;
+        [alert show];
+        return;
+    }
   
     if (self.captionType == VCaptionTypeMeme || self.captionType == VCaptionTypeQuote)
     {

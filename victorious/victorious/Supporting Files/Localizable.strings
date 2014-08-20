@@ -151,6 +151,8 @@
 "PublishDescriptionRequired" = "Text Needed";
 "PublishDescription"    =   "Please enter the caption for your content.";
 
+"PublishDescriptionMinCharacters" = "Please enter a longer description.";
+
 "ReplaceVideo"          =   "Replace Video";
 
 "VideoPlayFailed"       =   "Failed to play video";
