@@ -108,7 +108,6 @@ static char KVOContext;
     self.questionTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.questionTextView];
 
     self.questionPrompt.text      = NSLocalizedString(@"Ask a question...", @"");
-    self.questionPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     self.leftAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -149,11 +148,9 @@ static char KVOContext;
                                                                        constant:30.0f]];
     
     self.leftAnswerPrompt.text      = NSLocalizedString(@"Vote this", @"");
-    self.leftAnswerPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
 
     self.rightAnswerPrompt.text      = NSLocalizedString(@"Vote that", @"");
-    self.rightAnswerPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
