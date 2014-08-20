@@ -459,7 +459,8 @@ static const CGFloat kShareMargin = 34.0f;
         return;
     }
     
-    if (self.textView.text.length < 2) {
+    if (self.textView.text.length < 2)
+    {
         UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
                                                            message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
                                                           delegate:nil
