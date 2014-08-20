@@ -36,14 +36,16 @@
 
 #import "VNoContentView.h"
 
+#import "VCommentFilter.h"
+
 
 @import Social;
 
 @interface VCommentsTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
-@property (nonatomic, strong) NSArray* sortedComments;
 @property (nonatomic, strong) UIImageView* backgroundImageView;
+@property (nonatomic, strong) VCommentFilter* filter;
 
 @end
 
@@ -67,20 +69,21 @@ static NSString* CommentCache           = @"CommentCache";
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
-    [self sortComments];
+    [self.tableView reloadData];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    
+    self.filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+
     [self setHasComments:self.sequence.commentCount.integerValue];
     
     self.title = sequence.name;
     
-    [self sortComments];
+    [self.tableView reloadData];
     
-    if (![self.sortedComments count]) //If we don't have comments, try to pull more.
+    if (![self.filter.comments count]) //If we don't have comments, try to pull more.
         [self refresh:self.refreshControl];
 }
 
@@ -91,59 +94,6 @@ static NSString* CommentCache           = @"CommentCache";
         _newlyReadComments = [[NSMutableArray alloc] init];
     }
     return _newlyReadComments;
-}
-
-#pragma mark - Comment Sorters
-- (void)sortComments
-{
-    [self.sequence.managedObjectContext refreshObject:self.sequence mergeChanges:YES];
-    self.sortedComments = [self.sequence.comments allObjects];
-    //If theres no sorted comments, this is our first batch so animate in.
-    if (![self.sortedComments count])
-    {
-        [self sortCommentsByDate];
-
-        //Only do the animation if we have comments.
-        if (![self.sortedComments count])
-            return;
-        
-        __block CGRect frame = self.view.frame;
-        frame.origin.x = CGRectGetWidth(self.view.frame);
-        self.view.frame = frame;
-        
-        [UIView animateWithDuration:1.5
-                              delay:0.0
-             usingSpringWithDamping:0.5
-              initialSpringVelocity:1.0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:
-         ^{
-             frame.origin.x = 0;
-             self.view.frame = frame;
-         }
-                         completion:nil];
-    }
-    else
-    {
-        [self sortCommentsByDate];
-    }
-}
-
-- (void)sortCommentsByDate
-{
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-    self.sortedComments = [[self.sequence.comments allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
-    [self.tableView reloadData];
-}
-
-- (void)sortCommentsByFriends
-{
-    //TODO: add sort by friends
-}
-
-- (void)sortCommentsByPopular
-{
-    //TODO: add sort by popular
 }
 
 - (void)setHasComments:(BOOL)hasComments
@@ -165,23 +115,28 @@ static NSString* CommentCache           = @"CommentCache";
     }
 }
 
+- (void)addedNewComment:(VComment*)comment
+{
+    [self setHasComments:YES];
+    [self.tableView reloadData];
+    NSIndexPath* pathForComment = [NSIndexPath indexPathForRow:[self.filter.comments indexOfObject:comment] inSection:0];
+    [self.tableView scrollToRowAtIndexPath:pathForComment atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
-                                                  loadNextPageOfCommentFilter:filter
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshCommentFilter:self.filter
+                                                                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
-                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
+                                                      [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
                                                   }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                                                            failBlock:^(NSOperation* operation, NSError* error)
                                                   {
                                                       [self.refreshControl endRefreshing];
                                                   }];
-    
     if (operation)
     {
         [self.refreshControl beginRefreshing];
@@ -190,23 +145,12 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (void)loadNextPageAction
 {
-    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
-                                                  loadNextPageOfCommentFilter:filter
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                                  {
-                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
-//                                                      [self.bottomRefreshIndicator stopAnimating];
-                                                  }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
-                                                  {
-//                                                      [self.bottomRefreshIndicator stopAnimating];
-                                                  }];
-    
-    if (operation)
-    {
-//        [self.bottomRefreshIndicator startAnimating];
-    }
+    [[VObjectManager sharedManager] loadNextPageOfCommentFilter:self.filter
+                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.tableView reloadData];
+     }
+                                                      failBlock:nil];
 }
 
 #pragma mark - Table view data source
@@ -217,19 +161,19 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.sortedComments count];
+    return [self.filter.comments count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
+    VComment* comment = (VComment*)[self.filter.comments objectAtIndex:indexPath.row];
     return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
+    VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     cell.usernameLabel.text = comment.user.name;
@@ -250,7 +194,7 @@ static NSString* CommentCache           = @"CommentCache";
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:comment.user.pictureUrl];
+    NSURL *pictureURL = [NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl];
     if (pictureURL)
     {
         [cell.profileImageView setImageWithURL:pictureURL];
@@ -267,7 +211,7 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
+    VComment* comment = (VComment*)[self.filter.comments objectAtIndex:indexPath.row];
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 }
 
@@ -283,7 +227,7 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
+    VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
@@ -309,10 +253,9 @@ static NSString* CommentCache           = @"CommentCache";
                                           failBlock:^(NSOperation* operation, NSError* error)
          {
              VLog(@"Failed to flag comment %@", comment);
-             
-             //TODO: we may want to remove this later.
-             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
+            
+             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                           otherButtonTitles:nil];
@@ -332,19 +275,6 @@ static NSString* CommentCache           = @"CommentCache";
     [actionSheet showInView:window];
 }
 
-#pragma mark - Navigation
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
-    if ([segue.identifier isEqualToString:@"toComposeMessage"])
-    {
-//        ((VComposeMessageViewController *)segue.destinationViewController).delegate = self;
-    }
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {    
     //Whenever we leave this view we need to tell the server what was read.
@@ -361,17 +291,6 @@ static NSString* CommentCache           = @"CommentCache";
     self.newlyReadComments = nil;
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-}
-
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return NO;
-    }
-    
-    return YES;
 }
 
 @end

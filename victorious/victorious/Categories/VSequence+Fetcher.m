@@ -105,7 +105,7 @@
         [urls addObject:[NSURL URLWithString:self.previewImage]];
     
     if (self.user && self.user.pictureUrl)
-        [urls addObject:[NSURL URLWithString:self.user.pictureUrl]];
+        [urls addObject:[NSURL URLWithString:self.user.profileImagePathSmall ?: self.user.pictureUrl]];
     
     return [urls copy];
 }

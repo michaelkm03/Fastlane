@@ -118,7 +118,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     _sequence = sequence;
     
     self.nameLabel.text = sequence.user.name;
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.profileImagePathSmall ?: sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     
     [self.tableView reloadData];
 }
@@ -248,9 +248,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
      {
          VLog(@"Failed to flag sequence %@", self.sequence);
          
-         //TODO: we may want to remove this later.
-         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                message:NSLocalizedString(@"ReportContentMessage", @"")
+         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                message:NSLocalizedString(@"ErrorOccured", @"")
                                                                delegate:nil
                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                       otherButtonTitles:nil];

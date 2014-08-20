@@ -88,16 +88,18 @@
             //If this is a refresh, break the relationship to all the old objects.
             if (refresh)
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
-                NSArray* filteredSequences = [[filter.comments allObjects] filteredArrayUsingPredicate:tempFilter];
-                [filter removeComments:[NSSet setWithArray:filteredSequences]];
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"mediaType CONTAINS %@", kTemporaryContentStatus];
+                NSOrderedSet* filteredComments = [filter.comments filteredOrderedSetUsingPredicate:tempFilter];
+                filter.comments = filteredComments;
             }
-            
+
+            NSMutableOrderedSet *comments = [filter.comments mutableCopy];
             for (VComment* comment in resultObjects)
             {
                 VComment* commentInContext = (VComment*)[filter.managedObjectContext objectWithID:comment.objectID];
-                [filter addCommentsObject:commentInContext];
+                [comments addObject:commentInContext];
             }
+            filter.comments = comments;
             
             if (success)
             {

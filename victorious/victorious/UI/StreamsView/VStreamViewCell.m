@@ -150,7 +150,7 @@ static VLargeNumberFormatter* largeNumberFormatter;
      }
                                           failure:nil];
     
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.profileImagePathSmall ?: self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
     
