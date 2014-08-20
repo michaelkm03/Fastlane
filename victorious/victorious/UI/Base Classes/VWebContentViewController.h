@@ -8,9 +8,11 @@
 
 @interface VWebContentViewController : UIViewController <UIWebViewDelegate>
 
-@property (nonatomic, strong) NSURL *urlKeyPath;
-@property (nonatomic, strong) NSString *htmlString;
-
 + (instancetype)webContentViewController;
+
+@property (nonatomic, strong) NSURL *urlToView;
+
+@property (nonatomic, weak, readonly) IBOutlet UIWebView* webView;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *activitiyIndicator;
 
 @end

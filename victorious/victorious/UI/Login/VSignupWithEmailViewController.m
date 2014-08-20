@@ -16,6 +16,7 @@
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
+#import "VRegistrationModel.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -24,8 +25,7 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
-
+@property (nonatomic, strong)   VRegistrationModel* registrationModel;
 @end
 
 @implementation VSignupWithEmailViewController
@@ -62,6 +62,7 @@
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
 
+    self.registrationModel = [[VRegistrationModel alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,12 +75,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Stop being the navigation controller's delegate
-    if (self.navigationController.delegate == self)
-    {
-        self.navigationController.delegate = nil;
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -192,35 +187,19 @@
 
 - (IBAction)signup:(id)sender
 {
-    [self.activityIndicator startAnimating];
-    
     [[self view] endEditing:YES];
 
-    if (YES == [self shouldSignUpWithEmailAddress:self.emailTextField.text
-                                         password:self.passwordTextField.text])
+    if ([self shouldSignUpWithEmailAddress:self.emailTextField.text
+                                  password:self.passwordTextField.text])
     {
-        [self saveUserDetails];
+        // Go to Part II of Sign-up
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
     }
 }
 
 - (IBAction)cancel:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - Saving User Details
-
--(void)saveUserDetails
-{
-    // Turn off Activity Indicator
-    [self.activityIndicator stopAnimating];
-
-    // Store the New Account Information Temporarily in NSUserDefaults
-    [[NSUserDefaults standardUserDefaults] setObject:self.emailTextField.text forKey:kNewAccountEmail];
-    [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text forKey:kNewAccountPassword];
-    
-    // Go to Part II of Sign-up
-    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -261,6 +240,9 @@
         VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
+        self.registrationModel.email = self.emailTextField.text;
+        self.registrationModel.password = self.passwordTextField.text;
+        profileViewController.registrationModel = self.registrationModel;
     }
 }
 
