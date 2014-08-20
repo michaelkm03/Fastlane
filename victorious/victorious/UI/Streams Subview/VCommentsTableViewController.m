@@ -165,7 +165,8 @@ static NSString* CommentCache           = @"CommentCache";
                                                       self.needsRefresh = NO;
                                                       [self.refreshControl endRefreshing];
                                                   }];
-    if (!operation) {
+    if (!operation)
+    {
         [self.refreshControl endRefreshing];
     }
 }
