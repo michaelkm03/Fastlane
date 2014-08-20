@@ -516,7 +516,9 @@ static const CGFloat kShareMargin = 34.0f;
     else
         playbackSpeed = 0.5;
     
+    //We need to save these as block variables because the view may be dealloc'd before the upload finishes.
     __block BOOL facebookSelected = self.shareToFacebookView.selected;
+    __block BOOL twitterSelected = self.shareToTwitterView.selected;
     
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
@@ -549,6 +551,16 @@ static const CGFloat kShareMargin = 34.0f;
              {
                  VLog(@"Failed with error: %@", error);
              }];
+        }
+        
+        if (twitterSelected)
+        {
+            NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+            [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
+                                                        accessToken:[VTwitterManager sharedManager].oauthToken
+                                                             secret:[VTwitterManager sharedManager].secret
+                                                       successBlock:nil
+                                                          failBlock:nil];
         }
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
