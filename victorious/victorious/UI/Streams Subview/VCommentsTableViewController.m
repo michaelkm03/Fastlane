@@ -70,6 +70,17 @@ static NSString* CommentCache           = @"CommentCache";
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
     [self.tableView reloadData];
+
+    [self.refreshControl beginRefreshing];
+    
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:0.8f
+          initialSpringVelocity:1.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
+                     } completion:nil];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -137,9 +148,8 @@ static NSString* CommentCache           = @"CommentCache";
                                                   {
                                                       [self.refreshControl endRefreshing];
                                                   }];
-    if (operation)
-    {
-        [self.refreshControl beginRefreshing];
+    if (!operation) {
+        [self.refreshControl endRefreshing];
     }
 }
 
