@@ -30,8 +30,9 @@
 #import "VCompositeSnapshotController.h"
 #import "VSettingManager.h"
 
+#import "VTwitterManager.h"
 #import "VFacebookManager.h"
-#import "VUserManager.h"
+//#import "VUserManager.h"
 
 #import "NSURL+MediaType.h"
 

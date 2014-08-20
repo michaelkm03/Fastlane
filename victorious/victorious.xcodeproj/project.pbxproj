@@ -234,6 +234,7 @@
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
 		BE448FC919589F9700EB8682 /* VEnterResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE448FC819589F9700EB8682 /* VEnterResetTokenViewController.m */; };
 		BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */; };
+		BE55766619A53565000222A3 /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55766519A53565000222A3 /* VTwitterManager.m */; };
 		BE559E7019900881003E579A /* VShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE559E6F19900881003E579A /* VShareView.m */; };
 		BE559E72199008AA003E579A /* VShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE559E71199008AA003E579A /* VShareView.xib */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
@@ -761,6 +762,8 @@
 		BE449DBF18E4F6A1008411F1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AppSpecific/Info.plist; sourceTree = "<group>"; };
 		BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToContentAnimator.h; path = "UI/Content View/VCommentToContentAnimator.h"; sourceTree = "<group>"; };
 		BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToContentAnimator.m; path = "UI/Content View/VCommentToContentAnimator.m"; sourceTree = "<group>"; };
+		BE55766419A53565000222A3 /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTwitterManager.h; path = UI/Login/VTwitterManager.h; sourceTree = "<group>"; };
+		BE55766519A53565000222A3 /* VTwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTwitterManager.m; path = UI/Login/VTwitterManager.m; sourceTree = "<group>"; };
 		BE559E6E19900881003E579A /* VShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VShareView.h; path = UI/CameraViewController/VShareView.h; sourceTree = "<group>"; };
 		BE559E6F19900881003E579A /* VShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VShareView.m; path = UI/CameraViewController/VShareView.m; sourceTree = "<group>"; };
 		BE559E71199008AA003E579A /* VShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VShareView.xib; path = UI/CameraViewController/VShareView.xib; sourceTree = "<group>"; };
@@ -1359,6 +1362,8 @@
 				3F02824B1937D3890099259A /* Reset Password */,
 				03F80AA219523E3D00E876F7 /* VFacebookManager.h */,
 				03F80AA319523E3D00E876F7 /* VFacebookManager.m */,
+				BE55766419A53565000222A3 /* VTwitterManager.h */,
+				BE55766519A53565000222A3 /* VTwitterManager.m */,
 				3F53E0C118A485D400089C20 /* VUserManager.h */,
 				3F53E0C218A485D400089C20 /* VUserManager.m */,
 			);
@@ -2687,6 +2692,7 @@
 				03D6381B191840570084FFC8 /* VEnvironment.m in Sources */,
 				BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */,
 				03484C041930129C00403FB1 /* VImageLightboxViewController.m in Sources */,
+				BE55766619A53565000222A3 /* VTwitterManager.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */,
 				BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */,
