@@ -46,6 +46,8 @@
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) UIImageView* backgroundImageView;
 @property (nonatomic, strong) VCommentFilter* filter;
+@property (nonatomic, assign) BOOL hasComments;
+@property (nonatomic, assign) BOOL needsRefresh;
 
 @end
 
@@ -63,6 +65,7 @@ static NSString* CommentCache           = @"CommentCache";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.needsRefresh = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -70,17 +73,19 @@ static NSString* CommentCache           = @"CommentCache";
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
     [self.tableView reloadData];
-
-    [self.refreshControl beginRefreshing];
     
-    [UIView animateWithDuration:0.5f
-                          delay:0.0f
-         usingSpringWithDamping:0.8f
-          initialSpringVelocity:1.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^{
-                         self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
-                     } completion:nil];
+    if (self.needsRefresh) {
+        [self.refreshControl beginRefreshing];
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.8f
+              initialSpringVelocity:1.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
+                         } completion:nil];
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -94,8 +99,15 @@ static NSString* CommentCache           = @"CommentCache";
     
     [self.tableView reloadData];
     
-    if (![self.filter.comments count]) //If we don't have comments, try to pull more.
+    if (self.hasComments) //If we don't have comments, try to pull more.
+    {
+        self.needsRefresh = YES;
         [self refresh:self.refreshControl];
+    }
+    else
+    {
+        self.needsRefresh = NO;
+    }
 }
 
 - (NSMutableArray *)newlyReadComments
@@ -109,6 +121,7 @@ static NSString* CommentCache           = @"CommentCache";
 
 - (void)setHasComments:(BOOL)hasComments
 {
+    _hasComments = hasComments;
     if (!hasComments)
     {
         VNoContentView* noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
@@ -141,11 +154,13 @@ static NSString* CommentCache           = @"CommentCache";
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshCommentFilter:self.filter
                                                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
+                                                      self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
                                                   }
                                                                                             failBlock:^(NSOperation* operation, NSError* error)
                                                   {
+                                                      self.needsRefresh = NO;
                                                       [self.refreshControl endRefreshing];
                                                   }];
     if (!operation) {
