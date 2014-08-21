@@ -275,11 +275,17 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     controller.allowsEditing = NO;
     controller.delegate = self;
-    
-    if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-        controller.mediaTypes = @[(NSString *)kUTTypeImage];
-    else
-        controller.mediaTypes = @[(NSString *)kUTTypeMovie];
+
+    NSMutableArray* mediaTypes  = [[NSMutableArray alloc] init];
+    if (self.allowPhotos)
+    {
+        [mediaTypes addObject:(NSString *)kUTTypeImage];
+    }
+    if (self.allowVideo)
+    {
+        [mediaTypes addObject:(NSString *)kUTTypeMovie];
+    }
+    controller.mediaTypes = mediaTypes;
     
     [self presentViewController:controller animated:YES completion:nil];
 }
