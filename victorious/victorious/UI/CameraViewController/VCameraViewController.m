@@ -758,32 +758,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         }
         
         photo = [photo croppedImage:cropRect];
-        
-        //Orient for front-facing camera
-        if (self.camera.cameraDevice == VCCameraDeviceFront)
-        {
-            switch (photo.imageOrientation)
-            {
-                case UIImageOrientationUp:
-                    photo = [UIImage imageWithCGImage:photo.CGImage scale:photo.scale orientation:UIImageOrientationUpMirrored];
-                    break;
-                case UIImageOrientationDown:
-                    photo = [UIImage imageWithCGImage:photo.CGImage scale:photo.scale orientation:UIImageOrientationDownMirrored];
-                    break;
-                case UIImageOrientationLeft:
-                    photo = [UIImage imageWithCGImage:photo.CGImage scale:photo.scale orientation:UIImageOrientationRightMirrored];
-                    break;
-                case UIImageOrientationRight:
-                    photo = [UIImage imageWithCGImage:photo.CGImage scale:photo.scale orientation:UIImageOrientationLeftMirrored];
-                    break;
-                case UIImageOrientationUpMirrored:
-                case UIImageOrientationDownMirrored:
-                case UIImageOrientationLeftMirrored:
-                case UIImageOrientationRightMirrored:
-                    // do nothing
-                    break;
-            }
-        }
         photo = [photo fixOrientation];
         
         NSData *jpegData = UIImageJPEGRepresentation(photo, VConstantJPEGCompressionQuality);
