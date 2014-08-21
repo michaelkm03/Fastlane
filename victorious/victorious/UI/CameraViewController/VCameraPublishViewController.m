@@ -527,13 +527,22 @@ static const CGFloat kShareMargin = 34.0f;
                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
+        else if (error.code == kVMediaAlreadyCreatedError)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
+                                                                 message:NSLocalizedString(@"DuplicateVideoBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
         else
         {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                            message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
     }];
