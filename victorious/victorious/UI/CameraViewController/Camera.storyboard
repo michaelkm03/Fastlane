@@ -235,9 +235,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g4C-sb-DOe">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="302"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="302" id="9Xk-Ba-Ar1"/>
+                                    <constraint firstAttribute="height" constant="320" id="9Xk-Ba-Ar1"/>
                                     <constraint firstAttribute="width" constant="320" id="XST-bf-XMJ"/>
                                 </constraints>
                             </imageView>
@@ -257,7 +257,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
-                                <rect key="frame" x="20" y="192" width="280" height="90"/>
+                                <rect key="frame" x="20" y="210" width="280" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="Lpp-fh-Uw2"/>
                                 </constraints>
@@ -268,7 +268,7 @@ and don't forget #hashtags</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Description Text View">
-                                <rect key="frame" x="20" y="192" width="280" height="90"/>
+                                <rect key="frame" x="20" y="210" width="280" height="90"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -278,7 +278,7 @@ and don't forget #hashtags</string>
                                 </connections>
                             </textView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpa-qh-HnJ" userLabel="Caption View">
-                                <rect key="frame" x="0.0" y="302" width="320" height="61"/>
+                                <rect key="frame" x="0.0" y="320" width="320" height="61"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0I-mP-7db">
@@ -321,18 +321,18 @@ and don't forget #hashtags</string>
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7R-Zp-i10" userLabel="Share View">
-                                <rect key="frame" x="0.0" y="363" width="320" height="145"/>
+                                <rect key="frame" x="0.0" y="381" width="320" height="127"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SHARE TO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="quq-i9-xCf">
-                                        <rect key="frame" x="20" y="19" width="280" height="21"/>
+                                        <rect key="frame" x="20" y="10" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLE-SQ-PqX">
-                                        <rect key="frame" x="0.0" y="51" width="320" height="67"/>
+                                        <rect key="frame" x="0.0" y="42" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
