@@ -5,9 +5,9 @@
     <key>ProvisioningProfiles</key>
     <dict>
         <key>QA</key>
-        <string>Michelle Phan QA Ad Hoc Distribution</string>
+        <string>Victorious QA Ad Hoc Distribution</string>
         <key>Staging</key>
-        <string>Michelle Phan Staging Ad Hoc Distribution</string>
+        <string>Victorious Staging Ad Hoc Distribution</string>
     </dict>
 </dict>
 </plist>
