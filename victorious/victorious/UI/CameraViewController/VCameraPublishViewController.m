@@ -489,13 +489,23 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
-  
-    if (self.captionType == VCaptionTypeMeme || self.captionType == VCaptionTypeQuote)
+    
+    UIImage* snapshot;
+    if (self.captionType == VCaptionTypeMeme)
     {
-        UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
-        
+        UIImage* tintedImage = self.previewImageView.image;
+        self.previewImageView.image = self.previewImage;
+        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
+        self.previewImageView.image = tintedImage;
+    }
+    else if (self.captionType == VCaptionTypeQuote)
+    {
+        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
+    }
+    if (snapshot)
+    {
         NSURL *originalMediaURL = self.mediaURL;
-        NSData *filteredImageData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
+        NSData *filteredImageData = UIImageJPEGRepresentation(snapshot, VConstantJPEGCompressionQuality);
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
         if ([filteredImageData writeToURL:tempFile atomically:NO])
@@ -503,6 +513,7 @@ static const CGFloat kShareMargin = 34.0f;
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
+
     }
     
     VShareOptions shareOptions = self.shareToFacebookView.selected ? VShareToFacebook : VShareNone;
