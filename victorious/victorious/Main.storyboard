@@ -322,6 +322,7 @@
                     <connections>
                         <outlet property="mediaButton" destination="OoL-qH-7ZE" id="tDI-fd-dGU"/>
                         <outlet property="promptLabel" destination="gwv-3A-zYK" id="YQ6-fO-0IP"/>
+                        <outlet property="sendButton" destination="vPi-i8-4bG" id="co0-mL-Qnc"/>
                         <outlet property="textView" destination="emY-sK-BZQ" id="phN-ng-mOj"/>
                     </connections>
                 </viewController>
