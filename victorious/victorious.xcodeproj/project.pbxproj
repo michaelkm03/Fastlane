@@ -35,6 +35,7 @@
 		0361057D19411AA10069D49E /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0361057619411AA10069D49E /* libGoogleAnalyticsServices.a */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		03664CB719A57286007731EB /* VObjectManager+DeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 03664CB619A57286007731EB /* VObjectManager+DeviceRegistration.m */; };
 		036AC8F71958FD9F0086856B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */; };
 		036AC8F81958FD9F0086856B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */; };
 		036AC8FB1958FF320086856B /* VFindFacebookFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */; };
@@ -412,6 +413,8 @@
 		0361057C19411AA10069D49E /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGManager.h; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		03664CB519A57286007731EB /* VObjectManager+DeviceRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DeviceRegistration.h"; sourceTree = "<group>"; };
+		03664CB619A57286007731EB /* VObjectManager+DeviceRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DeviceRegistration.m"; sourceTree = "<group>"; };
 		036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindFriendsTableView.xib; sourceTree = "<group>"; };
 		036AC8F51958FD9F0086856B /* VFindFriendsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsTableView.h; sourceTree = "<group>"; };
 		036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableView.m; sourceTree = "<group>"; };
@@ -1990,6 +1993,8 @@
 				BE171DDD1868C211004E5202 /* VObjectManager+Comment.m */,
 				BEA5BF57187E7E8E0014C3EF /* VObjectManager+DirectMessaging.h */,
 				BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */,
+				03664CB519A57286007731EB /* VObjectManager+DeviceRegistration.h */,
+				03664CB619A57286007731EB /* VObjectManager+DeviceRegistration.m */,
 				03D6381C191841220084FFC8 /* VObjectManager+Environment.h */,
 				03D6381D191841220084FFC8 /* VObjectManager+Environment.m */,
 				032C9B451929C113002FB447 /* VObjectManager+ImageSearch.h */,
@@ -2551,6 +2556,7 @@
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				BEAA322019427ABE007774A4 /* VNoContentView.m in Sources */,
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
+				03664CB719A57286007731EB /* VObjectManager+DeviceRegistration.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				036AC9041959FB080086856B /* VFindInstagramFriendsViewController.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
@@ -2826,7 +2832,6 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -2953,7 +2958,6 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2977,7 +2981,6 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3069,7 +3072,6 @@
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious Inc. (82T26U698A)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3083,7 +3085,6 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;

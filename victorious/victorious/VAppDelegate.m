@@ -15,6 +15,7 @@
 #import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
 #import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -112,7 +113,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    NSLog(@"Registered for push notifications with token: %@", [NSString v_stringWithData:deviceToken]);
+    [[VObjectManager sharedManager] registerAPNSToken:deviceToken successBlock:nil failBlock:nil];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
