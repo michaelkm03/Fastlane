@@ -323,6 +323,7 @@
 		BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */; };
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
+		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
@@ -923,6 +924,8 @@
 		BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRealtimeCommentViewController.m; path = UI/RealtimeComments/VRealtimeCommentViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
+		D81AEE2C19A674F400727145 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "Categories/UIImage+Resize.h"; sourceTree = "<group>"; };
+		D81AEE2D19A674F400727145 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "Categories/UIImage+Resize.m"; sourceTree = "<group>"; };
 		D8852A1019A3E9BC000066A5 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = UI/Login/VRegistrationModel.h; sourceTree = "<group>"; };
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
@@ -1562,6 +1565,8 @@
 				03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */,
 				3FF7B6D818EE477D003831CD /* UIView+Masking.h */,
 				3FF7B6D918EE477D003831CD /* UIView+Masking.m */,
+				D81AEE2C19A674F400727145 /* UIImage+Resize.h */,
+				D81AEE2D19A674F400727145 /* UIImage+Resize.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2641,6 +2646,7 @@
 				0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */,
 				3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
+				D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
