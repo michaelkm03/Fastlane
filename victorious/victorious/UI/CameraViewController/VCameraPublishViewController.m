@@ -307,19 +307,18 @@ static const CGFloat kShareMargin = 34.0f;
         };
     }
     
-    
 //LAYOUT SHARE VIEWS
     NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
     for (int i=0; i<shareViews.count;i++)
     {
         UIView* shareView = shareViews[i];
         
-        CGFloat shareViewWidth = shareView.frame.size.width;
+        CGFloat shareViewWidth = CGRectGetWidth(shareView.frame);
         CGFloat widthOfShareViews = (shareViews.count * shareViewWidth) + ((shareViews.count - 1) * kShareMargin);
         CGFloat superviewMargin = (self.sharesSuperview.frame.size.width - widthOfShareViews) / 2;
         CGFloat xCenter = superviewMargin + (shareViewWidth / 2) + (i * shareViewWidth) + (i * kShareMargin);
         
-        shareView.center = CGPointMake(xCenter, self.sharesSuperview.frame.size.height / 2);
+        shareView.center = CGPointMake(xCenter, CGRectGetHeight(self.sharesSuperview.frame) / 2);
         
         [self.sharesSuperview addSubview:shareView];
     }

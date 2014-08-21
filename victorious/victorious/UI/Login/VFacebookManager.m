@@ -6,14 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "RKURLEncodedSerialization.h"
+#import "VConstants.h"
 #import "VFacebookManager.h"
 
 #import <FacebookSDK/FacebookSDK.h>
-#import "RKURLEncodedSerialization.h"
 
-#import "VConstants.h"
-
-static NSString* const vPublishActionsPermissionKey = @"publish_actions";
+static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 
 @implementation VFacebookManager
 
@@ -50,7 +49,7 @@ static NSString* const vPublishActionsPermissionKey = @"publish_actions";
 
 - (NSArray*)publishPermissions
 {
-    return @[vPublishActionsPermissionKey];
+    return @[kPublishActionsPermissionKey];
 }
 
 - (void)loginWithStoredTokenOnSuccess:(void (^)())successBlock onFailure:(void (^)(NSError *))failureBlock
@@ -117,12 +116,12 @@ static NSString* const vPublishActionsPermissionKey = @"publish_actions";
 
 - (BOOL)grantedPublishPermission
 {
-    return [[FBSession activeSession] hasGranted:vPublishActionsPermissionKey];
+    return [[FBSession activeSession] hasGranted:kPublishActionsPermissionKey];
 }
 
 - (void)requestPublishPermissionsOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
 {
-    if([self grantedPublishPermission])
+    if ([self grantedPublishPermission])
     {
         if (successBlock)
         {
@@ -136,25 +135,22 @@ static NSString* const vPublishActionsPermissionKey = @"publish_actions";
         [[FBSession activeSession] requestNewPublishPermissions:[self publishPermissions]
                                                 defaultAudience:FBSessionDefaultAudienceEveryone
                                               completionHandler:^(FBSession *session, NSError *error)
-         {
-             if ([self grantedPublishPermission])
-             {
-                 if (successBlock)
-                 {
-                     successBlock();
-                 }
-             }
-             else
-             {
-                 if (failureBlock)
-                 {
-                     NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-                     NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-                     NSError* error = [[NSError alloc] initWithDomain:kVictoriousErrorDomain code:999 userInfo:userInfoDict];
-                     failureBlock(error);
-                 }
-             }
-         }];
+        {
+            if ([self grantedPublishPermission])
+            {
+                if (successBlock)
+                {
+                    successBlock();
+                }
+            }
+            else
+            {
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+            }
+        }];
     }
     else
     {
