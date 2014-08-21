@@ -458,6 +458,17 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
+    
+    if (self.textView.text.length < 2)
+    {
+        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                           message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil] ;
+        [alert show];
+        return;
+    }
   
     if (self.captionType == VCaptionTypeMeme || self.captionType == VCaptionTypeQuote)
     {
@@ -516,13 +527,22 @@ static const CGFloat kShareMargin = 34.0f;
                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
+        else if (error.code == kVMediaAlreadyCreatedError)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
+                                                                 message:NSLocalizedString(@"DuplicateVideoBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
         else
         {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                            message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
     }];
