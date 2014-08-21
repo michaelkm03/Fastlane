@@ -354,8 +354,10 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
     {
         AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
         
-        if ([connection isVideoOrientationSupported]) {
-            switch ([UIDevice currentDevice].orientation) {
+        if ([connection isVideoOrientationSupported])
+        {
+            switch ([UIDevice currentDevice].orientation)
+            {
                 case UIDeviceOrientationUnknown:
                     [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
                     break;
