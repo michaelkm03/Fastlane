@@ -11,22 +11,22 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HqL-SU-35F">
-                    <rect key="frame" x="120" y="123" width="80" height="80"/>
+                    <rect key="frame" x="120" y="25" width="80" height="80"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="0T3-iJ-iMz"/>
                         <constraint firstAttribute="height" constant="80" id="6ft-Dj-IWu"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hml-7T-io9">
-                    <rect key="frame" x="0.0" y="220" width="320" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hml-7T-io9">
+                    <rect key="frame" x="0.0" y="122" width="320" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="S4j-eS-daM">
-                    <rect key="frame" x="0.0" y="249" width="320" height="25"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="S4j-eS-daM">
+                    <rect key="frame" x="36" y="151" width="248" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="FYK-xA-pFC"/>
@@ -36,10 +36,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="BwN-vC-fs2">
-                    <rect key="frame" x="36" y="279" width="248" height="80"/>
+                    <rect key="frame" x="36" y="181" width="248" height="178"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="80" id="Kba-Yg-3jk"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Kba-Yg-3jk"/>
                     </constraints>
                     <string key="text">Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -92,12 +92,12 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.8870894160583942" alpha="0.0" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="S4j-eS-daM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5yZ-Mo-8bM"/>
+                <constraint firstItem="S4j-eS-daM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="5yZ-Mo-8bM"/>
                 <constraint firstItem="hml-7T-io9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Eya-U8-XSA"/>
                 <constraint firstAttribute="trailing" secondItem="hml-7T-io9" secondAttribute="trailing" id="FdE-3p-aOK"/>
                 <constraint firstAttribute="centerX" secondItem="HqL-SU-35F" secondAttribute="centerX" id="N9c-oY-anG"/>
                 <constraint firstItem="Ym4-vc-saC" firstAttribute="top" secondItem="BwN-vC-fs2" secondAttribute="bottom" constant="149" id="P8M-GZ-tFV"/>
-                <constraint firstAttribute="trailing" secondItem="S4j-eS-daM" secondAttribute="trailing" id="bxf-i0-s4J"/>
+                <constraint firstAttribute="trailing" secondItem="S4j-eS-daM" secondAttribute="trailing" constant="36" id="bxf-i0-s4J"/>
                 <constraint firstAttribute="trailing" secondItem="BwN-vC-fs2" secondAttribute="trailing" constant="36" id="fSH-FK-53d"/>
                 <constraint firstAttribute="trailing" secondItem="Ym4-vc-saC" secondAttribute="trailing" id="iS6-ss-pJa"/>
                 <constraint firstItem="Ym4-vc-saC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jHa-Nh-rZ2"/>
@@ -105,6 +105,7 @@
                 <constraint firstItem="hml-7T-io9" firstAttribute="top" secondItem="HqL-SU-35F" secondAttribute="bottom" constant="17" id="kh6-xi-MzB"/>
                 <constraint firstItem="BwN-vC-fs2" firstAttribute="top" secondItem="S4j-eS-daM" secondAttribute="bottom" constant="5" id="ucy-tg-qkT"/>
                 <constraint firstAttribute="bottom" secondItem="Ym4-vc-saC" secondAttribute="bottom" id="v1z-9b-ZVb"/>
+                <constraint firstItem="HqL-SU-35F" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="vMJ-Yb-amY"/>
                 <constraint firstItem="BwN-vC-fs2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="zMt-XM-xeB"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
