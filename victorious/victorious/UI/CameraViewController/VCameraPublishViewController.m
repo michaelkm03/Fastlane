@@ -469,7 +469,13 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
-  
+
+    // Clear out any auto-correct dots
+    self.textView.autocorrectionType = UITextAutocorrectionTypeNo;
+    NSString *currentText = self.textView.text;
+    self.textView.text = @"";
+    self.textView.text = currentText;
+
     if (self.captionType == VCaptionTypeMeme || self.captionType == VCaptionTypeQuote)
     {
         UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
@@ -598,6 +604,7 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = YES;
+//    self.textView.autocorrectionType = UITextAutocorrectionTypeYes;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -652,6 +659,9 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
+//    
+//    self.textView.autocorrectionType = UITextAutocorrectionTypeNo
+    
     
     [self setDefaultCaptionText];
 }
