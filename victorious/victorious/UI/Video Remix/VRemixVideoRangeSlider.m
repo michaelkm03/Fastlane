@@ -6,6 +6,7 @@
 #import "VRemixSliderLeft.h"
 #import "VRemixSliderRight.h"
 #import "VRemixResizableBubble.h"
+#import "VCVideoPlayerViewController.h"
 
 @interface VRemixVideoRangeSlider ()
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
@@ -17,6 +18,8 @@
 @property (nonatomic, strong) VRemixResizableBubble *popoverBubble;
 @property (nonatomic) CGFloat frameWidth;
 @property (nonatomic) Float64 durationSeconds;
+
+@property (nonatomic, strong) id progressObserver;
 @end
 
 #define SLIDER_BORDERS_SIZE 6.0f
@@ -32,7 +35,7 @@
         _frameWidth = frame.size.width;
 
         int thumbWidth = ceil(frame.size.width*0.05);
-
+        
         _backgroundView = [[UIControl alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
         _backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
         _backgroundView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
@@ -84,6 +87,13 @@
         UIPanGestureRecognizer *centerPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCenterPan:)];
         [_centerView addGestureRecognizer:centerPan];
 
+        
+        CGRect indicatorFrame = CGRectMake(0, 0, _centerView.frame.size.width, _centerView.frame.size.height);
+        _frameIndicator = [[UISlider alloc] initWithFrame:indicatorFrame];
+        [_frameIndicator setThumbImage:[UIImage imageNamed:@"cameraScrubberIndicator"] forState:UIControlStateNormal];
+        [_centerView addSubview:_frameIndicator];
+        
+
 
         _popoverBubble = [[VRemixResizableBubble alloc] initWithFrame:CGRectMake(0, -50, 100, 50)];
         _popoverBubble.alpha = 0;
@@ -99,10 +109,24 @@
         
         [_popoverBubble addSubview:_bubbleText];
         
+        
         [self getMovieFrames];
     }
     
     return self;
+}
+
+-(void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
+{
+    _videoPlayerViewController = videoPlayerViewController;
+    
+    /*
+    __weak  VRemixVideoRangeSlider *weakSelf = self;
+	self.progressObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
+                         {
+                             [weakSelf syncScrubber];
+                         }];
+     */
 }
 
 -(void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
@@ -158,7 +182,10 @@
         [gesture setTranslation:CGPointZero inView:self];
         [self setNeedsLayout];
         if ([_delegate respondsToSelector:@selector(videoRange:didChangeLeftPosition:rightPosition:)])
+        {
             [_delegate videoRange:self didChangeLeftPosition:self.leftPosition rightPosition:self.rightPosition];
+        }
+        
     }
 
     _popoverBubble.alpha = 1;
