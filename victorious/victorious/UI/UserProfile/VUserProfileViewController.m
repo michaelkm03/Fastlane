@@ -35,7 +35,7 @@
 const   CGFloat kVNavigationBarHeight = 44.0;
 const   CGFloat kVLargeBottomBuffer = 149;
 const   CGFloat kVSmallBottomBuffer = 25;
-const   CGFloat kVSmallUserHeaderHeight = 316;
+const   CGFloat kVSmallUserHeaderHeight = 330;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 
