@@ -57,6 +57,8 @@ static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
+static const CGFloat kActionConstraintConstantCollapsed     =   0.0f;
+static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
@@ -73,6 +75,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @property (nonatomic) BOOL willClose; ///<Set to true when the close button was pressed in info vc;
 
 @property (nonatomic) NSInteger commentTime;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareButtonBottomToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *remixButtonBottomToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *repostButtonBottomToContainerConstraint;
 
 @end
 
@@ -417,6 +423,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.expandedTitleMaskingView.alpha = 1.0f;
         self.collapseButton.alpha = 1.0f;
+        
+        self.shareButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
+        self.remixButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
+        self.repostButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
+        
         self.topActionsViewHeightConstraint.constant = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.topActionsView.frame);
         [self.view layoutIfNeeded];
         [self updateConstraintsForTextSize:self.descriptionLabel.locationForLastLineOfText];
@@ -427,6 +438,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         
         self.descriptionLabel.alpha = 1.0f;
         temporaryTitleView.alpha = 0.0f;
+        [self.view layoutIfNeeded];
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
@@ -444,7 +456,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [UIView animateWithDuration:0.2
                               delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
+                            options:UIViewAnimationOptionCurveEaseIn
                          animations:animations
                          completion:completion];
     }
@@ -470,6 +482,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.expandedTitleMaskingView.alpha = 0;
         self.collapseButton.alpha = 0;
+        self.shareButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        self.remixButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        self.repostButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        
         self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
@@ -494,7 +510,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [UIView animateWithDuration:0.2
                               delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
+                            options:UIViewAnimationOptionCurveEaseOut
                          animations:animations
                          completion:completion];
     }

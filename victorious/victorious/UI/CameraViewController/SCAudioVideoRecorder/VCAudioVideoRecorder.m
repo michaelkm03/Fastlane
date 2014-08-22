@@ -353,6 +353,33 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
     if (self.stillImageOutput)
     {
         AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+        
+        if ([connection isVideoOrientationSupported])
+        {
+            switch ([UIDevice currentDevice].orientation)
+            {
+                case UIDeviceOrientationUnknown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+                    break;
+                case UIDeviceOrientationPortrait:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                    break;
+                case UIDeviceOrientationPortraitUpsideDown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+                    break;
+                case UIDeviceOrientationLandscapeLeft:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+                    break;
+                case UIDeviceOrientationLandscapeRight:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+                    break;
+                case UIDeviceOrientationFaceUp:
+                case UIDeviceOrientationFaceDown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                    break;
+            }
+        }
+        
         [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:
          ^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
          {

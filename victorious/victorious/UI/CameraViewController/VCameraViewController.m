@@ -17,6 +17,7 @@
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
+#import "UIImage+Resize.h"
 #import "VSettingManager.h"
 
 const   NSTimeInterval  kAnimationDuration      =   0.4;
@@ -745,7 +746,26 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!error)
     {
-        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:640.0];
+        UIImage *photo = photoDict[VCAudioVideoRecorderPhotoImageKey];
+
+        // Crop
+        CGFloat minDimension = fminf(photo.size.width, photo.size.height);
+        CGFloat x = (photo.size.width - minDimension) / 2.0f;
+        CGFloat y = (photo.size.height - minDimension) / 2.0f;
+        
+        CGRect cropRect;
+        if (photo.imageOrientation == UIImageOrientationRight || photo.imageOrientation == UIImageOrientationLeft)
+        {
+            cropRect = CGRectMake(y, x, minDimension, minDimension);
+        }
+        else
+        {
+            cropRect = CGRectMake(x, y, minDimension, minDimension);
+        }
+        
+        photo = [photo croppedImage:cropRect];
+        photo = [photo fixOrientation];
+        
         NSData *jpegData = UIImageJPEGRepresentation(photo, VConstantJPEGCompressionQuality);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
