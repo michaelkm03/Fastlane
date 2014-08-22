@@ -604,7 +604,6 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = YES;
-//    self.textView.autocorrectionType = UITextAutocorrectionTypeYes;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -659,9 +658,6 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
-//    
-//    self.textView.autocorrectionType = UITextAutocorrectionTypeNo
-    
     
     [self setDefaultCaptionText];
 }
