@@ -721,6 +721,45 @@
                                     <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
                                 </connections>
                             </containerView>
+                            <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
+                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEh-qP-DUl" userLabel="Media View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="EiR-3c-9nT" appends="YES" id="C4B-Qm-t0r"/>
+                                                </connections>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ZqV-fk-y5a" secondAttribute="width" priority="750" id="1ih-Ct-aqq"/>
+                                            <constraint firstAttribute="centerY" secondItem="ZqV-fk-y5a" secondAttribute="centerY" priority="750" id="L0H-3o-mJH"/>
+                                            <constraint firstAttribute="centerX" secondItem="ZqV-fk-y5a" secondAttribute="centerX" priority="750" id="U5o-zo-MM0"/>
+                                            <constraint firstAttribute="height" secondItem="ZqV-fk-y5a" secondAttribute="height" priority="750" id="bCg-Wg-6SM"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="leading" secondItem="gdx-vD-Je7" secondAttribute="leading" placeholder="YES" id="6VY-d8-pAj"/>
+                                    <constraint firstAttribute="bottom" secondItem="bEh-qP-DUl" secondAttribute="bottom" placeholder="YES" id="8Tf-Id-q1r"/>
+                                    <constraint firstAttribute="height" constant="320" placeholder="YES" id="H63-zh-766"/>
+                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="top" secondItem="gdx-vD-Je7" secondAttribute="top" placeholder="YES" id="b4x-bQ-SqW"/>
+                                    <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
+                                </constraints>
+                            </view>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAT-JQ-9wh" userLabel="Title View">
                                 <rect key="frame" x="0.0" y="51" width="320" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -783,7 +822,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="2TL-Vb-eja" firstAttribute="top" secondItem="kYi-kX-anM" secondAttribute="top" constant="48" id="1cy-d4-8n9"/>
                                     <constraint firstItem="qbm-gr-rvF" firstAttribute="leading" secondItem="lkK-8n-fRh" secondAttribute="trailing" constant="-1" id="8GY-1G-hrv"/>
@@ -802,41 +840,6 @@
                                     <constraint firstItem="IQa-Xx-665" firstAttribute="leading" secondItem="aAT-JQ-9wh" secondAttribute="leading" constant="-1" id="tKz-Xk-3s2"/>
                                 </constraints>
                                 <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                            </view>
-                            <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
-                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEh-qP-DUl" userLabel="Media View">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="EiR-3c-9nT" appends="YES" id="C4B-Qm-t0r"/>
-                                                </connections>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="ZqV-fk-y5a" secondAttribute="width" priority="750" id="1ih-Ct-aqq"/>
-                                            <constraint firstAttribute="centerY" secondItem="ZqV-fk-y5a" secondAttribute="centerY" priority="750" id="L0H-3o-mJH"/>
-                                            <constraint firstAttribute="centerX" secondItem="ZqV-fk-y5a" secondAttribute="centerX" priority="750" id="U5o-zo-MM0"/>
-                                            <constraint firstAttribute="height" secondItem="ZqV-fk-y5a" secondAttribute="height" priority="750" id="bCg-Wg-6SM"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="leading" secondItem="gdx-vD-Je7" secondAttribute="leading" placeholder="YES" id="6VY-d8-pAj"/>
-                                    <constraint firstAttribute="bottom" secondItem="bEh-qP-DUl" secondAttribute="bottom" placeholder="YES" id="8Tf-Id-q1r"/>
-                                    <constraint firstAttribute="height" constant="320" placeholder="YES" id="H63-zh-766"/>
-                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="top" secondItem="gdx-vD-Je7" secondAttribute="top" placeholder="YES" id="b4x-bQ-SqW"/>
-                                    <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
-                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-Lq-Sbm" userLabel="Bar Container View">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
@@ -857,11 +860,6 @@
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ruh-qb-vRD" userLabel="TopActionsView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
