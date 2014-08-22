@@ -24,7 +24,10 @@
 
 @interface VMessageContainerViewController ()
 
-@property (nonatomic, weak) UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIButton    *backButton;
+@property (nonatomic, weak) IBOutlet UILabel     *titleLabel;
+@property (nonatomic, weak) IBOutlet UIButton    *moreButton;
 
 @end
 
@@ -43,33 +46,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIBarButtonItem *flagButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"]
-                                                                       style:UIBarButtonItemStylePlain
-                                                                      target:self
-                                                                      action:@selector(flagConversation:)];
-    
-    self.navigationItem.rightBarButtonItems =  [@[flagButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
 
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    backgroundImageView.backgroundColor = [UIColor redColor];
-    [self.view insertSubview:backgroundImageView atIndex:0];
-    self.backgroundImageView = backgroundImageView;
-    [self createBackgroundImage];
+    UIImage *moreImage = [self.moreButton imageForState:UIControlStateNormal];
+    [self.moreButton setImage:[moreImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    
+    UIImage *backImage = [self.backButton imageForState:UIControlStateNormal];
+    [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+
+    [self addBackgroundImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    
-    self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
+    self.navigationItem.title = messageVC.conversation.user.name ?: @"Message";
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -110,17 +102,22 @@
     [actionSheet showInView:self.view];
 }
 
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)setConversation:(VConversation *)conversation
 {
     _conversation = conversation;
     ((VMessageViewController*)self.conversationTableViewController).conversation = conversation;
     if ([self isViewLoaded])
     {
-        [self createBackgroundImage];
+        [self addBackgroundImage];
     }
 }
 
-- (void)createBackgroundImage
+- (void)addBackgroundImage
 {
     UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
     
