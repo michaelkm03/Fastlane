@@ -188,6 +188,9 @@
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="Fdy-7V-EvU">
                                         <rect key="frame" x="20" y="59" width="280" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="e3o-K7-Qpn"/>
+                                        </constraints>
                                         <segments>
                                             <segment title="Hot"/>
                                             <segment title="Recent"/>
@@ -208,7 +211,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Fdy-7V-EvU" secondAttribute="bottom" constant="13" id="PcJ-tZ-AME"/>
+                                    <constraint firstAttribute="height" constant="100" id="JFE-TS-zO0"/>
+                                    <constraint firstItem="Fdy-7V-EvU" firstAttribute="top" secondItem="uAX-J4-ubb" secondAttribute="top" constant="59" id="mm0-oI-poj"/>
                                     <constraint firstAttribute="trailing" secondItem="Fdy-7V-EvU" secondAttribute="trailing" constant="20" id="r83-iL-j7O"/>
                                     <constraint firstItem="Fdy-7V-EvU" firstAttribute="leading" secondItem="uAX-J4-ubb" secondAttribute="leading" constant="20" id="sfk-tu-Ujm"/>
                                 </constraints>
@@ -218,7 +222,6 @@
                             <constraint firstItem="5Mf-9l-SXM" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="0M6-6z-WCg"/>
                             <constraint firstItem="uAX-J4-ubb" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="BQV-Qu-pgd"/>
                             <constraint firstAttribute="trailing" secondItem="uAX-J4-ubb" secondAttribute="trailing" id="Ktc-GO-koe"/>
-                            <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="uAX-J4-ubb" secondAttribute="bottom" constant="468" id="SCE-3I-Wuo"/>
                             <constraint firstAttribute="trailing" secondItem="5Mf-9l-SXM" secondAttribute="trailing" id="Xpf-AX-Eop"/>
                             <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="5Mf-9l-SXM" secondAttribute="bottom" placeholder="YES" id="Zqw-D1-23t"/>
                             <constraint firstItem="5Mf-9l-SXM" firstAttribute="top" secondItem="Oem-1Y-kAK" secondAttribute="bottom" placeholder="YES" id="fmD-8s-p8b"/>
