@@ -765,7 +765,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IQa-Xx-665">
-                                        <rect key="frame" x="-1" y="62" width="107" height="40"/>
+                                        <rect key="frame" x="-1" y="63" width="107" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="107" id="ZIp-G0-tDZ"/>
@@ -778,7 +778,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkK-8n-fRh">
-                                        <rect key="frame" x="105" y="62" width="110" height="40"/>
+                                        <rect key="frame" x="105" y="63" width="110" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="X0A-be-PJQ"/>
@@ -789,7 +789,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbm-gr-rvF">
-                                        <rect key="frame" x="214" y="62" width="107" height="40"/>
+                                        <rect key="frame" x="214" y="63" width="107" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="107" id="ngq-dN-Dbw"/>
@@ -801,7 +801,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYi-kX-anM" customClass="VContentTitleTextView">
-                                        <rect key="frame" x="20" y="7" width="280" height="55"/>
+                                        <rect key="frame" x="20" y="7" width="280" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <outlet property="delegate" destination="4V8-Qd-rfj" id="B19-Or-bBD"/>
@@ -823,12 +823,14 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="IQa-Xx-665" firstAttribute="top" secondItem="aAT-JQ-9wh" secondAttribute="top" constant="62" id="0C8-zs-bmy"/>
                                     <constraint firstItem="2TL-Vb-eja" firstAttribute="top" secondItem="kYi-kX-anM" secondAttribute="top" constant="48" id="1cy-d4-8n9"/>
                                     <constraint firstItem="qbm-gr-rvF" firstAttribute="leading" secondItem="lkK-8n-fRh" secondAttribute="trailing" constant="-1" id="8GY-1G-hrv"/>
+                                    <constraint firstAttribute="bottom" secondItem="IQa-Xx-665" secondAttribute="bottom" constant="-1" id="D0m-9d-9a5"/>
                                     <constraint firstItem="IQa-Xx-665" firstAttribute="trailing" secondItem="lkK-8n-fRh" secondAttribute="leading" constant="1" id="LTN-1s-uZb"/>
                                     <constraint firstAttribute="height" constant="102" id="N5Q-YY-0EG"/>
                                     <constraint firstAttribute="trailing" secondItem="kYi-kX-anM" secondAttribute="trailing" constant="20" id="UsO-bf-McM"/>
+                                    <constraint firstAttribute="bottom" secondItem="qbm-gr-rvF" secondAttribute="bottom" constant="-1" id="dVp-iX-TMD"/>
+                                    <constraint firstAttribute="bottom" secondItem="lkK-8n-fRh" secondAttribute="bottom" constant="-1" id="eou-ka-u0Z"/>
                                     <constraint firstAttribute="trailing" secondItem="qbm-gr-rvF" secondAttribute="trailing" constant="-1" id="fsU-sm-ja6"/>
                                     <constraint firstAttribute="centerX" secondItem="kYi-kX-anM" secondAttribute="centerX" id="j3j-VP-axQ"/>
                                     <constraint firstItem="kYi-kX-anM" firstAttribute="top" secondItem="aAT-JQ-9wh" secondAttribute="top" constant="7" id="jA2-2L-mf1"/>
@@ -836,8 +838,6 @@
                                     <constraint firstItem="qbm-gr-rvF" firstAttribute="top" secondItem="kYi-kX-anM" secondAttribute="bottom" id="rSM-ay-2Xz"/>
                                     <constraint firstAttribute="centerX" secondItem="2TL-Vb-eja" secondAttribute="centerX" id="sSk-Bg-cpf"/>
                                     <constraint firstItem="IQa-Xx-665" firstAttribute="leading" secondItem="aAT-JQ-9wh" secondAttribute="leading" constant="-1" id="tKz-Xk-3s2"/>
-                                    <constraint firstItem="qbm-gr-rvF" firstAttribute="top" secondItem="aAT-JQ-9wh" secondAttribute="top" constant="62" id="yX7-VJ-Xtj"/>
-                                    <constraint firstItem="lkK-8n-fRh" firstAttribute="top" secondItem="aAT-JQ-9wh" secondAttribute="top" constant="62" id="yth-PM-9Ey"/>
                                 </constraints>
                                 <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                             </view>
@@ -981,10 +981,10 @@
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="realtimeCommentsContainer" destination="FR4-4c-csb" id="3gI-AH-uQR"/>
                         <outlet property="remixButton" destination="lkK-8n-fRh" id="ffP-Ri-FL0"/>
-                        <outlet property="remixTopToContainerConstraint" destination="yth-PM-9Ey" id="8Vr-hl-q1z"/>
+                        <outlet property="remixButtonBottomToContainerConstraint" destination="eou-ka-u0Z" id="1Og-rm-C4G"/>
                         <outlet property="repostButton" destination="qbm-gr-rvF" id="CWg-L0-u5w"/>
+                        <outlet property="repostButtonBottomToContainerConstraint" destination="dVp-iX-TMD" id="EMt-PS-OgG"/>
                         <outlet property="repostButtonLeadingConstraint" destination="8GY-1G-hrv" id="bdO-2H-eF7"/>
-                        <outlet property="repostTopToContainerConstraint" destination="yX7-VJ-Xtj" id="6Gy-Rt-5AG"/>
                         <outlet property="rightImageViewHeightConstraint" destination="yWO-Zj-NEX" id="iw8-Li-jMN"/>
                         <outlet property="rightImageViewWidthConstraint" destination="Kaz-0u-z6m" id="OWb-gI-2lJ"/>
                         <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
@@ -993,7 +993,7 @@
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="shareButton" destination="IQa-Xx-665" id="mJH-uE-5l3"/>
-                        <outlet property="shareButtonTopToContainerConstraint" destination="0C8-zs-bmy" id="3qI-si-rtI"/>
+                        <outlet property="shareButtonBottomToContainerConstraint" destination="D0m-9d-9a5" id="wi5-Bc-ORI"/>
                         <outlet property="shareButtonTrailingConstraint" destination="LTN-1s-uZb" id="0Wp-da-58R"/>
                         <outlet property="topActionsView" destination="Ruh-qb-vRD" id="Xpq-SD-fWy"/>
                         <outlet property="topActionsViewHeightConstraint" destination="N5Q-YY-0EG" id="w8Q-36-NyT"/>

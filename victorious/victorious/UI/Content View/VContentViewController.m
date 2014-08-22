@@ -57,8 +57,8 @@ static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
-static const CGFloat kActionConstraintConstantCollapsed     =  62.0f;
-static const CGFloat kActionConstraintConstantExpanded      = 120.0f;
+static const CGFloat kActionConstraintConstantCollapsed     =   0.0f;
+static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
@@ -76,9 +76,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @property (nonatomic) NSInteger commentTime;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareButtonTopToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *remixTopToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *repostTopToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareButtonBottomToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *remixButtonBottomToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *repostButtonBottomToContainerConstraint;
 
 @end
 
@@ -424,9 +424,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.expandedTitleMaskingView.alpha = 1.0f;
         self.collapseButton.alpha = 1.0f;
         
-        self.shareButtonTopToContainerConstraint.constant = kActionConstraintConstantExpanded;
-        self.remixTopToContainerConstraint.constant = kActionConstraintConstantExpanded;
-        self.repostTopToContainerConstraint.constant = kActionConstraintConstantExpanded;
+        self.shareButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
+        self.remixButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
+        self.repostButtonBottomToContainerConstraint.constant = kActionConstraintConstantExpandedOffset;
         
         self.topActionsViewHeightConstraint.constant = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.topActionsView.frame);
         [self.view layoutIfNeeded];
@@ -482,9 +482,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.expandedTitleMaskingView.alpha = 0;
         self.collapseButton.alpha = 0;
-        self.shareButtonTopToContainerConstraint.constant = kActionConstraintConstantCollapsed;
-        self.remixTopToContainerConstraint.constant = kActionConstraintConstantCollapsed;
-        self.repostTopToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        self.shareButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        self.remixButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
+        self.repostButtonBottomToContainerConstraint.constant = kActionConstraintConstantCollapsed;
         
         self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
         [self updateConstraintsForTextSize:self.smallTextSize];
