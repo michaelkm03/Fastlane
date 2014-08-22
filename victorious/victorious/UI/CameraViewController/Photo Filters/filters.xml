@@ -892,7 +892,7 @@
 						<key>inputKey</key>
 						<string>inputRadius</string>
 						<key>value</key>
-						<real>312.10189819335938</real>
+						<real>0.9753184319</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
@@ -974,13 +974,13 @@
 						<key>inputKey</key>
 						<string>inputRadius</string>
 						<key>value</key>
-						<real>363.05731201171875</real>
+						<real>0.6</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
 						<string>inputIntensity</string>
 						<key>value</key>
-						<real>0.77707004547119141</real>
+						<real>0.65</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
@@ -1043,7 +1043,7 @@
 						<key>inputKey</key>
 						<string>inputRadius</string>
 						<key>value</key>
-						<real>369.4267578125</real>
+						<real>1.1544586182</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
@@ -1106,7 +1106,7 @@
 						<key>inputKey</key>
 						<string>inputRadius</string>
 						<key>value</key>
-						<real>923.56689453125</real>
+						<real>2.8861465454</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
@@ -1201,7 +1201,7 @@
 						<key>inputKey</key>
 						<string>inputRadius</string>
 						<key>value</key>
-						<real>401.27389526367188</real>
+						<real>1.2539809227</real>
 					</dict>
 					<dict>
 						<key>inputKey</key>
