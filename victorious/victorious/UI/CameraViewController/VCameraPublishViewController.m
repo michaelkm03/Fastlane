@@ -583,7 +583,8 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:self.captionPlaceholderLabel.attributedText.string
                                                                                       attributes:self.typingAttributes];
         
-        NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+        NSAttributedString *str = [[NSAttributedString alloc] initWithString:[self.textView.text uppercaseString]
+                                                                  attributes:self.typingAttributes];
         self.textView.attributedText = str;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
