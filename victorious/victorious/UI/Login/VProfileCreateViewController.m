@@ -286,18 +286,6 @@
         }
                          completion:nil];
     }
-    
-//    CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
-//    CGFloat taglineMaxY = CGRectGetMaxY(self.taglineTextView.frame);
-//    if (taglineMaxY > keyboardMinY)
-//    {
-//        [UIView animateWithDuration:animationDuration delay:0
-//                            options:(animationCurve << 16) animations:^
-//         {
-//             self.view.frame = CGRectOffset(self.view.frame, 0, keyboardMinY - VConstantsInputAccessoryHeight - taglineMaxY);
-//         }
-//                         completion:nil];
-//    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
