@@ -79,7 +79,6 @@
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.usernameTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.loginType != kVLoginTypeEmail)
         self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
@@ -87,12 +86,11 @@
     
     self.locationTextField.delegate = self;
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.locationTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.profile.location)
         self.locationTextField.text = self.profile.location;
     else
         self.locationTextField.text = @"";
-    self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.355 alpha:1.0]}];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
     {
         self.locationManager = [[CLLocationManager alloc] init];
@@ -105,7 +103,6 @@
 
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.taglineTextView setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.profile.tagline) {
         self.taglineTextView.text = self.profile.tagline;
     }
@@ -136,6 +133,7 @@
     if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
         self.backButton.hidden = YES;
     }
+    self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 - (void)viewWillAppear:(BOOL)animated
