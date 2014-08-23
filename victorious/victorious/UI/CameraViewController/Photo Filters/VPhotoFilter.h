@@ -15,8 +15,8 @@
  */
 @interface VPhotoFilter : NSObject <NSCopying>
 
-@property (nonatomic, copy) NSString                               *name;       ///< The filter's catchy name
-@property (nonatomic, copy) NSArray /* id<VPhotoFilterComponent */ *components; ///< The VPhotoFilterComponent objects that define this filter
+@property (nonatomic, copy) NSString                                *name;       ///< The filter's catchy name
+@property (nonatomic, copy) NSArray /* id<VPhotoFilterComponent> */ *components; ///< The VPhotoFilterComponent objects that define this filter
 
 /**
  Return a new image by sending the given sourceImage through
