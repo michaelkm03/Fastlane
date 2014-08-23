@@ -39,6 +39,7 @@ static char KVOContext;
 - (void)dealloc
 {
     self.filter = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setFilter:(VSequenceFilter *)filter

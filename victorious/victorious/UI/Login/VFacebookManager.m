@@ -6,10 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "RKURLEncodedSerialization.h"
+#import "VConstants.h"
 #import "VFacebookManager.h"
 
 #import <FacebookSDK/FacebookSDK.h>
-#import "RKURLEncodedSerialization.h"
+
+static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 
 @implementation VFacebookManager
 
@@ -44,6 +47,11 @@
     return @[@"public_profile", @"user_birthday", @"email"];
 }
 
+- (NSArray*)publishPermissions
+{
+    return @[kPublishActionsPermissionKey];
+}
+
 - (void)loginWithStoredTokenOnSuccess:(void (^)())successBlock onFailure:(void (^)(NSError *))failureBlock
 {
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
@@ -62,8 +70,13 @@
     {
         [self logout];
     }
-    
-    FBSession *session = [[FBSession alloc] initWithPermissions:[self readPermissions]];
+    [self loginWithBehavior:behavior permissions:[self readPermissions] onSuccess:successBlock onFailure:failureBlock];
+}
+
+- (void)loginWithBehavior:(FBSessionLoginBehavior)behavior permissions:(NSArray*)permissions
+                onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
+{
+    FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
     [FBSession setActiveSession:session];
     [FBSession.activeSession openWithBehavior:behavior completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
     {
@@ -99,6 +112,53 @@
                 break;
         }
     }];
+}
+
+- (BOOL)grantedPublishPermission
+{
+    return [[FBSession activeSession] hasGranted:kPublishActionsPermissionKey];
+}
+
+- (void)requestPublishPermissionsOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
+{
+    if ([self grantedPublishPermission])
+    {
+        if (successBlock)
+        {
+            successBlock();
+        }
+        return;
+    }
+    
+    if ([self isSessionValid])
+    {
+        [[FBSession activeSession] requestNewPublishPermissions:[self publishPermissions]
+                                                defaultAudience:FBSessionDefaultAudienceEveryone
+                                              completionHandler:^(FBSession *session, NSError *error)
+        {
+            if ([self grantedPublishPermission])
+            {
+                if (successBlock)
+                {
+                    successBlock();
+                }
+            }
+            else
+            {
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+            }
+        }];
+    }
+    else
+    {
+        [self loginWithBehavior:FBSessionLoginBehaviorWithNoFallbackToWebView
+                    permissions:[[self readPermissions] arrayByAddingObjectsFromArray:[self publishPermissions]]
+                      onSuccess:successBlock
+                      onFailure:failureBlock];
+    }
 }
 
 - (void)logout
