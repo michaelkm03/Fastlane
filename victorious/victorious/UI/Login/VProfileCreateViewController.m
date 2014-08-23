@@ -79,7 +79,6 @@
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.usernameTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.loginType != kVLoginTypeEmail)
         self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
@@ -87,12 +86,11 @@
     
     self.locationTextField.delegate = self;
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.locationTextField setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.profile.location)
         self.locationTextField.text = self.profile.location;
     else
         self.locationTextField.text = @"";
-    self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.355 alpha:1.0]}];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
     {
         self.locationManager = [[CLLocationManager alloc] init];
@@ -105,7 +103,6 @@
 
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.taglineTextView setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
     if (self.profile.tagline) {
         self.taglineTextView.text = self.profile.tagline;
     }
@@ -136,6 +133,7 @@
     if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
         self.backButton.hidden = YES;
     }
+    self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,8 +170,8 @@
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -268,27 +266,24 @@
 
 #pragma mark - Notification Handlers
 
-- (void)keyboardWasShown:(NSNotification *)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    // Get the size of the keyboard.
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
+
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
-    CGFloat taglineMaxY = CGRectGetMaxY(self.taglineTextView.frame);
-    if (taglineMaxY > keyboardMinY)
-    {
-        [UIView animateWithDuration:animationDuration delay:0
-                            options:(animationCurve << 16) animations:^
-         {
-             self.view.frame = CGRectOffset(self.view.frame, 0, keyboardMinY - VConstantsInputAccessoryHeight - taglineMaxY);
-         }
+
+    if ([self.taglineTextView isFirstResponder]) {
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0f
+                            options:(animationCurve << 16)
+                         animations:^
+        {
+            self.view.frame = CGRectOffset(self.view.bounds, 0, 0.0f - self.taglineTextView.bounds.size.height - VConstantsInputAccessoryHeight);
+        }
                          completion:nil];
     }
 }
@@ -305,10 +300,7 @@
     [UIView animateWithDuration:animationDuration delay:0
                         options:(animationCurve << 16) animations:^
      {
-         
-         CGRect frame = self.view.frame;
-         frame.origin = CGPointMake(0, 0);
-         self.view.frame = frame;
+         self.view.frame = self.view.bounds;
      }
                      completion:nil];
 }

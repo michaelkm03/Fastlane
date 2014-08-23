@@ -11,7 +11,7 @@
 @interface UIImage (ImageCreation)
 
 + (UIImage *)resizeableImageWithColor:(UIColor *)color;
-- (UIImage *)vImageWithColor:(UIColor *)color;
+- (UIImage *)v_imageWithColor:(UIColor *)color;
 - (UIImage*)scaleToSize:(CGSize)size;
 
 @end

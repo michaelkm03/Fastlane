@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="3vS-VG-xoV" customClass="VShareView">
+        <view contentMode="scaleToFill" id="3vS-VG-xoV" customClass="VPublishShareView">
             <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

@@ -152,6 +152,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 - (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
+    //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
 
