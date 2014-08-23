@@ -126,9 +126,14 @@
 
 - (NSDictionary *)attributesForTitle
 {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.lineSpacing = 0.0f;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    paragraphStyle.maximumLineHeight = 10.5f;
     return @{
         NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font],
-        NSKernAttributeName: @(-1)
+        NSKernAttributeName: @(-0.5),
+        NSParagraphStyleAttributeName : paragraphStyle
     };
 }
 
