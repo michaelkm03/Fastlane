@@ -15,10 +15,13 @@
 @property (nonatomic, strong) IBOutlet UIButton* shareButton;
 @property (nonatomic, strong) IBOutlet UILabel* titleLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* iconImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
 @implementation VPublishShareView
+
+#pragma mark - Initializers
 
 - (id)init
 {
@@ -42,6 +45,42 @@
     return self;
 }
 
+#pragma mark - Animation
+
+- (void)startAnimating
+{
+    [self continueAnimating];
+}
+
+- (void)continueAnimating
+{
+    if (self.selectedState != VShareViewSelectedStateLimbo) {
+        return;
+    }
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         self.backgroundImageView.transform = CGAffineTransformConcat(self.backgroundImageView.transform, CGAffineTransformMakeRotation(M_PI/3));
+                     } completion:^(BOOL finished) {
+                         [self continueAnimating];
+                     }];
+}
+
+- (void)stopAnimating
+{
+    [UIView animateWithDuration:1.5f
+                          delay:0.0f
+         usingSpringWithDamping:0.9f
+          initialSpringVelocity:1.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         self.backgroundImageView.transform = CGAffineTransformIdentity;
+                     } completion:nil];
+}
+
+#pragma mark - Property Accessors
+
 - (void)setSelectedState:(VShareViewSelectedState)selectedState
 {
     _selectedState = selectedState;
@@ -50,16 +89,19 @@
         case VShareViewSelectedStateNotSelected:
             self.shareButton.selected = NO;
             self.shareButton.enabled = YES;
+            [self stopAnimating];
             break;
             
         case VShareViewSelectedStateLimbo:
             self.shareButton.selected = NO;
             self.shareButton.enabled = NO;
+            [self startAnimating];
             break;
 
         case VShareViewSelectedStateSelected:
             self.shareButton.selected = YES;
             self.shareButton.enabled = YES;
+            [self stopAnimating];
             break;
     }
     [self updateColors];
@@ -116,6 +158,8 @@
     self.iconImageView.tintColor = currentColor;
 }
 
+#pragma mark - Actions
+
 - (IBAction)pressedShareButton:(id)sender
 {
     if (self.selectionBlock)
@@ -123,6 +167,8 @@
         self.selectionBlock();
     }
 }
+
+#pragma mark - Text Styling
 
 - (NSDictionary *)attributesForTitle
 {

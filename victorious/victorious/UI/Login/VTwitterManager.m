@@ -65,6 +65,10 @@
                                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                           otherButtonTitles:nil];
                                     [alert show];
+                                    if (completionBlock)
+                                    {
+                                        completionBlock();
+                                    }
                                 });
              }
              else

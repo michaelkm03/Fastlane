@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -10,15 +10,15 @@
             <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Fcu-IS-I6P">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="record_btn_outer_circle" id="iSN-YE-vpD">
+                    <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" id="Fcu-IS-I6P">
                     <rect key="frame" x="22" y="12" width="23" height="23"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="23" id="JQD-Uc-niY"/>
-                        <constraint firstAttribute="width" constant="23" id="PGl-ch-6JU"/>
-                    </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="55" translatesAutoresizingMaskIntoConstraints="NO" id="S02-jG-VMS">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="S02-jG-VMS">
                     <rect key="frame" x="6" y="35" width="55" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <attributedString key="attributedText">
@@ -32,10 +32,10 @@
                     </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QFB-AF-PHX">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFB-AF-PHX">
                     <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" backgroundImage="record_btn_outer_circle">
+                    <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="selected" backgroundImage="share-btn-circle"/>
@@ -45,15 +45,9 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="S02-jG-VMS" firstAttribute="leading" secondItem="3vS-VG-xoV" secondAttribute="leading" constant="6" id="68L-vW-zvj"/>
-                <constraint firstAttribute="centerX" secondItem="Fcu-IS-I6P" secondAttribute="centerX" id="ev8-FA-r1I"/>
-                <constraint firstAttribute="centerY" secondItem="S02-jG-VMS" secondAttribute="centerY" constant="-14" id="hqa-b2-YQo"/>
-                <constraint firstItem="Fcu-IS-I6P" firstAttribute="top" secondItem="3vS-VG-xoV" secondAttribute="top" constant="12" id="yRa-nM-2ic"/>
-                <constraint firstAttribute="trailing" secondItem="S02-jG-VMS" secondAttribute="trailing" constant="6" id="yeW-3j-Qeo"/>
-            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="backgroundImageView" destination="iSN-YE-vpD" id="lPs-8t-efr"/>
                 <outlet property="iconImageView" destination="Fcu-IS-I6P" id="oIk-oc-kPK"/>
                 <outlet property="shareButton" destination="QFB-AF-PHX" id="NzB-j3-Fr2"/>
                 <outlet property="titleLabel" destination="S02-jG-VMS" id="R3x-R9-tMu"/>
