@@ -21,7 +21,6 @@
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
-
 #import "VNoContentView.h"
 
 
@@ -56,11 +55,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
     [self modeSelected:self.modeSelectControl];
     
-//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-//    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
