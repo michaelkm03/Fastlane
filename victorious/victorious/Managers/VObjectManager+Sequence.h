@@ -23,11 +23,14 @@ extern NSString* const kPollResultsLoaded;
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
+                                                 accessToken:(NSString*)accessToken
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
+                                                 accessToken:(NSString*)accessToken
+                                                      secret:(NSString*)secret
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
@@ -36,7 +39,6 @@ extern NSString* const kPollResultsLoaded;
                                        votecounts:(NSArray*)voteCounts
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
-
 #pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
