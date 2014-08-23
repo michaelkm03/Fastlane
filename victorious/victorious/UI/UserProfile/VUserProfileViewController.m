@@ -35,7 +35,7 @@
 const   CGFloat kVNavigationBarHeight = 44.0;
 const   CGFloat kVLargeBottomBuffer = 149;
 const   CGFloat kVSmallBottomBuffer = 25;
-const   CGFloat kVSmallUserHeaderHeight = 330;
+const   CGFloat kVSmallUserHeaderHeight = 319;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 
@@ -109,6 +109,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     headerView.user = self.profile;
     headerView.delegate = self;
     self.tableView.tableHeaderView = headerView;
+    self.refreshControl.layer.zPosition = self.tableView.tableHeaderView.layer.zPosition + 1;
     
     if (self.isMe)
         [self addCreateButton];
