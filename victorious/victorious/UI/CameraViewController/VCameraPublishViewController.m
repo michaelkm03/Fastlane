@@ -59,7 +59,6 @@
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
-@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionLabels;
 
 @property (nonatomic, strong) NSMutableDictionary* typingAttributes;
 
