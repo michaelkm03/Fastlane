@@ -90,6 +90,7 @@
 "Facebook"              =   "Facebook";
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Privacy -> Facebook";
+"FacebookFailed"        =   "Could not connect to Facebook.";
 
 "SearchFailed"          =   "Search failed.";
 "ImageDownloadFailed"   =   "Image download failed.";
@@ -98,7 +99,7 @@
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
 
 "CameraRollDeniedTitle"    =   "Could Not Access Your Photos";
-"CameraRollDenied"         =   "Please grant access to your photos and microphone in Settings -> Privacy.";
+"CameraRollDenied"         =   "Please grant access to your photos in Settings -> Privacy.";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";

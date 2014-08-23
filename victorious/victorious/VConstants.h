@@ -16,13 +16,6 @@ typedef NS_ENUM(NSInteger, HTTPStatusCodes)
     kVHTTPStatusCode200OK      =   200
 };
 
-typedef NS_OPTIONS(NSUInteger, VShareOptions)
-{
-    VShareNone          = 0,
-    VShareToTwitter     = 1 << 0,
-    VShareToFacebook    = 1 << 1
-};
-
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
     VLoopOnce       =   0,

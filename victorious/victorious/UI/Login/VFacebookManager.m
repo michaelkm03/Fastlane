@@ -154,7 +154,7 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
     }
     else
     {
-        [self loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
+        [self loginWithBehavior:FBSessionLoginBehaviorWithNoFallbackToWebView
                     permissions:[[self readPermissions] arrayByAddingObjectsFromArray:[self publishPermissions]]
                       onSuccess:successBlock
                       onFailure:failureBlock];

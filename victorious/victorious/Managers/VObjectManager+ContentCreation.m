@@ -125,7 +125,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
-                                    shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
@@ -139,10 +138,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"expires_at"] = expiresAt;
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
-    if (shareOptions & VShareToFacebook)
-        parameters[@"share_facebook"] = @"1";
-    if (shareOptions & VShareToTwitter)
-        parameters[@"share_twitter"] = @"1";
 
     if (type == VCaptionTypeMeme)
         parameters[@"subcategory"] = @"meme";

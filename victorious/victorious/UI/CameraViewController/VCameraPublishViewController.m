@@ -22,7 +22,10 @@
 #import "VThemeManager.h"
 #import "TTTAttributedLabel.h"
 
-#import "VShareView.h"
+#import "VCameraRollPublishShareController.h"
+#import "VFacebookPublishShareController.h"
+#import "VPublishShareView.h"
+#import "VTwitterPublishShareController.h"
 
 #import "UIImage+ImageCreation.h"
 #import "UIActionSheet+VBlocks.h"
@@ -32,13 +35,8 @@
 
 #import "VTwitterManager.h"
 #import "VFacebookManager.h"
-//#import "VUserManager.h"
 
 #import "NSURL+MediaType.h"
-
-static NSString* kVSaveToCameraRollDisabledKey = @"saveToCameraKey";
-static NSString* kVShareToFacebookDisabledKey  = @"shareToFBKey";
-static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -69,9 +67,9 @@ static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
 @property (nonatomic, weak) IBOutlet UIButton* quoteButton;
 
-@property (nonatomic, strong) VShareView* saveToCameraView;
-@property (nonatomic, strong) VShareView* shareToTwitterView;
-@property (nonatomic, strong) VShareView* shareToFacebookView;
+@property (nonatomic, strong) VPublishShareController* saveToCameraController;
+@property (nonatomic, strong) VPublishShareController* shareToTwitterController;
+@property (nonatomic, strong) VPublishShareController* shareToFacebookController;
 
 @property (nonatomic, strong) VCompositeSnapshotController* snapshotController;
 
@@ -141,7 +139,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                                multiplier:self.originalTextViewYConstraint.multiplier
                                                                  constant:self.originalTextViewYConstraint.constant];
 
-    [self initShareViews];
+    [self configureShareViews];
 }
 
 - (void)setCaptionType:(VCaptionType)captionType
@@ -212,115 +210,25 @@ static const CGFloat kShareMargin = 34.0f;
     [self setDefaultCaptionText];
 }
 
-- (void)initShareViews
+- (void)configureShareViews
 {
-//SETUP FACEBOOK SHARE
-    self.shareToFacebookView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"facebook", nil)
-                                                          image:[UIImage imageNamed:@"share-btn-fb"]];
-    self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
-    if ([[VFacebookManager sharedFacebookManager] grantedPublishPermission])
-    {
-        self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
-    }
-    else
-    {
-        self.shareToFacebookView.selected = NO;
-        __weak VShareView* weakFBShare = self.shareToFacebookView;
-        
-        self.shareToFacebookView.selectionBlock = ^()
-        {
-            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
-             {
-                 weakFBShare.selectionBlock = nil;
-                 weakFBShare.selected = YES;
-             }
-                                                              onFailure:^(NSError *error)
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FacebookDeniedTitle", nil)
-                                                                message:NSLocalizedString(@"FacebookDenied", nil)
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
-                [alert show];
-            }];
-            return NO;
-        };
-    }
-
-//SETUP TWITTER SHARE
-    self.shareToTwitterView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"twitter", nil)
-                                                          image:[UIImage imageNamed:@"share-btn-twitter"]];
-    self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
-    self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToTwitterDisabledKey];
-    if ([[VTwitterManager sharedManager] isLoggedIn])
-    {
-        self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
-    }
-    else
-    {
-        self.shareToTwitterView.selected = NO;
-        __weak VShareView* weakTwitterShare = self.shareToTwitterView;
-        
-        self.shareToTwitterView.selectionBlock = ^()
-        {
-            __weak VTwitterManager* manager = [VTwitterManager sharedManager];
-            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:nil
-                                                               completionBlock:^
-            {
-                if ([manager isLoggedIn])
-                {
-                    weakTwitterShare.selectionBlock = nil;
-                    weakTwitterShare.selected = YES;
-                }
-                else
-                {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", nil)
-                                                                    message:NSLocalizedString(@"TwitterDenied", nil)
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
-                    [alert show];
-                }
-            }];
-            
-            return NO;
-        };
-    }
+    self.shareToFacebookController = [[VFacebookPublishShareController alloc] init];
+    self.shareToTwitterController = [[VTwitterPublishShareController alloc] init];
+    self.saveToCameraController = [[VCameraRollPublishShareController alloc] init];
     
-//SETUP SAVE TO CAMERA
-    self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
-                                                          image:[UIImage imageNamed:@"share-btn-library"]];
-    self.saveToCameraView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.saveToCameraView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollDisabledKey];
-
-    ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
-    if (status != ALAuthorizationStatusAuthorized)
+    NSArray* shareControllers = @[self.shareToFacebookController, self.shareToTwitterController, self.saveToCameraController];
+    for (NSInteger i = 0; i < shareControllers.count; i++)
     {
-        self.saveToCameraView.selected = NO;
+        VPublishShareController *shareController = shareControllers[i];
         
-        self.saveToCameraView.selectionBlock = ^()
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CameraRollDeniedTitle", nil)
-                                                            message:NSLocalizedString(@"CameraRollDenied", nil)
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
-            [alert show];
-            return NO;
-        };
-    }
-    
-//LAYOUT SHARE VIEWS
-    NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
-    for (int i=0; i<shareViews.count;i++)
-    {
-        UIView* shareView = shareViews[i];
-        
-        CGFloat shareViewWidth = CGRectGetWidth(shareView.frame);
-        CGFloat widthOfShareViews = (shareViews.count * shareViewWidth) + ((shareViews.count - 1) * kShareMargin);
+        CGFloat shareViewWidth = CGRectGetWidth(shareController.shareView.frame);
+        CGFloat widthOfShareViews = (shareControllers.count * shareViewWidth) + ((shareControllers.count - 1) * kShareMargin);
         CGFloat superviewMargin = (self.sharesSuperview.frame.size.width - widthOfShareViews) / 2;
         CGFloat xCenter = superviewMargin + (shareViewWidth / 2) + (i * shareViewWidth) + (i * kShareMargin);
         
-        shareView.center = CGPointMake(xCenter, CGRectGetHeight(self.sharesSuperview.frame) / 2);
+        shareController.shareView.center = CGPointMake(xCenter, CGRectGetHeight(self.sharesSuperview.frame) / 2);
         
-        [self.sharesSuperview addSubview:shareView];
+        [self.sharesSuperview addSubview:shareController.shareView];
     }
 }
 
@@ -394,9 +302,6 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-    [[NSUserDefaults standardUserDefaults] setBool:!self.shareToTwitterView.selected forKey:kVShareToTwitterDisabledKey];
-    [[NSUserDefaults standardUserDefaults] setBool:!self.shareToFacebookView.selected forKey:kVShareToFacebookDisabledKey];
-    [[NSUserDefaults standardUserDefaults] setBool:!self.saveToCameraView.selected forKey:kVSaveToCameraRollDisabledKey];
 }
 
 - (BOOL)shouldAutorotate
@@ -515,9 +420,6 @@ static const CGFloat kShareMargin = 34.0f;
 
     }
     
-    VShareOptions shareOptions = self.shareToFacebookView.selected ? VShareToFacebook : VShareNone;
-    shareOptions = self.shareToTwitterView.selected ? shareOptions | VShareToTwitter : shareOptions;
-    
     CGFloat playbackSpeed;
     if (self.playBackSpeed == VPlaybackNormalSpeed)
         playbackSpeed = 1.0;
@@ -526,9 +428,8 @@ static const CGFloat kShareMargin = 34.0f;
     else
         playbackSpeed = 0.5;
     
-    //We need to save these as block variables because the view may be dealloc'd before the upload finishes.
-    __block BOOL facebookSelected = self.shareToFacebookView.selected;
-    __block BOOL twitterSelected = self.shareToTwitterView.selected;
+    BOOL facebookSelected = self.shareToFacebookController.selected;
+    BOOL twitterSelected = self.shareToTwitterController.selected;
     
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
@@ -537,7 +438,6 @@ static const CGFloat kShareMargin = 34.0f;
                                            parentNodeId:@(self.parentID)
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
-                                           shareOptions:shareOptions
                                                mediaURL:self.mediaURL
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -555,7 +455,6 @@ static const CGFloat kShareMargin = 34.0f;
                                                         accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
-                 VLog(@"Succeeded with objects: %@", resultObjects);
              }
                                                           failBlock:^(NSOperation* operation, NSError* error)
              {
@@ -599,7 +498,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Content" label:self.textView.text value:nil];
     
-    if (self.saveToCameraView.selected && !self.didSelectAssetFromLibrary)
+    if (self.saveToCameraController.selected && !self.didSelectAssetFromLibrary)
     {
         if ([self.mediaURL v_hasVideoExtension])
         {

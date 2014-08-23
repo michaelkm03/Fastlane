@@ -58,7 +58,6 @@ extern NSString * const VObjectManagerContentIndexKey;
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
-                                    shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
