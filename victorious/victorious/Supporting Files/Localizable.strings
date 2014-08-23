@@ -88,8 +88,6 @@
 
 
 "Facebook"              =   "Facebook";
-"FacebookDeniedTitle"   =   "Could not access your Facebook account";
-"FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Privacy -> Facebook";
 "FacebookFailed"        =   "Could not connect to Facebook.";
 
 "SearchFailed"          =   "Search failed.";
