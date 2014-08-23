@@ -23,6 +23,7 @@
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
 		032C9B471929C113002FB447 /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */; };
 		0333B5D519A171510024B0DE /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0333B5D419A171510024B0DE /* VPaginationManager.m */; };
+		0333BE9E19A434B8008BD962 /* VCompositeImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0333BE9D19A434B8008BD962 /* VCompositeImageFilter.m */; };
 		0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */; };
 		03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BEE192D284100403FB1 /* VLightboxDisplayAnimator.m */; };
 		03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF0192D284100403FB1 /* VLightboxViewController.m */; };
@@ -42,6 +43,7 @@
 		0361057D19411AA10069D49E /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0361057619411AA10069D49E /* libGoogleAnalyticsServices.a */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		03664CB119A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03664CB019A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.m */; };
 		03664CB719A57286007731EB /* VObjectManager+DeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 03664CB619A57286007731EB /* VObjectManager+DeviceRegistration.m */; };
 		036AC8F71958FD9F0086856B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */; };
 		036AC8F81958FD9F0086856B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */; };
@@ -387,6 +389,9 @@
 		032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
 		0333B5D319A171510024B0DE /* VPaginationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginationManager.h; sourceTree = "<group>"; };
 		0333B5D419A171510024B0DE /* VPaginationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPaginationManager.m; sourceTree = "<group>"; };
+		0333BE9C19A434B8008BD962 /* VCompositeImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCompositeImageFilter.h; sourceTree = "<group>"; };
+		0333BE9D19A434B8008BD962 /* VCompositeImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCompositeImageFilter.m; sourceTree = "<group>"; };
+		0333BE9F19A43740008BD962 /* VPhotoFilterComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterComponent.h; sourceTree = "<group>"; };
 		0345285219244E9700D0B1D1 /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActivityIndicatorView.h; path = UI/VActivityIndicatorView.h; sourceTree = "<group>"; };
 		0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActivityIndicatorView.m; path = UI/VActivityIndicatorView.m; sourceTree = "<group>"; };
 		03484BED192D284100403FB1 /* VLightboxDisplayAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDisplayAnimator.h; sourceTree = "<group>"; };
@@ -432,6 +437,8 @@
 		0361057C19411AA10069D49E /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGManager.h; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		03664CAF19A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIFilter+VPhotoFilterComponentConformance.h"; sourceTree = "<group>"; };
+		03664CB019A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIFilter+VPhotoFilterComponentConformance.m"; sourceTree = "<group>"; };
 		03664CB519A57286007731EB /* VObjectManager+DeviceRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DeviceRegistration.h"; sourceTree = "<group>"; };
 		03664CB619A57286007731EB /* VObjectManager+DeviceRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DeviceRegistration.m"; sourceTree = "<group>"; };
 		036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindFriendsTableView.xib; sourceTree = "<group>"; };
@@ -1191,13 +1198,18 @@
 		03FDA090197A08FE00405361 /* Photo Filters */ = {
 			isa = PBXGroup;
 			children = (
+				03664CAF19A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.h */,
+				03664CB019A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.m */,
 				039B05D1197DC6260081C455 /* filters.xml */,
+				0333BE9C19A434B8008BD962 /* VCompositeImageFilter.h */,
+				0333BE9D19A434B8008BD962 /* VCompositeImageFilter.m */,
 				03FDA09A197A093A00405361 /* VPhotoFilter.h */,
 				03FDA09B197A093A00405361 /* VPhotoFilter.m */,
 				03FDA091197A092400405361 /* VPhotoFilterCollectionViewCell.h */,
 				03FDA092197A092400405361 /* VPhotoFilterCollectionViewCell.m */,
 				03FDA093197A092400405361 /* VPhotoFilterCollectionViewDataSource.h */,
 				03FDA094197A092400405361 /* VPhotoFilterCollectionViewDataSource.m */,
+				0333BE9F19A43740008BD962 /* VPhotoFilterComponent.h */,
 				03FDA095197A092400405361 /* VPhotoFilterSerialization.h */,
 				03FDA096197A092400405361 /* VPhotoFilterSerialization.m */,
 			);
@@ -2625,6 +2637,7 @@
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
 				3F9348A31922C944002EA91F /* VFollowerTableViewCell.m in Sources */,
+				03664CB119A4607A007731EB /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				BE31757C19257592007DAC76 /* VStreamContainerViewController.m in Sources */,
 				03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
@@ -2715,6 +2728,7 @@
 				BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */,
 				3F14C45418BD2BD0001796B9 /* VCVideoPlayerViewController.m in Sources */,
 				034B816F197F2EAB004F1845 /* VObjectManager+Analytics.m in Sources */,
+				0333BE9E19A434B8008BD962 /* VCompositeImageFilter.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
