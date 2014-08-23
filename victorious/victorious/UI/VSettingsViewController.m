@@ -181,18 +181,10 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
         viewController.title = NSLocalizedString(@"ToSText", @"");
-        
-        [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
-         {
-             if (!error)
-                 viewController.htmlString = htmlString;
-             else
-                 [viewController webView:nil didFailLoadWithError:error];
-         }];
     }
     else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
     {
-        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
+        viewController.urlToView = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
     }
 }
 

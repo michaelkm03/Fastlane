@@ -20,6 +20,7 @@ static const NSInteger kCharacterLimit = 255;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL* mediaURL;
 
 @end
@@ -39,7 +40,9 @@ static const NSInteger kCharacterLimit = 255;
     [self addAccessoryBar];
     
     self.promptLabel.textColor = [UIColor lightGrayColor];
-    self.textView.returnKeyType = UIReturnKeySend;
+    self.textView.returnKeyType = UIReturnKeyDefault;
+    
+    self.sendButton.enabled = (self.textView.text.length > 0);
 }
 
 
@@ -76,6 +79,11 @@ static const NSInteger kCharacterLimit = 255;
 
 - (IBAction)sendButtonAction:(id)sender
 {
+    if (self.textView.text.length < 1)
+    {
+        return;
+    }
+    
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
@@ -160,11 +168,9 @@ static const NSInteger kCharacterLimit = 255;
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 
 {
-    if ([text isEqualToString:@"\n"] && self.textView.returnKeyType == UIReturnKeySend)
-    {
-        [self sendButtonAction:textView];
-        return NO;
-    }
+    NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    self.sendButton.enabled = (newText.length > 0);
+    
     return YES;
 }
 

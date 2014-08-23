@@ -37,10 +37,6 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
     VCaptionTypeQuote
 };
 
-#pragma mark - Account Creation Contstants
-static NSString*  const kNewAccountEmail    = @"email";
-static NSString*  const kNewAccountPassword = @"password";
-
 #pragma mark - UI constants
 static NSUInteger const VConstantsMessageLength         = 140;
 static NSUInteger const VConstantsUsernameMaxLength     = 50;
@@ -62,6 +58,8 @@ static NSUInteger const kVConversationDoesNotExistError = 5000;
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVPollAlreadyAnsweredError      = 1005;
 static NSUInteger const kVUserBannedError               = 1007;
+
+static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
 
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;

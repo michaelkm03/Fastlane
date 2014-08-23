@@ -383,17 +383,23 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)publish:(id)sender
 {
-    if ([self.textView.text isEmpty])
+    if (self.textView.text.length < 2)
     {
-        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
-                                                             message:NSLocalizedString(@"PublishDescription", @"")
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                           message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil] ;
         [alert show];
         return;
     }
-    
+
+    // Clear out any auto-correct dots
+    self.textView.autocorrectionType = UITextAutocorrectionTypeNo;
+    NSString *currentText = self.textView.text;
+    self.textView.text = @"";
+    self.textView.text = currentText;
+
     UIImage* snapshot;
     if (self.captionType == VCaptionTypeMeme)
     {
@@ -417,7 +423,6 @@ static const CGFloat kShareMargin = 34.0f;
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
-
     }
     
     CGFloat playbackSpeed;
@@ -485,13 +490,22 @@ static const CGFloat kShareMargin = 34.0f;
                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
+        else if (error.code == kVMediaAlreadyCreatedError)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
+                                                                 message:NSLocalizedString(@"DuplicateVideoBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
         else
         {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                            message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
     }];
