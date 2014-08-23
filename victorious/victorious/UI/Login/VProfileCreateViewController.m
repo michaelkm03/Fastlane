@@ -282,7 +282,7 @@
                             options:(animationCurve << 16)
                          animations:^
         {
-            self.view.frame = CGRectOffset(self.view.bounds, 0, 0.0f - self.taglineTextView.bounds.size.height + VConstantsInputAccessoryHeight);
+            self.view.frame = CGRectOffset(self.view.bounds, 0, 0.0f - self.taglineTextView.bounds.size.height - VConstantsInputAccessoryHeight);
         }
                          completion:nil];
     }
