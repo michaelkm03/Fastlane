@@ -170,8 +170,8 @@
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -266,29 +266,38 @@
 
 #pragma mark - Notification Handlers
 
-- (void)keyboardWasShown:(NSNotification *)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    // Get the size of the keyboard.
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
+
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
-    CGFloat taglineMaxY = CGRectGetMaxY(self.taglineTextView.frame);
-    if (taglineMaxY > keyboardMinY)
-    {
-        [UIView animateWithDuration:animationDuration delay:0
-                            options:(animationCurve << 16) animations:^
-         {
-             self.view.frame = CGRectOffset(self.view.frame, 0, keyboardMinY - VConstantsInputAccessoryHeight - taglineMaxY);
-         }
+
+    if ([self.taglineTextView isFirstResponder]) {
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0f
+                            options:(animationCurve << 16)
+                         animations:^
+        {
+            self.view.frame = CGRectOffset(self.view.bounds, 0, 0.0f - self.taglineTextView.bounds.size.height + VConstantsInputAccessoryHeight);
+        }
                          completion:nil];
     }
+    
+//    CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
+//    CGFloat taglineMaxY = CGRectGetMaxY(self.taglineTextView.frame);
+//    if (taglineMaxY > keyboardMinY)
+//    {
+//        [UIView animateWithDuration:animationDuration delay:0
+//                            options:(animationCurve << 16) animations:^
+//         {
+//             self.view.frame = CGRectOffset(self.view.frame, 0, keyboardMinY - VConstantsInputAccessoryHeight - taglineMaxY);
+//         }
+//                         completion:nil];
+//    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -303,10 +312,7 @@
     [UIView animateWithDuration:animationDuration delay:0
                         options:(animationCurve << 16) animations:^
      {
-         
-         CGRect frame = self.view.frame;
-         frame.origin = CGPointMake(0, 0);
-         self.view.frame = frame;
+         self.view.frame = self.view.bounds;
      }
                      completion:nil];
 }
