@@ -178,17 +178,21 @@
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
+ 
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     VSuccessBlock successBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
         composeController.conversation = [resultObjects firstObject];
         [self.navigationController pushViewController:composeController animated:YES];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     };
     
     VFailBlock failBlock = ^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     };
     
     
