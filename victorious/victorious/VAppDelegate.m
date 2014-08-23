@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "NSString+VStringWithData.h"
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
@@ -14,10 +15,12 @@
 #import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
 #import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
+#import "VPushNotificationManager.h"
 #import "VSessionTimer.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -105,6 +108,16 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     
     [[VDeeplinkManager sharedManager] handleOpenURL:url];
     return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [[VPushNotificationManager sharedPushNotificationManager] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [[VPushNotificationManager sharedPushNotificationManager] didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
