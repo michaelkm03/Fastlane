@@ -20,6 +20,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
+#import "VPushNotificationManager.h"
 #import "VSessionTimer.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -71,8 +72,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
@@ -113,12 +112,12 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[VObjectManager sharedManager] registerAPNSToken:deviceToken successBlock:nil failBlock:nil];
+    [[VPushNotificationManager sharedPushNotificationManager] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    NSLog(@"Error registering for push notifications: %@", [error localizedDescription]);
+    [[VPushNotificationManager sharedPushNotificationManager] didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

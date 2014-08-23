@@ -13,6 +13,7 @@
 		0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */; };
 		031D86C41947BBB600CDB814 /* VForceUpgradeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */; };
 		031D86C51947BBB600CDB814 /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */; };
+		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
 		032C9B471929C113002FB447 /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */; };
 		0333B5D519A171510024B0DE /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0333B5D419A171510024B0DE /* VPaginationManager.m */; };
@@ -363,6 +364,8 @@
 		031D86C11947BBB600CDB814 /* VForceUpgradeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeViewController.h; sourceTree = "<group>"; };
 		031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeViewController.m; sourceTree = "<group>"; };
 		031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VForceUpgradeViewController.xib; sourceTree = "<group>"; };
+		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
+		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		032948A91970BE2E00208FBA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		032C9B451929C113002FB447 /* VObjectManager+ImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ImageSearch.h"; sourceTree = "<group>"; };
 		032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
@@ -1007,6 +1010,15 @@
 			);
 			name = ForceUpgrade;
 			path = UI/ForceUpgrade;
+			sourceTree = "<group>";
+		};
+		0326BBB719A8181B00D995DA /* Push Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				0326BBB819A8183800D995DA /* VPushNotificationManager.h */,
+				0326BBB919A8183800D995DA /* VPushNotificationManager.m */,
+			);
+			path = "Push Notifications";
 			sourceTree = "<group>";
 		};
 		03484BEC192D27E600403FB1 /* Lightbox */ = {
@@ -1828,6 +1840,7 @@
 			children = (
 				DB8D3A10198039BD005DD36D /* HashTags */,
 				BE6464E419511F1B0089A34F /* Deeplink */,
+				0326BBB719A8181B00D995DA /* Push Notifications */,
 				BEFA6887194B7CAC005A0189 /* Settings */,
 				035C2D801940F0D10023FC05 /* Analytics */,
 				BE7169D018D0F58C004966C3 /* InteractionManager */,
@@ -2687,6 +2700,7 @@
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
+				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
