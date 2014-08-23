@@ -43,21 +43,18 @@
 
 @implementation VHashTagStreamViewController
 
--(id)init
+- (id)init
 {
     return [self initWithHashTag:@""];
 }
 
--(id)initWithHashTag:(NSString*)hashTag
+- (id)initWithHashTag:(NSString *)hashTag
 {
-    
-    self = [super init];
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    self = [currentViewController.storyboard instantiateViewControllerWithIdentifier:kHashTagStreamStoryboardID];
     if (self)
     {
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        self = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
         [self setHashTag:hashTag];
-
     }
     return self;
 }
