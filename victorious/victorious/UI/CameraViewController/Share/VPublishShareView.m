@@ -106,7 +106,7 @@
 
 - (void)setTitle:(NSString *)title
 {
-    self.titleLabel.text = title;
+    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title ?: @"" attributes:[self attributesForTitle]];
 }
 
 - (void)updateColors
@@ -124,11 +124,12 @@
     }
 }
 
-- (void)awakeFromNib
+- (NSDictionary *)attributesForTitle
 {
-    [super awakeFromNib];
-    
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    return @{
+        NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font],
+        NSKernAttributeName: @(-1)
+    };
 }
 
 @end

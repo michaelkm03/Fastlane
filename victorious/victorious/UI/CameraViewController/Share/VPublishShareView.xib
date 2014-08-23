@@ -10,6 +10,17 @@
             <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Fcu-IS-I6P">
+                    <rect key="frame" x="22" y="11" width="22" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="save to library" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="55" translatesAutoresizingMaskIntoConstraints="NO" id="S02-jG-VMS">
+                    <rect key="frame" x="6" y="31" width="55" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QFB-AF-PHX">
                     <rect key="frame" x="0.0" y="0.0" width="67" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -21,19 +32,15 @@
                         <action selector="pressedShareButton:" destination="3vS-VG-xoV" eventType="touchUpInside" id="dO7-9k-ZIf"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Fcu-IS-I6P">
-                    <rect key="frame" x="22" y="11" width="22" height="19"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="save to library" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.30000000000000004" preferredMaxLayoutWidth="55" translatesAutoresizingMaskIntoConstraints="NO" id="S02-jG-VMS">
-                    <rect key="frame" x="6" y="34" width="55" height="24"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="S02-jG-VMS" firstAttribute="leading" secondItem="3vS-VG-xoV" secondAttribute="leading" constant="6" id="68L-vW-zvj"/>
+                <constraint firstAttribute="centerX" secondItem="Fcu-IS-I6P" secondAttribute="centerX" constant="0.5" id="AMW-WP-iCI"/>
+                <constraint firstAttribute="centerY" secondItem="S02-jG-VMS" secondAttribute="centerY" constant="-10.5" id="Njc-hb-n6k"/>
+                <constraint firstAttribute="centerY" secondItem="Fcu-IS-I6P" secondAttribute="centerY" constant="13" id="SWt-2Q-F0Q"/>
+                <constraint firstAttribute="trailing" secondItem="S02-jG-VMS" secondAttribute="trailing" constant="6" id="yeW-3j-Qeo"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="iconImageView" destination="Fcu-IS-I6P" id="oIk-oc-kPK"/>
