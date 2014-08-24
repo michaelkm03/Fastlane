@@ -452,6 +452,24 @@ static const CGFloat kShareMargin = 34.0f;
                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
         [alert show];
         
+        NSString  *analyticsString;
+        if ([self.mediaURL v_hasVideoExtension]) {
+            analyticsString = [NSString stringWithFormat:@"Published video via"];
+        } else {
+            switch (self.captionType) {
+                case VCaptionTypeNormal:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
+                    break;
+                case VCaptionTypeMeme:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
+                    break;
+                case VCaptionTypeQuote:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
+                    break;
+            }
+            
+        }
+        
         if (facebookSelected)
         {
             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
@@ -464,6 +482,11 @@ static const CGFloat kShareMargin = 34.0f;
              {
                  VLog(@"Failed with error: %@", error);
              }];
+
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
         }
         
         if (twitterSelected)
@@ -474,6 +497,11 @@ static const CGFloat kShareMargin = 34.0f;
                                                              secret:[VTwitterManager sharedManager].secret
                                                        successBlock:nil
                                                           failBlock:nil];
+            
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
         }
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
