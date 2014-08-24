@@ -20,11 +20,7 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
-@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate, UIGestureRecognizerDelegate>
-
-@property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
-@property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
-@property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
+@interface VRemixTrimViewController ()  <VRemixVideoRangeSliderDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
@@ -59,39 +55,21 @@
     self.trimSlider.delegate = self;
     [self.trimControlContainer addSubview:self.trimSlider];
     
-    [self.scrubber setThumbImage:[UIImage imageNamed:@"cameraScrubberIndicator"] forState:UIControlStateNormal];
-    
-    self.currentTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.totalTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
-    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
-    
-    double interval = .1f;
-    double duration = CMTimeGetSeconds([self playerItemDuration]);
-	if (isfinite(duration))
-	{
-		CGFloat width = CGRectGetWidth([self.scrubber bounds]);
-		interval = 0.5f * duration / width;
-	}
-
-    __weak VRemixTrimViewController *weakSelf = self;
-	self.timeObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
-                     {
-                         [weakSelf syncScrubber];
-                     }];
-
     // Add Video Player to Segment Selector
     self.trimSlider.videoPlayerViewController = self.videoPlayerViewController;
     
-    
     // To Ensure That The Navigation Bar is Always Present
     [self.navigationController setNavigationBarHidden:NO];
+    
+    // Set the Custom Next Button
+    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -136,20 +114,6 @@
     return NO;
 }
 
-#pragma mark - SCVideoPlayerDelegate
-
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
-{
-    CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-    if (CMTimeCompare(endTime, kCMTimeZero) != 0)
-    {
-        double normalizedTime = (double)self.videoPlayerViewController.player.currentTime.value / (double)endTime.value;
-        self.scrubber.value = normalizedTime;
-    }
-
-    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
-    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];
-}
 
 #pragma mark - VRemixVideoRangeSliderDelegate
 
@@ -330,27 +294,6 @@
         stitchViewController.playbackLooping = self.playbackLooping;
         stitchViewController.parentID = self.parentID;
     }
-}
-
-#pragma mark - Support
-
-- (void)syncScrubber
-{
-    CMTime playerDuration = [self playerItemDuration];
-	if (CMTIME_IS_INVALID(playerDuration))
-	{
-		self.scrubber.minimumValue = 0.0;
-		return;
-	}
-
-	double duration = CMTimeGetSeconds(playerDuration);
-	if (isfinite(duration) && (duration > 0))
-	{
-		float minValue = [self.scrubber minimumValue];
-		float maxValue = [self.scrubber maximumValue];
-		double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
-		[self.scrubber setValue:(maxValue - minValue) * time / duration + minValue];
-	}
 }
 
 @end

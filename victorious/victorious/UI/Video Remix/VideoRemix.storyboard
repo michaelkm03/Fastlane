@@ -147,13 +147,6 @@
                                     <action selector="takeSnapShotAction:" destination="uEv-AE-duX" eventType="touchUpInside" id="nbu-Lx-JPe"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="s7A-U9-bCy">
-                                <rect key="frame" x="55" y="65" width="210" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019607843137" green="0.12549019607843137" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="minimumTrackTintColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="maximumTrackTintColor" red="0.30980392156862746" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
-                            </slider>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-BV-WkM">
                                 <rect key="frame" x="0.0" y="508" width="107" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -184,22 +177,6 @@
                                     <action selector="playbackLoopingClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="DCZ-88-3Zd"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V5U-Ak-Uer">
-                                <rect key="frame" x="0.0" y="65" width="55" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019607843137" green="0.12549019607843137" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdh-uA-88a">
-                                <rect key="frame" x="265" y="65" width="55" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019607843137" green="0.12549019607843137" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doN-GD-FKd">
                                 <rect key="frame" x="0.0" y="440" width="320" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -213,23 +190,15 @@
                                 <action selector="goBack:" destination="uEv-AE-duX" id="xgO-IH-SJj"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ZUw-i1-Ae7">
-                            <connections>
-                                <action selector="nextButtonClicked:" destination="uEv-AE-duX" id="qKo-Tu-2T1"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="currentTimeLabel" destination="V5U-Ak-Uer" id="wEH-LT-f9a"/>
                         <outlet property="loopButton" destination="bZd-sH-zLg" id="0Jz-0b-vTj"/>
                         <outlet property="muteButton" destination="ZUq-H7-oEO" id="BuQ-qa-Q7u"/>
                         <outlet property="playButton" destination="ucr-Hp-JfF" id="HLc-ML-nor"/>
                         <outlet property="playCircle" destination="YQI-ac-uh8" id="FzX-0t-057"/>
                         <outlet property="previewParentView" destination="gBV-EL-ryr" id="iBS-qW-W16"/>
                         <outlet property="rateButton" destination="CN3-BV-WkM" id="hAH-ah-h7p"/>
-                        <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
                         <outlet property="takeImageSnapShotButton" destination="SlH-dr-QmS" id="LLh-hu-V8b"/>
-                        <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
                         <outlet property="trimControlContainer" destination="doN-GD-FKd" id="5cE-Cc-ChN"/>
                         <segue destination="vMj-SS-k4u" kind="push" identifier="toStitch" id="VD5-Sj-bti"/>
                     </connections>
@@ -313,7 +282,14 @@
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
-                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="CLr-Kk-zdY">
+                            <connections>
+                                <action selector="goBack:" destination="vMj-SS-k4u" id="HJQ-dU-Kv4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="btnNextArrowAccent" id="8ZA-Jm-6zK">
+                            <color key="tintColor" red="1" green="0.1217436891" blue="0.12809889520000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="afterButton" destination="WbC-ls-O0o" id="Pqt-TR-ueg"/>
@@ -335,9 +311,9 @@
     <resources>
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
+        <image name="btnNextArrowAccent" width="24" height="24"/>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
-        <image name="cameraButtonNext" width="24" height="24"/>
         <image name="cameraButtonNoLoop" width="106" height="59"/>
         <image name="cameraButtonSpeedNormal" width="107" height="59"/>
         <image name="cameraButtonUnmute" width="107" height="59"/>

@@ -15,7 +15,7 @@
     //// Color Declarations
     UIColor* color5 = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
     UIColor* gradientColor2 = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* color6 = [UIColor colorWithRed: 0.196 green: 0.161 blue: 0.047 alpha: 1];
+    UIColor* color6 = [UIColor colorWithRed:0.791 green:0.028 blue:0.010 alpha:1.000];
     
     //// Gradient Declarations
     NSArray* gradient3Colors = @[(id)gradientColor2.CGColor,
@@ -29,7 +29,7 @@
     
     //// Rounded Rectangle Drawing
     CGRect roundedRectangleRect = CGRectMake(CGRectGetMinX(bubbleFrame), CGRectGetMinY(bubbleFrame), CGRectGetWidth(bubbleFrame), CGRectGetHeight(bubbleFrame));
-    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: roundedRectangleRect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerBottomLeft cornerRadii: CGSizeMake(5, 5)];
+    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: roundedRectangleRect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerBottomLeft cornerRadii: CGSizeMake(1, 1)];
     [roundedRectanglePath closePath];
     CGContextSaveGState(context);
     [roundedRectanglePath addClip];

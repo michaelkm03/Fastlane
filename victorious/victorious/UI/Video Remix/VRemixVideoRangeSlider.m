@@ -26,7 +26,7 @@
 @property (nonatomic, strong) id progressObserver;
 @end
 
-#define SLIDER_BORDERS_SIZE 6.0f
+#define SLIDER_BORDERS_SIZE 3.0f
 #define BG_VIEW_BORDERS_SIZE 3.0f
 
 @implementation VRemixVideoRangeSlider
@@ -54,7 +54,7 @@
          UIImage *trackImage = [[UIImage alloc] init];
          [self.progressIndicator setMaximumTrackImage:trackImage forState:UIControlStateNormal];
          [self.progressIndicator setMinimumTrackImage:trackImage forState:UIControlStateNormal];
-         [self.progressIndicator setThumbImage:[UIImage imageNamed:@"cameraScrubberIndicator"] forState:UIControlStateNormal];
+         [self.progressIndicator setThumbImage:[UIImage imageNamed:@"timelineIndicator"] forState:UIControlStateNormal];
          [self.progressView addSubview:self.progressIndicator];
          
         
