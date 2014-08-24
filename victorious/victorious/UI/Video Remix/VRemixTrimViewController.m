@@ -86,6 +86,7 @@
                          [weakSelf syncScrubber];
                      }];
 
+    // Add Video Player to Segment Selector
     self.trimSlider.videoPlayerViewController = self.videoPlayerViewController;
     
     
@@ -160,11 +161,23 @@
     self.endSeconds = rightPosition;
     self.videoPlayerViewController.endSeconds = rightPosition;
 
+    
     double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
     if (time < leftPosition)
-        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+    {
+        //[self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, [self.videoPlayerViewController.player currentTime].timescale)
+                                          toleranceBefore:kCMTimeZero
+                                           toleranceAfter:kCMTimeZero];
+    }
+    
     if (time > rightPosition)
-        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+    {
+        //[self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, [self.videoPlayerViewController.player currentTime].timescale)
+                                          toleranceBefore:kCMTimeZero
+                                           toleranceAfter:kCMTimeZero];
+    }
 }
 
 #pragma mark - Actions
@@ -233,25 +246,36 @@
         [self.videoPlayerViewController.player pause];
 
     // Get the Time of the Current Frame
-    CMTime currentTime = [self.videoPlayerViewController.player currentTime];
-    CMTime actualTime;
+    CMTime currentTime = CMTimeMakeWithSeconds(CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]), [self.videoPlayerViewController.player currentTime].timescale);
+    CMTime actualTime, actualRepeat;
     NSError *error = nil;
-    
-    
     
     // Create A File Target
     NSURL *target = [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSnapShot"] stringByAppendingPathExtension:@"jpg"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
     
     // Create an AVAssetImageGenerator
-    AVAsset *anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
+    AVAsset *anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL
+                                               options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
+    
     AVAssetImageGenerator *imgGen = [[AVAssetImageGenerator alloc] initWithAsset:anAsset];
-    //imgGen.appliesPreferredTrackTransform = YES;
+    [imgGen setRequestedTimeToleranceBefore:kCMTimeZero];
+    [imgGen setRequestedTimeToleranceAfter:kCMTimeZero];
 
     // Using The AVAssetImageGenerator, Capture the Video Frame and Store it In A UIImage
     CGImageRef imgRef = [imgGen copyCGImageAtTime:currentTime actualTime:&actualTime error:&error];
     UIImage *thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
     CGImageRelease(imgRef);
+    
+    double currentSecs = CMTimeGetSeconds(currentTime);
+    double actualSecs = CMTimeGetSeconds(actualTime);
+    if (currentSecs != actualSecs)
+    {
+        imgRef = [imgGen copyCGImageAtTime:actualTime actualTime:&actualRepeat error:&error];
+        thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
+        CGImageRelease(imgRef);
+
+    }
     
     // Write the Captured Image to Disk
     [UIImageJPEGRepresentation(thumb, VConstantJPEGCompressionQuality) writeToURL:target atomically:YES];

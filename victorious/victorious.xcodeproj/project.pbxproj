@@ -338,7 +338,6 @@
 		DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 		DBE5C140199BF95400FA30F0 /* webContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBE5C13F199BF95400FA30F0 /* webContentView.xib */; };
-		DBEAC61019A9606400FC4CCF /* VImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEAC60F19A9606400FC4CCF /* VImagePickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -954,8 +953,6 @@
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
 		DBE5C13F199BF95400FA30F0 /* webContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = webContentView.xib; path = "UI/Base Classes/webContentView.xib"; sourceTree = "<group>"; };
-		DBEAC60E19A9606400FC4CCF /* VImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePickerController.h; path = UI/CameraViewController/VImagePickerController.h; sourceTree = "<group>"; };
-		DBEAC60F19A9606400FC4CCF /* VImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePickerController.m; path = UI/CameraViewController/VImagePickerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1581,8 +1578,6 @@
 				3F366E7018E24CCD00494B12 /* Remix */,
 				3F1AA53018CFEFFC0022D16B /* Capture */,
 				3F1AA53218CFF0180022D16B /* Common */,
-				DBEAC60E19A9606400FC4CCF /* VImagePickerController.h */,
-				DBEAC60F19A9606400FC4CCF /* VImagePickerController.m */,
 			);
 			name = CameraViewController;
 			sourceTree = "<group>";
@@ -2582,7 +2577,6 @@
 				BE2FC9091993E80F00F282AF /* VCompositeSnapshotController.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
-				DBEAC61019A9606400FC4CCF /* VImagePickerController.m in Sources */,
 				BEF186051989BD33007FB4BC /* VAsset.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE559E7019900881003E579A /* VShareView.m in Sources */,
