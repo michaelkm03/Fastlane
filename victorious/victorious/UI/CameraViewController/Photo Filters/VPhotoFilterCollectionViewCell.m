@@ -50,7 +50,7 @@
     
     self.label = [[UILabel alloc] init];
     self.label.translatesAutoresizingMaskIntoConstraints = NO;
-    self.label.font = [UIFont fontWithName:@"MuseoSans-500" size:11.0f]; // TODO: ask carly if this should be a themed font
+    self.label.font = [UIFont fontWithName:@"MuseoSans-500" size:11.0f];
     self.label.textColor = [UIColor colorWithRed:0.137f green:0.137f blue:0.137f alpha:1.0f];
     self.label.numberOfLines = 0;
     self.label.textAlignment = NSTextAlignmentCenter;

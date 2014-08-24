@@ -7,6 +7,7 @@
 //
 #import "VLoadingViewController.h"
 
+#import "VPushNotificationManager.h"
 #import "VStreamContainerViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -166,13 +167,15 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoaded = YES;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-             {
-                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
-             }
+            {
+                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+                [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
+            }
                                                                         onError:^(NSError *error)
-             {
-                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
-             }];
+            {
+                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+                [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
+            }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)
         {
