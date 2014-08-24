@@ -204,7 +204,7 @@
         for (VConversation* conversation in resultObjects)
         {
             //There should only be one message.  Its the current 'last message'
-            conversation.lastMessage = [conversation.messages anyObject];
+            conversation.lastMessage = [conversation.messages lastObject];
             
             //Sometimes we get -1 for the current logged in user
             if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
@@ -280,16 +280,25 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
+    NSManagedObjectID *conversationID = conversation.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        for (VMessage* message in resultObjects)
+        VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
+        if (refresh)
         {
-            VMessage* messageInContext = (VMessage*)[conversation.managedObjectContext objectWithID:message.objectID];
-            [conversation addMessagesObject:messageInContext];
+            conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjects];
+        }
+        else
+        {
+            NSMutableOrderedSet *messages = [conversation.messages mutableCopy];
+            [messages insertObjects:resultObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, resultObjects.count)]];
+            conversation.messages = messages;
         }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     if (refresh)

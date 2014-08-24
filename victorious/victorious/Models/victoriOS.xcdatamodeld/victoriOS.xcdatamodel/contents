@@ -60,7 +60,7 @@
         <attribute name="other_interlocutor_user_id" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="lastMessageInverse" inverseEntity="Message" syncable="YES"/>
-        <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
+        <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversations" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
