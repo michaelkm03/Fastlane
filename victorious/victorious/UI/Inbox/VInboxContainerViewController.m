@@ -30,7 +30,6 @@ typedef enum {
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VInboxContainerViewController* container = (VInboxContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
-    ((VInboxViewController*)container.tableViewController).delegate = container;
     
     return container;
 }
