@@ -40,8 +40,6 @@
 
 @implementation VObjectManager
 
-@synthesize mainUser;
-
 + (void)setupObjectManager
 {
 #if DEBUG && EnableRestKitLogs
@@ -123,6 +121,12 @@
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];
+}
+
+- (VUser *)mainUser
+{
+    NSAssert([NSThread isMainThread], @"mainUser should be accessed only from the main thread");
+    return _mainUser;
 }
 
 #pragma mark - operation
@@ -409,7 +413,11 @@
                              token,
                              RKStringFromRequestMethod(method)] SHA1HexDigest];
     
-    NSNumber* userID = mainUser.remoteId;
+    __block NSNumber* userID;
+    [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
+    {
+        userID = self.mainUser.remoteId;
+    }];
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [client setDefaultHeader:@"Authorization" value:sha1String];
