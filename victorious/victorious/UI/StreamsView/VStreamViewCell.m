@@ -169,8 +169,9 @@ static VLargeNumberFormatter* largeNumberFormatter;
         self.hashTagRanges = [VHashTags detectHashTags:text];
         if ([self.hashTagRanges count] > 0)
         {
-            newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText
-                                                withTagRanges:self.hashTagRanges];
+            [VHashTags formatHashTagsInString:newAttributedCellText
+                                withTagRanges:self.hashTagRanges
+                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
         }
         self.descriptionLabel.attributedText = newAttributedCellText;
     }

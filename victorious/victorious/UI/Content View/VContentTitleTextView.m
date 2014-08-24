@@ -113,18 +113,6 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
            };
 }
 
--(NSDictionary *)attributeForHashTag
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    return @{
-             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
-             NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-             NSParagraphStyleAttributeName: paragraphStyle,
-             };
-}
-
 - (void)setText:(NSString *)text
 {
     if (![_text isEqualToString:text])
@@ -133,26 +121,13 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     }
     self.seeMoreTextAppended = NO;
     
-    NSMutableAttributedString *newAttributedText;
-    if (text)
+    NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:text ?: @"" attributes:[self attributesForTitleText]];
+    self.hashTags = [VHashTags detectHashTags:text];
+    if ([self.hashTags count] > 0)
     {
-        self.hashTags = [VHashTags detectHashTags:text];
-        if ([self.hashTags count] > 0)
-        {
-            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text
-                                                                       attributes:[self attributesForTitleText]];
-            newAttributedText = [VHashTags formatHashTags:newAttributedText
-                                            withTagRanges:self.hashTags];
-        }
-        else
-        {
-            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text
-                                                                       attributes:[self attributesForTitleText]];
-        }
-    }
-    else
-    {
-        newAttributedText = [[NSMutableAttributedString alloc] initWithString:@""];
+        [VHashTags formatHashTagsInString:newAttributedText
+                            withTagRanges:self.hashTags
+                               attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
     }
     [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length)
                           withAttributedString:newAttributedText];

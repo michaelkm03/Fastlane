@@ -8,35 +8,7 @@
 
 #import "VHashTags.h"
 
-#import "VThemeManager.h"
-
-@interface VHashTags ()
-
-+(NSDictionary *)attributeForHashTag;
-
-@end
-
 @implementation VHashTags
-
-
-+(NSMutableAttributedString*)formatTag:(NSString*)hashTag
-{
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:hashTag
-                                                                                         attributes:[self attributeForHashTag]];
-    return attributedString;
-}
-
-+(NSDictionary *)attributeForHashTag
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    return @{
-             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
-             NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-             NSParagraphStyleAttributeName: paragraphStyle,
-             };
-}
 
 +(NSArray*)detectHashTags:(NSString*)fieldText
 {
@@ -63,25 +35,19 @@
     return [NSArray arrayWithArray:array];
 }
 
-+(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText
-                              withTagRanges:(NSArray*)tagRanges
++ (void)formatHashTagsInString:(NSMutableAttributedString*)fieldText
+                 withTagRanges:(NSArray*)tagRanges
+                    attributes:(NSDictionary *)attributes
 {
-    __block NSMutableAttributedString *attributedTag = [[NSMutableAttributedString alloc] initWithString:@""];
-    
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
     {
         NSRange tagRange = [tagRangeValue rangeValue];
-        NSRange tagRangeWithHash = {tagRange.location-1,tagRange.length+1};
-        NSString *tagText = [NSString stringWithFormat:@"#%@", [fieldText.string substringWithRange:tagRange]];
-        attributedTag = [self formatTag:tagText];
-        [fieldText replaceCharactersInRange:tagRangeWithHash
-                       withAttributedString:attributedTag];
+        if (tagRange.location && tagRange.length < fieldText.length)
+        {
+            NSRange tagRangeWithHash = {tagRange.location - 1,tagRange.length + 1};
+            [fieldText addAttributes:attributes range:tagRangeWithHash];
+        }
     }];
-    
-    return fieldText;
 }
-
-
-
 
 @end
