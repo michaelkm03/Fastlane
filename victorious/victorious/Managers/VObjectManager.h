@@ -11,9 +11,9 @@
 @class VPaginationManager, VUser;
 
 /*! Block that executes when the request succeeds.*/
-typedef void (^VSuccessBlock) (NSOperation*, id, NSArray*);
+typedef void (^VSuccessBlock) (NSOperation *operation, id result, NSArray *resultObjects);
 /*! Block that executes when the request fails.*/
-typedef void (^VFailBlock) (NSOperation*, NSError*);
+typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 @interface VObjectManager : RKObjectManager
 
