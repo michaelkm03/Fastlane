@@ -457,7 +457,8 @@ static const CGFloat kShareMargin = 34.0f;
         {
             analyticsString = [NSString stringWithFormat:@"Published video via"];
         } else {
-            switch (self.captionType) {
+            switch (self.captionType)
+            {
                 case VCaptionTypeNormal:
                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
                     break;
