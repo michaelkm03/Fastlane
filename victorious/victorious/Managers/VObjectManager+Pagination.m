@@ -218,7 +218,7 @@
             
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
-                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+                conversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", conversation.remoteId.intValue];
             }
             
             if (!conversation.user && conversation.other_interlocutor_user_id)

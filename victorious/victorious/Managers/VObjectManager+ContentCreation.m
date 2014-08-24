@@ -477,7 +477,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             if (![conversation.remoteId isEqualToNumber:returnedId])
             {
                 conversation.remoteId = returnedId;
-                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:returnedId.stringValue];
+                conversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", returnedId.intValue];
             }
             NSNumber* messageID = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
             

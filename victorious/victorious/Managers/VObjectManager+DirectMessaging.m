@@ -22,7 +22,6 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-
 - (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
@@ -58,7 +57,7 @@
             
             if (!newConversation.filterAPIPath || [newConversation.filterAPIPath isEmpty])
             {
-                newConversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:newConversation.remoteId.stringValue];
+                newConversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", newConversation.remoteId.intValue];
             }
             
             [newConversation.managedObjectContext saveToPersistentStore:nil];
@@ -100,7 +99,6 @@
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
-    
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
