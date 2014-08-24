@@ -25,8 +25,6 @@
 
 #import "VElapsedTimeFormatter.h"
 
-static const CGFloat kVRealtimeCommentTimeout = 2.0f;
-
 @interface VRealtimeCommentViewController ()
 
 @property (nonatomic, weak) IBOutlet UIView* progressBackgroundView;
@@ -97,7 +95,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     for (VComment* comment in self.comments)
     {
         CGFloat startTime = comment.realtime.floatValue;
-        if (startTime < time && time-startTime < kVRealtimeCommentTimeout)
+        if (startTime < time)
             currentComment = comment;
         else if (startTime > time)
             break;
