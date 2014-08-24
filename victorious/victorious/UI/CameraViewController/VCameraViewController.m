@@ -16,6 +16,7 @@
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
+#import "VImagePickerController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
 #import "VSettingManager.h"
@@ -57,7 +58,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 + (BOOL)isCameraAvailable
 {
-    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+    return [VImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
 }
 
 + (VCameraViewController *)cameraViewController
@@ -128,8 +129,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(VConstantsMaximumVideoDuration, 1);
     self.camera.videoEncoder.outputVideoSize = CGSizeMake(320.0, 320.0);
 
-    BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
-    BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+    BOOL    hasFrontCamera = [VImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+    BOOL    hasRearCamera = [VImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
     
     self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
     if (hasRearCamera)
@@ -271,7 +272,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (IBAction)openAlbumAction:(id)sender
 {
-    UIImagePickerController*    controller = [[UIImagePickerController alloc] init];
+    VImagePickerController*    controller = [[VImagePickerController alloc] init];
     
     controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     controller.allowsEditing = NO;
@@ -450,11 +451,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     switch (self.camera.cameraDevice)
     {
         case VCCameraDeviceFront:
-            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront] ? 1.0f : 0.0f;
+            self.flashButton.alpha = [VImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront] ? 1.0f : 0.0f;
             break;
             
         case VCCameraDeviceBack:
-            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ? 1.0f : 0.0f;
+            self.flashButton.alpha = [VImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ? 1.0f : 0.0f;
             break;
             
         default:
@@ -472,7 +473,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (mediaType.length == 0)
         return NO;
     
-    NSArray* availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+    NSArray* availableMediaTypes = [VImagePickerController availableMediaTypesForSourceType:sourceType];
     
     [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
      {
