@@ -8,7 +8,7 @@
         <!--Inbox View Controller-->
         <scene sceneID="ou3-rr-Ug5">
             <objects>
-                <tableViewController storyboardIdentifier="inbox" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VInboxViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="inbox" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VInboxViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="92" sectionHeaderHeight="22" sectionFooterHeight="22" id="YYr-UO-Tcc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -443,7 +443,7 @@
         <!--Root View Controller-->
         <scene sceneID="SBu-AO-Tpm">
             <objects>
-                <viewController storyboardIdentifier="rootController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L3S-Yk-w4N" customClass="VRootViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="rootController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L3S-Yk-w4N" customClass="VRootViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fcF-4G-gYg"/>
                         <viewControllerLayoutGuide type="bottom" id="bi6-Tb-VbN"/>
@@ -1939,7 +1939,7 @@
         <!--Inbox Container View Controller-->
         <scene sceneID="2GS-53-SxR">
             <objects>
-                <viewController storyboardIdentifier="inboxcontainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Yw-Xf-WUE" customClass="VInboxContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="inboxcontainer" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Yw-Xf-WUE" customClass="VInboxContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ykg-g6-NwQ"/>
                         <viewControllerLayoutGuide type="bottom" id="ZXG-1i-7LC"/>
