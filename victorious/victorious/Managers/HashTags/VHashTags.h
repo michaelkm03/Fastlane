@@ -28,16 +28,16 @@
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
-+(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary;
-
++(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText
+                              withTagRanges:(NSArray*)tagRanges;
 
 /**
- Returns an BOOL indicating wheather hash tags are detected in a string of text.
- 
- @param fieldText The string, (that may or may not contain hash tags), that needs to be checked
- 
- @return An NSDictionary object containing any found tags. (Otherwise return nil)
+ *  Find all hash tags within a given string.
+ *
+ *  @param fieldText The string to detect hash tags in.
+ *
+ *  @return An arry of NSRanges wrapped in NSValues.
  */
-+(NSDictionary*)detectHashTags:(NSString*)fieldText;
++(NSArray*)detectHashTags:(NSString*)fieldText;
 
 @end
