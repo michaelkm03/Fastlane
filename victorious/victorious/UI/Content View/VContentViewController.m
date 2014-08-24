@@ -131,7 +131,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         {
             self.keyboardBarVC = (VKeyboardBarViewController*)vc;
             self.keyboardBarVC.delegate = self;
-            self.keyboardBarVC.hideAccessoryBar = YES;
         }
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];

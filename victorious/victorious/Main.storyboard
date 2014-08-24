@@ -914,7 +914,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="epz-Kz-wbf" kind="embed" id="5WD-vV-kR2"/>
+                                    <segue destination="Xnc-VI-aqb" kind="embed" id="RlG-Yq-YxR"/>
                                 </connections>
                             </containerView>
                             <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Video Playback Masking View">
@@ -2169,6 +2169,10 @@
                                         <rect key="frame" x="10" y="10" width="32" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="1yh-5A-Lxy">
+                                        <rect key="frame" x="270" y="16" width="9" height="9"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xns-a2-wTW" userLabel="Time Label">
                                         <rect key="frame" x="280" y="10" width="40" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2696,6 +2700,7 @@
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="contentViewCollapse" width="40" height="40"/>
+        <image name="conversationClock" width="9" height="9"/>
         <image name="createContentButton" width="27" height="27"/>
         <image name="flipReverseIcon" width="23" height="20"/>
         <image name="profileCompose" width="27" height="27"/>
