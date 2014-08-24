@@ -2173,7 +2173,7 @@
                                             <constraint firstAttribute="height" constant="32" id="KNq-pQ-gX3"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="1yh-5A-Lxy">
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="1yh-5A-Lxy">
                                         <rect key="frame" x="270" y="16" width="9" height="9"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -2228,6 +2228,8 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="xns-a2-wTW" firstAttribute="leading" secondItem="1yh-5A-Lxy" secondAttribute="trailing" constant="1" id="0jD-cq-ZhH"/>
+                                    <constraint firstItem="1yh-5A-Lxy" firstAttribute="bottom" secondItem="xns-a2-wTW" secondAttribute="bottom" constant="-6" id="CJj-BH-YJM"/>
                                     <constraint firstItem="2Na-HK-39F" firstAttribute="top" secondItem="6Vh-qS-PfT" secondAttribute="top" constant="10" id="EY3-Y9-6yx"/>
                                     <constraint firstAttribute="bottom" secondItem="DTS-fO-icL" secondAttribute="bottom" constant="21" id="Itc-pY-koN"/>
                                     <constraint firstAttribute="trailing" secondItem="xns-a2-wTW" secondAttribute="trailing" id="MlO-vi-epo"/>
