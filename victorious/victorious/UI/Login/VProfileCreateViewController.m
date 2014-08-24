@@ -131,7 +131,8 @@
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
+    {
         self.backButton.hidden = YES;
     }
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -349,7 +350,8 @@
 {
     self.profile = mainUser;
     
-    switch (self.loginType) {
+    switch (self.loginType)
+    {
         case kVLoginTypeNone:
             break;
         case kVLoginTypeEmail:

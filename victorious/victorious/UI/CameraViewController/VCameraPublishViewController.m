@@ -453,7 +453,8 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         
         NSString  *analyticsString;
-        if ([self.mediaURL v_hasVideoExtension]) {
+        if ([self.mediaURL v_hasVideoExtension])
+        {
             analyticsString = [NSString stringWithFormat:@"Published video via"];
         } else {
             switch (self.captionType) {
