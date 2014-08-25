@@ -182,7 +182,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (!self.refreshFailed &&
-        scrollView.contentOffset.y < CGRectGetHeight(scrollView.bounds) * 0.5f &&
+        scrollView.contentOffset.y < CGRectGetHeight(scrollView.bounds) &&
         ![self.tableDataSource isLoading] &&
         [self.tableDataSource areMorePagesAvailable])
     {
