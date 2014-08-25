@@ -12,4 +12,10 @@
 
 @property (nonatomic, strong) VUser *otherUser;
 
+/**
+ If YES, the receiver will refresh from the server on -viewWillAppear.
+ Resets back to NO on every appearance.
+ */
+@property (nonatomic)         BOOL   shouldRefreshOnAppearance;
+
 @end

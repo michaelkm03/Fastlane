@@ -7,12 +7,14 @@
 //
 
 #import "VAnalyticsRecorder.h"
+#import "VConstants.h"
 #import "VInboxViewController.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
 #import "VNotification+RestKit.h"
+#import "VMessageViewController.h"
 #import "VMessageContainerViewController.h"
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
@@ -30,12 +32,15 @@ NS_ENUM(NSUInteger, VModeSelect)
     kNotificationModeSelect = 1
 };
 
-static  NSString*   kMessageCellViewIdentifier    =   @"VConversationCell";
-static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
+static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
+static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
-@property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
-@property (weak, nonatomic) IBOutlet UIView*                headerView;
+
+@property (weak, nonatomic)   IBOutlet UISegmentedControl *modeSelectControl;
+@property (weak, nonatomic)   IBOutlet UIView             *headerView;
+@property (strong, nonatomic) NSMutableDictionary         *detailViewControllers;
+
 @end
 
 @implementation VInboxViewController
@@ -57,6 +62,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.detailViewControllers = [[NSMutableDictionary alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -206,7 +213,16 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"toMessage" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+    VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VMessageContainerViewController *detailVC = self.detailViewControllers[conversation.remoteId];
+    if (!detailVC)
+    {
+        detailVC = (VMessageContainerViewController *)[self.storyboard instantiateViewControllerWithIdentifier:kMessageContainerID];
+        detailVC.otherUser = conversation.user;
+        self.detailViewControllers[conversation.remoteId] = detailVC;
+    }
+    [(VMessageViewController *)detailVC.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - Actions
@@ -252,35 +268,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
-                                             style:UIBarButtonItemStylePlain
-                                             target:nil
-                                             action:nil];
-
-    if ([segue.identifier isEqualToString:@"toMessage"])
-    {
-        VMessageContainerViewController *subview = (VMessageContainerViewController *)segue.destinationViewController;
-        UITableViewCell* cell = (UITableViewCell*)sender;
-
-        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-        subview.otherUser = conversation.user;
-    }
-    else if ([segue.identifier isEqualToString:@"toNews"])
-    {
-//        VNewsViewController *subview = (VNewsViewController *)segue.destinationViewController;
-//        UITableViewCell* cell = (UITableViewCell*)sender;
-//        
-//        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-//        
-//        [subview setConversation:conversation];
-    }
 }
 
 #pragma mark - UIScrollViewDelegate

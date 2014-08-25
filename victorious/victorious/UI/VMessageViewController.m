@@ -71,26 +71,30 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    if (!self.tableDataSource.isLoading)
+    if (self.shouldRefreshOnAppearance)
     {
-        [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
-        [self.tableDataSource refreshWithCompletion:^(NSError *error)
+        self.shouldRefreshOnAppearance = NO;
+        if (!self.tableDataSource.isLoading)
         {
-            [MBProgressHUD hideAllHUDsForView:self.parentViewController.view animated:YES];
-            if (error)
+            [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+            [self.tableDataSource refreshWithCompletion:^(NSError *error)
             {
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
-                hud.mode = MBProgressHUDModeText;
-                hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
-                [hud hide:YES afterDelay:3.0];
-            }
-            else
-            {
-                [self scrollToBottomAnimated:NO];
-            }
-        }];
+                [MBProgressHUD hideAllHUDsForView:self.parentViewController.view animated:YES];
+                if (error)
+                {
+                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+                    hud.mode = MBProgressHUDModeText;
+                    hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
+                    [hud hide:YES afterDelay:3.0];
+                }
+                else
+                {
+                    [self scrollToBottomAnimated:NO];
+                }
+            }];
+        }
+        self.shouldScrollToBottom = YES;
     }
-    self.shouldScrollToBottom = YES;
 }
 
 - (void)loadNextPageAction
