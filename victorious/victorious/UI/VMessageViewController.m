@@ -18,6 +18,7 @@
 #import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
 #import "VMessageCell.h"
+#import "VMessageContainerViewController.h"
 #import "VMessage+RestKit.h"
 #import "VObjectManager.h"
 #import "VPaginationManager.h"
@@ -76,13 +77,14 @@
         self.shouldRefreshOnAppearance = NO;
         if (!self.tableDataSource.isLoading)
         {
-            [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+            VMessageContainerViewController *container = (VMessageContainerViewController *)self.parentViewController;
+            container.busyView.hidden = NO;
             [self.tableDataSource refreshWithCompletion:^(NSError *error)
             {
-                [MBProgressHUD hideAllHUDsForView:self.parentViewController.view animated:YES];
+                container.busyView.hidden = YES;
                 if (error)
                 {
-                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:container.view animated:YES];
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
                     [hud hide:YES afterDelay:3.0];

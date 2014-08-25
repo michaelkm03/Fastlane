@@ -128,13 +128,37 @@
                                     <constraint firstAttribute="bottom" secondItem="ize-9d-bh3" secondAttribute="bottom" id="kFx-S9-Q2o"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-6n-Wb8" userLabel="Busy View">
+                                <rect key="frame" x="128" y="252" width="64" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="TSK-pW-by3">
+                                        <rect key="frame" x="14" y="14" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="TSK-pW-by3" secondAttribute="centerX" id="9HS-f7-lpJ"/>
+                                    <constraint firstAttribute="height" constant="64" id="W2Q-iP-Swt"/>
+                                    <constraint firstAttribute="width" constant="64" id="hU9-d1-Qhk"/>
+                                    <constraint firstAttribute="centerY" secondItem="TSK-pW-by3" secondAttribute="centerY" id="uLd-jA-VRM"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerY" secondItem="T2h-6n-Wb8" secondAttribute="centerY" id="90U-Ma-fpC"/>
                             <constraint firstAttribute="trailing" secondItem="HgY-Pa-0TC" secondAttribute="trailing" id="HiL-Dp-FJl"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="top" secondItem="apj-Bv-lmT" secondAttribute="bottom" id="IQo-YO-1oL"/>
                             <constraint firstItem="7bq-1t-oAX" firstAttribute="leading" secondItem="wK6-zv-ecc" secondAttribute="leading" id="Q7V-Ef-0SQ"/>
                             <constraint firstAttribute="trailing" secondItem="7bq-1t-oAX" secondAttribute="trailing" id="eQJ-t5-Lb3"/>
+                            <constraint firstAttribute="centerX" secondItem="T2h-6n-Wb8" secondAttribute="centerX" id="eQt-tg-swK"/>
                             <constraint firstItem="RWl-oO-2Nk" firstAttribute="top" secondItem="HgY-Pa-0TC" secondAttribute="bottom" id="fds-rE-EeU"/>
                             <constraint firstItem="7bq-1t-oAX" firstAttribute="top" secondItem="apj-Bv-lmT" secondAttribute="bottom" id="jeV-dp-IZl"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="leading" secondItem="wK6-zv-ecc" secondAttribute="leading" id="vqz-2K-0w8"/>
@@ -145,6 +169,7 @@
                     <connections>
                         <outlet property="backButton" destination="MHH-cG-KmJ" id="P4Y-Ln-Yiy"/>
                         <outlet property="backgroundImageView" destination="HgY-Pa-0TC" id="gD4-x5-SZk"/>
+                        <outlet property="busyView" destination="T2h-6n-Wb8" id="UyM-4F-CUb"/>
                         <outlet property="moreButton" destination="ize-9d-bh3" id="2aq-lj-ErZ"/>
                         <outlet property="titleLabel" destination="X81-AQ-EK0" id="Mt1-gT-Ed2"/>
                         <outlet property="topConstraintView" destination="7bq-1t-oAX" id="CUA-AV-XdP"/>

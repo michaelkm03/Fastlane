@@ -54,6 +54,7 @@
     [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 
     [self addBackgroundImage];
+    [self.view bringSubviewToFront:self.busyView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
