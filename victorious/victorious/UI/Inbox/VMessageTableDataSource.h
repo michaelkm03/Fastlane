@@ -35,10 +35,9 @@
  property of the given tableView, and registers reusable 
  conversation cells.
  
- @param otherUser     the user with whom we are conversing
  @param objectManager an instance of VObjectManager used to perform network calls
  */
-- (instancetype)initWithUser:(VUser *)otherUser objectManager:(VObjectManager *)objectManager;
+- (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
 
 - (void)refreshWithCompletion:(void(^)(NSError *error))completion;
 - (void)loadNextPageWithCompletion:(void(^)(NSError *error))completion;

@@ -26,57 +26,12 @@
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    NSAssert(user != nil, @"Must provide user with which to start a conversation");
-    
-    if (user.conversation)
-    {
-        if (success)
-        {
-            NSManagedObjectID *conversationObjectID = user.conversation.objectID;
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-                success(nil, nil, @[[context objectWithID:conversationObjectID]]);
-            });
-        }
-        return nil;
-    }
-    
-    NSManagedObjectID *userObjectID = user.objectID;
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == kVConversationDoesNotExistError)
-        {
-            NSAssert([NSThread isMainThread], @"callbacks are supposed to be on the main thread");
-            NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-            VConversation *newConversation = [NSEntityDescription
-                                              insertNewObjectForEntityForName:[VConversation entityName]
-                                              inManagedObjectContext:context];
-            newConversation.user = (VUser *)[context objectWithID:userObjectID];
-            newConversation.other_interlocutor_user_id = newConversation.user.remoteId;
-            newConversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", newConversation.remoteId.intValue];
-            [context saveToPersistentStore:nil];
-            
-            if (success)
-            {
-                success(nil, nil, @[newConversation]);
-            }
-        }
-        else
-        {
-            VLog(@"Failed with error: %@", error);
-            if (fail)
-            {
-                fail(operation, error);
-            }
-        }
-    };
-    
+    NSParameterAssert(user != nil);
     return [self GET:[@"/api/message/conversation_with_user/" stringByAppendingString:user.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fullFail];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID

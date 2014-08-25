@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "NSDate+timeSince.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -27,10 +28,20 @@
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
 @property (nonatomic, strong) VMessageTableDataSource *tableDataSource;
+@property (nonatomic)         BOOL                     shouldScrollToBottom;
 
 @end
 
 @implementation VMessageViewController
+
+- (void)setOtherUser:(VUser *)otherUser
+{
+    _otherUser = otherUser;
+    if ([self isViewLoaded])
+    {
+        self.tableDataSource.otherUser = otherUser;
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -39,36 +50,57 @@
     [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
          forCellReuseIdentifier:kVMessageCellNibName];
 
-    self.tableDataSource = [[VMessageTableDataSource alloc] initWithUser:self.otherUser objectManager:[VObjectManager sharedManager]];
+    self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
+    self.tableDataSource.otherUser = self.otherUser;
     self.tableDataSource.tableView = self.tableView;
     self.tableDataSource.delegate = self;
     self.tableView.dataSource = self.tableDataSource;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    if (self.shouldScrollToBottom)
+    {
+        self.shouldScrollToBottom = NO;
+        [self scrollToBottomAnimated:NO];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
     if (!self.tableDataSource.isLoading)
     {
+        [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
         [self.tableDataSource refreshWithCompletion:^(NSError *error)
         {
+            [MBProgressHUD hideAllHUDsForView:self.parentViewController.view animated:YES];
             if (error)
             {
-                // TODO
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
+                [hud hide:YES afterDelay:3.0];
             }
             else
             {
-                [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height - CGRectGetHeight(self.tableView.bounds))
-                                        animated:NO];
+                [self scrollToBottomAnimated:NO];
             }
         }];
     }
+    self.shouldScrollToBottom = YES;
 }
 
 - (void)loadNextPageAction
 {
     [self.tableDataSource loadNextPageWithCompletion:nil];
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated
+{
+    [self.tableView setContentOffset:CGPointMake(0, MAX(self.tableView.contentSize.height - CGRectGetHeight(self.tableView.bounds), 0)) animated:animated];
 }
 
 #pragma mark - VMessageTableDataDelegate methods

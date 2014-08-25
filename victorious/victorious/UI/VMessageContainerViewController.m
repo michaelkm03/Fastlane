@@ -134,26 +134,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    // TODO: do we really need this?
-#if 0
-    //Be sure to delete the conversation if we've come to create a new conversation and stopped
-    if (![[self.conversation messages] count])
-    {
-        NSManagedObjectContext* context =   self.conversation.managedObjectContext;
-        [context deleteObject:self.conversation];
-        [context saveToPersistentStore:nil];
-        
-        //Delete the evidence!
-        ((VMessageViewController*)self.conversationTableViewController).conversation = nil;
-        self.conversation = nil;
-    }
-#endif
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

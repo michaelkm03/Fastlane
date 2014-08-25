@@ -8,6 +8,7 @@
 
 #import "NSDate+timeSince.h"
 #import "VCommentTextAndMediaView.h"
+#import "VConstants.h"
 #import "VConversation.h"
 #import "VMessage.h"
 #import "VMessageCell.h"
@@ -25,27 +26,66 @@ static const NSInteger kPendingMessagesSection = 1; ///< The table view section 
 
 static const NSInteger kGenericErrorCode       = 1;
 
+static char KVOContext;
+
 @interface VMessageTableDataSource ()
 
 @property (nonatomic, strong) VConversation *conversation;
+@property (nonatomic)         BOOL           newConversation; //< YES if this conversation does not yet have a corresponding VConversation object
 @property (nonatomic)         BOOL           isLoading;
 
 @end
 
 @implementation VMessageTableDataSource
 
-- (instancetype)initWithUser:(VUser *)otherUser objectManager:(VObjectManager *)objectManager
+- (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
-    NSParameterAssert(otherUser != nil);
     NSParameterAssert(objectManager != nil);
 
     self = [super init];
     if (self)
     {
         _objectManager = objectManager;
-        _otherUser = otherUser;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    self.otherUser = nil;
+}
+
+- (void)setOtherUser:(VUser *)otherUser
+{
+    if (_otherUser == otherUser)
+    {
+        return;
+    }
+    
+    _otherUser = otherUser;
+    self.conversation = otherUser.conversation;
+    
+    [self reloadTableView];
+}
+
+- (void)setConversation:(VConversation *)conversation
+{
+    if (_conversation == conversation)
+    {
+        return;
+    }
+    
+    if (_conversation)
+    {
+        [_conversation removeObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) context:&KVOContext];
+    }
+    
+    _conversation = conversation;
+    
+    if (conversation)
+    {
+        [conversation addObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+    }
 }
 
 - (void)refreshWithCompletion:(void (^)(NSError *))completion
@@ -65,7 +105,6 @@ static const NSInteger kGenericErrorCode       = 1;
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self reloadTableView];
             if (completion)
             {
                 completion(nil);
@@ -109,14 +148,13 @@ static const NSInteger kGenericErrorCode       = 1;
         }
     }
     
-    if (self.conversation)
+    if (self.conversation || self.newConversation)
     {
         self.isLoading = YES;
         [self.objectManager loadNextPageOfConversation:self.conversation
                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self reloadTableView];
             if (completion)
             {
                 completion(nil);
@@ -134,19 +172,19 @@ static const NSInteger kGenericErrorCode       = 1;
     else
     {
         [self loadConversationWithCompletion:^(NSError *error)
-         {
-             if (error)
-             {
-                 if (completion)
-                 {
-                     completion(error);
-                 }
-             }
-             else
-             {
-                 [self refreshWithCompletion:completion];
-             }
-         }];
+        {
+            if (error)
+            {
+                if (completion)
+                {
+                    completion(error);
+                }
+            }
+            else
+            {
+                [self refreshWithCompletion:completion];
+            }
+        }];
     }
 }
 
@@ -181,7 +219,15 @@ static const NSInteger kGenericErrorCode       = 1;
                                    failBlock:^(NSOperation *operation, NSError *error)
     {
         self.isLoading = NO;
-        if (completion)
+        if (error.code == kVConversationDoesNotExistError)
+        {
+            self.newConversation = YES;
+            if (completion)
+            {
+                completion(nil);
+            }
+        }
+        else if (completion)
         {
             completion(error ?: [NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Could not retrieve conversation from server" }]);
         }
@@ -210,6 +256,17 @@ static const NSInteger kGenericErrorCode       = 1;
     // TODO
 }
 
+
+- (void)reloadTableView
+{
+    CGSize beforeSize = self.tableView.contentSize;
+    [self.tableView reloadData];
+    if (beforeSize.height)
+    {
+        self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + self.tableView.contentSize.height - beforeSize.height);
+    }
+}
+
 - (VMessage *)messageAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == kConversationSection)
@@ -227,13 +284,6 @@ static const NSInteger kGenericErrorCode       = 1;
     {
         return nil; // TODO
     }
-}
-
-- (void)reloadTableView
-{
-    CGSize beforeSize = self.tableView.contentSize;
-    [self.tableView reloadData];
-    self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + self.tableView.contentSize.height - beforeSize.height);
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -274,6 +324,16 @@ static const NSInteger kGenericErrorCode       = 1;
 {
     VMessage *message = [self messageAtIndexPath:indexPath];
     return [self.delegate dataSource:self cellForMessage:message atIndexPath:indexPath];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.conversation && [keyPath isEqualToString:NSStringFromSelector(@selector(messages))])
+    {
+        [self reloadTableView];
+    }
 }
 
 @end
