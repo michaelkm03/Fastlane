@@ -13,13 +13,13 @@
 		0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */; };
 		031D86C41947BBB600CDB814 /* VForceUpgradeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */; };
 		031D86C51947BBB600CDB814 /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */; };
-		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326BBAA19A7AA7E00D995DA /* VPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBA619A7AA7E00D995DA /* VPublishShareController.m */; };
 		0326BBAB19A7AA7E00D995DA /* VPublishShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBA819A7AA7E00D995DA /* VPublishShareView.m */; };
 		0326BBAC19A7AA7E00D995DA /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0326BBA919A7AA7E00D995DA /* VPublishShareView.xib */; };
 		0326BBAF19A7AACE00D995DA /* VFacebookPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBAE19A7AACE00D995DA /* VFacebookPublishShareController.m */; };
 		0326BBB219A7F4B100D995DA /* VTwitterPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB119A7F4B100D995DA /* VTwitterPublishShareController.m */; };
 		0326BBB519A803DE00D995DA /* VCameraRollPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB419A803DE00D995DA /* VCameraRollPublishShareController.m */; };
+		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
 		032C9B471929C113002FB447 /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */; };
 		0333B5D519A171510024B0DE /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0333B5D419A171510024B0DE /* VPaginationManager.m */; };
@@ -334,6 +334,7 @@
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
+		D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D866E84519ABAF9700B20082 /* VSelectorViewController.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
@@ -371,8 +372,6 @@
 		031D86C11947BBB600CDB814 /* VForceUpgradeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeViewController.h; sourceTree = "<group>"; };
 		031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeViewController.m; sourceTree = "<group>"; };
 		031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VForceUpgradeViewController.xib; sourceTree = "<group>"; };
-		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
-		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326BBA519A7AA7E00D995DA /* VPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishShareController.h; sourceTree = "<group>"; };
 		0326BBA619A7AA7E00D995DA /* VPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishShareController.m; sourceTree = "<group>"; };
 		0326BBA719A7AA7E00D995DA /* VPublishShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishShareView.h; sourceTree = "<group>"; };
@@ -384,6 +383,8 @@
 		0326BBB119A7F4B100D995DA /* VTwitterPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterPublishShareController.m; sourceTree = "<group>"; };
 		0326BBB319A803DE00D995DA /* VCameraRollPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraRollPublishShareController.h; sourceTree = "<group>"; };
 		0326BBB419A803DE00D995DA /* VCameraRollPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraRollPublishShareController.m; sourceTree = "<group>"; };
+		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
+		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		032948A91970BE2E00208FBA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		032C9B451929C113002FB447 /* VObjectManager+ImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ImageSearch.h"; sourceTree = "<group>"; };
 		032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
@@ -958,6 +959,8 @@
 		D81AEE2C19A674F400727145 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "Categories/UIImage+Resize.h"; sourceTree = "<group>"; };
 		D81AEE2D19A674F400727145 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "Categories/UIImage+Resize.m"; sourceTree = "<group>"; };
 		D81AEE2F19A6D09100727145 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		D866E84419ABAF9700B20082 /* VSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSelectorViewController.h; path = UI/Common/Selector/VSelectorViewController.h; sourceTree = "<group>"; };
+		D866E84519ABAF9700B20082 /* VSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSelectorViewController.m; path = UI/Common/Selector/VSelectorViewController.m; sourceTree = "<group>"; };
 		D8852A1019A3E9BC000066A5 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = UI/Login/VRegistrationModel.h; sourceTree = "<group>"; };
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
@@ -1034,15 +1037,6 @@
 			path = UI/ForceUpgrade;
 			sourceTree = "<group>";
 		};
-		0326BBB719A8181B00D995DA /* Push Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				0326BBB819A8183800D995DA /* VPushNotificationManager.h */,
-				0326BBB919A8183800D995DA /* VPushNotificationManager.m */,
-			);
-			path = "Push Notifications";
-			sourceTree = "<group>";
-		};
 		0326BBA419A7AA5C00D995DA /* Share */ = {
 			isa = PBXGroup;
 			children = (
@@ -1060,6 +1054,15 @@
 			);
 			name = Share;
 			path = UI/CameraViewController/Share;
+			sourceTree = "<group>";
+		};
+		0326BBB719A8181B00D995DA /* Push Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				0326BBB819A8183800D995DA /* VPushNotificationManager.h */,
+				0326BBB919A8183800D995DA /* VPushNotificationManager.m */,
+			);
+			path = "Push Notifications";
 			sourceTree = "<group>";
 		};
 		03484BEC192D27E600403FB1 /* Lightbox */ = {
@@ -1402,6 +1405,7 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D866E84319ABAF4D00B20082 /* Selector */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				BEF185E619884C13007FB4BC /* VConstants.m */,
 				3FA217E018AD87B50066E893 /* Categories */,
@@ -2242,6 +2246,15 @@
 			name = RealtimeComments;
 			sourceTree = "<group>";
 		};
+		D866E84319ABAF4D00B20082 /* Selector */ = {
+			isa = PBXGroup;
+			children = (
+				D866E84419ABAF9700B20082 /* VSelectorViewController.h */,
+				D866E84519ABAF9700B20082 /* VSelectorViewController.m */,
+			);
+			name = Selector;
+			sourceTree = "<group>";
+		};
 		DB58EF1E1990027F00D2A07F /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2787,6 +2800,7 @@
 				03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */,
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
+				D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				DB58EF44199403B300D2A07F /* VComment.m in Sources */,
