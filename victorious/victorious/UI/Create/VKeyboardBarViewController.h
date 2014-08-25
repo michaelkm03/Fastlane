@@ -22,10 +22,17 @@
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
+@property (nonatomic)         BOOL                      hideAccessoryBar;
+@property (nonatomic)         BOOL                      sendButtonEnabled;
 
-@property (nonatomic)   BOOL hideAccessoryBar;
+/**
+ If YES (default), text and media will be cleared automatically after the 
+ keyboardBar:didComposeWithText:mediaURL: delegate method is called
+ */
+@property (nonatomic) BOOL shouldAutoClearOnCompose;
 
 - (IBAction)cameraPressed:(id)sender;
 - (BOOL)becomeFirstResponder; ///< Tells the keyboard bar view controller to make its internal text view the first responder
+- (void)clearKeyboardBar; ///< Clears all text and media from the keyboard bar
 
 @end
