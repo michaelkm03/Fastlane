@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) VMessageTableDataSource *tableDataSource;
 @property (nonatomic)         BOOL                     shouldScrollToBottom;
+@property (nonatomic)         BOOL                     refreshFailed;
 
 @end
 
@@ -74,6 +75,7 @@
     
     if (self.shouldRefreshOnAppearance)
     {
+        self.refreshFailed = NO;
         self.shouldRefreshOnAppearance = NO;
         if (!self.tableDataSource.isLoading)
         {
@@ -88,6 +90,7 @@
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
                     [hud hide:YES afterDelay:3.0];
+                    self.refreshFailed = YES;
                 }
                 else
                 {
@@ -101,7 +104,17 @@
 
 - (void)loadNextPageAction
 {
-    [self.tableDataSource loadNextPageWithCompletion:nil];
+    [self.tableDataSource loadNextPageWithCompletion:^(NSError *error)
+    {
+        if (error)
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.parentViewController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
+            [hud hide:YES afterDelay:3.0];
+            self.refreshFailed = YES;
+        }
+    }];
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated
@@ -168,7 +181,8 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y < CGRectGetHeight(scrollView.bounds) * 0.5f &&
+    if (!self.refreshFailed &&
+        scrollView.contentOffset.y < CGRectGetHeight(scrollView.bounds) * 0.5f &&
         ![self.tableDataSource isLoading] &&
         [self.tableDataSource areMorePagesAvailable])
     {
