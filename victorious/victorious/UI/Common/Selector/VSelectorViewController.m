@@ -7,6 +7,7 @@
 //
 
 #import "VSelectorViewController.h"
+#import "VThemeManager.h"
 
 @interface VSelectorViewController ()
 
@@ -14,6 +15,8 @@
 @property (nonatomic, copy) VSelectionItemConfigureCellBlock configureBlock;
 
 @end
+
+NSString *const kSelectorCellIdentifier = @"cell";
 
 @implementation VSelectorViewController
 
@@ -33,10 +36,10 @@
     UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                       target:self
                                                                                       action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = cancelButtonItem;
+    self.navigationItem.leftBarButtonItem = cancelButtonItem;
     
     [self.tableView registerClass:[UITableViewCell class]
-           forCellReuseIdentifier:@"cell"];
+           forCellReuseIdentifier:kSelectorCellIdentifier];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -53,8 +56,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSelectorCellIdentifier
                                                             forIndexPath:indexPath];
+    cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     
     id itemForCell = [self.items objectAtIndex:indexPath.row];
     
