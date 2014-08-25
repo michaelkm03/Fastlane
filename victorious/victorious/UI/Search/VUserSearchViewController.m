@@ -99,6 +99,7 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
     self.tableView.hidden = YES;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
     // SET CHAR COUNTER
     self.charCount = 0;
