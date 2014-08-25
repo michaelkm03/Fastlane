@@ -128,7 +128,7 @@
                                     <constraint firstAttribute="bottom" secondItem="ize-9d-bh3" secondAttribute="bottom" id="kFx-S9-Q2o"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-6n-Wb8" userLabel="Busy View">
+                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-6n-Wb8" userLabel="Busy View">
                                 <rect key="frame" x="128" y="252" width="64" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -137,7 +137,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="TSK-pW-by3" secondAttribute="centerX" id="9HS-f7-lpJ"/>
                                     <constraint firstAttribute="height" constant="64" id="W2Q-iP-Swt"/>

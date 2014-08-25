@@ -13,6 +13,10 @@
 @protocol VMessageTableDataDelegate <NSObject>
 
 @required
+
+/**
+ Asks the delegate to provide a table cell for the given message at a specific index path.
+ */
 - (UITableViewCell *)dataSource:(VMessageTableDataSource *)dataSource cellForMessage:(VMessage *)message atIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -39,11 +43,11 @@
  */
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
 
-- (void)refreshWithCompletion:(void(^)(NSError *error))completion;
-- (void)loadNextPageWithCompletion:(void(^)(NSError *error))completion;
-- (BOOL)isLoading;
+- (void)refreshWithCompletion:(void(^)(NSError *error))completion; ///< Loads the latest messages from the server
+- (void)loadNextPageWithCompletion:(void(^)(NSError *error))completion; ///< Loads the next page of messages from the server
+- (BOOL)isLoading; ///< YES if we are currently waiting for a server operation to complete
 - (BOOL)areMorePagesAvailable; ///< YES if more pages of data are available on the server
-- (VMessage *)messageAtIndexPath:(NSIndexPath *)indexPath;
+- (VMessage *)messageAtIndexPath:(NSIndexPath *)indexPath; ///< Returns the VMessage instance at the specified index path
 
 /**
  Starts a process that polls the server every few seconds for new messages
