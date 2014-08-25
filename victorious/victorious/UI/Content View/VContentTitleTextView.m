@@ -19,7 +19,7 @@
 @property (nonatomic)         BOOL                seeMoreTextAppended;
 @property (nonatomic)         CGSize              sizeDuringLastTextLayout;
 @property (nonatomic)         NSRange             seeMoreRange;
-@property (nonatomic, strong) NSDictionary       *hashTags;
+@property (nonatomic, strong) NSArray            *hashTags;
 
 @end
 
@@ -113,17 +113,6 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
            };
 }
 
--(NSDictionary *)attributeForHashTag
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
-              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-              NSParagraphStyleAttributeName: paragraphStyle,
-             };
-}
-
 - (void)setText:(NSString *)text
 {
     if (![_text isEqualToString:text])
@@ -132,26 +121,16 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     }
     self.seeMoreTextAppended = NO;
     
-    NSMutableAttributedString *newAttributedText;
-    if (text)
+    NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:text ?: @"" attributes:[self attributesForTitleText]];
+    self.hashTags = [VHashTags detectHashTags:text];
+    if ([self.hashTags count] > 0)
     {
-        self.hashTags = [[NSDictionary alloc] init];
-        self.hashTags = [VHashTags detectHashTags:text];
-        if ([self.hashTags count] > 0)
-        {
-            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
-            newAttributedText = [VHashTags formatHashTags:newAttributedText withDictionary:self.hashTags];
-        }
-        else
-        {
-            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
-        }
+        [VHashTags formatHashTagsInString:newAttributedText
+                            withTagRanges:self.hashTags
+                               attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
     }
-    else
-    {
-        newAttributedText = [[NSMutableAttributedString alloc] initWithString:@""];
-    }
-    [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:newAttributedText];
+    [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length)
+                          withAttributedString:newAttributedText];
 }
 
 - (void)setLocationForLastLineOfText:(CGFloat)lastLineOfTextLocation
@@ -167,7 +146,8 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     NSRange displayedRange;
     [self.layoutManager textContainerForGlyphAtIndex:0 effectiveRange:&displayedRange];
     __block CGRect fragment;
-    [self.layoutManager enumerateLineFragmentsForGlyphRange:displayedRange usingBlock:^(CGRect rect, CGRect usedRect, NSTextContainer *textContainer, NSRange glyphRange, BOOL *stop)
+    [self.layoutManager enumerateLineFragmentsForGlyphRange:displayedRange
+                                                 usingBlock:^(CGRect rect, CGRect usedRect, NSTextContainer *textContainer, NSRange glyphRange, BOOL *stop)
     {
         if (glyphRange.length)
         {
@@ -220,22 +200,22 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     }
     else
     {
-        self.hashTags = [[NSDictionary alloc] init];
         self.hashTags = [VHashTags detectHashTags:fieldText];
         if ([self.hashTags count] > 0)
         {
-            for (NSString *tag in [self.hashTags allKeys]) {
-                NSValue *val = [self.hashTags valueForKey:tag];
-                NSRange tagRange = [val rangeValue];
+            [self.hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop)
+            {
+                NSRange tagRange = [hastagRangeValue rangeValue];
                 if (NSLocationInRange(character, tagRange))
                 {
                     if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
                     {
-                        [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:tag];
-                        break;
+                        [self.delegate hashTagButtonTappedInContentTitleTextView:self
+                                                                         withTag:[fieldText substringWithRange:tagRange]];
+                        *stop = YES;
                     }
                 }
-            }
+            }];
         }
     }
 }

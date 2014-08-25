@@ -17,7 +17,6 @@
 - (BOOL)isImage;
 - (BOOL)isVideo;
 - (BOOL)isOwnerContent;
-- (BOOL)isTemporarySequence;
 
 - (BOOL)isRemix;
 - (BOOL)isRepost;

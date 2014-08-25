@@ -44,6 +44,16 @@
 - (BOOL)isSessionValid;
 
 /**
+ Returns YES if the user granted publish permissions
+ */
+- (BOOL)grantedPublishPermission;
+
+/**
+ *  Logs in and requests normal permissions + publish permissions.
+ */
+- (void)requestPublishPermissionsOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock;
+
+/**
  Returns the access token for the current Facebook session
  */
 - (NSString *)accessToken;

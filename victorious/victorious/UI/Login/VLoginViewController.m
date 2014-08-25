@@ -133,26 +133,6 @@
     [view.layer insertSublayer:gradient atIndex:0];
 }
 
-- (void)facebookAccessDidFail:(NSError *)error
-{
-    if (error.code == ACErrorAccountNotFound)
-    {
-        SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [self presentViewController:composeViewController animated:NO completion:^{
-            [composeViewController dismissViewControllerAnimated:NO completion:nil];
-        }];
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FacebookDeniedTitle", @"")
-                                                        message:NSLocalizedString(@"FacebookDenied", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
 - (void)twitterAccessDidFail:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")

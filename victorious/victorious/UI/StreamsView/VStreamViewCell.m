@@ -53,7 +53,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @property (strong, nonatomic) VEphemeralTimerView* ephemeralTimerView;
 
-@property (nonatomic, strong) NSDictionary *hashTags;
+@property (nonatomic, strong) NSArray *hashTagRanges;
 
 @end
 
@@ -71,8 +71,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
     self.originalHeight = self.frame.size.height;
     
     self.commentViews = [[NSMutableArray alloc] init];
-    
-    self.hashTags = [[NSDictionary alloc] init];
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
@@ -110,23 +108,18 @@ static VLargeNumberFormatter* largeNumberFormatter;
 
 - (NSDictionary *)attributesForCellText
 {
-    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
-              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
-              };
+    return @{
+             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+             NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
+             };
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
     
-    if ([sequence isTemporarySequence])
-    {
-        [self contentExpired];
-    }
-    else
-    {
-        [self removeExpiredOverlay];
-    }
+    [self removeExpiredOverlay];
+
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
@@ -143,7 +136,8 @@ static VLargeNumberFormatter* largeNumberFormatter;
          
          self.previewImageView.alpha = 0;
          self.previewImageView.image = image;
-         [UIView animateWithDuration:.3f animations:^
+         [UIView animateWithDuration:.3f
+                          animations:^
           {
               self.previewImageView.alpha = 1;
           }];
@@ -164,10 +158,14 @@ static VLargeNumberFormatter* largeNumberFormatter;
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
         NSString *text = self.sequence.name;
-        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"") attributes:[self attributesForCellText]];
-        self.hashTags = [VHashTags detectHashTags:text];
-        if ([self.hashTags count] > 0) {
-            newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
+        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
+                                                                                                  attributes:[self attributesForCellText]];
+        self.hashTagRanges = [VHashTags detectHashTags:text];
+        if ([self.hashTagRanges count] > 0)
+        {
+            [VHashTags formatHashTagsInString:newAttributedCellText
+                                withTagRanges:self.hashTagRanges
+                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
         }
         self.descriptionLabel.attributedText = newAttributedCellText;
     }

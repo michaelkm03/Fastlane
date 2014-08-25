@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "CIFilter+VPhotoFilterComponentConformance.h"
 #import "VPhotoFilter.h"
+#import "VPhotoFilterComponent.h"
 #import "VPhotoFilterSerialization.h"
 
 static NSString * const kFilterNameKey                = @"name";
@@ -40,7 +42,20 @@ static NSString * const kFilterComponentInputValueKey = @"value";
         for (NSDictionary *componentDefinition in componentDefinitions)
         {
             NSString *componentName = componentDefinition[kFilterComponentNameKey];
-            CIFilter *component = [CIFilter filterWithName:componentName];
+            
+            id<VPhotoFilterComponent> component;
+            if ([componentName hasPrefix:@"CI"])
+            {
+                component = [CIFilter filterWithName:componentName];
+            }
+            else
+            {
+                Class filterClass = NSClassFromString(componentName);
+                if ([filterClass conformsToProtocol:@protocol(VPhotoFilterComponent)])
+                {
+                    component = [[filterClass alloc] init];
+                }
+            }
             if (component)
             {
                 NSArray *inputs = componentDefinition[kFilterComponentInputsKey];
@@ -48,7 +63,7 @@ static NSString * const kFilterComponentInputValueKey = @"value";
                 {
                     NSString *inputKey = inputDefinition[kFilterComponentInputKeyKey];
                     NSNumber *inputValue = inputDefinition[kFilterComponentInputValueKey];
-                    [component setValue:inputValue forKey:inputKey];
+                    [(NSObject *)component setValue:inputValue forKey:inputKey];
                 }
                 [components addObject:component];
             }

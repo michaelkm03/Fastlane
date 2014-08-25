@@ -10,34 +10,26 @@
 
 @interface VHashTags : NSObject
 
-
-/**
- Returns an attributed string with a single hash tag highlighted using the proper app theme
- 
- @param hashTag The string that contains a hash tag to be formatted.
- 
- @return A NSMutableAttributedString object that contains the property formatted text string.
- */
-+(NSMutableAttributedString*)formatTag:(NSString*)hashTag;
-
 /**
  Returns an attributed string with hash tags highlighted using the proper app theme
  
  @param fieldText The string, (that may or may not contain hash tags), that needs to be formatted.
  @param tagDictionary A dictionary object that contains any hashtags found in the fieldText that need to be formatted.
+ @param attributes A dictionary of text attributes to add to each hash tag
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
-+(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary;
-
++ (void)formatHashTagsInString:(NSMutableAttributedString*)fieldText
+                 withTagRanges:(NSArray*)tagRanges
+                    attributes:(NSDictionary *)attributes;
 
 /**
- Returns an BOOL indicating wheather hash tags are detected in a string of text.
- 
- @param fieldText The string, (that may or may not contain hash tags), that needs to be checked
- 
- @return An NSDictionary object containing any found tags. (Otherwise return nil)
+ *  Find all hash tags within a given string.
+ *
+ *  @param fieldText The string to detect hash tags in.
+ *
+ *  @return An arry of NSRanges wrapped in NSValues.
  */
-+(NSDictionary*)detectHashTags:(NSString*)fieldText;
++(NSArray*)detectHashTags:(NSString*)fieldText;
 
 @end

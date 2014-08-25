@@ -125,7 +125,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
-                                    shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
@@ -139,10 +138,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"expires_at"] = expiresAt;
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
-    if (shareOptions & VShareToFacebook)
-        parameters[@"share_facebook"] = @"1";
-    if (shareOptions & VShareToTwitter)
-        parameters[@"share_twitter"] = @"1";
 
     if (type == VCaptionTypeMeme)
         parameters[@"subcategory"] = @"meme";
@@ -169,7 +164,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                                     name:name
                                              description:description
                                             mediaURLPath:[mediaUrl absoluteString]];
-        [self insertSequenceIntoFilters:newSequence];
         
         //Try to fetch the sequence
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
@@ -233,57 +227,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     return tempSequence;
 }
 
-- (void)insertSequenceIntoFilters:(VSequence *)tempSequence
-{
-    //Add to home screen
-    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                               }];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
-    
-    //Add to community or owner (depends on user)
-    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? VOwnerCategories()
-                                                                 : VUGCCategories();
-    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                               }];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
-    
-    //Add to home screen
-    VSequenceFilter* profileFilter = [self sequenceFilterForUser:self.mainUser];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                                  }];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:profileFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
-
-    
-    [tempSequence.managedObjectContext saveToPersistentStore:nil];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                                  }];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                                  }];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
-                                                        object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
-                                                                  VObjectManagerContentIndexKey:    @(0)
-                                                                  }];
-}
-
 - (VSequence*)newPollWithID:(NSNumber*)remoteID
                        name:(NSString*)name
                 description:(NSString*)description
@@ -313,7 +256,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [node addInteractionsObject:interaction];
     [tempPoll addNodesObject:node];
     
-    [self insertSequenceIntoFilters:tempPoll];
     return tempPoll;
 }
 

@@ -40,7 +40,6 @@
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 #import "VContentToInfoAnimator.h"
-#import "VContentToHashTagStreamAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 
@@ -131,7 +130,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         {
             self.keyboardBarVC = (VKeyboardBarViewController*)vc;
             self.keyboardBarVC.delegate = self;
-            self.keyboardBarVC.hideAccessoryBar = YES;
         }
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
