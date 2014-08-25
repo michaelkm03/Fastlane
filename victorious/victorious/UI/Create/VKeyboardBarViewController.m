@@ -40,7 +40,6 @@ static const NSInteger kCharacterLimit = 255;
     [self addAccessoryBar];
     
     self.promptLabel.textColor = [UIColor lightGrayColor];
-    self.textView.returnKeyType = UIReturnKeyDefault;
     
     self.sendButton.enabled = (self.textView.text.length > 0);
 }
@@ -166,8 +165,30 @@ static const NSInteger kCharacterLimit = 255;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-
 {
+    if ([text isEqualToString:@"\n"]) {
+        switch (textView.returnKeyType) {
+            case UIReturnKeyGo:
+            case UIReturnKeyDone:
+            case UIReturnKeySend:
+                [textView resignFirstResponder];
+                if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
+                    [self.delegate didCancelKeyboardBar:self];
+                return NO;
+                break;
+            case UIReturnKeyDefault:
+            case UIReturnKeyGoogle:
+            case UIReturnKeyJoin:
+            case UIReturnKeyNext:
+            case UIReturnKeyRoute:
+            case UIReturnKeySearch:
+            case UIReturnKeyYahoo:
+            case UIReturnKeyEmergencyCall:
+            default:
+                break;
+        }
+    }
+    
     NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
     self.sendButton.enabled = (newText.length > 0);
     
