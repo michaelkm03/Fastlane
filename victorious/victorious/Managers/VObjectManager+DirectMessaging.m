@@ -26,48 +26,50 @@
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    for (VConversation* conversation in user.conversations)
+    NSAssert(user != nil, @"Must provide user with which to start a conversation");
+    
+    if (user.conversation)
     {
-        if ([conversation.user.remoteId isEqualToNumber:user.remoteId])
+        if (success)
         {
-            if (success)
-                success(nil, nil, @[conversation]);
-            return nil;
+            NSManagedObjectID *conversationObjectID = user.conversation.objectID;
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
+                success(nil, nil, @[[context objectWithID:conversationObjectID]]);
+            });
         }
+        return nil;
     }
     
+    NSManagedObjectID *userObjectID = user.objectID;
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
-        VLog(@"Failed with error: %@", error);
-        
         if (error.code == kVConversationDoesNotExistError)
         {
+            NSAssert([NSThread isMainThread], @"callbacks are supposed to be on the main thread");
+            NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
             VConversation *newConversation = [NSEntityDescription
                                               insertNewObjectForEntityForName:[VConversation entityName]
-                                              inManagedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-            
-            NSManagedObjectID* objectID = [user objectID];
-            if (objectID)
-            {
-                VUser* userInContext = (VUser*)[newConversation.managedObjectContext objectWithID:objectID];
-                
-                newConversation.other_interlocutor_user_id = userInContext.remoteId;
-                newConversation.user = userInContext;
-            }
-            
-            if (!newConversation.filterAPIPath || [newConversation.filterAPIPath isEmpty])
-            {
-                newConversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", newConversation.remoteId.intValue];
-            }
-            
-            [newConversation.managedObjectContext saveToPersistentStore:nil];
+                                              inManagedObjectContext:context];
+            newConversation.user = (VUser *)[context objectWithID:userObjectID];
+            newConversation.other_interlocutor_user_id = newConversation.user.remoteId;
+            newConversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", newConversation.remoteId.intValue];
+            [context saveToPersistentStore:nil];
             
             if (success)
+            {
                 success(nil, nil, @[newConversation]);
+            }
         }
-        
-        else if (fail)
-            fail(operation, error);
+        else
+        {
+            VLog(@"Failed with error: %@", error);
+            if (fail)
+            {
+                fail(operation, error);
+            }
+        }
     };
     
     return [self GET:[@"/api/message/conversation_with_user/" stringByAppendingString:user.remoteId.stringValue]

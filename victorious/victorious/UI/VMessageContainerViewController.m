@@ -61,7 +61,7 @@
     [super viewWillAppear:animated];
 
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    self.navigationItem.title = messageVC.conversation.user.name ?: @"Message";
+    self.navigationItem.title = messageVC.otherUser.name ?: @"Message";
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -74,6 +74,7 @@
                                                destructiveButtonTitle:reportTitle
                                                   onDestructiveButton:^(void)
                                   {
+#if 0 // TODO
                                       [[VObjectManager sharedManager] flagConversation:self.conversation
                                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
@@ -96,6 +97,7 @@
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                        }];
+#endif
                                   }
                                            otherButtonTitlesAndBlocks:nil];
     
@@ -107,10 +109,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setConversation:(VConversation *)conversation
+- (void)setOtherUser:(VUser *)otherUser
 {
-    _conversation = conversation;
-    ((VMessageViewController*)self.conversationTableViewController).conversation = conversation;
+    _otherUser = otherUser;
+    ((VMessageViewController*)self.conversationTableViewController).otherUser = otherUser;
     if ([self isViewLoaded])
     {
         [self addBackgroundImage];
@@ -121,9 +123,9 @@
 {
     UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
     
-    if (self.conversation)
+    if (self.otherUser)
     {
-        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.otherUser.pictureUrl]
                                                   placeholderImage:defaultBackgroundImage];
     }
     else
@@ -136,6 +138,8 @@
 {
     [super viewWillDisappear:animated];
     
+    // TODO: do we really need this?
+#if 0
     //Be sure to delete the conversation if we've come to create a new conversation and stopped
     if (![[self.conversation messages] count])
     {
@@ -147,6 +151,7 @@
         ((VMessageViewController*)self.conversationTableViewController).conversation = nil;
         self.conversation = nil;
     }
+#endif
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -166,6 +171,7 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
+#if 0 // TODO
     MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
@@ -199,6 +205,7 @@
                                                otherButtonTitles:nil];
          [alert show];
      }];
+#endif
 }
 
 @end

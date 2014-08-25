@@ -32,7 +32,7 @@
 @dynamic tokenUpdatedAt;
 @dynamic childSequences;
 @dynamic comments;
-@dynamic conversations;
+@dynamic conversation;
 @dynamic followers;
 @dynamic following;
 @dynamic messages;

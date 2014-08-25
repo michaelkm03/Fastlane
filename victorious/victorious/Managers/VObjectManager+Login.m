@@ -15,6 +15,7 @@
 
 #import "VUser+RestKit.h"
 
+#import "VConversation.h"
 #import "VVoteType.h"
 #import "VPollResult+RestKit.h"
 

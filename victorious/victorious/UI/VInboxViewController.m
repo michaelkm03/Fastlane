@@ -270,7 +270,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         UITableViewCell* cell = (UITableViewCell*)sender;
 
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-        subview.conversation = conversation;
+        subview.otherUser = conversation.user;
     }
     else if ([segue.identifier isEqualToString:@"toNews"])
     {

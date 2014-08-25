@@ -283,15 +283,16 @@
     NSManagedObjectID *conversationID = conversation.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSArray *resultObjectsInReverseOrder = [[resultObjects reverseObjectEnumerator] allObjects];
         VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
         if (refresh)
         {
-            conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjects];
+            conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjectsInReverseOrder];
         }
         else
         {
             NSMutableOrderedSet *messages = [conversation.messages mutableCopy];
-            [messages insertObjects:resultObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, resultObjects.count)]];
+            [messages insertObjects:resultObjectsInReverseOrder atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, resultObjects.count)]];
             conversation.messages = messages;
         }
         

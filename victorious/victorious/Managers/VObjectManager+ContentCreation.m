@@ -511,7 +511,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VUser* userInContext = (VUser*)[tempMessage.managedObjectContext objectWithID:self.mainUser.objectID];
     [userInContext addMessagesObject:tempMessage];
     
-    [conversation addMessagesObject:tempMessage];
+    NSMutableOrderedSet *messages = [[conversation messages] mutableCopy];
+    [messages addObject:tempMessage];
+    conversation.messages = messages;
+    
     if (!conversation.lastMessage)
         conversation.lastMessage = tempMessage;
     

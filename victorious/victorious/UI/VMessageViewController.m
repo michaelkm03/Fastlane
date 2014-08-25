@@ -13,17 +13,22 @@
 #import "UIImage+ImageEffects.h"
 #import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
-#import "VKeyboardBarViewController.h"
+#import "VConversation.h"
+#import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"
-#import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+Pagination.h"
 #import "VObjectManager.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
+
+@interface VMessageViewController () <VMessageTableDataDelegate>
+
+@property (nonatomic, strong) VMessageTableDataSource *tableDataSource;
+
+@end
 
 @implementation VMessageViewController
 
@@ -31,95 +36,47 @@
 {
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
+         forCellReuseIdentifier:kVMessageCellNibName];
+
+    self.tableDataSource = [[VMessageTableDataSource alloc] initWithUser:self.otherUser objectManager:[VObjectManager sharedManager]];
+    self.tableDataSource.tableView = self.tableView;
+    self.tableDataSource.delegate = self;
+    self.tableView.dataSource = self.tableDataSource;
 }
 
-- (void)setConversation:(VConversation *)conversation
+- (void)viewWillAppear:(BOOL)animated
 {
-    _conversation = conversation;
-    
-    [self refreshFetchController];
-}
-
-#pragma mark - fetched results controller
-
-- (NSFetchedResultsController *)makeFetchedResultsController
-{
-    RKObjectManager* manager = [RKObjectManager sharedManager];
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VMessage entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-    
-    NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"conversation.remoteId = %@", self.conversation.remoteId];
-    [fetchRequest setPredicate:filterPredicate];
-    
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:20]; //[self currentFilter].perPageNumber.integerValue];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
-                                                 sectionNameKeyPath:nil
-                                                          cacheName:fetchRequest.entityName];
-}
-
-#pragma mark - Refresh
-
-- (IBAction)refresh:(UIRefreshControl *)sender
-{
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    if (!self.tableDataSource.isLoading)
     {
-        NSLog(@"%@", error.localizedDescription);
-        [self.refreshControl endRefreshing];
-    };
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        [self.refreshControl endRefreshing];
-    };
-    
-    [[VObjectManager sharedManager] loadNextPageOfConversation:self.conversation
-                                                  successBlock:success
-                                                     failBlock:fail];
+        [self.tableDataSource refreshWithCompletion:^(NSError *error)
+        {
+            if (error)
+            {
+                // TODO
+            }
+            else
+            {
+                [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height - CGRectGetHeight(self.tableView.bounds))
+                                        animated:NO];
+            }
+        }];
+    }
 }
 
 - (void)loadNextPageAction
 {
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        NSLog(@"Failed to load next page: %@", error.localizedDescription);
-        [self.refreshControl endRefreshing];
-    };
-    
-    NSInteger preRefreshCount = self.fetchedResultsController.fetchedObjects.count;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        [self.refreshControl endRefreshing];
-        
-        if (preRefreshCount < self.fetchedResultsController.fetchedObjects.count &&
-            self.tableView.contentSize.height > self.tableView.frame.size.height)
-        {
-            CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
-                                         self.tableView.contentSize.height - self.tableView.frame.size.height);
-            [self.tableView setContentOffset:offset animated:YES];
-        }
-        
-        [[VObjectManager sharedManager] markConversationAsRead:self.conversation
-                                                  successBlock:nil
-                                                     failBlock:fail];
-    };
-    
-    [[VObjectManager sharedManager] refreshMessagesForConversation:self.conversation
-                                                      successBlock:success
-                                                         failBlock:fail];
+    [self.tableDataSource loadNextPageWithCompletion:nil];
 }
 
-#pragma mark - Table view data source
+#pragma mark - VMessageTableDataDelegate methods
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)dataSource:(VMessageTableDataSource *)dataSource cellForMessage:(VMessage *)message atIndexPath:(NSIndexPath *)indexPath
 {
-    VMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
-    VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
+    VMessageCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
+    
     cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
     
@@ -156,39 +113,28 @@
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    
     return cell;
 }
 
+#pragma mark - UITableViewDelegate methods
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VMessage *message = [self.tableDataSource messageAtIndexPath:indexPath];
     BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
     return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
-}
-
-- (void)registerCells
-{
-    [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
-         forCellReuseIdentifier:kVMessageCellNibName];
 }
 
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.conversation.currentPageNumber.intValue < self.conversation.maxPageNumber.intValue &&
-        [[self.fetchedResultsController sections][0] numberOfObjects] &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.conversation] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    if (scrollView.contentOffset.y < CGRectGetHeight(scrollView.bounds) * 0.5f &&
+        ![self.tableDataSource isLoading] &&
+        [self.tableDataSource areMorePagesAvailable])
     {
         [self loadNextPageAction];
-    }
-    
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 

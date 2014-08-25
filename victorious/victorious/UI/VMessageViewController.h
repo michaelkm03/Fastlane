@@ -6,13 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VConversation;
-@class VKeyboardBarViewController;
+@class VUser;
 
-#import "VFetchedResultsTableViewController.h"
+@interface VMessageViewController : UITableViewController
 
-@interface VMessageViewController : VFetchedResultsTableViewController
-
-@property (nonatomic, readwrite, strong)    VConversation*  conversation;
+@property (nonatomic, strong) VUser *otherUser;
 
 @end
