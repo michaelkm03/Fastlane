@@ -65,7 +65,7 @@ static const NSInteger kGenericErrorCode       = 1;
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self.tableView reloadData];
+            [self reloadTableView];
             if (completion)
             {
                 completion(nil);
@@ -116,7 +116,7 @@ static const NSInteger kGenericErrorCode       = 1;
                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self.tableView reloadData];
+            [self reloadTableView];
             if (completion)
             {
                 completion(nil);
@@ -228,6 +228,15 @@ static const NSInteger kGenericErrorCode       = 1;
         return nil; // TODO
     }
 }
+
+- (void)reloadTableView
+{
+    CGSize beforeSize = self.tableView.contentSize;
+    [self.tableView reloadData];
+    self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + self.tableView.contentSize.height - beforeSize.height);
+}
+
+#pragma mark - UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
