@@ -242,7 +242,7 @@
     self.contentViewController = [[VContentViewController alloc] init];
     
     VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    if ([sequence isTemporarySequence] || [sequence.expiresAt timeIntervalSinceNow] < 0)
+    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
     {
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
@@ -450,10 +450,6 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-    if ([cell.sequence isTemporarySequence])
-    {
-        return;
-    }
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];

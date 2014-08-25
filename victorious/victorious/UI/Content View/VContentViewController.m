@@ -40,7 +40,6 @@
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 #import "VContentToInfoAnimator.h"
-#import "VContentToHashTagStreamAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 

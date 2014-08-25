@@ -118,14 +118,8 @@ static VLargeNumberFormatter* largeNumberFormatter;
 {
     _sequence = sequence;
     
-    if ([sequence isTemporarySequence])
-    {
-        [self contentExpired];
-    }
-    else
-    {
-        [self removeExpiredOverlay];
-    }
+    [self removeExpiredOverlay];
+
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];

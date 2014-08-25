@@ -151,7 +151,7 @@
 "PublishUpload"         =   "Your content is being uploaded.";
 
 "PublishSucceeded"      =   "Publish Succeeded";
-"PublishSucceededDetail"    =   "Your media has been submitted to the server";
+"PublishSucceededDetail"=   "Your media has been submitted to the server. It may take a few minutes for your content to appear.";
 
 "PublishDescriptionRequired" = "Text Needed";
 "PublishDescription"    =   "Please enter the caption for your content.";
