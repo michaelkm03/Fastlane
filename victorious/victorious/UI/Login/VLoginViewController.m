@@ -358,29 +358,31 @@
 {
     [MBProgressHUD showHUDAddedTo:self.navigationController.view
                          animated:YES];
-    [[VUserManager sharedInstance] loginViaTwitterWithAccount:twitterAccount
-                                                 OnCompletion:^(VUser *user, BOOL created) {
-                                                     [MBProgressHUD hideHUDForView:self.navigationController.view
-                                                                          animated:YES];
-                                                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
-                                                     self.profile = user;
-                                                     if (created)
-                                                     {
-                                                         [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
-                                                     }
-                                                     else
-                                                     {
-                                                         [self dismissViewControllerAnimated:YES completion:NULL];
-                                                     }
-                                                     
-                                                 } onError:^(NSError *error) {
-                                                     [MBProgressHUD hideHUDForView:self.navigationController.view
-                                                                          animated:YES];
-                                                     
-                                                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
-                                                     [self enableButtons];
-                                                     [self didFailWithError:error];
-                                                 }];
+    [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                   OnCompletion:^(VUser *user, BOOL created)
+     {
+         [MBProgressHUD hideHUDForView:self.navigationController.view
+                              animated:YES];
+         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
+         self.profile = user;
+         if (created)
+         {
+             [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
+         }
+         else
+         {
+             [self dismissViewControllerAnimated:YES completion:NULL];
+         }
+         
+     } onError:^(NSError *error)
+     {
+         [MBProgressHUD hideHUDForView:self.navigationController.view
+                              animated:YES];
+         
+         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
+         [self enableButtons];
+         [self didFailWithError:error];
+     }];
 }
 
 

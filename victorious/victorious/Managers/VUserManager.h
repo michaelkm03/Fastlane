@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import Accounts;
-
 @class VUser;
 
 typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL created);
@@ -27,9 +25,9 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
  */
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)loginViaTwitterWithAccount:(ACAccount *)twitterAccount
-                      OnCompletion:(VUserManagerLoginCompletionBlock)completion
-                           onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                             onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 - (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 

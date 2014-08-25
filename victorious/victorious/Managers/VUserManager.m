@@ -13,6 +13,7 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 
+@import Accounts;
 @import Security;
 
 typedef NS_ENUM(NSInteger, VLastLoginType)
@@ -144,11 +145,11 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     }
 }
 
-- (void)loginViaTwitterWithAccount:(ACAccount *)twitterAccount
-                      OnCompletion:(VUserManagerLoginCompletionBlock)completion
-                           onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                             onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaTwitterAccountWithIdentifier:twitterAccount.identifier
+    [self loginViaTwitterAccountWithIdentifier:twitterID
                                   onCompletion:completion
                                        onError:errorBlock];
 }
