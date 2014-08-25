@@ -14,9 +14,10 @@
 
 @interface VConversation : VAbstractFilter
 
+@property (nonatomic, retain) NSString * lastMessageText;
 @property (nonatomic, retain) NSNumber * other_interlocutor_user_id;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) VMessage *lastMessage;
+@property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSOrderedSet *messages;
 @property (nonatomic, retain) VUser *user;
 @end

@@ -44,8 +44,8 @@ CGFloat const kVConversationCellHeight = 72;
     self.usernameLabel.text  = conversation.user.name;
     [self.profileImageView setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-    self.messageLabel.text = conversation.lastMessage.text;
-    self.dateLabel.text = [conversation.lastMessage.postedAt timeSince];
+    self.messageLabel.text = conversation.lastMessageText;
+    self.dateLabel.text = [conversation.postedAt timeSince];
 }
 
 - (IBAction)profileButtonAction:(id)sender

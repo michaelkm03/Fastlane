@@ -199,31 +199,19 @@
 {
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSManagedObjectContext* context;
+        NSManagedObjectContext* context = nil;
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation* conversation in resultObjects)
         {
-            //There should only be one message.  Its the current 'last message'
-            conversation.lastMessage = [conversation.messages lastObject];
-            
-            //Sometimes we get -1 for the current logged in user
-            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
-            {
-                conversation.lastMessage.user = self.mainUser;
-            }
-            else if (conversation.lastMessage && !conversation.lastMessage.user)
-            {
-                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
-            }
-            
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
                 conversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", conversation.remoteId.intValue];
             }
             
             if (!conversation.user && conversation.other_interlocutor_user_id)
+            {
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
-            
+            }
             context = conversation.managedObjectContext;
         }
         

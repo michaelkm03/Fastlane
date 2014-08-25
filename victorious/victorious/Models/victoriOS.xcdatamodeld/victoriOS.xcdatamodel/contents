@@ -57,9 +57,10 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="filters" inverseEntity="Comment" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" parentEntity="AbstractFilter" syncable="YES">
+        <attribute name="lastMessageText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="other_interlocutor_user_id" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
+        <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="lastMessageInverse" inverseEntity="Message" syncable="YES"/>
         <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversation" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -91,7 +92,6 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="lastMessageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="lastMessage" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" inverseName="message" inverseEntity="Notification" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -207,10 +207,10 @@
         <element name="Asset" positionX="630" positionY="-414" width="128" height="148"/>
         <element name="Comment" positionX="1035" positionY="-576" width="128" height="343"/>
         <element name="CommentFilter" positionX="844" positionY="-463" width="128" height="58"/>
-        <element name="Conversation" positionX="1530" positionY="-468" width="128" height="118"/>
+        <element name="Conversation" positionX="1528" positionY="-468" width="128" height="133"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="208"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="148"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>

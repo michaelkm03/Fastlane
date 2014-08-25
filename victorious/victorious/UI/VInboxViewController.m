@@ -105,7 +105,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     if (VModeSelect == kMessageModeSelect)
     {
         fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-        sort = [NSSortDescriptor sortDescriptorWithKey:@"lastMessage.postedAt" ascending:NO];
+        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
     }
     else if (VModeSelect == kNotificationModeSelect)
     {

@@ -515,9 +515,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [messages addObject:tempMessage];
     conversation.messages = messages;
     
-    if (!conversation.lastMessage)
-        conversation.lastMessage = tempMessage;
-    
+    if (!conversation.lastMessageText)
+    {
+        conversation.lastMessageText = tempMessage.text;
+    }
     
     [tempMessage.managedObjectContext saveToPersistentStore:nil];
     
