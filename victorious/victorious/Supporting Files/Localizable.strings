@@ -102,6 +102,8 @@
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
 
+"SelectTwitter"         =   "Select a twitter account";
+
 "HelpNeeded"            =   "I need help with...";
 
 "ReportInappropriate"   =   "Report Inappropriate";

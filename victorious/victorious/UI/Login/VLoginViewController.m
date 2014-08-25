@@ -246,6 +246,7 @@
                                                                                                                 cell.detailTextLabel.text = account.accountDescription;
                                                                                                             }];
                     selectorVC.delegate = self;
+                    selectorVC.navigationItem.prompt = NSLocalizedString(@"SelectTwitter", @"");
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectorVC];
                     [self presentViewController:navController
                                        animated:YES
