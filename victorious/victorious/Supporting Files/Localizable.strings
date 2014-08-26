@@ -279,6 +279,8 @@
 "reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
 "Repost"                =   "Repost";
+"RepostContentView"     =   "REPOST";
+"RpostedContentView"    =   "REPOSTED";
 "comments"              =   "comments";
 
 "repostedFromFormat"      =   "Repost from %@";

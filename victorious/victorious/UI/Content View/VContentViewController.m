@@ -560,6 +560,28 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
+    
+    [[VObjectManager sharedManager] fetchUserInteractionsForSequence:sequence.remoteId
+                                                      withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
+     {
+         NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"REPOSTED", @"") : NSLocalizedString(@"RepostContentView", @"");
+         if (userInteractions.hasReposted)
+         {
+             UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+             [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+             self.repostButton.adjustsImageWhenDisabled = NO;
+             self.repostButton.enabled = NO;
+             repostButtonTitle = [NSString stringWithFormat:@" %@", repostButtonTitle];
+         }
+         else
+         {
+             repostButtonTitle = [NSString stringWithFormat:@"  %@", repostButtonTitle];
+         }
+         
+
+         [self.repostButton setTitle:repostButtonTitle
+                            forState:UIControlStateNormal];
+     }];
 }
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
@@ -744,6 +766,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [self loadImage];
     }
+    
     
     [self showRemixButton];
 }
@@ -972,8 +995,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                   {
                                       [[VObjectManager sharedManager] repostNode:self.currentNode
                                                                         withName:self.sequence.name
-                                                                    successBlock:nil
-                                                                       failBlock:nil];
+                                                                    successBlock:^(NSOperation *repostOperation, id fullResponse, NSArray *allObjects)
+                                      {
+                                          NSString *repostedTitle = NSLocalizedString(@"REPOSTED", @"");
+                                          repostedTitle = [NSString stringWithFormat:@" %@", repostedTitle];
+                                          [self.repostButton setTitle:repostedTitle
+                                                             forState:UIControlStateNormal];
+                                          UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+                                          [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+                                          self.repostButton.enabled = NO;
+                                      }
+                                                                       failBlock:^(NSOperation *repostOperation, NSError *error)
+                                      {
+
+                                      }];
                                   }, nil];
     
     [actionSheet showInView:self.view];

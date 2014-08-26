@@ -335,6 +335,7 @@
 		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
 		D8B0500A19AC1C690048E2BE /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */; };
+		D8B0501119AD2B280048E2BE /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
@@ -959,6 +960,8 @@
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
 		D8B0500819AC1C690048E2BE /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRTCUserPostedAtFormatter.h; path = UI/Common/VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
 		D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRTCUserPostedAtFormatter.m; path = UI/Common/VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
+		D8B0500F19AD2B280048E2BE /* VSequenceUserInteractions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceUserInteractions.h; path = "Simple Models/VSequenceUserInteractions.h"; sourceTree = "<group>"; };
+		D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceUserInteractions.m; path = "Simple Models/VSequenceUserInteractions.m"; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
 		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
 		DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchViewController.h; sourceTree = "<group>"; };
@@ -1725,7 +1728,8 @@
 				BE171DD91868C211004E5202 /* Managers */,
 				BEE9C8BB18CE90230095C737 /* Protocols */,
 				BE171DAE1868C211004E5202 /* Categories */,
-				BE171DE91868C211004E5202 /* Models */,
+				BE171DE91868C211004E5202 /* ManagedObjectModels */,
+				D8B0500E19AD2A740048E2BE /* Simple Models */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
 				83ABAF9A18709DE30069556C /* Fonts */,
@@ -1893,7 +1897,7 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		BE171DE91868C211004E5202 /* Models */ = {
+		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
 				BED95E9C199D616A00637031 /* VSequence.h */,
@@ -1942,6 +1946,7 @@
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
 			);
+			name = ManagedObjectModels;
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -2235,6 +2240,15 @@
 				BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */,
 			);
 			name = RealtimeComments;
+			sourceTree = "<group>";
+		};
+		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
+			isa = PBXGroup;
+			children = (
+				D8B0500F19AD2B280048E2BE /* VSequenceUserInteractions.h */,
+				D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */,
+			);
+			name = "Simple Models";
 			sourceTree = "<group>";
 		};
 		DB58EF1E1990027F00D2A07F /* Search */ = {
@@ -2722,6 +2736,7 @@
 				3F14C45418BD2BD0001796B9 /* VCVideoPlayerViewController.m in Sources */,
 				034B816F197F2EAB004F1845 /* VObjectManager+Analytics.m in Sources */,
 				0333BE9E19A434B8008BD962 /* VCompositeImageFilter.m in Sources */,
+				D8B0501119AD2B280048E2BE /* VSequenceUserInteractions.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,

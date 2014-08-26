@@ -8,6 +8,7 @@
 
 #import "VObjectManager.h"
 #import "VConstants.h"
+#import "VSequenceUserInteractions.h"
 
 extern NSString* const kPollResultsLoaded;
 
@@ -22,6 +23,8 @@ extern NSString* const kPollResultsLoaded;
 - (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
+
+
 
 - (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
                                                  accessToken:(NSString*)accessToken
@@ -53,5 +56,10 @@ extern NSString* const kPollResultsLoaded;
 - (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
+
+#pragma mark - UserInteractions
+
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+                                                       withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
 
 @end

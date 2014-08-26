@@ -243,4 +243,23 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fail];
 }
 
+#pragma mark - UserInteractions
+
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+                                                       withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
+{
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequenceID.stringValue, self.mainUser.remoteId.stringValue]
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                VSequenceUserInteractions *userInteractions = [VSequenceUserInteractions sequenceUserInteractionsWithPayload:fullResponse[@"payload"]];
+                completion(userInteractions,nil);
+            }
+           failBlock:^(NSOperation *operation, NSError *error)
+            {
+                completion(nil,error);
+            }];
+}
+
 @end
