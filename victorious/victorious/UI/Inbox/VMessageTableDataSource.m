@@ -27,13 +27,16 @@ static const NSInteger kPendingMessagesSection = 1; ///< The table view section 
 
 static const NSInteger kGenericErrorCode       = 1;
 
-static char KVOContext;
+static const int64_t kPollFrequencyInSeconds = 5;
+static       char    kKVOContext;
 
 @interface VMessageTableDataSource ()
 
 @property (nonatomic, strong) VConversation  *conversation;
 @property (nonatomic)         BOOL            newConversation; //< YES if this conversation does not yet have a corresponding VConversation object
 @property (nonatomic)         BOOL            isLoading;
+@property (nonatomic)         BOOL            liveUpdating;
+@property (nonatomic)         BOOL            ignoreModelChanges; ///< If YES, model changes detected via KVO will be ignored. Careful with this!
 @property (nonatomic, strong) NSMutableArray *pendingMessages; ///< Array of VMessage objects that have been sent to the server but haven't shown up in a refresh yet
 
 @end
@@ -80,14 +83,14 @@ static char KVOContext;
     
     if (_conversation)
     {
-        [_conversation removeObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) context:&KVOContext];
+        [_conversation removeObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) context:&kKVOContext];
     }
     
     _conversation = conversation;
     
     if (conversation)
     {
-        [conversation addObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+        [conversation addObserver:self forKeyPath:NSStringFromSelector(@selector(messages)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&kKVOContext];
     }
 }
 
@@ -262,12 +265,90 @@ static char KVOContext;
 
 - (void)beginLiveUpdates
 {
-    // TODO
+    self.liveUpdating = YES;
+    __typeof(self) __weak weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kPollFrequencyInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+    {
+        id strongSelf = weakSelf;
+        if (strongSelf)
+        {
+            if ([strongSelf liveUpdating])
+            {
+                [strongSelf goLiveUpdate];
+            }
+        }
+    });
 }
 
 - (void)endLiveUpdates
 {
-    // TODO
+    self.liveUpdating = NO;
+}
+
+- (void)goLiveUpdate
+{
+    if (self.conversation)
+    {
+        [self.objectManager loadNewestMessagesInConversation:self.conversation
+                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+        {
+            self.ignoreModelChanges = YES;
+            NSMutableOrderedSet *messages = [self.conversation.messages mutableCopy];
+            
+            CGFloat tableViewContentHeightBefore = self.tableView.contentSize.height;
+            
+            NSIndexPath *indexPathForNewMessage = nil;
+            [self.tableView beginUpdates];
+            for (VMessage *message in resultObjects)
+            {
+                indexPathForNewMessage = [NSIndexPath indexPathForRow:messages.count inSection:kConversationSection];
+                NSUInteger pendingMessageIndex = [self.pendingMessages indexOfObject:message];
+                if (pendingMessageIndex != NSNotFound)
+                {
+                    [self.pendingMessages removeObjectAtIndex:pendingMessageIndex];
+                    [self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:pendingMessageIndex inSection:kPendingMessagesSection] toIndexPath:indexPathForNewMessage];
+                }
+                else
+                {
+                    [self.tableView insertRowsAtIndexPaths:@[indexPathForNewMessage] withRowAnimation:UITableViewRowAnimationTop];
+                }
+                [messages addObject:message];
+            }
+            
+            self.conversation.messages = messages;
+            [self.conversation.managedObjectContext saveToPersistentStore:nil];
+            self.ignoreModelChanges = NO;
+            
+            [self.tableView endUpdates];
+            
+            [self.tableView scrollToRowAtIndexPath:indexPathForNewMessage atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            
+            if (self.liveUpdating)
+            {
+                [self beginLiveUpdates]; // schedule another poll
+            }
+        }
+                                                   failBlock:^(NSOperation *operation, NSError *error)
+        {
+            if ([error.domain isEqualToString:kVictoriousErrorDomain] && error.code == kTooManyNewMessagesErrorCode)
+            {
+                [self refreshWithCompletion:^(NSError *error)
+                {
+                    if (self.liveUpdating)
+                    {
+                        [self beginLiveUpdates]; // schedule another poll
+                    }
+                }];
+            }
+            else
+            {
+                if (self.liveUpdating)
+                {
+                    [self beginLiveUpdates]; // schedule another poll
+                }
+            }
+        }];
+    }
 }
 
 - (void)reloadTableView
@@ -390,6 +471,11 @@ static char KVOContext;
     [self.pendingMessages addObject:newMessage];
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:kPendingMessagesSection]] withRowAnimation:UITableViewRowAnimationTop];
     [self.tableView endUpdates];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:kPendingMessagesSection] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    });
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -438,7 +524,10 @@ static char KVOContext;
 {
     if (object == self.conversation && [keyPath isEqualToString:NSStringFromSelector(@selector(messages))])
     {
-        [self reloadTableView];
+        if (!self.ignoreModelChanges)
+        {
+            [self reloadTableView];
+        }
     }
 }
 

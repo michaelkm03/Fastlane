@@ -102,6 +102,18 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableDataSource beginLiveUpdates];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.tableDataSource endLiveUpdates];
+}
+
 - (void)loadNextPageAction
 {
     [self.tableDataSource loadNextPageWithCompletion:^(NSError *error)

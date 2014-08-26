@@ -29,6 +29,8 @@
 
 #import "NSString+VParseHelp.h"
 
+const NSInteger kTooManyNewMessagesErrorCode = 999;
+
 @implementation VObjectManager (Pagination)
 
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
@@ -298,6 +300,43 @@
     {
         return [self.paginationManager loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
     }
+}
+
+- (RKManagedObjectRequestOperation *)loadNewestMessagesInConversation:(VConversation *)conversation
+                                                         successBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail;
+{
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VMessage *latestMessage = [conversation.messages lastObject];
+        NSUInteger indexOfLatestMessage = [resultObjects indexOfObject:latestMessage];
+        if (indexOfLatestMessage == NSNotFound)
+        {
+            if (fail)
+            {
+                fail(operation, [NSError errorWithDomain:kVictoriousErrorDomain code:kTooManyNewMessagesErrorCode userInfo:nil]);
+            }
+        }
+        else if (success)
+        {
+            NSArray *newMessages;
+            if (indexOfLatestMessage)
+            {
+                 newMessages = [resultObjects subarrayWithRange:NSMakeRange(0, indexOfLatestMessage)];
+            }
+            else
+            {
+                newMessages = @[];
+            }
+            success(operation, fullResponse, [[newMessages reverseObjectEnumerator] allObjects]);
+        }
+    };
+    
+    return [self GET:[conversation.filterAPIPath stringByAppendingFormat:@"/1/%ld", (long)conversation.perPageNumber.integerValue]
+              object:nil
+          parameters:nil
+        successBlock:fullSuccessBlock
+           failBlock:fail];
 }
 
 #pragma mark - Following
