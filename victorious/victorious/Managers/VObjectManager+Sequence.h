@@ -24,8 +24,6 @@ extern NSString* const kPollResultsLoaded;
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
-
-
 - (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
                                                  accessToken:(NSString*)accessToken
                                                 successBlock:(VSuccessBlock)success
