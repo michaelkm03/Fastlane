@@ -205,7 +205,7 @@
         {
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
-                conversation.filterAPIPath = [NSString stringWithFormat:@"/api/message/conversation/%d/desc", conversation.remoteId.intValue];
+                conversation.filterAPIPath = [self apiPathForConversationWithRemoteID:conversation.remoteId];
             }
             
             if (!conversation.user && conversation.other_interlocutor_user_id)
@@ -622,6 +622,11 @@
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
+}
+
+- (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID
+{
+    return [NSString stringWithFormat:@"/api/message/conversation/%ld/desc", remoteID.longValue];
 }
 
 @end

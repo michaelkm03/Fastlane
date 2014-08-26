@@ -13,6 +13,7 @@
 #import "VMessage.h"
 #import "VMessageCell.h"
 #import "VMessageTableDataSource.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
@@ -30,9 +31,10 @@ static char KVOContext;
 
 @interface VMessageTableDataSource ()
 
-@property (nonatomic, strong) VConversation *conversation;
-@property (nonatomic)         BOOL           newConversation; //< YES if this conversation does not yet have a corresponding VConversation object
-@property (nonatomic)         BOOL           isLoading;
+@property (nonatomic, strong) VConversation  *conversation;
+@property (nonatomic)         BOOL            newConversation; //< YES if this conversation does not yet have a corresponding VConversation object
+@property (nonatomic)         BOOL            isLoading;
+@property (nonatomic, strong) NSMutableArray *pendingMessages; ///< Array of VMessage objects that have been sent to the server but haven't shown up in a refresh yet
 
 @end
 
@@ -46,6 +48,7 @@ static char KVOContext;
     if (self)
     {
         _objectManager = objectManager;
+        _pendingMessages = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -267,10 +270,22 @@ static char KVOContext;
     // TODO
 }
 
-
 - (void)reloadTableView
 {
     CGSize beforeSize = self.tableView.contentSize;
+    
+    if (self.conversation && self.pendingMessages.count)
+    {
+        NSArray *pendingMessages = [self.pendingMessages copy];
+        for (NSInteger n = 0; n < pendingMessages.count; n++)
+        {
+            if ([self.conversation.messages containsObject:pendingMessages[n]])
+            {
+                [self.pendingMessages removeObjectAtIndex:n];
+            }
+        }
+    }
+    
     [self.tableView reloadData];
     if (beforeSize.height)
     {
@@ -280,21 +295,101 @@ static char KVOContext;
 
 - (VMessage *)messageAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == kConversationSection)
+    switch (indexPath.section)
     {
-        if (!self.conversation || self.conversation.messages.count <= indexPath.row)
+        case kConversationSection:
         {
+            if (self.conversation && self.conversation.messages.count > indexPath.row)
+            {
+                return self.conversation.messages[indexPath.row];
+            }
+            else
+            {
+                return nil;
+            }
+        }
+            break;
+            
+        case kPendingMessagesSection:
+        {
+            if (self.pendingMessages.count > indexPath.row)
+            {
+                return self.pendingMessages[indexPath.row];
+            }
+            else
+            {
+                return nil;
+            }
+        }
+            break;
+            
+        default:
             return nil;
-        }
-        else
-        {
-            return self.conversation.messages[indexPath.row];
-        }
+            break;
     }
-    else
+}
+
+- (void)createCommentWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion
+{
+    NSAssert([NSThread isMainThread], @"VMessageTableDataSource is intended to be used only on the main thread");
+    NSManagedObjectContext *context = self.objectManager.managedObjectStore.mainQueueManagedObjectContext;
+    VMessage *message = [self.objectManager messageWithText:text
+                                               mediaURLPath:[mediaURL absoluteString]];
+    [context saveToPersistentStore:nil];
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        return nil; // TODO
-    }
+        [self addNewMessage:message];
+        if ([fullResponse isKindOfClass:[NSDictionary class]])
+        {
+            if (self.conversation)
+            {
+                self.conversation.lastMessageText = message.text;
+                self.conversation.postedAt = message.postedAt;
+            }
+            else if (self.newConversation)
+            {
+                NSAssert([NSThread isMainThread], @"Callbacks are supposed to be on the main thread");
+                VConversation *conversation = [NSEntityDescription insertNewObjectForEntityForName:[VConversation entityName] inManagedObjectContext:context];
+                conversation.filterAPIPath = [self.objectManager apiPathForConversationWithRemoteID:@([fullResponse[kVPayloadKey][@"conversation_id"] integerValue])];
+                conversation.user = self.otherUser;
+                conversation.lastMessageText = message.text;
+                conversation.postedAt = message.postedAt;
+                self.conversation = conversation;
+                self.newConversation = NO;
+                [context saveToPersistentStore:nil];
+            }
+        }
+        if (completion)
+        {
+            completion(nil);
+        }
+    };
+    
+    [self.objectManager sendMessage:message
+                             toUser:self.otherUser
+                       successBlock:success
+                          failBlock:^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed in creating message with error: %@", error);
+        [context deleteObject:message];
+        
+        if (completion)
+        {
+            completion(error ?: [NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Failed to send message" }]);
+        }
+    }];
+}
+
+- (void)addNewMessage:(VMessage *)newMessage
+{
+    NSParameterAssert(newMessage != nil);
+    
+    [self.tableView beginUpdates];
+    NSUInteger newIndex = self.pendingMessages.count;
+    [self.pendingMessages addObject:newMessage];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:kPendingMessagesSection]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.tableView endUpdates];
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -322,7 +417,7 @@ static char KVOContext;
             break;
         
         case kPendingMessagesSection:
-            return 0;
+            return self.pendingMessages.count;
             break;
             
         default:

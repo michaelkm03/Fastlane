@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VMessageTableDataSource, VObjectManager, VUser;
+@class VMessage, VMessageTableDataSource, VObjectManager, VUser;
 
 @protocol VMessageTableDataDelegate <NSObject>
 
@@ -48,6 +48,11 @@
 - (BOOL)isLoading; ///< YES if we are currently waiting for a server operation to complete
 - (BOOL)areMorePagesAvailable; ///< YES if more pages of data are available on the server
 - (VMessage *)messageAtIndexPath:(NSIndexPath *)indexPath; ///< Returns the VMessage instance at the specified index path
+
+/**
+ Sends a new comment to the server and adds it to the table view
+ */
+- (void)createCommentWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion;
 
 /**
  Starts a process that polls the server every few seconds for new messages

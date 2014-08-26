@@ -9,6 +9,7 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
 #import "VMessageContainerViewController.h"
+#import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
 #import "VObjectManager.h"
 #import "VObjectManager+ContentCreation.h"
@@ -68,6 +69,8 @@ static NSMutableDictionary *messageViewControllers;
     UIImage *backImage = [self.backButton imageForState:UIControlStateNormal];
     [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 
+    self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
+    
     [self addBackgroundImage];
     [self.view bringSubviewToFront:self.busyView];
 }
@@ -77,7 +80,7 @@ static NSMutableDictionary *messageViewControllers;
     [super viewWillAppear:animated];
 
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    self.navigationItem.title = messageVC.otherUser.name ?: @"Message";
+    self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -167,41 +170,25 @@ static NSMutableDictionary *messageViewControllers;
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-#if 0 // TODO
-    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
-    progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
-    
-    __block NSNumber* oldID = self.conversation.remoteId;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    keyboardBar.sendButtonEnabled = NO;
+    VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+    self.busyView.hidden = NO;
+    [messageViewController.tableDataSource createCommentWithText:text mediaURL:mediaURL completion:^(NSError *error)
     {
-        if (![oldID isEqualToValue:self.conversation.remoteId])
+        keyboardBar.sendButtonEnabled = YES;
+        self.busyView.hidden = YES;
+        if (error)
         {
-            //If the ID on the conversation changes we need to refresh the fetch controller with the new ID.
-            //This happens because we do not have the remote ID for the conversation until the first message is sent
-            [((VMessageViewController*)self.conversationTableViewController) refreshFetchController];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
+            [hud hide:YES afterDelay:3.0];
         }
-        [progressHUD hide:YES];
-    };
-    
-    [[VObjectManager sharedManager] sendMessageToConversation:self.conversation
-                                                     withText:text
-                                                     mediaURL:mediaURL
-                                                 successBlock:success
-                                                    failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed in creating message with error: %@", error);
-         [progressHUD hide:YES];
-         
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadError", @"")
-                                                         message: NSLocalizedString(@"UploadErrorBody", @"")
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
-     }];
-#endif
+        else
+        {
+            [keyboardBar clearKeyboardBar];
+        }
+    }];
 }
 
 @end

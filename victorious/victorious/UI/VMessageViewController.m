@@ -28,9 +28,9 @@
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
-@property (nonatomic, strong) VMessageTableDataSource *tableDataSource;
-@property (nonatomic)         BOOL                     shouldScrollToBottom;
-@property (nonatomic)         BOOL                     refreshFailed;
+@property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;
+@property (nonatomic)            BOOL                     shouldScrollToBottom;
+@property (nonatomic)            BOOL                     refreshFailed;
 
 @end
 
@@ -131,7 +131,7 @@
     cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
     
-    if ([message.user isEqualToUser:[[VObjectManager sharedManager] mainUser]])
+    if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
     {
         cell.profileImageOnRight = YES;
     }
@@ -153,14 +153,14 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:message.user.profileImagePathSmall ?: message.user.pictureUrl];
+    NSURL *pictureURL = [NSURL URLWithString:message.sender.profileImagePathSmall ?: message.sender.pictureUrl];
     if (pictureURL)
     {
         [cell.profileImageView setImageWithURL:pictureURL];
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:message.user];
+        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:message.sender];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

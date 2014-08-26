@@ -79,5 +79,6 @@
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 
 @end
