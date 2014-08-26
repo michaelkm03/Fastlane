@@ -123,9 +123,10 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
              {
                  self.editProfileButton.selected = [resultObjects[0] boolValue];
                  [UIView animateWithDuration:0.2f
-                                  animations:^{
-                                      self.editProfileButton.alpha = 1.0f;
-                                  }];
+                                  animations:^
+                  {
+                      self.editProfileButton.alpha = 1.0f;
+                  }];
              }
                                          failBlock:nil];
         }
