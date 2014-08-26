@@ -863,7 +863,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.commentTime = CMTIME_IS_VALID(self.videoPlayer.currentTime) ? CMTimeGetSeconds(self.videoPlayer.currentTime) : -1;
         self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
                                                [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
-
         [self showRTC];
    
         [UIView animateWithDuration:.25 animations:
