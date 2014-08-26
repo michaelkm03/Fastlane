@@ -14,6 +14,7 @@
 #import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "VAnalyticsRecorder.h"
 
 #import "VContentInputAccessoryView.h"
 
@@ -130,7 +131,8 @@
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
+    {
         self.backButton.hidden = YES;
     }
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -347,6 +349,30 @@
 - (void)didSignUpWithUser:(VUser*)mainUser
 {
     self.profile = mainUser;
+    
+    switch (self.loginType)
+    {
+        case kVLoginTypeNone:
+            break;
+        case kVLoginTypeEmail:
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via email"
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+            break;
+        case kVLoginTypeFaceBook:
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via Facebook"
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+            break;
+        case kVLoginTypeTwitter:
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via Twitter"
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+            break;
+    }
 
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
@@ -453,7 +479,14 @@
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
+    {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Completed new profile"
+                                                                     action:nil
+                                                                      label:nil
+                                                                      value:nil];
         return YES;
+    }
+    
     
     // Identify Which Form Field is Missing
     NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];

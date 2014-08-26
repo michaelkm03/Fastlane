@@ -335,6 +335,7 @@
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
+		D8B0500A19AC1C690048E2BE /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
@@ -959,6 +960,8 @@
 		D81AEE2F19A6D09100727145 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		D8852A1019A3E9BC000066A5 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = UI/Login/VRegistrationModel.h; sourceTree = "<group>"; };
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
+		D8B0500819AC1C690048E2BE /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRTCUserPostedAtFormatter.h; path = UI/Common/VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
+		D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRTCUserPostedAtFormatter.m; path = UI/Common/VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
 		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
 		DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchViewController.h; sourceTree = "<group>"; };
@@ -1413,6 +1416,8 @@
 				03CA03CB193F93FE002CFB37 /* VLargeNumberFormatter.m */,
 				BE651D0C18AAD58A00069119 /* VLoadingViewController.h */,
 				BE651D0D18AAD58A00069119 /* VLoadingViewController.m */,
+				D8B0500819AC1C690048E2BE /* VRTCUserPostedAtFormatter.h */,
+				D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -2776,6 +2781,7 @@
 				BE55766619A53565000222A3 /* VTwitterManager.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */,
+				D8B0500A19AC1C690048E2BE /* VRTCUserPostedAtFormatter.m in Sources */,
 				BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */,
 				5FC4DA6D1897119C006BA107 /* VProfileCreateViewController.m in Sources */,
 				03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */,

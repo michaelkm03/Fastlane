@@ -11,6 +11,7 @@
 #import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
+#import "VRTCUserPostedAtFormatter.h"
 
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
@@ -204,7 +205,8 @@ static NSString* CommentCache           = @"CommentCache";
     VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
-    cell.usernameLabel.text = comment.user.name;
+    cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:comment.user.name
+                                                                                      andPostedTime:comment.realtime];
     cell.commentTextView.text = comment.text;
     if (comment.hasMedia)
     {

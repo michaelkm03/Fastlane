@@ -128,8 +128,13 @@ applyConfiguration(){
         fi
     fi
 
-    codesign -f -vvv -s "$CODESIGN_ID" "victorious.xcarchive/Products/Applications/victorious.app"
+    rm victorious.xcarchive/Products/Applications/victorious.app/*.xcent # remove old entitlements
+    security cms -D -i "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision" > tmp.plist
+    /usr/libexec/PlistBuddy -x -c 'Print:Entitlements' tmp.plist > entitlements.plist
+    codesign -f -vvv -s "$CODESIGN_ID" --entitlements entitlements.plist "victorious.xcarchive/Products/Applications/victorious.app"
     CODESIGNRESULT=$?
+    rm tmp.plist
+    rm entitlements.plist
 
     if [ $CODESIGNRESULT != 0 ]; then
         echo "Codesign failed."
