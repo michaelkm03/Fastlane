@@ -341,6 +341,7 @@
         NSString *city = [locationDictionary valueForKey:@"City"];
         NSString *state = [locationDictionary valueForKey:@"State"];
         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+        self.registrationModel.locationText = self.locationTextField.text;
     }];
 }
 
