@@ -520,6 +520,34 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
         self.playbackPlayer.rate = self.recordingRate;
     }
 	dispatch_async(self.dispatch_queue, ^ {
+        AVCaptureConnection *connection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+        
+        if ([connection isVideoOrientationSupported])
+        {
+            switch ([UIDevice currentDevice].orientation)
+            {
+                case UIDeviceOrientationUnknown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+                    break;
+                case UIDeviceOrientationPortrait:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                    break;
+                case UIDeviceOrientationPortraitUpsideDown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+                    break;
+                case UIDeviceOrientationLandscapeLeft:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+                    break;
+                case UIDeviceOrientationLandscapeRight:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+                    break;
+                case UIDeviceOrientationFaceUp:
+                case UIDeviceOrientationFaceDown:
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                    break;
+            }
+        }
+        
 		self.shouldComputeOffset = YES;
 		recording = YES;
     });
