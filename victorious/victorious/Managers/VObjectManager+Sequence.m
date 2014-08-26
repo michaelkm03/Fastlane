@@ -187,7 +187,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     
     if (!user)
         return nil;
-    
+
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

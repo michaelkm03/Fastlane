@@ -315,13 +315,10 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             [context deleteObject:pollResult];
         }
         
-        //Nuke and refetch the user so we don't have their access token / person info
-        NSNumber* remoteID = self.mainUser.remoteId;
-        [context deleteObject:[context objectWithID:self.mainUser.objectID]];
-        [self fetchUser:remoteID withSuccessBlock:nil failBlock:nil];
-        
         [context save:nil];
     }];
+    
+    self.mainUser.token = nil;
     
     //Log out no matter what
     self.mainUser = nil;
