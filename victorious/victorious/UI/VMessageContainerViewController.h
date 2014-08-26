@@ -12,10 +12,9 @@
 
 @interface VMessageContainerViewController : VKeyboardBarContainerViewController
 
-@property (nonatomic, strong)        VUser  *otherUser;
-@property (nonatomic, weak) IBOutlet UIView *busyView;
+@property (nonatomic, readonly)          VUser  *otherUser;
+@property (nonatomic, weak)     IBOutlet UIView *busyView;
 
-
-+ (instancetype)messageContainer;
++ (instancetype)messageViewControllerForUser:(VUser *)otherUser;
 
 @end

@@ -250,9 +250,16 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                              target:nil
                                              action:nil];
 
-    VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
-    composeController.otherUser = self.profile;
-    [self.navigationController pushViewController:composeController animated:YES];
+    VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+    
+    if ([self.navigationController.viewControllers containsObject:composeController])
+    {
+        [self.navigationController popToViewController:composeController animated:YES];
+    }
+    else
+    {
+        [self.navigationController pushViewController:composeController animated:YES];
+    }
 }
 
 - (void)editProfileHandler

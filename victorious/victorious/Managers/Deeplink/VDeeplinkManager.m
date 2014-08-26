@@ -178,11 +178,9 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] conversationByID:conversationId
                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
-         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageContainer];
-         
          VConversation* conversation = (VConversation*)[resultObjects firstObject];
-         messageVC.otherUser = conversation.user;
+         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
+         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
          VRootViewController* root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[inbox]];

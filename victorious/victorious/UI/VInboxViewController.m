@@ -39,7 +39,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @property (weak, nonatomic)   IBOutlet UISegmentedControl *modeSelectControl;
 @property (weak, nonatomic)   IBOutlet UIView             *headerView;
-@property (strong, nonatomic) NSMutableDictionary         *detailViewControllers;
 
 @end
 
@@ -62,8 +61,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.detailViewControllers = [[NSMutableDictionary alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -214,14 +211,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    VMessageContainerViewController *detailVC = self.detailViewControllers[conversation.remoteId];
-    if (!detailVC)
-    {
-        detailVC = (VMessageContainerViewController *)[self.storyboard instantiateViewControllerWithIdentifier:kMessageContainerID];
-        detailVC.otherUser = conversation.user;
-        self.detailViewControllers[conversation.remoteId] = detailVC;
-    }
-    [(VMessageViewController *)detailVC.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 

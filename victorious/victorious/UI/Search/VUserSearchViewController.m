@@ -180,8 +180,7 @@
         return;
     }
     
-    VMessageContainerViewController *composeController = [VMessageContainerViewController messageContainer];
-    composeController.otherUser = profile;
+    VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
     [self.navigationController pushViewController:composeController animated:YES];
 }
 

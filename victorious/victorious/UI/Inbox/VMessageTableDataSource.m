@@ -119,6 +119,13 @@ static char KVOContext;
             }
         }];
     }
+    else if (self.newConversation)
+    {
+        if (completion)
+        {
+            completion(nil);
+        }
+    }
     else
     {
         [self loadConversationWithCompletion:^(NSError *error)
@@ -130,9 +137,13 @@ static char KVOContext;
                     completion(error);
                 }
             }
-            else
+            else if (!self.newConversation)
             {
                 [self refreshWithCompletion:completion];
+            }
+            else if (completion)
+            {
+                completion(nil);
             }
         }];
     }

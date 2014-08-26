@@ -22,6 +22,8 @@
 
 #import "MBProgressHUD.h"
 
+static NSMutableDictionary *messageViewControllers;
+
 @interface VMessageContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
@@ -32,15 +34,28 @@
 @end
 
 @implementation VMessageContainerViewController
+
 @synthesize conversationTableViewController = _conversationTableViewController;
 
-
-+ (instancetype)messageContainer
++ (instancetype)messageViewControllerForUser:(VUser *)otherUser
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VMessageContainerViewController* container = (VMessageContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kMessageContainerID];
+    NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
+    if (!messageViewControllers)
+    {
+        messageViewControllers = [[NSMutableDictionary alloc] init];
+    }
     
-    return container;
+    VMessageContainerViewController *messageViewController = messageViewControllers[otherUser.remoteId];
+    if (!messageViewController)
+    {
+        UIViewController *rootViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        messageViewController = (VMessageContainerViewController *)[rootViewController.storyboard instantiateViewControllerWithIdentifier:kMessageContainerID];
+        messageViewController.otherUser = otherUser;
+        messageViewControllers[otherUser.remoteId] = messageViewController;
+    }
+    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    
+    return messageViewController;
 }
 
 - (void)viewDidLoad
