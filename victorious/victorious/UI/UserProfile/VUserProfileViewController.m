@@ -67,12 +67,12 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonClose"]
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
                                                                                        style:UIBarButtonItemStylePlain
                                                                                       target:viewController
                                                                                       action:@selector(close:)];
     viewController.profile = aUser;
-    
+
     return viewController;
 }
 
@@ -161,6 +161,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     if (fromInbox)
         self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 - (void)dealloc
