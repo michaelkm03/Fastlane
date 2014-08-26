@@ -47,7 +47,7 @@
 	
     self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
     self.playBackSpeed = VPlaybackNormalSpeed;
-    self.playbackLooping = VLoopOnce;
+    self.playbackLooping = VLoopRepeat;
     
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -80,12 +80,14 @@
 		interval = 0.5f * duration / width;
 	}
 
-    __weak  VRemixTrimViewController*   weakSelf    =   self;
+    __weak VRemixTrimViewController *weakSelf = self;
 	self.timeObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
                      {
                          [weakSelf syncScrubber];
                      }];
 
+    self.trimSlider.videoPlayerViewController = self.videoPlayerViewController;
+    
     
     // To Ensure That The Navigation Bar is Always Present
     [self.navigationController setNavigationBarHidden:NO];
