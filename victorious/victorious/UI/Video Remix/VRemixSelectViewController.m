@@ -126,7 +126,8 @@
         float value = [self.scrubber value];
         double time = duration * (value - minValue) / (maxValue - minValue);
         
-        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
+    
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(time, [self.videoPlayerViewController.player.currentItem duration].timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
         self.videoPlayerViewController.startSeconds = time;
     }
 }

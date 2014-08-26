@@ -26,7 +26,6 @@
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
 @property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
-@property (nonatomic, strong)   id                              timeObserver;
 
 @property (nonatomic, strong)   AVAssetExportSession*           exportSession;
 
@@ -45,8 +44,8 @@
     self.playBackSpeed = VPlaybackNormalSpeed;
     self.playbackLooping = VLoopRepeat;
     
-    UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
+    //UIImage *nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
     
     self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.bounds videoUrl:self.sourceURL];
     self.trimSlider.bubbleText.font = [UIFont systemFontOfSize:12];
@@ -70,6 +69,8 @@
     // Set the Custom Next Button
     UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
+    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blueColor]];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -91,7 +92,6 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = nil;
     
-    [self.videoPlayerViewController.player removeTimeObserver:self.timeObserver];
     [self.trimSlider cancel];
 }
 
@@ -203,8 +203,6 @@
 
 -(IBAction)takeSnapShotAction:(id)sender
 {
-    NSLog(@"\n\n-----\nTaking An Image Snapshot\n-----\n\n");
-    
     // Pause the Current Video If It Is Playing
     if (self.videoPlayerViewController.isPlaying)
         [self.videoPlayerViewController.player pause];

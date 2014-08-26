@@ -185,7 +185,7 @@
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="Wxk-Ov-Iz6">
+                        <barButtonItem key="leftBarButtonItem" image="btnPrevArrowAccent" id="Wxk-Ov-Iz6">
                             <connections>
                                 <action selector="goBack:" destination="uEv-AE-duX" id="xgO-IH-SJj"/>
                             </connections>
@@ -239,7 +239,6 @@
                                 </state>
                                 <connections>
                                     <action selector="playbackRateClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="Yh6-3i-iKL"/>
-                                    <action selector="playbackRateClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="uQo-M0-3ya"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oad-Gb-wYK">
@@ -269,6 +268,17 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RBv-U1-0Dn">
+                                <rect key="frame" x="87" y="434" width="146" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="kfv-4U-TLh">
+                                        <rect key="frame" x="-2" y="2" width="150" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </slider>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gjo-M3-pff">
                                 <rect key="frame" x="0.0" y="440" width="80" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -282,14 +292,12 @@
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="CLr-Kk-zdY">
+                        <barButtonItem key="leftBarButtonItem" image="btnPrevArrowAccent" id="CLr-Kk-zdY">
                             <connections>
                                 <action selector="goBack:" destination="vMj-SS-k4u" id="HJQ-dU-Kv4"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="btnNextArrowAccent" id="8ZA-Jm-6zK">
-                            <color key="tintColor" red="1" green="0.1217436891" blue="0.12809889520000001" alpha="1" colorSpace="calibratedRGB"/>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="btnNextArrowAccent" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
                         <outlet property="afterButton" destination="WbC-ls-O0o" id="Pqt-TR-ueg"/>
@@ -299,6 +307,8 @@
                         <outlet property="playButton" destination="Ele-xw-w6U" id="kRP-WJ-lc2"/>
                         <outlet property="playCircle" destination="ykO-ox-Rir" id="RRs-zT-dbC"/>
                         <outlet property="previewParentView" destination="5C1-bS-FtL" id="zRX-uo-mji"/>
+                        <outlet property="progressIndicator" destination="kfv-4U-TLh" id="M8e-S6-Snj"/>
+                        <outlet property="progressView" destination="RBv-U1-0Dn" id="JGh-cq-gjQ"/>
                         <outlet property="rateButton" destination="AJB-sl-S4A" id="fuY-hg-AIT"/>
                         <outlet property="thumbnail" destination="0ry-6h-dSb" id="uzo-Td-SiA"/>
                     </connections>
@@ -312,7 +322,7 @@
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
         <image name="btnNextArrowAccent" width="24" height="24"/>
-        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="btnPrevArrowAccent" width="24" height="24"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonNoLoop" width="106" height="59"/>
         <image name="cameraButtonSpeedNormal" width="107" height="59"/>

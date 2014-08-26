@@ -14,6 +14,7 @@
 #import "VConstants.h"
 #import "UIView+Masking.h"
 #import "VCameraViewController.h"
+#import "VThemeManager.h"
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
@@ -31,6 +32,10 @@
 @property (nonatomic)           BOOL                            selectingBeforeURL;
 @property (nonatomic)           BOOL                            selectingAfterURL;
 
+@property (nonatomic, strong) IBOutlet UIView *progressView;
+@property (nonatomic, strong) IBOutlet UISlider *progressIndicator;
+@property (nonatomic, strong) id progressObserver;
+
 @end
 
 @implementation VRemixStitchViewController
@@ -44,6 +49,18 @@
     [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
 
     [self setupThumbnailStrip:self.thumbnail withURL:self.sourceURL];
+
+    self.playbackLooping = VLoopRepeat;
+
+    // Setup Progress View
+    [self.progressView setBackgroundColor:[UIColor clearColor]];
+    [self.progressView setHidden:YES];
+
+    UIImage *trackImage = [[UIImage alloc] init];
+    [self.progressIndicator setMaximumTrackImage:trackImage forState:UIControlStateNormal];
+    [self.progressIndicator setMinimumTrackImage:trackImage forState:UIControlStateNormal];
+    [self.progressIndicator setThumbImage:[UIImage imageNamed:@"remixCurrentTimelineIndicator"] forState:UIControlStateNormal];
+
     
     [self.beforeButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectBeforeAssetClicked:)]];
     self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
@@ -54,21 +71,121 @@
     self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
     self.afterButton.userInteractionEnabled = YES;
     [self.afterButton maskWithImage:[UIImage imageNamed:@"cameraRightMask"]];
+    
+    UIImage *prevButtonImage = [[UIImage imageNamed:@"btnPrevArrowWhite"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:prevButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(goBack:)];
 
     UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
+    
+    //[self setupProgressObserver];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Stitch"];
+    
+    
+    // Set Video Playback Rate
+    CGFloat rate = 1.0;
+    [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
+    
+    if (self.playBackSpeed == VPlaybackDoubleSpeed)
+    {
+        rate = 2.0;
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
+    }
+    else if (self.playBackSpeed == VPlaybackHalfSpeed)
+    {
+        rate = 0.5;
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
+    }
+    
+    [self.videoPlayerViewController.player setRate:rate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
+    // Remove Time Observer
+    //[self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
+}
+
+
+#pragma mark - Video Methods
+
+-(void)setupProgressObserver
+{
+    // Set This Controller as the Video Player Delegate
+    self.videoPlayerViewController.delegate = self;
+    
+    // TODO: Remove this line post-launch
+    [self.progressIndicator setHidden:YES];
+    
+    double interval = .1f;
+    double duration = CMTimeGetSeconds([self playerItemDuration]);
+    if (isfinite(duration))
+    {
+        CGFloat width = CGRectGetWidth([self.progressIndicator bounds]);
+        interval = 0.5f * duration / width;
+    }
+    
+    __weak VRemixStitchViewController *weakSelf = self;
+    self.progressObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
+                             {
+                                 [weakSelf syncProgressIndicator];
+                             }];
+}
+
+-(CMTime)playerItemDuration
+{
+    AVPlayerItem *thePlayerItem = self.videoPlayerViewController.player.currentItem;
+    if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
+    {
+        return thePlayerItem.duration;
+    }
+    else
+    {
+        return kCMTimeInvalid;
+    }
+}
+
+-(void)syncProgressIndicator
+{
+    CMTime playerDuration = [self playerItemDuration];
+    if (CMTIME_IS_INVALID(playerDuration))
+    {
+        self.progressIndicator.minimumValue = 0.0;
+        return;
+    }
+    
+    double duration = CMTimeGetSeconds(playerDuration);
+    if (isfinite(duration) && (duration > 0))
+    {
+        float minValue = [self.progressIndicator minimumValue];
+        float maxValue = [self.progressIndicator maximumValue];
+        double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
+        [self.progressIndicator setValue:(maxValue - minValue) * time / duration + minValue];
+    }
+}
+
+#pragma mark - VCVideoPlayerDelegate
+-(void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+{
+    CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+    if (CMTimeCompare(endTime, kCMTimeZero) != 0)
+    {
+        double normalizedTime = (double)self.videoPlayerViewController.player.currentTime.value / (double)endTime.value;
+        self.progressIndicator.value = normalizedTime;
+    }
 }
 
 #pragma mark - Actions

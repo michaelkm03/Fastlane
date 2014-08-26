@@ -8,6 +8,7 @@
 
 #import "UIViewController+ForceOrientationChange.h"
 
+#import "VConstants.h"
 #import "VAnalyticsRecorder.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
@@ -25,6 +26,7 @@
 #import "VHashTagStreamViewController.h"
 
 #import "VRemixSelectViewController.h"
+#import "VRemixTrimViewController.h"
 
 #import "UIImageView+Blurring.h"
 
@@ -51,6 +53,8 @@
 #import "VDeeplinkManager.h"
 #import "VSettingManager.h"
 
+#import "MBProgressHUD.h"
+
 static const CGFloat kMaximumNoCaptionContentViewOffset     = 134.0f;
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
@@ -63,7 +67,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @import MediaPlayer;
 
-@interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate>
+@interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate, NSURLSessionDownloadDelegate>
 
 @property (nonatomic, readonly) BOOL isViewingTitle;
 @property (nonatomic) VElapsedTimeFormatter* timeFormatter;
@@ -79,6 +83,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *remixButtonBottomToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *repostButtonBottomToContainerConstraint;
 
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) NSURL *sourceURL;
+@property (nonatomic, strong) NSURL *targetURL;
+@property (nonatomic) NSInteger sequenceID;
+@property (nonatomic) NSInteger nodeID;
 @end
 
 @implementation VContentViewController
@@ -777,18 +786,24 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     if ([self.currentAsset isVideo])
     {
-        UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
+        
+        self.sourceURL = [self.currentAsset.data mp4UrlFromM3U8];
+        self.sequenceID = [self.sequence.remoteId integerValue];
+        self.nodeID = [self.currentNode.remoteId integerValue];
+        
+        UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.sourceURL sequenceID:self.sequenceID nodeID:self.nodeID];
         [self presentViewController:remixVC animated:YES completion:
          ^{
              [self.videoPlayer.player pause];
          }];
+        
     }
     else
     {
         UINavigationController * __weak weakNav = self.navigationController;
         VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
         publishViewController.previewImage = self.previewImage.image;
-        publishViewController.parentID = self.sequence.remoteId.integerValue;
+        publishViewController.parentID = self.sequenceID;
         publishViewController.completion = ^(BOOL complete)
         {
             [weakNav popViewControllerAnimated:YES];
@@ -975,6 +990,100 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     contentInfo.backgroundImage = self.backgroundImage.image;
     contentInfo.delegate = self;
     [self.navigationController pushViewController:contentInfo animated:YES];
+}
+
+#pragma mark - Remix Methods
+
+- (void)downloadVideoSegmentForSequenceID:(NSInteger)sequenceID atTime:(CGFloat)selectedTime
+{
+    self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
+    
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError* error)
+     {
+         if (completion)
+         {
+             [self downloadVideoSegmentAtURL:remixMp4Url];
+         }
+         else
+         {
+             [self.progressHUD hide:YES];
+             self.progressHUD = nil;
+             [self showSegmentDownloadFailureAlert];
+             self.navigationItem.leftBarButtonItem.enabled = YES;
+         }
+     }];
+}
+
+- (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL
+{
+    self.progressHUD.mode = MBProgressHUDModeDeterminate;
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
+    
+    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    sessionConfig.allowsCellularAccess = YES;
+    
+    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
+                                                                        delegate:self
+                                                                   delegateQueue:nil];
+    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:segmentURL];
+    [task resume];
+}
+
+- (void)showSegmentDownloadFailureAlert
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
+                                                           message:NSLocalizedString(@"TryAgain", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    [alert show];
+}
+
+
+#pragma mark - NSURLSessionDownloadDelegate
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    double percent = ((double)totalBytesWritten / (double)totalBytesExpectedToWrite);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressHUD.progress = (float)percent;
+    });
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
+{
+    self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
+    [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:nil];
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.targetURL error:nil];
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
+{
+    // Method is only here to satisfy the delegate warning
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressHUD hide:YES];
+        self.progressHUD = nil;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+        
+        if (error)
+        {
+            [self showSegmentDownloadFailureAlert];
+        }
+        else
+        {
+            VRemixTrimViewController *trimVC = [[VRemixTrimViewController alloc] init];
+            trimVC.sourceURL = self.targetURL;
+            trimVC.parentID = self.nodeID;
+            [self presentViewController:trimVC animated:YES completion:nil];
+        }
+    });
 }
 
 #pragma mark - VContentInfoDelegate
