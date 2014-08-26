@@ -551,8 +551,6 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 		self.shouldComputeOffset = YES;
 		recording = YES;
     });
-    
-    
 }
 
 - (void)cancel
