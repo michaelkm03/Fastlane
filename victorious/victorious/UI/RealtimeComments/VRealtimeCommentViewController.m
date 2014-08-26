@@ -24,6 +24,7 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VElapsedTimeFormatter.h"
+#import "VRTCUserPostedAtFormatter.h"
 
 @interface VRealtimeCommentViewController ()
 
@@ -50,6 +51,8 @@
 @property (nonatomic)   BOOL didSelectComment;
 
 @property (nonatomic)   BOOL needsCommentLayout;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceArrowToContainerConstraint;
 
 @end
 
@@ -141,11 +144,11 @@
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
         progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
-        
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
@@ -179,18 +182,27 @@
     if (currentComment)
     {
         UIImageView* imageView = [self.progressBarImageViews objectAtIndex:[self.comments indexOfObject:currentComment]];
-        self.arrowImageView.center = CGPointMake(imageView.center.x, self.arrowImageView.center.y);
-        [UIView animateWithDuration:.25f animations:
-         ^{
-             self.commentBackgroundView.alpha = 1;
-         }];
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.7f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.leadingSpaceArrowToContainerConstraint.constant = imageView.center.x - (CGRectGetWidth(self.arrowImageView.bounds) / 2);
+                             [self.view layoutIfNeeded];
+                             self.commentBackgroundView.alpha = 1;
+                         } completion:nil];
     }
     else if (!currentComment)
     {
-        [UIView animateWithDuration:.25f animations:
-         ^{
-             self.commentBackgroundView.alpha = 0;
-         }];
+        [UIView animateWithDuration:0.25f
+                              delay:0.0f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.commentBackgroundView.alpha = 0.0f;
+                         } completion:nil];
     }
     
     _currentComment = currentComment;
@@ -210,15 +222,8 @@
     
     self.commentLabel.attributedText = commentWithStyle;
     
-    NSString* fullString = [NSString stringWithFormat:NSLocalizedString(@"RTCUserPostedAtSyntax", nil),
-                            currentComment.user.name ?: @"", [self.timeFormatter stringForSeconds:currentComment.realtime.floatValue]];
-    
-    NSMutableAttributedString* nameString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [nameString addAttribute:NSForegroundColorAttributeName value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
-                       range:NSMakeRange(0, currentComment.user.name.length)];
-    [nameString addAttribute:NSFontAttributeName value:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font]
-                       range:NSMakeRange(0, fullString.length)];
-    self.nameLabel.attributedText = nameString;
+    self.nameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:currentComment.user.name
+                                                                                            andPostedTime:currentComment.realtime];
     
     self.playButtonImageView.hidden = !currentComment.mediaType || ![currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo];
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)

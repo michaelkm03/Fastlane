@@ -878,7 +878,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.commentTime = CMTIME_IS_VALID(self.videoPlayer.currentTime) ? CMTimeGetSeconds(self.videoPlayer.currentTime) : -1;
         self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
                                                [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
-
         [self showRTC];
    
         [UIView animateWithDuration:.25 animations:
@@ -910,19 +909,23 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [[VThemeManager sharedThemeManager] removeStyling];
     
     NSString* shareText;
+    NSString* analyticsContentTypeText = @"";
     if ([self.sequence.user isOwner])
     {
         if ([self.sequence isPoll])
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
+            analyticsContentTypeText = @"poll";
         }
         else if ([self.sequence isVideo])
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+            analyticsContentTypeText = @"video";
         }
         else
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
+            analyticsContentTypeText = @"image";
         }
     }
     else
@@ -950,6 +953,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
+    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+    {
+
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", analyticsContentTypeText, activityType]
+                                                                     action:nil
+                                                                      label:nil
+                                                                      value:nil];
+    };
     
     [self.navigationController presentViewController:activityViewController
                                        animated:YES

@@ -17,6 +17,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
+#import "VAnalyticsRecorder.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -80,6 +81,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Started signup via email"
+                                                                 action:nil
+                                                                  label:nil
+                                                                  value:nil];
     
     [self.emailTextField becomeFirstResponder];
     self.navigationController.delegate = self;
@@ -192,6 +198,10 @@
     if ([self shouldSignUpWithEmailAddress:self.emailTextField.text
                                   password:self.passwordTextField.text])
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Submitted email and password"
+                                                                     action:nil
+                                                                      label:nil
+                                                                      value:nil];
         // Go to Part II of Sign-up
         [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
     }
