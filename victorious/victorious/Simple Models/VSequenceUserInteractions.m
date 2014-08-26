@@ -20,11 +20,11 @@ static NSString *const kVHasRepostedKey = @"has_reposted";
 
 + (instancetype)sequenceUserInteractionsWithPayload:(NSDictionary *)payload
 {
-    VSequenceUserInteractions *userIteractionsModel = [[VSequenceUserInteractions alloc] init];
+    VSequenceUserInteractions *userInteractionsModel = [[VSequenceUserInteractions alloc] init];
     
-    userIteractionsModel.hasReposted = [payload[kVHasRepostedKey] isKindOfClass:[NSNumber class]] ? [payload[kVHasRepostedKey] boolValue] : NO;
+    userInteractionsModel.hasReposted = [payload[kVHasRepostedKey] isKindOfClass:[NSNumber class]] ? [payload[kVHasRepostedKey] boolValue] : NO;
     
-    return userIteractionsModel;
+    return userInteractionsModel;
 }
 
 @end
