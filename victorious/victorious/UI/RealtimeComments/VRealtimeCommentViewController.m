@@ -144,11 +144,11 @@
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
         progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
-        
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
