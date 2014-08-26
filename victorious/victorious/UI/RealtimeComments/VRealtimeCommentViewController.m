@@ -52,6 +52,8 @@
 
 @property (nonatomic)   BOOL needsCommentLayout;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceArrowToContainerConstraint;
+
 @end
 
 @implementation VRealtimeCommentViewController
@@ -180,18 +182,27 @@
     if (currentComment)
     {
         UIImageView* imageView = [self.progressBarImageViews objectAtIndex:[self.comments indexOfObject:currentComment]];
-        self.arrowImageView.center = CGPointMake(imageView.center.x, self.arrowImageView.center.y);
-        [UIView animateWithDuration:.25f animations:
-         ^{
-             self.commentBackgroundView.alpha = 1;
-         }];
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.7f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.leadingSpaceArrowToContainerConstraint.constant = imageView.center.x - (CGRectGetWidth(self.arrowImageView.bounds) / 2);
+                             [self.view layoutIfNeeded];
+                             self.commentBackgroundView.alpha = 1;
+                         } completion:nil];
     }
     else if (!currentComment)
     {
-        [UIView animateWithDuration:.25f animations:
-         ^{
-             self.commentBackgroundView.alpha = 0;
-         }];
+        [UIView animateWithDuration:0.25f
+                              delay:0.0f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.commentBackgroundView.alpha = 0.0f;
+                         } completion:nil];
     }
     
     _currentComment = currentComment;
