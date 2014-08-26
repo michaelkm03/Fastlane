@@ -93,8 +93,9 @@ static NSMutableDictionary *messageViewControllers;
                                                destructiveButtonTitle:reportTitle
                                                   onDestructiveButton:^(void)
                                   {
-#if 0 // TODO
-                                      [[VObjectManager sharedManager] flagConversation:self.conversation
+                                      VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+                                      
+                                      [[VObjectManager sharedManager] flagConversation:messageViewController.tableDataSource.conversation
                                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
@@ -107,7 +108,7 @@ static NSMutableDictionary *messageViewControllers;
                                        }
                                                                          failBlock:^(NSOperation* operation, NSError* error)
                                        {
-                                           VLog(@"Failed to flag conversation %@", self.conversation);
+                                           VLog(@"Failed to flag conversation %@", messageViewController.tableDataSource.conversation);
                                            
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                                                   message:NSLocalizedString(@"ErrorOccured", @"")
@@ -116,7 +117,6 @@ static NSMutableDictionary *messageViewControllers;
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                        }];
-#endif
                                   }
                                            otherButtonTitlesAndBlocks:nil];
     

@@ -106,9 +106,28 @@
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
+    if (!conversation)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
+    VMessage *latestMessage = [conversation.messages lastObject];
+    if (!latestMessage)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
     return [self POST:@"/api/message/flag"
-               object:conversation
-           parameters:@{@"conversation_id" : conversation.remoteId}
+               object:nil
+           parameters:@{ @"message_id" : latestMessage.remoteId }
          successBlock:success
             failBlock:fail];
 }

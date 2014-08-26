@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VMessage, VMessageTableDataSource, VObjectManager, VUser;
+@class VConversation, VMessage, VMessageTableDataSource, VObjectManager, VUser;
 
 @protocol VMessageTableDataDelegate <NSObject>
 
@@ -29,10 +29,11 @@
  */
 @interface VMessageTableDataSource : NSObject <UITableViewDataSource>
 
-@property (nonatomic, weak)   id<VMessageTableDataDelegate>  delegate;
-@property (nonatomic, weak)   UITableView                   *tableView; ///< The tableView passed to the initializer
-@property (nonatomic, strong) VUser                         *otherUser; ///< The user with whom we are conversing
-@property (nonatomic, strong) VObjectManager                *objectManager;
+@property (nonatomic, weak)     id<VMessageTableDataDelegate>  delegate;
+@property (nonatomic, weak)     UITableView                   *tableView; ///< The tableView passed to the initializer
+@property (nonatomic, strong)   VUser                         *otherUser; ///< The user with whom we are conversing
+@property (nonatomic, readonly) VConversation                 *conversation; ///< Might be nil if we haven't yet sent or received any messages from this user.
+@property (nonatomic, strong)   VObjectManager                *objectManager;
 
 /**
  Creates a new instance of the receiver, adds it as the dataSource
