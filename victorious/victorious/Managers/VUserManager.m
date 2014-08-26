@@ -145,6 +145,15 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     }
 }
 
+- (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                             onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    [self loginViaTwitterAccountWithIdentifier:twitterID
+                                  onCompletion:completion
+                                       onError:errorBlock];
+}
+
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:nil onCompletion:completion onError:errorBlock];

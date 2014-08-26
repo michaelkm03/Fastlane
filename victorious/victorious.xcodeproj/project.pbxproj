@@ -333,6 +333,7 @@
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
+		D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D866E84519ABAF9700B20082 /* VSelectorViewController.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
 		D8B0500A19AC1C690048E2BE /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
@@ -955,6 +956,8 @@
 		D81AEE2C19A674F400727145 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "Categories/UIImage+Resize.h"; sourceTree = "<group>"; };
 		D81AEE2D19A674F400727145 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "Categories/UIImage+Resize.m"; sourceTree = "<group>"; };
 		D81AEE2F19A6D09100727145 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		D866E84419ABAF9700B20082 /* VSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSelectorViewController.h; path = UI/Common/Selector/VSelectorViewController.h; sourceTree = "<group>"; };
+		D866E84519ABAF9700B20082 /* VSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSelectorViewController.m; path = UI/Common/Selector/VSelectorViewController.m; sourceTree = "<group>"; };
 		D8852A1019A3E9BC000066A5 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = UI/Login/VRegistrationModel.h; sourceTree = "<group>"; };
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
 		D8B0500819AC1C690048E2BE /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRTCUserPostedAtFormatter.h; path = UI/Common/VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
@@ -1399,6 +1402,7 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D866E84319ABAF4D00B20082 /* Selector */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				BEF185E619884C13007FB4BC /* VConstants.m */,
 				3FA217E018AD87B50066E893 /* Categories */,
@@ -2237,6 +2241,15 @@
 			name = RealtimeComments;
 			sourceTree = "<group>";
 		};
+		D866E84319ABAF4D00B20082 /* Selector */ = {
+			isa = PBXGroup;
+			children = (
+				D866E84419ABAF9700B20082 /* VSelectorViewController.h */,
+				D866E84519ABAF9700B20082 /* VSelectorViewController.m */,
+			);
+			name = Selector;
+			sourceTree = "<group>";
+		};
 		DB58EF1E1990027F00D2A07F /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2781,6 +2794,7 @@
 				03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */,
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
+				D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				DB58EF44199403B300D2A07F /* VComment.m in Sources */,
