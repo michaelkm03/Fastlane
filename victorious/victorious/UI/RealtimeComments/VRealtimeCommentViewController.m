@@ -24,6 +24,7 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VElapsedTimeFormatter.h"
+#import "VRTCUserPostedAtFormatter.h"
 
 @interface VRealtimeCommentViewController ()
 
@@ -210,15 +211,8 @@
     
     self.commentLabel.attributedText = commentWithStyle;
     
-    NSString* fullString = [NSString stringWithFormat:NSLocalizedString(@"RTCUserPostedAtSyntax", nil),
-                            currentComment.user.name ?: @"", [self.timeFormatter stringForSeconds:currentComment.realtime.floatValue]];
-    
-    NSMutableAttributedString* nameString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [nameString addAttribute:NSForegroundColorAttributeName value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
-                       range:NSMakeRange(0, currentComment.user.name.length)];
-    [nameString addAttribute:NSFontAttributeName value:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font]
-                       range:NSMakeRange(0, fullString.length)];
-    self.nameLabel.attributedText = nameString;
+    self.nameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:currentComment.user.name
+                                                                                            andPostedTime:currentComment.realtime];
     
     self.playButtonImageView.hidden = !currentComment.mediaType || ![currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo];
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
