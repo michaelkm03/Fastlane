@@ -48,6 +48,7 @@
 @property (strong, nonatomic) UIActivityIndicatorView* bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;
+@property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
 @property (strong, nonatomic) VSequenceFilter* defaultFilter;
 
@@ -113,6 +114,7 @@
     self.tableDataSource.filter = self.currentFilter;
     self.tableDataSource.tableView = self.tableView;
     self.tableView.dataSource = self.tableDataSource;
+    self.tableView.delegate = self;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self registerCells];
     
@@ -136,6 +138,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (self.lastSelectedIndexPath)
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[self.lastSelectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
@@ -238,6 +245,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.lastSelectedIndexPath = indexPath;
     
     self.contentViewController = [[VContentViewController alloc] init];
     
@@ -450,6 +458,8 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    
+    self.lastSelectedIndexPath = [self.tableView indexPathForCell:cell];
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
@@ -535,7 +545,7 @@
               CGFloat maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height;
               if (self.tableView.contentOffset.y < minOffset)
               {
-                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, 0) animated:YES];
+                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, -self.tableView.contentInset.top) animated:YES];
               }
               else if (self.tableView.contentOffset.y >= maxOffset)
               {
