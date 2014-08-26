@@ -22,7 +22,7 @@ static NSString *const kVHasRepostedKey = @"has_reposted";
 {
     VSequenceUserInteractions *userIteractionsModel = [[VSequenceUserInteractions alloc] init];
     
-    userIteractionsModel.hasReposted = payload[kVHasRepostedKey] ? [payload[kVHasRepostedKey] boolValue] : NO;
+    userIteractionsModel.hasReposted = [payload[kVHasRepostedKey] isKindOfClass:[NSNumber class]] ? [payload[kVHasRepostedKey] boolValue] : NO;
     
     return userIteractionsModel;
 }
