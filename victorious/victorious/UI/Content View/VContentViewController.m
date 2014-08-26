@@ -767,7 +767,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self loadImage];
     }
     
-    
     [self showRemixButton];
 }
 
