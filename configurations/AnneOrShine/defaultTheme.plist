@@ -10,6 +10,8 @@
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
 	<string>Anne Or Shine</string>
+	<key>email.support</key>
+	<string>support@victorious.com</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>

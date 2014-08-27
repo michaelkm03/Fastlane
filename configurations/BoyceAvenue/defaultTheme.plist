@@ -8,6 +8,8 @@
 	<string>Terms of Service</string>
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
+	<key>email.support</key>
+	<string>support@victorious.com</string>
 	<key>channel.name</key>
 	<string>Boyce Avenue</string>
 	<key>channel.url.about</key>

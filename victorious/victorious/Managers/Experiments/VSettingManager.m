@@ -25,8 +25,6 @@ NSString*   const   kVTermsOfServiceURL                 =   @"url.tos";
 NSString*   const   kVAppStoreURL                       =   @"url.appstore";
 NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
 
-NSString*   const   kVChannelURLSupport                 =   @"email.support";
-
 @implementation VSettingManager
 
 + (instancetype)sharedManager

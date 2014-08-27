@@ -4,6 +4,8 @@
 <dict>
 	<key>channel.name</key>
 	<string>Jess Lizama</string>
+	<key>email.support</key>
+	<string>support@victorious.com</string>
 	<key>color.background</key>
 	<dict>
 		<key>red</key>
