@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 #import "VInboxViewController.h"
@@ -193,16 +194,23 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [[VObjectManager sharedManager] deleteConversation:conversation
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             NSManagedObjectContext* context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
         }
                                                  failBlock:^(NSOperation* operation, NSError* error)
         {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationDelError", @"");
+            [hud hide:YES afterDelay:3.0];
             VLog(@"Failed to delete conversation: %@", error)
         }];
     }
