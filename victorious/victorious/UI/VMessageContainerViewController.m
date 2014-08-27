@@ -59,6 +59,15 @@ static NSMutableDictionary *messageViewControllers;
     return messageViewController;
 }
 
++ (void)removeCachedViewControllerForUser:(VUser *)otherUser
+{
+    if (!messageViewControllers || !otherUser.remoteId)
+    {
+        return;
+    }
+    [messageViewControllers removeObjectForKey:otherUser.remoteId];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

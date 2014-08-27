@@ -200,6 +200,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [VMessageContainerViewController removeCachedViewControllerForUser:conversation.user];
             NSManagedObjectContext* context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
@@ -219,8 +220,11 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    if (conversation.user)
+    {
+        VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 #pragma mark - Actions
