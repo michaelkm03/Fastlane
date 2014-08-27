@@ -295,8 +295,6 @@ static       char    kKVOContext;
             self.ignoreModelChanges = YES;
             NSMutableOrderedSet *messages = [self.conversation.messages mutableCopy];
             
-            CGFloat tableViewContentHeightBefore = self.tableView.contentSize.height;
-            
             NSIndexPath *indexPathForNewMessage = nil;
             [self.tableView beginUpdates];
             for (VMessage *message in resultObjects)

@@ -28,16 +28,16 @@
 {
     [super viewDidLoad];
 
-    [self addChildViewController:self.keyboardBarViewController];
-    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.keyboardBarViewController.view];
-    [self.keyboardBarViewController didMoveToParentViewController:self];
-
     [self addChildViewController:self.conversationTableViewController];
     self.conversationTableViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.conversationTableViewController.view];
     [self.conversationTableViewController didMoveToParentViewController:self];
     
+    [self addChildViewController:self.keyboardBarViewController];
+    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.keyboardBarViewController.view];
+    [self.keyboardBarViewController didMoveToParentViewController:self];
+
     self.keyboardBarHeightConstraint = [NSLayoutConstraint constraintWithItem:self.keyboardBarViewController.view
                                                                     attribute:NSLayoutAttributeHeight
                                                                     relatedBy:NSLayoutRelationEqual
@@ -60,7 +60,7 @@
     
     UIView *tableView = self.conversationTableViewController.view;
     id topConstraintView = (id)self.topConstraintView ?: self.topLayoutGuide;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView, keyboardView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView, keyboardView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
                                                           attribute:NSLayoutAttributeHeight
@@ -69,6 +69,13 @@
                                                           attribute:NSLayoutAttributeNotAnAttribute
                                                          multiplier:1.0f
                                                            constant:44.0f]];
+
+    UITableView *conversationTableView = self.conversationTableViewController.tableView;
+    conversationTableView.contentInset = UIEdgeInsetsMake(conversationTableView.contentInset.top,
+                                                          conversationTableView.contentInset.left,
+                                                          self.keyboardBarHeightConstraint.constant,
+                                                          conversationTableView.contentInset.right);
+    conversationTableView.scrollIndicatorInsets = conversationTableView.contentInset;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -119,6 +126,8 @@
                         options:(animationCurve << 16) animations:^
     {
         self.bottomConstraint.constant = -(CGRectGetHeight([[UIScreen mainScreen] bounds])-CGRectGetMinY(keyboardEndFrame));
+        UITableView *tableView = self.conversationTableViewController.tableView;
+        tableView.contentOffset = CGPointMake(0, tableView.contentOffset.y - self.bottomConstraint.constant);
         [self.view layoutIfNeeded];
     }
                      completion:nil];
