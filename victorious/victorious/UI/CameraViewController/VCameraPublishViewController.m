@@ -125,7 +125,8 @@ static const CGFloat kShareMargin = 34.0f;
     
     [self setDefaultCaptionText];
 
-    if (self.view.bounds.size.height <= 480) {
+    if (CGRectGetHeight(self.view.bounds) <= 480)
+    {
         self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
         self.shareViewHeightConstraint.constant = 79.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
@@ -658,7 +659,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (self.view.bounds.size.height > 480.0f)
+    if (CGRectGetHeight(self.view.bounds) > 480.0f)
     {
         return;
     }
@@ -675,7 +676,7 @@ static const CGFloat kShareMargin = 34.0f;
                         options:(animationCurve << 16)
                      animations:^
      {
-         self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset - ((self.view.frame.size.height <= 480.0f) ? 0.0f : 20.0f);
+         self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset - ((CGRectGetHeight(self.view.bounds) <= 480.0f) ? 0.0f : 20.0f);
          [self.view layoutIfNeeded];
      }
                      completion:nil];
@@ -684,7 +685,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    if (self.view.bounds.size.height > 480.0f)
+    if (CGRectGetHeight(self.view.bounds) > 480.0f)
     {
         return;
     }
