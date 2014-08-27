@@ -39,6 +39,7 @@
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
 
     self.followButton.hidden = YES;
+#if 0 // Disable until this can be debugged
     if (self.showButton)
     {
         [[VObjectManager sharedManager] isUser:self.owner
@@ -50,6 +51,7 @@
          }
                                      failBlock:nil];
     }
+#endif
 }
 
 - (IBAction)follow:(id)sender
