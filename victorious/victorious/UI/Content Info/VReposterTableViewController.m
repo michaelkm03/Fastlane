@@ -156,7 +156,7 @@
         self.tableView.backgroundView = noRepostersView;
         noRepostersView.titleLabel.text = NSLocalizedString(@"NoRepostersTitle", @"");
         noRepostersView.messageLabel.text = NSLocalizedString(@"NoRepostersMessage", @"");
-        noRepostersView.iconImageView.image = [UIImage imageNamed:@"repostIcon"];
+        noRepostersView.iconImageView.image = [UIImage imageNamed:@"noRepostsIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
