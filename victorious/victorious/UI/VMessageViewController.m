@@ -131,7 +131,7 @@
 
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
-    [self.tableView setContentOffset:CGPointMake(0, MAX(self.tableView.contentSize.height - CGRectGetHeight(self.tableView.bounds), 0)) animated:animated];
+    [self.tableView setContentOffset:CGPointMake(0, MAX(self.tableView.contentSize.height + self.tableView.contentInset.top + self.tableView.contentInset.bottom - CGRectGetHeight(self.tableView.bounds), 0)) animated:animated];
 }
 
 #pragma mark - VMessageTableDataDelegate methods

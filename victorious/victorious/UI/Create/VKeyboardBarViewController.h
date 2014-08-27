@@ -32,7 +32,6 @@
 @property (nonatomic) BOOL shouldAutoClearOnCompose;
 
 - (IBAction)cameraPressed:(id)sender;
-- (BOOL)becomeFirstResponder; ///< Tells the keyboard bar view controller to make its internal text view the first responder
 - (void)clearKeyboardBar; ///< Clears all text and media from the keyboard bar
 
 @end

@@ -59,6 +59,15 @@ static NSMutableDictionary *messageViewControllers;
     return messageViewController;
 }
 
++ (void)removeCachedViewControllerForUser:(VUser *)otherUser
+{
+    if (!messageViewControllers || !otherUser.remoteId)
+    {
+        return;
+    }
+    [messageViewControllers removeObjectForKey:otherUser.remoteId];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,6 +79,7 @@ static NSMutableDictionary *messageViewControllers;
     [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
+    self.keyboardBarViewController.hideAccessoryBar = YES;
     
     [self addBackgroundImage];
     [self.view bringSubviewToFront:self.busyView];

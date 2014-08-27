@@ -27,10 +27,28 @@
                                                 failBlock:(VFailBlock)fail
 {
     NSParameterAssert(user != nil);
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        for (VConversation *conversation in resultObjects)
+        {
+            if (conversation.remoteId)
+            {
+                conversation.filterAPIPath = [self apiPathForConversationWithRemoteID:conversation.remoteId];
+            }
+            conversation.user = user;
+        };
+        
+        if (success)
+        {
+            success(operation, result, resultObjects);
+        }
+    };
+    
     return [self GET:[@"/api/message/conversation_with_user/" stringByAppendingString:user.remoteId.stringValue]
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:fail];
 }
 

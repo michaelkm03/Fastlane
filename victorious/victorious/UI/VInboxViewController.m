@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 #import "VInboxViewController.h"
@@ -193,16 +194,24 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [[VObjectManager sharedManager] deleteConversation:conversation
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [VMessageContainerViewController removeCachedViewControllerForUser:conversation.user];
             NSManagedObjectContext* context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
         }
                                                  failBlock:^(NSOperation* operation, NSError* error)
         {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationDelError", @"");
+            [hud hide:YES afterDelay:3.0];
             VLog(@"Failed to delete conversation: %@", error)
         }];
     }
@@ -211,8 +220,11 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    if (conversation.user)
+    {
+        VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 #pragma mark - Actions

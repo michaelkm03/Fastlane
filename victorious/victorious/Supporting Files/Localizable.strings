@@ -143,6 +143,7 @@
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
 "ConversationLoadError" =   "Unable to load conversation";
+"ConversationDelError"  =   "Unable to delete conversation";
 "ConversationSendError" =   "Your message could not be sent";
 
 "Normal"                =   "Normal";
