@@ -211,8 +211,8 @@
 "me"                    =   "Me";
 
 "editProfileButton"     =   "Edit Profile";
-"followers"             =   "Followers";
-"following"             =   "Following";
+"followers"             =   "FOLLOWERS";
+"following"             =   "FOLLOWING";
 "follow"                =   "Follow";
 
 "ResetPassword"         =   "Reset Password";
