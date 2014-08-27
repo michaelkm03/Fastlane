@@ -77,6 +77,7 @@
          
          self.previewImageView.alpha = 0;
          self.previewImageView.image = image;
+         self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
          [UIView animateWithDuration:.3f animations:^
           {
               self.previewImageView.alpha = 1;
@@ -97,6 +98,7 @@
          }
          self.previewImageTwo.alpha = 0;
          self.previewImageTwo.image = image;
+         self.previewImageTwo.contentMode = UIViewContentModeScaleAspectFill;
          [UIView animateWithDuration:.3f animations:^
           {
               self.previewImageTwo.alpha = 1;
