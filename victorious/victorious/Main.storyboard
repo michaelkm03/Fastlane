@@ -819,17 +819,6 @@
                                     <constraint firstItem="ZyP-Vw-yAD" firstAttribute="centerY" secondItem="plb-mq-Tcq" secondAttribute="centerY" id="wVH-A2-ccI"/>
                                 </constraints>
                             </view>
-                            <containerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb" userLabel="RTC Container View">
-                                <rect key="frame" x="0.0" y="52" width="320" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="102" id="jLn-P6-pUV"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
-                                </connections>
-                            </containerView>
                             <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
                                 <rect key="frame" x="0.0" y="154" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -864,6 +853,17 @@
                                     <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
                                 </constraints>
                             </view>
+                            <containerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb" userLabel="RTC Container View">
+                                <rect key="frame" x="0.0" y="52" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="102" id="jLn-P6-pUV"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
+                                </connections>
+                            </containerView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

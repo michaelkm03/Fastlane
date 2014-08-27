@@ -30,10 +30,10 @@
 
 @property (nonatomic, weak) IBOutlet UIView* progressBackgroundView;
 @property (nonatomic, weak) IBOutlet UIView* progressBarView;
-@property (nonatomic, weak) IBOutlet UIView* commentBackgroundView;
+@property (nonatomic, weak, readwrite) IBOutlet UIView* commentBackgroundView;
 
 @property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
-@property (nonatomic, weak) IBOutlet UIImageView* arrowImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView* arrowImageView;
 
 @property (nonatomic, weak) IBOutlet UIImageView* playButtonImageView;
 @property (nonatomic, weak) IBOutlet UIButton* mediaButton;
@@ -103,6 +103,11 @@
         else if (startTime > time)
             break;
     }
+    
+    if (!currentComment) {
+        return [self.comments firstObject];
+    }
+    
     return currentComment;
 }
 
