@@ -287,15 +287,18 @@ static       char    kKVOContext;
 
 - (void)goLiveUpdate
 {
-    if (self.conversation)
+    if (self.conversation && !self.isLoading)
     {
+        self.isLoading = YES;
         [self.objectManager loadNewestMessagesInConversation:self.conversation
                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
+            self.isLoading = NO;
             self.ignoreModelChanges = YES;
             NSMutableOrderedSet *messages = [self.conversation.messages mutableCopy];
             
             NSIndexPath *indexPathForNewMessage = nil;
+            NSMutableIndexSet *indexesOfPendingMessagesToRemove = [[NSMutableIndexSet alloc] init];
             [self.tableView beginUpdates];
             for (VMessage *message in resultObjects)
             {
@@ -303,7 +306,7 @@ static       char    kKVOContext;
                 NSUInteger pendingMessageIndex = [self.pendingMessages indexOfObject:message];
                 if (pendingMessageIndex != NSNotFound)
                 {
-                    [self.pendingMessages removeObjectAtIndex:pendingMessageIndex];
+                    [indexesOfPendingMessagesToRemove addIndex:pendingMessageIndex];
                     [self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:pendingMessageIndex inSection:kPendingMessagesSection] toIndexPath:indexPathForNewMessage];
                 }
                 else
@@ -312,6 +315,7 @@ static       char    kKVOContext;
                 }
                 [messages addObject:message];
             }
+            [self.pendingMessages removeObjectsAtIndexes:indexesOfPendingMessagesToRemove];
             
             self.conversation.messages = messages;
             [self.conversation.managedObjectContext saveToPersistentStore:nil];
@@ -330,6 +334,7 @@ static       char    kKVOContext;
         {
             if ([error.domain isEqualToString:kVictoriousErrorDomain] && error.code == kTooManyNewMessagesErrorCode)
             {
+                self.isLoading = NO;
                 [self refreshWithCompletion:^(NSError *error)
                 {
                     if (self.liveUpdating)
@@ -347,6 +352,10 @@ static       char    kKVOContext;
             }
         }];
     }
+    else if (self.liveUpdating)
+    {
+        [self beginLiveUpdates]; // schedule another poll
+    }
 }
 
 - (void)reloadTableView
@@ -356,7 +365,7 @@ static       char    kKVOContext;
     if (self.conversation && self.pendingMessages.count)
     {
         NSArray *pendingMessages = [self.pendingMessages copy];
-        for (NSInteger n = 0; n < pendingMessages.count; n++)
+        for (NSInteger n = pendingMessages.count - 1; n >= 0; n--)
         {
             if ([self.conversation.messages containsObject:pendingMessages[n]])
             {
@@ -418,6 +427,9 @@ static       char    kKVOContext;
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        self.isLoading = NO;
+        message.remoteId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
+        [message.managedObjectContext saveToPersistentStore:nil];
         [self addNewMessage:message];
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
@@ -430,7 +442,8 @@ static       char    kKVOContext;
             {
                 NSAssert([NSThread isMainThread], @"Callbacks are supposed to be on the main thread");
                 VConversation *conversation = [NSEntityDescription insertNewObjectForEntityForName:[VConversation entityName] inManagedObjectContext:context];
-                conversation.filterAPIPath = [self.objectManager apiPathForConversationWithRemoteID:@([fullResponse[kVPayloadKey][@"conversation_id"] integerValue])];
+                conversation.remoteId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
+                conversation.filterAPIPath = [self.objectManager apiPathForConversationWithRemoteID:conversation.remoteId];
                 conversation.user = self.otherUser;
                 conversation.lastMessageText = message.text;
                 conversation.postedAt = message.postedAt;
@@ -445,11 +458,13 @@ static       char    kKVOContext;
         }
     };
     
+    self.isLoading = YES;
     [self.objectManager sendMessage:message
                              toUser:self.otherUser
                        successBlock:success
                           failBlock:^(NSOperation* operation, NSError* error)
     {
+        self.isLoading = NO;
         VLog(@"Failed in creating message with error: %@", error);
         [context deleteObject:message];
         
