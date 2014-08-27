@@ -22,8 +22,8 @@ static       NSString * const kNibName           = @"MediaPreview";
 
 @property (nonatomic, weak) IBOutlet UIImageView *deleteButton;
 @property (nonatomic, weak) IBOutlet UIImageView *deleteConfirmationButton;
-@property (nonatomic, weak) IBOutlet UIButton    *doneButton;
-@property (nonatomic, weak) IBOutlet UIButton    *closeButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton    *doneButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton    *nextButton;
 
 @end
 
@@ -63,9 +63,6 @@ static       NSString * const kNibName           = @"MediaPreview";
     doneButtonImage = [doneButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.doneButton setImage:doneButtonImage forState:UIControlStateNormal];
     self.doneButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-
-    UIImage* closeButtonImage =[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.closeButton setImage:closeButtonImage forState:UIControlStateNormal];
 }
 
 - (void)viewDidLayoutSubviews

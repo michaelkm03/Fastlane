@@ -19,6 +19,8 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @property (nonatomic, strong)        NSURL  *mediaURL;
 @property (nonatomic, weak) IBOutlet UIView *previewImageSuperview;
 @property (nonatomic, weak) IBOutlet UIView *bottomButtonSuperview;
+@property (nonatomic, weak, readonly) IBOutlet UIButton     *nextButton;
+@property (nonatomic, weak, readonly) IBOutlet UIButton    *doneButton;
 @property (nonatomic) BOOL didSelectAssetFromLibrary;
 
 /**
