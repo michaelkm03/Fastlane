@@ -54,11 +54,11 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
