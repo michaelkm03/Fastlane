@@ -14,6 +14,21 @@
 
 @implementation VRTCUserPostedAtFormatter
 
++ (NSAttributedString*)formatRTCUserName:(NSString*)username
+{
+    NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:username
+                                                                                   attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
+    [nameString addAttribute:NSForegroundColorAttributeName
+                       value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                       range:NSMakeRange(0, username.length)];
+    [nameString addAttribute:NSFontAttributeName
+                       value:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font]
+                       range:NSMakeRange(0, username.length)];
+    
+    return nameString;
+
+}
+
 + (NSAttributedString *)formattedRTCUserPostedAtStringWithUserName:(NSString *)username
                                                      andPostedTime:(NSNumber *)postedTime
 {

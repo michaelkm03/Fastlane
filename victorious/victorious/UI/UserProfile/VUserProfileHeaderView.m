@@ -92,8 +92,14 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     self.locationLabel.text = self.user.location;
     
     if (self.user.tagline && self.user.tagline.length)
+    {
         self.taglineLabel.text = self.user.tagline;
-    
+    }
+    else
+    {
+        self.taglineLabel.text = @"";
+    }
+        
     __block VLargeNumberFormatter* largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
