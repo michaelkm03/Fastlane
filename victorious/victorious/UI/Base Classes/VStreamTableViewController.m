@@ -282,7 +282,7 @@
     else
     {
         self.tableView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:0.25f
+        [UIView animateWithDuration:0.2f
                               delay:0.0f
              usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
