@@ -426,11 +426,17 @@ static const CGFloat kShareMargin = 34.0f;
     
     CGFloat playbackSpeed;
     if (self.playBackSpeed == VPlaybackNormalSpeed)
+    {
         playbackSpeed = 1.0;
+    }
     else if (self.playBackSpeed == VPlaybackDoubleSpeed)
+    {
         playbackSpeed = 2.0;
+    }
     else
+    {
         playbackSpeed = 0.5;
+    }
     
     BOOL facebookSelected = self.shareToFacebookController.selected;
     BOOL twitterSelected = self.shareToTwitterController.selected;

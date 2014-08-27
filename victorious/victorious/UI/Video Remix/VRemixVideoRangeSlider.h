@@ -19,10 +19,7 @@
 @property (nonatomic, assign) NSInteger minGap;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
-@property (nonatomic, assign) double playerDuration;
 
-
-@property (nonatomic, strong) UISlider *frameIndicator;
 - (instancetype)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoUrl;
 - (void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height;
 
