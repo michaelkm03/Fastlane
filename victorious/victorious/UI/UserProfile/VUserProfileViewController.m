@@ -163,11 +163,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return NO;
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
