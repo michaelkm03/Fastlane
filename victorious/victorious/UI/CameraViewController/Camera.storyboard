@@ -259,7 +259,7 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
                                 <rect key="frame" x="20" y="210" width="280" height="90"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="Lpp-fh-Uw2"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="90" id="Lpp-fh-Uw2"/>
                                 </constraints>
                                 <string key="text">Add a description...
 and don't forget #hashtags</string>
@@ -372,6 +372,7 @@ and don't forget #hashtags</string>
                             <constraint firstItem="wOt-la-SB9" firstAttribute="top" secondItem="Q7R-Zp-i10" secondAttribute="bottom" id="ogo-0A-om9"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="top" secondItem="Fsz-Xd-hVx" secondAttribute="top" id="qkr-A1-Vqg"/>
                             <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="fcy-KG-Paj" secondAttribute="top" id="rzE-Eu-X9b"/>
+                            <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="g4C-sb-DOe" secondAttribute="top" constant="20" id="w9m-sW-nnu"/>
                             <constraint firstAttribute="trailing" secondItem="Q7R-Zp-i10" secondAttribute="trailing" id="zOV-Mh-FIW"/>
                         </constraints>
                     </view>
