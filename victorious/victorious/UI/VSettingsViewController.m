@@ -274,17 +274,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         
         MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
         NSString *msgBody = [self collectDeviceInfo:nil];
-        NSString *subjString = NSLocalizedString(@"NoEmail", @"Email not setup title");
+        NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
         
         [mailComposer setSubject:msgSubj];
-        [mailComposer setToRecipients:@[@"support@victorious.com"]];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
