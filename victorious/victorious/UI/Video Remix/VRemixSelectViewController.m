@@ -70,6 +70,14 @@
     [self.scrubber addTarget:self action:@selector(scrubberDidEndMoving:) forControlEvents:UIControlEventTouchUpOutside];
     
     [self.scrubber setThumbImage:[UIImage imageNamed:@"cameraButtonScrubber"] forState:UIControlStateNormal];
+    
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 10.5;
+    style.alignment = NSTextAlignmentCenter;
+    
+    self.instructionsText.attributedText = [[NSAttributedString alloc] initWithString:self.instructionsText.text
+                                                                           attributes:@{NSParagraphStyleAttributeName:style}];
 }
 
 -(void)viewWillAppear:(BOOL)animated
