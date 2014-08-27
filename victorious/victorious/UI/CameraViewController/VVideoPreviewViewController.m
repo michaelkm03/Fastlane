@@ -23,6 +23,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.nextButton.hidden = YES;
+    
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] init];
     [self addChildViewController:self.videoPlayerViewController];
     self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;

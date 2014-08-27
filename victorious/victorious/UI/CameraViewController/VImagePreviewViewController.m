@@ -45,6 +45,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.doneButton.hidden = YES;
+    
     UIImageView *previewImageView = [[UIImageView alloc] initWithImage:[self previewImage]];
     previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.previewImageSuperview addSubview:previewImageView];
@@ -74,7 +77,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(filterCollectionView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[filterCollectionView(==107)][bottomButtonSuperview]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[filterCollectionView(==107)]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(filterCollectionView, bottomButtonSuperview)]];
