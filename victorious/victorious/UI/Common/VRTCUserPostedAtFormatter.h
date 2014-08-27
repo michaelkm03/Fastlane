@@ -10,6 +10,7 @@
 
 @interface VRTCUserPostedAtFormatter : NSObject
 
++ (NSAttributedString*)formatRTCUserName:(NSString*)username;
 + (NSAttributedString *)formattedRTCUserPostedAtStringWithUserName:(NSString *)username
                                                      andPostedTime:(NSNumber *)postedTime;
 
