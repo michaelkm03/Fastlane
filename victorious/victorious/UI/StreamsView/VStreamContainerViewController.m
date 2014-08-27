@@ -91,6 +91,13 @@
     
     UIView *tableContainerView = self.tableContainerView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView)]];
+    
+    [self.filterControls setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12]}
+                                       forState:UIControlStateNormal];
+    
+    [self.filterControls setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
+                                                  NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
+                                       forState:UIControlStateSelected];
 }
 
 - (IBAction)changedFilterControls:(id)sender
