@@ -79,6 +79,7 @@ static NSMutableDictionary *messageViewControllers;
     [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
+    self.keyboardBarViewController.hideAccessoryBar = YES;
     
     [self addBackgroundImage];
     [self.view bringSubviewToFront:self.busyView];
