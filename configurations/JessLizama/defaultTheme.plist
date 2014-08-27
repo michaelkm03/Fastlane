@@ -165,9 +165,5 @@
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
-	<key>image.emptyprofile</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
-	<key>image.launchImage</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
 </dict>
 </plist>

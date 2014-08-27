@@ -11,20 +11,12 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb582360511878683</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}jesslizama</string>
+				<string>fb1446614055626741</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>582360511878683</string>
+	<string>1446614055626741</string>
 	<key>FacebookDisplayName</key>
 	<string>Jess Lizama</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
