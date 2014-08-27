@@ -617,7 +617,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (self.captionType == VCaptionTypeMeme)
     {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ?: @""
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? [self.textView.text uppercaseString]: @""
                                                                        attributes:self.typingAttributes];
     }
     else if (self.captionType == VCaptionTypeQuote)
