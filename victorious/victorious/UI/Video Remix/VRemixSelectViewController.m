@@ -73,11 +73,13 @@
     
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 10.5;
+    style.minimumLineHeight = 21.0f;
+    style.maximumLineHeight = 21.0f;
     style.alignment = NSTextAlignmentCenter;
     
     self.instructionsText.attributedText = [[NSAttributedString alloc] initWithString:self.instructionsText.text
-                                                                           attributes:@{NSParagraphStyleAttributeName:style}];
+                                                                           attributes:@{NSParagraphStyleAttributeName:style,
+                                                                                        NSFontAttributeName:[UIFont systemFontOfSize:17]}];
 }
 
 -(void)viewWillAppear:(BOOL)animated
