@@ -254,13 +254,17 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
                 VSequenceUserInteractions *userInteractions = [VSequenceUserInteractions sequenceUserInteractionsWithPayload:fullResponse[@"payload"]];
-                if (completion) {
-                    completion(userInteractions,nil);
+                if (completion)
+                {
+                    completion(userInteractions, nil);
                 }
             }
            failBlock:^(NSOperation *operation, NSError *error)
             {
-                completion(nil,error);
+                if (completion)
+                {
+                    completion(nil, error);
+                }
             }];
 }
 
