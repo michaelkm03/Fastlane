@@ -118,11 +118,17 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     {
         if ([VObjectManager sharedManager].mainUser)
         {
+            self.editProfileButton.alpha = 0.0f;
             [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                          following:self.user
                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
                  self.editProfileButton.selected = [resultObjects[0] boolValue];
+                 [UIView animateWithDuration:0.2f
+                                  animations:^
+                  {
+                      self.editProfileButton.alpha = 1.0f;
+                  }];
              }
                                          failBlock:nil];
         }
