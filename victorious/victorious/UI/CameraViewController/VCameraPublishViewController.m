@@ -133,9 +133,11 @@ static const CGFloat kShareMargin = 34.0f;
         self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
     }
 
-    [self.view layoutIfNeeded];
-    
     [self configureShareViews];
+    
+    [self textViewDidChange:self.textView];
+    self.captionType = self.captionType;
+    [self.view layoutIfNeeded];
 }
 
 - (void)setCaptionType:(VCaptionType)captionType
@@ -149,7 +151,7 @@ static const CGFloat kShareMargin = 34.0f;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
                                    NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
+                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:30.0],
                                    NSForegroundColorAttributeName : [UIColor whiteColor],
                                    NSStrokeColorAttributeName : [UIColor blackColor],
                                    NSStrokeWidthAttributeName : @(-5.0)
@@ -184,15 +186,18 @@ static const CGFloat kShareMargin = 34.0f;
     }
     //This is a hack.  In the event that self.textView.text is an empty string, the attributes of the string won't change.
     //So we add a non empty string with the attributes first so we are sure to clear the old attribute values, then add the real string.
-    NSString* originalText = self.textView.text;
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"This is going to be replaced" attributes:self.typingAttributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:originalText attributes:self.typingAttributes];
+    NSString* originalText = self.textView.text ?: @"";
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"This is going to be replaced"
+                                                                   attributes:self.typingAttributes];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:originalText
+                                                                   attributes:self.typingAttributes];
     
     self.textView.font = self.typingAttributes[NSFontAttributeName];
-    [self textViewDidChange:self.textView];
     
     self.captionPlaceholderLabel.font = self.textView.font;
     self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
+    
+    [self textViewDidChange:self.textView];
     
     [self setDefaultCaptionText];
     
@@ -381,6 +386,11 @@ static const CGFloat kShareMargin = 34.0f;
     {
         [self textViewDidChange:self.textView];
     }
+}
+
+- (IBAction)startEditing:(id)sender
+{
+    [self.textView becomeFirstResponder];
 }
 
 - (IBAction)publish:(id)sender
@@ -607,14 +617,8 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (self.captionType == VCaptionTypeMeme)
     {
-        self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:30];
-        self.typingAttributes[NSFontAttributeName] = self.textView.font;
-        self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:self.captionPlaceholderLabel.attributedText.string
-                                                                                      attributes:self.typingAttributes];
-        
-        NSAttributedString *str = [[NSAttributedString alloc] initWithString:[self.textView.text uppercaseString]
-                                                                  attributes:self.typingAttributes];
-        self.textView.attributedText = str;
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ?: @""
+                                                                       attributes:self.typingAttributes];
     }
     else if (self.captionType == VCaptionTypeQuote)
     {

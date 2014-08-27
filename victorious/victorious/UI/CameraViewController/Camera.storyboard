@@ -241,7 +241,18 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g4C-sb-DOe">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <gestureRecognizers/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-rE-1kp" userLabel="Start Editing Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startEditing:" destination="1zz-KC-cVA" eventType="touchUpInside" id="Gdc-PR-QsP"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" userLabel="Attributed Label - Add a description... and don't forget #hashtags" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="20" y="247" width="280" height="53"/>
                                         <string key="text">Add a description...
@@ -263,10 +274,13 @@ and don't forget #hashtags</string>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="iCW-rE-1kp" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="26h-SA-T89"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="3uw-Pi-TDY"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="4D7-at-UZO"/>
                                     <constraint firstAttribute="trailing" secondItem="g4C-sb-DOe" secondAttribute="trailing" id="91A-LA-tXs"/>
+                                    <constraint firstAttribute="bottom" secondItem="iCW-rE-1kp" secondAttribute="bottom" id="EbP-m3-LOd"/>
                                     <constraint firstAttribute="bottom" secondItem="g4C-sb-DOe" secondAttribute="bottom" id="Gqp-Xw-z4X"/>
+                                    <constraint firstItem="iCW-rE-1kp" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="KwL-AA-dOD"/>
                                     <constraint firstAttribute="trailing" secondItem="yxx-6S-3iW" secondAttribute="trailing" constant="20" id="S1x-5g-QdO"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="SWG-s7-iLi"/>
                                     <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" constant="20" id="U9B-UC-7dG"/>
@@ -275,6 +289,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="kKv-XO-y9t"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="nf0-eb-v5g"/>
                                     <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" constant="20" id="p19-Ss-WbR"/>
+                                    <constraint firstAttribute="trailing" secondItem="iCW-rE-1kp" secondAttribute="trailing" id="rK1-Gr-w2i"/>
                                     <constraint firstAttribute="trailing" secondItem="Fsz-Xd-hVx" secondAttribute="trailing" constant="20" id="uNU-kl-62z"/>
                                 </constraints>
                             </view>
