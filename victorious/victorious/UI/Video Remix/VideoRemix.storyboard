@@ -53,7 +53,7 @@
                                     <constraint firstAttribute="width" secondItem="1j4-RX-jZf" secondAttribute="height" multiplier="1:1" id="Zye-Rg-BPZ"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYL-4v-0L6">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYL-4v-0L6" userLabel="Scrubber View">
                                 <rect key="frame" x="0.0" y="409" width="320" height="101"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
