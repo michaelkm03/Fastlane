@@ -186,6 +186,10 @@
 {
     if (currentComment)
     {
+        if (self.progressBarImageViews.count == 0)
+        {
+            return;
+        }
         UIImageView* imageView = [self.progressBarImageViews objectAtIndex:[self.comments indexOfObject:currentComment]];
         [UIView animateWithDuration:0.5f
                               delay:0.0f
