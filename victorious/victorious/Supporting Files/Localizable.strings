@@ -301,3 +301,5 @@
 
 "areYouSure"            =   "Are You Sure?";
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
+
+"SupportEmailSubject"  =   "Feedback on";

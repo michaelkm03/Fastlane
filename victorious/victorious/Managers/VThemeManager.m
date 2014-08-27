@@ -53,6 +53,9 @@ NSString*   const   kVSecondaryLinkColor                =   @"color.link.seconda
 
 NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
+#pragma mark - Feedback Support
+NSString*   const   kVChannelURLSupport                 =   @"email.support";
+
 @interface      VThemeManager   ()
 @end
 
