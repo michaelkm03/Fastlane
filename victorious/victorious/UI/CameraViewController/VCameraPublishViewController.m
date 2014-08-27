@@ -602,6 +602,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+// TODO: proper resizing of content based on spec
+    
     if (self.captionType == VCaptionTypeMeme)
     {
         self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:30];
@@ -615,9 +617,6 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (self.captionType == VCaptionTypeQuote)
     {
-        CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
-        
-//        self.quoteTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
     }
     else
     {
@@ -659,7 +658,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (self.view.bounds.size.height > 480.0f) {
+    if (self.view.bounds.size.height > 480.0f)
+    {
         return;
     }
     
@@ -684,7 +684,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    if (self.view.bounds.size.height > 480.0f) {
+    if (self.view.bounds.size.height > 480.0f)
+    {
         return;
     }
     
