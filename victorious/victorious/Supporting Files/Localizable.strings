@@ -102,6 +102,8 @@
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
 
+"SelectTwitter"         =   "Select a twitter account";
+
 "HelpNeeded"            =   "I need help with...";
 
 "ReportInappropriate"   =   "Report Inappropriate";
@@ -139,6 +141,9 @@
 
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
+
+"ConversationLoadError" =   "Unable to load conversation";
+"ConversationSendError" =   "Your message could not be sent";
 
 "Normal"                =   "Normal";
 
@@ -279,6 +284,8 @@
 "reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
 "Repost"                =   "Repost";
+"RepostContentView"     =   "REPOST";
+"RpostedContentView"    =   "REPOSTED";
 "comments"              =   "comments";
 
 "repostedFromFormat"      =   "Repost from %@";

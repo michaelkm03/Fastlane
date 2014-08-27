@@ -13,6 +13,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+DirectMessaging.h"
 
+#import "VConversation.h"
 #import "VUser.h"
 #import "VSequence.h"
 
@@ -177,11 +178,9 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] conversationByID:conversationId
                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
-         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageContainer];
-         
          VConversation* conversation = (VConversation*)[resultObjects firstObject];
-         messageVC.conversation = conversation;
+         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
+         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
          VRootViewController* root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[inbox]];

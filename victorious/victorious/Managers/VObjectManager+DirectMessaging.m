@@ -22,60 +22,16 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-
 - (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    for (VConversation* conversation in user.conversations)
-    {
-        if ([conversation.user.remoteId isEqualToNumber:user.remoteId])
-        {
-            if (success)
-                success(nil, nil, @[conversation]);
-            return nil;
-        }
-    }
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-        
-        if (error.code == kVConversationDoesNotExistError)
-        {
-            VConversation *newConversation = [NSEntityDescription
-                                              insertNewObjectForEntityForName:[VConversation entityName]
-                                              inManagedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-            
-            NSManagedObjectID* objectID = [user objectID];
-            if (objectID)
-            {
-                VUser* userInContext = (VUser*)[newConversation.managedObjectContext objectWithID:objectID];
-                
-                newConversation.other_interlocutor_user_id = userInContext.remoteId;
-                newConversation.user = userInContext;
-            }
-            
-            if (!newConversation.filterAPIPath || [newConversation.filterAPIPath isEmpty])
-            {
-                newConversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:newConversation.remoteId.stringValue];
-            }
-            
-            [newConversation.managedObjectContext saveToPersistentStore:nil];
-            
-            if (success)
-                success(nil, nil, @[newConversation]);
-        }
-        
-        else if (fail)
-            fail(operation, error);
-    };
-    
+    NSParameterAssert(user != nil);
     return [self GET:[@"/api/message/conversation_with_user/" stringByAppendingString:user.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fullFail];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
@@ -100,7 +56,6 @@
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
-    
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
@@ -151,9 +106,28 @@
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
+    if (!conversation)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
+    VMessage *latestMessage = [conversation.messages lastObject];
+    if (!latestMessage)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
     return [self POST:@"/api/message/flag"
-               object:conversation
-           parameters:@{@"conversation_id" : conversation.remoteId}
+               object:nil
+           parameters:@{ @"message_id" : latestMessage.remoteId }
          successBlock:success
             failBlock:fail];
 }

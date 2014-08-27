@@ -17,14 +17,16 @@
 #import "VLoginTransitionAnimator.h"
 #import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
+#import "VSelectorViewController.h"
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate>
 @property (nonatomic, strong)           VUser*          profile;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       facebookButton;
@@ -226,25 +228,30 @@
             }
             else
             {
-                [[VUserManager sharedInstance] loginViaTwitterOnCompletion:^(VUser *user, BOOL created)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
-                    self.profile = user;
-                    if (created)
-                    {
-                        [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
+                    ACAccountStore* account = [[ACAccountStore alloc] init];
+                    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+                    NSArray *accounts = [account accountsWithAccountType:accountType];
+                    
+                    if (accounts.count == 1) {
+                        [self attemptLoginWithTwitterAccount:[accounts firstObject]];
+                        return;
                     }
-                    else
-                    {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                }
-                                                                    onError:^(NSError *error)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
-                    [self enableButtons];
-                    [self didFailWithError:error];
-                }];
+                    
+                    // Select from n twitter accounts
+                    VSelectorViewController *selectorVC = [VSelectorViewController selectorViewControllerWithItemsToSelectFrom:accounts
+                                                                                                            withConfigureBlock:^(UITableViewCell *cell, ACAccount *account) {
+                                                                                                                cell.textLabel.text = account.username;
+                                                                                                                cell.detailTextLabel.text = account.accountDescription;
+                                                                                                            }];
+                    selectorVC.delegate = self;
+                    selectorVC.navigationItem.prompt = NSLocalizedString(@"SelectTwitter", @"");
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectorVC];
+                    [self presentViewController:navController
+                                       animated:YES
+                                     completion:nil];
+                });
             }
         }
     }];
@@ -330,5 +337,54 @@
     
     return nil;
 }
+
+#pragma mark - VSelectorViewControllerDelegate
+
+- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController
+                  didSelectItem:(id)selectedItem
+{
+    [self attemptLoginWithTwitterAccount:selectedItem];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
+{
+    [self enableButtons];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)attemptLoginWithTwitterAccount:(ACAccount *)twitterAccount
+{
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view
+                         animated:YES];
+    [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                   OnCompletion:^(VUser *user, BOOL created)
+     {
+         [MBProgressHUD hideHUDForView:self.navigationController.view
+                              animated:YES];
+         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
+         self.profile = user;
+         if (created)
+         {
+             [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
+         }
+         else
+         {
+             [self dismissViewControllerAnimated:YES completion:NULL];
+         }
+         
+     } onError:^(NSError *error)
+     {
+         [MBProgressHUD hideHUDForView:self.navigationController.view
+                              animated:YES];
+         
+         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
+         [self enableButtons];
+         [self didFailWithError:error];
+     }];
+}
+
 
 @end

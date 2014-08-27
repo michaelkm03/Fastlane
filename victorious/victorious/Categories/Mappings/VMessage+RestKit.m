@@ -35,7 +35,7 @@
 
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"senderUserId" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"sender" connectedBy:@{@"senderUserId" : @"remoteId"}];
     
     return mapping;
 }
@@ -44,13 +44,13 @@
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/message/conversation/:id/:currentpage/:perpage"
+                                                   pathPattern:@"/api/message/conversation/:id/:sort/:currentpage/:perpage"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/conversation/:id"
+                                                      pathPattern:@"/api/message/conversation/:id/:sort"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]];
 }

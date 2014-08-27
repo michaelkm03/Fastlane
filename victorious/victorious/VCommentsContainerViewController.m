@@ -57,8 +57,8 @@
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
     UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [newBackgroundView setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                  placeholderImage:placeholderImage];
+    [newBackgroundView setExtraLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                       placeholderImage:placeholderImage];
     
     self.backgroundImage = newBackgroundView;
     [self.view insertSubview:self.backgroundImage atIndex:0];

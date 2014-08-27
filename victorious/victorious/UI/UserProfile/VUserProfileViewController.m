@@ -105,7 +105,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     VUserProfileHeaderView* headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
-                                                                                              screenHeight - kVNavigationBarHeight)];
+                                                                                              screenHeight - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height)];
     headerView.user = self.profile;
     headerView.delegate = self;
     self.tableView.tableHeaderView = headerView;
@@ -130,7 +130,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [super viewWillAppear:animated];
     
     ((VUserProfileHeaderView*)self.tableView.tableHeaderView).user = self.profile;
-    self.tableView.contentOffset = CGPointZero;
+    self.tableView.contentOffset = CGPointMake(0, -self.tableView.contentInset.top);
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -166,6 +166,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 #pragma mark - Accessors
@@ -216,7 +221,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         else
         {
             [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
+                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height];
         }
     }];
 }
@@ -249,18 +254,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                              style:UIBarButtonItemStylePlain
                                              target:nil
                                              action:nil];
+
+    VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
-    [[VObjectManager sharedManager] conversationWithUser:self.profile
-                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    if ([self.navigationController.viewControllers containsObject:composeController])
     {
-        VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
-        composeController.conversation = [resultObjects firstObject];
+        [self.navigationController popToViewController:composeController animated:YES];
+    }
+    else
+    {
         [self.navigationController pushViewController:composeController animated:YES];
     }
-                                               failBlock:^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-    }];
 }
 
 - (void)editProfileHandler
@@ -398,7 +402,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         else
         {
             [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
+                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height];
         }
     }
     

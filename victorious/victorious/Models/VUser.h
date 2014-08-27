@@ -26,7 +26,7 @@
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
-@property (nonatomic, retain) NSSet *conversations;
+@property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSSet *messages;
@@ -49,11 +49,6 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
-
-- (void)addConversationsObject:(VConversation *)value;
-- (void)removeConversationsObject:(VConversation *)value;
-- (void)addConversations:(NSSet *)values;
-- (void)removeConversations:(NSSet *)values;
 
 - (void)addFollowersObject:(VUser *)value;
 - (void)removeFollowersObject:(VUser *)value;

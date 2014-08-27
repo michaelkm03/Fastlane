@@ -187,7 +187,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     
     if (!user)
         return nil;
-    
+
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -241,6 +241,27 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
+}
+
+#pragma mark - UserInteractions
+
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+                                                       withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
+{
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequenceID.stringValue, self.mainUser.remoteId.stringValue]
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                VSequenceUserInteractions *userInteractions = [VSequenceUserInteractions sequenceUserInteractionsWithPayload:fullResponse[@"payload"]];
+                if (completion) {
+                    completion(userInteractions,nil);
+                }
+            }
+           failBlock:^(NSOperation *operation, NSError *error)
+            {
+                completion(nil,error);
+            }];
 }
 
 @end

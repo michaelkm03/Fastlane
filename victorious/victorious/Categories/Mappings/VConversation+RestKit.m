@@ -20,7 +20,9 @@
 {
     NSDictionary *propertyMap = @{
                                   @"conversation_id" : VSelectorName(remoteId),
-                                  @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id)
+                                  @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id),
+                                  @"text" : VSelectorName(lastMessageText),
+                                  @"posted_at": VSelectorName(postedAt),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -28,11 +30,7 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:nil toKeyPath:@"messages" withMapping:[VMessage entityMapping]]];
-
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
     
     return mapping;

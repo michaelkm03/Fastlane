@@ -104,7 +104,6 @@
         UIPanGestureRecognizer *centerPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCenterPan:)];
         [_centerView addGestureRecognizer:centerPan];
         
-        
         _popoverBubble = [[VRemixResizableBubble alloc] initWithFrame:CGRectMake(0, -50, 100, 50)];
         _popoverBubble.alpha = 0;
         _popoverBubble.backgroundColor = [UIColor clearColor];

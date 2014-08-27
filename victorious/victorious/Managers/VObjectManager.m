@@ -403,7 +403,15 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = (client.defaultHeaders)[kVUserAgentHeader];
     
-    NSString* token = self.mainUser.token ? self.mainUser.token : @"";
+    __block NSString* token;
+    __block NSNumber* userID;
+    // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
+    // Can't think of a good reason why you'd ever do that, but still, beware.
+    [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
+    {
+        userID = self.mainUser.remoteId;
+        token = self.mainUser.token ?: @"";
+    }];
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
@@ -413,11 +421,6 @@
                              token,
                              RKStringFromRequestMethod(method)] SHA1HexDigest];
     
-    __block NSNumber* userID;
-    [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
-    {
-        userID = self.mainUser.remoteId;
-    }];
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [client setDefaultHeader:@"Authorization" value:sha1String];

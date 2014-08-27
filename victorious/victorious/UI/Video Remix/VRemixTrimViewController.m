@@ -62,6 +62,7 @@
 
     // Add Video Player to Segment Selector
     self.trimSlider.videoPlayerViewController = self.videoPlayerViewController;
+
     
     // To Ensure That The Navigation Bar is Always Present
     [self.navigationController setNavigationBarHidden:NO];

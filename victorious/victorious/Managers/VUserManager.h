@@ -25,6 +25,10 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
  */
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
+- (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                             onError:(VUserManagerLoginErrorBlock)errorBlock;
+
 - (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 - (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
