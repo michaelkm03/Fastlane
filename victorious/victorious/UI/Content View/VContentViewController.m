@@ -147,6 +147,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.keyboardBarContainer.hidden = YES;
     
     [self resetView];
+    
+    if (CGRectGetHeight(self.view.bounds) == 480.0f)
+    {
+        UIColor *currentBackgroundColor = self.realtimeCommentVC.commentBackgroundView.backgroundColor;
+        self.realtimeCommentVC.commentBackgroundView.backgroundColor = [currentBackgroundColor colorWithAlphaComponent:1.0f];
+        self.realtimeCommentVC.arrowImageView.image = [self.realtimeCommentVC.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.realtimeCommentVC.arrowImageView.tintColor = [currentBackgroundColor colorWithAlphaComponent:1.0f];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
