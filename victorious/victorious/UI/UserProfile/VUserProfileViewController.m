@@ -105,7 +105,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     VUserProfileHeaderView* headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
-                                                                                              screenHeight - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height)];
+                                                                                              screenHeight - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))];
     headerView.user = self.profile;
     headerView.delegate = self;
     self.tableView.tableHeaderView = headerView;
@@ -221,7 +221,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         else
         {
             [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height];
+                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
         }
     }];
 }
@@ -362,7 +362,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)animateHeaderWithDuration:(CGFloat)duration buffer:(CGFloat)buffer height:(CGFloat)height
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
-    CGFloat heightDiff = header.frame.size.height - height;
+    CGFloat heightDiff = CGRectGetHeight(header.frame) - height;
     if (!heightDiff)
         return;
     
@@ -383,7 +383,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
          header.frame = frame;
          self.tableView.tableHeaderView = header;
          
-         self.tableView.contentOffset = CGPointMake(0, -kVNavigationBarHeight);
+         self.tableView.contentOffset = CGPointMake(0, -kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame));
      }];
 }
 
@@ -402,7 +402,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         else
         {
             [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight - [UIApplication sharedApplication].statusBarFrame.size.height];
+                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
         }
     }
     

@@ -48,6 +48,13 @@
     
     // Set the Alpha for the Snapshot Button
     self.takeImageSnapShotButton.alpha = 1.0;
+    
+    // Transparent Nav Bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated

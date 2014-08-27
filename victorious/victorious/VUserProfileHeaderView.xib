@@ -83,10 +83,42 @@
                                 <action selector="pressedEditProfile:" destination="iN0-l3-epB" eventType="touchUpInside" id="y1L-ny-eXu"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8Q-Qa-e98" userLabel="Follower Button">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="60"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="ubO-ph-c1x"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="pressedFollowers:" destination="iN0-l3-epB" eventType="touchUpInside" id="Nu4-lJ-25w"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PYc-nn-KYH" userLabel="Following Button">
+                            <rect key="frame" x="223" y="0.0" width="100" height="60"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="B36-M4-cjL"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="pressedFollowering:" destination="iN0-l3-epB" eventType="touchUpInside" id="xMb-Wn-ifX"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="a8Q-Qa-e98" firstAttribute="top" secondItem="Ym4-vc-saC" secondAttribute="top" id="2HK-K8-VFt"/>
+                        <constraint firstItem="a8Q-Qa-e98" firstAttribute="leading" secondItem="Ym4-vc-saC" secondAttribute="leading" id="8cX-g6-Voa"/>
+                        <constraint firstItem="PYc-nn-KYH" firstAttribute="top" secondItem="Ym4-vc-saC" secondAttribute="top" id="8sG-YN-KzL"/>
+                        <constraint firstAttribute="bottom" secondItem="PYc-nn-KYH" secondAttribute="bottom" id="Rtb-AR-6FP"/>
                         <constraint firstAttribute="height" constant="60" id="rPj-Ir-2AL"/>
+                        <constraint firstAttribute="trailing" secondItem="PYc-nn-KYH" secondAttribute="trailing" constant="-3" id="uCD-PY-vUg"/>
+                        <constraint firstAttribute="bottom" secondItem="a8Q-Qa-e98" secondAttribute="bottom" id="xBJ-CD-zra"/>
                     </constraints>
                 </view>
             </subviews>
