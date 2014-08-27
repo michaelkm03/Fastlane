@@ -32,6 +32,12 @@ static const NSInteger kCharacterLimit = 255;
     [self.textView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
 }
 
+- (void)awakeFromNib
+{
+    self.shouldAutoClearOnCompose = YES;
+    self.sendButtonEnabled = YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,10 +47,8 @@ static const NSInteger kCharacterLimit = 255;
     
     self.promptLabel.textColor = [UIColor lightGrayColor];
     
-    self.sendButton.enabled = (self.textView.text.length > 0);
+    [self enableOrDisableSendButtonAsAppropriate];
 }
-
-
 
 - (void)addAccessoryBar
 {
@@ -76,6 +80,19 @@ static const NSInteger kCharacterLimit = 255;
     self.mediaButton.clipsToBounds = YES;
 }
 
+- (void)clearKeyboardBar
+{
+    [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
+    self.textView.text = nil;
+    self.mediaURL = nil;
+    [self textViewDidChange:self.textView];
+}
+
+- (void)enableOrDisableSendButtonAsAppropriate
+{
+    self.sendButton.enabled = self.sendButtonEnabled && (self.textView.text.length > 0);
+}
+
 - (IBAction)sendButtonAction:(id)sender
 {
     if (self.textView.text.length < 1)
@@ -92,12 +109,13 @@ static const NSInteger kCharacterLimit = 255;
     [self.textView resignFirstResponder];
 
     if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
+    {
         [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
-    
-    [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
-    self.textView.text = nil;
-    self.mediaURL = nil;
-    [self textViewDidChange:self.textView];
+    }
+    if (self.shouldAutoClearOnCompose)
+    {
+        [self clearKeyboardBar];
+    }
 }
 
 - (IBAction)cancelButtonAction:(id)sender
@@ -147,6 +165,15 @@ static const NSInteger kCharacterLimit = 255;
     }
 }
 
+- (void)setSendButtonEnabled:(BOOL)sendButtonEnabled
+{
+    _sendButtonEnabled = sendButtonEnabled;
+    if ([self isViewLoaded])
+    {
+        [self enableOrDisableSendButtonAsAppropriate];
+    }
+}
+
 - (BOOL)becomeFirstResponder
 {
     return [self.textView becomeFirstResponder];
@@ -188,18 +215,14 @@ static const NSInteger kCharacterLimit = 255;
                 break;
         }
     }
-    
-    NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    self.sendButton.enabled = (newText.length > 0);
-    
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.promptLabel.hidden = ![textView.text isEqualToString:@""];
+    [self enableOrDisableSendButtonAsAppropriate];
 }
-
 
 #pragma mark - KVO
 
@@ -208,7 +231,13 @@ static const NSInteger kCharacterLimit = 255;
     if (object == self.textView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
     {
         if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
-            [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:(14.0f + self.textView.contentSize.height)];
+        {
+            CGFloat desiredHeight = 14.0f + self.textView.contentSize.height;
+            if (CGRectGetHeight(self.view.bounds) != desiredHeight)
+            {
+                [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:desiredHeight];
+            }
+        }
     }
 }
 

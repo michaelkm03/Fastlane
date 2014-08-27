@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+extern const NSInteger kTooManyNewMessagesErrorCode;
+
 @class VAbstractFilter, VSequenceFilter, VCommentFilter, VSequence, VConversation;
 
 @interface VObjectManager (Pagination)
@@ -64,6 +66,16 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
                                                                           failBlock:(VFailBlock)fail;
 
+/**
+ Loads page one from the server, but only returns messages that already exist. If every
+ message in page one is brand new, the fail block is called. In that case, the NSError
+ object will have a domain of kVictoriousErrorDomain and an error code of
+ kTooManyNewMessagesErrorCode.
+ */
+- (RKManagedObjectRequestOperation *)loadNewestMessagesInConversation:(VConversation *)conversation
+                                                         successBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail;
+
 #pragma mark Notifications
 - (RKManagedObjectRequestOperation *)refreshListOfNotificationsWithSuccessBlock:(VSuccessBlock)success
                                                                       failBlock:(VFailBlock)fail;
@@ -79,5 +91,6 @@
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 
 @end

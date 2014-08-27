@@ -6,13 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VConversation;
-@class VKeyboardBarViewController;
+@class VMessageTableDataSource, VUser;
 
-#import "VFetchedResultsTableViewController.h"
+@interface VMessageViewController : UITableViewController
 
-@interface VMessageViewController : VFetchedResultsTableViewController
+@property (nonatomic, strong)           VUser                   *otherUser; ///< The user with whom the logged-in user is conversing
+@property (nonatomic, strong, readonly) VMessageTableDataSource *tableDataSource;
 
-@property (nonatomic, readwrite, strong)    VConversation*  conversation;
+/**
+ If YES, the receiver will refresh from the server on -viewWillAppear.
+ Resets back to NO on every appearance.
+ */
+@property (nonatomic) BOOL shouldRefreshOnAppearance;
 
 @end

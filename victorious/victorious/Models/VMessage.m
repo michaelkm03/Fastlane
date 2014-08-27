@@ -23,7 +23,7 @@
 @dynamic thumbnailPath;
 @dynamic conversation;
 @dynamic lastMessageInverse;
-@dynamic user;
+@dynamic sender;
 @dynamic notification;
 
 @end

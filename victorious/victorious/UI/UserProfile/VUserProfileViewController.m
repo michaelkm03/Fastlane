@@ -254,18 +254,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                              style:UIBarButtonItemStylePlain
                                              target:nil
                                              action:nil];
+
+    VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
-    [[VObjectManager sharedManager] conversationWithUser:self.profile
-                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    if ([self.navigationController.viewControllers containsObject:composeController])
     {
-        VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
-        composeController.conversation = [resultObjects firstObject];
+        [self.navigationController popToViewController:composeController animated:YES];
+    }
+    else
+    {
         [self.navigationController pushViewController:composeController animated:YES];
     }
-                                               failBlock:^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-    }];
 }
 
 - (void)editProfileHandler

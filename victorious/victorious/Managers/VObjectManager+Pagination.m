@@ -29,6 +29,8 @@
 
 #import "NSString+VParseHelp.h"
 
+const NSInteger kTooManyNewMessagesErrorCode = 999;
+
 @implementation VObjectManager (Pagination)
 
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
@@ -199,31 +201,19 @@
 {
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSManagedObjectContext* context;
+        NSManagedObjectContext* context = nil;
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation* conversation in resultObjects)
         {
-            //There should only be one message.  Its the current 'last message'
-            conversation.lastMessage = [conversation.messages anyObject];
-            
-            //Sometimes we get -1 for the current logged in user
-            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
-            {
-                conversation.lastMessage.user = self.mainUser;
-            }
-            else if (conversation.lastMessage && !conversation.lastMessage.user)
-            {
-                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
-            }
-            
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
-                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+                conversation.filterAPIPath = [self apiPathForConversationWithRemoteID:conversation.remoteId];
             }
             
             if (!conversation.user && conversation.other_interlocutor_user_id)
+            {
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
-            
+            }
             context = conversation.managedObjectContext;
         }
         
@@ -280,16 +270,26 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
+    NSManagedObjectID *conversationID = conversation.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        for (VMessage* message in resultObjects)
+        NSArray *resultObjectsInReverseOrder = [[resultObjects reverseObjectEnumerator] allObjects];
+        VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
+        if (refresh)
         {
-            VMessage* messageInContext = (VMessage*)[conversation.managedObjectContext objectWithID:message.objectID];
-            [conversation addMessagesObject:messageInContext];
+            conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjectsInReverseOrder];
+        }
+        else
+        {
+            NSMutableOrderedSet *messages = [conversation.messages mutableCopy];
+            [messages insertObjects:resultObjectsInReverseOrder atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, resultObjects.count)]];
+            conversation.messages = messages;
         }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     if (refresh)
@@ -300,6 +300,43 @@
     {
         return [self.paginationManager loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
     }
+}
+
+- (RKManagedObjectRequestOperation *)loadNewestMessagesInConversation:(VConversation *)conversation
+                                                         successBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail;
+{
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VMessage *latestMessage = [conversation.messages lastObject];
+        NSUInteger indexOfLatestMessage = [resultObjects indexOfObject:latestMessage];
+        if (indexOfLatestMessage == NSNotFound)
+        {
+            if (fail)
+            {
+                fail(operation, [NSError errorWithDomain:kVictoriousErrorDomain code:kTooManyNewMessagesErrorCode userInfo:nil]);
+            }
+        }
+        else if (success)
+        {
+            NSArray *newMessages;
+            if (indexOfLatestMessage)
+            {
+                 newMessages = [resultObjects subarrayWithRange:NSMakeRange(0, indexOfLatestMessage)];
+            }
+            else
+            {
+                newMessages = @[];
+            }
+            success(operation, fullResponse, [[newMessages reverseObjectEnumerator] allObjects]);
+        }
+    };
+    
+    return [self GET:[conversation.filterAPIPath stringByAppendingFormat:@"/1/%ld", (long)conversation.perPageNumber.integerValue]
+              object:nil
+          parameters:nil
+        successBlock:fullSuccessBlock
+           failBlock:fail];
 }
 
 #pragma mark - Following
@@ -624,6 +661,11 @@
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
+}
+
+- (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID
+{
+    return [NSString stringWithFormat:@"/api/message/conversation/%ld/desc", remoteID.longValue];
 }
 
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
@@ -400,44 +401,42 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Messages
-- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
-                                             withText:(NSString*)text
-                                             mediaURL:(NSURL*)mediaURL
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail
+- (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
+                                 toUser:(VUser *)user
+                           successBlock:(VSuccessBlock)success
+                              failBlock:(VFailBlock)fail;
 {
     //Set the parameters
-    NSDictionary* parameters = [@{@"to_user_id" : conversation.other_interlocutor_user_id.stringValue ?: [NSNull null],
-                                  @"text" : text ?: [NSNull null]
+    NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+                                  @"text" : message.text ?: [NSNull null]
                                   } mutableCopy];
     NSDictionary *allURLs;
-    if (mediaURL)
+    if (message.mediaPath)
     {
-        allURLs = @{@"media_data":mediaURL};
-        NSString* type = [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMOV] || [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4]
-        ? @"video" : @"image";
+        NSURL *mediaURL = [NSURL URLWithString:message.mediaPath];
+        allURLs = @{@"media_data": mediaURL};
+        NSString* type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
         [parameters setValue:type forKey:@"media_type"];
     }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VMessage* tempMessage;
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
-            NSNumber* returnedId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
-            if (![conversation.remoteId isEqualToNumber:returnedId])
+            [message.managedObjectContext performBlock:^(void)
             {
-                conversation.remoteId = returnedId;
-                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:returnedId.stringValue];
-            }
-            NSNumber* messageID = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
-            
-            tempMessage = [self newMessageWithID:messageID conversation:conversation text:text mediaURLPath:[mediaURL absoluteString]];
-            resultObjects = @[tempMessage];
+                NSNumber* returnedId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
+                if (![message.remoteId isEqualToNumber:returnedId])
+                {
+                    message.remoteId = returnedId;
+                    [message.managedObjectContext saveToPersistentStore:nil];
+                }
+            }];
         }
-        
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self uploadURLs:allURLs
@@ -447,27 +446,18 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
-- (VMessage*)newMessageWithID:(NSNumber*)remoteID
-                 conversation:(VConversation*)conversation
-                         text:(NSString*)text
+- (VMessage *)messageWithText:(NSString*)text
                  mediaURLPath:(NSString*)mediaURLPath
 {
-    VMessage* tempMessage = [conversation.managedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
+    NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
+    VMessage* tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
     
-    tempMessage.remoteId = remoteID;
     tempMessage.text = text;
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
-    
-    VUser* userInContext = (VUser*)[tempMessage.managedObjectContext objectWithID:self.mainUser.objectID];
-    [userInContext addMessagesObject:tempMessage];
-    
-    [conversation addMessagesObject:tempMessage];
-    if (!conversation.lastMessage)
-        conversation.lastMessage = tempMessage;
-    
-    
-    [tempMessage.managedObjectContext saveToPersistentStore:nil];
+    tempMessage.mediaPath = mediaURLPath;
+    tempMessage.sender = self.mainUser;
+    tempMessage.senderUserId = self.mainUser.remoteId;
     
     return tempMessage;
 }
@@ -477,11 +467,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 - (NSString*)localImageURLForVideo:(NSString*)localVideoPath
 {
     if (!localVideoPath)
+    {
         return nil;
+    }
     
-    NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
-        || [extension isEqualToString:VConstantMediaExtensionJPEG])
+    if ([localVideoPath v_hasImageExtension])
     {
         return localVideoPath;
     }

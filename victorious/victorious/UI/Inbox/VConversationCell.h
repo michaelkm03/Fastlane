@@ -12,12 +12,13 @@ extern CGFloat const kVConversationCellHeight;
 
 @class VConversation;
 
-@interface VConversationCell : VTableViewCell
+@interface VConversationCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
-@property (strong, nonatomic) VConversation* conversation;
-@property (nonatomic) BOOL seen;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (strong, nonatomic) VConversation *conversation;
+@property (weak, nonatomic) UITableViewController *parentTableViewController;
 
 @end

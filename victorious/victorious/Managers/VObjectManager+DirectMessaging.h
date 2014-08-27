@@ -8,13 +8,13 @@
 
 #import "VObjectManager.h"
 
-#import "VConversation.h"
+@class VConversation;
 
 @interface VObjectManager (DirectMessaging)
 
-- (VConversation*)conversationWithUser:(VUser*)user
-                          successBlock:(VSuccessBlock)success
-                             failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
                                          successBlock:(VSuccessBlock)success

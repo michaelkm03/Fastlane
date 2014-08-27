@@ -9,7 +9,7 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-@class VSequence, VComment, VConversation, VAsset, VNode;
+@class VSequence, VComment, VConversation, VAsset, VMessage, VNode;
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
@@ -85,11 +85,20 @@ Creates a new realtime comment
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
-                                             withText:(NSString*)text
-                                             mediaURL:(NSURL*)mediaURL
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail;
+/**
+ Creates a new message, but does not send it to the server.
+ See sendMessage:successBlock:failBlock: for that.
+ */
+- (VMessage *)messageWithText:(NSString*)text
+                 mediaURLPath:(NSString*)mediaURLPath;
+
+/**
+ Sends a new message to the server
+ */
+- (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
+                                 toUser:(VUser *)user
+                           successBlock:(VSuccessBlock)success
+                              failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
                                         withName:(NSString*)name

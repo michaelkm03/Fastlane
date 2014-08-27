@@ -165,6 +165,11 @@
 
 - (BOOL)isLoadingFilter:(VAbstractFilter *)filter
 {
+    if (!filter)
+    {
+        return NO;
+    }
+    
     __block NSString *path = nil;
     [filter.managedObjectContext performBlockAndWait:^(void)
     {

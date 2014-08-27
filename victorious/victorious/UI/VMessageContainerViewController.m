@@ -6,12 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
 #import "VMessageContainerViewController.h"
+#import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
 #import "VObjectManager.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
+#import "VThemeManager.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
 
@@ -19,43 +23,64 @@
 
 #import "MBProgressHUD.h"
 
+static NSMutableDictionary *messageViewControllers;
+
 @interface VMessageContainerViewController ()
+
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIButton    *backButton;
+@property (nonatomic, weak) IBOutlet UILabel     *titleLabel;
+@property (nonatomic, weak) IBOutlet UIButton    *moreButton;
+
 @end
 
 @implementation VMessageContainerViewController
+
 @synthesize conversationTableViewController = _conversationTableViewController;
 
-
-+ (instancetype)messageContainer
++ (instancetype)messageViewControllerForUser:(VUser *)otherUser
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VMessageContainerViewController* container = (VMessageContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kMessageContainerID];
+    NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
+    if (!messageViewControllers)
+    {
+        messageViewControllers = [[NSMutableDictionary alloc] init];
+    }
     
-    return container;
+    VMessageContainerViewController *messageViewController = messageViewControllers[otherUser.remoteId];
+    if (!messageViewController)
+    {
+        UIViewController *rootViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        messageViewController = (VMessageContainerViewController *)[rootViewController.storyboard instantiateViewControllerWithIdentifier:kMessageContainerID];
+        messageViewController.otherUser = otherUser;
+        messageViewControllers[otherUser.remoteId] = messageViewController;
+    }
+    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    
+    return messageViewController;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    UIImage *moreImage = [self.moreButton imageForState:UIControlStateNormal];
+    [self.moreButton setImage:[moreImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
-    UIBarButtonItem *flagButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"]
-                                                                       style:UIBarButtonItemStylePlain
-                                                                      target:self
-                                                                      action:@selector(flagConversation:)];
+    UIImage *backImage = [self.backButton imageForState:UIControlStateNormal];
+    [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+
+    self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     
-    self.navigationItem.rightBarButtonItems =  [@[flagButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
+    [self addBackgroundImage];
+    [self.view bringSubviewToFront:self.busyView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    
-    self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
+    self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -68,7 +93,9 @@
                                                destructiveButtonTitle:reportTitle
                                                   onDestructiveButton:^(void)
                                   {
-                                      [[VObjectManager sharedManager] flagConversation:self.conversation
+                                      VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+                                      
+                                      [[VObjectManager sharedManager] flagConversation:messageViewController.tableDataSource.conversation
                                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
@@ -81,7 +108,7 @@
                                        }
                                                                          failBlock:^(NSOperation* operation, NSError* error)
                                        {
-                                           VLog(@"Failed to flag conversation %@", self.conversation);
+                                           VLog(@"Failed to flag conversation %@", messageViewController.tableDataSource.conversation);
                                            
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                                                   message:NSLocalizedString(@"ErrorOccured", @"")
@@ -96,26 +123,33 @@
     [actionSheet showInView:self.view];
 }
 
-- (void)setConversation:(VConversation *)conversation
+- (IBAction)goBack:(id)sender
 {
-    _conversation = conversation;
-    ((VMessageViewController*)self.conversationTableViewController).conversation = conversation;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)setOtherUser:(VUser *)otherUser
 {
-    [super viewWillDisappear:animated];
-    
-    //Be sure to delete the conversation if we've come to create a new conversation and stopped
-    if (![[self.conversation messages] count])
+    _otherUser = otherUser;
+    ((VMessageViewController*)self.conversationTableViewController).otherUser = otherUser;
+    if ([self isViewLoaded])
     {
-        NSManagedObjectContext* context =   self.conversation.managedObjectContext;
-        [context deleteObject:self.conversation];
-        [context saveToPersistentStore:nil];
-        
-        //Delete the evidence!
-        ((VMessageViewController*)self.conversationTableViewController).conversation = nil;
-        self.conversation = nil;
+        [self addBackgroundImage];
+    }
+}
+
+- (void)addBackgroundImage
+{
+    UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
+    
+    if (self.otherUser)
+    {
+        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.otherUser.pictureUrl]
+                                                  placeholderImage:defaultBackgroundImage];
+    }
+    else
+    {
+        self.backgroundImageView.image = defaultBackgroundImage;
     }
 }
 
@@ -136,39 +170,25 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
-    progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
-    
-    __block NSNumber* oldID = self.conversation.remoteId;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    keyboardBar.sendButtonEnabled = NO;
+    VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+    self.busyView.hidden = NO;
+    [messageViewController.tableDataSource createCommentWithText:text mediaURL:mediaURL completion:^(NSError *error)
     {
-        if (![oldID isEqualToValue:self.conversation.remoteId])
+        keyboardBar.sendButtonEnabled = YES;
+        self.busyView.hidden = YES;
+        if (error)
         {
-            //If the ID on the conversation changes we need to refresh the fetch controller with the new ID.
-            //This happens because we do not have the remote ID for the conversation until the first message is sent
-            [((VMessageViewController*)self.conversationTableViewController) refreshFetchController];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
+            [hud hide:YES afterDelay:3.0];
         }
-        [progressHUD hide:YES];
-    };
-    
-    [[VObjectManager sharedManager] sendMessageToConversation:self.conversation
-                                                     withText:text
-                                                     mediaURL:mediaURL
-                                                 successBlock:success
-                                                    failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed in creating message with error: %@", error);
-         [progressHUD hide:YES];
-         
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadError", @"")
-                                                         message: NSLocalizedString(@"UploadErrorBody", @"")
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
-     }];
+        else
+        {
+            [keyboardBar clearKeyboardBar];
+        }
+    }];
 }
 
 @end

@@ -142,6 +142,9 @@
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
+"ConversationLoadError" =   "Unable to load conversation";
+"ConversationSendError" =   "Your message could not be sent";
+
 "Normal"                =   "Normal";
 
 "ClosePreviewConfirm"   =   "Are you sure you want to close the window? Your creation will be lost.";

@@ -22,7 +22,7 @@
 @property (nonatomic, retain) NSString * thumbnailPath;
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VConversation *lastMessageInverse;
-@property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VUser *sender;
 @property (nonatomic, retain) VNotification *notification;
 
 @end

@@ -17,7 +17,7 @@
 
 #import "VUserProfileViewController.h"
 
-CGFloat const kVConversationCellHeight = 71;
+CGFloat const kVConversationCellHeight = 72;
 
 @implementation VConversationCell
 
@@ -27,27 +27,14 @@ CGFloat const kVConversationCellHeight = 71;
 
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    self.profileImageButton.clipsToBounds = YES;
-    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
-    self.profileImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-    self.profileImageButton.layer.borderColor = self.backgroundColor.CGColor;
-    self.profileImageButton.layer.borderWidth = 1.0f;
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-}
-
-- (void)setSeen:(BOOL)seen
-{
-//    [self.seenView setHidden:seen];
 }
 
 - (void)setConversation:(VConversation *)conversation
@@ -55,14 +42,10 @@ CGFloat const kVConversationCellHeight = 71;
     _conversation = conversation;
     
     self.usernameLabel.text  = conversation.user.name;
-    
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
-    
-    self.messageLabel.text = conversation.lastMessage.text;
-    self.dateLabel.text = [conversation.lastMessage.postedAt timeSince];
-    self.seen = conversation.lastMessage.isRead.boolValue;
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
+                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    self.messageLabel.text = conversation.lastMessageText;
+    self.dateLabel.text = [conversation.postedAt timeSince];
 }
 
 - (IBAction)profileButtonAction:(id)sender
