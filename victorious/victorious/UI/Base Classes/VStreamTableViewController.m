@@ -282,16 +282,21 @@
     else
     {
         self.tableView.userInteractionEnabled = NO;
-        [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:YES];
-    }
-}
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+        {
+            [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+        }
+                         completion:^(BOOL finished)
+        {
+            self.tableView.userInteractionEnabled = YES;
+            [self.navigationController pushViewController:self.contentViewController animated:YES];
+        }];
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    if (self.selectedSequence)
-    {
-        self.tableView.userInteractionEnabled = YES;
-        [self.navigationController pushViewController:self.contentViewController animated:YES];
     }
 }
 
