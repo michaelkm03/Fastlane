@@ -94,7 +94,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.layer.cornerRadius = 0.0;
         self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
-
+    
     self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
     self.chromeCastController.delegate = self;
     
@@ -162,7 +162,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
     }
-
+    
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
@@ -193,7 +193,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (void)updateChromecastButton
 {
     self.showChromeCastButton = NO;
-
+    
 #if 0
     if (self.self.chromeCastController.deviceScanner.devices.count == 0)
     {
@@ -202,9 +202,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     else
     {
         self.showChromeCastButton = YES;
-
+        
         UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kChromecastButtonIndex inSection:kSettingsSectionIndex]];
-
+        
         if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ConnectedTo", @""), self.chromeCastController.deviceName];
         else
@@ -280,17 +280,18 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         mailComposer.mailComposeDelegate = self;
         
         NSString *msgBody = [self collectDeviceInfo:nil];
-        NSString *msgSubj = [NSString stringWithFormat:@"Feedback on %@",[appName capitalizedString]];
+        NSString *subjString = NSLocalizedString(@"NoEmail", @"Email not setup title");
+        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
         
-        [mailComposer setSubject:NSLocalizedString(msgSubj,@"Feedback / Help")];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
+        [mailComposer setSubject:msgSubj];
+        [mailComposer setToRecipients:@[@"support@victorious.com"]];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:
          ^{
-            [[VThemeManager sharedThemeManager] applyStyling];
-        }];
+             [[VThemeManager sharedThemeManager] applyStyling];
+         }];
     }
     else
     {
@@ -305,18 +306,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 - (NSString*)collectDeviceInfo:(id)sender
 {
-    NSString *userString = @"";
-    VUser *user;
-    
     // Grab App Version
     NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     
-    // Grab UserInfo (if logged in)
-    if ([VObjectManager sharedManager].isAuthorized)
-    {
-        user = [VObjectManager sharedManager].mainUser;
-        userString = [NSString stringWithFormat:@"\nUser ID: %@",user.remoteId];
-    }
     
     // Collect All of the Device Information
     UIDevice *currentDevice = [UIDevice currentDevice];
@@ -325,7 +317,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     NSString *iosName = [currentDevice systemName];
     
     // Return the Compiled String of Variables
-    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice Type: %@\nOS Version: %@ v%@\nApp Version: %@%@",model, iosName, iosVersion, appVersion, userString];
+    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice Type: %@\nOS Version: %@ v%@\nApp Version: %@",model, iosName, iosVersion, appVersion];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
