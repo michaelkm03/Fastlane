@@ -38,6 +38,8 @@
 
 #import "NSURL+MediaType.h"
 
+static const CGFloat kPublishKeyboardOffset = 80.0f;
+
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
@@ -52,9 +54,7 @@
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
-@property (nonatomic, strong) IBOutlet  NSLayoutConstraint* originalTextViewYConstraint;//This is intentionally strong
-@property (nonatomic, strong)           NSLayoutConstraint* quoteTextViewYConstraint;
-@property (nonatomic, strong)           NSLayoutConstraint* memeTextViewYConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
 
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
 
@@ -122,22 +122,8 @@ static const CGFloat kShareMargin = 34.0f;
     }
     
     [self setDefaultCaptionText];
+
     
-    self.quoteTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
-                                                                  attribute:NSLayoutAttributeCenterY
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.previewImageView
-                                                                  attribute:NSLayoutAttributeCenterY
-                                                                 multiplier:1.0
-                                                                   constant:0.0];
-    
-    self.memeTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.originalTextViewYConstraint.firstItem
-                                                                attribute:self.originalTextViewYConstraint.firstAttribute
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:self.originalTextViewYConstraint.secondItem
-                                                                attribute:self.originalTextViewYConstraint.secondAttribute
-                                                               multiplier:self.originalTextViewYConstraint.multiplier
-                                                                 constant:self.originalTextViewYConstraint.constant];
 
     [self configureShareViews];
 }
@@ -148,10 +134,6 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (captionType == VCaptionTypeMeme)
     {
-        [self.view removeConstraint:self.quoteTextViewYConstraint];
-        [self.view removeConstraint:self.originalTextViewYConstraint];
-        [self.view addConstraint:self.memeTextViewYConstraint];
-        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -164,10 +146,6 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeQuote)
     {
-        [self.view removeConstraint:self.originalTextViewYConstraint];
-        [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.quoteTextViewYConstraint];
-        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -181,10 +159,6 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeNormal)
     {
-        [self.view removeConstraint:self.quoteTextViewYConstraint];
-        [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.originalTextViewYConstraint];
-        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentLeft;
         self.typingAttributes = [@{
@@ -262,6 +236,17 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionViewHeightConstraint.constant = 0;
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillShow:)
+//                                                 name:UIKeyboardWillShowNotification
+//                                               object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillHide:)
+//                                                 name:UIKeyboardWillHideNotification
+//                                               object:nil];
 }
 
 - (void)setDefaultCaptionText
@@ -302,6 +287,8 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotate
@@ -616,7 +603,7 @@ static const CGFloat kShareMargin = 34.0f;
     {
         CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         
-        self.quoteTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
+//        self.quoteTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
     }
     else
     {
@@ -653,5 +640,55 @@ static const CGFloat kShareMargin = 34.0f;
         viewController.previewImage = self.previewImageView.image;
     }
 }
+
+#pragma mark - Notification Handlers
+
+//- (void)keyboardWillShow:(NSNotification *)notification
+//{
+//    if (self.view.bounds.size.height > 480.0f) {
+//        return;
+//    }
+//    
+//    NSTimeInterval animationDuration;
+//    UIViewAnimationCurve animationCurve;
+//    NSDictionary *userInfo = [notification userInfo];
+//    
+//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+//    
+//
+//        [UIView animateWithDuration:animationDuration
+//                              delay:0.0f
+//                            options:(animationCurve << 16)
+//                         animations:^
+//         {
+//             self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset;
+//             [self.view layoutIfNeeded];
+//         }
+//                         completion:nil];
+//
+//}
+//
+//- (void)keyboardWillHide:(NSNotification *)notification
+//{
+//    if (self.view.bounds.size.height > 480.0f) {
+//        return;
+//    }
+//    
+//    NSTimeInterval animationDuration;
+//    UIViewAnimationCurve animationCurve;
+//    NSDictionary *userInfo = [notification userInfo];
+//    
+//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+//    
+//    [UIView animateWithDuration:animationDuration delay:0
+//                        options:(animationCurve << 16) animations:^
+//     {
+//         self.topOfCanvasToContainerConstraint.constant = -44;
+//         [self.view layoutIfNeeded];
+//     }
+//                     completion:nil];
+//}
 
 @end
