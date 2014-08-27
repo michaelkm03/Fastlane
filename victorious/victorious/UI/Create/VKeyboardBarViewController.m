@@ -179,6 +179,11 @@ static const NSInteger kCharacterLimit = 255;
     return [self.textView becomeFirstResponder];
 }
 
+- (BOOL)resignFirstResponder
+{
+    return [self.textView resignFirstResponder];
+}
+
 #pragma mark - UITextViewDelegate methods
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
