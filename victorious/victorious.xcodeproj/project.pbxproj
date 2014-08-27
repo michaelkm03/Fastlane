@@ -51,6 +51,7 @@
 		036AC8FE1959EA060086856B /* VFindTwitterFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8FD1959EA060086856B /* VFindTwitterFriendsTableViewController.m */; };
 		036AC9041959FB080086856B /* VFindInstagramFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC9031959FB080086856B /* VFindInstagramFriendsViewController.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		037DFF6219AD571400C69C22 /* VSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037DFF6119AD571400C69C22 /* VSelectorViewController.m */; };
 		03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
@@ -333,9 +334,9 @@
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D81AEE2E19A674F400727145 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D81AEE2D19A674F400727145 /* UIImage+Resize.m */; };
-		D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D866E84519ABAF9700B20082 /* VSelectorViewController.m */; };
 		D8852A1219A3E9BC000066A5 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */; };
 		D8B0500A19AC1C690048E2BE /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */; };
+		D8B0501119AD2B280048E2BE /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
@@ -452,6 +453,8 @@
 		036AC9031959FB080086856B /* VFindInstagramFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindInstagramFriendsViewController.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		037DFF6019AD571400C69C22 /* VSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSelectorViewController.h; sourceTree = "<group>"; };
+		037DFF6119AD571400C69C22 /* VSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSelectorViewController.m; sourceTree = "<group>"; };
 		03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultsFooterView.h; sourceTree = "<group>"; };
 		03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResultsFooterView.m; sourceTree = "<group>"; };
 		03811D2F193533D0005687FF /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
@@ -956,12 +959,12 @@
 		D81AEE2C19A674F400727145 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "Categories/UIImage+Resize.h"; sourceTree = "<group>"; };
 		D81AEE2D19A674F400727145 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "Categories/UIImage+Resize.m"; sourceTree = "<group>"; };
 		D81AEE2F19A6D09100727145 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
-		D866E84419ABAF9700B20082 /* VSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSelectorViewController.h; path = UI/Common/Selector/VSelectorViewController.h; sourceTree = "<group>"; };
-		D866E84519ABAF9700B20082 /* VSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSelectorViewController.m; path = UI/Common/Selector/VSelectorViewController.m; sourceTree = "<group>"; };
 		D8852A1019A3E9BC000066A5 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = UI/Login/VRegistrationModel.h; sourceTree = "<group>"; };
 		D8852A1119A3E9BC000066A5 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = UI/Login/VRegistrationModel.m; sourceTree = "<group>"; };
 		D8B0500819AC1C690048E2BE /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRTCUserPostedAtFormatter.h; path = UI/Common/VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
 		D8B0500919AC1C690048E2BE /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRTCUserPostedAtFormatter.m; path = UI/Common/VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
+		D8B0500F19AD2B280048E2BE /* VSequenceUserInteractions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceUserInteractions.h; path = "Simple Models/VSequenceUserInteractions.h"; sourceTree = "<group>"; };
+		D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceUserInteractions.m; path = "Simple Models/VSequenceUserInteractions.m"; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
 		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
 		DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchViewController.h; sourceTree = "<group>"; };
@@ -1136,6 +1139,16 @@
 				036AE5EC18FF0C0600A74BDA /* VReachability.m */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		037DFF5F19AD571400C69C22 /* Selector */ = {
+			isa = PBXGroup;
+			children = (
+				037DFF6019AD571400C69C22 /* VSelectorViewController.h */,
+				037DFF6119AD571400C69C22 /* VSelectorViewController.m */,
+			);
+			name = Selector;
+			path = UI/Common/Selector;
 			sourceTree = "<group>";
 		};
 		0388AE651949457E0098A393 /* Setters */ = {
@@ -1402,11 +1415,11 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				D866E84319ABAF4D00B20082 /* Selector */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				BEF185E619884C13007FB4BC /* VConstants.m */,
 				3FA217E018AD87B50066E893 /* Categories */,
 				3F9B666518887D000046F826 /* Management */,
+				037DFF5F19AD571400C69C22 /* Selector */,
 				3F9B666418887CF40046F826 /* UI Elements */,
 				3F9B666318887CE50046F826 /* Base Classes */,
 				5FF9BE801893188A0054694B /* Menu */,
@@ -1729,7 +1742,8 @@
 				BE171DD91868C211004E5202 /* Managers */,
 				BEE9C8BB18CE90230095C737 /* Protocols */,
 				BE171DAE1868C211004E5202 /* Categories */,
-				BE171DE91868C211004E5202 /* Models */,
+				BE171DE91868C211004E5202 /* ManagedObjectModels */,
+				D8B0500E19AD2A740048E2BE /* Simple Models */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
 				83ABAF9A18709DE30069556C /* Fonts */,
@@ -1897,7 +1911,7 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		BE171DE91868C211004E5202 /* Models */ = {
+		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
 				BED95E9C199D616A00637031 /* VSequence.h */,
@@ -1946,6 +1960,7 @@
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
 			);
+			name = ManagedObjectModels;
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -2241,13 +2256,13 @@
 			name = RealtimeComments;
 			sourceTree = "<group>";
 		};
-		D866E84319ABAF4D00B20082 /* Selector */ = {
+		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
-				D866E84419ABAF9700B20082 /* VSelectorViewController.h */,
-				D866E84519ABAF9700B20082 /* VSelectorViewController.m */,
+				D8B0500F19AD2B280048E2BE /* VSequenceUserInteractions.h */,
+				D8B0501019AD2B280048E2BE /* VSequenceUserInteractions.m */,
 			);
-			name = Selector;
+			name = "Simple Models";
 			sourceTree = "<group>";
 		};
 		DB58EF1E1990027F00D2A07F /* Search */ = {
@@ -2544,6 +2559,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				037DFF6219AD571400C69C22 /* VSelectorViewController.m in Sources */,
 				03484BF5192D28CC00403FB1 /* VLightboxTransitioningDelegate.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
@@ -2735,6 +2751,7 @@
 				3F14C45418BD2BD0001796B9 /* VCVideoPlayerViewController.m in Sources */,
 				034B816F197F2EAB004F1845 /* VObjectManager+Analytics.m in Sources */,
 				0333BE9E19A434B8008BD962 /* VCompositeImageFilter.m in Sources */,
+				D8B0501119AD2B280048E2BE /* VSequenceUserInteractions.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
@@ -2794,7 +2811,6 @@
 				03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */,
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
-				D866E84619ABAF9700B20082 /* VSelectorViewController.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				DB58EF44199403B300D2A07F /* VComment.m in Sources */,
