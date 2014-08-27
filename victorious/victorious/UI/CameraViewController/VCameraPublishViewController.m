@@ -38,7 +38,7 @@
 
 #import "NSURL+MediaType.h"
 
-static const CGFloat kPublishKeyboardOffset = 80.0f;
+static const CGFloat kPublishKeyboardOffset = 106.0f;
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -55,8 +55,9 @@ static const CGFloat kPublishKeyboardOffset = 80.0f;
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
-
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
@@ -123,8 +124,15 @@ static const CGFloat kShareMargin = 34.0f;
     
     [self setDefaultCaptionText];
 
-    
+    if (self.view.bounds.size.height <= 480) {
+        self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
+        self.shareViewHeightConstraint.constant = 79.0f;
+        self.captionViewHeightConstraint.constant = 40.0f;
+        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
+    }
 
+    [self.view layoutIfNeeded];
+    
     [self configureShareViews];
 }
 
@@ -238,15 +246,15 @@ static const CGFloat kShareMargin = 34.0f;
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillHide:)
-//                                                 name:UIKeyboardWillHideNotification
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)setDefaultCaptionText
@@ -643,52 +651,53 @@ static const CGFloat kShareMargin = 34.0f;
 
 #pragma mark - Notification Handlers
 
-//- (void)keyboardWillShow:(NSNotification *)notification
-//{
-//    if (self.view.bounds.size.height > 480.0f) {
-//        return;
-//    }
-//    
-//    NSTimeInterval animationDuration;
-//    UIViewAnimationCurve animationCurve;
-//    NSDictionary *userInfo = [notification userInfo];
-//    
-//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-//    
-//
-//        [UIView animateWithDuration:animationDuration
-//                              delay:0.0f
-//                            options:(animationCurve << 16)
-//                         animations:^
-//         {
-//             self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset;
-//             [self.view layoutIfNeeded];
-//         }
-//                         completion:nil];
-//
-//}
-//
-//- (void)keyboardWillHide:(NSNotification *)notification
-//{
-//    if (self.view.bounds.size.height > 480.0f) {
-//        return;
-//    }
-//    
-//    NSTimeInterval animationDuration;
-//    UIViewAnimationCurve animationCurve;
-//    NSDictionary *userInfo = [notification userInfo];
-//    
-//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-//    
-//    [UIView animateWithDuration:animationDuration delay:0
-//                        options:(animationCurve << 16) animations:^
-//     {
-//         self.topOfCanvasToContainerConstraint.constant = -44;
-//         [self.view layoutIfNeeded];
-//     }
-//                     completion:nil];
-//}
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    if (self.view.bounds.size.height > 480.0f) {
+        return;
+    }
+    
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0f
+                        options:(animationCurve << 16)
+                     animations:^
+     {
+         self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset - ((self.view.frame.size.height <= 480.0f) ? 0.0f : 20.0f);
+         [self.view layoutIfNeeded];
+     }
+                     completion:nil];
+
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    if (self.view.bounds.size.height > 480.0f) {
+        return;
+    }
+    
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         self.topOfCanvasToContainerConstraint.constant = -64 - ((self.view.frame.size.height <= 480.0f) ? 0.0f : 20.0f);
+         [self.view layoutIfNeeded];
+     }
+                     completion:nil];
+}
 
 @end
