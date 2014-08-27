@@ -440,16 +440,23 @@ static       char    kKVOContext;
             }
             else if (self.newConversation)
             {
-                NSAssert([NSThread isMainThread], @"Callbacks are supposed to be on the main thread");
-                VConversation *conversation = [NSEntityDescription insertNewObjectForEntityForName:[VConversation entityName] inManagedObjectContext:context];
-                conversation.remoteId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
-                conversation.filterAPIPath = [self.objectManager apiPathForConversationWithRemoteID:conversation.remoteId];
-                conversation.user = self.otherUser;
-                conversation.lastMessageText = message.text;
-                conversation.postedAt = message.postedAt;
-                self.conversation = conversation;
+                if (self.otherUser.conversation)
+                {
+                    self.conversation = self.otherUser.conversation;
+                }
+                else
+                {
+                    NSAssert([NSThread isMainThread], @"Callbacks are supposed to be on the main thread");
+                    VConversation *conversation = [NSEntityDescription insertNewObjectForEntityForName:[VConversation entityName] inManagedObjectContext:context];
+                    conversation.remoteId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
+                    conversation.filterAPIPath = [self.objectManager apiPathForConversationWithRemoteID:conversation.remoteId];
+                    conversation.user = self.otherUser;
+                    conversation.lastMessageText = message.text;
+                    conversation.postedAt = message.postedAt;
+                    self.conversation = conversation;
+                    [context saveToPersistentStore:nil];
+                }
                 self.newConversation = NO;
-                [context saveToPersistentStore:nil];
             }
         }
         if (completion)
