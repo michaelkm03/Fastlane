@@ -35,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1j4-RX-jZf" userLabel="Preview Parent View">
-                                <rect key="frame" x="0.0" y="-63" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="4qQ-50-2PX">
@@ -115,10 +115,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="1j4-RX-jZf" firstAttribute="top" secondItem="BxD-xu-DRZ" secondAttribute="bottom" constant="-44" id="2Hv-m6-qZm"/>
                             <constraint firstAttribute="trailing" secondItem="cYL-4v-0L6" secondAttribute="trailing" id="2cs-nc-LNl"/>
                             <constraint firstItem="WfQ-PA-grS" firstAttribute="top" secondItem="7cq-1s-ji5" secondAttribute="bottom" id="81X-Sp-vMC"/>
                             <constraint firstItem="7cq-1s-ji5" firstAttribute="leading" secondItem="hfF-1g-NB8" secondAttribute="leading" id="Qdg-15-Bee"/>
-                            <constraint firstItem="cYL-4v-0L6" firstAttribute="top" secondItem="1j4-RX-jZf" secondAttribute="bottom" id="WUh-kn-oPc"/>
                             <constraint firstItem="1j4-RX-jZf" firstAttribute="leading" secondItem="hfF-1g-NB8" secondAttribute="leading" id="Y8O-wO-Dqd"/>
                             <constraint firstAttribute="trailing" secondItem="1j4-RX-jZf" secondAttribute="trailing" id="cj9-bC-zHZ"/>
                             <constraint firstItem="7cq-1s-ji5" firstAttribute="top" secondItem="cYL-4v-0L6" secondAttribute="bottom" constant="-2" id="dVB-SO-i7v"/>
@@ -164,7 +164,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr" userLabel="Preview Parent View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="YQI-ac-uh8">
@@ -272,7 +272,7 @@
                             <constraint firstAttribute="trailing" secondItem="gBV-EL-ryr" secondAttribute="trailing" id="aCI-jH-AEk"/>
                             <constraint firstItem="Swv-TE-YEJ" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="bottom" id="cV6-zC-Ny4"/>
                             <constraint firstItem="gBV-EL-ryr" firstAttribute="leading" secondItem="rlV-Dy-AD0" secondAttribute="leading" id="jKn-LO-qRL"/>
-                            <constraint firstItem="gBV-EL-ryr" firstAttribute="top" secondItem="209-HU-njC" secondAttribute="bottom" id="pY2-Hh-ZUh"/>
+                            <constraint firstItem="gBV-EL-ryr" firstAttribute="top" secondItem="209-HU-njC" secondAttribute="bottom" constant="-44" id="pY2-Hh-ZUh"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
@@ -462,7 +462,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="884" y="84"/>
+            <point key="canvasLocation" x="873" y="84"/>
         </scene>
     </scenes>
     <resources>
