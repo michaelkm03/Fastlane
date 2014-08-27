@@ -58,6 +58,7 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
@@ -142,6 +143,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (captionType == VCaptionTypeMeme)
     {
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 20.0f;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -154,6 +156,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeQuote)
     {
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 100.0f;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -167,6 +170,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeNormal)
     {
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 20.0f;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentLeft;
         self.typingAttributes = [@{
@@ -190,6 +194,8 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
     
     [self setDefaultCaptionText];
+    
+    [self.view layoutIfNeeded];
 }
 
 - (void)configureShareViews
@@ -663,8 +669,6 @@ static const CGFloat kShareMargin = 34.0f;
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 
     [UIView animateWithDuration:animationDuration
                           delay:0.0f
