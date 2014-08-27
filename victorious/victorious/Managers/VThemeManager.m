@@ -41,7 +41,6 @@ NSString*   const   kVButton2Font                       =   @"font.button2";
 #pragma mark - Colors
 NSString*   const   kVBackgroundColor                   =   @"color.background";
 NSString*   const   kVSecondaryBackgroundColor          =   @"color.bacground.secondary";
-NSString*   const   kVCancelColor                       =   @"color.cancel";
 
 NSString*   const   kVMainTextColor                     =   @"color.text";
 NSString*   const   kVContentTextColor                  =   @"color.text.content";
