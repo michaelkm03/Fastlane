@@ -113,6 +113,8 @@ static NSString*   const   kVOwnerImageMemeCategory     = @"owner_image_meme";
 static NSString*   const   kVOwnerVideoCategory         = @"owner_video";
 static NSString*   const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString*   const   kVOwnerVideoRepostCategory 	= @"owner_video_repost";
+static NSString*   const   kVOwnerMemeRepostCategory 	= @"owner_meme_repost";
+static NSString*   const   kVOwnerQuoteRepostCategory 	= @"owner_secret_repost";
 
 static NSString*   const   kVUGCPollCategory            = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory           = @"ugc_image";
@@ -122,6 +124,8 @@ static NSString*   const   kVUGCImageMemeCategory       = @"ugc_image_meme";
 static NSString*   const   kVUGCVideoCategory           = @"ugc_video";
 static NSString*   const   kVUGCVideoRemixCategory      = @"ugc_video_remix";
 static NSString*   const   kVUGCVideoRepostCategory     = @"ugc_video_repost";
+static NSString*   const   kVUGCMemeRepostCategory      = @"ugc_meme_repost";
+static NSString*   const   kVUGCQuoteRepostCategory     = @"ugc_secret_repost";
 
 NSArray* VOwnerCategories();
 NSArray* VUGCCategories();
