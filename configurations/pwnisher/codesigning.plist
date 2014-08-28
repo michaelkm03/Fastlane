@@ -6,6 +6,8 @@
     <dict>
         <key>QA</key>
         <string>Pwnisher QA Ad Hoc Distribution</string>
+        <key>Staging</key>
+        <string>Pwnisher Staging Ad Hoc Distribution</string>
     </dict>
 </dict>
 </plist>
