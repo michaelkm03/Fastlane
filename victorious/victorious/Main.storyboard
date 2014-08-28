@@ -2309,13 +2309,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kat Treadwell at 0:16" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-ba-mCG" userLabel="Name Label">
-                                        <rect key="frame" x="47" y="15" width="199" height="21"/>
+                                        <rect key="frame" x="46" y="15" width="200" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abcd Abcd " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="78A-YU-Zgf" userLabel="Comment Label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abcd Abcd " lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="78A-YU-Zgf" userLabel="Comment Label">
                                         <rect key="frame" x="47" y="40" width="199" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -2367,7 +2367,7 @@
                                     <constraint firstItem="CvT-g7-dU3" firstAttribute="leading" secondItem="6Vh-qS-PfT" secondAttribute="leading" id="keW-Eu-e2N"/>
                                     <constraint firstItem="an1-gc-VA6" firstAttribute="leading" secondItem="X9m-ba-mCG" secondAttribute="trailing" id="mHK-fj-v9f"/>
                                     <constraint firstItem="78A-YU-Zgf" firstAttribute="top" secondItem="X9m-ba-mCG" secondAttribute="bottom" constant="4" id="pAP-39-na1"/>
-                                    <constraint firstItem="X9m-ba-mCG" firstAttribute="leading" secondItem="2Na-HK-39F" secondAttribute="trailing" constant="5" id="rxU-zl-3DP"/>
+                                    <constraint firstItem="X9m-ba-mCG" firstAttribute="leading" secondItem="2Na-HK-39F" secondAttribute="trailing" constant="4" id="rxU-zl-3DP"/>
                                     <constraint firstAttribute="bottom" secondItem="CvT-g7-dU3" secondAttribute="bottom" constant="-7" id="to0-Te-TwW"/>
                                     <constraint firstItem="xns-a2-wTW" firstAttribute="top" secondItem="6Vh-qS-PfT" secondAttribute="top" constant="10" id="xUb-6n-YWI"/>
                                     <constraint firstItem="DTS-fO-icL" firstAttribute="top" secondItem="6Vh-qS-PfT" secondAttribute="top" constant="21" id="xvS-bV-jO9"/>
