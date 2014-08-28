@@ -8,8 +8,6 @@
 
 #import "VConstants.h"
 
-// owner_meme_repost, ugc_meme_repost, owner_secret_repost, ugc_secret_repost
-
 NSArray* VOwnerCategories()
 {
     return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
