@@ -362,29 +362,31 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)animateHeaderWithDuration:(CGFloat)duration buffer:(CGFloat)buffer height:(CGFloat)height
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
-    CGFloat heightDiff = CGRectGetHeight(header.frame) - height;
-    if (!heightDiff)
-        return;
-    
-    VLog(@"height:%f buffer:%f", height, buffer);
 
-    [UIView animateWithDuration:duration animations:^(void)
+    if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
+    {
+        self.tableView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.view.bounds) - kVSmallUserHeaderHeight);
+        header.frame = CGRectMake(0,
+                                  -CGRectGetHeight(header.bounds) - kVSmallUserHeaderHeight,
+                                  CGRectGetWidth(self.tableView.bounds),
+                                  CGRectGetHeight(header.bounds));
+    }
+
+    [UIView animateWithDuration:1.0f
+                          delay:0.0f
+         usingSpringWithDamping:0.95f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionLayoutSubviews
+                     animations:^
      {
-         CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + heightDiff);
-         self.tableView.contentOffset = newOffset;
-         
-         header.bottomBufferConstraint.constant = buffer;
-         [self.tableView layoutIfNeeded];
-     }
-                     completion:^(BOOL finished)
-     {
-         CGRect frame = header.frame;
-         frame.size.height = height;
-         header.frame = frame;
+         header.frame = CGRectMake(0,
+                                   0,
+                                   CGRectGetWidth(self.tableView.bounds),
+                                   kVSmallUserHeaderHeight);
+         [header layoutIfNeeded];
          self.tableView.tableHeaderView = header;
-         
-         self.tableView.contentOffset = CGPointMake(0, -kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame));
-     }];
+         self.tableView.contentOffset = CGPointMake(0, -64);
+     } completion:nil];
 }
 
 #pragma mark - KVO
