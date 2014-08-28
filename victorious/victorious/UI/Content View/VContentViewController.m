@@ -867,6 +867,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedComment:(id)sender
 {
+    if ([self isTitleExpanded]) {
+        return;
+    }
     if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
     {
         [self goToCommentView];
