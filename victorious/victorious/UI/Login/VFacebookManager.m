@@ -76,8 +76,11 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 - (void)loginWithBehavior:(FBSessionLoginBehavior)behavior permissions:(NSArray*)permissions
                 onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
 {
-    FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
-    [FBSession setActiveSession:session];
+    if (![FBSession activeSession].state == FBSessionStateCreatedTokenLoaded)
+    {
+        FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
+        [FBSession setActiveSession:session];
+    }
     [FBSession.activeSession openWithBehavior:behavior completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
     {
         switch (status)
