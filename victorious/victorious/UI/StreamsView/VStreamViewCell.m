@@ -193,6 +193,13 @@ static VLargeNumberFormatter* largeNumberFormatter;
     NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
+    // Hide Comment Button if Viewing from the User Profile
+    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
+    {
+        [self.commentButton setHidden:YES];
+    }
+    
+    
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
