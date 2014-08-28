@@ -96,6 +96,16 @@
     return YES;
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldSignUpWithEmailAddress:(NSString *)emailAddress password:(NSString *)password
