@@ -379,7 +379,7 @@ and don't forget #hashtags</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="bLE-SQ-PqX" secondAttribute="bottom" constant="18" id="2CO-TC-onZ"/>
                                     <constraint firstAttribute="centerX" secondItem="quq-i9-xCf" secondAttribute="centerX" id="7Zh-SN-e2h"/>
@@ -405,7 +405,7 @@ and don't forget #hashtags</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="WBZ-Ng-22P" firstAttribute="top" secondItem="Twn-Vd-Vv9" secondAttribute="bottom" constant="-44" id="5S5-Fy-gO0"/>
                             <constraint firstItem="bpa-qh-HnJ" firstAttribute="leading" secondItem="fcy-KG-Paj" secondAttribute="leading" id="JfG-qv-b5G"/>
