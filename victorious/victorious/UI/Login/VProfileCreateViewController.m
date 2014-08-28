@@ -427,13 +427,13 @@
     [MBProgressHUD showHUDAddedTo:self.view
                          animated:YES];
 
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
-        [self didSignUpWithUser:self.profile];
-        return;
-    }
-    
     if ([self shouldCreateProfile])
     {
+        if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+            [self didSignUpWithUser:self.profile];
+            return;
+        }
+        
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
                                                  userName:self.registrationModel.email
