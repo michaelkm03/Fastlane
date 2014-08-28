@@ -93,6 +93,8 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewDidLoad];
     
+    self.captionPlaceholderLabel.userInteractionEnabled = NO;
+    
     UIView *previewImageView = self.previewImageView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(previewImageView)]];
     
