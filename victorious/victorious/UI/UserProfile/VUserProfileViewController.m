@@ -149,9 +149,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (self.tableDataSource.count)
     {
-        [self animateHeaderWithDuration:0.0f
-                                buffer:kVSmallBottomBuffer
-                                 height:kVSmallUserHeaderHeight];
+        [self animateHeaderShrinkingWithDuration:0.0f];
     }
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
@@ -218,12 +216,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.tableDataSource.count)
         {
-            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
         else
         {
-            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
     }];
 }
@@ -361,9 +358,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [super createButtonAction:sender];
 }
 
-- (void)animateHeaderWithDuration:(CGFloat)duration
-                           buffer:(CGFloat)buffer
-                           height:(CGFloat)height
+- (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
 
@@ -403,12 +398,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.tableDataSource.count)
         {
-            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
         else
         {
-            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
     }
     
