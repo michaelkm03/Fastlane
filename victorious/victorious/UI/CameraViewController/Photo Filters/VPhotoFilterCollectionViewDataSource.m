@@ -20,6 +20,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
 @property (nonatomic, strong) NSArray          *filters;
 @property (nonatomic, strong) NSCache          *filteredImages;
 @property (nonatomic, strong) dispatch_queue_t  filterQueue;
+@property (nonatomic, strong) CIContext        *coreImageContext;
 
 @end
 
@@ -32,6 +33,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
     {
         _filteredImages = [[NSCache alloc] init];
         _filterQueue = dispatch_queue_create("VPhotoFilterCollectionViewDataSource", DISPATCH_QUEUE_SERIAL);
+        _coreImageContext = [CIContext contextWithOptions:@{}];
     }
     return self;
 }
@@ -108,7 +110,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
             VPhotoFilter *filterCopy = [filter copy];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void)
             {
-                UIImage *filteredImage = [filterCopy imageByFilteringImage:self.sourceImage];
+                UIImage *filteredImage = [filterCopy imageByFilteringImage:self.sourceImage withCIContext:self.coreImageContext];
                 if (filteredImage)
                 {
                     dispatch_async(dispatch_get_main_queue(), ^(void)

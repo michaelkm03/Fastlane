@@ -22,6 +22,6 @@
  Return a new image by sending the given sourceImage through
  each of the receiver's CIFilter instances.
  */
-- (UIImage *)imageByFilteringImage:(UIImage *)sourceImage;
+- (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context;
 
 @end

@@ -18,18 +18,20 @@
 
 @interface VImagePreviewViewController () <UICollectionViewDelegate>
 
-@property (nonatomic, weak)   UIImageView                          *previewImageView;
-@property (nonatomic, weak)   UICollectionView                     *filterCollectionView;
-@property (nonatomic, strong) VPhotoFilterCollectionViewDataSource *filterDataSource;
-@property (nonatomic, strong) NSURL                                *filteredMediaURL;
-@property (nonatomic)         BOOL                                  mediaURLneedsUpdating; ///< YES if the mediaURL does not point to a current version of the image
+@property (nonatomic, weak)     UIImageView                          *previewImageView;
+@property (nonatomic, weak)     UICollectionView                     *filterCollectionView;
+@property (nonatomic, strong)   VPhotoFilterCollectionViewDataSource *filterDataSource;
+@property (nonatomic, strong)   NSURL                                *filteredMediaURL;
+@property (nonatomic)           BOOL                                  mediaURLneedsUpdating; ///< YES if the mediaURL does not point to a current version of the image
+@property (nonatomic, readonly) CIContext                            *coreImageContext;
 
 @end
 
 @implementation VImagePreviewViewController
 {
-    UIImage *_originalImage;
-    UIImage *_filteredImage;
+    UIImage   *_originalImage;
+    UIImage   *_filteredImage;
+    CIContext *_coreImageContext;
 }
 
 - (instancetype)initWithMediaURL:(NSURL *)mediaURL
@@ -96,6 +98,15 @@
     return _filteredImage;
 }
 
+- (CIContext *)coreImageContext
+{
+    if (!_coreImageContext)
+    {
+        _coreImageContext = [CIContext contextWithOptions:@{}];
+    }
+    return _coreImageContext;
+}
+
 - (void)willComplete
 {
     if (self.mediaURLneedsUpdating)
@@ -128,7 +139,7 @@
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             VPhotoFilter *filter = [self.filterDataSource filterAtIndexPath:indexPath];
-            self.previewImageView.image = _filteredImage = [filter imageByFilteringImage:_originalImage];
+            self.previewImageView.image = _filteredImage = [filter imageByFilteringImage:_originalImage withCIContext:self.coreImageContext];
         });
     }
 }
