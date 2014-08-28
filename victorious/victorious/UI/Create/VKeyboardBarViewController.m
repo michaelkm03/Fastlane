@@ -18,7 +18,7 @@ static const NSInteger kCharacterLimit = 255;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UITextView *textView;
+@property (nonatomic, weak, readwrite) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL* mediaURL;

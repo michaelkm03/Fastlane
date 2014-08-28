@@ -967,6 +967,11 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
+                                    <view hidden="YES" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Video Playback Masking View">
+                                        <rect key="frame" x="0.0" y="-154" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -1019,11 +1024,6 @@
                                     <segue destination="Xnc-VI-aqb" kind="embed" id="RlG-Yq-YxR"/>
                                 </connections>
                             </containerView>
-                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Video Playback Masking View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1033,10 +1033,8 @@
                             <constraint firstItem="Pce-Lq-Sbm" firstAttribute="top" secondItem="xqp-3V-NIb" secondAttribute="bottom" id="8CJ-Qs-zAk"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="Xzc-fo-Pc8" secondAttribute="bottom" id="AmN-9c-QFq"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="81Y-P5-SQ9" secondAttribute="bottom" id="BQp-e0-jeV"/>
-                            <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="NhC-7g-uaI" secondAttribute="bottom" placeholder="YES" id="EMS-9J-Hfd"/>
                             <constraint firstItem="FR4-4c-csb" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="EhC-ZZ-Cm5"/>
                             <constraint firstItem="aAT-JQ-9wh" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GMG-QR-lKo"/>
-                            <constraint firstItem="NhC-7g-uaI" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GhU-u6-Riq"/>
                             <constraint firstAttribute="trailing" secondItem="Pce-Lq-Sbm" secondAttribute="trailing" id="GlD-Pt-1y7"/>
                             <constraint firstAttribute="trailing" secondItem="aAT-JQ-9wh" secondAttribute="trailing" id="HLF-h0-bgS"/>
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="N5p-dC-n0i"/>
@@ -1047,10 +1045,8 @@
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="XEh-9f-3nO"/>
                             <constraint firstItem="4Kr-fK-dGu" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" id="cjf-8S-WD0"/>
                             <constraint firstItem="81Y-P5-SQ9" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="g52-mZ-mqx"/>
-                            <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Xzc-fo-Pc8" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="jPc-jb-yfD"/>
                             <constraint firstItem="Ruh-qb-vRD" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="l5f-cX-Qkc"/>
-                            <constraint firstAttribute="trailing" secondItem="NhC-7g-uaI" secondAttribute="trailing" id="lXB-Pj-4PK"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="Pce-Lq-Sbm" secondAttribute="bottom" id="mi7-ad-qcX"/>
                             <constraint firstAttribute="centerX" secondItem="Ruh-qb-vRD" secondAttribute="centerX" id="mv9-RC-Tvp"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" placeholder="YES" id="njQ-Wv-G0c"/>
@@ -2309,13 +2305,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kat Treadwell at 0:16" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-ba-mCG" userLabel="Name Label">
-                                        <rect key="frame" x="47" y="15" width="199" height="21"/>
+                                        <rect key="frame" x="46" y="15" width="200" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abcd Abcd " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="78A-YU-Zgf" userLabel="Comment Label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abcd Abcd " lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="78A-YU-Zgf" userLabel="Comment Label">
                                         <rect key="frame" x="47" y="40" width="199" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -2367,7 +2363,7 @@
                                     <constraint firstItem="CvT-g7-dU3" firstAttribute="leading" secondItem="6Vh-qS-PfT" secondAttribute="leading" id="keW-Eu-e2N"/>
                                     <constraint firstItem="an1-gc-VA6" firstAttribute="leading" secondItem="X9m-ba-mCG" secondAttribute="trailing" id="mHK-fj-v9f"/>
                                     <constraint firstItem="78A-YU-Zgf" firstAttribute="top" secondItem="X9m-ba-mCG" secondAttribute="bottom" constant="4" id="pAP-39-na1"/>
-                                    <constraint firstItem="X9m-ba-mCG" firstAttribute="leading" secondItem="2Na-HK-39F" secondAttribute="trailing" constant="5" id="rxU-zl-3DP"/>
+                                    <constraint firstItem="X9m-ba-mCG" firstAttribute="leading" secondItem="2Na-HK-39F" secondAttribute="trailing" constant="4" id="rxU-zl-3DP"/>
                                     <constraint firstAttribute="bottom" secondItem="CvT-g7-dU3" secondAttribute="bottom" constant="-7" id="to0-Te-TwW"/>
                                     <constraint firstItem="xns-a2-wTW" firstAttribute="top" secondItem="6Vh-qS-PfT" secondAttribute="top" constant="10" id="xUb-6n-YWI"/>
                                     <constraint firstItem="DTS-fO-icL" firstAttribute="top" secondItem="6Vh-qS-PfT" secondAttribute="top" constant="21" id="xvS-bV-jO9"/>

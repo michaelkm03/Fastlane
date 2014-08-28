@@ -234,8 +234,6 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillAppear:animated];
     self.previewImageView.image = self.previewImage;
-
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];

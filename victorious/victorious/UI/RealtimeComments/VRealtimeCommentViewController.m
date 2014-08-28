@@ -65,6 +65,8 @@
     
     self.endTime = -1;
     
+    self.commentLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.commentLabel.bounds);
+    
     self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     UITapGestureRecognizer *commentSelectionRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self

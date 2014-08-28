@@ -19,6 +19,7 @@
 
 @interface VKeyboardBarViewController : UIViewController
 
+@property (nonatomic, weak, readonly) IBOutlet UITextView *textView;
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;

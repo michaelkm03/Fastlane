@@ -1185,6 +1185,18 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
+    for (UIViewController *childViewController in self.childViewControllers)
+    {
+        if ([childViewController isKindOfClass:[VKeyboardBarViewController class]])
+        {
+            VKeyboardBarViewController *keyBoardVC = (VKeyboardBarViewController *)childViewController;
+            if ([keyBoardVC.textView isFirstResponder])
+            {
+                return;
+            }
+        }
+    }
+
     [UIView animateWithDuration:duration
                      animations:
      ^{
