@@ -8,15 +8,15 @@
 
 #import "VConstants.h"
 
-
+// owner_meme_repost, ugc_meme_repost, owner_secret_repost, ugc_secret_repost
 
 NSArray* VOwnerCategories()
 {
-    return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory];
+    return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
 }
 NSArray* VUGCCategories()
 {
-    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCImageRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory];
+    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCImageRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
 }
 NSArray* VImageCategories()
 {
@@ -32,7 +32,7 @@ NSArray* VPollCategories()
 }
 NSArray* VRepostCategories()
 {
-    return @[kVOwnerVideoRepostCategory,kVUGCVideoRepostCategory,kVOwnerImageRepostCategory,kVUGCImageRepostCategory];
+    return @[kVOwnerVideoRepostCategory,kVUGCVideoRepostCategory,kVOwnerImageRepostCategory,kVUGCImageRepostCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
 }
 NSArray* VRemixCategories()
 {
