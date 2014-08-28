@@ -42,6 +42,7 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
+@property (nonatomic, weak) IBOutlet    UIView*         blackBackgroundView;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       publishButton;
 
@@ -230,10 +231,6 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillAppear:animated];
     self.previewImageView.image = self.previewImage;
-    if (self.previewImage)
-    {
-        self.previewImageView.image = [self.previewImage applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.11 alpha:0.73] saturationDeltaFactor:1.8 maskImage:nil];
-    }
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
@@ -415,14 +412,11 @@ static const CGFloat kShareMargin = 34.0f;
     UIImage* snapshot;
     if (self.captionType == VCaptionTypeMeme)
     {
-        UIImage* tintedImage = self.previewImageView.image;
-        self.previewImageView.image = self.previewImage;
         snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
-        self.previewImageView.image = tintedImage;
     }
     else if (self.captionType == VCaptionTypeQuote)
     {
-        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
+        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.blackBackgroundView, self.textView]];
     }
     if (snapshot)
     {
