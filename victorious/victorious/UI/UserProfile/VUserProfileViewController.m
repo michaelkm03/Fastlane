@@ -82,7 +82,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
                                                                                        style:UIBarButtonItemStyleBordered
-                                                                                      target:self
+                                                                                      target:viewController
                                                                                       action:@selector(goBack:)];
     viewController.profile = aUser;
     

@@ -624,13 +624,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     _currentAsset = nil; //we changed nodes, so we're not on an asset
     if ([self.currentNode isQuiz])
     {
-        [self hideRemixButton];
+        self.remixButton.enabled = NO;
         [self loadQuiz];
     }
     
     else if ([self.currentNode isPoll])
     {
-        [self hideRemixButton];
+        self.remixButton.enabled = NO;
+        self.repostButton.enabled = NO;
         [self loadPoll];
     }
     
@@ -703,32 +704,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.actionBarVC = newActionBar;
     }
-}
-
-- (void)hideRemixButton
-{
-    if (self.remixButton.hidden)
-        return;
-    
-    self.remixButton.hidden = YES;
-    [self.view removeConstraints:@[self.shareButtonTrailingConstraint, self.repostButtonLeadingConstraint]];
-    self.shareButtonTrailingConstraint = [NSLayoutConstraint constraintWithItem:self.shareButton
-                                                                      attribute:NSLayoutAttributeTrailing
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeCenterX
-                                                                     multiplier:1.0f
-                                                                       constant:0.0];
-    
-    self.repostButtonLeadingConstraint = [NSLayoutConstraint constraintWithItem:self.repostButton
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeCenterX
-                                                                     multiplier:1.0f
-                                                                       constant:-1.0f];
-    [self.view addConstraints:@[self.shareButtonTrailingConstraint, self.repostButtonLeadingConstraint]];
-    [self.view layoutIfNeeded];
 }
 
 - (void)showRemixButton
