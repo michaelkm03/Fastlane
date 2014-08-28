@@ -29,6 +29,7 @@
 
 #import <Crashlytics/Crashlytics.h>
 
+@import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
 
@@ -61,6 +62,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [VObjectManager setupObjectManager];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
     // Initialize the chromecast device controller.
     self.chromecastDeviceController = [[ChromecastDeviceController alloc] init];
