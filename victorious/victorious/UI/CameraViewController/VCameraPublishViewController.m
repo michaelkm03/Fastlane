@@ -41,6 +41,7 @@
 static const CGFloat kPublishKeyboardOffset = 106.0f;
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
+
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 @property (nonatomic, weak) IBOutlet    UIView*         blackBackgroundView;
 
@@ -619,7 +620,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else
     {
-        self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
+        self.captionPlaceholderLabel.hidden = (([textView.text length] > 0) || [self.textView isFirstResponder]);
     }
 }
 
