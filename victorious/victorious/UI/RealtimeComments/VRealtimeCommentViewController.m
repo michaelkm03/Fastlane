@@ -65,6 +65,8 @@
     
     self.endTime = -1;
     
+//    self.com
+    
     self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     UITapGestureRecognizer *commentSelectionRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
