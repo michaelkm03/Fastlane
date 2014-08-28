@@ -225,11 +225,7 @@
     [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
-    NSParagraphStyle *paragraphStyle = [NSParagraphStyle defaultParagraphStyle];
-    
-    NSAttributedString *commentWithStyle = [[NSAttributedString alloc] initWithString:currentComment.text attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
-    
-    self.commentLabel.attributedText = commentWithStyle;
+    self.commentLabel.text = currentComment.text;
     
     self.nameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:currentComment.user.name
                                                                                             andPostedTime:currentComment.realtime];
