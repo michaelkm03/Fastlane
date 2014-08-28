@@ -205,7 +205,17 @@ static NSString* CommentCache           = @"CommentCache";
     VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
-    if ([comment.sequence.category isEqualToString:@"ugc_image"] || [comment.sequence.category isEqualToString:@"ugc_poll"])
+    if ([comment.sequence.category isEqualToString:@"ugc_image"] ||
+        [comment.sequence.category isEqualToString:@"ugc_poll"] ||
+        [comment.sequence.category isEqualToString:@"ugc_image_repost"] ||
+        [comment.sequence.category isEqualToString:@"ugc_image_secret"] ||
+        [comment.sequence.category isEqualToString:@"ugc_image_meme"] ||
+        [comment.sequence.category isEqualToString:@"owner_image_secret"] ||
+        [comment.sequence.category isEqualToString:@"owner_image"] ||
+        [comment.sequence.category isEqualToString:@"owner_image_meme"] ||
+        [comment.sequence.category isEqualToString:@"owner_image_repost"] ||
+        [comment.sequence.category isEqualToString:@"owner_poll"]
+        )
     {
         
         cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name];
