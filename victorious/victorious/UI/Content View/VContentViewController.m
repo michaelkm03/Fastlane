@@ -892,6 +892,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [UIView animateWithDuration:.25 animations:
          ^{
              self.keyboardBarContainer.alpha = 1;
+             self.realtimeCommentsContainer.alpha = 0.0f;
          }
          completion:^(BOOL finished)
         {
@@ -1296,6 +1297,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [UIView animateWithDuration:.25 animations:
      ^{
          self.keyboardBarContainer.alpha = 0;
+         self.realtimeCommentsContainer.alpha = 1.0f;
      }
                      completion:^(BOOL finished)
      {
