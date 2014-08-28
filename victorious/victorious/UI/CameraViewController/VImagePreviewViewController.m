@@ -104,7 +104,7 @@
         NSData *filteredImageData = UIImageJPEGRepresentation(_filteredImage, VConstantJPEGCompressionQuality);
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        if ([filteredImageData writeToURL:tempFile atomically:YES])
         {
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];

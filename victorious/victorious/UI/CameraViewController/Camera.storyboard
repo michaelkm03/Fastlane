@@ -243,6 +243,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                         <gestureRecognizers/>
                                     </imageView>
+                                    <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aa5-gI-eua" userLabel="Black Background View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-rE-1kp" userLabel="Start Editing Button">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -277,7 +282,9 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="iCW-rE-1kp" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="26h-SA-T89"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="3uw-Pi-TDY"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="4D7-at-UZO"/>
+                                    <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="Aa5-gI-eua" secondAttribute="leading" id="6RX-kW-Ojq"/>
                                     <constraint firstAttribute="trailing" secondItem="g4C-sb-DOe" secondAttribute="trailing" id="91A-LA-tXs"/>
+                                    <constraint firstItem="g4C-sb-DOe" firstAttribute="trailing" secondItem="Aa5-gI-eua" secondAttribute="trailing" id="DXm-6u-RV2"/>
                                     <constraint firstAttribute="bottom" secondItem="iCW-rE-1kp" secondAttribute="bottom" id="EbP-m3-LOd"/>
                                     <constraint firstAttribute="bottom" secondItem="g4C-sb-DOe" secondAttribute="bottom" id="Gqp-Xw-z4X"/>
                                     <constraint firstItem="iCW-rE-1kp" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="KwL-AA-dOD"/>
@@ -290,7 +297,9 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="nf0-eb-v5g"/>
                                     <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" constant="20" id="p19-Ss-WbR"/>
                                     <constraint firstAttribute="trailing" secondItem="iCW-rE-1kp" secondAttribute="trailing" id="rK1-Gr-w2i"/>
+                                    <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="Aa5-gI-eua" secondAttribute="top" id="tq3-Gs-63z"/>
                                     <constraint firstAttribute="trailing" secondItem="Fsz-Xd-hVx" secondAttribute="trailing" constant="20" id="uNU-kl-62z"/>
+                                    <constraint firstItem="g4C-sb-DOe" firstAttribute="bottom" secondItem="Aa5-gI-eua" secondAttribute="bottom" id="xfk-3O-ggf"/>
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpa-qh-HnJ" userLabel="Caption View">
@@ -422,6 +431,7 @@ and don't forget #hashtags</string>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="blackBackgroundView" destination="Aa5-gI-eua" id="qQX-55-ZvQ"/>
                         <outlet property="bottomVerticalSpaceShareButtonsToContainer" destination="2CO-TC-onZ" id="iLl-uI-xK1"/>
                         <outlet property="bottomVerticalSpaceTextViewToCanvasConstraint" destination="U9B-UC-7dG" id="XLE-MI-nia"/>
                         <outlet property="captionButton" destination="H0I-mP-7db" id="dSX-xX-ng4"/>
