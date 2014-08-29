@@ -149,9 +149,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (self.tableDataSource.count)
     {
-        [self animateHeaderWithDuration:0.0f
-                                buffer:kVSmallBottomBuffer
-                                 height:kVSmallUserHeaderHeight];
+        [self animateHeaderShrinkingWithDuration:0.0f];
     }
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
@@ -218,12 +216,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.tableDataSource.count)
         {
-            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
-        }
-        else
-        {
-            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
     }];
 }
@@ -247,15 +240,16 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController]
+                           animated:YES
+                         completion:NULL];
         return;
     }
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
-                                             style:UIBarButtonItemStylePlain
-                                             target:nil
-                                             action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"")
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
 
     VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
@@ -361,9 +355,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [super createButtonAction:sender];
 }
 
-- (void)animateHeaderWithDuration:(CGFloat)duration
-                           buffer:(CGFloat)buffer
-                           height:(CGFloat)height
+- (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
 
@@ -394,7 +386,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     if (context != VUserProfileViewContext)
         return;
@@ -403,16 +398,12 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.tableDataSource.count)
         {
-            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
-        }
-        else
-        {
-            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
-                                     height:CGRectGetHeight([UIScreen mainScreen].bounds) - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame)];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
     }
     
-    [self.currentFilter removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences))];
+    [self.currentFilter removeObserver:self
+                            forKeyPath:NSStringFromSelector(@selector(sequences))];
 }
 
 @end
