@@ -218,10 +218,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         {
             [self animateHeaderShrinkingWithDuration:.5];
         }
-        else
-        {
-            [self animateHeaderShrinkingWithDuration:.5];
-        }
     }];
 }
 
@@ -244,15 +240,16 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController]
+                           animated:YES
+                         completion:NULL];
         return;
     }
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
-                                             style:UIBarButtonItemStylePlain
-                                             target:nil
-                                             action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"")
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
 
     VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
@@ -389,7 +386,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     if (context != VUserProfileViewContext)
         return;
@@ -400,13 +400,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         {
             [self animateHeaderShrinkingWithDuration:.5];
         }
-        else
-        {
-            [self animateHeaderShrinkingWithDuration:.5];
-        }
     }
     
-    [self.currentFilter removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences))];
+    [self.currentFilter removeObserver:self
+                            forKeyPath:NSStringFromSelector(@selector(sequences))];
 }
 
 @end
