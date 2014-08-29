@@ -47,6 +47,11 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
+-(BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 - (IBAction)done:(UIBarButtonItem *)sender
 {
     [[self view] endEditing:YES];
