@@ -15,6 +15,6 @@
 
 @property (nonatomic, weak)           id<UITextInput>  textInputView; ///< The text input view for which the receiver is an input accessory.
 @property (nonatomic, weak, readonly) UIBarButtonItem *hashtagButton; ///< Pressing this button inserts a hashtag into the textInputView
-@property (nonatomic)                 NSInteger        maxCharacterLength; ///<The max length for the text input
+@property (nonatomic)                 NSUInteger       maxCharacterLength; ///<The max length for the text input
 
 @end

@@ -61,13 +61,13 @@
     self.setExpirationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     self.afterButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.afterButton.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    self.afterButton.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
     [self.afterButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
     self.onButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.onButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    self.onButton.backgroundColor = [UIColor colorWithWhite:0.56f alpha:1.0f];
     [self.onButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    self.doneButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    self.doneButton.backgroundColor = [UIColor colorWithWhite:0.56f alpha:1.0f];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 

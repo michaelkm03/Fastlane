@@ -32,10 +32,10 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
 static NSUInteger const VConstantsMessageLength         = 140;
 static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
-static NSUInteger const VConstantsInputAccessoryHeight  = 44.0;
+static CGFloat    const VConstantsInputAccessoryHeight  = 44.0f;
 
-static NSUInteger const kStreamDoublePollCellHeight = 214;
-static NSUInteger const kStreamViewCellHeight       = 320;
+static CGFloat const kStreamDoublePollCellHeight = 214.0f;
+static CGFloat const kStreamViewCellHeight       = 320.0f;
 
 #pragma mark - Error Codes
 static NSString*  const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";

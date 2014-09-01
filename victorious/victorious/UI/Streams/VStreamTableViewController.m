@@ -305,13 +305,16 @@
 {
     VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
 
-    NSUInteger cellHeight;
+    CGFloat cellHeight;
     
     if ([sequence isPoll])
+    {
         cellHeight = kStreamDoublePollCellHeight;
-    
+    }
     else
+    {
         cellHeight = kStreamViewCellHeight;
+    }
     
     return cellHeight;
 }

@@ -45,7 +45,7 @@
     [self addSubview:toolbar];
 
     //Default to the standard message length if no length is provided
-    self.maxCharacterLength = self.maxCharacterLength ?: VConstantsMessageLength;
+    _maxCharacterLength = VConstantsMessageLength;
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
@@ -68,7 +68,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setMaxCharacterLength:(NSInteger)maxCharacterLength
+- (void)setMaxCharacterLength:(NSUInteger)maxCharacterLength
 {
     _maxCharacterLength = maxCharacterLength;
     
@@ -106,7 +106,7 @@
     }
 }
 
-- (NSString *)charactersRemainingForCharacterCount:(NSInteger)characterCount
+- (NSString *)charactersRemainingForCharacterCount:(NSUInteger)characterCount
 {
     static NSNumberFormatter *numberFormatter;
     static dispatch_once_t onceToken;
@@ -116,7 +116,7 @@
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     });
     characterCount = MIN(characterCount, self.maxCharacterLength);
-    return [numberFormatter stringFromNumber:@((NSInteger)self.maxCharacterLength - characterCount)];
+    return [numberFormatter stringFromNumber:@(self.maxCharacterLength - characterCount)];
 }
 
 #pragma mark - Properties
@@ -150,8 +150,8 @@
         if (text.length > self.maxCharacterLength)
         {
             UITextPosition *beginning = self.textInputView.beginningOfDocument;
-            UITextPosition *start = [self.textInputView positionFromPosition:beginning offset:self.maxCharacterLength];
-            UITextPosition *end = [self.textInputView positionFromPosition:start offset:text.length - self.maxCharacterLength];
+            UITextPosition *start = [self.textInputView positionFromPosition:beginning offset:(NSInteger)self.maxCharacterLength];
+            UITextPosition *end = [self.textInputView positionFromPosition:start offset:(NSInteger)(text.length - self.maxCharacterLength)];
             UITextRange *textRange = [self.textInputView textRangeFromPosition:start toPosition:end];
             [self.textInputView replaceRange:textRange withText:@""];
         }
