@@ -193,7 +193,6 @@
 		0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D41D19B46B5E00FA363C /* VTabInfo.m */; };
 		0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0314D41E19B46B5E00FA363C /* login.storyboard */; };
 		0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42019B46B5E00FA363C /* VEnterResetTokenViewController.m */; };
-		0314D4EC19B46B5E00FA363C /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42219B46B5E00FA363C /* VFacebookManager.m */; };
 		0314D4ED19B46B5E00FA363C /* VLoginTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42419B46B5E00FA363C /* VLoginTransitionAnimator.m */; };
 		0314D4EE19B46B5E00FA363C /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42619B46B5E00FA363C /* VLoginViewController.m */; };
 		0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42819B46B5E00FA363C /* VLoginWithEmailViewController.m */; };
@@ -201,7 +200,6 @@
 		0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42C19B46B5E00FA363C /* VResetPasswordViewController.m */; };
 		0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */; };
 		0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */; };
-		0314D4F419B46B5E00FA363C /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43219B46B5E00FA363C /* VTwitterManager.m */; };
 		0314D4F519B46B5E00FA363C /* VStreamToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43619B46B5E00FA363C /* VStreamToCommentAnimator.m */; };
 		0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43819B46B5E00FA363C /* VStreamToContentAnimator.m */; };
 		0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */; };
@@ -270,6 +268,8 @@
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
 		03C185CC19B42FE900E27D05 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C185CA19B42FE900E27D05 /* InfoPlist.strings */; };
 		03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */; };
+		03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F219B47B590011BB9E /* VFacebookManager.m */; };
+		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
@@ -703,8 +703,6 @@
 		0314D41E19B46B5E00FA363C /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = login.storyboard; sourceTree = "<group>"; };
 		0314D41F19B46B5E00FA363C /* VEnterResetTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterResetTokenViewController.h; sourceTree = "<group>"; };
 		0314D42019B46B5E00FA363C /* VEnterResetTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterResetTokenViewController.m; sourceTree = "<group>"; };
-		0314D42119B46B5E00FA363C /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFacebookManager.h; sourceTree = "<group>"; };
-		0314D42219B46B5E00FA363C /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFacebookManager.m; sourceTree = "<group>"; };
 		0314D42319B46B5E00FA363C /* VLoginTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginTransitionAnimator.h; sourceTree = "<group>"; };
 		0314D42419B46B5E00FA363C /* VLoginTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginTransitionAnimator.m; sourceTree = "<group>"; };
 		0314D42519B46B5E00FA363C /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginViewController.h; sourceTree = "<group>"; };
@@ -719,8 +717,6 @@
 		0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupTransitionAnimator.m; sourceTree = "<group>"; };
 		0314D42F19B46B5E00FA363C /* VSignupWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSignupWithEmailViewController.h; sourceTree = "<group>"; };
 		0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupWithEmailViewController.m; sourceTree = "<group>"; };
-		0314D43119B46B5E00FA363C /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
-		0314D43219B46B5E00FA363C /* VTwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterManager.m; sourceTree = "<group>"; };
 		0314D43519B46B5E00FA363C /* VStreamToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamToCommentAnimator.h; sourceTree = "<group>"; };
 		0314D43619B46B5E00FA363C /* VStreamToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamToCommentAnimator.m; sourceTree = "<group>"; };
 		0314D43719B46B5E00FA363C /* VStreamToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamToContentAnimator.h; sourceTree = "<group>"; };
@@ -836,6 +832,10 @@
 		03C185CB19B42FE900E27D05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		03C185CE19B4308400E27D05 /* VAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimation.h; sourceTree = "<group>"; };
 		03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLargeNumberFormatterTests.m; sourceTree = "<group>"; };
+		03CE66F119B47B590011BB9E /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFacebookManager.h; sourceTree = "<group>"; };
+		03CE66F219B47B590011BB9E /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFacebookManager.m; sourceTree = "<group>"; };
+		03CE66F419B47B590011BB9E /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
+		03CE66F519B47B590011BB9E /* VTwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterManager.m; sourceTree = "<group>"; };
 		03CF151E195CFBE600F6477B /* NSArray+VMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VMap.h"; sourceTree = "<group>"; };
 		03CF151F195CFBE600F6477B /* NSArray+VMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VMap.m"; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
@@ -1552,8 +1552,6 @@
 				0314D41E19B46B5E00FA363C /* login.storyboard */,
 				0314D41F19B46B5E00FA363C /* VEnterResetTokenViewController.h */,
 				0314D42019B46B5E00FA363C /* VEnterResetTokenViewController.m */,
-				0314D42119B46B5E00FA363C /* VFacebookManager.h */,
-				0314D42219B46B5E00FA363C /* VFacebookManager.m */,
 				0314D42319B46B5E00FA363C /* VLoginTransitionAnimator.h */,
 				0314D42419B46B5E00FA363C /* VLoginTransitionAnimator.m */,
 				0314D42519B46B5E00FA363C /* VLoginViewController.h */,
@@ -1568,8 +1566,6 @@
 				0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */,
 				0314D42F19B46B5E00FA363C /* VSignupWithEmailViewController.h */,
 				0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */,
-				0314D43119B46B5E00FA363C /* VTwitterManager.h */,
-				0314D43219B46B5E00FA363C /* VTwitterManager.m */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
@@ -1859,6 +1855,24 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		03CE66F019B47B590011BB9E /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				03CE66F119B47B590011BB9E /* VFacebookManager.h */,
+				03CE66F219B47B590011BB9E /* VFacebookManager.m */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
+		03CE66F319B47B590011BB9E /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				03CE66F419B47B590011BB9E /* VTwitterManager.h */,
+				03CE66F519B47B590011BB9E /* VTwitterManager.m */,
+			);
+			path = Twitter;
+			sourceTree = "<group>";
+		};
 		BE171D6D1868BE64004E5202 = {
 			isa = PBXGroup;
 			children = (
@@ -2079,6 +2093,7 @@
 			children = (
 				035C2D801940F0D10023FC05 /* Analytics */,
 				BE6464E419511F1B0089A34F /* Deeplink */,
+				03CE66F019B47B590011BB9E /* Facebook */,
 				DB8D3A10198039BD005DD36D /* HashTags */,
 				0314D08D19B4694600FA363C /* Interaction */,
 				0314D09119B4698800FA363C /* Object */,
@@ -2086,6 +2101,7 @@
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
 				0314D0BA19B469C100FA363C /* Settings */,
 				0314D2DC19B46AF300FA363C /* Theme */,
+				03CE66F319B47B590011BB9E /* Twitter */,
 				0314D2DF19B46AF300FA363C /* User */,
 			);
 			path = Managers;
@@ -2490,7 +2506,6 @@
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
 				0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
-				0314D4F419B46B5E00FA363C /* VTwitterManager.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				0314D46119B46B5E00FA363C /* VMediaPreviewViewController.m in Sources */,
@@ -2554,7 +2569,6 @@
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
-				0314D4EC19B46B5E00FA363C /* VFacebookManager.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
@@ -2607,6 +2621,7 @@
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				BE24782C193E735A0074191C /* VConversation.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
+				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
@@ -2678,6 +2693,7 @@
 				0350BCEE19804F580072A714 /* VSessionTimer.m in Sources */,
 				0314D4E419B46B5E00FA363C /* VSuggestedFriendsTableViewController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
+				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */,
