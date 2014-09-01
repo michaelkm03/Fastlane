@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIViewController+ForceOrientationChange.h"
-#import "VCVideoPlayerViewController.h"
 #import "VLightboxViewController.h"
-#import "VThemeManager.h"
 
 @interface VLightboxViewController ()
 

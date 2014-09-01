@@ -7,7 +7,6 @@
 //
 
 #import "VKeyboardBarContainerViewController.h"
-#import "VKeyboardBarViewController.h"
 #import "VConstants.h"
 
 @interface VKeyboardBarContainerViewController()

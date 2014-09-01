@@ -9,7 +9,6 @@
 #import "VUserSearchViewController.h"
 
 #import "VAnalyticsRecorder.h"
-#import "VConstants.h"
 
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"

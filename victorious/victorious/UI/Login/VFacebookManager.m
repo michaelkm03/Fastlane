@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "RKURLEncodedSerialization.h"
-#import "VConstants.h"
 #import "VFacebookManager.h"
 
 #import <FacebookSDK/FacebookSDK.h>

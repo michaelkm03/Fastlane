@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "RKResponseDescriptor.h"
 #import "VImageSearchResult.h"
 
 @implementation VImageSearchResult

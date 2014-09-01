@@ -8,7 +8,6 @@
 
 #import "MBProgressHUD.h"
 #import "NSDate+timeSince.h"
-#import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
 #import "UIButton+VImageLoading.h"
 #import "UIImage+ImageEffects.h"

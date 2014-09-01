@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import AVFoundation;
-@import AssetsLibrary;
-
 #import "VAnalyticsRecorder.h"
 #import "VCameraPublishViewController.h"
 #import "VContentInputAccessoryView.h"

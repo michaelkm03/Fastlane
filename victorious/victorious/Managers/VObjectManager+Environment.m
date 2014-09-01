@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "AFNetworking.h"
 #import "VEnvironment.h"
 #import "VObjectManager+Environment.h"
 #import "VConstants.h"

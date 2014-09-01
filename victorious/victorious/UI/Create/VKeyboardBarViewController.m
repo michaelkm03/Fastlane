@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import AVFoundation;
-
 #import "VCameraViewController.h"
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+Comment.h"

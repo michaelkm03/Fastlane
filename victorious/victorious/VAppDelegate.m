@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "NSString+VStringWithData.h"
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"

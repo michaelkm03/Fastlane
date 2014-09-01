@@ -8,7 +8,6 @@
 
 #import "VResetPasswordViewController.h"
 #import "VObjectManager+Login.h"
-#import "VConstants.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 

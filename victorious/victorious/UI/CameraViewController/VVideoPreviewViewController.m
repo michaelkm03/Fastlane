@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VVideoPreviewViewController.h"
 #import "VCVideoPlayerViewController.h"
 #import "VCameraPublishViewController.h"
-#import "VThemeManager.h"
 
 @interface VVideoPreviewViewController ()
 

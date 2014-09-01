@@ -107,7 +107,7 @@ typedef enum
 - (void)commitSessionConfiguration;
 
 // preview
-@property (weak, nonatomic) UIView * previewView;
+@property (nonatomic, strong) UIView * previewView;
 
 @property (nonatomic, readonly) CGRect cleanAperture;
 @property (readonly, nonatomic) VCCameraFocusMode focusMode;

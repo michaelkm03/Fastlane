@@ -8,7 +8,6 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VAsset.h"
 #import "VVoteResult.h"
 #import "VConstants.h"
 

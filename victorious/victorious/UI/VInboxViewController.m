@@ -8,7 +8,6 @@
 
 #import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
-#import "VConstants.h"
 #import "VInboxViewController.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"

@@ -8,8 +8,6 @@
 
 #import "VStreamPollCell.h"
 
-#import "VObjectManager+Sequence.h"
-
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAnswer.h"

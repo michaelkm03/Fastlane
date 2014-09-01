@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern  NSString*   const   kVThemeManagerThemeDidChange;
-
 #pragma mark - New Theme Constants
 extern  NSString*   const   kVChannelName;
 

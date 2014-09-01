@@ -204,7 +204,7 @@
                              self.commentBackgroundView.alpha = 1;
                          } completion:nil];
     }
-    else if (!currentComment)
+    else
     {
         [UIView animateWithDuration:0.25f
                               delay:0.0f

@@ -12,8 +12,6 @@
 #import "VObjectManager+Users.h"
 
 #import "VUser.h"
-#import "VConstants.h"
-
 #import "VComment+RestKit.h"
 
 @implementation VObjectManager (Comment)

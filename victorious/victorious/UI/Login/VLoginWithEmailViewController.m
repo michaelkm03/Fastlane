@@ -152,7 +152,7 @@
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VLoginBadEmailAddressErrorCode
+                                                       code:VLoginErrorCodeBadEmailAddress
                                                    userInfo:userInfoDict];
         }
 
@@ -171,7 +171,7 @@
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VLoginBadPasswordErrorCode
+                                                       code:VLoginErrorCodeBadPassword
                                                    userInfo:userInfoDict];
         }
 

@@ -6,11 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import CoreData;
-
 #import "VFetchedResultsTableViewController.h"
 #import "NSString+VParseHelp.h"
-#import "VThemeManager.h"
 
 @implementation VFetchedResultsTableViewController
 

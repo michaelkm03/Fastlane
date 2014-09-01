@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "NSDate+timeSince.h"
-#import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
 #import "VConversation.h"
 #import "VMessage.h"

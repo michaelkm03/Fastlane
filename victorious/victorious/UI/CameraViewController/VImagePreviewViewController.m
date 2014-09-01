@@ -7,9 +7,7 @@
 //
 
 #import "UIImage+Cropping.h"
-#import "VAnalyticsRecorder.h"
 #import "VCameraPublishViewController.h"
-#import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VPhotoFilter.h"
 #import "VPhotoFilterCollectionViewCell.h"

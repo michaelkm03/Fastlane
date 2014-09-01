@@ -7,18 +7,13 @@
 //
 
 #import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Pagination.h"
 
 #import "VMessage.h"
 #import "VUser.h"
 
-#import "VConstants.h"
-
 #import "VConversation+RestKit.h"
-
-#import "NSString+VParseHelp.h"
 
 @implementation VObjectManager (DirectMessaging)
 

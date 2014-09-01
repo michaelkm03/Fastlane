@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "NSIndexSet+Map.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"

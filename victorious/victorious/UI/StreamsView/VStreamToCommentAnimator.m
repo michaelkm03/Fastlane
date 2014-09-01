@@ -9,7 +9,6 @@
 #import "VStreamToCommentAnimator.h"
 
 #import "VStreamContainerViewController.h"
-#import "VStreamTableViewController.h"
 #import "VCommentsContainerViewController.h"
 
 #import "VStreamViewCell.h"

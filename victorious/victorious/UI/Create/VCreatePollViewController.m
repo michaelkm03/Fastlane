@@ -6,12 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import AVFoundation;
-
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "VCameraViewController.h"
-#import "VConstants.h"
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"

@@ -7,7 +7,6 @@
 //
 
 #import "NSURL+MediaType.h"
-#import "VAnalyticsRecorder.h"
 #import "VAnswer.h"
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"

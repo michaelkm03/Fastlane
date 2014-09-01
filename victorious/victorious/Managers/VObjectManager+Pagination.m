@@ -23,8 +23,6 @@
 
 #import "VStreamTableViewController.h"
 
-#import "VUserManager.h"
-
 #import "VConstants.h"
 
 #import "NSString+VParseHelp.h"

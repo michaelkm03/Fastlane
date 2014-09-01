@@ -22,10 +22,8 @@
 #import "VAnswer+RestKit.h"
 #import "VSequenceFilter.h"
 #import "VCommentFilter.h"
-#import "VComment.h"
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
-#import "VConversation.h"
 #import "VUser+Fetcher.h"
 
 @import AVFoundation;
@@ -154,7 +152,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"playback"] = loopParam;
     }
     
-    NSDictionary* allUrls = @{@"media_data":mediaUrl ?: [NSNull null]};
+    NSDictionary* allUrls = @{@"media_data": mediaUrl};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {

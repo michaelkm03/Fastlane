@@ -65,8 +65,6 @@ static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
-@import MediaPlayer;
-
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate, NSURLSessionDownloadDelegate>
 
 @property (nonatomic, readonly) BOOL isViewingTitle;

@@ -8,7 +8,6 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VProfileEditViewController.h"
-#import "UIImage+ImageEffects.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
 

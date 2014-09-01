@@ -6,11 +6,8 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VNode+Fetcher.h"
-#import "VNode+RestKit.h"
-
-#import "VSequence.h"
 #import "VInteraction.h"
+#import "VNode+Fetcher.h"
 
 @implementation VNode (Fetcher)
 

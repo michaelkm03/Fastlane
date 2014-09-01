@@ -8,7 +8,6 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
-#import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
@@ -16,12 +15,10 @@
 #import "VUser+RestKit.h"
 
 #import "VConversation.h"
-#import "VVoteType.h"
 #import "VPollResult+RestKit.h"
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VUserManager.h"
 
 @implementation VObjectManager (Login)
 

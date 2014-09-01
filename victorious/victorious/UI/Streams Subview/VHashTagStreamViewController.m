@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamTableDataSource.h"
 #import "VHashTagStreamViewController.h"
 
-#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 #import "VStreamTableViewController+ContentCreation.h"
 

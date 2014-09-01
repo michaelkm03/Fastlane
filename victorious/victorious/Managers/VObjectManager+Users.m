@@ -10,11 +10,7 @@
 #import "VObjectManager+Private.h"
 
 #import "VConversation+RestKit.h"
-#import "VComment+RestKit.h"
-#import "VMessage+RestKit.h"
-#import "VSequence+RestKit.h"
 #import "VUser.h"
-#import "VUser+RestKit.h"
 
 #import "TWAPIManager.h"
 

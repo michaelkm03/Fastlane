@@ -8,19 +8,12 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 
 #import "VUser.h"
-#import "VUserManager.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
-#import "VComment.h"
-#import "VVoteType.h"
 
 #import "VPollResult.h"
-
-#import "NSString+VParseHelp.h"
 
 NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 

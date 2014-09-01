@@ -10,7 +10,6 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+Pagination.h"
 #import "VObjectManager+DirectMessaging.h"
 
 #import "VConversation.h"

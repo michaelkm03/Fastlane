@@ -7,9 +7,7 @@
 //
 
 #import "VEphemeralTimerView.h"
-
 #import "VThemeManager.h"
-#import "NSString+VParseHelp.h"
 
 @interface VEphemeralTimerView()
 

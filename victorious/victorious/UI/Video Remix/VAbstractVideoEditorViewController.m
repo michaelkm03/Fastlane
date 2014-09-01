@@ -7,7 +7,6 @@
 //
 
 #import "VAbstractVideoEditorViewController.h"
-#import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 

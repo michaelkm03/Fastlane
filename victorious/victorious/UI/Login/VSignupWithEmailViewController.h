@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-NS_ENUM(NSUInteger, VSignupErrorCode)
+typedef NS_ENUM(NSUInteger, VSignupErrorCode)
 {
-    VSignupBadUsernameErrorCode,
-    VSignupBadPasswordErrorCode,
-    VSignUpBadEmailAddressErrorCode
+    VSignupErrorCodeBadUsername,
+    VSignupErrorCodeBadPassword,
+    VSignupErrorCodeBadEmailAddress
 };
 
 @interface VSignupWithEmailViewController : UIViewController
+
 @end

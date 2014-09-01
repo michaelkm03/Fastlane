@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIImage+ImageCreation.h"
 #import "VConstants.h"
 #import "VImageSearchDataSource.h"
 #import "VImageSearchResult.h"

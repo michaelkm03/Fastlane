@@ -6,15 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#define IS_IPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-#define IS_IPHONE ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-#define IS_IPHONE_5 (IS_IPHONE && [[UIScreen mainScreen] bounds].size.height == 568.0f)
-
-//  HTTP Error Codes
-typedef NS_ENUM(NSInteger, HTTPStatusCodes)
-{
-    kVHTTPStatusCode200OK      =   200
-};
 
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
@@ -43,10 +34,7 @@ static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
 static NSUInteger const VConstantsInputAccessoryHeight  = 44.0;
 
-static NSUInteger const kFeaturedTableCellHeight    = 180;
 static NSUInteger const kStreamDoublePollCellHeight = 214;
-static NSUInteger const kStreamPollCellHeight       = 320;
-static NSUInteger const kStreamYoutubeCellHeight    = 180;
 static NSUInteger const kStreamViewCellHeight       = 320;
 
 #pragma mark - Error Codes
@@ -56,7 +44,6 @@ static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
-static NSUInteger const kVPollAlreadyAnsweredError      = 1005;
 static NSUInteger const kVUserBannedError               = 1007;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
@@ -71,8 +58,6 @@ static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 static NSString*   const   kStagingAppIDKey         = @"StagingAppID";
 static NSString*   const   kQAAppIDKey              = @"QAAppID";
 
-static NSString*   const   kFacebookAppIDKey        = @"FacebookAppID";
-
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
@@ -83,8 +68,6 @@ static NSString*   const   kGAID                    = @"GAID";
 static NSString*    const   kVUserAgentHeader    = @"User-Agent";
 static NSString*    const   kVPayloadKey         = @"payload";
 static NSString*    const   kRemoteIdKey         = @"remoteId";
-static NSString*    const   kReleasedAtKey       = @"releasedAt";
-static NSString*    const   kDisplayOrderKey     = @"display_order";
 
 #pragma mark - Media Constants
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
@@ -142,9 +125,6 @@ static NSString*   const   kOwnerAccessLevel = @"api_owner";
 static NSString*   const   kUserAccessLevel = @"api_user";
 
 #pragma mark - Storyboard IDs
-static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
-static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
-static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
 static NSString*   const   kStreamContainerID                   = @"streamcontainer";
 static NSString*   const   kModalStreamContainerID              = @"modalstreamcontainer";
 static NSString*   const   kHashTagStreamStoryboardID           = @"hashtagstream";
@@ -163,9 +143,3 @@ static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerba
 static NSString*   const   kHashTagsContainerStoryboardID       = @"hashtagscontainer";
 static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID             = @"keyboardbar";
-
-#pragma mark - Segue IDs
-static NSString*   const   kStreamContentSegueStoryboardID      = @"streamcontent";
-static NSString*   const   kContentCommentSegueStoryboardID     = @"contentcomment";
-static NSString*   const   kStreamCommentSegueID                = @"streamcomment";
-

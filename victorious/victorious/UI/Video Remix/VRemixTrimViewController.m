@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import MediaPlayer;
-
 #import "VAnalyticsRecorder.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"

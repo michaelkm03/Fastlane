@@ -9,7 +9,6 @@
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VAnalyticsRecorder.h"
-#import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
 #import "VThemeManager.h"

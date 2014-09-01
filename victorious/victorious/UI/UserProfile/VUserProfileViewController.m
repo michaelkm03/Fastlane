@@ -6,9 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VUserProfileViewController.h"
-#import "VConstants.h"
 #import "VUser.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VLoginViewController.h"
@@ -32,10 +30,8 @@
 
 #import "VUserProfileHeaderView.h"
 
-const   CGFloat kVNavigationBarHeight = 44.0;
-const   CGFloat kVLargeBottomBuffer = 149;
-const   CGFloat kVSmallBottomBuffer = 25;
-const   CGFloat kVSmallUserHeaderHeight = 319;
+static const CGFloat kVNavigationBarHeight   =  44.0f;
+static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 

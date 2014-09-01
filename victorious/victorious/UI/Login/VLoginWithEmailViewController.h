@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-NS_ENUM(NSUInteger, VLoginErrorCode)
+typedef NS_ENUM(NSUInteger, VLoginErrorCode)
 {
-    VLoginBadEmailAddressErrorCode,
-    VLoginBadPasswordErrorCode,
-    VLoginFailedLoginErrorCode
+    VLoginErrorCodeBadEmailAddress,
+    VLoginErrorCodeBadPassword,
+    VLoginErrorCodeFailedLogin
 };
 
 @interface VLoginWithEmailViewController : UIViewController
-@property (nonatomic, weak) IBOutlet    UIView*         transitionPlaceholder;
+
+@property (nonatomic, weak) IBOutlet UIView *transitionPlaceholder;
+
 @end

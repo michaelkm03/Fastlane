@@ -9,7 +9,6 @@
 #import "VAnalyticsRecorder.h"
 #import "VCommentsTableViewController.h"
 #import "VCommentTextAndMediaView.h"
-#import "VConstants.h"
 #import "VThemeManager.h"
 #import "VRTCUserPostedAtFormatter.h"
 
@@ -51,8 +50,6 @@
 @property (nonatomic, assign) BOOL needsRefresh;
 
 @end
-
-static NSString* CommentCache           = @"CommentCache";
 
 @implementation VCommentsTableViewController
 

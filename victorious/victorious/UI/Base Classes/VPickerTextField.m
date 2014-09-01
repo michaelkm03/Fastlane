@@ -7,11 +7,12 @@
 //
 
 #import "VPickerTextField.h"
-#import "VThemeManager.h"
 
-@interface      VPickerTextField () <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface VPickerTextField () <UIPickerViewDataSource, UIPickerViewDelegate>
+
 @property (nonatomic, strong) UIPickerView *picker;
 @property (nonatomic, strong) UIToolbar *toolbar;
+
 @end
 
 @implementation VPickerTextField

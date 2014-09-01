@@ -9,12 +9,10 @@
 #import "VAnalyticsRecorder.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixSelectViewController.h"
-#import "VCVideoPlayerViewController.h"
 #import "VRemixTrimViewController.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
-#import "VConstants.h"
 
 @interface VRemixSelectViewController ()    <NSURLSessionDownloadDelegate>
 

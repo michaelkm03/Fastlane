@@ -7,7 +7,6 @@
 //
 
 #import "VInviteFriendTableViewCell.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 

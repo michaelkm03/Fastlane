@@ -8,7 +8,6 @@
 
 #import "VAbstractProfileEditViewController.h"
 #import "VCameraViewController.h"
-#import "VConstants.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"

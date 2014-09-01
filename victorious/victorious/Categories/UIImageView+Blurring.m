@@ -7,7 +7,6 @@
 //
 
 #import "UIImageView+Blurring.h"
-#import "UIImageView+AFNetworking.h"
 #import "UIImage+ImageEffects.h"
 
 @implementation UIImageView (Blurring)

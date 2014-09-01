@@ -13,9 +13,6 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 
-@import Accounts;
-@import Security;
-
 typedef NS_ENUM(NSInteger, VLastLoginType)
 {
     kVLastLoginTypeNone,

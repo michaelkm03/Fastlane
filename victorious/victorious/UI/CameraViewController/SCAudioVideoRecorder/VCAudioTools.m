@@ -3,16 +3,11 @@
 //
 
 @import AVFoundation;
-@import AudioToolbox;
 
 #import "VCAudioTools.h"
-
 #import "VConstants.h"
 
 @implementation VCAudioTools
-{
-    
-}
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 + (void)overrideCategoryMixWithOthers

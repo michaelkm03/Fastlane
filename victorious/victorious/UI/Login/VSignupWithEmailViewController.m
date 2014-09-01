@@ -8,7 +8,6 @@
 
 #import "VSignupWithEmailViewController.h"
 #import "VProfileCreateViewController.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
@@ -170,7 +169,7 @@
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VSignUpBadEmailAddressErrorCode
+                                                       code:VSignupErrorCodeBadEmailAddress
                                                    userInfo:userInfoDict];
         }
 
@@ -189,7 +188,7 @@
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VSignupBadPasswordErrorCode
+                                                       code:VSignupErrorCodeBadPassword
                                                    userInfo:userInfoDict];
         }
 
