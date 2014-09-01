@@ -31,7 +31,7 @@ static       char    kKVOContext;
 @interface VMessageTableDataSource ()
 
 @property (nonatomic, strong) VConversation  *conversation;
-@property (nonatomic)         BOOL            newConversation; //< YES if this conversation does not yet have a corresponding VConversation object
+@property (nonatomic)         BOOL            newConversation; ///< YES if this conversation does not yet have a corresponding VConversation object
 @property (nonatomic)         BOOL            isLoading;
 @property (nonatomic)         BOOL            liveUpdating;
 @property (nonatomic)         BOOL            ignoreModelChanges; ///< If YES, model changes detected via KVO will be ignored. Careful with this!
