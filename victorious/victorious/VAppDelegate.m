@@ -36,11 +36,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
 @implementation VAppDelegate
 
-+ (VAppDelegate*) sharedAppDelegate
-{
-    return (VAppDelegate*)[[UIApplication sharedApplication] delegate];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
