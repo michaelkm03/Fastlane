@@ -20,7 +20,6 @@
 #import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "ChromecastDeviceController.h"
 #import "VLoginViewController.h"
 
 #import "VObjectManager+Websites.h"
@@ -30,11 +29,10 @@ static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kServerEnvironmentButtonIndex = 3;
 
-@interface VSettingsViewController ()   <ChromecastControllerDelegate, MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
-@property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 
@@ -95,12 +93,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     
-    self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
-    self.chromeCastController.delegate = self;
-    
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
-    
-    [self updateChromecastButton];
     
 #ifdef V_NO_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = NO;
@@ -186,54 +179,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     {
         viewController.urlToView = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
     }
-}
-
-#pragma mark - ChromecastControllerDelegate
-
-- (void)updateChromecastButton
-{
-    self.showChromeCastButton = NO;
-    
-#if 0
-    if (self.self.chromeCastController.deviceScanner.devices.count == 0)
-    {
-        self.showChromeCastButton = NO;
-    }
-    else
-    {
-        self.showChromeCastButton = YES;
-        
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kChromecastButtonIndex inSection:kSettingsSectionIndex]];
-        
-        if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ConnectedTo", @""), self.chromeCastController.deviceName];
-        else
-            cell.detailTextLabel.text = NSLocalizedString(@"NotConnected", @"");
-    }
-    
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
-#endif
-}
-
-- (void)didDiscoverDeviceOnNetwork
-{
-    [self updateChromecastButton];
-}
-
-- (void)didLoseDeviceOnNetwork
-{
-    [self updateChromecastButton];
-}
-
-- (void)didConnectToDevice:(GCKDevice*)device
-{
-    [self updateChromecastButton];
-}
-
-- (void)didDisconnect
-{
-    [self updateChromecastButton];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;

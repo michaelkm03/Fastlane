@@ -6,14 +6,10 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "ChromecastDeviceController.h"
-
 @interface VAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 + (VAppDelegate*) sharedAppDelegate;
-
-@property ChromecastDeviceController* chromecastDeviceController;
 
 @end
