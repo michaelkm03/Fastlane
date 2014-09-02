@@ -138,7 +138,7 @@ const NSInteger kVPhotoFiltersSectionIndex  = 1;
 
 - (VPhotoFilter *)filterAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert(indexPath.section == kVPhotoFiltersSectionIndex, @"only section %d has filters", kVPhotoFiltersSectionIndex);
+    NSAssert(indexPath.section == kVPhotoFiltersSectionIndex, @"only section %ld has filters", (long)kVPhotoFiltersSectionIndex);
     return self.filters[indexPath.item];
 }
 
