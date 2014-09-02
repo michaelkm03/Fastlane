@@ -60,6 +60,8 @@
     self.enterCodeLabel.text = NSLocalizedString(@"EnterCodeTitle", @"");
     self.enterCodeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.enterCodeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+
+    self.codeField.tintColor = [UIColor blueColor];
     
     [self.resendButton.titleLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
     [self.resendButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
