@@ -6,79 +6,90 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+// Analytics
 #import "VAnalyticsRecorder.h"
-#import "VCameraPublishViewController.h"
-#import "VContentInputAccessoryView.h"
-#import "VSetExpirationViewController.h"
-#import "UIImage+ImageEffects.h"
+
+// Model
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
-#import "VConstants.h"
-#import "NSString+VParseHelp.h"
-#import "VThemeManager.h"
-#import "TTTAttributedLabel.h"
-
-#import "VCameraRollPublishShareController.h"
-#import "VFacebookPublishShareController.h"
-#import "VPublishShareView.h"
-#import "VTwitterPublishShareController.h"
-
-#import "UIImage+ImageCreation.h"
-#import "UIActionSheet+VBlocks.h"
-
-#import "VCompositeSnapshotController.h"
+// Managers
 #import "VSettingManager.h"
-
 #import "VTwitterManager.h"
 #import "VFacebookManager.h"
 
+// Theme
+#import "VThemeManager.h"
+
+// Views
+#import "VPublishShareView.h"
+#import "TTTAttributedLabel.h"
+#import "VContentInputAccessoryView.h"
+
+// Utility Categories
+#import "UIImage+ImageCreation.h"
+#import "UIActionSheet+VBlocks.h"
+#import "NSString+VParseHelp.h"
+#import "UIImage+ImageEffects.h"
 #import "NSURL+MediaType.h"
+
+// Controllers
+#import "VCompositeSnapshotController.h"
+#import "VTwitterPublishShareController.h"
+#import "VCameraRollPublishShareController.h"
+#import "VFacebookPublishShareController.h"
+#import "VCameraPublishViewController.h"
+#import "VSetExpirationViewController.h"
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
 
 @interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
 
-@property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
-@property (nonatomic, weak) IBOutlet    UIView*         blackBackgroundView;
+// Canvas
+@property (nonatomic, weak) IBOutlet    UIView*                 canvasView;
+@property (nonatomic, weak) IBOutlet    UIImageView*            previewImageView;
+@property (nonatomic, weak) IBOutlet    UIView*                 blackBackgroundView;
 
-@property (nonatomic, weak) IBOutlet    UIButton*       publishButton;
+// Text Drawing
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel*     captionPlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    UITextView*             captionTextView;
+@property (nonatomic, weak) IBOutlet    UITextView*             memeTextView;
+@property (nonatomic, weak) IBOutlet    UITextView*             quoteTextView;
 
-@property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
-@property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
+// Caption Buttons
+@property (nonatomic, retain)           IBOutletCollection(UIButton) NSArray *captionButtons;
+@property (nonatomic, weak) IBOutlet    UIButton*               captionButton;
+@property (nonatomic, weak) IBOutlet    UIButton*               memeButton;
+@property (nonatomic, weak) IBOutlet    UIButton*               quoteButton;
 
-@property (nonatomic, weak) IBOutlet    UILabel*        shareToLabel;
+// Sharing
+@property (nonatomic, weak) IBOutlet    UILabel*                shareToLabel;
+@property (nonatomic, weak) IBOutlet    UIView*                 sharesSuperview;
 
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* captionPlaceholderLabel;
+// Publish
+@property (nonatomic, weak) IBOutlet    UIButton*               publishButton;
 
-@property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
-@property (weak, nonatomic) IBOutlet UIView *canvasView;
+// Constraints
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     topOfCanvasToContainerConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     bottomVerticalSpaceShareButtonsToContainer;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     shareViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     captionViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     bottomVerticalSpacePlaceholderLabelToContainer;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     centerYAlignmentPlaceholderLabelToContainer;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentTextViewToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpacePlaceholderLabelToContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentPlaceholderLabelToContainer;
+// Input Accessories
+@property (nonatomic, weak)             VContentInputAccessoryView*     contentInputAccessoryView;
 
-@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
+// Snapshotter
+@property (nonatomic, strong)           VCompositeSnapshotController*   snapshotController;
 
-@property (nonatomic, strong) NSMutableDictionary* typingAttributes;
-@property (nonatomic, strong) NSString *userEnteredText;
+// To preserve user's original text
+@property (nonatomic, strong)           NSString*                       userEnteredText;
 
-@property (nonatomic, weak) VContentInputAccessoryView *contentInputAccessoryView;
-
-@property (nonatomic, weak) IBOutlet UIButton* captionButton;
-@property (nonatomic, weak) IBOutlet UIButton* memeButton;
-@property (nonatomic, weak) IBOutlet UIButton* quoteButton;
-
-@property (nonatomic, strong) VPublishShareController* saveToCameraController;
-@property (nonatomic, strong) VPublishShareController* shareToTwitterController;
-@property (nonatomic, strong) VPublishShareController* shareToFacebookController;
-
-@property (nonatomic, strong) VCompositeSnapshotController* snapshotController;
+// Share Controllers
+@property (nonatomic, strong)           VPublishShareController*        saveToCameraController;
+@property (nonatomic, strong)           VPublishShareController*        shareToTwitterController;
+@property (nonatomic, strong)           VPublishShareController*        shareToFacebookController;
 
 @end
 
@@ -178,7 +189,6 @@ static const CGFloat kShareMargin = 34.0f;
     else if (captionType == VCaptionTypeQuote)
     {
         self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
-        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultHigh;
         self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
         self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
         
@@ -346,29 +356,28 @@ static const CGFloat kShareMargin = 34.0f;
 
 #pragma mark - Actions
 
-- (IBAction)changeCaptionType:(id)sender
+- (IBAction)changeCaptionType:(UIButton *)sender
 {
     for (UIButton* button in self.captionButtons)
     {
         button.selected = (button == (UIButton*)sender);
     }
     
-    if ((UIButton*)sender == self.memeButton)
+    if (sender == self.memeButton)
     {
         self.captionType = VCaptionTypeMeme;
         self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
-    else if ((UIButton*)sender == self.quoteButton)
+    else if (sender == self.quoteButton)
     {
         self.captionType = VCaptionTypeQuote;
         self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
-    else if ((UIButton*)sender == self.captionButton)
+    else if (sender == self.captionButton)
     {
         self.captionType = VCaptionTypeNormal;
         self.contentInputAccessoryView.hashtagButton.enabled = YES;
     }
-    [self.textView becomeFirstResponder];
 }
 
 - (IBAction)goBack:(id)sender
@@ -771,15 +780,10 @@ didChangeGeometryFromSize:(CGSize)oldSize
         return;
     }
     
-    NSLog(@"%@", NSStringFromCGSize(textContainer.size));
-    
-    
     CGFloat maxMemeWidth = CGRectGetWidth(self.canvasView.bounds) - 40.0f; // 20 pt margin on each side
     
     if (textContainer.size.width < maxMemeWidth) {
-//        [self.typingAttributes setObject:[UIFont fontWithName:kMemeFont size:50.0f] forKey:NSFontAttributeName];
-        self.textView.font = [UIFont fontWithName:kMemeFont size:50.0f];
-//        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+
     }
     
 }
