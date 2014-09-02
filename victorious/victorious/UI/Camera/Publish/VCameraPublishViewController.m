@@ -59,6 +59,8 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentTextViewToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomVerticalSpacePlaceholderLabelToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentPlaceholderLabelToContainer;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
@@ -157,6 +159,9 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
         self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
+        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -171,6 +176,9 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
         self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -186,6 +194,9 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
         self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
+        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+        
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentLeft;
         self.typingAttributes = [@{
@@ -744,7 +755,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
 {
-    return NO;
+    return (self.captionType == VCaptionTypeNormal) ? YES : NO;
 }
 
 @end

@@ -293,10 +293,11 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="SWG-s7-iLi"/>
                                     <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" priority="999" constant="20" id="U9B-UC-7dG"/>
                                     <constraint firstAttribute="width" secondItem="WBZ-Ng-22P" secondAttribute="height" multiplier="1:1" id="UQY-W6-DFk"/>
+                                    <constraint firstAttribute="centerY" secondItem="Fsz-Xd-hVx" secondAttribute="centerY" priority="1" id="aQG-Qm-ZYz"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="gEd-uQ-Yfg"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="kKv-XO-y9t"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="nf0-eb-v5g"/>
-                                    <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" constant="20" id="p19-Ss-WbR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" priority="999" constant="20" id="p19-Ss-WbR"/>
                                     <constraint firstAttribute="trailing" secondItem="iCW-rE-1kp" secondAttribute="trailing" id="rK1-Gr-w2i"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="Aa5-gI-eua" secondAttribute="top" id="tq3-Gs-63z"/>
                                     <constraint firstAttribute="trailing" secondItem="Fsz-Xd-hVx" secondAttribute="trailing" constant="20" id="uNU-kl-62z"/>
@@ -433,11 +434,13 @@ and don't forget #hashtags</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="blackBackgroundView" destination="Aa5-gI-eua" id="qQX-55-ZvQ"/>
+                        <outlet property="bottomVerticalSpacePlaceholderLabelToContainer" destination="p19-Ss-WbR" id="axS-CF-ns5"/>
                         <outlet property="bottomVerticalSpaceShareButtonsToContainer" destination="2CO-TC-onZ" id="iLl-uI-xK1"/>
                         <outlet property="bottomVerticalSpaceTextViewToCanvasConstraint" destination="U9B-UC-7dG" id="XLE-MI-nia"/>
                         <outlet property="captionButton" destination="H0I-mP-7db" id="dSX-xX-ng4"/>
                         <outlet property="captionPlaceholderLabel" destination="Fsz-Xd-hVx" id="rrD-Fh-xLF"/>
                         <outlet property="captionViewHeightConstraint" destination="IJs-Rg-u4e" id="Kf0-Cn-wiM"/>
+                        <outlet property="centerYAlignmentPlaceholderLabelToContainer" destination="aQG-Qm-ZYz" id="2HB-kf-seA"/>
                         <outlet property="centerYAlignmentTextViewToContainerConstraint" destination="7H5-Fk-W4w" id="X62-x8-CL4"/>
                         <outlet property="memeButton" destination="0Xc-ND-ZII" id="lhs-k9-W2X"/>
                         <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
