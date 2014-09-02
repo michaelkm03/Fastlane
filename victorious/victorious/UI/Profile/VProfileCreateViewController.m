@@ -337,7 +337,7 @@
         if (mapLocation.administrativeArea)
             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
 
-        [locationDictionary setObject:[[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
         NSString *city = [locationDictionary valueForKey:@"City"];
         NSString *state = [locationDictionary valueForKey:@"State"];
         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];

@@ -103,18 +103,23 @@ typedef UIView View;
     return [[VCCamera alloc] init];
 }
 
-- (AVCaptureDeviceInput*) addInputToSession:(AVCaptureSession*)captureSession device:(AVCaptureDevice*)device withMediaType:(NSString*)mediaType error:(NSError**)error {
-    *error = nil;
-	AVCaptureDeviceInput * input = nil;
-    if (device != nil)
+- (AVCaptureDeviceInput*) addInputToSession:(AVCaptureSession*)captureSession device:(AVCaptureDevice*)device withMediaType:(NSString*)mediaType error:(NSError**)error
+{
+	AVCaptureDeviceInput *input = nil;
+    if (device)
     {
-        input = [AVCaptureDeviceInput deviceInputWithDevice:device error:error];
-        if (*error == nil)
+        NSError *myError = nil;
+        input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&myError];
+        if (!myError)
         {
             [captureSession addInput:input];
         }
+        else if (error)
+        {
+            *error = myError;
+        }
     }
-    else
+    else if (error)
     {
         *error = [VCAudioVideoRecorder createError:[NSString stringWithFormat:@"No device of type %@ were found", mediaType]];
     }

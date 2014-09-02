@@ -23,8 +23,8 @@ static const NSUInteger kRetryAttempts = 5;
 
 @interface VLoadingViewController()
 
-@property NSUInteger failCount;
-@property MBProgressHUD* progressHUD;
+@property (nonatomic)         NSUInteger     failCount;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @end
 

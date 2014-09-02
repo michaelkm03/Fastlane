@@ -271,11 +271,9 @@ static const CGFloat kShareMargin = 34.0f;
         [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
             NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
             
-            UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-            CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)headerFont.fontName, headerFont.pointSize, NULL);
-            
-            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:NSMakeRange(0, [mutableAttributedString length])];
-            [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
             
             return mutableAttributedString;
         }];
