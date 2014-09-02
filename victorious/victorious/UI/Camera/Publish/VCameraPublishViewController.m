@@ -37,7 +37,7 @@
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
 
-@interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 @property (nonatomic, weak) IBOutlet    UIView*         blackBackgroundView;
@@ -62,6 +62,9 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
 @property (nonatomic, strong) NSMutableDictionary* typingAttributes;
+@property (nonatomic, strong) NSString *userEnteredText;
+
+@property (nonatomic, weak) VContentInputAccessoryView *contentInputAccessoryView;
 
 @property (nonatomic, weak) IBOutlet UIButton* captionButton;
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
@@ -100,9 +103,13 @@ static const CGFloat kShareMargin = 34.0f;
     contentInputAccessory.maxCharacterLength = 70;
     contentInputAccessory.textInputView = self.textView;
     contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    contentInputAccessory.delegate = self;
+    self.contentInputAccessoryView = contentInputAccessory;
     self.textView.inputAccessoryView = contentInputAccessory;
     
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
+    
+    self.userEnteredText = @"";
     
     self.publishButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.publishButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -331,14 +338,17 @@ static const CGFloat kShareMargin = 34.0f;
     if ((UIButton*)sender == self.memeButton)
     {
         self.captionType = VCaptionTypeMeme;
+        self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
     else if ((UIButton*)sender == self.quoteButton)
     {
         self.captionType = VCaptionTypeQuote;
+        self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
     else if ((UIButton*)sender == self.captionButton)
     {
         self.captionType = VCaptionTypeNormal;
+        self.contentInputAccessoryView.hashtagButton.enabled = YES;
     }
     [self.textView becomeFirstResponder];
 }
@@ -609,11 +619,12 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (self.captionType == VCaptionTypeMeme)
     {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? [self.textView.text uppercaseString]: @""
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
                                                                        attributes:self.typingAttributes];
     }
-    else if (self.captionType == VCaptionTypeQuote)
+    else if ((self.captionType == VCaptionTypeQuote) || (self.captionType == VCaptionTypeNormal))
     {
+        self.textView.text = self.userEnteredText;
     }
     else
     {
@@ -628,6 +639,9 @@ static const CGFloat kShareMargin = 34.0f;
         [textView resignFirstResponder];
         return NO;
     }
+    
+    self.userEnteredText = [self.userEnteredText stringByReplacingCharactersInRange:range
+                                                                  withString:text];
 
     return YES;
 }
@@ -700,6 +714,16 @@ static const CGFloat kShareMargin = 34.0f;
          [self.view layoutIfNeeded];
      }
                      completion:nil];
+}
+
+#pragma mark - VContentInputAccessoryViewDelegate
+
+- (void)hashTagButtonTappedOnInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    if (self.captionType == VCaptionTypeNormal)
+    {
+        self.userEnteredText = [self.userEnteredText stringByAppendingString:@"#"];
+    }
 }
 
 @end

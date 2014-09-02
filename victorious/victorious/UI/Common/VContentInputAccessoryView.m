@@ -82,6 +82,11 @@
 
 - (void)hashButtonTapped:(UIBarButtonItem *)sender
 {
+    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedOnInputAccessoryView:)])
+    {
+        [self.delegate hashTagButtonTappedOnInputAccessoryView:self];
+    }
+
     [self.textInputView replaceRange:[self.textInputView selectedTextRange] withText:@"#"];
 }
 
