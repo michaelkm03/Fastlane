@@ -342,7 +342,7 @@
     cell.parentTableViewController = self;
     [cell setSequence:sequence];
     
-    if ([dataSource count] > indexPath.row + 2)
+    if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
         NSIndexPath* preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
         VSequence* preloadSequence = [dataSource sequenceAtIndexPath:preloadPath];

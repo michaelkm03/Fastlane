@@ -385,7 +385,7 @@ static       char    kKVOContext;
     {
         case kConversationSection:
         {
-            if (self.conversation && self.conversation.messages.count > indexPath.row)
+            if (self.conversation && self.conversation.messages.count > (NSUInteger)indexPath.row)
             {
                 return self.conversation.messages[indexPath.row];
             }
@@ -398,7 +398,7 @@ static       char    kKVOContext;
             
         case kPendingMessagesSection:
         {
-            if (self.pendingMessages.count > indexPath.row)
+            if (self.pendingMessages.count > (NSUInteger)indexPath.row)
             {
                 return self.pendingMessages[indexPath.row];
             }

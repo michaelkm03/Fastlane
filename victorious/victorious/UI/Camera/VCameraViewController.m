@@ -506,7 +506,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 /**
  @param photo if YES, use photo thumbnail. If NO, use video thumbnail
  */
-- (void)setOpenAlbumButtonImageWithLatestPhoto:(BOOL)photo animated:(BOOL)animated;
+- (void)setOpenAlbumButtonImageWithLatestPhoto:(BOOL)photo animated:(BOOL)animated
 {
     void (^animations)(void) = ^(void)
     {

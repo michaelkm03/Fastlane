@@ -38,11 +38,6 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setSeen:(BOOL)seen
-{
-#warning PUT IN ROUTINE FOR WHAT HAPPENS ONCE NOTIFICATION HAS BEEN SEEN
-}
-
 - (void)setNotifcation:(VNotification *)notifcation
 {
     _notifcation = notifcation;

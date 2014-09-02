@@ -146,7 +146,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
                                      withAnswer:(VAnswer*)answer
                                    successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
+                                      failBlock:(VFailBlock)fail
 {
     if (!poll || !answer)
     {

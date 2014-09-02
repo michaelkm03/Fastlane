@@ -184,7 +184,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
     {

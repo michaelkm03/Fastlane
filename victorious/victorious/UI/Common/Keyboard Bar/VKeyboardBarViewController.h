@@ -23,7 +23,6 @@
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
-@property (nonatomic)         BOOL                      hideAccessoryBar;
 @property (nonatomic)         BOOL                      sendButtonEnabled;
 
 /**
@@ -34,5 +33,6 @@
 
 - (IBAction)cameraPressed:(id)sender;
 - (void)clearKeyboardBar; ///< Clears all text and media from the keyboard bar
+- (void)setHideAccessoryBar:(BOOL)hideAccessoryBar; ///< Hides or shows the input accessory view.
 
 @end

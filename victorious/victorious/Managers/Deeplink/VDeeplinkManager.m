@@ -66,7 +66,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
         if (result)
         {
             NSMutableArray* captures = [NSMutableArray array];
-            for (int i = 1; i < result.numberOfRanges; i++)
+            for (NSUInteger i = 1; i < result.numberOfRanges; i++)
             {
                 NSRange range = [result rangeAtIndex:i];
                 NSString*   capture = [linkString substringWithRange:range];

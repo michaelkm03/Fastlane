@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
     return [self voteAtIndex:VVoteTypeDislike];
 }
 
-+ (VVoteType *)voteAtIndex:(NSInteger)index
++ (VVoteType *)voteAtIndex:(NSUInteger)index
 {
     NSAssert([NSThread isMainThread], @"voteAtIndex needs to be called on the main thread");
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VVoteType entityName]];

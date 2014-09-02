@@ -424,7 +424,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 - (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
                                  toUser:(VUser *)user
                            successBlock:(VSuccessBlock)success
-                              failBlock:(VFailBlock)fail;
+                              failBlock:(VFailBlock)fail
 {
     //Set the parameters
     NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],

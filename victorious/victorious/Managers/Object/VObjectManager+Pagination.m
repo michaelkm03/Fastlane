@@ -305,7 +305,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (RKManagedObjectRequestOperation *)loadNewestMessagesInConversation:(VConversation *)conversation
                                                          successBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)fail;
+                                                            failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {

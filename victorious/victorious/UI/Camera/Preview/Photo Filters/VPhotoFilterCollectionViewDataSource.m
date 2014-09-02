@@ -12,8 +12,8 @@
 #import "VPhotoFilterSerialization.h"
 
 NSString * const kPhotoFilterCellIdentifier = @"kPhotoFilterCellIdentifier";
-const NSUInteger kVOriginalImageSectionIndex = 0;
-const NSUInteger kVPhotoFiltersSectionIndex  = 1;
+const NSInteger kVOriginalImageSectionIndex = 0;
+const NSInteger kVPhotoFiltersSectionIndex  = 1;
 
 @interface VPhotoFilterCollectionViewDataSource ()
 
