@@ -173,9 +173,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
+    {
         return YES;
+    }
     else
+    {
         return NO;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

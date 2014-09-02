@@ -78,7 +78,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                       failBlock:(VFailBlock)fail
 {
     if (!media1Url || !media2Url)
+    {
         return nil;
+    }
     
     //Required Fields
     NSDictionary* parameters = @{@"name":name ?: [NSNull null],
@@ -107,7 +109,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
         
         if (success)
+        {
             success(operation, fullResponse, @[newSequence]);
+        }
     };
     
     return [self uploadURLs:allURLs
@@ -129,19 +133,29 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                        failBlock:(VFailBlock)fail
 {
     if (!mediaUrl)
+    {
         return nil;
+    }
     
     NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
+    {
         parameters[@"expires_at"] = expiresAt;
+    }
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
+    {
         parameters[@"parent_node_id"] = parentNodeId;
+    }
 
     if (type == VCaptionTypeMeme)
+    {
         parameters[@"subcategory"] = @"meme";
+    }
     else if (type == VCaptionTypeQuote)
+    {
         parameters[@"subcategory"] = @"secret";
+    }
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
@@ -168,7 +182,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
 
         if (success)
+        {
             success(operation, fullResponse, @[newSequence]);
+        }
     };
     
     return [self uploadURLs:allUrls
@@ -197,14 +213,17 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             failBlock:fail];
 }
 
-
 - (NSString*)stringForLoopType:(VLoopType)type
 {
     if (type == VLoopRepeat)
+    {
         return @"loop";
+    }
     
     if (type == VLoopReverse)
+    {
         return @"reverse";
+    }
 
     return @"once";
 }
@@ -357,7 +376,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         
         if (success)
+        {
             success(operation, fullResponse, @[newComment]);
+        }
     };
     
     return [self uploadURLs:allURLs
@@ -399,6 +420,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Messages
+
 - (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
                                  toUser:(VUser *)user
                            successBlock:(VSuccessBlock)success
@@ -480,8 +502,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     CMTime time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale);
     CGImageRef imageRef = [assetGenerator copyCGImageAtTime:time actualTime:NULL error:&error];
     if (error)
+    {
         return nil;
-        
+    }
+    
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     

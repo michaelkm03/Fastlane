@@ -65,12 +65,16 @@
         audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioCompressionSetings];
         audioInput.expectsMediaDataInRealTime = YES;
         if (error)
+        {
             *error = nil;
+        }
     }
     else
     {
         if (error)
+        {
             *error = [VCAudioVideoRecorder createError:@"Cannot apply Audio settings"];
+        }
     }
 
     return audioInput;

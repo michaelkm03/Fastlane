@@ -101,7 +101,9 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if ([self.pickerDelegate respondsToSelector:@selector(pickerTextField:didSelectRow:inComponent:)])
+    {
         [self.pickerDelegate pickerTextField:self didSelectRow:row inComponent:component];
+    }
 }
 
 #pragma mark - Actions
@@ -114,7 +116,9 @@
 - (IBAction)clear:(id)sender
 {
     if ([self.pickerDelegate respondsToSelector:@selector(pickerTextFieldDidClear:)])
+    {
         [self.pickerDelegate pickerTextFieldDidClear:self];
+    }
 
     [self resignFirstResponder];
 }

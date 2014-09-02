@@ -33,7 +33,9 @@
     [self resignFirstResponder];
     
     if ([self.delegate respondsToSelector:@selector(datePicker:didSelectExpirationDate:)])
+    {
         [self.delegate datePicker:self didSelectExpirationDate:self.datePicker.date];
+    }
 }
 
 - (IBAction)clear:(id)sender

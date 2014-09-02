@@ -287,12 +287,14 @@
     else if (alertView == self.thanksAlert)
     {
         if (self.deviceToken)
+        {
             [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
-
+        }
         else
+        {
             self.alertDismissed = YES;
+        }
     }
-    
 }
 
 #pragma mark - UITextFieldDelegate

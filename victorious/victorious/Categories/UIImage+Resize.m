@@ -38,7 +38,10 @@
 - (UIImage *)fixOrientation
 {
     // No-op if the orientation is already correct
-    if (self.imageOrientation == UIImageOrientationUp) return self;
+    if (self.imageOrientation == UIImageOrientationUp)
+    {
+        return self;
+    }
     
     // We need to calculate the proper transformation to make the image upright.
     // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
@@ -210,9 +213,13 @@
 {
     CGRect newRect;
     if ([self respondsToSelector:@selector(scale)])
+    {
         newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width * self.scale, newSize.height * self.scale));
+    }
     else
+    {
         newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
+    }
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
     CGImageRef imageRef = self.CGImage;
     

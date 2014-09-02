@@ -31,11 +31,17 @@
     while (vc)
     {
         if ([vc isKindOfClass:[VSideMenuViewController class]])
+        {
             return (VSideMenuViewController *)vc;
+        }
         else if (vc.parentViewController && vc.parentViewController != vc)
+        {
             vc = vc.parentViewController;
+        }
         else
+        {
             vc = nil;
+        }
     }
 
     return nil;

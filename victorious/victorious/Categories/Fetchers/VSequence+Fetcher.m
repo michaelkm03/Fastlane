@@ -21,8 +21,12 @@
 - (BOOL)isPoll
 {
     for (NSString* category in VPollCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -35,8 +39,12 @@
 - (BOOL)isImage
 {
     for (NSString* category in VImageCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -44,8 +52,12 @@
 - (BOOL)isVideo
 {
     for (NSString* category in VVideoCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -53,8 +65,12 @@
 - (BOOL)isOwnerContent
 {
     for (NSString* category in VOwnerCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -62,8 +78,12 @@
 - (BOOL)isRepost
 {
     for (NSString* category in VRepostCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -71,8 +91,12 @@
 - (BOOL)isRemix
 {
     for (NSString* category in VRemixCategories())
+    {
         if ([self.category isEqualToString:category])
+        {
             return true;
+        }
+    }
     
     return false;
 }
@@ -92,14 +116,20 @@
         for (VAnswer* answer in [[self firstNode] firstAnswers])
         {
             if (answer.thumbnailUrl)
+            {
                 [urls addObject:[NSURL URLWithString:answer.thumbnailUrl]];
+            }
         }
     }
     else
+    {
         [urls addObject:[NSURL URLWithString:self.previewImage]];
+    }
     
     if (self.user && self.user.pictureUrl)
+    {
         [urls addObject:[NSURL URLWithString:self.user.profileImagePathSmall ?: self.user.pictureUrl]];
+    }
     
     return [urls copy];
 }
@@ -107,19 +137,18 @@
 - (NSNumber*)voteCountForVoteID:(NSNumber*)voteID
 {
     if (!voteID)
+    {
         return @(0);
+    }
     
     for (VVoteResult* result in [self.voteResults allObjects])
     {
         if ([result.remoteId isEqualToNumber:voteID])
+        {
             return result.count;
+        }
     }
     return @(0);
-}
-
-- (NSURL*)deeplinkForContentView
-{
-    return [NSURL URLWithString:@""];
 }
 
 @end

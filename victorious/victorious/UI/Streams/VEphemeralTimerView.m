@@ -88,13 +88,21 @@
     secondsTilExpiration = fmodf(secondsTilExpiration, 60);
     
     if (days == 1)
+    {
         self.dayLabel.text = [@"1" stringByAppendingString:NSLocalizedString(@" Day", nil)];
+    }
     else if (days != 0)
+    {
         self.dayLabel.text = [@(days).stringValue stringByAppendingString:NSLocalizedString(@" Days", nil)];
+    }
     else if (hours == 1)
+    {
         self.dayLabel.text = [@"1" stringByAppendingString:NSLocalizedString(@" Hour", nil)];
+    }
     else
+    {
         self.dayLabel.text = [@(hours).stringValue stringByAppendingString:NSLocalizedString(@" Hours", nil)];
+    }
     
     NSString* hourString = hours > 9 ? @(hours).stringValue
                                     : hours <= 0 ? @"00"
@@ -109,20 +117,31 @@
                                     : [@"0" stringByAppendingString:@(secondsTilExpiration).stringValue];
     
     if (days)
+    {
         self.countdownLabel.text = [[hourString stringByAppendingString:@":"] stringByAppendingString:minuteString];
+    }
     else
+    {
         self.countdownLabel.text = [[minuteString stringByAppendingString:@":"] stringByAppendingString:secondString];
-    
+    }
     
     if (!days && !hours)
+    {
         self.dayLabel.textColor = self.timeRemainingLabel.textColor;
+    }
     else
+    {
         self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
     
     if (!days && !hours && !minutes && secondsTilExpiration <= 0)
+    {
         self.countdownLabel.textColor = self.timeRemainingLabel.textColor;
+    }
     else
+    {
         self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
 }
 
 #define TimerAnimationKey @"timerAnimation"

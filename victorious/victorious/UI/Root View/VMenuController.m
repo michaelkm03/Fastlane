@@ -67,9 +67,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     else
     {
         if (count < 1000)
+        {
             self.inboxBadgeLabel.text = [NSNumberFormatter localizedStringFromNumber:@(count) numberStyle:NSNumberFormatterDecimalStyle];
+        }
         else
+        {
             self.inboxBadgeLabel.text = @"+999";
+        }
         
         self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
         self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
@@ -207,9 +211,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
  - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (1 == section)
+    {
         return 1.0;
+    }
     else
+    {
         return 100.0;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -26,9 +26,13 @@
     VStreamTableViewController *streamVC;
     
     if ([fromVC isKindOfClass:[VStreamTableViewController class]])
+    {
         streamVC = (VStreamTableViewController*)fromVC;
+    }
     else
+    {
         streamVC = ((VStreamContainerViewController*)fromVC).streamTable;
+    }
     
     VCommentsContainerViewController* commentVC = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     

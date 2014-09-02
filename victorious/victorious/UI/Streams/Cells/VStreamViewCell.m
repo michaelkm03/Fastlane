@@ -66,7 +66,9 @@ static VLargeNumberFormatter* largeNumberFormatter;
     [super awakeFromNib];
     
     if (!largeNumberFormatter)
+    {
         largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
     
     self.originalHeight = self.frame.size.height;
     
@@ -149,9 +151,13 @@ static VLargeNumberFormatter* largeNumberFormatter;
                                     forState:UIControlStateNormal];
     
     if ([[[_sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    {
         self.playButtonImage.hidden = NO;
+    }
     else
+    {
         self.playButtonImage.hidden = YES;
+    }
     
     self.usernameLabel.text = self.sequence.user.name;
 
@@ -202,10 +208,14 @@ static VLargeNumberFormatter* largeNumberFormatter;
     
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
+    {
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
+    }
     
     if ([self.sequence isRemix] && self.sequence.parentUser)
+    {
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
+    }
     
     self.parentLabel.text = parentUserString;
     
@@ -241,10 +251,14 @@ static VLargeNumberFormatter* largeNumberFormatter;
     for (UIViewController* vc in self.parentTableViewController.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
             fromProfile = YES;
+        }
     }
     if (fromProfile)
+    {
         return;
+    }
     
     VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];

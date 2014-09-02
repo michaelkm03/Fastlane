@@ -16,6 +16,5 @@
 - (NSArray*)orderedInteractions;
 
 - (BOOL)isPoll;
-- (BOOL)isQuiz;
 
 @end

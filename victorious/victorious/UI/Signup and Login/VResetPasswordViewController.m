@@ -96,7 +96,9 @@
                          ([self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text]));
     
     if (isValid)
+    {
         return YES;
+    }
     
     UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                        message:NSLocalizedString(@"PasswordNotMatching", @"")
@@ -113,9 +115,13 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.passwordTextField)
+    {
         [self.confirmPasswordTextField becomeFirstResponder];
+    }
     else if (textField == self.confirmPasswordTextField)
+    {
         [self.confirmPasswordTextField resignFirstResponder];
+    }
     
     return NO;
 }

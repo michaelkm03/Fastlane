@@ -107,9 +107,13 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.usernameTextField])
+    {
         [self.locationTextField becomeFirstResponder];
+    }
     else if ([textField isEqual:self.locationTextField])
+    {
         [self.locationTextField resignFirstResponder];
+    }
     
     return YES;
 }

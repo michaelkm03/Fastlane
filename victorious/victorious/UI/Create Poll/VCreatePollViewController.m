@@ -192,25 +192,33 @@ static char KVOContext;
     [self.postButton setEnabled:YES];
     
     if (!self.firstMediaURL || !self.secondMediaURL)
+    {
         [self.postButton setEnabled:NO];
-    
+    }
     else if ([self.questionTextView.text isEmpty])
+    {
         [self.postButton setEnabled:NO];
-
+    }
     else if ([self.questionTextView.text length] > VConstantsMessageLength)
+    {
         [self.postButton setEnabled:NO];
-    
+    }
     else if ([self.leftAnswerTextView.text isEmpty])
+    {
         [self.postButton setEnabled:NO];
-
+    }
     else if ([self.leftAnswerTextView.text length] > VConstantsPollAnswerLength)
+    {
         [self.postButton setEnabled:NO];
-    
+    }
     else if ([self.rightAnswerTextView.text isEmpty])
+    {
         [self.postButton setEnabled:NO];
-
+    }
     else if ([self.rightAnswerTextView.text length] > VConstantsPollAnswerLength)
+    {
         [self.postButton setEnabled:NO];
+    }
 }
 
 - (void)updateViewState

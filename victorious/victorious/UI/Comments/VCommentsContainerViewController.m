@@ -122,7 +122,9 @@
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     if ((!text || !text.length) && (!mediaURL || !mediaURL.absoluteString.length))
+    {
         return;
+    }
     
     MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
@@ -251,7 +253,9 @@
          for (UIView* view in self.view.subviews)
          {
              if ([view isKindOfClass:[UIImageView class]])
+             {
                  continue;
+             }
              
              if (view.center.y > self.view.center.y)
              {

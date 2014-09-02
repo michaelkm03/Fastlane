@@ -101,9 +101,13 @@
     {
         CGFloat startTime = comment.realtime.floatValue;
         if (startTime < time)
+        {
             currentComment = comment;
+        }
         else if (startTime > time)
+        {
             break;
+        }
     }
     
     if (!currentComment) {
@@ -117,12 +121,18 @@
 - (void)setEndTime:(CGFloat)endTime
 {
     if (isnan(endTime) || endTime < 1)
+    {
         _endTime = -1;
+    }
     else
+    {
         _endTime = endTime;
+    }
     
     if (self.needsCommentLayout && _endTime > 0)
+    {
         self.comments = self.comments;
+    }
 }
 
 - (void)setComments:(NSArray *)comments
@@ -172,7 +182,9 @@
     _currentTime = currentTime;
     
     if (!self.didSelectComment)
+    {
         self.currentComment = [self commentAtTime:currentTime];
+    }
     
     [UIView animateWithDuration:currentTime - oldTime
                      animations:
@@ -247,8 +259,9 @@
 - (IBAction)pressedMedia:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(willShowRTCMedia)])
+    {
         [self.delegate willShowRTCMedia];
-    
+    }
     
     VLightboxViewController* lightbox;
     if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo])
@@ -266,7 +279,9 @@
     lightbox.onCloseButtonTapped = ^(void)
     {
         if ([self.delegate respondsToSelector:@selector(didFinishedRTCMedia)])
+        {
             [self.delegate didFinishedRTCMedia];
+        }
         
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     };

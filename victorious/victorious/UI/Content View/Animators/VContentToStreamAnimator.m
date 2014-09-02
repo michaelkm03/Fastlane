@@ -62,11 +62,14 @@
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
+    {
         streamVC = (VStreamTableViewController*)toVC;
+    }
     else
+    {
         streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+    }
 
-    
     [UIView animateWithDuration:.2
                      animations:^
      {

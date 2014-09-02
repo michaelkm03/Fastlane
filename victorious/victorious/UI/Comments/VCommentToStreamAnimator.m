@@ -26,9 +26,13 @@
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
+    {
         streamVC = (VStreamTableViewController*)toVC;
+    }
     else
+    {
         streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+    }
     
     commentsContainer.view.userInteractionEnabled = NO;
     toVC.view.userInteractionEnabled = NO;

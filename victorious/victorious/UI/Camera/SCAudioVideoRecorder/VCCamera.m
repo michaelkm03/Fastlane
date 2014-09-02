@@ -146,7 +146,9 @@ typedef UIView View;
 - (void)startRunningSession
 {
     if (!session && session.isRunning)
+    {
         return;
+    }
     
     [session startRunning];
     
@@ -159,7 +161,9 @@ typedef UIView View;
 - (void)stopRunningSession
 {
     if (!session || !session.isRunning)
+    {
         return;
+    }
     
     [session stopRunning];
     
@@ -372,7 +376,9 @@ typedef UIView View;
     AVCaptureDevice *_currentDevice = self.currentVideoDeviceInput.device;
     BOOL shouldChangeFlashMode = (_flashMode != flashMode);
     if (![_currentDevice hasFlash] || !shouldChangeFlashMode)
+    {
         return;
+    }
     
     _flashMode = flashMode;
     
@@ -425,13 +431,17 @@ typedef UIView View;
 - (void)_willCapturePhoto
 {
     if ([self.delegate respondsToSelector:@selector(cameraWillCapturePhoto:)])
+    {
         [self.delegate cameraWillCapturePhoto:self];
+    }
 }
 
 - (void)_didCapturePhoto
 {
     if ([self.delegate respondsToSelector:@selector(cameraDidCapturePhoto:)])
+    {
         [self.delegate cameraDidCapturePhoto:self];
+    }
 }
 
 - (void) switchCamera
@@ -473,7 +483,9 @@ typedef UIView View;
 - (void)setCameraDevice:(VCCameraDevice)cameraDevice
 {
     if (_cameraDevice == cameraDevice)
+    {
         return;
+    }
     
     _cameraDevice = cameraDevice;
     [self reconfigureSessionInputs];
@@ -600,7 +612,9 @@ typedef UIView View;
 - (void)removeObserverForSession
 {
     if (!session)
+    {
         return;
+    }
     
     // remove notification observers (we don't want to just 'remove all' because we're also observing background notifications
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -916,20 +930,26 @@ typedef UIView View;
 - (void)_focusStarted
 {
     if ([self.delegate respondsToSelector:@selector(cameraDidStartFocus:)])
+    {
         [self.delegate cameraDidStartFocus:self];
+    }
 }
 
 - (void)_focusEnded
 {
     if ([self.delegate respondsToSelector:@selector(cameraDidStopFocus:)])
+    {
         [self.delegate cameraDidStopFocus:self];
+    }
 }
 
 - (void)_focus
 {
     AVCaptureDevice *device = [self.currentVideoDeviceInput device];
     if ([device isAdjustingFocus] || [device isAdjustingExposure])
+    {
         return;
+    }
 
     CGPoint focusPoint = CGPointMake(0.5f, 0.5f);
     [self autoFocusAtPoint:focusPoint];

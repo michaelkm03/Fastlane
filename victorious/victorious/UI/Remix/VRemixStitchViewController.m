@@ -193,7 +193,9 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     if (self.videoPlayerViewController.isPlaying)
+    {
         [self.videoPlayerViewController.player pause];
+    }
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
     publishViewController.mediaURL = self.targetURL;
@@ -416,10 +418,14 @@
     CGAffineTransform                           transform = videoTrack.preferredTransform;
     BOOL                                        isAssetPortrait         =   NO;
     if (transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0)
+    {
         isAssetPortrait = YES;
+    }
 
     if (transform.a == 0 && transform.b == -1.0 && transform.c == 1.0 && transform.d == 0)
+    {
         isAssetPortrait = YES;
+    }
 
     CGFloat assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.width;
     if (isAssetPortrait)

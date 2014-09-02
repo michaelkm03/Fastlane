@@ -69,7 +69,9 @@
     [self performFetch];
     
     if (![self.fetchedResultsController.fetchedObjects count] < 5)
+    {
         [self refresh:self.refreshControl];
+    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
@@ -109,8 +111,10 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    if (self.tableView.window == nil)
+    if (!self.tableView.window)
+    {
         return;
+    }
 
     [self.tableView beginUpdates];
 }
@@ -121,8 +125,10 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if (self.tableView.window == nil)
+    if (!self.tableView.window)
+    {
         return;
+    }
     
     switch(type)
     {
@@ -158,8 +164,10 @@
            atIndex:(NSUInteger)sectionIndex
      forChangeType:(NSFetchedResultsChangeType)type
 {
-    if (self.tableView.window == nil)
+    if (!self.tableView.window)
+    {
         return;
+    }
 
     switch(type)
     {

@@ -154,11 +154,17 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.oldPasswordTextField])
+    {
         [self.changedPasswordTextField becomeFirstResponder];
+    }
     else if ([textField isEqual:self.changedPasswordTextField])
+    {
         [self.confirmPasswordTextField becomeFirstResponder];
+    }
     else
+    {
         [self.confirmPasswordTextField resignFirstResponder];
+    }
     
     return YES;
 }

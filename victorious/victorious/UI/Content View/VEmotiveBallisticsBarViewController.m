@@ -112,7 +112,9 @@
     [super setSequence:sequence];
     
     if (!sequence)
+    {
         return;
+    }
     
     self.voteCountsForDisplay[self.likeVote.remoteId] = [self.sequence voteCountForVoteID:self.likeVote.remoteId];
     self.voteCountsForDisplay[self.dislikeVote.remoteId] = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId];
@@ -223,13 +225,18 @@
     {
         UIImage* nextImage;
         if (emotive == self.leftButton && i<13)
+        {
             nextImage = [UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]];
-        
+        }
         else if (emotive == self.rightButton)
+        {
             nextImage = [UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]];
+        }
         
         if (nextImage)
+        {
             [emotiveAnimations addObject:nextImage];
+        }
     }
     
     thrownImage.animationImages = emotiveAnimations;
@@ -261,6 +268,5 @@
 {
     return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * 2) -1;
 }
-
 
 @end

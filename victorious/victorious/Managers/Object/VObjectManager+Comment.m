@@ -25,15 +25,22 @@
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VComment* comment in resultObjects)
         {
-            if (!comment.user )
+            if (!comment.user)
+            {
                 [nonExistantUsers addObject:comment.userId];
+            }
         }
+        
         if ([nonExistantUsers count])
+        {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:success
                                              failBlock:fail];
+        }
         else if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self GET:[@"/api/comment/all_by_asset_filtered/" stringByAppendingString:@(assetId).stringValue]
@@ -82,7 +89,9 @@
                                           loadAttempt:(NSInteger)attemptCount
 {
     if (!commentID)
+    {
         return nil;
+    }
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
@@ -91,15 +100,18 @@
         {
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
+            {
                 [self fetchCommentByID:commentID
                           successBlock:success
                              failBlock:fail
-                           loadAttempt:(attemptCount+1)];
+                           loadAttempt:(attemptCount + 1)];
             });
         }
         else if (fail)
+        {
             fail(operation, error);
+        }
     };
     
     return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(commentID).stringValue]
@@ -124,7 +136,9 @@
         [commentToRemove.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/comment/remove"
@@ -148,6 +162,7 @@
 }
 
 #pragma mark - Vote Methods
+
 - (RKManagedObjectRequestOperation *)voteComment:(VComment*)comment
                                         voteType:(NSString*)type
                                     successBlock:(VSuccessBlock)success
@@ -184,6 +199,7 @@
 }
 
 #pragma mark -
+
 - (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
