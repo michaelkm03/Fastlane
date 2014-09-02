@@ -58,6 +58,7 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceTextViewToCanvasConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentTextViewToContainerConstraint;
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 
@@ -154,7 +155,8 @@ static const CGFloat kShareMargin = 34.0f;
     
     if (captionType == VCaptionTypeMeme)
     {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 20.0f;
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -167,7 +169,8 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeQuote)
     {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 100.0f;
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
+        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultHigh;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
@@ -181,7 +184,8 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else if (captionType == VCaptionTypeNormal)
     {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.constant = 20.0f;
+        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentLeft;
         self.typingAttributes = [@{
@@ -634,14 +638,21 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    NSString *newString = [self.userEnteredText stringByReplacingCharactersInRange:range
+                                                                        withString:text];
+
     if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
     }
     
-    self.userEnteredText = [self.userEnteredText stringByReplacingCharactersInRange:range
-                                                                  withString:text];
+    if (newString.length > self.contentInputAccessoryView.maxCharacterLength)
+    {
+        return NO;
+    }
+    
+    self.userEnteredText = newString;
 
     return YES;
 }
@@ -724,6 +735,16 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.userEnteredText = [self.userEnteredText stringByAppendingString:@"#"];
     }
+}
+
+- (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return NO;
+}
+
+- (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return NO;
 }
 
 @end

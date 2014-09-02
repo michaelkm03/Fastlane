@@ -283,6 +283,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="3uw-Pi-TDY"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="4D7-at-UZO"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="Aa5-gI-eua" secondAttribute="leading" id="6RX-kW-Ojq"/>
+                                    <constraint firstAttribute="centerY" secondItem="yxx-6S-3iW" secondAttribute="centerY" priority="1" id="7H5-Fk-W4w"/>
                                     <constraint firstAttribute="trailing" secondItem="g4C-sb-DOe" secondAttribute="trailing" id="91A-LA-tXs"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="trailing" secondItem="Aa5-gI-eua" secondAttribute="trailing" id="DXm-6u-RV2"/>
                                     <constraint firstAttribute="bottom" secondItem="iCW-rE-1kp" secondAttribute="bottom" id="EbP-m3-LOd"/>
@@ -290,7 +291,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="iCW-rE-1kp" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="KwL-AA-dOD"/>
                                     <constraint firstAttribute="trailing" secondItem="yxx-6S-3iW" secondAttribute="trailing" constant="20" id="S1x-5g-QdO"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="SWG-s7-iLi"/>
-                                    <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" constant="20" id="U9B-UC-7dG"/>
+                                    <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" priority="999" constant="20" id="U9B-UC-7dG"/>
                                     <constraint firstAttribute="width" secondItem="WBZ-Ng-22P" secondAttribute="height" multiplier="1:1" id="UQY-W6-DFk"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="gEd-uQ-Yfg"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="kKv-XO-y9t"/>
@@ -437,6 +438,7 @@ and don't forget #hashtags</string>
                         <outlet property="captionButton" destination="H0I-mP-7db" id="dSX-xX-ng4"/>
                         <outlet property="captionPlaceholderLabel" destination="Fsz-Xd-hVx" id="rrD-Fh-xLF"/>
                         <outlet property="captionViewHeightConstraint" destination="IJs-Rg-u4e" id="Kf0-Cn-wiM"/>
+                        <outlet property="centerYAlignmentTextViewToContainerConstraint" destination="7H5-Fk-W4w" id="X62-x8-CL4"/>
                         <outlet property="memeButton" destination="0Xc-ND-ZII" id="lhs-k9-W2X"/>
                         <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
                         <outlet property="publishButton" destination="wOt-la-SB9" id="Pbk-8V-Al6"/>
