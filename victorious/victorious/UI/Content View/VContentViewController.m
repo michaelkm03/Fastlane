@@ -65,8 +65,6 @@ static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
-@import MediaPlayer;
-
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate, NSURLSessionDownloadDelegate>
 
 @property (nonatomic, readonly) BOOL isViewingTitle;
@@ -610,33 +608,31 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     //If you run out of nodes... go to the beginning.
     if (!currentNode)
+    {
         _currentNode = [self.sequence firstNode];
-    
-    //If this node is not for the sequence... Something is wrong, just use the first node and print a warning
-    else if (currentNode.sequence != self.sequence)
+    }
+    else if (currentNode.sequence != self.sequence) //If this node is not for the sequence... Something is wrong, just use the first node and print a warning
     {
         VLog(@"Warning: node %@ does not belong in sequence %@", currentNode, self.sequence);
         _currentNode = [self.sequence firstNode];
     }
     else
-        _currentNode = currentNode;
-    
-    _currentAsset = nil; //we changed nodes, so we're not on an asset
-    if ([self.currentNode isQuiz])
     {
-        self.remixButton.enabled = NO;
-        [self loadQuiz];
+        _currentNode = currentNode;
     }
     
-    else if ([self.currentNode isPoll])
+    _currentAsset = nil; //we changed nodes, so we're not on an asset
+    
+    if ([self.currentNode isPoll])
     {
         self.remixButton.enabled = NO;
         self.repostButton.enabled = NO;
         [self loadPoll];
     }
-    
     else
+    {
         [self loadNextAsset];
+    }
     
     //This is a safety feature to disable sharing if we do not recieve a share URL from the server.
     self.shareButton.userInteractionEnabled = self.currentNode.shareUrlPath && self.currentNode.shareUrlPath.length;
@@ -661,7 +657,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          {
              [actionBarVC didMoveToParentViewController:self];
              if ([self.sequence isPoll])
+             {
                  [self pollAnimation];
+             }
          }];
     }
 }
@@ -709,7 +707,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)showRemixButton
 {
     if (!self.remixButton.hidden)
+    {
         return;
+    }
     
     self.remixButton.hidden = NO;
 
@@ -760,12 +760,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
     
     [self showRemixButton];
-}
-
-#pragma mark - Quiz
-- (void)loadQuiz
-{
-    //self.actionBar = [VActionBarViewController quizBar];
 }
 
 #pragma mark - Button Actions
@@ -1149,7 +1143,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
         
         if (animator.isPresenting)
+        {
             animator.movingImage = self.previewImage.image;
+        }
         
         return animator;
     }
@@ -1170,7 +1166,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)showRTC
 {
     if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled] || !self.isViewingTitle)
+    {
         return;
+    }
     
     [self flipHeaderWithDuration:.25f completion:nil];
 }
@@ -1178,7 +1176,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)hideRTC
 {
     if (self.isViewingTitle)
+    {
         return;
+    }
     
     [self flipHeaderWithDuration:.25f completion:nil];
 }
@@ -1231,7 +1231,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          for (UIView* view in self.view.subviews)
          {
              if (CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
+             {
                  continue;
+             }
              
              if (view.center.y > self.view.center.y)
              {
@@ -1261,7 +1263,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          for (UIView* view in self.view.subviews)
          {
              if (!CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
+             {
                  continue;
+             }
              
              if (view.center.y > self.view.center.y)
              {
@@ -1324,9 +1328,13 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaView];
     
     if (CGRectIntersectsRect(keyboardEndFrame, videoFrame))
+    {
         self.keyboardOverlapsMedia = YES;
+    }
     else
+    {
         self.keyboardOverlapsMedia = NO;
+    }
     
     self.isShowingKeyboard = YES;
     

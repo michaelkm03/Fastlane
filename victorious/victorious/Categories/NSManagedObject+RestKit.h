@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
 
 @interface NSManagedObject (RestKit)
 

@@ -10,7 +10,6 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+Pagination.h"
 #import "VObjectManager+DirectMessaging.h"
 
 #import "VConversation.h"
@@ -44,14 +43,15 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     return sharedManager;
 }
 
-
 - (void)handleOpenURL:(NSURL *)aURL
 {
     NSString*   linkString = [aURL resourceSpecifier];
     NSError*    error = NULL;
     
     if (!linkString)
+    {
         return;
+    }
     
     for (NSString* pattern in [[self deepLinkPatterns] allKeys])
     {
@@ -66,7 +66,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
         if (result)
         {
             NSMutableArray* captures = [NSMutableArray array];
-            for (int i=1; i < result.numberOfRanges; i++)
+            for (int i = 1; i < result.numberOfRanges; i++)
             {
                 NSRange range = [result rangeAtIndex:i];
                 NSString*   capture = [linkString substringWithRange:range];
@@ -150,9 +150,13 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
      {
          VUserProfileViewController* profileVC;
          if ([VObjectManager sharedManager].mainUser && [userID isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+         {
              profileVC = [VUserProfileViewController userProfileWithSelf];
+         }
          else
+         {
              profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
+         }
          
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          VRootViewController* root = [VRootViewController rootViewController];
@@ -224,7 +228,6 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
      }];
 }
 
-
 - (void)handleResetPasswordURL:(NSArray *)captures
 {
     NSString* userToken = ((NSString*)[captures firstObject]);
@@ -243,9 +246,9 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     [root.contentViewController pushViewController:enterTokenVC animated:YES];
 }
 
-
 #pragma mark - Deeplink generation
--(NSURL*)contentDeeplinkForSequence:(VSequence *)sequence
+
+- (NSURL*)contentDeeplinkForSequence:(VSequence *)sequence
 {
     //TODO: Fetch the actual deeplink prefix from the info.plist
     return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId.stringValue]];

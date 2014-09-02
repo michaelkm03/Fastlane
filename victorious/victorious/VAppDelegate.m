@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "NSString+VStringWithData.h"
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
@@ -37,11 +36,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
 @implementation VAppDelegate
 
-+ (VAppDelegate*) sharedAppDelegate
-{
-    return (VAppDelegate*)[[UIApplication sharedApplication] delegate];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
@@ -64,19 +58,15 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    // Initialize the chromecast device controller.
-    self.chromecastDeviceController = [[ChromecastDeviceController alloc] init];
-    
-    // Scan for devices.
-    [self.chromecastDeviceController performScan:YES];
-
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
+    {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
+    }
     
     return YES;
 }
