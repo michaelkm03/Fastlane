@@ -9,6 +9,7 @@
 @import MessageUI;
 
 #import "VAnalyticsRecorder.h"
+#import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
@@ -262,17 +263,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (NSString*)collectDeviceInfo:(id)sender
 {
     // Grab App Version
-    NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
-    
+    NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"";
+    NSString *appBuildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey] ?: @"";
     
     // Collect All of the Device Information
     UIDevice *currentDevice = [UIDevice currentDevice];
-    NSString *model = [currentDevice model];
+    NSString *device = [VDeviceInfo platformString];
     NSString *iosVersion = [currentDevice systemVersion];
     NSString *iosName = [currentDevice systemName];
     
     // Return the Compiled String of Variables
-    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice Type: %@\nOS Version: %@ v%@\nApp Version: %@",model, iosName, iosVersion, appVersion];
+    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice: %@\nOS Version: %@ %@\nApp Version: %@ (%@)",device, iosName, iosVersion, appVersion, appBuildNumber];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
