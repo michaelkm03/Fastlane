@@ -37,7 +37,7 @@
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
 
-@interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 @property (nonatomic, weak) IBOutlet    UIView*         blackBackgroundView;
@@ -52,6 +52,7 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel* captionPlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
+@property (weak, nonatomic) IBOutlet UIView *canvasView;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
@@ -145,6 +146,8 @@ static const CGFloat kShareMargin = 34.0f;
     }
 
     [self configureShareViews];
+    
+    self.textView.layoutManager.delegate = self;
     
     [self textViewDidChange:self.textView];
     self.captionType = self.captionType;
@@ -756,6 +759,29 @@ static const CGFloat kShareMargin = 34.0f;
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
 {
     return (self.captionType == VCaptionTypeNormal) ? YES : NO;
+}
+
+#pragma mark - NSLayoutManagerDelegate
+
+- (void)layoutManager:(NSLayoutManager *)layoutManager
+        textContainer:(NSTextContainer *)textContainer
+didChangeGeometryFromSize:(CGSize)oldSize
+{
+    if (self.captionType != VCaptionTypeMeme) {
+        return;
+    }
+    
+    NSLog(@"%@", NSStringFromCGSize(textContainer.size));
+    
+    
+    CGFloat maxMemeWidth = CGRectGetWidth(self.canvasView.bounds) - 40.0f; // 20 pt margin on each side
+    
+    if (textContainer.size.width < maxMemeWidth) {
+//        [self.typingAttributes setObject:[UIFont fontWithName:kMemeFont size:50.0f] forKey:NSFontAttributeName];
+        self.textView.font = [UIFont fontWithName:kMemeFont size:50.0f];
+//        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+    }
+    
 }
 
 @end

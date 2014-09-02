@@ -437,6 +437,7 @@ and don't forget #hashtags</string>
                         <outlet property="bottomVerticalSpacePlaceholderLabelToContainer" destination="p19-Ss-WbR" id="axS-CF-ns5"/>
                         <outlet property="bottomVerticalSpaceShareButtonsToContainer" destination="2CO-TC-onZ" id="iLl-uI-xK1"/>
                         <outlet property="bottomVerticalSpaceTextViewToCanvasConstraint" destination="U9B-UC-7dG" id="XLE-MI-nia"/>
+                        <outlet property="canvasView" destination="WBZ-Ng-22P" id="alc-m3-XUv"/>
                         <outlet property="captionButton" destination="H0I-mP-7db" id="dSX-xX-ng4"/>
                         <outlet property="captionPlaceholderLabel" destination="Fsz-Xd-hVx" id="rrD-Fh-xLF"/>
                         <outlet property="captionViewHeightConstraint" destination="IJs-Rg-u4e" id="Kf0-Cn-wiM"/>
