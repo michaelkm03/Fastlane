@@ -145,7 +145,9 @@ static const char kVideoPlayerKey;
 - (void)resumeVideo
 {
     if ([self.videoPlayer.player rate] == 0.0)
+    {
         [self.videoPlayer.player play];
+    }
 }
 
 - (void)addCloseButtonToVideoPlayer
@@ -387,7 +389,9 @@ static const char kVideoPlayerKey;
 - (void)videoPlayerWasTapped
 {
     if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]  || [self.sequence isPoll])
+    {
         return;
+    }
     
     [self flipHeaderWithDuration:.25f completion:nil];
 }
@@ -437,7 +441,9 @@ static const char kVideoPlayerKey;
 {
     CMTime currentTime = videoPlayer.currentTime;
     if(CMTIME_IS_INVALID(currentTime) || CMTIME_IS_INDEFINITE(currentTime))
+    {
         return;
+    }
     
     NSDictionary *event = [[VObjectManager sharedManager] dictionaryForSequenceViewWithDate:[NSDate date]
                                                                                      length:CMTimeGetSeconds(currentTime)

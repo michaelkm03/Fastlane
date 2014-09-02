@@ -98,10 +98,14 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
      {
          BOOL valid = YES;
          if ([obj respondsToSelector:@selector(length)])
+         {
              valid = ((NSString*)obj).length;
+         }
          
          if (obj && valid)
+         {
              [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+         }
      }];
     
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
@@ -228,7 +232,9 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 {
     NSDictionary*   colorDictionary =   [self themedValueForKey:key];
     if (nil == colorDictionary)
+    {
         return [UIColor clearColor];
+    }
 
     CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
     CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
@@ -252,8 +258,10 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 - (NSURL *)themedImageURLForKey:(NSString *)key
 {
     NSURL*  url =   [self themedURLForKey:key];
-    if (nil == url)
-        url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
+    if (!url)
+    {
+        url = [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
+    }
     return url ?: [NSURL URLWithString:@""];
 }
 
@@ -269,13 +277,19 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
     CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
     
     if (0 == fontSize)
+    {
         fontSize = [UIFont systemFontSize];
+    }
     
     UIFont* font = [UIFont fontWithName:fontName size:fontSize];
     if (font)
+    {
         return font;
+    }
     else
+    {
         return [UIFont systemFontOfSize:fontSize];
+    }
 }
 
 @end

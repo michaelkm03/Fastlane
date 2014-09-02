@@ -124,7 +124,9 @@
 {
     CMTime playerDuration = [self.videoPlayerViewController playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
+    {
         return;
+    }
     
     double duration = CMTimeGetSeconds(playerDuration);
     if (isfinite(duration))
@@ -133,7 +135,6 @@
         float maxValue = [self.scrubber maximumValue];
         float value = [self.scrubber value];
         double time = duration * (value - minValue) / (maxValue - minValue);
-        
     
         [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(time, [self.videoPlayerViewController.player.currentItem duration].timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
         self.videoPlayerViewController.startSeconds = time;
@@ -240,9 +241,13 @@
         self.navigationItem.leftBarButtonItem.enabled = YES;
         
         if (error)
+        {
             [self showSegmentDownloadFailureAlert];
+        }
         else
+        {
             [self performSegueWithIdentifier:@"toTrim" sender:self];
+        }
     });
 }
 

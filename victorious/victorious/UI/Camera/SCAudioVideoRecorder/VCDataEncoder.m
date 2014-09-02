@@ -50,7 +50,9 @@
 - (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
 {
     if (error)
+    {
         *error = [VCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
+    }
     
     return nil;
 }
@@ -137,8 +139,10 @@
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     if (!self.enabled)
+    {
         return;
-	    
+    }
+	   
     CMTime frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     CMTime realDuration = CMSampleBufferGetDuration(sampleBuffer);
     

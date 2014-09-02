@@ -133,9 +133,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
     if (hasRearCamera)
+    {
         self.camera.cameraDevice = VCCameraDeviceBack;
+    }
     else if (hasFrontCamera)
+    {
         self.camera.cameraDevice = VCCameraDeviceFront;
+    }
     
     [self.camera initialize:^(NSError * audioError, NSError * videoError)
      {
@@ -470,7 +474,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     __block BOOL    results = NO;
     
     if (mediaType.length == 0)
+    {
         return NO;
+    }
     
     NSArray* availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
     
@@ -533,9 +539,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
      {
         // Within the group enumeration block, filter to enumerate just photos.
          if (photo)
+         {
              [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+         }
          else
+         {
              [group setAssetsFilter:[ALAssetsFilter allVideos]];
+         }
          
          if ([group numberOfAssets] > 0)
          {

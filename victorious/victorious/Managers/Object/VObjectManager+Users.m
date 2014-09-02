@@ -149,7 +149,9 @@
     if (![VObjectManager sharedManager].mainUser)
     {
         if (fail)
+        {
             fail(nil, nil);
+        }
         return;
     }
     
@@ -256,7 +258,9 @@
             NSArray* results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
             
             if (success)
+            {
                 success(operation, fullResponse, results);
+            }
         }
     };
 
@@ -277,7 +281,9 @@
         NSArray*    results = @[fullResponse[kVPayloadKey][@"relationship_exists"]];
         
         if (success)
+        {
             success(operation, fullResponse, results);
+        }
     };
     
     return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId intValue], [user.remoteId intValue]]
@@ -349,7 +355,6 @@
          successBlock:fullSuccess
             failBlock:fail];
 }
-
 
 - (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
                                                    token:(NSString *)token

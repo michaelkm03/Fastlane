@@ -62,10 +62,14 @@
     [super viewDidLoad];
     
     if (!_contentViewInLandscapeOffsetCenterX)
+    {
         _contentViewInLandscapeOffsetCenterX = CGRectGetHeight(self.view.frame) + 30.f;
+    }
     
     if (!_contentViewInPortraitOffsetCenterX)
+    {
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
+    }
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.backgroundImageView = ({
@@ -86,7 +90,9 @@
     [self displayController:self.contentViewController frame:self.view.bounds];
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
+    {
         self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+    }
     
     [self addMenuViewControllerMotionEffects];
 }
@@ -146,7 +152,9 @@
     self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
+    {
         self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+    }
     
     [self showMenuViewController];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Side Menu" label:nil value:nil];
@@ -160,15 +168,18 @@
     self.visible = YES;
     [UIView animateWithDuration:self.animationDuration animations:^{
         if (self.scaleContentView)
+        {
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
+        }
         
         self.contentViewController.view.center = CGPointMake((UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? self.contentViewInLandscapeOffsetCenterX : self.contentViewInPortraitOffsetCenterX), self.contentViewController.view.center.y);
         
         self.menuViewController.view.alpha = 1.0f;
         self.menuViewController.view.transform = CGAffineTransformIdentity;
         if (self.scaleBackgroundImageView)
+        {
             self.backgroundImageView.transform = CGAffineTransformIdentity;
-        
+        }
     }
     completion:^(BOOL finished)
     {
@@ -187,10 +198,11 @@
     [UIView animateWithDuration:self.animationDuration animations:^{
         self.contentViewController.view.transform = CGAffineTransformIdentity;
         self.contentViewController.view.frame = self.view.bounds;
-//        self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
         self.menuViewController.view.alpha = 0;
         if (self.scaleBackgroundImageView)
+        {
             self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+        }
 
         if (self.parallaxEnabled)
         {
@@ -206,13 +218,14 @@
     {
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }];
-    
 }
 
 - (void)addContentButton
 {
     if (self.contentButton.superview)
+    {
         return;
+    }
     
     self.contentButton.autoresizingMask = UIViewAutoresizingNone;
     self.contentButton.frame = self.contentViewController.view.bounds;
@@ -246,8 +259,10 @@
 {
     if (self.parallaxEnabled)
     {
-       for (UIMotionEffect *effect in self.contentViewController.view.motionEffects)
-           [self.contentViewController.view removeMotionEffect:effect];
+        for (UIMotionEffect *effect in self.contentViewController.view.motionEffects)
+        {
+            [self.contentViewController.view removeMotionEffect:effect];
+        }
 
         [UIView animateWithDuration:0.2 animations:^{
             UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
@@ -270,7 +285,9 @@
 {
     _backgroundImage = backgroundImage;
     if (self.backgroundImageView)
+    {
         self.backgroundImageView.image = backgroundImage;
+    }
 }
 
 - (void)setContentViewController:(UINavigationController *)contentViewController

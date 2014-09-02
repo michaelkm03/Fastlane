@@ -51,9 +51,13 @@
               [[context containerView] addSubview:contentVC.view];
               
               if (selectedCell)
+              {
                   contentVC.sequence = selectedCell.sequence;
+              }
               else
+              {
                   contentVC.sequence = contentVC.sequence;
+              }
               
               [contentVC animateInWithDuration:.2f
                                     completion:^(BOOL finished)

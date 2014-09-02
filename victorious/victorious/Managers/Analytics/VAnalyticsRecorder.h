@@ -12,14 +12,12 @@
  Analytics event categories
  */
 ///{
-
 extern NSString * const kVAnalyticsEventCategoryNavigation;   ///< e.g. show side menu, open "hot" items, etc
 extern NSString * const kVAnalyticsEventCategoryAppLifecycle; ///< e.g. app launch, background, resume, etc
 extern NSString * const kVAnalyticsEventCategoryUserAccount;  ///< e.g. Log in, log out, change password, etc
 extern NSString * const kVAnalyticsEventCategoryInteraction;  ///< e.g. save profile, like/dislike, etc
 extern NSString * const kVAnalyticsEventCategoryVideo;        ///< Video playback, e.g. first quartile, second quartile, video complete, etc
 extern NSString * const kVAnalyticsEventCategoryCamera;       ///< Actions on the camera screen
-
 ///}
 
 @interface VAnalyticsRecorder : NSObject

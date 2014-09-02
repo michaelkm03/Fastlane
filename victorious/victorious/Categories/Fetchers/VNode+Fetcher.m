@@ -35,24 +35,11 @@
 {
     NSArray* firstAnswers = [self firstAnswers];
     if (![firstAnswers count])
+    {
         return NO;
+    }
 
-//    for (VAnswer* answer in firstAnswers)
-//    {
-//        if (answer.isCorrect)
-//            return NO;
-//    }
     return YES;
 }
-- (BOOL)isQuiz
-{
-//    for (VAnswer* answer in [self firstAnswers])
-//    {
-//        if (answer.isCorrect)
-//            return YES;
-//    }
-    return NO;
-}
-
 
 @end

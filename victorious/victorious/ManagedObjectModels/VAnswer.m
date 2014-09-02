@@ -10,7 +10,6 @@
 #import "VAnswerAction.h"
 #import "VInteraction.h"
 
-
 @implementation VAnswer
 
 @dynamic currency;

@@ -100,9 +100,13 @@
 {
     AVPlayerItem *thePlayerItem = self.videoPlayerViewController.player.currentItem;
     if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
+    {
         return thePlayerItem.duration;
+    }
     else
+    {
         return kCMTimeInvalid;
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -112,7 +116,6 @@
     //  Disable iOS 7 Back Gesture
     return NO;
 }
-
 
 #pragma mark - VRemixVideoRangeSliderDelegate
 
@@ -148,7 +151,9 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     if (self.videoPlayerViewController.isPlaying)
+    {
         [self.videoPlayerViewController.player pause];
+    }
 
     MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Just a moment";
@@ -204,7 +209,9 @@
 {
     // Pause the Current Video If It Is Playing
     if (self.videoPlayerViewController.isPlaying)
+    {
         [self.videoPlayerViewController.player pause];
+    }
 
     // Get the Time of the Current Frame
     CMTime currentTime = CMTimeMakeWithSeconds(CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]), [self.videoPlayerViewController.player currentTime].timescale);

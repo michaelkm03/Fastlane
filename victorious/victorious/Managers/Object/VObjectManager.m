@@ -143,7 +143,9 @@
     {
         //Something has gone horribly wrong, so fail.
         if (failBlock)
+        {
             failBlock(nil, nil);
+        }
         return nil;
     }
     
@@ -187,7 +189,9 @@
             [self defaultErrorHandlingForCode:nsError.code];
             
             if (failBlock)
+            {
                 failBlock(operation, nsError);
+            }
         }
     };
     
@@ -204,7 +208,9 @@
             [self defaultErrorHandlingForCode:rkErrorMessage.errorMessage.integerValue];
             
             if (failBlock)
+            {
                 failBlock(operation, error);
+            }
         }
     };
     
@@ -283,7 +289,9 @@
     {
         //Something has gone horribly wrong, so fail.
         if (failBlock)
+        {
             failBlock(nil, nil);
+        }
         return nil;
     }
     
@@ -325,12 +333,16 @@
         }
 
         if (!error && successBlock)
+        {
             successBlock(operation, mutableResponseObject, nil);
+        }
         else
         {
             [self defaultErrorHandlingForCode:error.code];
             if (failBlock)
+            {
                 failBlock(operation, error);
+            }
         }
     };
     
@@ -344,7 +356,9 @@
 - (NSError*)errorForResponse:(NSDictionary*)responseObject
 {
     if ([responseObject[@"error"] integerValue] == 0)
+    {
         return nil;
+    }
     
     NSString* errorMessage = responseObject[@"message"];
     if ([errorMessage isKindOfClass:[NSArray class]])
@@ -363,7 +377,9 @@
 {
     NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
+    {
         return object;
+    }
     
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
@@ -376,7 +392,9 @@
     }
     
     if (object)
+    {
         [self.objectCache setObject:object forKey:[entityName stringByAppendingString:objectID.stringValue]];
+    }
     
     return object;
 }

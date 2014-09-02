@@ -178,7 +178,9 @@
          for (UIView* view in self.view.subviews)
          {
              if ([view isKindOfClass:[UIImageView class]])
+             {
                  continue;
+             }
              
              if (view.center.y > self.view.center.y)
              {

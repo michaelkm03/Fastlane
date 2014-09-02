@@ -113,9 +113,13 @@
     self.videoPlayerViewController.player.muted = self.shouldMuteAudio;
     
     if (self.shouldMuteAudio)
+    {
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
+    }
     else
+    {
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)playbackRateClicked:(id)sender
@@ -178,7 +182,9 @@
 {
     //If we are already animating just ignore this and continue from where we are.
     if (self.animatingPlayButton)
+    {
         return;
+    }
     
     self.playButton.alpha = 1.0;
     self.playCircle.alpha = 1.0;

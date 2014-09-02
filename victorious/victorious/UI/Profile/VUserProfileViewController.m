@@ -92,9 +92,13 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     if (self.isMe)
+    {
         self.navigationItem.title = NSLocalizedString(@"me", "");
+    }
     else
+    {
         self.navigationItem.title = self.profile.name ? self.profile.name : @"Profile";
+    }
     
     [super viewDidLoad];
    
@@ -108,17 +112,23 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     self.refreshControl.layer.zPosition = self.tableView.tableHeaderView.layer.zPosition + 1;
     
     if (self.isMe)
+    {
         [self addCreateButton];
+    }
     else if (!self.isMe)
+    {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
+    }
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     if (![VObjectManager sharedManager].mainUser)
+    {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -132,9 +142,13 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
  
     UIImage*    defaultBackgroundImage;
     if (self.backgroundImageView.image)
+    {
         defaultBackgroundImage = self.backgroundImageView.image;
+    }
     else
+    {
         defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
+    }
     
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -153,10 +167,14 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     for (UIViewController* vc in self.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VInboxContainerViewController class]])
+        {
             fromInbox = YES;
+        }
     }
     if (fromInbox)
+    {
         self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 - (void)dealloc
@@ -268,8 +286,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     
     if (self.isMe)
+    {
         [self performSegueWithIdentifier:@"toEditProfile" sender:self];
-    
+    }
     else
     {
         VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
@@ -388,7 +407,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                        context:(void *)context
 {
     if (context != VUserProfileViewContext)
+    {
         return;
+    }
     
     if (object == self.currentFilter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {

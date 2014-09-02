@@ -56,6 +56,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Comment
+
 - (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
@@ -110,8 +111,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VComment* comment in resultObjects)
         {
-            if (!comment.user )
+            if (!comment.user)
+            {
                 [nonExistantUsers addObject:comment.userId];
+            }
         }
         if ([nonExistantUsers count])
         {
@@ -378,7 +381,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     if (refresh)
@@ -430,7 +435,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     if (refresh)
@@ -485,7 +492,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     if (refresh)
@@ -499,6 +508,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Sequence
+
 - (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
@@ -587,6 +597,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Filter Fetchers
+
 - (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence
 {
     NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];

@@ -36,7 +36,9 @@ static NSString* const VFacebookActivityType = @"com.victorious.facebook";
     for (id item in activityItems)
     {
         if ([item isKindOfClass:[VSequence class]])
+        {
             return YES;
+        }
     }
     
     return NO;

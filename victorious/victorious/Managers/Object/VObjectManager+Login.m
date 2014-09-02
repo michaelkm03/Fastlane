@@ -35,14 +35,20 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+        {
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
+        }
         
         NSDictionary* videoQuality = payload[@"video_quality"];
         if ([videoQuality isKindOfClass:[NSDictionary class]])
+        {
             [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
+        }
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self GET:@"/api/init"
@@ -71,7 +77,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/login/facebook"
@@ -91,7 +99,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/account/create/via_facebook"
@@ -100,6 +110,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
          successBlock:fullSuccess
             failBlock:failed];
 }
+
 #pragma mark - Twitter
 
 - (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
@@ -117,7 +128,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/login/twitter"
@@ -141,7 +154,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/account/create/via_twitter"
@@ -163,7 +178,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/login"
@@ -187,7 +204,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/account/create"
@@ -209,15 +228,25 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     if (email)
+    {
         [params setObject:email forKey:@"email"];
+    }
     if (password)
+    {
         [params setObject:password forKey:@"password"];
+    }
     if (name)
+    {
         [params setObject:name forKey:@"name"];
+    }
     if (location)
+    {
         [params setObject:location forKey:@"profile_location"];
+    }
     if (tagline)
+    {
         [params setObject:tagline forKey:@"profile_tagline"];
+    }
     
     NSDictionary* allURLs = nil;
     if (profileImageURL)
@@ -281,7 +310,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (RKManagedObjectRequestOperation *)logout
 {
     if (![self isAuthorized]) //foolish mortal you need to log in to log out...
+    {
         return nil;
+    }
 
     RKManagedObjectRequestOperation* operation = [self GET:@"/api/logout"
               object:nil
@@ -340,7 +371,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             NSArray* results = @[fullResponse[kVPayloadKey][@"device_token"]];
             
             if (success)
+            {
                 success(operation, fullResponse, results);
+            }
         }
     };
 

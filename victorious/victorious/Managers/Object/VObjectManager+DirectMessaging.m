@@ -56,7 +56,9 @@
         for (VUser* user in resultObjects)
         {
             if ([user.remoteId isEqualToNumber:self.mainUser.remoteId])
+            {
                 continue;
+            }
             
             [self conversationWithUser:user
                           successBlock:success
@@ -90,10 +92,14 @@
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if ([resultObjects firstObject])
+        {
             self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
+        }
 
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self GET:@"/api/message/unread_message_count"
@@ -113,7 +119,6 @@
          successBlock:success
             failBlock:fail];
 }
-
 
 - (RKManagedObjectRequestOperation *) flagConversation:(VConversation*)conversation
                                             successBlock:(VSuccessBlock)success

@@ -39,7 +39,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     if (!sequenceID)
     {
         if (fail)
+        {
             fail(nil, nil);
+        }
         return nil;
     }
     NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
@@ -70,7 +72,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 }
 
 #pragma mark - Flag
-
 
 - (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
                                      successBlock:(VSuccessBlock)success
@@ -119,7 +120,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
             failBlock:fail];
     
 }
+
 #pragma mark - Sequence Vote Methods
+
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
                                         voteTypes:(NSArray*)voteTypes
                                        votecounts:(NSArray*)voteCounts
@@ -146,7 +149,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                       failBlock:(VFailBlock)fail;
 {
     if (!poll || !answer)
+    {
         return nil;
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -160,7 +165,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         [self.mainUser.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self POST:@"/api/pollresult/create"
@@ -179,7 +186,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     user = user ?: self.mainUser;
     
     if (!user)
+    {
         return nil;
+    }
 
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
@@ -196,7 +205,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         [[NSNotificationCenter defaultCenter] postNotificationName:kPollResultsLoaded object:nil];
         
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self GET:path
@@ -211,7 +222,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                                   failBlock:(VFailBlock)fail
 {
     if (!sequence)
+    {
         return nil;
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -226,7 +239,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         [context saveToPersistentStore:nil];
       
         if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId.stringValue]

@@ -86,9 +86,13 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if (0 == component)
+    {
         return self.numbers.count;
+    }
     else
+    {
         return self.units.count;
+    }
 }
 
 #pragma mark - UIPickerViewDelegate
@@ -96,20 +100,28 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     if (0 == component)
+    {
         return self.numbers[row];
+    }
     else
     {
         if (1 == self.selectedValue)
+        {
             return self.units[row];
+        }
         else
+        {
             return self.unitsPlural[row];
+        }
     }
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if ([self.pickerDelegate respondsToSelector:@selector(pickerTextField:didSelectRow:inComponent:)])
+    {
         [self.pickerDelegate pickerTextField:self didSelectRow:row inComponent:component];
+    }
     
     if (0 == component)
     {
@@ -117,7 +129,9 @@
         [pickerView reloadComponent:1];
     }
     else
+    {
         self.selectedCalendarUnit = row;
+    }
 }
 
 #pragma mark - Actions
@@ -129,20 +143,32 @@
     NSCalendar*         calendar    =   [NSCalendar autoupdatingCurrentCalendar];
     NSDateComponents*   components  =   [[NSDateComponents alloc] init];
     if (self.selectedCalendarUnit == 0)
+    {
         components.minute = self.selectedValue;
+    }
     else if (self.selectedCalendarUnit == 1)
+    {
         components.hour = self.selectedValue;
+    }
     else if (self.selectedCalendarUnit == 2)
+    {
         components.day = self.selectedValue;
+    }
     else if (self.selectedCalendarUnit == 3)
+    {
         components.week = self.selectedValue;
+    }
     else if (self.selectedCalendarUnit == 4)
+    {
         components.month = self.selectedValue;
+    }
     
-    NSDate*             targetDate  =   [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    NSDate *targetDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     if ([self.pickerDelegate respondsToSelector:@selector(pickerTextField:didSelectExpirationDate:)])
+    {
         [self.pickerDelegate pickerTextField:self didSelectExpirationDate:targetDate];
+    }
 }
 
 @end

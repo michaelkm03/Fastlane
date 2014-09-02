@@ -64,7 +64,9 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
+    {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
+    }
     
     return YES;
 }

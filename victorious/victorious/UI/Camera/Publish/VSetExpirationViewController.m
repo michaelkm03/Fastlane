@@ -139,7 +139,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.firstOtherButtonIndex != buttonIndex)
+    {
         [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (IBAction)reset:(id)sender
@@ -174,7 +176,9 @@
     if (nil != self.expirationDate)
     {
         if ([self.delegate respondsToSelector:@selector(setExpirationViewController:didSelectDate:)])
+        {
             [self.delegate setExpirationViewController:self didSelectDate:self.expirationDate];
+        }
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -186,15 +190,21 @@
     self.onButton.userInteractionEnabled = NO;
 
     if (self.useAfterMode)
+    {
         [self.expirationPicker becomeFirstResponder];
+    }
     else
+    {
         [self.expirationDatePicker becomeFirstResponder];
+    }
 }
 
 - (void)setExpirationDate:(NSDate *)expirationDate
 {
     if([expirationDate isEqualToDate:_expirationDate])
+    {
         return;
+    }
     
     _expirationDate = expirationDate;
     
@@ -244,6 +254,5 @@
 {
     self.expirationDate = expirationDate;
 }
-
 
 @end

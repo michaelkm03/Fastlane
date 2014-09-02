@@ -134,7 +134,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (0 == indexPath.section && 1 == indexPath.row)
+    {
         [self sendHelp:self];
+    }
 }
 
 #pragma mark - Actions
@@ -186,9 +188,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
     {
         if (self.showChromeCastButton)
+        {
             return self.tableView.rowHeight;
+        }
         else
+        {
             return 0;
+        }
     }
     else if (kSettingsSectionIndex == indexPath.section && kServerEnvironmentButtonIndex == indexPath.row)
     {
@@ -204,9 +210,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
         if ([VObjectManager sharedManager].isAuthorized)
+        {
             return self.tableView.rowHeight;
+        }
         else
+        {
             return 0;
+        }
     }
     
     return self.tableView.rowHeight;

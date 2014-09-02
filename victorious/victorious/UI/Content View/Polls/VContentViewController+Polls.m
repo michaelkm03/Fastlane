@@ -309,12 +309,17 @@
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     if ([answerId isEqualToNumber:((VAnswer*)[answers firstObject]).remoteId])
+    {
         return self.firstResultView;
-    
+    }
     else if ([answerId isEqualToNumber:((VAnswer*)[answers lastObject]).remoteId])
+    {
         return self.secondResultView;
-    
-    else return nil;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end

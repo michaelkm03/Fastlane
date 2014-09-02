@@ -175,7 +175,9 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 - (void)prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error
 {
 	if (fileUrl == nil)
+    {
 		[NSException raise:@"Invalid argument" format:@"FileUrl must be not nil"];
+    }
 
 	dispatch_sync(self.dispatch_queue, ^{
 		[self resetInternal];
@@ -513,7 +515,9 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 - (void)record
 {
 	if (![self isPrepared])
+    {
 		[NSException raise:@"Recording not previously started" format:@"Recording should be started using startRecording before trying to resume it"];
+    }
 	
     if (self.playPlaybackAssetWhenRecording)
     {

@@ -124,7 +124,9 @@ static const NSInteger kCharacterLimit = 255;
     self.mediaURL = nil;
     
     if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
+    {
         [self.delegate didCancelKeyboardBar:self];
+    }
 }
 
 - (void)cameraPressed:(id)sender
@@ -203,7 +205,9 @@ static const NSInteger kCharacterLimit = 255;
             case UIReturnKeySend:
                 [textView resignFirstResponder];
                 if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
+                {
                     [self.delegate didCancelKeyboardBar:self];
+                }
                 return NO;
                 break;
             case UIReturnKeyDefault:
