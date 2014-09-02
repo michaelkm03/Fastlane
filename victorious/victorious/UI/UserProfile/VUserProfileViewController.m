@@ -130,7 +130,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [super viewWillAppear:animated];
     
     ((VUserProfileHeaderView*)self.tableView.tableHeaderView).user = self.profile;
-    self.tableView.contentOffset = CGPointMake(0, -self.tableView.contentInset.top);
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -372,7 +371,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                           delay:0.0f
          usingSpringWithDamping:0.95f
           initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionLayoutSubviews
+                        options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
          header.frame = CGRectMake(0,
@@ -381,8 +380,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                    kVSmallUserHeaderHeight);
          [header layoutIfNeeded];
          self.tableView.tableHeaderView = header;
-         self.tableView.contentOffset = CGPointMake(0, -64);
-     } completion:nil];
+         self.tableView.contentOffset = CGPointMake(0,
+                                                    - CGRectGetHeight(self.navigationController.navigationBar.bounds) -
+                                                    CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]));
+     } completion:^(BOOL finished)
+    {
+        if (duration == 0.0f)
+        {
+            // Forcing content offset to be neutral when not animating. Seemed like UITableViewController was setting contentoffset between the animation block and this completion.
+            self.tableView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
+        }
+     }];
 }
 
 #pragma mark - KVO
