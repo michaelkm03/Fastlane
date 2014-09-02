@@ -33,7 +33,7 @@
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
-    self.cancelButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
     self.cancelButton.layer.cornerRadius = 3.0;
     self.cancelButton.backgroundColor = [UIColor clearColor];
@@ -42,7 +42,7 @@
     
     self.updateButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.updateButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.updateButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    [self.updateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.passwordTextField.delegate  =   self;
     self.confirmPasswordTextField.delegate  =   self;
