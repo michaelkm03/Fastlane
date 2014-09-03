@@ -148,26 +148,34 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 - (IBAction)pressedEditProfile:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(editProfileHandler)])
+    {
         [self.delegate editProfileHandler];
+    }
 }
 
 - (IBAction)pressedFollowers:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(followerHandler)])
+    {
         [self.delegate followerHandler];
+    }
 }
 
 -(IBAction)pressedFollowering:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(followingHandler)])
+    {
         [self.delegate followingHandler];
+    }
 }
 
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context != VProfileHeaderContext)
+    {
         return;
+    }
     
     if (object == self.editProfileButton && [keyPath isEqualToString:@"selected"])
     {

@@ -81,16 +81,22 @@
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.loginType != kVLoginTypeEmail)
+    {
         self.usernameTextField.text = self.profile.name;
+    }
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
     self.locationTextField.delegate = self;
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.profile.location)
+    {
         self.locationTextField.text = self.profile.location;
+    }
     else
+    {
         self.locationTextField.text = @"";
+    }
     self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.355 alpha:1.0]}];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
     {
@@ -104,11 +110,14 @@
 
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    if (self.profile.tagline) {
+    if (self.profile.tagline)
+    {
         self.taglineTextView.text = self.profile.tagline;
     }
     if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
         [self textViewDidChange:self.taglineTextView];
+    }
     
     // Create Accessory Views
     [self createInputAccessoryView];
@@ -210,9 +219,13 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.usernameTextField])
+    {
         [self.locationTextField becomeFirstResponder];
+    }
     else if ([textField isEqual:self.locationTextField])
+    {
         [self.taglineTextView becomeFirstResponder];
+    }
     
     return NO;
 }
@@ -235,7 +248,6 @@
 
 -(void)characterCountdown:(id)sender
 {
-    
     self.usernameCountDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength - self.usernameTextField.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
 }
@@ -332,10 +344,14 @@
         NSMutableDictionary*    locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
 
         if (mapLocation.locality)
+        {
             [locationDictionary setObject:mapLocation.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+        }
 
         if (mapLocation.administrativeArea)
+        {
             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+        }
 
         [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
         NSString *city = [locationDictionary valueForKey:@"City"];
