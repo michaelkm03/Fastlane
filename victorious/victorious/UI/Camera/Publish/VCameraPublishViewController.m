@@ -441,6 +441,23 @@ static const CGFloat kShareMargin = 34.0f;
     UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
     for (UIButton* button in self.captionButtons)
     {
+        if (button == self.memeButton)
+        {
+            // Meme is center we only want border on top and bottom
+            CALayer *topBorder = [CALayer layer];
+            topBorder.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
+            topBorder.borderWidth = 1;
+            topBorder.frame = CGRectMake(0, 0, CGRectGetWidth(button.frame)+1, 1);
+            
+            CALayer *bottomBorder = [CALayer layer];
+            bottomBorder.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
+            bottomBorder.borderWidth = 1;
+            bottomBorder.frame = CGRectMake(0, CGRectGetHeight(button.frame)-1, CGRectGetWidth(button.frame)+1, 1);
+            
+            [button.layer addSublayer:topBorder];
+            [button.layer addSublayer:bottomBorder];
+            continue;
+        }
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
         [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
         [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
