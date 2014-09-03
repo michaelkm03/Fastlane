@@ -126,6 +126,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     // Configure UI
     self.captionPlaceholderLabel.userInteractionEnabled = NO;
+    [self configurePlaceholderLabels];
     [self configureInputAccessoryViews];
     [self configurePublishButton];
     [self configureShareLabel];
@@ -346,28 +347,36 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)configurePlaceholderLabels
 {
     //TODO: Implement
-    //    if (self.captionType == VCaptionTypeNormal)
-    //    {
-    //        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-    //            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-    //
-    //            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    //            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
-    //            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-    //
-    //            return mutableAttributedString;
-    //        }];
-    //        return;
-    //    }
-    //
-    //
-    //    if (self.captionType == VCaptionTypeMeme)
-    //    {
-    //        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
-    //    }
-    //
-    //    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
-    //                                                                                  attributes:placeholderAttributes];
+    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"AddDescription", @"")
+                                                                                  attributes:[self captionAttributes]];
+    self.memePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
+                                                                               attributes:[self memeAttributesForDesiredSize:self.currentMemeFontSize]];
+    self.quotePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
+                                                                                attributes:[self quoteAttributes]];
+    
+    [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+
+            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+
+            return mutableAttributedString;
+        }];
+//    if (self.captionType == VCaptionTypeNormal)
+//    {
+//
+//        return;
+//    }
+//
+//
+//    if (self.captionType == VCaptionTypeMeme)
+//    {
+//        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
+//    }
+//
+//    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
+//                                                                                  attributes:placeholderAttributes];
 }
 
 - (void)configureShareLabel
