@@ -28,8 +28,6 @@
 
 @property (nonatomic, weak) IBOutlet UIButton* createButton;
 
-@property (nonatomic, getter = streamTable) VStreamTableViewController* streamTable;
-
 @end
 
 @implementation VStreamContainerViewController

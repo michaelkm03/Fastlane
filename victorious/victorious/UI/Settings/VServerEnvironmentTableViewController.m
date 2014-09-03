@@ -71,7 +71,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    for (NSInteger n = 0; n < self.serverEnvironments.count; n++)
+    for (NSUInteger n = 0; n < self.serverEnvironments.count; n++)
     {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0]];
         cell.accessoryType = UITableViewCellAccessoryNone;

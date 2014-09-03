@@ -47,7 +47,6 @@ typedef UIView View;
 @synthesize delegate;
 @synthesize previewLayer;
 @synthesize flashMode = _flashMode;
-@synthesize isFocusSupported = _isFocusSupported;
 @synthesize cameraDevice = _cameraDevice;
 
 

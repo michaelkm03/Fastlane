@@ -201,7 +201,7 @@
     VAnswer* chosenAnswer;
     
     NSInteger tag = ((UIButton*)sender).tag;
-    if (tag >= [self.answers count])
+    if ((NSUInteger)tag >= [self.answers count])
     {
         chosenAnswer = [self.answers lastObject];
     }

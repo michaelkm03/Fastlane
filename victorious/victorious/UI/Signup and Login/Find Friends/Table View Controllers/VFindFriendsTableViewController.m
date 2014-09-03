@@ -202,7 +202,7 @@
 
 - (void)selectAllRows
 {
-    for (NSInteger n = 0; n < self.users.count; n++)
+    for (NSUInteger n = 0; n < self.users.count; n++)
     {
         [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
