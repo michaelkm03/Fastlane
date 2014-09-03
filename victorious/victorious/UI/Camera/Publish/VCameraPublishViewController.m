@@ -214,12 +214,12 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
-    [self updateTextViewsAndPlaceholderLabels];
+    [self updateUI];
 }
 
 #pragma mark - Internal Methods
 
-- (void)updateTextViewsAndPlaceholderLabels
+- (void)updateUI
 {
     [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop)
      {
@@ -229,6 +229,8 @@ static const CGFloat kShareMargin = 34.0f;
      {
          inputTextView.hidden = YES;
      }];
+    
+    self.blackBackgroundView.hidden = YES;
     
     UITextView *changedTextView = nil;
     switch (self.captionType)
@@ -271,6 +273,7 @@ static const CGFloat kShareMargin = 34.0f;
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
+            self.blackBackgroundView.hidden = NO;
             changedTextView = self.quoteTextView;
             self.quoteTextView.textAlignment = NSTextAlignmentCenter;
             self.quotePlaceholderLabel.hidden = (([self.quoteTextView.text length] > 0) || [self.quoteTextView isFirstResponder]);
@@ -776,7 +779,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self updateTextViewsAndPlaceholderLabels];
+    [self updateUI];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

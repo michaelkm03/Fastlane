@@ -274,8 +274,8 @@ and don't forget #hashtags</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="2Pn-GI-xUc" userLabel="Quote Placeholder Label" customClass="TTTAttributedLabel">
-                                        <rect key="frame" x="20" y="134" width="280" height="53"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="261" translatesAutoresizingMaskIntoConstraints="NO" id="2Pn-GI-xUc" userLabel="Quote Placeholder Label" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="-31" y="-45" width="261" height="53"/>
                                         <string key="text">Add a description...
 and don't forget #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
@@ -356,7 +356,7 @@ and don't forget #hashtags</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0I-mP-7db">
-                                        <rect key="frame" x="0.0" y="0.0" width="106" height="61"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="107" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Caption">
                                             <color key="titleColor" red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
@@ -367,11 +367,8 @@ and don't forget #hashtags</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Xc-ND-ZII">
-                                        <rect key="frame" x="106" y="0.0" width="108" height="61"/>
+                                        <rect key="frame" x="107" y="0.0" width="106" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="108" id="Lpm-jr-o8g"/>
-                                        </constraints>
                                         <state key="normal" title="Meme">
                                             <color key="titleColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -381,7 +378,7 @@ and don't forget #hashtags</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byc-3g-q5D">
-                                        <rect key="frame" x="214" y="0.0" width="106" height="61"/>
+                                        <rect key="frame" x="213" y="0.0" width="107" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Quote">
                                             <color key="titleColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -395,6 +392,7 @@ and don't forget #hashtags</string>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="byc-3g-q5D" secondAttribute="trailing" id="20f-xL-P9O"/>
+                                    <constraint firstItem="H0I-mP-7db" firstAttribute="width" secondItem="0Xc-ND-ZII" secondAttribute="width" id="4uB-kl-Cci"/>
                                     <constraint firstAttribute="centerX" secondItem="0Xc-ND-ZII" secondAttribute="centerX" id="BqK-YL-wNc"/>
                                     <constraint firstItem="H0I-mP-7db" firstAttribute="top" secondItem="bpa-qh-HnJ" secondAttribute="top" id="EOI-vj-d5n"/>
                                     <constraint firstAttribute="height" constant="61" id="IJs-Rg-u4e"/>
@@ -405,6 +403,7 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="bottom" secondItem="byc-3g-q5D" secondAttribute="bottom" id="UPh-V7-9HV"/>
                                     <constraint firstItem="0Xc-ND-ZII" firstAttribute="leading" secondItem="H0I-mP-7db" secondAttribute="trailing" id="W7a-7z-QGs"/>
                                     <constraint firstItem="H0I-mP-7db" firstAttribute="leading" secondItem="bpa-qh-HnJ" secondAttribute="leading" id="fnW-vs-zYw"/>
+                                    <constraint firstItem="byc-3g-q5D" firstAttribute="width" secondItem="0Xc-ND-ZII" secondAttribute="width" id="jEE-aO-1tO"/>
                                     <constraint firstItem="0Xc-ND-ZII" firstAttribute="top" secondItem="bpa-qh-HnJ" secondAttribute="top" id="u1b-Kq-27q"/>
                                 </constraints>
                             </view>
