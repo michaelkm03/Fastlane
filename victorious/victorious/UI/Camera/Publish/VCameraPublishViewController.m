@@ -78,8 +78,6 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *bottomVerticalSpaceShareButtonsToContainer;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *shareViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *captionViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *bottomVerticalSpacePlaceholderLabelToContainer;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *centerYAlignmentPlaceholderLabelToContainer;
 
 // Input Accessories
 @property (nonatomic, weak)             VContentInputAccessoryView      *captionInputAccessoryView;
@@ -122,8 +120,6 @@ static const CGFloat kShareMargin = 34.0f;
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
 
     self.userEnteredText = @"";
-
-    [self setDefaultCaptionText];
     
     // Configure UI
     self.captionPlaceholderLabel.userInteractionEnabled = NO;
@@ -224,28 +220,33 @@ static const CGFloat kShareMargin = 34.0f;
 {
     _captionType = captionType;
     
-    // Adjust placeholder label
+//TODO: show/hide textViews/labels appropriately.
     switch (captionType) {
         case VCaptionTypeNormal:
-            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+
             break;
         case VCaptionTypeMeme:
-            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
             break;
         case VCaptionTypeQuote:
-            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
             break;
     }
-    
-    [self setDefaultCaptionText];
     
     [self.view layoutIfNeeded];
 }
 
 #pragma mark - Internal Methods
+
+- (BOOL)isTextLengthValid
+{
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+            return (self.captionTextView.text.length > 2);
+        case VCaptionTypeMeme:
+            return (self.memeTextView.text.length > 2);
+        case VCaptionTypeQuote:
+            return (self.quoteTextView.text.length > 2);
+    }
+}
 
 - (NSDictionary *)captionAttributes
 {
@@ -298,30 +299,58 @@ static const CGFloat kShareMargin = 34.0f;
              };
 }
 
-- (void)setDefaultCaptionText
+- (void)clearAutoCorrectDots
 {
-    if (self.captionType == VCaptionTypeNormal)
-    {
-        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-            
-            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
-            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-            
-            return mutableAttributedString;
-        }];
-        return;
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+        {
+            NSString *currentText = self.captionTextView.text;
+            self.captionTextView.text = @"";
+            self.captionTextView.text = currentText;
+        }
+            break;
+        case VCaptionTypeMeme:
+        {
+            NSString *currentText = self.memeTextView.text;
+            self.memeTextView.text = @"";
+            self.memeTextView.text = currentText;
+        }
+            break;
+        case VCaptionTypeQuote:
+        {
+            NSString *currentText = self.quoteTextView.text;
+            self.quoteTextView.text = @"";
+            self.quoteTextView.text = currentText;
+        }
+            break;
     }
-    
-    NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
-    if (self.captionType == VCaptionTypeMeme)
-    {
-        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
-    }
-    
-    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
-                                                                                  attributes:placeholderAttributes];
+}
+
+- (void)configurePlaceholderLabels
+{
+//TODO: Implement
+//    if (self.captionType == VCaptionTypeNormal)
+//    {
+//        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+//            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+//            
+//            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+//            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+//            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+//            
+//            return mutableAttributedString;
+//        }];
+//        return;
+//    }
+//    
+//
+//    if (self.captionType == VCaptionTypeMeme)
+//    {
+//        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
+//    }
+//    
+//    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
+//                                                                                  attributes:placeholderAttributes];
 }
 
 - (void)configureShareLabel
@@ -354,6 +383,7 @@ static const CGFloat kShareMargin = 34.0f;
     memeInputAccessory.textInputView = self.memeTextView;
     memeInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     memeInputAccessory.delegate = self;
+    memeInputAccessory.hashtagButton.enabled = NO;
     self.memeInputAccessoryView = memeInputAccessory;
     self.memeTextView.inputAccessoryView = memeInputAccessory;
     
@@ -362,6 +392,7 @@ static const CGFloat kShareMargin = 34.0f;
     quoteInputAccessory.textInputView = self.quoteTextView;
     quoteInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     quoteInputAccessory.delegate = self;
+    quoteInputAccessory.hashtagButton.enabled = NO;
     self.quoteInputAccessoryView = quoteInputAccessory;
     self.quoteTextView.inputAccessoryView = quoteInputAccessory;
 }
@@ -454,17 +485,14 @@ static const CGFloat kShareMargin = 34.0f;
     if (sender == self.memeButton)
     {
         self.captionType = VCaptionTypeMeme;
-        self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
     else if (sender == self.quoteButton)
     {
         self.captionType = VCaptionTypeQuote;
-        self.contentInputAccessoryView.hashtagButton.enabled = NO;
     }
     else if (sender == self.captionButton)
     {
         self.captionType = VCaptionTypeNormal;
-        self.contentInputAccessoryView.hashtagButton.enabled = YES;
     }
 }
 
@@ -478,12 +506,22 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)startEditing:(id)sender
 {
-    [self.textView becomeFirstResponder];
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+            [self.captionTextView becomeFirstResponder];
+            break;
+        case VCaptionTypeMeme:
+            [self.memeTextView becomeFirstResponder];
+            break;
+        case VCaptionTypeQuote:
+            [self.quoteTextView becomeFirstResponder];
+            break;
+    }
 }
 
 - (IBAction)publish:(id)sender
 {
-    if (self.textView.text.length < 2)
+    if (![self isTextLengthValid])
     {
         UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
                                                            message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
@@ -494,21 +532,26 @@ static const CGFloat kShareMargin = 34.0f;
         return;
     }
 
-    // Clear out any auto-correct dots
-    self.textView.autocorrectionType = UITextAutocorrectionTypeNo;
-    NSString *currentText = self.textView.text;
-    self.textView.text = @"";
-    self.textView.text = currentText;
+    [self clearAutoCorrectDots];
 
     UIImage* snapshot;
-    if (self.captionType == VCaptionTypeMeme)
-    {
-        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+            // NO Snapshotting on caption
+            break;
+        case VCaptionTypeMeme:
+            snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView
+                                                          subViews:@[self.memeTextView]];
+            break;
+        case VCaptionTypeQuote:
+            snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView
+                                                          subViews:@[self.blackBackgroundView, self.quoteTextView]];
+            break;
+            
+        default:
+            break;
     }
-    else if (self.captionType == VCaptionTypeQuote)
-    {
-        snapshot = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.blackBackgroundView, self.textView]];
-    }
+
     if (snapshot)
     {
         NSURL *originalMediaURL = self.mediaURL;
@@ -539,8 +582,21 @@ static const CGFloat kShareMargin = 34.0f;
     BOOL facebookSelected = self.shareToFacebookController.selected;
     BOOL twitterSelected = self.shareToTwitterController.selected;
     
-    [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
-                                            description:self.textView.text
+    NSString *finalText = @"";
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+            finalText = self.captionTextView.text;
+            break;
+        case VCaptionTypeMeme:
+            finalText = self.memeTextView.text;
+            break;
+        case VCaptionTypeQuote:
+            finalText = self.quoteTextView.text;
+            break;
+    }
+    
+    [[VObjectManager sharedManager] uploadMediaWithName:finalText
+                                            description:finalText
                                             captionType:self.captionType
                                               expiresAt:self.expirationDateString
                                            parentNodeId:@(self.parentID)
@@ -645,7 +701,10 @@ static const CGFloat kShareMargin = 34.0f;
         }
     }];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Content" label:self.textView.text value:nil];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
+                                                                 action:@"Post Content"
+                                                                  label:finalText
+                                                                  value:nil];
     
     if (self.saveToCameraController.selected && !self.didSelectAssetFromLibrary)
     {
@@ -666,14 +725,6 @@ static const CGFloat kShareMargin = 34.0f;
     }
 }
 
-#pragma mark - VSetExpirationDelegate
-
-- (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
-{
-    self.expirationDateString = [self stringForRFC2822Date:expirationDate];
-    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle]];
-}
-
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -683,20 +734,23 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-// TODO: proper resizing of content based on spec
-    
-    if (self.captionType == VCaptionTypeMeme)
+    switch (self.captionType)
     {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
-                                                                       attributes:self.typingAttributes];
-    }
-    else if ((self.captionType == VCaptionTypeQuote) || (self.captionType == VCaptionTypeNormal))
-    {
-        self.textView.text = self.userEnteredText;
-    }
-    else
-    {
-        self.captionPlaceholderLabel.hidden = (([textView.text length] > 0) || [self.textView isFirstResponder]);
+        case VCaptionTypeNormal:
+            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+                                                                                  attributes:[self captionAttributes]];
+            self.captionPlaceholderLabel.hidden = (([self.captionTextView.text length] > 0) || [self.captionTextView isFirstResponder]);
+            break;
+        case VCaptionTypeMeme:
+            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
+                                                                           attributes:[self memeAttributesForDesiredSize:30.0f]];
+            self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
+            break;
+        case VCaptionTypeQuote:
+            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+                                                                                attributes:[self quoteAttributes]];
+            self.quoteTextView.hidden = (([self.quoteTextView.text length] > 0) || [self.quoteTextView isFirstResponder]);
+            break;
     }
 }
 
@@ -711,7 +765,7 @@ static const CGFloat kShareMargin = 34.0f;
         return NO;
     }
     
-    if (newString.length > self.contentInputAccessoryView.maxCharacterLength)
+    if (newString.length > self.memeInputAccessoryView.maxCharacterLength)
     {
         return NO;
     }
@@ -723,9 +777,17 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
-    
-    [self setDefaultCaptionText];
+    switch (self.captionType) {
+        case VCaptionTypeNormal:
+            self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
+            break;
+        case VCaptionTypeMeme:
+            self.memePlaceholderLabel.hidden = ([textView.text length] > 0);
+            break;
+        case VCaptionTypeQuote:
+            self.quotePlaceholderLabel.hidden = ([textView.text length] > 0);
+            break;
+    }
 }
 
 #pragma mark - Notification Handlers

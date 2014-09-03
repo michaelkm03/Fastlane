@@ -10,6 +10,6 @@
 
 @interface NSString (RFC2822Date)
 
-- (NSString *)stringForRFC2822Date:(NSDate *)date;
++ (NSString *)stringForRFC2822Date:(NSDate *)date;
 
 @end

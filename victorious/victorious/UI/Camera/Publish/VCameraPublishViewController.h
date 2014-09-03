@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-//#import "VConstants.h"
+#import "VConstants.h"
 
 @interface VCameraPublishViewController : UIViewController
 

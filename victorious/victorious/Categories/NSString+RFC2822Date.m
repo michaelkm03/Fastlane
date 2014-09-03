@@ -10,7 +10,7 @@
 
 @implementation NSString (RFC2822Date)
 
-- (NSString *)stringForRFC2822Date:(NSDate *)date
++ (NSString *)stringForRFC2822Date:(NSDate *)date
 {
     static NSDateFormatter *sRFC2822DateFormatter = nil;
     

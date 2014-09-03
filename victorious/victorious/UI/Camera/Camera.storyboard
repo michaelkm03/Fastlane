@@ -479,7 +479,6 @@ and don't forget #hashtags</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="blackBackgroundView" destination="Aa5-gI-eua" id="qQX-55-ZvQ"/>
-                        <outlet property="bottomVerticalSpacePlaceholderLabelToContainer" destination="p19-Ss-WbR" id="axS-CF-ns5"/>
                         <outlet property="bottomVerticalSpaceShareButtonsToContainer" destination="2CO-TC-onZ" id="iLl-uI-xK1"/>
                         <outlet property="canvasView" destination="WBZ-Ng-22P" id="alc-m3-XUv"/>
                         <outlet property="captionButton" destination="H0I-mP-7db" id="dSX-xX-ng4"/>
