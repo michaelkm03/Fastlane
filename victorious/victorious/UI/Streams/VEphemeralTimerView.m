@@ -223,8 +223,10 @@
 
 - (void)animationDidStop:(CABasicAnimation *)theAnimation finished:(BOOL)flag
 {
-    if(!flag)
+    if (!flag)
+    {
         return;
+    }
     
     [self updateLabels];
     

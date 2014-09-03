@@ -42,11 +42,14 @@
     for (VInteraction* interaction in self.interactions)
     {
         if (interaction.timeout.floatValue > self.lastInteractionTimeout)
+        {
             self.lastInteractionTimeout = interaction.timeout.floatValue / 1000;
+        }
         
         if (interaction.startTime.integerValue == -1)
+        {
             [self.delegate firedInteraction:interaction];
-        
+        }
     }
 }
 

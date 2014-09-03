@@ -21,9 +21,13 @@
 {
     UIViewController *controller;
     if (self.presenting)
+    {
         controller = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    }
     else
+    {
         controller = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    }
     
     CGRect frame = CGRectOffset([self rectForDismissedState:transitionContext], 0, -CGRectGetHeight(controller.view.bounds));
     return frame;

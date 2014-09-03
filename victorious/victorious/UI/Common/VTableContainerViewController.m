@@ -108,7 +108,9 @@
 - (void)hideHeader
 {
     if (![self isHeaderVisible])
+    {
         return;
+    }
     
     self.headerYConstraint.constant = -self.headerView.frame.size.height;
     [self.view layoutIfNeeded];
@@ -118,7 +120,9 @@
 - (void)showHeader
 {
     if ([self isHeaderVisible])
+    {
         return;
+    }
     
     self.headerYConstraint.constant = 0;
     [self.view layoutIfNeeded];
