@@ -49,53 +49,53 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
 
 // Canvas
-@property (nonatomic, weak) IBOutlet    UIView                  *canvasView;
-@property (nonatomic, weak) IBOutlet    UIImageView             *previewImageView;
-@property (nonatomic, weak) IBOutlet    UIView                  *blackBackgroundView;
+@property (nonatomic, weak) IBOutlet UIView *canvasView;
+@property (nonatomic, weak) IBOutlet UIView *blackBackgroundView;
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 
 // Text Drawing
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *captionPlaceholderLabel;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *memePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *quotePlaceholderLabel;
-@property (strong, nonatomic) IBOutletCollection(TTTAttributedLabel) NSArray *placeholderLabels;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *captionPlaceholderLabel;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *memePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *quotePlaceholderLabel;
+@property (nonatomic, strong) IBOutletCollection(TTTAttributedLabel) NSArray *placeholderLabels;
 
-@property (nonatomic, weak) IBOutlet    UITextView              *captionTextView;
-@property (nonatomic, weak) IBOutlet    UITextView              *memeTextView;
-@property (nonatomic, weak) IBOutlet    UITextView              *quoteTextView;
-@property (strong, nonatomic) IBOutletCollection(UITextView) NSArray *inputTextViews;
+@property (nonatomic, weak) IBOutlet UITextView *captionTextView;
+@property (nonatomic, weak) IBOutlet UITextView *memeTextView;
+@property (nonatomic, weak) IBOutlet UITextView *quoteTextView;
+@property (nonatomic, strong) IBOutletCollection(UITextView) NSArray *inputTextViews;
 
 // Caption Buttons
-@property (nonatomic, retain)           IBOutletCollection(UIButton) NSArray *captionButtons;
-@property (nonatomic, weak) IBOutlet    UIButton                *captionButton;
-@property (nonatomic, weak) IBOutlet    UIButton                *memeButton;
-@property (nonatomic, weak) IBOutlet    UIButton                *quoteButton;
+@property (nonatomic, strong) IBOutletCollection(UIButton) NSArray *captionButtons;
+@property (nonatomic, weak) IBOutlet UIButton *captionButton;
+@property (nonatomic, weak) IBOutlet UIButton *memeButton;
+@property (nonatomic, weak) IBOutlet UIButton *quoteButton;
 
 // Sharing
-@property (nonatomic, weak) IBOutlet    UILabel                 *shareToLabel;
-@property (nonatomic, weak) IBOutlet    UIView                  *sharesSuperview;
+@property (nonatomic, weak) IBOutlet UILabel *shareToLabel;
+@property (nonatomic, weak) IBOutlet UIView *sharesSuperview;
 
 // Publish
-@property (nonatomic, weak) IBOutlet    UIButton                *publishButton;
+@property (nonatomic, weak) IBOutlet UIButton *publishButton;
 
 // Constraints
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *topOfCanvasToContainerConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *bottomVerticalSpaceShareButtonsToContainer;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *shareViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *captionViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topOfCanvasToContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomVerticalSpaceShareButtonsToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *shareViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionViewHeightConstraint;
 
 // Input Accessories
-@property (nonatomic, weak)             VContentInputAccessoryView      *memeInputAccessoryView;
+@property (nonatomic, weak) VContentInputAccessoryView *memeInputAccessoryView;
 
 // Snapshotter
-@property (nonatomic, strong)           VCompositeSnapshotController    *snapshotController;
+@property (nonatomic, strong) VCompositeSnapshotController *snapshotController;
 
 // To preserve user's original text
-@property (nonatomic, strong)           NSString                        *userEnteredText;
+@property (nonatomic, strong) NSString *userEnteredText;
 
 // Share Controllers
-@property (nonatomic, strong)           VPublishShareController         *saveToCameraController;
-@property (nonatomic, strong)           VPublishShareController         *shareToTwitterController;
-@property (nonatomic, strong)           VPublishShareController         *shareToFacebookController;
+@property (nonatomic, strong) VPublishShareController *saveToCameraController;
+@property (nonatomic, strong) VPublishShareController *shareToTwitterController;
+@property (nonatomic, strong) VPublishShareController *shareToFacebookController;
 
 @end
 
@@ -106,11 +106,16 @@ static const CGFloat kShareMargin = 34.0f;
 
 @implementation VCameraPublishViewController
 
-#pragma mark - Factory Methods
+#pragma mark - Factory Methods & Dealloc
 
 + (VCameraPublishViewController *)cameraPublishViewController
 {
     return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIViewController
