@@ -84,9 +84,7 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *captionViewHeightConstraint;
 
 // Input Accessories
-@property (nonatomic, weak)             VContentInputAccessoryView      *captionInputAccessoryView;
 @property (nonatomic, weak)             VContentInputAccessoryView      *memeInputAccessoryView;
-@property (nonatomic, weak)             VContentInputAccessoryView      *quoteInputAccessoryView;
 
 // Snapshotter
 @property (nonatomic, strong)           VCompositeSnapshotController    *snapshotController;
@@ -417,7 +415,6 @@ static const CGFloat kShareMargin = 34.0f;
     captionInputAccessory.textInputView = self.captionTextView;
     captionInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     captionInputAccessory.delegate = self;
-    self.captionInputAccessoryView = captionInputAccessory;
     self.captionTextView.inputAccessoryView = captionInputAccessory;
     
     VContentInputAccessoryView* memeInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
@@ -426,8 +423,8 @@ static const CGFloat kShareMargin = 34.0f;
     memeInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     memeInputAccessory.delegate = self;
     memeInputAccessory.hashtagButton.enabled = NO;
-    self.memeInputAccessoryView = memeInputAccessory;
     self.memeTextView.inputAccessoryView = memeInputAccessory;
+    self.memeInputAccessoryView = memeInputAccessory;
     
     VContentInputAccessoryView* quoteInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
     quoteInputAccessory.maxCharacterLength = 70;
@@ -435,7 +432,6 @@ static const CGFloat kShareMargin = 34.0f;
     quoteInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     quoteInputAccessory.delegate = self;
     quoteInputAccessory.hashtagButton.enabled = NO;
-    self.quoteInputAccessoryView = quoteInputAccessory;
     self.quoteTextView.inputAccessoryView = quoteInputAccessory;
 }
 
