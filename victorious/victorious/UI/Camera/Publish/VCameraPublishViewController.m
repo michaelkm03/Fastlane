@@ -32,6 +32,7 @@
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageEffects.h"
 #import "NSURL+MediaType.h"
+#import "NSString+RFC2822Date.h"
 
 // Controllers
 #import "VCompositeSnapshotController.h"
@@ -100,10 +101,14 @@ static const CGFloat kShareMargin = 34.0f;
 
 @implementation VCameraPublishViewController
 
+#pragma mark - Factory Methods
+
 + (VCameraPublishViewController *)cameraPublishViewController
 {
     return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
 }
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -164,6 +169,84 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionType = self.captionType;
     [self.view layoutIfNeeded];
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.previewImageView.image = self.previewImage;
+    
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
+    
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
+    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+    
+    self.memeButton.selected = self.captionType == VCaptionTypeMeme;
+    self.captionButton.selected = self.captionType == VCaptionTypeNormal;
+    self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
+    
+    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
+        || [self.mediaURL v_hasVideoExtension])
+        self.captionViewHeightConstraint.constant = 0;
+    
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Publish"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"setExpiration"])
+    {
+        VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
+        viewController.delegate = self;
+        viewController.previewImage = self.previewImageView.image;
+    }
+}
+
+#pragma mark - Property Accessors
 
 - (void)setCaptionType:(VCaptionType)captionType
 {
@@ -240,6 +323,8 @@ static const CGFloat kShareMargin = 34.0f;
     [self.view layoutIfNeeded];
 }
 
+#pragma mark - Internal Methods
+
 - (void)configureShareViews
 {
     self.shareToFacebookController = [[VFacebookPublishShareController alloc] init];
@@ -260,43 +345,6 @@ static const CGFloat kShareMargin = 34.0f;
         
         [self.sharesSuperview addSubview:shareController.shareView];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.previewImageView.image = self.previewImage;
-    
-    self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-
-    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
-    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-
-    self.memeButton.selected = self.captionType == VCaptionTypeMeme;
-    self.captionButton.selected = self.captionType == VCaptionTypeNormal;
-    self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
-    
-    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
-        || [self.mediaURL v_hasVideoExtension])
-        self.captionViewHeightConstraint.constant = 0;
-    
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 - (void)setDefaultCaptionText
@@ -325,36 +373,30 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                   attributes:placeholderAttributes];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Publish"];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 #pragma mark - Actions
+
+- (void)cancel:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"contentIsntPublished", nil)
+                                                    cancelButtonTitle:NSLocalizedString(@"Stay", @"")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:NSLocalizedString(@"Close", @"")
+                                                  onDestructiveButton:^(void)
+                                  {
+                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                   action:@"Camera Publish Cancelled"
+                                                                                                    label:nil
+                                                                                                    value:nil];
+                                      if (self.completion)
+                                      {
+                                          self.completion(YES);
+                                      }
+                                  }
+                                           otherButtonTitlesAndBlocks:nil];
+    [actionSheet showInView:self.view];
+}
+
+#pragma mark IBAction
 
 - (IBAction)changeCaptionType:(UIButton *)sender
 {
@@ -385,36 +427,6 @@ static const CGFloat kShareMargin = 34.0f;
     if (self.completion)
     {
         self.completion(NO);
-    }
-}
-
-- (IBAction)cancel:(id)sender
-{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"contentIsntPublished", nil)
-                                                    cancelButtonTitle:NSLocalizedString(@"Stay", @"")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:NSLocalizedString(@"Close", @"")
-                                                  onDestructiveButton:^(void)
-                                  {
-                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                   action:@"Camera Publish Cancelled"
-                                                                                                    label:nil
-                                                                                                    value:nil];
-                                      if (self.completion)
-                                      {
-                                          self.completion(YES);
-                                      }
-                                  }
-                                           otherButtonTitlesAndBlocks:nil];
-    [actionSheet showInView:self.view];
-}
-
-- (IBAction)hashButtonClicked:(id)sender
-{
-    self.textView.text = [self.textView.text stringByAppendingString:@"#"];
-    if ([self respondsToSelector:@selector(textViewDidChange:)])
-    {
-        [self textViewDidChange:self.textView];
     }
 }
 
@@ -608,29 +620,12 @@ static const CGFloat kShareMargin = 34.0f;
     }
 }
 
-#pragma mark - Delegates
+#pragma mark - VSetExpirationDelegate
 
 - (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
     self.expirationDateString = [self stringForRFC2822Date:expirationDate];
     self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle]];
-}
-
-#pragma mark - Support
-
-- (NSString *)stringForRFC2822Date:(NSDate *)date
-{
-    static NSDateFormatter *sRFC2822DateFormatter = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
-        sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
-        
-        [sRFC2822DateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
-    });
-    
-    return [sRFC2822DateFormatter stringFromDate:date];
 }
 
 #pragma mark - UITextViewDelegate
@@ -685,18 +680,6 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
     
     [self setDefaultCaptionText];
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"setExpiration"])
-    {
-        VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
-        viewController.delegate = self;
-        viewController.previewImage = self.previewImageView.image;
-    }
 }
 
 #pragma mark - Notification Handlers
@@ -776,13 +759,15 @@ static const CGFloat kShareMargin = 34.0f;
         textContainer:(NSTextContainer *)textContainer
 didChangeGeometryFromSize:(CGSize)oldSize
 {
-    if (self.captionType != VCaptionTypeMeme) {
+    if (self.captionType != VCaptionTypeMeme)
+    {
         return;
     }
     
     CGFloat maxMemeWidth = CGRectGetWidth(self.canvasView.bounds) - 40.0f; // 20 pt margin on each side
     
-    if (textContainer.size.width < maxMemeWidth) {
+    if (textContainer.size.width < maxMemeWidth)
+    {
 
     }
     
