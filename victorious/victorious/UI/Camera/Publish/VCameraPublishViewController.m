@@ -47,52 +47,55 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
 
 // Canvas
-@property (nonatomic, weak) IBOutlet    UIView*                 canvasView;
-@property (nonatomic, weak) IBOutlet    UIImageView*            previewImageView;
-@property (nonatomic, weak) IBOutlet    UIView*                 blackBackgroundView;
+@property (nonatomic, weak) IBOutlet    UIView                  *canvasView;
+@property (nonatomic, weak) IBOutlet    UIImageView             *previewImageView;
+@property (nonatomic, weak) IBOutlet    UIView                  *blackBackgroundView;
 
 // Text Drawing
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel*     captionPlaceholderLabel;
-@property (nonatomic, weak) IBOutlet    UITextView*             captionTextView;
-@property (nonatomic, weak) IBOutlet    UITextView*             memeTextView;
-@property (nonatomic, weak) IBOutlet    UITextView*             quoteTextView;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *captionPlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *memePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *quotePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    UITextView              *captionTextView;
+@property (nonatomic, weak) IBOutlet    UITextView              *memeTextView;
+@property (nonatomic, weak) IBOutlet    UITextView              *quoteTextView;
+@property (nonatomic)                   CGFloat                 currentMemeFontSize;
 
 // Caption Buttons
 @property (nonatomic, retain)           IBOutletCollection(UIButton) NSArray *captionButtons;
-@property (nonatomic, weak) IBOutlet    UIButton*               captionButton;
-@property (nonatomic, weak) IBOutlet    UIButton*               memeButton;
-@property (nonatomic, weak) IBOutlet    UIButton*               quoteButton;
+@property (nonatomic, weak) IBOutlet    UIButton                *captionButton;
+@property (nonatomic, weak) IBOutlet    UIButton                *memeButton;
+@property (nonatomic, weak) IBOutlet    UIButton                *quoteButton;
 
 // Sharing
-@property (nonatomic, weak) IBOutlet    UILabel*                shareToLabel;
-@property (nonatomic, weak) IBOutlet    UIView*                 sharesSuperview;
+@property (nonatomic, weak) IBOutlet    UILabel                 *shareToLabel;
+@property (nonatomic, weak) IBOutlet    UIView                  *sharesSuperview;
 
 // Publish
-@property (nonatomic, weak) IBOutlet    UIButton*               publishButton;
+@property (nonatomic, weak) IBOutlet    UIButton                *publishButton;
 
 // Constraints
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     topOfCanvasToContainerConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     bottomVerticalSpaceShareButtonsToContainer;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     shareViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     captionViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     bottomVerticalSpacePlaceholderLabelToContainer;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     centerYAlignmentPlaceholderLabelToContainer;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *topOfCanvasToContainerConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *bottomVerticalSpaceShareButtonsToContainer;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *shareViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *captionViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *bottomVerticalSpacePlaceholderLabelToContainer;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint      *centerYAlignmentPlaceholderLabelToContainer;
 
 // Input Accessories
-@property (nonatomic, weak)             VContentInputAccessoryView*     captionInputAccessoryView;
-@property (nonatomic, weak)             VContentInputAccessoryView*     memeInputAccessoryView;
-@property (nonatomic, weak)             VContentInputAccessoryView*     quoteInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView      *captionInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView      *memeInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView      *quoteInputAccessoryView;
 
 // Snapshotter
-@property (nonatomic, strong)           VCompositeSnapshotController*   snapshotController;
+@property (nonatomic, strong)           VCompositeSnapshotController    *snapshotController;
 
 // To preserve user's original text
-@property (nonatomic, strong)           NSString*                       userEnteredText;
+@property (nonatomic, strong)           NSString                        *userEnteredText;
 
 // Share Controllers
-@property (nonatomic, strong)           VPublishShareController*        saveToCameraController;
-@property (nonatomic, strong)           VPublishShareController*        shareToTwitterController;
-@property (nonatomic, strong)           VPublishShareController*        shareToFacebookController;
+@property (nonatomic, strong)           VPublishShareController         *saveToCameraController;
+@property (nonatomic, strong)           VPublishShareController         *shareToTwitterController;
+@property (nonatomic, strong)           VPublishShareController         *shareToFacebookController;
 
 @end
 
@@ -221,53 +224,19 @@ static const CGFloat kShareMargin = 34.0f;
 {
     _captionType = captionType;
     
+    // Adjust placeholder label
     switch (captionType) {
         case VCaptionTypeNormal:
-            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
-            self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
             self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
             self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-            
-            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-            paragraphStyle.alignment                = NSTextAlignmentLeft;
-            self.typingAttributes = [@{
-                                       NSParagraphStyleAttributeName : paragraphStyle,
-                                       NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
-                                       NSForegroundColorAttributeName : [UIColor whiteColor],
-                                       NSStrokeColorAttributeName : [UIColor whiteColor],
-                                       NSStrokeWidthAttributeName : @(0)
-                                       } mutableCopy];
             break;
         case VCaptionTypeMeme:
-            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
-            self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
             self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
             self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-            
-            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-            paragraphStyle.alignment                = NSTextAlignmentCenter;
-            self.typingAttributes = [@{
-                                       NSParagraphStyleAttributeName : paragraphStyle,
-                                       NSFontAttributeName : [UIFont fontWithName:kMemeFont size:30.0],
-                                       NSForegroundColorAttributeName : [UIColor whiteColor],
-                                       NSStrokeColorAttributeName : [UIColor blackColor],
-                                       NSStrokeWidthAttributeName : @(-5.0)
-                                       } mutableCopy];
             break;
         case VCaptionTypeQuote:
-            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
             self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
             self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-            
-            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-            paragraphStyle.alignment                = NSTextAlignmentCenter;
-            self.typingAttributes = [@{
-                                       NSParagraphStyleAttributeName : paragraphStyle,
-                                       NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
-                                       NSForegroundColorAttributeName : [UIColor whiteColor],
-                                       NSStrokeColorAttributeName : [UIColor whiteColor],
-                                       NSStrokeWidthAttributeName : @(0)
-                                       } mutableCopy];
             break;
     }
     
@@ -277,6 +246,57 @@ static const CGFloat kShareMargin = 34.0f;
 }
 
 #pragma mark - Internal Methods
+
+- (NSDictionary *)captionAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    paragraphStyle.alignment                = NSTextAlignmentLeft;
+    return @{
+             NSParagraphStyleAttributeName : paragraphStyle,
+             NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
+             NSForegroundColorAttributeName : [UIColor whiteColor],
+             NSStrokeColorAttributeName : [UIColor whiteColor],
+             NSStrokeWidthAttributeName : @(0)
+             };
+}
+
+- (NSDictionary *)memeAttributesForDesiredSize:(CGFloat)desiredSize
+{
+    if (desiredSize < 30.0f)
+    {
+        desiredSize = 30.0f;
+    }
+    else if (desiredSize > 50.0f)
+    {
+        desiredSize = 50.0f;
+    }
+    
+    self.currentMemeFontSize = desiredSize;
+    
+    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    paragraphStyle.alignment                = NSTextAlignmentCenter;
+    return @{
+             NSParagraphStyleAttributeName : paragraphStyle,
+             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:desiredSize],
+             NSForegroundColorAttributeName : [UIColor whiteColor],
+             NSStrokeColorAttributeName : [UIColor blackColor],
+             NSStrokeWidthAttributeName : @(-5.0)
+             };
+}
+
+- (NSDictionary *)quoteAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    paragraphStyle.alignment                = NSTextAlignmentCenter;
+    
+    return @{
+             NSParagraphStyleAttributeName : paragraphStyle,
+             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
+             NSForegroundColorAttributeName : [UIColor whiteColor],
+             NSStrokeColorAttributeName : [UIColor whiteColor],
+             NSStrokeWidthAttributeName : @(0)
+             };
+}
 
 - (void)setDefaultCaptionText
 {

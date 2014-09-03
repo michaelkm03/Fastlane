@@ -258,8 +258,24 @@
                                             <action selector="startEditing:" destination="1zz-KC-cVA" eventType="touchUpInside" id="Gdc-PR-QsP"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" userLabel="Attributed Label - Add a description... and don't forget #hashtags" customClass="TTTAttributedLabel">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" userLabel="Caption Placeholder Label" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="20" y="247" width="280" height="53"/>
+                                        <string key="text">Add a description...
+and don't forget #hashtags</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="TwG-Lp-QLk" userLabel="Meme Placeholder Label" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="20" y="134" width="280" height="53"/>
+                                        <string key="text">Add a description...
+and don't forget #hashtags</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="2Pn-GI-xUc" userLabel="Quote Placeholder Label" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="20" y="134" width="280" height="53"/>
                                         <string key="text">Add a description...
 and don't forget #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
@@ -316,7 +332,6 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" constant="20" id="U9B-UC-7dG"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zV0-x2-7Yh" secondAttribute="bottom" constant="20" id="UCQ-oS-P5E"/>
                                     <constraint firstAttribute="width" secondItem="WBZ-Ng-22P" secondAttribute="height" multiplier="1:1" id="UQY-W6-DFk"/>
-                                    <constraint firstAttribute="centerY" secondItem="Fsz-Xd-hVx" secondAttribute="centerY" priority="1" id="aQG-Qm-ZYz"/>
                                     <constraint firstAttribute="centerX" secondItem="zV0-x2-7Yh" secondAttribute="centerX" id="dWD-Tu-ly1"/>
                                     <constraint firstItem="Emm-sn-qjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="g8J-9t-99m"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="gEd-uQ-Yfg"/>
@@ -325,7 +340,7 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="trailing" secondItem="zV0-x2-7Yh" secondAttribute="trailing" constant="20" id="kKO-51-yHE"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="kKv-XO-y9t"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="nf0-eb-v5g"/>
-                                    <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" priority="999" constant="20" id="p19-Ss-WbR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Fsz-Xd-hVx" secondAttribute="bottom" constant="20" id="p19-Ss-WbR"/>
                                     <constraint firstAttribute="trailing" secondItem="iCW-rE-1kp" secondAttribute="trailing" id="rK1-Gr-w2i"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="Aa5-gI-eua" secondAttribute="top" id="tq3-Gs-63z"/>
                                     <constraint firstAttribute="trailing" secondItem="Fsz-Xd-hVx" secondAttribute="trailing" constant="20" id="uNU-kl-62z"/>
@@ -471,12 +486,13 @@ and don't forget #hashtags</string>
                         <outlet property="captionPlaceholderLabel" destination="Fsz-Xd-hVx" id="rrD-Fh-xLF"/>
                         <outlet property="captionTextView" destination="yxx-6S-3iW" id="QRK-Tw-Hmw"/>
                         <outlet property="captionViewHeightConstraint" destination="IJs-Rg-u4e" id="Kf0-Cn-wiM"/>
-                        <outlet property="centerYAlignmentPlaceholderLabelToContainer" destination="aQG-Qm-ZYz" id="2HB-kf-seA"/>
                         <outlet property="memeButton" destination="0Xc-ND-ZII" id="lhs-k9-W2X"/>
+                        <outlet property="memePlaceholderLabel" destination="TwG-Lp-QLk" id="ODv-Qh-f8I"/>
                         <outlet property="memeTextView" destination="Emm-sn-qjl" id="Wuo-Xe-boz"/>
                         <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
                         <outlet property="publishButton" destination="wOt-la-SB9" id="Pbk-8V-Al6"/>
                         <outlet property="quoteButton" destination="byc-3g-q5D" id="Oqk-6c-cjG"/>
+                        <outlet property="quotePlaceholderLabel" destination="2Pn-GI-xUc" id="mys-DS-m4M"/>
                         <outlet property="quoteTextView" destination="zV0-x2-7Yh" id="GNB-BG-oJg"/>
                         <outlet property="shareToLabel" destination="quq-i9-xCf" id="xXy-Z7-ki7"/>
                         <outlet property="shareViewHeightConstraint" destination="YaQ-Ki-T4z" id="CRs-w6-ZhU"/>
