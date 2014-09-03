@@ -364,9 +364,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         {
             NSDictionary* payload = fullResponse[kVPayloadKey];
             NSNumber* commentID = @([payload[@"id"] integerValue]);
-            
             newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
-            newComment.realtime = @([payload[@"realtime"] integerValue]);
+            newComment.realtime = time;
             [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         }
         
