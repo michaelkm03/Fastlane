@@ -68,9 +68,13 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
     
     //If it contains :// its a valid URL
     if ([path rangeOfString:@"://"].length)
+    {
         url = [NSURL URLWithString:path];
+    }
     else
+    {
         url = [[VObjectManager currentEnvironment].baseURL URLByAppendingPathComponent:path];
+    }
     
     return url;
 }
@@ -95,13 +99,21 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
     NSString*   value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVExportVideoQuality];
     
     if ([value isEqualToString:@"low"])
+    {
         return  AVAssetExportPresetLowQuality;
+    }
     else if ([value isEqualToString:@"medium"])
+    {
         return  AVAssetExportPresetMediumQuality;
+    }
     else if ([value isEqualToString:@"high"])
+    {
         return  AVAssetExportPresetHighestQuality;
+    }
     else
+    {
         return AVAssetExportPresetMediumQuality;
+    }
 }
 
 - (NSString *)captureVideoQuality
@@ -109,13 +121,21 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
     NSString*   value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVCaptureVideoQuality];
     
     if ([value isEqualToString:@"low"])
+    {
         return  AVCaptureSessionPresetLow;
+    }
     else if ([value isEqualToString:@"medium"])
+    {
         return  AVCaptureSessionPresetMedium;
+    }
     else if ([value isEqualToString:@"high"])
+    {
         return  AVCaptureSessionPresetHigh;
+    }
     else
+    {
         return AVCaptureSessionPresetMedium;
+    }
 }
 
 @end

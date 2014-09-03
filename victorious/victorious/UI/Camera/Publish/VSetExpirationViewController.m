@@ -201,7 +201,7 @@
 
 - (void)setExpirationDate:(NSDate *)expirationDate
 {
-    if([expirationDate isEqualToDate:_expirationDate])
+    if ([expirationDate isEqualToDate:_expirationDate])
     {
         return;
     }
