@@ -15,7 +15,7 @@
 #import "VVideoPreviewViewController.h"
 
 static const NSTimeInterval   kAnimationDuration = 0.2;
-static       NSString * const kNibName           = @"MediaPreview";
+static       NSString * const kNibName           = @"VMediaPreviewViewController";
 
 @interface VMediaPreviewViewController ()
 
