@@ -258,17 +258,18 @@ static const CGFloat kShareMargin = 34.0f;
                 self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
             }
             {
-                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize) {
+                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize)
+                {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
                 }
                 
-                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height < kPublishMinMemeFontSize) {
+                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height < kPublishMinMemeFontSize)
+                {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
                 }
             }
             break;
         }
-            break;
         case VCaptionTypeQuote:
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
@@ -342,7 +343,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)clearAutoCorrectDots
 {
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
         {
             NSString *currentText = self.captionTextView.text;
@@ -380,15 +382,16 @@ static const CGFloat kShareMargin = 34.0f;
     self.quotePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
                                                                                 attributes:[self quoteAttributes]];
     
-    [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-
-            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
-            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-
-            return mutableAttributedString;
-        }];
+    [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString)
+     {
+         NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+         
+         UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+         [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+         [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+         
+         return mutableAttributedString;
+     }];
 }
 
 - (void)configureShareLabel
@@ -566,7 +569,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)startEditing:(id)sender
 {
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
             [self.captionTextView becomeFirstResponder];
             break;
@@ -595,7 +599,8 @@ static const CGFloat kShareMargin = 34.0f;
     [self clearAutoCorrectDots];
     
     UIImage* snapshot;
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
             // NO Snapshotting on caption
             break;
@@ -643,7 +648,8 @@ static const CGFloat kShareMargin = 34.0f;
     BOOL twitterSelected = self.shareToTwitterController.selected;
     
     NSString *finalText = @"";
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
             finalText = self.captionTextView.text;
             break;
@@ -789,7 +795,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop) {
+    [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop)
+    {
         label.hidden = YES;
     }];
 }
@@ -822,7 +829,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
             self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
             break;
