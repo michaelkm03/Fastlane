@@ -266,8 +266,8 @@ and don't forget #hashtags</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="TwG-Lp-QLk" userLabel="Meme Placeholder Label" customClass="TTTAttributedLabel">
-                                        <rect key="frame" x="20" y="134" width="280" height="53"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="TwG-Lp-QLk" userLabel="Meme Placeholder Label" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="20" y="247" width="280" height="53"/>
                                         <string key="text">Add a description...
 and don't forget #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
@@ -329,8 +329,10 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="trailing" secondItem="yxx-6S-3iW" secondAttribute="trailing" constant="20" id="S1x-5g-QdO"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="SWG-s7-iLi"/>
                                     <constraint firstItem="zV0-x2-7Yh" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="TLT-cE-lop"/>
+                                    <constraint firstAttribute="trailing" secondItem="TwG-Lp-QLk" secondAttribute="trailing" constant="20" id="Tt2-G2-o2C"/>
                                     <constraint firstAttribute="bottom" secondItem="yxx-6S-3iW" secondAttribute="bottom" constant="20" id="U9B-UC-7dG"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zV0-x2-7Yh" secondAttribute="bottom" constant="20" id="UCQ-oS-P5E"/>
+                                    <constraint firstItem="TwG-Lp-QLk" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="UDa-3P-HeW"/>
                                     <constraint firstAttribute="width" secondItem="WBZ-Ng-22P" secondAttribute="height" multiplier="1:1" id="UQY-W6-DFk"/>
                                     <constraint firstAttribute="centerX" secondItem="zV0-x2-7Yh" secondAttribute="centerX" id="dWD-Tu-ly1"/>
                                     <constraint firstItem="Emm-sn-qjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="g8J-9t-99m"/>
@@ -345,6 +347,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="Aa5-gI-eua" secondAttribute="top" id="tq3-Gs-63z"/>
                                     <constraint firstAttribute="trailing" secondItem="Fsz-Xd-hVx" secondAttribute="trailing" constant="20" id="uNU-kl-62z"/>
                                     <constraint firstAttribute="bottom" secondItem="Emm-sn-qjl" secondAttribute="bottom" constant="20" id="uW5-Iw-Q30"/>
+                                    <constraint firstAttribute="bottom" secondItem="TwG-Lp-QLk" secondAttribute="bottom" constant="20" id="ueq-NA-PGY"/>
                                     <constraint firstAttribute="centerY" secondItem="zV0-x2-7Yh" secondAttribute="centerY" constant="-0.5" id="uvV-4P-51K"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="bottom" secondItem="Aa5-gI-eua" secondAttribute="bottom" id="xfk-3O-ggf"/>
                                 </constraints>
@@ -492,7 +495,7 @@ and don't forget #hashtags</string>
                         <outlet property="publishButton" destination="wOt-la-SB9" id="Pbk-8V-Al6"/>
                         <outlet property="quoteButton" destination="byc-3g-q5D" id="Oqk-6c-cjG"/>
                         <outlet property="quotePlaceholderLabel" destination="2Pn-GI-xUc" id="mys-DS-m4M"/>
-                        <outlet property="quoteTextView" destination="zV0-x2-7Yh" id="GNB-BG-oJg"/>
+                        <outlet property="quoteTextView" destination="zV0-x2-7Yh" id="UH8-yk-hDH"/>
                         <outlet property="shareToLabel" destination="quq-i9-xCf" id="xXy-Z7-ki7"/>
                         <outlet property="shareViewHeightConstraint" destination="YaQ-Ki-T4z" id="CRs-w6-ZhU"/>
                         <outlet property="sharesSuperview" destination="bLE-SQ-PqX" id="qUM-oJ-7eF"/>
@@ -500,6 +503,12 @@ and don't forget #hashtags</string>
                         <outletCollection property="captionButtons" destination="H0I-mP-7db" id="Y9E-1T-4He"/>
                         <outletCollection property="captionButtons" destination="0Xc-ND-ZII" id="KjJ-Vc-23y"/>
                         <outletCollection property="captionButtons" destination="byc-3g-q5D" id="yoq-Vi-GZJ"/>
+                        <outletCollection property="placeholderLabels" destination="Fsz-Xd-hVx" id="2ZO-ay-mPm"/>
+                        <outletCollection property="placeholderLabels" destination="TwG-Lp-QLk" id="xPr-nZ-4hj"/>
+                        <outletCollection property="placeholderLabels" destination="2Pn-GI-xUc" id="MrT-Z5-NMA"/>
+                        <outletCollection property="inputTextViews" destination="yxx-6S-3iW" id="ONX-fY-2xz"/>
+                        <outletCollection property="inputTextViews" destination="Emm-sn-qjl" id="p1g-nl-RRP"/>
+                        <outletCollection property="inputTextViews" destination="zV0-x2-7Yh" id="jnQ-5P-D4b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZI5-R9-aUv" userLabel="First Responder" sceneMemberID="firstResponder"/>

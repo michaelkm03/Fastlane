@@ -44,7 +44,7 @@
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
 
-@interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VSetExpirationDelegate, VContentInputAccessoryViewDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VContentInputAccessoryViewDelegate>
 
 // Canvas
 @property (nonatomic, weak) IBOutlet    UIView                  *canvasView;
@@ -55,9 +55,12 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *captionPlaceholderLabel;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *memePlaceholderLabel;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel      *quotePlaceholderLabel;
+@property (strong, nonatomic) IBOutletCollection(TTTAttributedLabel) NSArray *placeholderLabels;
+
 @property (nonatomic, weak) IBOutlet    UITextView              *captionTextView;
 @property (nonatomic, weak) IBOutlet    UITextView              *memeTextView;
 @property (nonatomic, weak) IBOutlet    UITextView              *quoteTextView;
+@property (strong, nonatomic) IBOutletCollection(UITextView) NSArray *inputTextViews;
 @property (nonatomic)                   CGFloat                 currentMemeFontSize;
 
 // Caption Buttons
@@ -118,7 +121,7 @@ static const CGFloat kShareMargin = 34.0f;
     [super viewDidLoad];
     
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
-
+    
     self.userEnteredText = @"";
     
     // Configure UI
@@ -144,6 +147,8 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionTextView.layoutManager.delegate = self;
     self.memeTextView.layoutManager.delegate = self;
     self.quoteTextView.layoutManager.delegate = self;
+    
+    self.captionType = VCaptionTypeNormal;
     
     [self.view layoutIfNeeded];
 }
@@ -204,30 +209,40 @@ static const CGFloat kShareMargin = 34.0f;
     return YES;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"setExpiration"])
-    {
-        VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
-        viewController.delegate = self;
-        viewController.previewImage = self.previewImageView.image;
-    }
-}
-
 #pragma mark - Property Accessors
 
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
     
-//TODO: show/hide textViews/labels appropriately.
-    switch (captionType) {
+    [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop)
+     {
+         label.hidden = YES;
+     }];
+    [self.inputTextViews enumerateObjectsUsingBlock:^(UITextView *inputTextView, NSUInteger idx, BOOL *stop)
+     {
+         inputTextView.hidden = YES;
+     }];
+    
+    switch (captionType)
+    {
         case VCaptionTypeNormal:
-
+            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+                                                                                  attributes:[self captionAttributes]];
+            self.captionTextView.hidden = NO;
+            self.captionPlaceholderLabel.hidden = (self.captionTextView.text.length > 0);
             break;
         case VCaptionTypeMeme:
+            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
+                                                                               attributes:[self memeAttributesForDesiredSize:self.currentMemeFontSize]];
+            self.memeTextView.hidden = NO;
+            self.memePlaceholderLabel.hidden = (self.memeTextView.text.length > 0);
             break;
         case VCaptionTypeQuote:
+            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+                                                                                attributes:[self quoteAttributes]];
+            self.quoteTextView.hidden = NO;
+            self.quotePlaceholderLabel.hidden = (self.quoteTextView.text.length > 0);
             break;
     }
     
@@ -238,7 +253,8 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (BOOL)isTextLengthValid
 {
-    switch (self.captionType) {
+    switch (self.captionType)
+    {
         case VCaptionTypeNormal:
             return (self.captionTextView.text.length > 2);
         case VCaptionTypeMeme:
@@ -251,7 +267,8 @@ static const CGFloat kShareMargin = 34.0f;
 - (NSDictionary *)captionAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-    paragraphStyle.alignment                = NSTextAlignmentLeft;
+    paragraphStyle.alignment = NSTextAlignmentLeft;
+    
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
              NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
@@ -328,29 +345,29 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)configurePlaceholderLabels
 {
-//TODO: Implement
-//    if (self.captionType == VCaptionTypeNormal)
-//    {
-//        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-//            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-//            
-//            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-//            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
-//            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-//            
-//            return mutableAttributedString;
-//        }];
-//        return;
-//    }
-//    
-//
-//    if (self.captionType == VCaptionTypeMeme)
-//    {
-//        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
-//    }
-//    
-//    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
-//                                                                                  attributes:placeholderAttributes];
+    //TODO: Implement
+    //    if (self.captionType == VCaptionTypeNormal)
+    //    {
+    //        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+    //            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+    //
+    //            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    //            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+    //            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+    //
+    //            return mutableAttributedString;
+    //        }];
+    //        return;
+    //    }
+    //
+    //
+    //    if (self.captionType == VCaptionTypeMeme)
+    //    {
+    //        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
+    //    }
+    //
+    //    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
+    //                                                                                  attributes:placeholderAttributes];
 }
 
 - (void)configureShareLabel
@@ -531,9 +548,9 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
-
+    
     [self clearAutoCorrectDots];
-
+    
     UIImage* snapshot;
     switch (self.captionType) {
         case VCaptionTypeNormal:
@@ -551,7 +568,7 @@ static const CGFloat kShareMargin = 34.0f;
         default:
             break;
     }
-
+    
     if (snapshot)
     {
         NSURL *originalMediaURL = self.mediaURL;
@@ -604,102 +621,102 @@ static const CGFloat kShareMargin = 34.0f;
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
-                                                             message:NSLocalizedString(@"PublishSucceededDetail", @"")
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-        [alert show];
-        
-        NSString  *analyticsString;
-        if ([self.mediaURL v_hasVideoExtension])
-        {
-            analyticsString = [NSString stringWithFormat:@"Published video via"];
-        }
-        else
-        {
-            switch (self.captionType)
-            {
-                case VCaptionTypeNormal:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
-                    break;
-                case VCaptionTypeMeme:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
-                    break;
-                case VCaptionTypeQuote:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
-                    break;
-            }
-            
-        }
-        
-        if (facebookSelected)
-        {
-            NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
-            [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
-                                                        accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
+                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
+                                                             delegate:nil
+                                                    cancelButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+         [alert show];
+         
+         NSString  *analyticsString;
+         if ([self.mediaURL v_hasVideoExtension])
+         {
+             analyticsString = [NSString stringWithFormat:@"Published video via"];
+         }
+         else
+         {
+             switch (self.captionType)
              {
+                 case VCaptionTypeNormal:
+                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
+                     break;
+                 case VCaptionTypeMeme:
+                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
+                     break;
+                 case VCaptionTypeQuote:
+                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
+                     break;
              }
-                                                          failBlock:^(NSOperation* operation, NSError* error)
-             {
-                 VLog(@"Failed with error: %@", error);
-             }];
-
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-        }
-        
-        if (twitterSelected)
-        {
-            NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
-            [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
-                                                        accessToken:[VTwitterManager sharedManager].oauthToken
-                                                             secret:[VTwitterManager sharedManager].secret
-                                                       successBlock:nil
-                                                          failBlock:nil];
-            
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-        }
-    }
+             
+         }
+         
+         if (facebookSelected)
+         {
+             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
+                                                         accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+              {
+              }
+                                                           failBlock:^(NSOperation* operation, NSError* error)
+              {
+                  VLog(@"Failed with error: %@", error);
+              }];
+             
+             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
+                                                                          action:nil
+                                                                           label:nil
+                                                                           value:nil];
+         }
+         
+         if (twitterSelected)
+         {
+             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
+                                                         accessToken:[VTwitterManager sharedManager].oauthToken
+                                                              secret:[VTwitterManager sharedManager].secret
+                                                        successBlock:nil
+                                                           failBlock:nil];
+             
+             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
+                                                                          action:nil
+                                                                           label:nil
+                                                                           value:nil];
+         }
+     }
                                               failBlock:^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-        
-        if (kVStillTranscodingError == error.code)
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-        else if (error.code == kVMediaAlreadyCreatedError)
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
-                                                                 message:NSLocalizedString(@"DuplicateVideoBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-        else
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-    }];
+     {
+         VLog(@"Failed with error: %@", error);
+         
+         if (kVStillTranscodingError == error.code)
+         {
+             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:nil
+                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+             [alert show];
+         }
+         else if (error.code == kVMediaAlreadyCreatedError)
+         {
+             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
+                                                                  message:NSLocalizedString(@"DuplicateVideoBody", @"")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:nil
+                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+             [alert show];
+         }
+         else
+         {
+             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                                  message:NSLocalizedString(@"UploadErrorBody", @"")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:nil
+                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+             [alert show];
+         }
+     }];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
                                                                  action:@"Post Content"
@@ -739,17 +756,17 @@ static const CGFloat kShareMargin = 34.0f;
         case VCaptionTypeNormal:
             self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                   attributes:[self captionAttributes]];
-            self.captionPlaceholderLabel.hidden = (([self.captionTextView.text length] > 0) || [self.captionTextView isFirstResponder]);
+            self.captionPlaceholderLabel.hidden = (([textView.text length] > 0) || [self.captionTextView isFirstResponder]);
             break;
         case VCaptionTypeMeme:
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
-                                                                           attributes:[self memeAttributesForDesiredSize:30.0f]];
-            self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
+                                                                               attributes:[self memeAttributesForDesiredSize:30.0f]];
+            self.memePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.memeTextView isFirstResponder]);
             break;
         case VCaptionTypeQuote:
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
-            self.quoteTextView.hidden = (([self.quoteTextView.text length] > 0) || [self.quoteTextView isFirstResponder]);
+            self.quoteTextView.hidden = (([textView.text length] > 0) || [self.quoteTextView isFirstResponder]);
             break;
     }
 }
@@ -758,7 +775,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     NSString *newString = [self.userEnteredText stringByReplacingCharactersInRange:range
                                                                         withString:text];
-
+    
     if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
@@ -771,7 +788,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     
     self.userEnteredText = newString;
-
+    
     return YES;
 }
 
@@ -805,7 +822,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-
+    
     [UIView animateWithDuration:animationDuration
                           delay:0.0f
                         options:(animationCurve << 16)
@@ -815,7 +832,7 @@ static const CGFloat kShareMargin = 34.0f;
          [self.view layoutIfNeeded];
      }
                      completion:nil];
-
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -876,7 +893,7 @@ didChangeGeometryFromSize:(CGSize)oldSize
     
     if (textContainer.size.width < maxMemeWidth)
     {
-
+        
     }
     
 }
