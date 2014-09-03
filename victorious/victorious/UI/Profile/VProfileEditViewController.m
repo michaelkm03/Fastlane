@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 
 #import "VObjectManager+Login.h"
+#import "VThemeManager.h"
 
 @interface VProfileEditViewController ()
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
@@ -29,6 +30,7 @@
                                                                             target:self
                                                                             action:@selector(goBack:)];
 
+    [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
     self.nameLabel.text = self.profile.name;
     
     [self.usernameTextField becomeFirstResponder];
