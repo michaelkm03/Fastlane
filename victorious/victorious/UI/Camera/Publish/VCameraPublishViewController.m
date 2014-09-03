@@ -43,7 +43,7 @@
 #import "VSetExpirationViewController.h"
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
-static const CGFloat kPublishMaxMemeFontSize = 70.0f;
+static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
@@ -143,8 +143,12 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
         self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
     }
-    
+        
+    self.userEnteredText = @"";
     self.captionType = VCaptionTypeNormal;
+    
+    // Force Meme text to start at max
+    self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
     
     [self.view layoutIfNeeded];
 }
@@ -232,6 +236,7 @@ static const CGFloat kShareMargin = 34.0f;
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
                                                                                attributes:[self memeAttributes]];
             self.memeTextView.hidden = NO;
+            self.memeTextView.textAlignment = NSTextAlignmentCenter;
             self.memePlaceholderLabel.hidden = (self.memeTextView.text.length > 0);
             break;
         case VCaptionTypeQuote:
@@ -281,7 +286,7 @@ static const CGFloat kShareMargin = 34.0f;
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMaxMemeFontSize],
+             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMinMemeFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor blackColor],
              NSStrokeWidthAttributeName : @(-5.0)
@@ -755,6 +760,11 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.memeTextView isFirstResponder]);
+            // When we clear out the text view reset meme's font to max
+            if (self.userEnteredText.length == 0)
+            {
+                self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
+            }
         {
             
             while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize) {

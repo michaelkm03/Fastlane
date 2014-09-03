@@ -334,7 +334,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="TwG-Lp-QLk" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="UDa-3P-HeW"/>
                                     <constraint firstAttribute="width" secondItem="WBZ-Ng-22P" secondAttribute="height" multiplier="1:1" id="UQY-W6-DFk"/>
                                     <constraint firstAttribute="centerX" secondItem="zV0-x2-7Yh" secondAttribute="centerX" id="dWD-Tu-ly1"/>
-                                    <constraint firstItem="Emm-sn-qjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="g8J-9t-99m"/>
+                                    <constraint firstItem="Emm-sn-qjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" priority="999" constant="20" id="g8J-9t-99m"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="gEd-uQ-Yfg"/>
                                     <constraint firstItem="zV0-x2-7Yh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="hWR-wA-6z3"/>
                                     <constraint firstAttribute="trailing" secondItem="Emm-sn-qjl" secondAttribute="trailing" priority="999" constant="20" id="jFc-68-i5Q"/>
