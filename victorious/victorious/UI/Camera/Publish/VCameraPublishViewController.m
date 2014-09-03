@@ -214,7 +214,13 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
-    
+    [self updateTextViewsAndPlaceholderLabels];
+}
+
+#pragma mark - Internal Methods
+
+- (void)updateTextViewsAndPlaceholderLabels
+{
     [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop)
      {
          label.hidden = YES;
@@ -224,34 +230,58 @@ static const CGFloat kShareMargin = 34.0f;
          inputTextView.hidden = YES;
      }];
     
-    switch (captionType)
-    {
-        case VCaptionTypeNormal:
+    UITextView *changedTextView = nil;
+    switch (self.captionType)
+    {        case VCaptionTypeNormal:
             self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                   attributes:[self captionAttributes]];
             self.captionTextView.hidden = NO;
-            self.captionPlaceholderLabel.hidden = (self.captionTextView.text.length > 0);
+            changedTextView = self.captionTextView;
+            self.captionPlaceholderLabel.hidden = (([self.captionTextView.text length] > 0) || [self.captionTextView isFirstResponder]);
             break;
         case VCaptionTypeMeme:
+        {
+            NSRange currentCursorLocation = [self.memeTextView selectedRange];
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
                                                                                attributes:[self memeAttributes]];
-            self.memeTextView.hidden = NO;
+            changedTextView = self.memeTextView;
+            self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
             self.memeTextView.textAlignment = NSTextAlignmentCenter;
-            self.memePlaceholderLabel.hidden = (self.memeTextView.text.length > 0);
+            self.memeTextView.hidden = NO;
+            [self.memeTextView setSelectedRange:currentCursorLocation];
+            
+            // When we clear out the text view reset meme's font to min
+            if (self.userEnteredText.length == 0)
+            {
+                self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
+            }
+            {
+                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize) {
+                    self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
+                }
+                
+                while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height < kPublishMinMemeFontSize) {
+                    self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
+                }
+            }
+            break;
+        }
             break;
         case VCaptionTypeQuote:
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
+            changedTextView = self.quoteTextView;
             self.quoteTextView.textAlignment = NSTextAlignmentCenter;
-            self.quotePlaceholderLabel.hidden = (self.quoteTextView.text.length > 0);
+            self.quotePlaceholderLabel.hidden = (([self.quoteTextView.text length] > 0) || [self.quoteTextView isFirstResponder]);
             break;
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification
+                                                        object:changedTextView];
+    
     [self.view layoutIfNeeded];
 }
-
-#pragma mark - Internal Methods
 
 - (BOOL)isTextLengthValid
 {
@@ -746,49 +776,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    UITextView *changedTextView = nil;
-    switch (self.captionType)
-    {
-        case VCaptionTypeNormal:
-            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
-                                                                                  attributes:[self captionAttributes]];
-            changedTextView = self.captionTextView;
-            self.captionPlaceholderLabel.hidden = (([textView.text length] > 0) || [self.captionTextView isFirstResponder]);
-            break;
-        case VCaptionTypeMeme:
-            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
-                                                                               attributes:[self memeAttributes]];
-            changedTextView = self.memeTextView;
-            self.memePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.memeTextView isFirstResponder]);
-            // When we clear out the text view reset meme's font to max
-            if (self.userEnteredText.length == 0)
-            {
-                self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
-            }
-        {
-            
-            while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize) {
-                self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
-            }
-            
-            while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height < kPublishMinMemeFontSize) {
-                self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
-            }
-        }
-            break;
-        case VCaptionTypeQuote:
-            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
-                                                                                attributes:[self quoteAttributes]];
-            changedTextView = self.quoteTextView;
-            self.quotePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.quoteTextView isFirstResponder]);
-            break;
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification
-                                                        object:changedTextView];
-    
-
-
-    
+    [self updateTextViewsAndPlaceholderLabels];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
