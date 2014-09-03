@@ -125,7 +125,6 @@ static const CGFloat kShareMargin = 34.0f;
     self.userEnteredText = @"";
     
     // Configure UI
-    self.captionPlaceholderLabel.userInteractionEnabled = NO;
     [self configurePlaceholderLabels];
     [self configureInputAccessoryViews];
     [self configurePublishButton];
@@ -346,7 +345,10 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)configurePlaceholderLabels
 {
-    //TODO: Implement
+    self.captionPlaceholderLabel.userInteractionEnabled = NO;
+    self.memePlaceholderLabel.userInteractionEnabled = NO;
+    self.quotePlaceholderLabel.userInteractionEnabled = NO;
+    
     self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"AddDescription", @"")
                                                                                   attributes:[self captionAttributes]];
     self.memePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
