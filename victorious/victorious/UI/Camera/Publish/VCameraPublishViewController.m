@@ -43,8 +43,10 @@
 #import "VSetExpirationViewController.h"
 
 static const CGFloat kPublishKeyboardOffset = 106.0f;
+static const CGFloat kPublishMaxMemeFontSize = 70.0f;
+static const CGFloat kPublishMinMemeFontSize = 50.0f;
 
-@interface VCameraPublishViewController () <UITextViewDelegate, NSLayoutManagerDelegate, VContentInputAccessoryViewDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
 
 // Canvas
 @property (nonatomic, weak) IBOutlet    UIView                  *canvasView;
@@ -61,7 +63,6 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet    UITextView              *memeTextView;
 @property (nonatomic, weak) IBOutlet    UITextView              *quoteTextView;
 @property (strong, nonatomic) IBOutletCollection(UITextView) NSArray *inputTextViews;
-@property (nonatomic)                   CGFloat                 currentMemeFontSize;
 
 // Caption Buttons
 @property (nonatomic, retain)           IBOutletCollection(UIButton) NSArray *captionButtons;
@@ -142,11 +143,6 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
         self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
     }
-    
-    //TODO: REMOVE THESE?
-    self.captionTextView.layoutManager.delegate = self;
-    self.memeTextView.layoutManager.delegate = self;
-    self.quoteTextView.layoutManager.delegate = self;
     
     self.captionType = VCaptionTypeNormal;
     
@@ -234,7 +230,7 @@ static const CGFloat kShareMargin = 34.0f;
             break;
         case VCaptionTypeMeme:
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
-                                                                               attributes:[self memeAttributesForDesiredSize:self.currentMemeFontSize]];
+                                                                               attributes:[self memeAttributes]];
             self.memeTextView.hidden = NO;
             self.memePlaceholderLabel.hidden = (self.memeTextView.text.length > 0);
             break;
@@ -279,24 +275,13 @@ static const CGFloat kShareMargin = 34.0f;
              };
 }
 
-- (NSDictionary *)memeAttributesForDesiredSize:(CGFloat)desiredSize
+- (NSDictionary *)memeAttributes
 {
-    if (desiredSize < 30.0f)
-    {
-        desiredSize = 30.0f;
-    }
-    else if (desiredSize > 50.0f)
-    {
-        desiredSize = 50.0f;
-    }
-    
-    self.currentMemeFontSize = desiredSize;
-    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:desiredSize],
+             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMaxMemeFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor blackColor],
              NSStrokeWidthAttributeName : @(-5.0)
@@ -353,7 +338,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"AddDescription", @"")
                                                                                   attributes:[self captionAttributes]];
     self.memePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
-                                                                               attributes:[self memeAttributesForDesiredSize:self.currentMemeFontSize]];
+                                                                               attributes:[self memeAttributes]];
     self.quotePlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", @"")
                                                                                 attributes:[self quoteAttributes]];
     
@@ -767,9 +752,19 @@ static const CGFloat kShareMargin = 34.0f;
             break;
         case VCaptionTypeMeme:
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
-                                                                               attributes:[self memeAttributesForDesiredSize:30.0f]];
+                                                                               attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.memeTextView isFirstResponder]);
+        {
+            
+            while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize) {
+                self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
+            }
+            
+            while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height < kPublishMinMemeFontSize) {
+                self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
+            }
+        }
             break;
         case VCaptionTypeQuote:
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
@@ -780,6 +775,10 @@ static const CGFloat kShareMargin = 34.0f;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification
                                                         object:changedTextView];
+    
+
+
+    
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -887,26 +886,6 @@ static const CGFloat kShareMargin = 34.0f;
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
 {
     return (self.captionType == VCaptionTypeNormal) ? YES : NO;
-}
-
-#pragma mark - NSLayoutManagerDelegate
-
-- (void)layoutManager:(NSLayoutManager *)layoutManager
-        textContainer:(NSTextContainer *)textContainer
-didChangeGeometryFromSize:(CGSize)oldSize
-{
-    if (self.captionType != VCaptionTypeMeme)
-    {
-        return;
-    }
-    
-    CGFloat maxMemeWidth = CGRectGetWidth(self.canvasView.bounds) - 40.0f; // 20 pt margin on each side
-    
-    if (textContainer.size.width < maxMemeWidth)
-    {
-        
-    }
-    
 }
 
 @end
