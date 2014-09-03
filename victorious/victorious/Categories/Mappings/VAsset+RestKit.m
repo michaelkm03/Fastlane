@@ -22,6 +22,8 @@
                                   @"display_order" : VSelectorName(display_order),
                                   @"type" : VSelectorName(type),
                                   @"data" : VSelectorName(data),
+                                  @"rate" : VSelectorName(rate),
+                                  @"loop" : VSelectorName(loop),
                                   @"asset_id" : VSelectorName(remoteId)
                                   };
     

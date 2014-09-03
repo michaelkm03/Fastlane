@@ -8,6 +8,7 @@
 
 #import "VContentViewController.h"
 #import "VCVideoPlayerViewController.h"
+#import "VConstants.h"
 
 const NSTimeInterval kVideoPlayerAnimationDuration; ///< The duration to be used when animating the video player into and out of view
 
@@ -15,6 +16,9 @@ const NSTimeInterval kVideoPlayerAnimationDuration; ///< The duration to be used
 
 
 @property (strong, nonatomic) VCVideoPlayerViewController* videoPlayer;
+
+@property (nonatomic, assign) CGFloat playBackRate;
+@property (nonatomic, assign) NSInteger loopMode;
 
 @property (nonatomic, copy) void (^onVideoCompletionBlock)(void); ///< A block to execute as soon as playback finishes. Block will be cleared after executing once.
 

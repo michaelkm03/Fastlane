@@ -26,6 +26,9 @@ static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
 static const char kVideoPlayerKey;
 
+static const char kPlayBackRateKey;
+static const char kLoopModeKey;
+
 @interface VContentViewController (VideosPrivate)
 
 @property (nonatomic) BOOL shouldPause;
@@ -107,6 +110,7 @@ static const char kVideoPlayerKey;
         [self addCloseButtonToVideoPlayer];
     }
     
+    [self.videoPlayer.player setRate:0.50];
     [self.videoPlayer setItemURL:contentURL];
     
     self.activityIndicator = [[VActivityIndicatorView alloc] init];
@@ -344,6 +348,26 @@ static const char kVideoPlayerKey;
 
 #pragma mark - Properties
 
+-(NSInteger)loopMode
+{
+    return [objc_getAssociatedObject(self, &kLoopModeKey) integerValue];
+}
+
+-(void)setLoopMode:(NSInteger)loopMode
+{
+    objc_setAssociatedObject(self, &kLoopModeKey, [NSNumber numberWithInteger:loopMode], OBJC_ASSOCIATION_ASSIGN);
+}
+
+-(CGFloat)playBackRate
+{
+    return [objc_getAssociatedObject(self, &kPlayBackRateKey) floatValue];
+}
+
+-(void)setPlayBackRate:(CGFloat)playBackRate
+{
+    objc_setAssociatedObject(self, &kPlayBackRateKey, [NSNumber numberWithFloat:playBackRate], OBJC_ASSOCIATION_ASSIGN);
+}
+
 - (void)setVideoPreviewView:(UIView *)videoPreviewView
 {
     objc_setAssociatedObject(self, &kVideoPreviewViewKey, videoPreviewView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -435,6 +459,11 @@ static const char kVideoPlayerKey;
         self.onVideoCompletionBlock();
         self.onVideoCompletionBlock = nil;
     }
+}
+
+-(void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    [videoPlayer.player setRate:2.0f];
 }
 
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer

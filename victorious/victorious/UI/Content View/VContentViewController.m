@@ -743,6 +743,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     if ([self.currentAsset isVideo])
     {
+        // Grab Playback Rate and Loop Mode
+        self.playBackRate = 0.5;
+        self.loopMode = [self.currentAsset.loop integerValue];
+        
         [self loadImage]; // load the video thumbnail
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
         
