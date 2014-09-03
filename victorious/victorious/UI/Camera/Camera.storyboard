@@ -293,7 +293,7 @@ and don't forget #hashtags</string>
                                         </connections>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Emm-sn-qjl" userLabel="Meme Text View">
-                                        <rect key="frame" x="155" y="255" width="10" height="45"/>
+                                        <rect key="frame" x="20" y="255" width="280" height="45"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -319,9 +319,8 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" id="3uw-Pi-TDY"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="WBZ-Ng-22P" secondAttribute="top" id="4D7-at-UZO"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="leading" secondItem="Aa5-gI-eua" secondAttribute="leading" id="6RX-kW-Ojq"/>
-                                    <constraint firstAttribute="centerX" secondItem="Emm-sn-qjl" secondAttribute="centerX" id="7O4-e1-pAM"/>
                                     <constraint firstAttribute="trailing" secondItem="g4C-sb-DOe" secondAttribute="trailing" id="91A-LA-tXs"/>
-                                    <constraint firstItem="Emm-sn-qjl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="BaG-kh-OM3"/>
+                                    <constraint firstItem="Emm-sn-qjl" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="BaG-kh-OM3"/>
                                     <constraint firstItem="g4C-sb-DOe" firstAttribute="trailing" secondItem="Aa5-gI-eua" secondAttribute="trailing" id="DXm-6u-RV2"/>
                                     <constraint firstAttribute="bottom" secondItem="iCW-rE-1kp" secondAttribute="bottom" id="EbP-m3-LOd"/>
                                     <constraint firstAttribute="bottom" secondItem="g4C-sb-DOe" secondAttribute="bottom" id="Gqp-Xw-z4X"/>
@@ -338,7 +337,7 @@ and don't forget #hashtags</string>
                                     <constraint firstItem="Emm-sn-qjl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="g8J-9t-99m"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="gEd-uQ-Yfg"/>
                                     <constraint firstItem="zV0-x2-7Yh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="hWR-wA-6z3"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Emm-sn-qjl" secondAttribute="trailing" constant="20" id="jFc-68-i5Q"/>
+                                    <constraint firstAttribute="trailing" secondItem="Emm-sn-qjl" secondAttribute="trailing" constant="20" id="jFc-68-i5Q"/>
                                     <constraint firstAttribute="trailing" secondItem="zV0-x2-7Yh" secondAttribute="trailing" constant="20" id="kKO-51-yHE"/>
                                     <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="WBZ-Ng-22P" secondAttribute="leading" constant="20" id="kKv-XO-y9t"/>
                                     <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBZ-Ng-22P" secondAttribute="top" constant="20" id="nf0-eb-v5g"/>
