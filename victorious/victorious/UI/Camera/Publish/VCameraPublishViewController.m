@@ -125,6 +125,16 @@ static const CGFloat kShareMargin = 34.0f;
     
     self.userEnteredText = @"";
     
+    // iPhone 4 special cases
+    if (CGRectGetHeight(self.view.bounds) <= 480)
+    {
+        self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
+        self.shareViewHeightConstraint.constant = 80.0f;
+        self.captionViewHeightConstraint.constant = 40.0f;
+        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
+        [self.view layoutIfNeeded];
+    }
+    
     // Configure UI
     [self configurePlaceholderLabels];
     [self configureInputAccessoryViews];
@@ -134,15 +144,6 @@ static const CGFloat kShareMargin = 34.0f;
     [self configureShareViews];
     [self configureCloseButton];
     [self configureNavigationBar];
-    
-    // iPhone 4 special cases
-    if (CGRectGetHeight(self.view.bounds) <= 480)
-    {
-        self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
-        self.shareViewHeightConstraint.constant = 79.0f;
-        self.captionViewHeightConstraint.constant = 40.0f;
-        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
-    }
         
     self.userEnteredText = @"";
     self.captionType = VCaptionTypeNormal;
@@ -444,6 +445,12 @@ static const CGFloat kShareMargin = 34.0f;
     UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
     for (UIButton* button in self.captionButtons)
     {
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
+        [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
+        [button setBackgroundImage:unselectedImage forState:UIControlStateNormal];
+        
+        // Borders
         if (button == self.memeButton)
         {
             // Meme is center we only want border on top and bottom
@@ -461,10 +468,6 @@ static const CGFloat kShareMargin = 34.0f;
             [button.layer addSublayer:bottomBorder];
             continue;
         }
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-        [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
-        [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
-        [button setBackgroundImage:unselectedImage forState:UIControlStateNormal];
         button.layer.borderWidth = 1;
         button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
     }
