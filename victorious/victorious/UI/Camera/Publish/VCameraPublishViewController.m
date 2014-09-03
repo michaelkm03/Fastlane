@@ -79,7 +79,9 @@ static const CGFloat kPublishKeyboardOffset = 106.0f;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint*     centerYAlignmentPlaceholderLabelToContainer;
 
 // Input Accessories
-@property (nonatomic, weak)             VContentInputAccessoryView*     contentInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView*     captionInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView*     memeInputAccessoryView;
+@property (nonatomic, weak)             VContentInputAccessoryView*     quoteInputAccessoryView;
 
 // Snapshotter
 @property (nonatomic, strong)           VCompositeSnapshotController*   snapshotController;
@@ -114,45 +116,23 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewDidLoad];
     
-    self.captionPlaceholderLabel.userInteractionEnabled = NO;
-    
-    UIView *previewImageView = self.previewImageView;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(previewImageView)]];
-    
-    VContentInputAccessoryView *contentInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
-    contentInputAccessory.maxCharacterLength = 70;
-    contentInputAccessory.textInputView = self.textView;
-    contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
-    contentInputAccessory.delegate = self;
-    self.contentInputAccessoryView = contentInputAccessory;
-    self.textView.inputAccessoryView = contentInputAccessory;
-    
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
-    
-    self.userEnteredText = @"";
-    
-    self.publishButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.publishButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.publishButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
-    self.publishButton.titleLabel.text = NSLocalizedString(@"Publish", nil);
-    
-    self.shareToLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.shareToLabel.textColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
-    
-    UIImage* selectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.9 green:.91 blue:.92 alpha:1]];
-    UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
-    for (UIButton* button in self.captionButtons)
-    {
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-        [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
-        [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
-        [button setBackgroundImage:unselectedImage forState:UIControlStateNormal];
-        button.layer.borderWidth = 1;
-        button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
-    }
-    
-    [self setDefaultCaptionText];
 
+    self.userEnteredText = @"";
+
+    [self setDefaultCaptionText];
+    
+    // Configure UI
+    self.captionPlaceholderLabel.userInteractionEnabled = NO;
+    [self configureInputAccessoryViews];
+    [self configurePublishButton];
+    [self configureShareLabel];
+    [self configureCaptionButtons];
+    [self configureShareViews];
+    [self configureCloseButton];
+    [self configureNavigationBar];
+    
+    // iPhone 4 special cases
     if (CGRectGetHeight(self.view.bounds) <= 480)
     {
         self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
@@ -160,42 +140,31 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
         self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
     }
-
-    [self configureShareViews];
     
-    self.textView.layoutManager.delegate = self;
+    //TODO: REMOVE THESE?
+    self.captionTextView.layoutManager.delegate = self;
+    self.memeTextView.layoutManager.delegate = self;
+    self.quoteTextView.layoutManager.delegate = self;
     
-    [self textViewDidChange:self.textView];
-    self.captionType = self.captionType;
     [self.view layoutIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.previewImageView.image = self.previewImage;
-    
-    self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    
-    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
-    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
     
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
     self.captionButton.selected = self.captionType == VCaptionTypeNormal;
     self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
     
-    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
-        || [self.mediaURL v_hasVideoExtension])
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled] || [self.mediaURL v_hasVideoExtension])
+    {
         self.captionViewHeightConstraint.constant = 0;
+    }
     
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    
-    
+    // Register
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -252,71 +221,55 @@ static const CGFloat kShareMargin = 34.0f;
 {
     _captionType = captionType;
     
-    if (captionType == VCaptionTypeMeme)
-    {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
-        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
-        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentCenter;
-        self.typingAttributes = [@{
-                                   NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:30.0],
-                                   NSForegroundColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeColorAttributeName : [UIColor blackColor],
-                                   NSStrokeWidthAttributeName : @(-5.0)
-                                   } mutableCopy];
+    switch (captionType) {
+        case VCaptionTypeNormal:
+            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
+            self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
+            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+            
+            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+            paragraphStyle.alignment                = NSTextAlignmentLeft;
+            self.typingAttributes = [@{
+                                       NSParagraphStyleAttributeName : paragraphStyle,
+                                       NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
+                                       NSForegroundColorAttributeName : [UIColor whiteColor],
+                                       NSStrokeColorAttributeName : [UIColor whiteColor],
+                                       NSStrokeWidthAttributeName : @(0)
+                                       } mutableCopy];
+            break;
+        case VCaptionTypeMeme:
+            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
+            self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
+            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+            
+            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+            paragraphStyle.alignment                = NSTextAlignmentCenter;
+            self.typingAttributes = [@{
+                                       NSParagraphStyleAttributeName : paragraphStyle,
+                                       NSFontAttributeName : [UIFont fontWithName:kMemeFont size:30.0],
+                                       NSForegroundColorAttributeName : [UIColor whiteColor],
+                                       NSStrokeColorAttributeName : [UIColor blackColor],
+                                       NSStrokeWidthAttributeName : @(-5.0)
+                                       } mutableCopy];
+            break;
+        case VCaptionTypeQuote:
+            self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
+            self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
+            self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
+            
+            NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+            paragraphStyle.alignment                = NSTextAlignmentCenter;
+            self.typingAttributes = [@{
+                                       NSParagraphStyleAttributeName : paragraphStyle,
+                                       NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
+                                       NSForegroundColorAttributeName : [UIColor whiteColor],
+                                       NSStrokeColorAttributeName : [UIColor whiteColor],
+                                       NSStrokeWidthAttributeName : @(0)
+                                       } mutableCopy];
+            break;
     }
-    else if (captionType == VCaptionTypeQuote)
-    {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultLow;
-        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentCenter;
-        self.typingAttributes = [@{
-                                   NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
-                                   NSForegroundColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeWidthAttributeName : @(0)
-                                   } mutableCopy];
-
-    }
-    else if (captionType == VCaptionTypeNormal)
-    {
-        self.bottomVerticalSpaceTextViewToCanvasConstraint.priority = UILayoutPriorityDefaultHigh;
-        self.centerYAlignmentTextViewToContainerConstraint.priority = UILayoutPriorityDefaultLow;
-        self.bottomVerticalSpacePlaceholderLabelToContainer.priority = UILayoutPriorityDefaultHigh;
-        self.centerYAlignmentPlaceholderLabelToContainer.priority = UILayoutPriorityDefaultLow;
-        
-        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-        paragraphStyle.alignment                = NSTextAlignmentLeft;
-        self.typingAttributes = [@{
-                                   NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
-                                   NSForegroundColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeColorAttributeName : [UIColor whiteColor],
-                                   NSStrokeWidthAttributeName : @(0)
-                                   } mutableCopy];
-    }
-    //This is a hack.  In the event that self.textView.text is an empty string, the attributes of the string won't change.
-    //So we add a non empty string with the attributes first so we are sure to clear the old attribute values, then add the real string.
-    NSString* originalText = self.textView.text ?: @"";
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"This is going to be replaced"
-                                                                   attributes:self.typingAttributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:originalText
-                                                                   attributes:self.typingAttributes];
-    
-    self.textView.font = self.typingAttributes[NSFontAttributeName];
-    
-    self.captionPlaceholderLabel.font = self.textView.font;
-    self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
-    
-    [self textViewDidChange:self.textView];
     
     [self setDefaultCaptionText];
     
@@ -324,6 +277,89 @@ static const CGFloat kShareMargin = 34.0f;
 }
 
 #pragma mark - Internal Methods
+
+- (void)setDefaultCaptionText
+{
+    if (self.captionType == VCaptionTypeNormal)
+    {
+        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+            
+            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+            
+            return mutableAttributedString;
+        }];
+        return;
+    }
+    
+    NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
+    if (self.captionType == VCaptionTypeMeme)
+    {
+        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
+    }
+    
+    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
+                                                                                  attributes:placeholderAttributes];
+}
+
+- (void)configureShareLabel
+{
+    self.shareToLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.shareToLabel.textColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
+}
+
+- (void)configurePublishButton
+{
+    self.publishButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.publishButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.publishButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+    self.publishButton.titleLabel.text = NSLocalizedString(@"Publish", nil);
+}
+
+- (void)configureInputAccessoryViews
+{
+    // Input Accessory Views
+    VContentInputAccessoryView* captionInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    captionInputAccessory.maxCharacterLength = 70;
+    captionInputAccessory.textInputView = self.captionTextView;
+    captionInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    captionInputAccessory.delegate = self;
+    self.captionInputAccessoryView = captionInputAccessory;
+    self.captionTextView.inputAccessoryView = captionInputAccessory;
+    
+    VContentInputAccessoryView* memeInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    memeInputAccessory.maxCharacterLength = 70;
+    memeInputAccessory.textInputView = self.memeTextView;
+    memeInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    memeInputAccessory.delegate = self;
+    self.memeInputAccessoryView = memeInputAccessory;
+    self.memeTextView.inputAccessoryView = memeInputAccessory;
+    
+    VContentInputAccessoryView* quoteInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    quoteInputAccessory.maxCharacterLength = 70;
+    quoteInputAccessory.textInputView = self.quoteTextView;
+    quoteInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    quoteInputAccessory.delegate = self;
+    self.quoteInputAccessoryView = quoteInputAccessory;
+    self.quoteTextView.inputAccessoryView = quoteInputAccessory;
+}
+
+- (void)configureCaptionButtons
+{
+    UIImage* selectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.9 green:.91 blue:.92 alpha:1]];
+    UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
+    for (UIButton* button in self.captionButtons)
+    {
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
+        [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
+        [button setBackgroundImage:unselectedImage forState:UIControlStateNormal];
+        button.layer.borderWidth = 1;
+        button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
+    }
+}
 
 - (void)configureShareViews
 {
@@ -347,30 +383,20 @@ static const CGFloat kShareMargin = 34.0f;
     }
 }
 
-- (void)setDefaultCaptionText
+- (void)configureCloseButton
 {
-    if (self.captionType == VCaptionTypeNormal)
-    {
-        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-            
-            UIFont *headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-            [mutableAttributedString addAttribute:NSFontAttributeName value:headerFont range:NSMakeRange(0, [mutableAttributedString length])];
-            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-            
-            return mutableAttributedString;
-        }];
-        return;
-    }
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
+    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+}
 
-    NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
-    if (self.captionType == VCaptionTypeMeme)
-    {
-        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
-    }
-    
-    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
-                                                                                  attributes:placeholderAttributes];
+- (void)configureNavigationBar
+{
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
 }
 
 #pragma mark - Actions
