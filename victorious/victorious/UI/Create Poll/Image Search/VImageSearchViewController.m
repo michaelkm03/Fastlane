@@ -90,6 +90,10 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     {
         [self performSearch];
     }
+    else
+    {
+        [self.searchField becomeFirstResponder];
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -121,6 +125,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (void)performSearch
 {
+    [self.searchField resignFirstResponder];
     self.noResultsLabel.hidden = YES;
     [self.activityIndicatorView startAnimating];
     [self.dataSource searchWithSearchTerm:self.searchField.text
