@@ -242,6 +242,7 @@ static const CGFloat kShareMargin = 34.0f;
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
+            self.quoteTextView.textAlignment = NSTextAlignmentCenter;
             self.quotePlaceholderLabel.hidden = (self.quoteTextView.text.length > 0);
             break;
     }
@@ -291,7 +292,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     self.currentMemeFontSize = desiredSize;
     
-    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
@@ -304,7 +305,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (NSDictionary *)quoteAttributes
 {
-    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     
     return @{
@@ -365,20 +366,6 @@ static const CGFloat kShareMargin = 34.0f;
 
             return mutableAttributedString;
         }];
-//    if (self.captionType == VCaptionTypeNormal)
-//    {
-//
-//        return;
-//    }
-//
-//
-//    if (self.captionType == VCaptionTypeMeme)
-//    {
-//        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
-//    }
-//
-//    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
-//                                                                                  attributes:placeholderAttributes];
 }
 
 - (void)configureShareLabel
@@ -513,15 +500,20 @@ static const CGFloat kShareMargin = 34.0f;
     if (sender == self.memeButton)
     {
         self.captionType = VCaptionTypeMeme;
+        [self.memeTextView becomeFirstResponder];
     }
     else if (sender == self.quoteButton)
     {
         self.captionType = VCaptionTypeQuote;
+        [self.quoteTextView becomeFirstResponder];
     }
     else if (sender == self.captionButton)
     {
         self.captionType = VCaptionTypeNormal;
+        [self.captionTextView becomeFirstResponder];
     }
+    
+    [self textViewDidChange:nil];
 }
 
 - (IBAction)goBack:(id)sender
@@ -757,29 +749,37 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    self.captionPlaceholderLabel.hidden = YES;
+    [self.placeholderLabels enumerateObjectsUsingBlock:^(TTTAttributedLabel *label, NSUInteger idx, BOOL *stop) {
+        label.hidden = YES;
+    }];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    UITextView *changedTextView = nil;
     switch (self.captionType)
     {
         case VCaptionTypeNormal:
             self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                   attributes:[self captionAttributes]];
+            changedTextView = self.captionTextView;
             self.captionPlaceholderLabel.hidden = (([textView.text length] > 0) || [self.captionTextView isFirstResponder]);
             break;
         case VCaptionTypeMeme:
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ? [self.userEnteredText uppercaseString]: @""
                                                                                attributes:[self memeAttributesForDesiredSize:30.0f]];
+            changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.memeTextView isFirstResponder]);
             break;
         case VCaptionTypeQuote:
             self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
                                                                                 attributes:[self quoteAttributes]];
-            self.quoteTextView.hidden = (([textView.text length] > 0) || [self.quoteTextView isFirstResponder]);
+            changedTextView = self.quoteTextView;
+            self.quotePlaceholderLabel.hidden = (([textView.text length] > 0) || [self.quoteTextView isFirstResponder]);
             break;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification
+                                                        object:changedTextView];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
