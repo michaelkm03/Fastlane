@@ -401,6 +401,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.mediaType = kTemporaryContentStatus;
     tempComment.display_order = @(-1);
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
+    tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
     
     [sequence addCommentsObject:tempComment];
