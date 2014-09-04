@@ -364,9 +364,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         {
             NSDictionary* payload = fullResponse[kVPayloadKey];
             NSNumber* commentID = @([payload[@"id"] integerValue]);
-            
             newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
-            newComment.realtime = @([payload[@"realtime"] integerValue]);
+            newComment.realtime = time;
             [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         }
         
@@ -402,6 +401,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.mediaType = kTemporaryContentStatus;
     tempComment.display_order = @(-1);
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
+    tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
     
     [sequence addCommentsObject:tempComment];
@@ -424,7 +424,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 - (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
                                  toUser:(VUser *)user
                            successBlock:(VSuccessBlock)success
-                              failBlock:(VFailBlock)fail;
+                              failBlock:(VFailBlock)fail
 {
     //Set the parameters
     NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],

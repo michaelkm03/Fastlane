@@ -21,7 +21,7 @@ NSString *const kSelectorCellIdentifier = @"cell";
 @implementation VSelectorViewController
 
 + (instancetype)selectorViewControllerWithItemsToSelectFrom:(NSArray *)items
-                                         withConfigureBlock:(VSelectionItemConfigureCellBlock)configureBlock;
+                                         withConfigureBlock:(VSelectionItemConfigureCellBlock)configureBlock
 {
     VSelectorViewController *selectorViewController = [[VSelectorViewController alloc] initWithStyle:UITableViewStylePlain];
     selectorViewController.items = items;

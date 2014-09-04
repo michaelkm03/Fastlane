@@ -131,7 +131,9 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     {
         case VRemixCountInfo:
             if ([self.sequence isPoll])
+            {
                 return 0;
+            }
             
         default:
             return self.tableView.rowHeight;
@@ -260,7 +262,9 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedBack:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(didCloseFromInfo)])
+    {
         [self.delegate didCloseFromInfo];
+    }
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -280,7 +284,9 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedComment:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(willCommentFromInfo)])
+    {
         [self.delegate willCommentFromInfo];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }

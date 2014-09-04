@@ -201,7 +201,7 @@
     VAnswer* chosenAnswer;
     
     NSInteger tag = ((UIButton*)sender).tag;
-    if (tag >= [self.answers count])
+    if ((NSUInteger)tag >= [self.answers count])
     {
         chosenAnswer = [self.answers lastObject];
     }
@@ -259,10 +259,13 @@
 - (UIButton*)buttonForAnswerID:(NSNumber*)answerID
 {
     if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+    {
         return self.leftButton;
-    
+    }
     else if ([answerID isEqualToNumber:((VAnswer*)[self.answers lastObject]).remoteId])
-        return  self.rightButton;
+    {
+        return self.rightButton;
+    }
 
     return nil;
 }

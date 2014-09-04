@@ -2,7 +2,7 @@
 //  VAsset.h
 //  victorious
 //
-//  Created by Will Long on 7/30/14.
+//  Created by Lawrence Leach on 9/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,11 +15,13 @@
 
 @property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * loop;
 @property (nonatomic, retain) NSNumber * nodeId;
-@property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) VNode *node;
+@property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, retain) VNode *node;
 @end
 
 @interface VAsset (CoreDataGeneratedAccessors)

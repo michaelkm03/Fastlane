@@ -78,7 +78,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)toggleFilterControl:(NSInteger)idx
 {
     VModeSelect = idx;
-    NSLog(@"\n\n-----\nSelected Index = %d\n-----\n\n",VModeSelect);
+    NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
     
     if (![VObjectManager sharedManager].mainUser)
     {

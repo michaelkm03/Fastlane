@@ -52,7 +52,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
 
 @property (nonatomic, strong) NSArray *foundUsers;
-@property (nonatomic) BOOL haveSearchResults;
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
@@ -227,7 +226,7 @@
     }
 }
 
--(void)setHaveSearchResults:(BOOL)haveSearchResults
+- (void)setHaveSearchResults:(BOOL)haveSearchResults
 {
     if (!haveSearchResults)
     {

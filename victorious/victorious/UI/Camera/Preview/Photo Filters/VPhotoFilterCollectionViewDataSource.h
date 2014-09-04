@@ -11,8 +11,8 @@
 @class VPhotoFilter;
 
 extern NSString * const kPhotoFilterCellIdentifier;
-extern const NSUInteger kVOriginalImageSectionIndex; ///< A collection view section index with one item: the original photo (no filter)
-extern const NSUInteger kVPhotoFiltersSectionIndex; ///< The collection view section containing all the photo filters
+extern const NSInteger kVOriginalImageSectionIndex; ///< A collection view section index with one item: the original photo (no filter)
+extern const NSInteger kVPhotoFiltersSectionIndex;  ///< The collection view section containing all the photo filters
 
 @interface VPhotoFilterCollectionViewDataSource : NSObject <UICollectionViewDataSource>
 

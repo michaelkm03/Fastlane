@@ -294,7 +294,9 @@
         [gesture setTranslation:CGPointZero inView:self];
         [self setNeedsLayout];
         if ([_delegate respondsToSelector:@selector(videoRange:didChangeLeftPosition:rightPosition:)])
+        {
             [_delegate videoRange:self didChangeLeftPosition:self.leftPosition rightPosition:self.rightPosition];
+        }
     }
     
     _popoverBubble.alpha = 1;
@@ -326,7 +328,9 @@
         [gesture setTranslation:CGPointZero inView:self];
         [self setNeedsLayout];
         if ([_delegate respondsToSelector:@selector(videoRange:didChangeLeftPosition:rightPosition:)])
+        {
             [_delegate videoRange:self didChangeLeftPosition:self.leftPosition rightPosition:self.rightPosition];
+        }
     }
     
     _popoverBubble.alpha = 1;
@@ -451,7 +455,9 @@
                      completion:nil];
     
     if ([_delegate respondsToSelector:@selector(videoRange:didGestureStateEndedLeftPosition:rightPosition:)])
+    {
         [_delegate videoRange:self didGestureStateEndedLeftPosition:self.leftPosition rightPosition:self.rightPosition];
+    }
 }
 
 -(void)setTimeLabel

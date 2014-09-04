@@ -112,7 +112,7 @@
     };
     
     NSString *path = [@"/api/userinfo/fetch/" stringByAppendingString:unloadedUserIDs[0]];
-    for (int i = 1; i < [unloadedUserIDs count]; i++)
+    for (NSUInteger i = 1; i < [unloadedUserIDs count]; i++)
     {
         path = [path stringByAppendingString:@","];
         path = [path stringByAppendingString:unloadedUserIDs[i]];

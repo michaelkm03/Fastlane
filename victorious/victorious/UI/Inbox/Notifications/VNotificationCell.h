@@ -17,5 +17,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *notificationType;
 @property (strong, nonatomic) VNotification* notifcation;
-@property (nonatomic) BOOL seen;
+
 @end

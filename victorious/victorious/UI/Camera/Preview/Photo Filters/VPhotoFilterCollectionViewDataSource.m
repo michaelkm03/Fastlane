@@ -12,8 +12,8 @@
 #import "VPhotoFilterSerialization.h"
 
 NSString * const kPhotoFilterCellIdentifier = @"kPhotoFilterCellIdentifier";
-const NSUInteger kVOriginalImageSectionIndex = 0;
-const NSUInteger kVPhotoFiltersSectionIndex  = 1;
+const NSInteger kVOriginalImageSectionIndex = 0;
+const NSInteger kVPhotoFiltersSectionIndex  = 1;
 
 @interface VPhotoFilterCollectionViewDataSource ()
 
@@ -138,7 +138,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
 
 - (VPhotoFilter *)filterAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert(indexPath.section == kVPhotoFiltersSectionIndex, @"only section %d has filters", kVPhotoFiltersSectionIndex);
+    NSAssert(indexPath.section == kVPhotoFiltersSectionIndex, @"only section %ld has filters", (long)kVPhotoFiltersSectionIndex);
     return self.filters[indexPath.item];
 }
 

@@ -25,7 +25,7 @@ static const CGFloat kButtonMargin           =  0.5f;
 @property (nonatomic, weak)   UIView             *childContainer;
 @property (nonatomic, strong) NSArray /* UIButton */           *buttons;
 @property (nonatomic, strong) NSArray /* NSLayoutConstraint */ *buttonWidthConstraints;
-@property (nonatomic)         NSInteger           selectedIndex;
+@property (nonatomic)         NSUInteger          selectedIndex;
 @property (nonatomic, weak)   UIImageView        *selectionIndicator;
 @property (nonatomic, weak)   NSLayoutConstraint *selectionXconstraint;
 @property (nonatomic, strong) UIViewController   *displayedViewController;
