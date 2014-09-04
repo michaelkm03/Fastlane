@@ -98,8 +98,11 @@
                                        forState:UIControlStateSelected];
     
     UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:kVChannelHeaderLogo];
-    self.headerImageView.image = headerImage;
-    self.headerLabel.hidden = headerImage ? YES : NO;
+    if ((headerImage.size.width > 1) && (headerImage.size.height > 1)) {
+        self.headerImageView.image = headerImage;
+        self.headerLabel.hidden = YES;
+    }
+
     
     [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
                      forLeftSegmentState:UIControlStateNormal
