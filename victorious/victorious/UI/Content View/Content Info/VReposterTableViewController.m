@@ -149,11 +149,14 @@
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [UIView animateWithDuration:0.2f
-                         animations:^{
-                             self.tableView.backgroundView.alpha = 0.0f;
-                         } completion:^(BOOL finished) {
-                             self.tableView.backgroundView = nil;
-                         }];
+                         animations:^
+         {
+             self.tableView.backgroundView.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             self.tableView.backgroundView = nil;
+         }];
     }
 }
 

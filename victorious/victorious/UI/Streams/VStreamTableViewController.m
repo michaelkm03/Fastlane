@@ -463,7 +463,8 @@
         return;
     }
     
-    void (^noContentUpdates)(void) = ^void(void) {
+    void (^noContentUpdates)(void) = ^void(void)
+    {
         self.tableView.backgroundView.alpha = 0.0f;
     };
     
