@@ -94,36 +94,21 @@
     }
 }
 
-- (IBAction)refresh:(id)sender
-{
-    int64_t         delayInSeconds = 1.0f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
-                   {
-                       [self refreshRepostersList];
-                       [self.refreshControl endRefreshing];
-                   });
-}
-
 - (void)refreshRepostersList
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.reposters = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self setHasReposters:self.reposters.count];
+        [self setHasReposters:(self.reposters.count>0)];
         
         [self.tableView reloadData];
     };
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
-        if (error.code)
-        {
-            self.reposters = [[NSArray alloc] init];
-            [self.tableView reloadData];
-            [self setHasReposters:NO];
-        }
+        [self.tableView reloadData];
+        [self setHasReposters:NO];
     };
     
     [[VObjectManager sharedManager] refreshRepostersForSequence:self.sequence
@@ -163,7 +148,12 @@
     else
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        self.tableView.backgroundView = nil;
+        [UIView animateWithDuration:0.2f
+                         animations:^{
+                             self.tableView.backgroundView.alpha = 0.0f;
+                         } completion:^(BOOL finished) {
+                             self.tableView.backgroundView = nil;
+                         }];
     }
 }
 
