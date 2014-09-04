@@ -18,7 +18,35 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VCreatePollViewController.h"
 
+#import "VFindFriendsViewController.h"
+
 @implementation VStreamTableViewController (ContentCreation)
+
+-(void)addFriendsButton
+{
+
+    
+    UIBarButtonItem *friendsButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"findFriendsIcon"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(findFriendsAction:)];
+    
+    self.navigationItem.rightBarButtonItems =  [@[friendsButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
+    
+}
+
+- (IBAction)findFriendsAction:(id)sender
+{
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+
+    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+    [ffvc setShouldAutoselectNewFriends:NO];
+    [self presentViewController:ffvc animated:YES completion:nil];
+}
 
 - (void)addCreateButton
 {
