@@ -2,7 +2,7 @@
 //  VAsset.m
 //  victorious
 //
-//  Created by Lawrence Leach on 9/2/14.
+//  Created by Lawrence Leach on 9/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,11 +15,11 @@
 
 @dynamic data;
 @dynamic display_order;
+@dynamic loop;
 @dynamic nodeId;
+@dynamic speed;
 @dynamic remoteId;
 @dynamic type;
-@dynamic rate;
-@dynamic loop;
 @dynamic comments;
 @dynamic node;
 

@@ -333,7 +333,7 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
-		DB478CE619B68E1800462C37 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = DB478CE519B68E1800462C37 /* VAsset.m */; };
+		DB1FF51619B808B8002D204E /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1FF51519B808B8002D204E /* VAsset.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF44199403B300D2A07F /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF43199403B300D2A07F /* VComment.m */; };
 		DB58EF47199403B400D2A07F /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF46199403B400D2A07F /* VMessage.m */; };
@@ -950,6 +950,8 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		DB1FF51419B808B8002D204E /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAsset.h; path = victorious/ManagedObjectModels/VAsset.h; sourceTree = "<group>"; };
+		DB1FF51519B808B8002D204E /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAsset.m; path = victorious/ManagedObjectModels/VAsset.m; sourceTree = "<group>"; };
 		DB478CE419B68E1800462C37 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
 		DB478CE519B68E1800462C37 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
@@ -1898,6 +1900,8 @@
 		BE171D6D1868BE64004E5202 = {
 			isa = PBXGroup;
 			children = (
+				DB1FF51419B808B8002D204E /* VAsset.h */,
+				DB1FF51519B808B8002D204E /* VAsset.m */,
 				03C1859419B42D3000E27D05 /* 3rd Party SDKs */,
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				03C1856219B42C9100E27D05 /* Fonts */,
@@ -2567,6 +2571,7 @@
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
+				DB1FF51619B808B8002D204E /* VAsset.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
@@ -2726,7 +2731,6 @@
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
 				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,
-				DB478CE619B68E1800462C37 /* VAsset.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				0314D47719B46B5E00FA363C /* VElapsedTimeFormatter.m in Sources */,

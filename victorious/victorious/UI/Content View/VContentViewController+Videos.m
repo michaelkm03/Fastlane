@@ -316,7 +316,7 @@ static const char kVideoPlayerKey;
             if (![self isTitleExpanded] && self.appearing)
             {
                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Start Video" label:self.sequence.name value:nil];
-                CGFloat playBackRate = [self.currentAsset.rate floatValue];
+                CGFloat playBackRate = [self.currentAsset.speed floatValue];
                 BOOL shouldLoop = [self.currentAsset.loop boolValue];
                 [self.videoPlayer.player setRate:playBackRate];
                 [self.videoPlayer setShouldLoop:shouldLoop];

@@ -27,8 +27,8 @@
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="asset" inverseEntity="Comment" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
@@ -206,7 +206,7 @@
         <element name="AbstractFilter" positionX="990" positionY="-747" width="128" height="105"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="630" positionY="-414" width="128" height="178"/>
+        <element name="Asset" positionX="630" positionY="-414" width="128" height="180"/>
         <element name="Comment" positionX="1035" positionY="-576" width="128" height="343"/>
         <element name="CommentFilter" positionX="844" positionY="-463" width="128" height="58"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="133"/>
