@@ -26,7 +26,6 @@ static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
 static const char kVideoPlayerKey;
 
-
 @interface VContentViewController (VideosPrivate)
 
 @property (nonatomic) BOOL shouldPause;
