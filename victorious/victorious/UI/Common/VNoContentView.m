@@ -18,6 +18,7 @@
     noContentView.frame = frame;
     noContentView.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
     noContentView.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    noContentView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     return noContentView;
 }

@@ -23,6 +23,9 @@
 #import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
+// Views
+#import "VNoContentView.h"
+
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
@@ -118,9 +121,14 @@
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self registerCells];
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(willCommentSequence:)
-     name:kStreamsWillCommentNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willCommentSequence:)
+                                                 name:kStreamsWillCommentNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamTableDataSourceDidChangeNotification
+                                               object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
 }
@@ -133,6 +141,24 @@
         self.preloadImageCache.countLimit = 20;
     }
     return _preloadImageCache;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.noContentImage || self.noContentMessage || self.noContentTitle)
+    {
+        VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noContentView;
+        noContentView.titleLabel.text = self.noContentTitle;
+        noContentView.messageLabel.text = self.noContentMessage;
+        noContentView.iconImageView.image = self.noContentImage;
+        
+        self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+    }
+    
+    [self updateNoContentViewAnimated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -428,6 +454,33 @@
     self.tableView.tableFooterView = nil;
 }
 
+#pragma mark No Content
+
+- (void)updateNoContentViewAnimated:(BOOL)animated
+{
+    if (self.tableDataSource.filter.sequences.count <= 0)
+    {
+        return;
+    }
+    
+    void (^noContentUpdates)(void) = ^void(void) {
+        self.tableView.backgroundView.alpha = 0.0f;
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2f
+                         animations:^
+         {
+             noContentUpdates();
+         }];
+    }
+    else
+    {
+        noContentUpdates();
+    }
+}
+
 #pragma mark - Predicates
 
 - (VSequenceFilter*)defaultFilter
@@ -475,6 +528,11 @@
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
+- (void)dataSourceDidChange:(NSNotification *)notification
+{
+    [self updateNoContentViewAnimated:YES];
 }
 
 #pragma mark - Navigation
