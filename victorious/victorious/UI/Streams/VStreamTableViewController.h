@@ -14,9 +14,9 @@
 
 typedef NS_ENUM(NSInteger, VStreamFilter)
 {
-    VStreamHotFilter = 0,
-    VStreamRecentFilter,
-    VStreamFollowingFilter
+    VStreamFilterFeatured,
+    VStreamFilterFollowing,
+    VStreamFilterRecent
 };
 
 @protocol VStreamTableDelegate <NSObject>

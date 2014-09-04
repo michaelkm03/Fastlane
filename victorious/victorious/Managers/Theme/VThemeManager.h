@@ -11,8 +11,11 @@
 #pragma mark - New Theme Constants
 extern  NSString*   const   kVChannelName;
 
+// Images
+
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
+extern  NSString*   const   kVChannelHeaderLogo;
 
 //Fonts
 extern  NSString*   const   kVHeaderFont;

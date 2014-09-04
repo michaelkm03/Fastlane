@@ -13,6 +13,7 @@ NSString*   const   kVChannelName                       =   @"channel.name";
 
 NSString*   const   kVMenuBackgroundImage               =   @"Default";
 NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
+NSString*   const   kVChannelHeaderLogo                 =   @"homeHeaderImage";
 
 #pragma mark - Fonts
 
@@ -267,6 +268,11 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (UIImage *)themedImageForKey:(NSString *)key
 {
+    if ([key isEqualToString:kVChannelHeaderLogo])
+    {
+        return [UIImage imageNamed:kVChannelHeaderLogo];
+    }
+    
     return [UIImage imageNamed:key];
 }
 
