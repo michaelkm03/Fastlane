@@ -107,9 +107,9 @@
 "HelpNeeded"            =   "I need help with...";
 
 "ReportInappropriate"   =   "Report Inappropriate";
-"ReportedTitle"         =   "Got it!";
-"ReportContentMessage"  =   "This content will be reviewed within 24 hours";
-"ReportCommentMessage"  =   "This comment will be reviewed within 24 hours";
+"ReportedTitle"         =   "Got It!";
+"ReportContentMessage"  =   "We will review this content within 24 hours.";
+"ReportCommentMessage"  =   "We will review this content within 24 hours.";
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
 
 "BlockUser"             =   "Block User";
