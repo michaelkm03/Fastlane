@@ -78,6 +78,9 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
+"NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
+"NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
+
 "OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
