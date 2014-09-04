@@ -8,7 +8,6 @@
 
 #import "VContentViewController.h"
 #import "VCVideoPlayerViewController.h"
-#import "VConstants.h"
 
 const NSTimeInterval kVideoPlayerAnimationDuration; ///< The duration to be used when animating the video player into and out of view
 

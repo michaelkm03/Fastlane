@@ -26,8 +26,6 @@ static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
 static const char kVideoPlayerKey;
 
-static const char kPlayBackRateKey;
-static const char kLoopModeKey;
 
 @interface VContentViewController (VideosPrivate)
 
