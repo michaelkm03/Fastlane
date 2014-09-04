@@ -13,8 +13,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="235" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
-                        <rect key="frame" x="66" y="14" width="235" height="15"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
+                        <rect key="frame" x="66" y="14" width="196" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="highlightedColor"/>
@@ -46,14 +46,14 @@
                             <action selector="profileImageTapped:" destination="X3b-iY-v4q" eventType="touchUpInside" id="oZZ-Dr-TSr"/>
                         </connections>
                     </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-Uh-Qd1">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-Uh-Qd1">
                         <rect key="frame" x="286" y="14" width="14" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" red="0.27058823529411763" green="0.27058823529411763" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="nnt-e6-nzy">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="nnt-e6-nzy">
                         <rect key="frame" x="270" y="14" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,6 +71,7 @@
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="N5I-mS-ds0"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerX" secondItem="rxs-Gg-jrR" secondAttribute="centerX" id="O91-x4-1Pr"/>
                     <constraint firstAttribute="bottom" secondItem="Gyn-y5-GEV" secondAttribute="bottom" constant="11" id="PHo-7I-Iy3"/>
+                    <constraint firstItem="nnt-e6-nzy" firstAttribute="leading" secondItem="yUe-8b-fBQ" secondAttribute="trailing" constant="8" id="YjX-HS-bm6"/>
                     <constraint firstItem="Gyn-y5-GEV" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="10" id="bWO-9t-7if"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerY" secondItem="rxs-Gg-jrR" secondAttribute="centerY" id="gMn-f5-VtX"/>
                     <constraint firstItem="nnt-e6-nzy" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="gwe-5S-Xt3"/>
@@ -78,7 +79,6 @@
                     <constraint firstItem="rxs-Gg-jrR" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="rQW-bG-E3F"/>
                     <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="leading" secondItem="nnt-e6-nzy" secondAttribute="trailing" constant="3" id="sWn-Mu-r3J"/>
                     <constraint firstItem="Gyn-y5-GEV" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="66" id="tbW-yA-scL"/>
-                    <constraint firstAttribute="right" secondItem="yUe-8b-fBQ" secondAttribute="right" constant="19" id="vl0-HH-1L5"/>
                     <constraint firstAttribute="right" secondItem="Gyn-y5-GEV" secondAttribute="right" constant="25" id="waE-ve-40G"/>
                 </constraints>
             </tableViewCellContentView>
