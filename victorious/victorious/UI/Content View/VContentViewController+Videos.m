@@ -404,8 +404,6 @@ static const char kVideoPlayerKey;
 {
     self.realtimeCommentVC.endTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);
     self.realtimeCommentVC.currentTime = CMTimeGetSeconds(time);
-    
-    NSLog(@"\nPlaying...\nPlayback Rate = %f",videoPlayer.player.rate);
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
@@ -441,11 +439,6 @@ static const char kVideoPlayerKey;
         self.onVideoCompletionBlock();
         self.onVideoCompletionBlock = nil;
     }
-}
-
--(void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
-{
-    NSLog(@"\n\nPlayer About to Start Playing...\nPlayback Rate = %f\n\n",videoPlayer.player.rate);
 }
 
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
