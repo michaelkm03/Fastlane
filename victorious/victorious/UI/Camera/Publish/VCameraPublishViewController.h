@@ -10,19 +10,16 @@
 
 @interface VCameraPublishViewController : UIViewController
 
-@property (nonatomic, strong)   UIImage*    previewImage;
-@property (nonatomic, strong)   NSURL*      mediaURL;
+@property (nonatomic, strong)   UIImage*        previewImage;
+@property (nonatomic, strong)   NSURL*          mediaURL;
+@property (nonatomic, strong)   NSString*       expirationDateString;
 
-@property (nonatomic, weak) IBOutlet    UITextView*     textView;
+@property (nonatomic)   VPlaybackSpeed          playBackSpeed;
+@property (nonatomic)   VLoopType               playbackLooping;
+@property (nonatomic)   VCaptionType            captionType;
 
-@property (nonatomic, strong)   NSString*     expirationDateString;
-
-@property (nonatomic)   VPlaybackSpeed  playBackSpeed;
-@property (nonatomic)   VLoopType       playbackLooping;
-@property (nonatomic)   VCaptionType    captionType;
-
-@property (nonatomic)   NSInteger       parentID;
-@property (nonatomic) BOOL didSelectAssetFromLibrary;
+@property (nonatomic)   NSInteger               parentID;
+@property (nonatomic)   BOOL                    didSelectAssetFromLibrary;
 
 /**
  This block will be called when the user has finished publishing

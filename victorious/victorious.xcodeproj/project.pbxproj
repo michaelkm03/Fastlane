@@ -313,6 +313,7 @@
 		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
 		BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3F518DA72140047B67E /* VInteractionAction.m */; };
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
+		BE6425BE19B8D55900A9371F /* NSString+RFC2822Date.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6425BD19B8D55900A9371F /* NSString+RFC2822Date.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */; };
 		BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E9018EB762A009E488E /* VVoteResult.m */; };
@@ -911,6 +912,8 @@
 		BE5DE3F518DA72140047B67E /* VInteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionAction.m; sourceTree = "<group>"; };
 		BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+RestKit.h"; sourceTree = "<group>"; };
 		BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+RestKit.m"; sourceTree = "<group>"; };
+		BE6425BC19B8D55900A9371F /* NSString+RFC2822Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RFC2822Date.h"; sourceTree = "<group>"; };
+		BE6425BD19B8D55900A9371F /* NSString+RFC2822Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RFC2822Date.m"; sourceTree = "<group>"; };
 		BE6C15231880A31A00469BA8 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
 		BE6C15241880A31A00469BA8 /* VAnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswerAction.m; sourceTree = "<group>"; };
 		BE7D2E8C18EB65ED009E488E /* VVoteResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteResult+RestKit.h"; sourceTree = "<group>"; };
@@ -1991,6 +1994,8 @@
 		BE171DAE1868C211004E5202 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BE6425BC19B8D55900A9371F /* NSString+RFC2822Date.h */,
+				BE6425BD19B8D55900A9371F /* NSString+RFC2822Date.m */,
 				03FDA09D197A0AEC00405361 /* CIImage+VImage.h */,
 				03FDA09E197A0AEC00405361 /* CIImage+VImage.m */,
 				BE171DAF1868C211004E5202 /* Fetchers */,
@@ -2641,6 +2646,7 @@
 				0314D47419B46B5E00FA363C /* VCVideoPlayerToolbarView.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
+				BE6425BE19B8D55900A9371F /* NSString+RFC2822Date.m in Sources */,
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
