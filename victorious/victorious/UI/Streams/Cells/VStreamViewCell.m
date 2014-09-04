@@ -45,6 +45,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UIImageView *dateImageView;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
+@property (weak, nonatomic) IBOutlet UIButton *commentHitboxButton;
 
 @property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
@@ -203,8 +204,8 @@ static VLargeNumberFormatter* largeNumberFormatter;
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
     {
         [self.commentButton setHidden:YES];
+        [self.commentHitboxButton setHidden:YES];
     }
-    
     
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
