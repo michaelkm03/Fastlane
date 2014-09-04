@@ -57,6 +57,8 @@
 
 @property (strong, nonatomic) NSString* streamName;
 
+@property (nonatomic, assign) BOOL hasRefreshed;
+
 @end
 
 @implementation VStreamTableViewController
@@ -112,6 +114,8 @@
 {
     [super viewDidLoad];
     
+    self.hasRefreshed = NO;
+    
     self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
     self.tableDataSource.delegate = self;
     self.tableDataSource.filter = self.currentFilter;
@@ -146,17 +150,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if (self.noContentImage || self.noContentMessage || self.noContentTitle)
-    {
-        VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        self.tableView.backgroundView = noContentView;
-        noContentView.titleLabel.text = self.noContentTitle;
-        noContentView.messageLabel.text = self.noContentMessage;
-        noContentView.iconImageView.image = self.noContentImage;
-        
-        self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
-    }
     
     [self updateNoContentViewAnimated:animated];
 }
@@ -407,6 +400,8 @@
 {
     [self.tableDataSource refreshWithSuccess:^(void)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
         if (completionBlock)
         {
@@ -415,6 +410,8 @@
     }
                                      failure:^(NSError *error)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
     }];
     
@@ -458,15 +455,37 @@
 
 - (void)updateNoContentViewAnimated:(BOOL)animated
 {
-    if (self.tableDataSource.filter.sequences.count <= 0)
+    if (![self hasNoContentView])
     {
         return;
     }
     
-    void (^noContentUpdates)(void) = ^void(void)
+    void (^noContentUpdates)(void);
+    
+    if (self.tableDataSource.filter.sequences.count <= 0)
     {
-        self.tableView.backgroundView.alpha = 0.0f;
-    };
+
+        VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noContentView;
+        noContentView.titleLabel.text = self.noContentTitle;
+        noContentView.messageLabel.text = self.noContentMessage;
+        noContentView.iconImageView.image = self.noContentImage;
+        noContentView.alpha = 0.0f;
+        
+        self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = (self.hasRefreshed && [self hasNoContentView]) ? 1.0f : 0.0f;
+        };
+    }
+    else
+    {
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = 0.0f;
+        };
+    }
     
     if (animated)
     {
@@ -480,6 +499,11 @@
     {
         noContentUpdates();
     }
+}
+
+- (BOOL)hasNoContentView
+{
+    return (self.noContentImage || self.noContentTitle || self.noContentMessage);
 }
 
 #pragma mark - Predicates
@@ -512,7 +536,7 @@
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
-    self.tableView.backgroundView = newBackgroundView;
+    [self.tableView addSubview:newBackgroundView];
 }
 
 #pragma mark - Notifications
