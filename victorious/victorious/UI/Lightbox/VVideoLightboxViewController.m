@@ -231,13 +231,20 @@
 {
     [self.activityIndicator removeFromSuperview];
     
+    CGSize videoSize = self.videoPlayer.naturalSize;
+    CGFloat aspectRatio = 1.0f;
+    if (videoSize.height != 0.0f)
+    {
+        aspectRatio = videoSize.width / videoSize.height;
+    }
+    
     [UIView animateWithDuration:0.2
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^(void)
     {
         [self.contentSuperview removeConstraints:self.previewImageConstraints];
-        [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:(self.videoPlayer.naturalSize.width / self.videoPlayer.naturalSize.height)]];
+        [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:aspectRatio]];
         [self.contentSuperview layoutIfNeeded];
         self.previewImageView.alpha = 0.0f;
         self.videoPlayer.view.alpha = 1.0f;
