@@ -287,6 +287,7 @@
 "remixes"               =   "remixes";
 "reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
+"REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
 "RepostContentView"     =   "REPOST";
 "RpostedContentView"    =   "REPOSTED";
