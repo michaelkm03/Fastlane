@@ -110,7 +110,7 @@ static const char kLoopModeKey;
         [self addCloseButtonToVideoPlayer];
     }
     
-    [self.videoPlayer.player setRate:0.50];
+    [self.videoPlayer.player setRate:self.playBackRate];
     [self.videoPlayer setItemURL:contentURL];
     
     self.activityIndicator = [[VActivityIndicatorView alloc] init];
@@ -348,14 +348,14 @@ static const char kLoopModeKey;
 
 #pragma mark - Properties
 
--(NSInteger)loopMode
+-(VLoopType)loopMode
 {
     return [objc_getAssociatedObject(self, &kLoopModeKey) integerValue];
 }
 
--(void)setLoopMode:(NSInteger)loopMode
+-(void)setLoopMode:(VLoopType)loopMode
 {
-    objc_setAssociatedObject(self, &kLoopModeKey, [NSNumber numberWithInteger:loopMode], OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &kLoopModeKey, [NSNumber numberWithInteger:loopMode], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(CGFloat)playBackRate
@@ -365,7 +365,7 @@ static const char kLoopModeKey;
 
 -(void)setPlayBackRate:(CGFloat)playBackRate
 {
-    objc_setAssociatedObject(self, &kPlayBackRateKey, [NSNumber numberWithFloat:playBackRate], OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &kPlayBackRateKey, [NSNumber numberWithFloat:playBackRate], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setVideoPreviewView:(UIView *)videoPreviewView
@@ -424,6 +424,8 @@ static const char kLoopModeKey;
 {
     self.realtimeCommentVC.endTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);
     self.realtimeCommentVC.currentTime = CMTimeGetSeconds(time);
+    
+    NSLog(@"\nPlaying...\nPlayback Rate = %f",videoPlayer.player.rate);
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
@@ -459,11 +461,27 @@ static const char kLoopModeKey;
         self.onVideoCompletionBlock();
         self.onVideoCompletionBlock = nil;
     }
+    
+    switch (self.loopMode) {
+        case VLoopOnce:
+            break;
+        case VLoopRepeat:
+            [videoPlayer.player play];
+            break;
+        case VLoopReverse:
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 
 -(void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
-    [videoPlayer.player setRate:2.0f];
+    [videoPlayer.player setRate:self.playBackRate];
+    NSLog(@"\n\nPlayer About to Start Playing...\nPlayback Rate = %f\n\n",videoPlayer.player.rate);
+
 }
 
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer

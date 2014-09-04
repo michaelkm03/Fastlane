@@ -744,11 +744,24 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     if ([self.currentAsset isVideo])
     {
         // Grab Playback Rate and Loop Mode
-        self.playBackRate = 0.5;
-        self.loopMode = [self.currentAsset.loop integerValue];
+        CGFloat rate = [[self.currentAsset rate] floatValue];
+        VLoopType loop = [[self.currentAsset loop] integerValue];
+        self.playBackRate = 1;
+        self.loopMode = VLoopRepeat;
+        
+        if (rate)
+        {
+            self.playBackRate = 0.5;
+        }
+        
+        if (loop)
+        {
+            self.loopMode = VLoopRepeat;
+        }
         
         [self loadImage]; // load the video thumbnail
-        [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
+        NSURL *newURL = [self.currentAsset.data mp4UrlFromM3U8];
+        [self playVideoAtURL:newURL withPreviewView:self.previewImage];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
