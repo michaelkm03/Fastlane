@@ -61,7 +61,7 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                                         views:NSDictionaryOfVariableBindings(buttonsSuperview)]];
     self.buttonsSuperview = buttonsSuperview;
     
-    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"inviteHighlightArrow"]];
+    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowDownIndicator"]];
     selectionIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [self.buttonsSuperview addSubview:selectionIndicator];
     [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[selectionIndicator]|"
