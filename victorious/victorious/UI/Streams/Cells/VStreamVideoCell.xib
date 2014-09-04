@@ -62,7 +62,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZQB-qj-B4I">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZQB-qj-B4I">
                                 <rect key="frame" x="60" y="19" width="79" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -81,9 +81,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYb-yh-8oc" userLabel="Comment Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYb-yh-8oc" userLabel="Comment Button">
                                 <rect key="frame" x="254" y="4" width="66" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="lKT-gw-BvL"/>
+                                    <constraint firstAttribute="width" constant="66" id="xn6-la-9zm"/>
+                                </constraints>
                                 <state key="normal" title=" 32" image="StreamComments"/>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="h1o-6t-QRB" userLabel="Description">
@@ -104,7 +108,7 @@
                                     <action selector="profileButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="fRn-Rp-3qq"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7J-UH-EAu" userLabel="Comment Button">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7J-UH-EAu" userLabel="Comment Hitbox Button">
                                 <rect key="frame" x="245" y="0.0" width="75" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
@@ -129,7 +133,10 @@
                             <constraint firstItem="EnC-ed-tLe" firstAttribute="centerY" secondItem="ZQB-qj-B4I" secondAttribute="centerY" id="2Jw-s1-dP3"/>
                             <constraint firstItem="wl8-Nf-XeE" firstAttribute="leading" secondItem="ZQB-qj-B4I" secondAttribute="leading" id="63P-cK-akR"/>
                             <constraint firstItem="ZQB-qj-B4I" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="19" id="BFk-n4-Mf7"/>
+                            <constraint firstItem="RYb-yh-8oc" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="4" id="EfX-V1-Nd7"/>
+                            <constraint firstItem="ClZ-8D-vSe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RYb-yh-8oc" secondAttribute="leading" constant="20" id="GeD-of-iGe"/>
                             <constraint firstItem="hHd-Lm-ESF" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" constant="20" id="HnS-3D-zRf"/>
+                            <constraint firstAttribute="trailing" secondItem="RYb-yh-8oc" secondAttribute="trailing" id="J83-iT-0e2"/>
                             <constraint firstItem="wl8-Nf-XeE" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="35" id="JJJ-wL-Vxp"/>
                             <constraint firstAttribute="trailing" secondItem="h1o-6t-QRB" secondAttribute="trailing" constant="20" id="QAI-dt-cFq"/>
                             <constraint firstItem="EnC-ed-tLe" firstAttribute="leading" secondItem="ZQB-qj-B4I" secondAttribute="trailing" constant="8" id="avg-kQ-2Zf"/>
@@ -151,6 +158,7 @@
                 <outlet property="animationBackgroundImage" destination="tq5-a6-OxG" id="NGO-vB-CGE"/>
                 <outlet property="animationImage" destination="N2L-pH-5Tp" id="Xte-M2-l3Z"/>
                 <outlet property="commentButton" destination="RYb-yh-8oc" id="2Oh-KQ-ej1"/>
+                <outlet property="commentHitboxButton" destination="h7J-UH-EAu" id="lTb-gO-vBJ"/>
                 <outlet property="dateImageView" destination="EnC-ed-tLe" id="KHu-qM-PX7"/>
                 <outlet property="dateLabel" destination="ClZ-8D-vSe" id="jTd-I7-vCF"/>
                 <outlet property="descriptionLabel" destination="h1o-6t-QRB" id="7KT-DS-yWE"/>
