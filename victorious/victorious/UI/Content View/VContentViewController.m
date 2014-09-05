@@ -576,23 +576,34 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
     
-    [[VObjectManager sharedManager] fetchUserInteractionsForSequence:sequence.remoteId
-                                                      withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
-     {
-         NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"REPOSTED", @"") : NSLocalizedString(@"RepostContentView", @"");
-         if (userInteractions.hasReposted
-             || [self.sequence.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]
-             || [self.sequence.parentUser.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+    if (![self.sequence.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]
+        && ![self.sequence.parentUser.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+    {
+        self.repostButton.userInteractionEnabled = NO;
+        [[VObjectManager sharedManager] fetchUserInteractionsForSequence:sequence.remoteId
+                                                          withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
          {
-             UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-             [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
-             self.repostButton.adjustsImageWhenDisabled = NO;
-             self.repostButton.enabled = NO;
-         }
-         
-         [self.repostButton setTitle:repostButtonTitle
-                            forState:UIControlStateNormal];
-     }];
+             self.repostButton.userInteractionEnabled = YES;
+             NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"RepostedContentView", @"") : NSLocalizedString(@"RepostContentView", @"");
+             
+             if (userInteractions.hasReposted)
+             {
+                 UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+                 [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+                 self.repostButton.adjustsImageWhenDisabled = NO;
+                 [self.repostButton setTitle:repostButtonTitle
+                                    forState:UIControlStateNormal];
+                 self.repostButton.enabled = NO;
+             }
+         }];
+    }
+    else
+    {
+        self.repostButton.enabled = NO;
+        UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+        self.repostButton.adjustsImageWhenDisabled = NO;
+    }
 }
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
