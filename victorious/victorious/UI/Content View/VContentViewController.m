@@ -873,8 +873,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         return;
     }
-    else
+    else //We're trying to post a RTC
     {
+        if (![VObjectManager sharedManager].mainUser)
+        {
+            [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+            return;
+        }
+        
         self.keyboardBarContainer.hidden = NO;
         self.keyboardBarContainer.alpha = 0;
         
