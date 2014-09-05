@@ -118,8 +118,8 @@
                                     <action selector="commentButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="vIt-YJ-hxT"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repost by Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wl8-Nf-XeE">
-                                <rect key="frame" x="60" y="35" width="198" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Repost by Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wl8-Nf-XeE">
+                                <rect key="frame" x="60" y="35" width="177" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -134,7 +134,7 @@
                             <constraint firstItem="wl8-Nf-XeE" firstAttribute="leading" secondItem="ZQB-qj-B4I" secondAttribute="leading" id="63P-cK-akR"/>
                             <constraint firstItem="ZQB-qj-B4I" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="19" id="BFk-n4-Mf7"/>
                             <constraint firstItem="RYb-yh-8oc" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="4" id="EfX-V1-Nd7"/>
-                            <constraint firstItem="ClZ-8D-vSe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RYb-yh-8oc" secondAttribute="leading" constant="20" id="GeD-of-iGe"/>
+                            <constraint firstItem="ClZ-8D-vSe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RYb-yh-8oc" secondAttribute="leading" constant="10" id="GeD-of-iGe"/>
                             <constraint firstItem="hHd-Lm-ESF" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" constant="20" id="HnS-3D-zRf"/>
                             <constraint firstAttribute="trailing" secondItem="RYb-yh-8oc" secondAttribute="trailing" id="J83-iT-0e2"/>
                             <constraint firstItem="wl8-Nf-XeE" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="35" id="JJJ-wL-Vxp"/>
@@ -142,6 +142,7 @@
                             <constraint firstItem="EnC-ed-tLe" firstAttribute="leading" secondItem="ZQB-qj-B4I" secondAttribute="trailing" constant="8" id="avg-kQ-2Zf"/>
                             <constraint firstItem="h1o-6t-QRB" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" constant="20" id="f9s-Dm-zNx"/>
                             <constraint firstItem="ClZ-8D-vSe" firstAttribute="leading" secondItem="EnC-ed-tLe" secondAttribute="trailing" constant="1" id="o4v-74-mgt"/>
+                            <constraint firstItem="wl8-Nf-XeE" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RYb-yh-8oc" secondAttribute="leading" constant="10" id="rTt-W2-wvO"/>
                             <constraint firstItem="ZQB-qj-B4I" firstAttribute="leading" secondItem="hHd-Lm-ESF" secondAttribute="trailing" constant="8" id="u6m-yj-NsE"/>
                             <constraint firstAttribute="bottom" secondItem="h1o-6t-QRB" secondAttribute="bottom" constant="20" id="xiX-Zz-86n"/>
                         </constraints>

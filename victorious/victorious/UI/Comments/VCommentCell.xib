@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Johnny Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
                         <rect key="frame" x="66" y="14" width="196" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -71,7 +71,7 @@
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="N5I-mS-ds0"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerX" secondItem="rxs-Gg-jrR" secondAttribute="centerX" id="O91-x4-1Pr"/>
                     <constraint firstAttribute="bottom" secondItem="Gyn-y5-GEV" secondAttribute="bottom" constant="11" id="PHo-7I-Iy3"/>
-                    <constraint firstItem="nnt-e6-nzy" firstAttribute="leading" secondItem="yUe-8b-fBQ" secondAttribute="trailing" constant="8" id="YjX-HS-bm6"/>
+                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="trailing" secondItem="nnt-e6-nzy" secondAttribute="leading" constant="-8" id="YjX-HS-bm6"/>
                     <constraint firstItem="Gyn-y5-GEV" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="10" id="bWO-9t-7if"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerY" secondItem="rxs-Gg-jrR" secondAttribute="centerY" id="gMn-f5-VtX"/>
                     <constraint firstItem="nnt-e6-nzy" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="gwe-5S-Xt3"/>
