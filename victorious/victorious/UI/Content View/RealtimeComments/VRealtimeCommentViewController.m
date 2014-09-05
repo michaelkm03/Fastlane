@@ -75,7 +75,6 @@
     [self.progressBackgroundView addGestureRecognizer:commentSelectionRecognizer];
     
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
-//    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.progressBarImageViews = [[NSMutableArray alloc] init];
     self.arrowImageView.image = [self.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -160,7 +159,6 @@
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
-//        progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
