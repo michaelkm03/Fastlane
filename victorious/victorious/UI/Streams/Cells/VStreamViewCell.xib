@@ -43,22 +43,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BA-qs-0sG">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BA-qs-0sG">
                                 <rect key="frame" x="57" y="19" width="79" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
-                                <rect key="frame" x="159" y="19" width="20" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" misplaced="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
+                                <rect key="frame" x="234" y="19" width="20" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
-                                <rect key="frame" x="142" y="23" width="13" height="13"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
+                                <rect key="frame" x="217" y="23" width="13" height="13"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -69,9 +69,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLx-fR-OJL" userLabel="Comment Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLx-fR-OJL" userLabel="Comment Button">
                                 <rect key="frame" x="254" y="2" width="66" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Gn0-v6-Sal"/>
+                                    <constraint firstAttribute="width" constant="66" id="hQ0-qQ-OrT"/>
+                                </constraints>
                                 <state key="normal" title=" 32" image="StreamComments"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sT5-hN-nDW">
@@ -96,9 +100,13 @@
                                     <action selector="profileButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="kOF-yI-eTO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN8-j8-vLE" userLabel="Comment Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN8-j8-vLE" userLabel="Comment Hitbox Button">
                                 <rect key="frame" x="245" y="0.0" width="75" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="Aoo-52-oFa"/>
+                                    <constraint firstAttribute="height" constant="75" id="I5q-GR-WFz"/>
+                                </constraints>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -117,8 +125,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="FjP-gf-RHX" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="35" id="1Uv-5i-Sxq"/>
+                            <constraint firstItem="OUw-F8-xAD" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="cLx-fR-OJL" secondAttribute="leading" constant="20" id="5Mh-Y2-8lY"/>
                             <constraint firstItem="OUw-F8-xAD" firstAttribute="leading" secondItem="D3j-da-Kgn" secondAttribute="trailing" constant="4" id="6hV-CC-HIR"/>
                             <constraint firstItem="4BA-qs-0sG" firstAttribute="leading" secondItem="sT5-hN-nDW" secondAttribute="trailing" constant="5" id="Cj3-Ft-o6K"/>
+                            <constraint firstItem="cLx-fR-OJL" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="2" id="Elv-cU-TtT"/>
                             <constraint firstItem="sT5-hN-nDW" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="15" id="Lpi-wr-3tG"/>
                             <constraint firstItem="sT5-hN-nDW" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" constant="20" id="M4s-AK-uE0"/>
                             <constraint firstItem="D3j-da-Kgn" firstAttribute="leading" secondItem="4BA-qs-0sG" secondAttribute="trailing" constant="6" id="TQ5-o1-tzB"/>
@@ -127,6 +137,9 @@
                             <constraint firstAttribute="trailing" secondItem="WLo-v6-MW0" secondAttribute="trailing" constant="20" id="fAI-FJ-3K6"/>
                             <constraint firstItem="4BA-qs-0sG" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="19" id="jR2-iy-USs"/>
                             <constraint firstItem="WLo-v6-MW0" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" constant="20" id="n95-0X-R7c"/>
+                            <constraint firstAttribute="trailing" secondItem="cLx-fR-OJL" secondAttribute="trailing" id="nlk-Zc-l5M"/>
+                            <constraint firstItem="TN8-j8-vLE" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" id="p3d-of-ZJl"/>
+                            <constraint firstAttribute="trailing" secondItem="TN8-j8-vLE" secondAttribute="trailing" id="sl6-ab-whR"/>
                             <constraint firstItem="D3j-da-Kgn" firstAttribute="centerY" secondItem="OUw-F8-xAD" secondAttribute="centerY" id="trQ-6T-zHl"/>
                             <constraint firstItem="4BA-qs-0sG" firstAttribute="leading" secondItem="FjP-gf-RHX" secondAttribute="leading" id="wNK-Cj-28K"/>
                         </constraints>
@@ -141,6 +154,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentButton" destination="cLx-fR-OJL" id="53U-gB-3TI"/>
+                <outlet property="commentHitboxButton" destination="TN8-j8-vLE" id="Hop-Zz-D49"/>
                 <outlet property="dateImageView" destination="D3j-da-Kgn" id="UE5-kg-oJf"/>
                 <outlet property="dateLabel" destination="OUw-F8-xAD" id="gfW-Td-Edg"/>
                 <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="ErA-uR-QtJ"/>

@@ -36,6 +36,13 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
 @property (nonatomic, readonly) NSString *viewName; ///< The view name that will be sent to the analytics server, can be overridden by subclasses
 
+/**
+ *  No content image/title/message to be used when there is no content to display for a given filter. Does not update. Desired properties must be set before ViewWilAppear could be called.
+ */
+@property (nonatomic, strong) UIImage *noContentImage;
+@property (nonatomic, strong) NSString *noContentTitle;
+@property (nonatomic, strong) NSString *noContentMessage;
+
 - (void)refreshWithCompletion:(void(^)(void))completionBlock;
 
 + (instancetype)homeStream;

@@ -481,7 +481,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.saveToCameraController = [[VCameraRollPublishShareController alloc] init];
     
     NSArray* shareControllers = @[self.shareToFacebookController, self.shareToTwitterController, self.saveToCameraController];
-    for (NSInteger i = 0; i < shareControllers.count; i++)
+    for (NSUInteger i = 0; i < shareControllers.count; i++)
     {
         VPublishShareController *shareController = shareControllers[i];
         

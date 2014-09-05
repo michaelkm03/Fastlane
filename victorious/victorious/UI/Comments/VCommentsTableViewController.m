@@ -43,7 +43,6 @@
 
 @interface VCommentsTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) UIImageView* backgroundImageView;
 @property (nonatomic, strong) VCommentFilter* filter;
 @property (nonatomic, assign) BOOL hasComments;
@@ -52,6 +51,8 @@
 @end
 
 @implementation VCommentsTableViewController
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -88,6 +89,8 @@
     }
 }
 
+#pragma mark - Property Accessors
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -110,15 +113,6 @@
     }
 }
 
-- (NSMutableArray *)newlyReadComments
-{
-    if (_newlyReadComments == nil)
-    {
-        _newlyReadComments = [[NSMutableArray alloc] init];
-    }
-    return _newlyReadComments;
-}
-
 - (void)setHasComments:(BOOL)hasComments
 {
     _hasComments = hasComments;
@@ -138,6 +132,8 @@
         self.tableView.backgroundView = nil;
     }
 }
+
+#pragma mark - Public Mehtods
 
 - (void)addedNewComment:(VComment*)comment
 {
@@ -168,6 +164,8 @@
         [self.refreshControl endRefreshing];
     }
 }
+
+#pragma mark - Pagination
 
 - (void)loadNextPageAction
 {
@@ -254,12 +252,6 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VComment* comment = (VComment*)[self.filter.comments objectAtIndex:indexPath.row];
-    [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -305,7 +297,6 @@
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                           otherButtonTitles:nil];
              [alert show];
-
          }];
     }
                                            otherButtonTitlesAndBlocks:
@@ -321,19 +312,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{    
-    //Whenever we leave this view we need to tell the server what was read.
-    if ([VObjectManager sharedManager].mainUser && [self.newlyReadComments count])
-    {
-        __block NSMutableArray* readComments = self.newlyReadComments;
-        [[VObjectManager sharedManager] readComments:readComments
-                                         successBlock:nil
-                                            failBlock:^(NSOperation* operation, NSError* error)
-                                            {
-                                                VLog(@"Warning: failed to mark following comments as read: %@", readComments);
-                                            }];
-    }
-    self.newlyReadComments = nil;
+{
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
