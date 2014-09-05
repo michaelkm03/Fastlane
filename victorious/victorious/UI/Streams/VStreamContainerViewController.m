@@ -8,6 +8,7 @@
 
 #import "VStreamContainerViewController.h"
 
+#import "VSystemVersionDetection.h"
 
 #import "VLoginViewController.h"
 
@@ -107,22 +108,26 @@
     {
         self.headerImageView.hidden = YES;
     }
-
     
-    [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
-                     forLeftSegmentState:UIControlStateNormal
-                       rightSegmentState:UIControlStateNormal
-                              barMetrics:UIBarMetricsDefault];
-    [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
-                     forLeftSegmentState:UIControlStateSelected
-                       rightSegmentState:UIControlStateSelected
-                              barMetrics:UIBarMetricsDefault];
-    [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Unselected"]
-                                   forState:UIControlStateNormal
-                                 barMetrics:UIBarMetricsDefault];
-    [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Selected"]
-                                   forState:UIControlStateSelected
-                                 barMetrics:UIBarMetricsDefault];
+    if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
+    {
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+                         forLeftSegmentState:UIControlStateNormal
+                           rightSegmentState:UIControlStateNormal
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+                         forLeftSegmentState:UIControlStateSelected
+                           rightSegmentState:UIControlStateSelected
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Unselected"]
+                                       forState:UIControlStateNormal
+                                     barMetrics:UIBarMetricsDefault];
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Selected"]
+                                       forState:UIControlStateSelected
+                                     barMetrics:UIBarMetricsDefault];
+    }
+    
+
 }
 
 - (IBAction)changedFilterControls:(id)sender
