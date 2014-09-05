@@ -570,9 +570,46 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)goBack:(id)sender
 {
-    if (self.completion)
+    NSString *finalText = @"";
+    switch (self.captionType)
     {
-        self.completion(NO);
+        case VCaptionTypeNormal:
+            finalText = self.captionTextView.text;
+            break;
+        case VCaptionTypeMeme:
+            finalText = self.memeTextView.text;
+            break;
+        case VCaptionTypeQuote:
+            finalText = self.quoteTextView.text;
+            break;
+    }
+    
+    if (finalText.length)
+    {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"captionIsntPublished", nil)
+                                                        cancelButtonTitle:NSLocalizedString(@"Stay", @"")
+                                                           onCancelButton:nil
+                                                   destructiveButtonTitle:NSLocalizedString(@"BackButton", @"")
+                                                      onDestructiveButton:^(void)
+                                      {
+                                          [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                       action:@"Camera Publish Back"
+                                                                                                        label:nil
+                                                                                                        value:nil];
+                                          if (self.completion)
+                                          {
+                                              self.completion(NO);
+                                          }
+                                      }
+                                               otherButtonTitlesAndBlocks:nil];
+        [actionSheet showInView:self.view];
+    }
+    else
+    {
+        if (self.completion)
+        {
+            self.completion(NO);
+        }
     }
 }
 
