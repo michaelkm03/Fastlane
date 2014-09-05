@@ -9,6 +9,8 @@
 #import "UIImage+ImageCreation.h"
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
+#import "VThemeManager.h"
+#import "UIImage+ImageCreation.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
@@ -37,6 +39,8 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 {
     [super awakeFromNib];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
     [self resetView];
 }
 
@@ -181,7 +185,8 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 {
     self.chatBubble.image = [self chatBubbleImageWithColor:[UIColor whiteColor]];
     [self.commentTextView resetView];
-    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
     self.profileImageOnRight = NO;
 }
 

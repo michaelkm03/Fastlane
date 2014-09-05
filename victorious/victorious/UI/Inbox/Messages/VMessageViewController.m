@@ -24,6 +24,7 @@
 #import "VThemeManager.h"
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
+#import "VObjectManager+DirectMessaging.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
@@ -111,6 +112,7 @@
 {
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
+    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)loadNextPageAction

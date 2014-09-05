@@ -23,6 +23,7 @@
                                   @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id),
                                   @"text" : VSelectorName(lastMessageText),
                                   @"posted_at": VSelectorName(postedAt),
+                                  @"is_read": VSelectorName(isRead),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
