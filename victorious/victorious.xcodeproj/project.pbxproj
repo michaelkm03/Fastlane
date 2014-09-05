@@ -237,6 +237,8 @@
 		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
+		03AC453219B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */; };
+		03AC453519B972C000CE4351 /* VSystemVersionDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453419B972C000CE4351 /* VSystemVersionDetection.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
 		03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856D19B42C9100E27D05 /* LICENSE.txt */; };
@@ -785,6 +787,10 @@
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
+		03AC453019B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextViewWithCorrectIntrinsicContentSize.h; sourceTree = "<group>"; };
+		03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextViewWithCorrectIntrinsicContentSize.m; sourceTree = "<group>"; };
+		03AC453319B972C000CE4351 /* VSystemVersionDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSystemVersionDetection.h; sourceTree = "<group>"; };
+		03AC453419B972C000CE4351 /* VSystemVersionDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSystemVersionDetection.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		03C1856D19B42C9100E27D05 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -1170,6 +1176,10 @@
 				0314D30E19B46B5E00FA363C /* VPickerTextField.m */,
 				0314D30F19B46B5E00FA363C /* VSetExpirationViewController.h */,
 				0314D31019B46B5E00FA363C /* VSetExpirationViewController.m */,
+				03AC453319B972C000CE4351 /* VSystemVersionDetection.h */,
+				03AC453419B972C000CE4351 /* VSystemVersionDetection.m */,
+				03AC453019B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.h */,
+				03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */,
 			);
 			path = Publish;
 			sourceTree = "<group>";
@@ -2650,6 +2660,7 @@
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				0314D49419B46B5E00FA363C /* VContentViewController+Polls.m in Sources */,
+				03AC453219B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				0314D47419B46B5E00FA363C /* VCVideoPlayerToolbarView.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
@@ -2699,6 +2710,7 @@
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
+				03AC453519B972C000CE4351 /* VSystemVersionDetection.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
