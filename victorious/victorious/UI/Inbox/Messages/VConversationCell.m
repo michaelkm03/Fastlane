@@ -56,7 +56,7 @@ CGFloat const kVConversationCellHeight = 72;
     }
     else
     {
-        self.backgroundColor = [UIColor colorWithRed:.97 green:.97 blue:.97 alpha:1];
+        self.backgroundColor = [UIColor colorWithRed:.90 green:.91 blue:.93 alpha:1];
     }
 }
 
