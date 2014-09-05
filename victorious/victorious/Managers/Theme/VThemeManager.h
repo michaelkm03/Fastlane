@@ -15,7 +15,7 @@ extern  NSString*   const   kVChannelName;
 
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
-extern  NSString*   const   kVChannelHeaderLogo;
+extern  NSString*   const   VThemeManagerHomeHeaderImageKey;
 
 //Fonts
 extern  NSString*   const   kVHeaderFont;

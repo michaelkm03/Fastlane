@@ -97,10 +97,15 @@
                                                   NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
                                        forState:UIControlStateSelected];
     
-    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:kVChannelHeaderLogo];
-    if ((headerImage.size.width > 1) && (headerImage.size.height > 1)) {
+    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
+    if (headerImage)
+    {
         self.headerImageView.image = headerImage;
         self.headerLabel.hidden = YES;
+    }
+    else
+    {
+        self.headerImageView.hidden = YES;
     }
 
     
