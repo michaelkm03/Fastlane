@@ -580,20 +580,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                       withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
      {
          NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"REPOSTED", @"") : NSLocalizedString(@"RepostContentView", @"");
-         if (userInteractions.hasReposted)
+         if (userInteractions.hasReposted
+             || [self.sequence.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]
+             || [self.sequence.parentUser.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
          {
              UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
              [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
              self.repostButton.adjustsImageWhenDisabled = NO;
              self.repostButton.enabled = NO;
-             repostButtonTitle = [NSString stringWithFormat:@" %@", repostButtonTitle];
-         }
-         else
-         {
-             repostButtonTitle = [NSString stringWithFormat:@"  %@", repostButtonTitle];
          }
          
-
          [self.repostButton setTitle:repostButtonTitle
                             forState:UIControlStateNormal];
      }];
