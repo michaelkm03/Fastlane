@@ -415,7 +415,7 @@ static       char    kKVOContext;
     }
 }
 
-- (void)createCommentWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion
+- (void)createMessageWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion
 {
     NSAssert([NSThread isMainThread], @"VMessageTableDataSource is intended to be used only on the main thread");
     NSManagedObjectContext *context = self.objectManager.managedObjectStore.mainQueueManagedObjectContext;

@@ -9,6 +9,7 @@
 #import "VCommentCell.h"
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
+#import "UIImage+ImageCreation.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 
@@ -31,6 +32,8 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     [super awakeFromNib];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -52,7 +55,8 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 - (void)prepareForReuse
 {
     [self.commentTextView resetView];
-    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
 }
 
 @end

@@ -53,7 +53,7 @@
 /**
  Sends a new comment to the server and adds it to the table view
  */
-- (void)createCommentWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion;
+- (void)createMessageWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion;
 
 /**
  Starts a process that polls the server every few seconds for new messages

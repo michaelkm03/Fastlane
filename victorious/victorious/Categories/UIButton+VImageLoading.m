@@ -25,7 +25,7 @@
     
     __weak UIButton* weakSelf = self;
     [self.imageView setImageWithURLRequest:request
-                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                          placeholderImage:placeholderImage
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                                    {
                                        __strong UIButton* strongSelf = weakSelf;

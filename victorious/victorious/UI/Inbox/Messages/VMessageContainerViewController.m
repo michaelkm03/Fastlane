@@ -183,7 +183,7 @@ static NSMutableDictionary *messageViewControllers;
     keyboardBar.sendButtonEnabled = NO;
     VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
     self.busyView.hidden = NO;
-    [messageViewController.tableDataSource createCommentWithText:text mediaURL:mediaURL completion:^(NSError *error)
+    [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
     {
         keyboardBar.sendButtonEnabled = YES;
         self.busyView.hidden = YES;

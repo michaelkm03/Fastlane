@@ -75,7 +75,6 @@
     [self.progressBackgroundView addGestureRecognizer:commentSelectionRecognizer];
     
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
-    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.progressBarImageViews = [[NSMutableArray alloc] init];
     self.arrowImageView.image = [self.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -160,16 +159,16 @@
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
-        progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
+        UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
-                         placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-
+                         placeholderImage:[[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent]];
+    
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];
     }
@@ -236,7 +235,9 @@
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl]
+                          placeholderImage:[[UIImage imageNamed:@"profile_full"] v_imageWithColor:transparentAccent]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
     self.commentLabel.text = currentComment.text;

@@ -169,12 +169,12 @@ static const NSUInteger kRetryAttempts = 5;
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
+                [self.navigationController setViewControllers:@[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]] animated:YES];
             }
                                                                         onError:^(NSError *error)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
+                [self.navigationController setViewControllers:@[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]] animated:YES];
             }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)

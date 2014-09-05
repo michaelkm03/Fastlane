@@ -23,6 +23,9 @@
 #import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
+// Views
+#import "VNoContentView.h"
+
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
@@ -53,6 +56,8 @@
 @property (strong, nonatomic) VSequenceFilter* defaultFilter;
 
 @property (strong, nonatomic) NSString* streamName;
+
+@property (nonatomic, assign) BOOL hasRefreshed;
 
 @end
 
@@ -109,6 +114,8 @@
 {
     [super viewDidLoad];
     
+    self.hasRefreshed = NO;
+    
     self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
     self.tableDataSource.delegate = self;
     self.tableDataSource.filter = self.currentFilter;
@@ -118,9 +125,14 @@
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self registerCells];
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(willCommentSequence:)
-     name:kStreamsWillCommentNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willCommentSequence:)
+                                                 name:kStreamsWillCommentNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamTableDataSourceDidChangeNotification
+                                               object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
 }
@@ -133,6 +145,13 @@
         self.preloadImageCache.countLimit = 20;
     }
     return _preloadImageCache;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateNoContentViewAnimated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -381,6 +400,8 @@
 {
     [self.tableDataSource refreshWithSuccess:^(void)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
         if (completionBlock)
         {
@@ -389,6 +410,8 @@
     }
                                      failure:^(NSError *error)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
     }];
     
@@ -428,6 +451,63 @@
     self.tableView.tableFooterView = nil;
 }
 
+#pragma mark No Content
+
+- (void)updateNoContentViewAnimated:(BOOL)animated
+{
+    if (![self hasNoContentView])
+    {
+        return;
+    }
+    
+    void (^noContentUpdates)(void);
+    
+    if (self.tableDataSource.filter.sequences.count <= 0)
+    {
+        if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
+        {
+            VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+            self.tableView.backgroundView = noContentView;
+            noContentView.titleLabel.text = self.noContentTitle;
+            noContentView.messageLabel.text = self.noContentMessage;
+            noContentView.iconImageView.image = self.noContentImage;
+            noContentView.alpha = 0.0f;
+        }
+        
+        self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = (self.hasRefreshed && [self hasNoContentView]) ? 1.0f : 0.0f;
+        };
+    }
+    else
+    {
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = 0.0f;
+        };
+    }
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:noContentUpdates
+                         completion:nil];
+    }
+    else
+    {
+        noContentUpdates();
+    }
+}
+
+- (BOOL)hasNoContentView
+{
+    return (self.noContentImage || self.noContentTitle || self.noContentMessage);
+}
+
 #pragma mark - Predicates
 
 - (VSequenceFilter*)defaultFilter
@@ -458,7 +538,7 @@
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
-    self.tableView.backgroundView = newBackgroundView;
+    [self.tableView addSubview:newBackgroundView];
 }
 
 #pragma mark - Notifications
@@ -475,6 +555,12 @@
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
+- (void)dataSourceDidChange:(NSNotification *)notification
+{
+    self.hasRefreshed = YES;
+    [self updateNoContentViewAnimated:YES];
 }
 
 #pragma mark - Navigation

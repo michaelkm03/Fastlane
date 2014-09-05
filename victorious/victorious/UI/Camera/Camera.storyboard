@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
-                                <rect key="frame" x="0.0" y="529" width="321" height="64"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
+                                <rect key="frame" x="0.0" y="0.0" width="321" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-I5-ldA" userLabel="Close Button">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
@@ -282,7 +282,7 @@ and don't forget #hashtags</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Caption Text View">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Caption Text View" customClass="VTextViewWithCorrectIntrinsicContentSize">
                                         <rect key="frame" x="20" y="255" width="280" height="45"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -292,7 +292,7 @@ and don't forget #hashtags</string>
                                             <outlet property="delegate" destination="1zz-KC-cVA" id="5VY-zf-1uj"/>
                                         </connections>
                                     </textView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Emm-sn-qjl" userLabel="Meme Text View">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Emm-sn-qjl" userLabel="Meme Text View" customClass="VTextViewWithCorrectIntrinsicContentSize">
                                         <rect key="frame" x="20" y="255" width="280" height="45"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -302,7 +302,7 @@ and don't forget #hashtags</string>
                                             <outlet property="delegate" destination="1zz-KC-cVA" id="Xzd-dp-DPd"/>
                                         </connections>
                                     </textView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zV0-x2-7Yh" userLabel="Quote Text View">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zV0-x2-7Yh" userLabel="Quote Text View" customClass="VTextViewWithCorrectIntrinsicContentSize">
                                         <rect key="frame" x="20" y="138" width="280" height="45"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

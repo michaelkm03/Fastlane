@@ -6,13 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIImage+ImageCreation.h"
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
+#import "VThemeManager.h"
+#import "UIImage+ImageCreation.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
 static const CGFloat      kMinimumCellHeight    = 71.0f;
 static const UIEdgeInsets kTextInsets           = { 24.0f, 74.0f, 24.0f, 32.0f };
+static NSString * const   kChatBubble           = @"ChatBubble";
 static NSString * const   kChatBubbleArrowLeft  = @"ChatBubbleArrowLeft";
 static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
@@ -34,8 +38,15 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.chatBubble.image = [[[UIImage imageNamed:@"ChatBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
+    [self resetView];
+}
+
+- (UIImage *)chatBubbleImageWithColor:(UIColor *)color
+{
+    return [[[UIImage imageNamed:kChatBubble] v_imageWithColor:color] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -153,22 +164,29 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     if (profileImageOnRight)
     {
         self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowRight] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.chatBubble.tintColor = [self alternateChatBubbleTintColor];
+        self.chatBubble.image = [self chatBubbleImageWithColor:[self alternateChatBubbleTintColor]];
         self.chatBubbleArrow.tintColor = [self alternateChatBubbleTintColor];
     }
     else
     {
         self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowLeft] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.chatBubble.tintColor = [UIColor whiteColor];
+        self.chatBubble.image = [self chatBubbleImageWithColor:[UIColor whiteColor]];
         self.chatBubbleArrow.tintColor = [UIColor whiteColor];
     }
 }
 
 - (void)prepareForReuse
 {
-    self.chatBubble.tintColor = [UIColor whiteColor];
+    [super prepareForReuse];
+    [self resetView];
+}
+
+- (void)resetView
+{
+    self.chatBubble.image = [self chatBubbleImageWithColor:[UIColor whiteColor]];
     [self.commentTextView resetView];
-    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
     self.profileImageOnRight = NO;
 }
 
