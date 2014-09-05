@@ -50,8 +50,7 @@ CGFloat const kVConversationCellHeight = 72;
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
 
-    VMessage* firstMessage = [_conversation.messages firstObject];
-    if (firstMessage.isRead.boolValue)
+    if (self.conversation.isRead.boolValue)
     {
         self.backgroundColor = [UIColor whiteColor];
     }

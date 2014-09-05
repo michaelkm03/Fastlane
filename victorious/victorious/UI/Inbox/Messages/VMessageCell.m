@@ -37,6 +37,11 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     [super awakeFromNib];
     self.chatBubble.image = [[[UIImage imageNamed:@"ChatBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
+    
+    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageView.layer.borderWidth = 1;
+    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia

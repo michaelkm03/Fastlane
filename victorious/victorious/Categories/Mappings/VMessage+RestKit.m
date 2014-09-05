@@ -18,7 +18,6 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"is_read" : VSelectorName(isRead),
                                   @"text" : VSelectorName(text),
                                   @"sender_user_id" : VSelectorName(senderUserId),
                                   @"posted_at" : VSelectorName(postedAt),

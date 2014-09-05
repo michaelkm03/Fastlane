@@ -78,7 +78,7 @@
                                                   failBlock:(VFailBlock)fail
 {
     //Mark the most recent message as read so there is no server delay.
-    ((VMessage*)[conversation.messages firstObject]).isRead = @(YES);
+    conversation.isRead = @(YES);
     [conversation.managedObjectContext saveToPersistentStore:nil];
     
     return [self POST:@"/api/message/mark_conversation_read"

@@ -23,6 +23,7 @@
                                   @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id),
                                   @"text" : VSelectorName(lastMessageText),
                                   @"posted_at": VSelectorName(postedAt),
+                                  @"is_read": VSelectorName(isRead),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -32,11 +33,6 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
-    
-    RKRelationshipMapping* messageMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:nil
-                                                                                        toKeyPath:VSelectorName(messages)
-                                                                                      withMapping:[VMessage entityMapping]];
-    [mapping addPropertyMapping:messageMapping];
     
     return mapping;
 }
