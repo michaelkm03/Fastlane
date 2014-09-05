@@ -464,13 +464,15 @@
     
     if (self.tableDataSource.filter.sequences.count <= 0)
     {
-
-        VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        self.tableView.backgroundView = noContentView;
-        noContentView.titleLabel.text = self.noContentTitle;
-        noContentView.messageLabel.text = self.noContentMessage;
-        noContentView.iconImageView.image = self.noContentImage;
-        noContentView.alpha = 0.0f;
+        if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
+        {
+            VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+            self.tableView.backgroundView = noContentView;
+            noContentView.titleLabel.text = self.noContentTitle;
+            noContentView.messageLabel.text = self.noContentMessage;
+            noContentView.iconImageView.image = self.noContentImage;
+            noContentView.alpha = 0.0f;
+        }
         
         self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
 
@@ -490,10 +492,10 @@
     if (animated)
     {
         [UIView animateWithDuration:0.2f
-                         animations:^
-         {
-             noContentUpdates();
-         }];
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:noContentUpdates
+                         completion:nil];
     }
     else
     {
@@ -557,6 +559,7 @@
 
 - (void)dataSourceDidChange:(NSNotification *)notification
 {
+    self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
 }
 
