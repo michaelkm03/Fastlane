@@ -114,8 +114,8 @@
                                     <action selector="commentButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="Iof-6Z-4Iy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reposted by Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bb8-dJ-1Yq">
-                                <rect key="frame" x="60" y="35" width="218" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Reposted by Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bb8-dJ-1Yq">
+                                <rect key="frame" x="60" y="35" width="162" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -138,6 +138,7 @@
                             <constraint firstItem="3Jw-Bn-2h0" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" constant="19" id="hB8-cL-7DW"/>
                             <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="20" id="lBp-Vo-p0y"/>
                             <constraint firstItem="a6x-TU-Q9b" firstAttribute="leading" secondItem="BQ0-e0-bhp" secondAttribute="trailing" constant="2" id="lX3-r6-Qr7"/>
+                            <constraint firstItem="Bb8-dJ-1Yq" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="94V-qD-H5h" secondAttribute="leading" constant="10" id="nOg-aT-oeU"/>
                             <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
                             <constraint firstItem="Bb8-dJ-1Yq" firstAttribute="leading" secondItem="3Jw-Bn-2h0" secondAttribute="leading" id="yMY-U2-woi"/>
                         </constraints>
