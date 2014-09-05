@@ -8,6 +8,7 @@
 
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
+#import "VThemeManager.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
@@ -169,6 +170,9 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
     self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageView.layer.borderWidth = 1;
+    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
     self.profileImageOnRight = NO;
 }
 

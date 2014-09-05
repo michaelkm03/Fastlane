@@ -44,6 +44,9 @@ CGFloat const kVConversationCellHeight = 72;
     self.usernameLabel.text  = conversation.user.name;
     [self.profileImageView setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageView.layer.borderWidth = 1;
+    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
 

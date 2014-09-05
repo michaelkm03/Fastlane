@@ -169,6 +169,10 @@
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        
+        progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        progressBarImage.layer.borderWidth = 1;
+        progressBarImage.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
 
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];

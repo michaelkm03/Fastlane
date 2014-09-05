@@ -53,6 +53,9 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 {
     [self.commentTextView resetView];
     self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageView.layer.borderWidth = 1;
+    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
 }
 
 @end

@@ -151,6 +151,10 @@ static VLargeNumberFormatter* largeNumberFormatter;
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
     
+    self.profileImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageButton.layer.borderWidth = 1;
+    self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    
     if ([[[_sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         self.playButtonImage.hidden = NO;
