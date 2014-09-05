@@ -100,6 +100,11 @@
     return YES;
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
