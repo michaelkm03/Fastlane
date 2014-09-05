@@ -46,6 +46,16 @@ CGFloat const kVConversationCellHeight = 72;
                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
+
+    VMessage* firstMessage = [_conversation.messages firstObject];
+    if (firstMessage.isRead.boolValue)
+    {
+        self.backgroundColor = [UIColor whiteColor];
+    }
+    else
+    {
+        self.backgroundColor = [UIColor colorWithRed:.97 green:.97 blue:.97 alpha:1];
+    }
 }
 
 - (IBAction)profileButtonAction:(id)sender
