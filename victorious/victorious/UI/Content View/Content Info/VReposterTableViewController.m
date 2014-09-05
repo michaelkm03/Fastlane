@@ -50,7 +50,7 @@
     
     self.reposters = [[NSArray alloc] init];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kFollowCellReuseID bundle:nil] forCellReuseIdentifier:kFollowCellReuseID];
+    [self.tableView registerNib:[UINib nibWithNibName:VInviteFriendTableViewCellNibName bundle:nil] forCellReuseIdentifier:VInviteFriendTableViewCellNibName];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,7 +69,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kFollowCellReuseID];
+    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName];
     cell.profile = self.reposters[indexPath.row];
     return cell;
 }

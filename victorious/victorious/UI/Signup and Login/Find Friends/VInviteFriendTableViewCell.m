@@ -10,13 +10,17 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 
-@interface      VInviteFriendTableViewCell ()
+NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
+
+@interface VInviteFriendTableViewCell ()
+
 @property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        followIconImageView;
 @property (nonatomic, strong)               UIImage*            followIcon;
 @property (nonatomic, strong)               UIImage*            unfollowIcon;
+
 @end
 
 @implementation VInviteFriendTableViewCell
