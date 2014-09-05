@@ -63,6 +63,7 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 @property (nonatomic, weak) IBOutlet UITextView *memeTextView;
 @property (nonatomic, weak) IBOutlet UITextView *quoteTextView;
 @property (nonatomic, strong) IBOutletCollection(UITextView) NSArray *inputTextViews;
+@property (nonatomic, assign) BOOL memeTextFits;
 
 // Caption Buttons
 @property (nonatomic, strong) IBOutletCollection(UIButton) NSArray *captionButtons;
@@ -127,6 +128,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
     
     self.userEnteredText = @"";
+    self.memeTextFits = NO;
     
     // iPhone 4 special cases
     if (CGRectGetHeight(self.view.bounds) <= 480)
@@ -262,6 +264,10 @@ static const CGFloat kShareMargin = 34.0f;
                 self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
             }
             {
+                if (_memeTextFits)
+                {
+                    break;
+                }
                 while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize)
                 {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
@@ -271,6 +277,7 @@ static const CGFloat kShareMargin = 34.0f;
                 {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
                 }
+                self.memeTextFits = YES;
             }
             break;
         }
@@ -324,7 +331,7 @@ static const CGFloat kShareMargin = 34.0f;
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMinMemeFontSize],
+             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.memeTextFits ? self.memeTextView.font.pointSize : kPublishMinMemeFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor blackColor],
              NSStrokeWidthAttributeName : @(-5.0)
@@ -559,8 +566,6 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionType = VCaptionTypeNormal;
         [self.captionTextView becomeFirstResponder];
     }
-    
-    [self textViewDidChange:nil];
 }
 
 - (IBAction)goBack:(id)sender
@@ -807,6 +812,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    self.memeTextFits = NO;
     [self updateUI];
 }
 
