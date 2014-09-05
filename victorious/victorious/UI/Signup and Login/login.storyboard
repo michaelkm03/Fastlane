@@ -749,7 +749,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQr-df-rJr">
-                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
+                                        <rect key="frame" x="263" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="phy-Su-mdq"/>
@@ -797,7 +797,7 @@
                                     <constraint firstAttribute="centerX" secondItem="nNU-ow-QSQ" secondAttribute="centerX" constant="-0.5" id="Ud4-7H-qsC"/>
                                     <constraint firstAttribute="height" constant="105" id="sGy-AW-b6a"/>
                                     <constraint firstAttribute="right" secondItem="3dI-fH-6bk" secondAttribute="right" id="xAz-QU-amf"/>
-                                    <constraint firstItem="AQr-df-rJr" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" id="z3c-aU-E75"/>
+                                    <constraint firstItem="AQr-df-rJr" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" constant="263" id="z3c-aU-E75"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuM-Vh-XTe">

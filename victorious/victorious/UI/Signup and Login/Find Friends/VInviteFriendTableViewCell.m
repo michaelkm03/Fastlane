@@ -23,8 +23,8 @@
 
 - (void)awakeFromNib
 {
-    self.followIcon   = [UIImage imageNamed:@"buttonFollowedRed"];
-    self.unfollowIcon = [UIImage imageNamed:@"buttonFollow"];
+    self.followIcon   = [UIImage imageNamed:@"followIcon"];
+    self.unfollowIcon = [UIImage imageNamed:@"followedIcon"];
     self.followIconImageView.image = self.unfollowIcon;
     
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];

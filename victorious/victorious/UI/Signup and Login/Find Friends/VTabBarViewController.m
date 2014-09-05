@@ -8,6 +8,7 @@
 
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
+#import "VThemeManager.h"
 
 typedef NS_ENUM(NSInteger, VSlideDirection)
 {
@@ -61,8 +62,10 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                                         views:NSDictionaryOfVariableBindings(buttonsSuperview)]];
     self.buttonsSuperview = buttonsSuperview;
     
-    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowDownIndicator"]];
+    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"arrowDownIndicator"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     selectionIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [selectionIndicator setTintColor:[UIColor redColor]];
+    //[selectionIndicator setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
     [self.buttonsSuperview addSubview:selectionIndicator];
     [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[selectionIndicator]|"
                                                                                   options:0

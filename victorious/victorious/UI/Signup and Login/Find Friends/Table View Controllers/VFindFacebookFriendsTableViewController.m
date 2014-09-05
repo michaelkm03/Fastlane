@@ -17,6 +17,7 @@
 {
     [super viewDidLoad];
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindFBFriends", @"")];
+    [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"FBSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Facebook", @"") forState:UIControlStateNormal];
 }
 

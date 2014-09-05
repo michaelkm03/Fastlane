@@ -113,7 +113,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (self.isMe)
     {
-        //[self addCreateButton];
         [self addFriendsButton];
     }
     else if (!self.isMe)

@@ -45,7 +45,7 @@
 
     VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
     [ffvc setShouldAutoselectNewFriends:NO];
-    [self presentViewController:ffvc animated:YES completion:nil];
+    [self.navigationController pushViewController:ffvc animated:YES];
 }
 
 - (void)addCreateButton

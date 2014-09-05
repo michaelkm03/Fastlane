@@ -32,6 +32,7 @@
 {
     [super viewDidLoad];
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindContacts", @"")];
+    [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"ContactsSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
 }
 

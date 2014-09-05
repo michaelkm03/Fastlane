@@ -19,6 +19,7 @@
 {
     [super viewDidLoad];
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindTwitterFriends", @"")];
+    [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"TwitterSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Twitter", @"") forState:UIControlStateNormal];
 }
 
