@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Posted whenever the underlying data source chages.
+ */
+UIKIT_EXTERN NSString *const VStreamTableDataSourceDidChangeNotification;
+
 @class VSequence, VSequenceFilter, VStreamTableDataSource;
 
 @protocol VStreamTableDataDelegate <NSObject>

@@ -14,6 +14,8 @@
 
 static char KVOContext;
 
+NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableDataSourceDidChangeNotification";
+
 @interface VStreamTableDataSource ()
 
 @property (nonatomic) BOOL insertingContent;
@@ -176,6 +178,8 @@ static char KVOContext;
         if (!self.insertingContent)
         {
             [self.tableView reloadData];
+            [[NSNotificationCenter defaultCenter] postNotificationName:VStreamTableDataSourceDidChangeNotification
+                                                                object:self];
         }
     }
 }
