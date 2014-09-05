@@ -23,9 +23,9 @@
 
 - (void)awakeFromNib
 {
-    self.followIcon   = [UIImage imageNamed:@"followIcon"];
-    self.unfollowIcon = [UIImage imageNamed:@"followedIcon"];
-    self.followIconImageView.image = self.unfollowIcon;
+    self.followIcon   = [UIImage imageNamed:@"buttonFollow"];
+    self.unfollowIcon = [UIImage imageNamed:@"buttonFollowed"];
+    self.followIconImageView.image = self.followIcon;
     
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
@@ -59,11 +59,11 @@
     {
         if (selected)
         {
-            self.followIconImageView.image = self.followIcon;
+            self.followIconImageView.image = self.unfollowIcon;
         }
         else
         {
-            self.followIconImageView.image = self.unfollowIcon;
+            self.followIconImageView.image = self.followIcon;
         }
     };
     if (animated)
@@ -78,11 +78,6 @@
     {
         animations();
     }
-}
-
-- (void)prepareForReuse
-{
-    self.followIconImageView.image = self.unfollowIcon;
 }
 
 @end
