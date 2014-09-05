@@ -114,13 +114,18 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         switch (indexPath.row)
         {
             case VMenuRowHome:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]];
+            {
+                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+                homeContainer.shouldShowHeaderLogo = YES;
+                navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
+            }
             break;
-            
             case VMenuRowOwnerChannel:
+            {
                 navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
                 [self.sideMenuViewController hideMenuViewController];
+            }
             break;
             
             case VMenuRowCommunityChannel:

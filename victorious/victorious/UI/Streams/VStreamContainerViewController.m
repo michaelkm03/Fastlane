@@ -98,6 +98,17 @@
                                                   NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
                                        forState:UIControlStateSelected];
     
+    [self configureHeaderImage];
+    [self configureSegmentedControl];
+}
+
+- (void)configureHeaderImage
+{
+    if (!self.shouldShowHeaderLogo)
+    {
+        return;
+    }
+    
     UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
     if (headerImage)
     {
@@ -108,7 +119,10 @@
     {
         self.headerImageView.hidden = YES;
     }
-    
+}
+
+- (void)configureSegmentedControl
+{
     if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
     {
         [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
@@ -126,8 +140,6 @@
                                        forState:UIControlStateSelected
                                      barMetrics:UIBarMetricsDefault];
     }
-    
-
 }
 
 - (IBAction)changedFilterControls:(id)sender

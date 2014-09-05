@@ -121,6 +121,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
      {
          VContentViewController* contentView = [[VContentViewController alloc] init];
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         homeContainer.shouldShowHeaderLogo = YES;
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];
          contentView.sequence = sequence;
@@ -159,6 +160,8 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
          }
          
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         homeContainer.shouldShowHeaderLogo = YES;
+         
          VRootViewController* root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer]];
          [homeContainer.navigationController pushViewController:profileVC animated:YES];
@@ -212,6 +215,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
          VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
          VContentViewController* contentView = [[VContentViewController alloc] init];
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         homeContainer.shouldShowHeaderLogo = YES;
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];
          contentView.sequence = sequence;

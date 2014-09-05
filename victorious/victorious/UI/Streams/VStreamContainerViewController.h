@@ -14,6 +14,7 @@
 @interface VStreamContainerViewController : VTableContainerViewController <VStreamTableDelegate>
 
 @property (nonatomic, readonly) VStreamTableViewController* streamTable;
+@property (nonatomic, assign) BOOL shouldShowHeaderLogo;
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable;
 + (instancetype)modalContainerForStreamTable:(VStreamTableViewController*)streamTable;
