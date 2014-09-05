@@ -9,6 +9,7 @@
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
 #import "VThemeManager.h"
+#import "UIImage+ImageCreation.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
@@ -38,10 +39,8 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     self.chatBubble.image = [[[UIImage imageNamed:@"ChatBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
     
-    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
-    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.profileImageView.layer.borderWidth = 1;
-    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -174,10 +173,8 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
-    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
-    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.profileImageView.layer.borderWidth = 1;
-    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
     self.profileImageOnRight = NO;
 }
 
