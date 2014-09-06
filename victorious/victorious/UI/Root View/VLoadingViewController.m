@@ -166,15 +166,18 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoading = NO;
             _appInitLoaded = YES;
             
+            VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+            streamContainer.shouldShowHeaderLogo = YES;
+            
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController setViewControllers:@[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]] animated:YES];
+                [self.navigationController pushViewController:streamContainer animated:YES];
             }
                                                                         onError:^(NSError *error)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController setViewControllers:@[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]] animated:YES];
+                [self.navigationController pushViewController:streamContainer animated:YES];
             }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)

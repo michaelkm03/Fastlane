@@ -218,15 +218,15 @@
     
     switch (self.filterType)
     {
-        case VStreamHotFilter:
+        case VStreamFilterFeatured:
             self.currentFilter = [self hotFilter];
             break;
             
-        case VStreamRecentFilter:
+        case VStreamFilterRecent:
             self.currentFilter = [self defaultFilter];
             break;
             
-        case VStreamFollowingFilter:
+        case VStreamFilterFollowing:
             self.currentFilter = [self followingFilter];
             break;
             

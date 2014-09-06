@@ -8,6 +8,7 @@
 
 #import "VStreamContainerViewController.h"
 
+#import "VSystemVersionDetection.h"
 
 #import "VLoginViewController.h"
 
@@ -81,10 +82,10 @@
     
     if (![self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController homeStream].defaultFilter.filterAPIPath])
     {
-        [self.filterControls removeSegmentAtIndex:VStreamFollowingFilter animated:NO];
+        [self.filterControls removeSegmentAtIndex:VStreamFilterFollowing animated:NO];
     }
     
-    [self.filterControls setSelectedSegmentIndex:VStreamRecentFilter];
+    [self.filterControls setSelectedSegmentIndex:VStreamFilterRecent];
     [self changedFilterControls:nil];
     
     UIView *tableContainerView = self.tableContainerView;
@@ -96,11 +97,54 @@
     [self.filterControls setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
                                                   NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
                                        forState:UIControlStateSelected];
+    
+    [self configureHeaderImage];
+    [self configureSegmentedControl];
+}
+
+- (void)configureHeaderImage
+{
+    if (!self.shouldShowHeaderLogo)
+    {
+        return;
+    }
+    
+    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
+    if (headerImage)
+    {
+        self.headerImageView.image = headerImage;
+        self.headerLabel.hidden = YES;
+    }
+    else
+    {
+        self.headerImageView.hidden = YES;
+    }
+}
+
+- (void)configureSegmentedControl
+{
+    if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
+    {
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+                         forLeftSegmentState:UIControlStateNormal
+                           rightSegmentState:UIControlStateNormal
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+                         forLeftSegmentState:UIControlStateSelected
+                           rightSegmentState:UIControlStateSelected
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Unselected"]
+                                       forState:UIControlStateNormal
+                                     barMetrics:UIBarMetricsDefault];
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Selected"]
+                                       forState:UIControlStateSelected
+                                     barMetrics:UIBarMetricsDefault];
+    }
 }
 
 - (IBAction)changedFilterControls:(id)sender
 {
-    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
+    if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
     {
         [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
@@ -114,15 +158,15 @@
     {
         NSString *eventAction = nil;
         switch (self.filterControls.selectedSegmentIndex) {
-            case VStreamHotFilter:
-                eventAction = @"Selected Filter: Hot";
+            case VStreamFilterFeatured:
+                eventAction = @"Selected Filter: Featured";
                 break;
                 
-            case VStreamRecentFilter:
+            case VStreamFilterRecent:
                 eventAction = @"Selected Filter: Recent";
                 break;
                 
-            case VStreamFollowingFilter:
+            case VStreamFilterFollowing:
                 eventAction = @"Selected Filter: Following";
                 break;
                 

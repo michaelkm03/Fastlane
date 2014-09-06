@@ -337,6 +337,8 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
+		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
+		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		DB1FF51619B808B8002D204E /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1FF51519B808B8002D204E /* VAsset.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF44199403B300D2A07F /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF43199403B300D2A07F /* VComment.m */; };
@@ -961,6 +963,8 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
+		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		DB1FF51419B808B8002D204E /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAsset.h; path = victorious/ManagedObjectModels/VAsset.h; sourceTree = "<group>"; };
 		DB1FF51519B808B8002D204E /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAsset.m; path = victorious/ManagedObjectModels/VAsset.m; sourceTree = "<group>"; };
 		DB478CE419B68E1800462C37 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -2211,6 +2215,8 @@
 		BE76FBE218E4AA95009E6DD7 /* AppSpecific */ = {
 			isa = PBXGroup;
 			children = (
+				D811BBBD19B92F75007398BF /* homeHeaderImage.png */,
+				D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */,
 				0314D07A19B4688E00FA363C /* Default-568h@2x.png */,
 				0314D07B19B4688E00FA363C /* Default@2x.png */,
 				0314D07C19B4688E00FA363C /* defaultSettings.plist */,
@@ -2362,6 +2368,7 @@
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
+				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
@@ -2375,6 +2382,7 @@
 				0314D47519B46B5E00FA363C /* VCVideoPlayerToolbarView.xib in Resources */,
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
+				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
