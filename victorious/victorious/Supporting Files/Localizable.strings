@@ -289,8 +289,8 @@
 "REPOSTS"               =   "Reposts";
 "REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
-"RepostContentView"     =   "REPOST";
-"RpostedContentView"    =   "REPOSTED";
+"RepostContentView"     =   " REPOST";
+"RepostedContentView"   =   " REPOSTED";
 "comments"              =   "comments";
 
 "repostedFromFormat"      =   "Repost from %@";
