@@ -84,7 +84,7 @@
     [self.view addSubview:self.backButton];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
