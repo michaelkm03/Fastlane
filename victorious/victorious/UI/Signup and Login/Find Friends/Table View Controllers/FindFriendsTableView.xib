@@ -23,35 +23,15 @@
                                 <outlet property="delegate" destination="-1" id="Idg-pF-9kg"/>
                             </connections>
                         </tableView>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WN7-as-Hbq">
-                            <rect key="frame" x="20" y="416" width="127" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="127" id="KpF-oz-neV"/>
-                                <constraint firstAttribute="height" constant="34" id="o9N-rd-d0J"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <state key="normal" title="Clear">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="clearButtonTapped:" destination="-1" eventType="touchUpInside" id="FT2-jv-jqD"/>
-                                <action selector="makeButtonClear:" destination="-1" eventType="touchUpInside" id="ccW-2Y-Uj1"/>
-                                <action selector="makeButtonClear:" destination="-1" eventType="touchDragExit" id="qlH-wB-Rb1"/>
-                                <action selector="makeButtonGray:" destination="-1" eventType="touchDragEnter" id="KR1-ag-5bq"/>
-                                <action selector="makeButtonGray:" destination="-1" eventType="touchDown" id="R0P-iv-aVb"/>
-                            </connections>
-                        </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcw-4q-StV">
-                            <rect key="frame" x="173" y="416" width="127" height="34"/>
+                            <rect key="frame" x="20" y="416" width="280" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="127" id="gyn-ZP-xXy"/>
+                                <constraint firstAttribute="width" constant="280" id="gyn-ZP-xXy"/>
                                 <constraint firstAttribute="height" constant="34" id="j3t-1s-iCa"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <state key="normal" title="Select All">
+                            <state key="normal" title="Add All">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -70,8 +50,6 @@
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="top" secondItem="zKc-GL-com" secondAttribute="top" id="7Kd-nV-Hu7"/>
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="leading" secondItem="zKc-GL-com" secondAttribute="leading" id="8fC-of-Ivo"/>
                         <constraint firstAttribute="bottom" secondItem="hcw-4q-StV" secondAttribute="bottom" constant="13" id="9O6-VT-VbY"/>
-                        <constraint firstAttribute="bottom" secondItem="WN7-as-Hbq" secondAttribute="bottom" constant="13" id="Al7-Dg-Bz7"/>
-                        <constraint firstItem="WN7-as-Hbq" firstAttribute="leading" secondItem="zKc-GL-com" secondAttribute="leading" constant="20" id="Bq2-6O-GvH"/>
                         <constraint firstAttribute="trailing" secondItem="gft-qK-0Rj" secondAttribute="trailing" id="TkI-RK-zpO"/>
                         <constraint firstAttribute="bottom" secondItem="gft-qK-0Rj" secondAttribute="bottom" constant="60" id="hnl-ei-4jf"/>
                     </constraints>
@@ -219,7 +197,6 @@
             <connections>
                 <outlet property="activityIndicator" destination="Upq-Kv-Dnb" id="ksX-75-avZ"/>
                 <outlet property="busyOverlay" destination="Iqn-gS-Xj7" id="7Nm-Ph-BR4"/>
-                <outlet property="clearButton" destination="WN7-as-Hbq" id="RvD-Ek-F6Q"/>
                 <outlet property="connectButton" destination="tbC-61-nna" id="AIK-Ok-QLZ"/>
                 <outlet property="connectPromptLabel" destination="7dw-z9-qes" id="iZk-c0-RUU"/>
                 <outlet property="connectedView" destination="zKc-GL-com" id="5xM-2k-nNy"/>
