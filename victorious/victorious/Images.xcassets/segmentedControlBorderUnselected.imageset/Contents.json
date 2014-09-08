@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "Segmented control border Unselected.png"
+      "filename" : "segmentedControlBorderUnselected.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Segmented control border Unselected@2x.png"
+      "filename" : "segmentedControlBorderUnselected@2x.png"
     }
   ],
   "info" : {
