@@ -125,13 +125,13 @@
 {
     if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
     {
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Seperator Left Unselected"]
                          forLeftSegmentState:UIControlStateNormal
-                           rightSegmentState:UIControlStateNormal
-                                  barMetrics:UIBarMetricsDefault];
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
-                         forLeftSegmentState:UIControlStateSelected
                            rightSegmentState:UIControlStateSelected
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"Seperator Right Unselected"]
+                         forLeftSegmentState:UIControlStateSelected
+                           rightSegmentState:UIControlStateNormal
                                   barMetrics:UIBarMetricsDefault];
         [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Unselected"]
                                        forState:UIControlStateNormal
