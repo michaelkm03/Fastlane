@@ -325,6 +325,8 @@
 		BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECDA19105DB8009DD407 /* VAnswer.m */; };
 		BE9181EB1909D38A0071E7AF /* VSequenceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
+		BEA78BBF19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BBE19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.m */; };
+		BEA78BC219BE39E0006A1ABC /* VStreamDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BC119BE39E0006A1ABC /* VStreamDirectoryDataSource.m */; };
 		BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF512919BA15B6007AB3BA /* VConversation.m */; };
 		BEBF512D19BA15B7007AB3BA /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF512C19BA15B7007AB3BA /* VMessage.m */; };
 		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
@@ -940,6 +942,10 @@
 		BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceFilter.m; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
+		BEA78BBD19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamDirectoryCollectionView.h; sourceTree = "<group>"; };
+		BEA78BBE19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamDirectoryCollectionView.m; sourceTree = "<group>"; };
+		BEA78BC019BE39E0006A1ABC /* VStreamDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamDirectoryDataSource.h; sourceTree = "<group>"; };
+		BEA78BC119BE39E0006A1ABC /* VStreamDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamDirectoryDataSource.m; sourceTree = "<group>"; };
 		BEBF512819BA15B6007AB3BA /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BEBF512919BA15B6007AB3BA /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
 		BEBF512B19BA15B7007AB3BA /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
@@ -1089,6 +1095,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				0314D3BB19B46B5E00FA363C /* Main.storyboard */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
@@ -1097,7 +1104,6 @@
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
-				0314D3BB19B46B5E00FA363C /* Main.storyboard */,
 				0314D3BC19B46B5E00FA363C /* Profile */,
 				0314D3D019B46B5E00FA363C /* Remix */,
 				0314D3E219B46B5E00FA363C /* Root View */,
@@ -1105,6 +1111,7 @@
 				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
+				BEA78BBC19BE2EBA006A1ABC /* StreamDirectory */,
 				0314D43319B46B5E00FA363C /* Streams */,
 				0314D45419B46B5E00FA363C /* Web View */,
 			);
@@ -2229,6 +2236,17 @@
 			path = AppSpecific;
 			sourceTree = "<group>";
 		};
+		BEA78BBC19BE2EBA006A1ABC /* StreamDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				BEA78BBD19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.h */,
+				BEA78BBE19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.m */,
+				BEA78BC019BE39E0006A1ABC /* VStreamDirectoryDataSource.h */,
+				BEA78BC119BE39E0006A1ABC /* VStreamDirectoryDataSource.m */,
+			);
+			path = StreamDirectory;
+			sourceTree = "<group>";
+		};
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -2534,6 +2552,7 @@
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				0314D46419B46B5E00FA363C /* VCameraPublishViewController.m in Sources */,
+				BEA78BBF19BE2EBA006A1ABC /* VStreamDirectoryCollectionView.m in Sources */,
 				0314D49219B46B5E00FA363C /* VContentInfoViewController.m in Sources */,
 				0314D4F519B46B5E00FA363C /* VStreamToCommentAnimator.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
@@ -2573,6 +2592,7 @@
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
+				BEA78BC219BE39E0006A1ABC /* VStreamDirectoryDataSource.m in Sources */,
 				BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
