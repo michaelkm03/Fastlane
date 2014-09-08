@@ -538,7 +538,7 @@
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
-    [self.tableView addSubview:newBackgroundView];
+    self.tableView.backgroundView = newBackgroundView;
 }
 
 #pragma mark - Notifications
