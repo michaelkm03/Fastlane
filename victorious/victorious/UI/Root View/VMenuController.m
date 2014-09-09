@@ -81,8 +81,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    self.nameLabel.text = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
-    
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
 
