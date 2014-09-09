@@ -169,6 +169,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         self.switchCameraModeButton.hidden = YES;
     }
+    
+    [self checkForMicrophoneAuthorization];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -229,6 +231,26 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     return YES;
 }
+
+#pragma mark - Check Microphone Permissions
+
+// Check if we have microphone access
+- (void)checkForMicrophoneAuthorization
+{
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted){
+        
+        if (!granted)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:NSLocalizedString(@"AccessMicrophoneDenied", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
+}
+
 
 #pragma mark - Actions
 
