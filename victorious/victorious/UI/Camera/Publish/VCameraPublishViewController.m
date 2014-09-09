@@ -151,7 +151,6 @@ static const CGFloat kShareMargin = 34.0f;
     [self configureNavigationBar];
         
     self.userEnteredText = @"";
-    self.captionType = VCaptionTypeNormal;
     
     // Force Meme text to start at max
     self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
@@ -168,6 +167,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
     self.captionButton.selected = self.captionType == VCaptionTypeNormal;
     self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
+    [self updateUI];
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled] || [self.mediaURL v_hasVideoExtension])
     {
@@ -220,7 +220,10 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
-    [self updateUI];
+    if ([self isViewLoaded])
+    {
+        [self updateUI];
+    }
 }
 
 #pragma mark - Internal Methods
