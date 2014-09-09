@@ -8,11 +8,11 @@
 
 #import "VCollapsingFlowLayout.h"
 
-typedef NS_ENUM(NSInteger, kVContentViewState)
+typedef NS_ENUM(NSInteger, VContentViewState)
 {
-    kVContentViewStateFullSize,
-    kVContentViewStateShrinking,
-    kVContentViewStateFloating
+    VContentViewStateFullSize,
+    VContentViewStateShrinking,
+    VContentViewStateFloating
 };
 
 @interface VCollapsingFlowLayout ()
@@ -34,8 +34,7 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
 {
     NSMutableArray *attributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [attributes objectAtIndex:1];
-    
+    UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
     
     NSLog(@"current content offset: %@", NSStringFromCGPoint(self.collectionView.contentOffset));
@@ -46,7 +45,7 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
         {
             if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
             {
-                [self layoutAttributesForConetntViewState:kVContentViewStateFullSize
+                [self layoutAttributesForConetntViewState:VContentViewStateFullSize
                               withInitialLayoutAttributes:layoutAttributes];
             }
             else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
@@ -58,7 +57,7 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
         {
             if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
             {
-                [self layoutAttributesForConetntViewState:kVContentViewStateShrinking
+                [self layoutAttributesForConetntViewState:VContentViewStateShrinking
                               withInitialLayoutAttributes:layoutAttributes];
             }
             else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
@@ -78,13 +77,25 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
 {
     if ([indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
     {
-        return [self layoutAttributesForConetntViewState:kVContentViewStateFloating
+        return [self layoutAttributesForConetntViewState:VContentViewStateFloating
                              withInitialLayoutAttributes:nil];
     }
     return [super layoutAttributesForItemAtIndexPath:indexPath];
 }
 
 #pragma mark - Convenience
+
+- (VContentViewState)currentContentViewState
+{
+    if (self.collectionView.contentOffset.y < self.catchPoint)
+    {
+        return VContentViewStateFullSize;
+    }
+    else
+    {
+        return VContentViewStateShrinking;
+    }
+}
 
 - (NSIndexPath *)contentViewIndexPath
 {
@@ -96,7 +107,7 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
     return [NSIndexPath indexPathForRow:0 inSection:1];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForConetntViewState:(kVContentViewState)contentViewState
+- (UICollectionViewLayoutAttributes *)layoutAttributesForConetntViewState:(VContentViewState)contentViewState
                                               withInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes;
@@ -108,11 +119,11 @@ typedef NS_ENUM(NSInteger, kVContentViewState)
     }
     
     switch (contentViewState) {
-        case kVContentViewStateFullSize:
+        case VContentViewStateFullSize:
             layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, 320);
             break;
-        case kVContentViewStateShrinking:
-        case kVContentViewStateFloating:
+        case VContentViewStateShrinking:
+        case VContentViewStateFloating:
         {
             CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
             CGFloat percentCompleted = (deltaCatchPointToTop / 320.0f);
