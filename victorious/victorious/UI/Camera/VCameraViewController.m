@@ -241,12 +241,15 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         
         if (!granted)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:NSLocalizedString(@"AccessMicrophoneDenied", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                  otherButtonTitles:nil];
-            [alert show];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+                           {
+                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                               message:NSLocalizedString(@"AccessMicrophoneDenied", @"")
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                     otherButtonTitles:nil];
+                               [alert show];
+                           });
         }
     }];
 }
