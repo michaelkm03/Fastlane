@@ -16,7 +16,7 @@
                           bundle:nil];
 }
 
-+ (NSString *)reuseIdentifier
++ (NSString *)suggestedReuseIdentifier
 {
     return NSStringFromClass([self class]);
 }

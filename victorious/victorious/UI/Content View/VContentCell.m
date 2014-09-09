@@ -10,6 +10,9 @@
 
 @implementation VContentCell
 
-
+- (BOOL)shouldPan
+{
+    return NO;
+}
 
 @end

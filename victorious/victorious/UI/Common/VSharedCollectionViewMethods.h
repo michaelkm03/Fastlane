@@ -8,7 +8,7 @@
 
 @protocol VSharedCollectionViewMethods <NSObject>
 
-+ (NSString *)reuseIdentifier;
++ (NSString *)suggestedReuseIdentifier;
 + (UINib *)nibForCell;
 
 @end

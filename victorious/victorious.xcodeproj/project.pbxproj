@@ -342,6 +342,8 @@
 		D8B3F8B719BE93140009B7CD /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */; };
 		D8B3F8B919BE93720009B7CD /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */; };
 		D8B3F8BC19BE93B80009B7CD /* VBaseCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BB19BE93B80009B7CD /* VBaseCollectionReusableView.m */; };
+		D8B3F8C019BE968C0009B7CD /* VConditionalPanningCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */; };
+		D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */; };
 		D8DE612B19BE566D00F7731E /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612A19BE566D00F7731E /* VNewContentViewController.m */; };
 		D8DE612D19BE575B00F7731E /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8DE612C19BE575B00F7731E /* ContentView.storyboard */; };
 		D8DE613019BE7ED300F7731E /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612F19BE7ED300F7731E /* VContentCell.m */; };
@@ -983,6 +985,10 @@
 		D8B3F8BA19BE93B80009B7CD /* VBaseCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseCollectionReusableView.h; sourceTree = "<group>"; };
 		D8B3F8BB19BE93B80009B7CD /* VBaseCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCollectionReusableView.m; sourceTree = "<group>"; };
 		D8B3F8BD19BE93ED0009B7CD /* VSharedCollectionViewMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSharedCollectionViewMethods.h; sourceTree = "<group>"; };
+		D8B3F8BE19BE968C0009B7CD /* VConditionalPanningCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConditionalPanningCollectionView.h; sourceTree = "<group>"; };
+		D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConditionalPanningCollectionView.m; sourceTree = "<group>"; };
+		D8B3F8C419BE9D480009B7CD /* VCollapsingFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollapsingFlowLayout.h; sourceTree = "<group>"; };
+		D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollapsingFlowLayout.m; sourceTree = "<group>"; };
 		D8DE612919BE566D00F7731E /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
 		D8DE612A19BE566D00F7731E /* VNewContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNewContentViewController.m; sourceTree = "<group>"; };
 		D8DE612C19BE575B00F7731E /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -1288,6 +1294,7 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D8B3F8C119BE9D050009B7CD /* UICollectionView */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
@@ -1310,6 +1317,8 @@
 				D8B3F8BA19BE93B80009B7CD /* VBaseCollectionReusableView.h */,
 				D8B3F8BB19BE93B80009B7CD /* VBaseCollectionReusableView.m */,
 				D8B3F8BD19BE93ED0009B7CD /* VSharedCollectionViewMethods.h */,
+				D8B3F8BE19BE968C0009B7CD /* VConditionalPanningCollectionView.h */,
+				D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2290,6 +2299,23 @@
 			path = "Simple Models";
 			sourceTree = "<group>";
 		};
+		D8B3F8C119BE9D050009B7CD /* UICollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D8B3F8C219BE9D050009B7CD /* Layouts */,
+			);
+			path = UICollectionView;
+			sourceTree = "<group>";
+		};
+		D8B3F8C219BE9D050009B7CD /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				D8B3F8C419BE9D480009B7CD /* VCollapsingFlowLayout.h */,
+				D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
 		D8DE613819BE802300F7731E /* AllComments */ = {
 			isa = PBXGroup;
 			children = (
@@ -2640,6 +2666,7 @@
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */,
+				D8B3F8C019BE968C0009B7CD /* VConditionalPanningCollectionView.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
@@ -2710,6 +2737,7 @@
 				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,
 				0314D4FB19B46B5E00FA363C /* VStreamViewCell.m in Sources */,
 				0314D0AD19B4698800FA363C /* VObjectManager+Analytics.m in Sources */,
+				D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */,
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,

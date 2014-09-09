@@ -12,7 +12,7 @@
 
 #pragma mark - VSharedCollectionViewMethods
 
-+ (NSString *)reuseIdentifier
++ (NSString *)suggestedReuseIdentifier
 {
     return NSStringFromClass([self class]);
 }
@@ -21,6 +21,13 @@
 {
     return [UINib nibWithNibName:NSStringFromClass([self class])
                           bundle:nil];
+}
+
+#pragma mark - Public Interface
+
+- (BOOL)shouldPan
+{
+    return YES;
 }
 
 @end

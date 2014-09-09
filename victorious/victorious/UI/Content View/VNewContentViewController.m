@@ -40,14 +40,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
     // Register nibs
     [self.contentCollectionView registerNib:[VContentCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCell reuseIdentifier]];
+                 forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
-                 forCellWithReuseIdentifier:[VRealTimeCommentsCell reuseIdentifier]];
+                 forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VAllCommentCell nibForCell]
-                 forCellWithReuseIdentifier:[VAllCommentCell reuseIdentifier]];
+                 forCellWithReuseIdentifier:[VAllCommentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                        withReuseIdentifier:[VSectionHandleReusableView reuseIdentifier]];
+                        withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -86,13 +86,13 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell reuseIdentifier]
+            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionRealTimeComments:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell reuseIdentifier]
+            return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionAllComments:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VAllCommentCell reuseIdentifier]
+            return [collectionView dequeueReusableCellWithReuseIdentifier:[VAllCommentCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionCount:
             return nil;
@@ -112,7 +112,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return nil;
         case VContentViewSectionAllComments:
             return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                      withReuseIdentifier:[VSectionHandleReusableView reuseIdentifier]
+                                                      withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionCount:
             return nil;

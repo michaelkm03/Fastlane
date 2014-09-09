@@ -11,4 +11,6 @@
 
 @interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionViewMethods>
 
+- (BOOL)shouldPan;
+
 @end
