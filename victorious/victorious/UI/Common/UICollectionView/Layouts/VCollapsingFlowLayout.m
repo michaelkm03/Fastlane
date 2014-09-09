@@ -19,24 +19,44 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *defaultAttributes = [super layoutAttributesForElementsInRect:rect];
-
-//    NSMutableArray *modifiedAttributes = [NSMutableArray new];
     
-    CGFloat catchPoint = 320.0f;
-    CGFloat collapsePoint = 430.0f;
+    UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [defaultAttributes objectAtIndex:1];
+    
+    CGFloat catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
     
     [defaultAttributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
     {
-        
-        if (idx == 0)
+        if (self.collectionView.contentOffset.y < catchPoint)
         {
-            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, 320);
+            if (idx == 0)
+            {
+                layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, 320);
+            }
+            else if (idx == 1)
+            {
+                layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y + 320, 320, 110);
+            }
         }
-        else if (idx == 1)
+        else
         {
-            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y + 320, 320, 110);
+            CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - catchPoint;
+            CGFloat percentCompleted = (deltaCatchPointToTop / 320.0f);
+            NSLog(@"%f", percentCompleted);
+            if (idx == 0)
+            {
+                layoutAttributes.zIndex = 1000;
+                layoutAttributes.center = CGPointMake(layoutAttributes.center.x + fminf((percentCompleted* 100.0f), 100.0f), layoutAttributes.center.y + self.collectionView.contentOffset.y - fminf((percentCompleted * 160.0f), 160.0f));
+                layoutAttributes.transform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, 0.35f), fmaxf(1.0f - percentCompleted, 0.35f));
+            }
+            else if (idx == 1)
+            {
+                layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y + 320.0f, 320, 110);
+            }
+            else
+            {
+                
+            }
         }
-        
     }];
     
     return defaultAttributes;
