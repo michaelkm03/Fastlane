@@ -83,7 +83,7 @@
 + (instancetype)ownerStream
 {
     VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VOwnerCategories()];
-    return [self streamWithDefaultFilter:defaultFilter name:@"owner" title:[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    return [self streamWithDefaultFilter:defaultFilter name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
 }
 
 + (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag
