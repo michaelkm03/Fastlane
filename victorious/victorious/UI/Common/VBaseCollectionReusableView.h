@@ -1,5 +1,5 @@
 //
-//  VBaseCollectionViewCell.h
+//  VBaseCollectionReusableView.h
 //  victorious
 //
 //  Created by Michael Sena on 9/8/14.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "VSharedCollectionViewMethods.h"
 
-@interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionViewMethods>
+@interface VBaseCollectionReusableView : UICollectionReusableView <VSharedCollectionViewMethods>
 
 @end

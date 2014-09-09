@@ -22,6 +22,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="lT4-p3-HeN" secondAttribute="centerY" constant="0.5" id="Lrx-Ce-ofU"/>
                 <constraint firstAttribute="centerX" secondItem="lT4-p3-HeN" secondAttribute="centerX" id="uxg-mp-zrm"/>

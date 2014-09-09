@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VBaseCollectionViewCell.h"
 
-@interface VAllCommentCell : UICollectionViewCell
+@interface VAllCommentCell : VBaseCollectionViewCell
 
 @end
