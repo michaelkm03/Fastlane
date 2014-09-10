@@ -609,7 +609,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter*)filterForStream:(VStream*)stream
 {
-    if (!stream.apiPath || !stream.apiPath.length)
+    if (!stream.apiPath.length)
     {
         return nil;
     }
