@@ -143,12 +143,10 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             layoutAttributes.zIndex = 1000;
             layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320.0f, 320.0f);
 
-            NSLog(@"percent completed: %f", percentCompleted);
-            
             CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, 0.21f), fmaxf(1.0f - percentCompleted, 0.21f));
             CGFloat xTranslation = fminf(100.0f, 100.0f * percentCompleted);
             CGFloat yTranslation = fmaxf(-60.0f, -60.0f * percentCompleted);
-            NSLog(@"x:%f y:%f", xTranslation, yTranslation);
+            
             CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                                       yTranslation);
             CGAffineTransform combinedTransform = CGAffineTransformConcat(scaleTransform, translationTransform);
