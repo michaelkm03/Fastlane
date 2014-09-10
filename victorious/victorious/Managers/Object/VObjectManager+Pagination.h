@@ -10,7 +10,7 @@
 
 extern const NSInteger kTooManyNewMessagesErrorCode;
 
-@class VAbstractFilter, VSequenceFilter, VAsset, VSequence, VConversation;
+@class VAbstractFilter, VSequenceFilter, VAsset, VSequence, VConversation, VStream;
 
 @interface VObjectManager (Pagination)
 
@@ -23,12 +23,14 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 #pragma mark Sequence
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
-                                              successBlock:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)refreshStream:(VStream*)stream
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream*)stream
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 
 #pragma mark Following
 - (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
@@ -80,13 +82,13 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
                                                                            failBlock:(VFailBlock)fail;
 
-#pragma mark Filters
-- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;
-- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
-- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
-- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
-- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
-- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
+//#pragma mark Filters
+//- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;
+//- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
+//- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
+//- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
+//- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
+//- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 

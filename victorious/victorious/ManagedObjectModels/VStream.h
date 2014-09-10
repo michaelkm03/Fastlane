@@ -1,23 +1,24 @@
 //
-//  VSequenceFilter.h
+//  VStream.h
 //  victorious
 //
-//  Created by Josh Hinman on 6/11/14.
+//  Created by Will Long on 9/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "VAbstractFilter.h"
+#import "VDirectoryItem.h"
 
 @class VSequence;
 
-@interface VSequenceFilter : VAbstractFilter
+@interface VStream : VDirectoryItem
 
+@property (nonatomic, retain) NSString * apiPath;
 @property (nonatomic, retain) NSOrderedSet *sequences;
 @end
 
-@interface VSequenceFilter (CoreDataGeneratedAccessors)
+@interface VStream (CoreDataGeneratedAccessors)
 
 - (void)insertObject:(VSequence *)value inSequencesAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromSequencesAtIndex:(NSUInteger)idx;
@@ -28,5 +29,5 @@
 - (void)addSequencesObject:(VSequence *)value;
 - (void)removeSequencesObject:(VSequence *)value;
 - (void)addSequences:(NSOrderedSet *)values;
-- (void)removeSequences:(NSSet *)values;
+- (void)removeSequences:(NSOrderedSet *)values;
 @end

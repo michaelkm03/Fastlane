@@ -24,6 +24,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 
+#import "VStream+Fetcher.h"
+
 #import "VObjectManager+ContentCreation.h"
 
 #import "VInboxContainerViewController.h"
@@ -196,7 +198,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
-    self.currentFilter = [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
+    self.currentStream = [VStream streamForUser:self.profile];
     if ([self isViewLoaded])
     {
         [self refresh:nil];
@@ -361,7 +363,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (IBAction)createButtonAction:(id)sender
 {
-    [self.currentFilter addObserver:self
+    [self.currentStream addObserver:self
                          forKeyPath:@"sequences"
                             options:NSKeyValueObservingOptionNew
                             context:VUserProfileViewContext];
@@ -419,7 +421,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         return;
     }
     
-    if (object == self.currentFilter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
         if (self.tableDataSource.count)
         {
@@ -427,7 +429,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         }
     }
     
-    [self.currentFilter removeObserver:self
+    [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(sequences))];
 }
 

@@ -1,17 +1,18 @@
 //
-//  VSequenceFilter.m
+//  VStream.m
 //  victorious
 //
-//  Created by Josh Hinman on 6/11/14.
+//  Created by Will Long on 9/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSequenceFilter.h"
+#import "VStream.h"
 #import "VSequence.h"
 
 
-@implementation VSequenceFilter
+@implementation VStream
 
+@dynamic apiPath;
 @dynamic sequences;
 
 @end

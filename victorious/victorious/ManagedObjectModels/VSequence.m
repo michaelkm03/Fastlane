@@ -10,7 +10,7 @@
 #import "VComment.h"
 #import "VNode.h"
 #import "VPollResult.h"
-#import "VSequenceFilter.h"
+#import "VStream.h"
 #import "VUser.h"
 #import "VVoteResult.h"
 
@@ -24,18 +24,15 @@
 @dynamic expiresAt;
 @dynamic gameStatus;
 @dynamic isComplete;
-@dynamic name;
 @dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
-@dynamic previewImage;
 @dynamic releasedAt;
 @dynamic remixCount;
-@dynamic remoteId;
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
 @dynamic comments;
-@dynamic filters;
+@dynamic streams;
 @dynamic nodes;
 @dynamic parentUser;
 @dynamic pollResults;

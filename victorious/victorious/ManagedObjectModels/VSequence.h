@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "VDirectoryItem.h"
 
-@class VComment, VNode, VPollResult, VSequenceFilter, VUser, VVoteResult;
+@class VComment, VNode, VPollResult, VStream, VUser, VVoteResult;
 
-@interface VSequence : NSManagedObject
+@interface VSequence : VDirectoryItem
 
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSNumber * commentCount;
@@ -20,18 +21,15 @@
 @property (nonatomic, retain) NSDate * expiresAt;
 @property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * isComplete;
-@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
-@property (nonatomic, retain) id previewImage;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * remixCount;
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSOrderedSet *comments;
-@property (nonatomic, retain) NSSet *filters;
+@property (nonatomic, retain) NSSet *streams;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
@@ -53,10 +51,10 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
-- (void)addFiltersObject:(VSequenceFilter *)value;
-- (void)removeFiltersObject:(VSequenceFilter *)value;
-- (void)addFilters:(NSSet *)values;
-- (void)removeFilters:(NSSet *)values;
+- (void)addStreamsObject:(VStream *)value;
+- (void)removeStreamsObject:(VStream *)value;
+- (void)addStreams:(NSSet *)values;
+- (void)removeStreams:(NSSet *)values;
 
 - (void)addNodesObject:(VNode *)value;
 - (void)removeNodesObject:(VNode *)value;

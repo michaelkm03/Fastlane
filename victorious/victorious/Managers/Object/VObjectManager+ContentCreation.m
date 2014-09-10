@@ -20,7 +20,6 @@
 #import "VNode+RestKit.h"
 #import "VInteraction+RestKit.h"
 #import "VAnswer+RestKit.h"
-#import "VSequenceFilter.h"
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"

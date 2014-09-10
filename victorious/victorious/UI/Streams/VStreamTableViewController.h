@@ -8,9 +8,8 @@
 
 #import "VCreatePollViewController.h"
 #import "VAnimation.h"
-#import "VSequenceFilter.h"
 
-@class VStreamTableDataSource;
+@class VStreamTableDataSource, VStream, VSequence;
 
 typedef NS_ENUM(NSInteger, VStreamFilter)
 {
@@ -27,8 +26,8 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
 
 @property (nonatomic)         VStreamFilter    filterType;
-@property (nonatomic, strong) VSequenceFilter *currentFilter;
-@property (nonatomic, readonly) VSequenceFilter* defaultFilter;
+@property (nonatomic, strong) VStream *currentStream;
+@property (nonatomic, readonly) VStream* defaultStream;
 
 @property (strong, nonatomic, readonly) VStreamTableDataSource* tableDataSource;
 @property (strong, nonatomic) VSequence* selectedSequence;
@@ -50,6 +49,6 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 + (instancetype)ownerStream;
 + (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag;
 
-+ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter name:(NSString*)name title:(NSString*)title;
++ (instancetype)streamWithDefaultStream:(VStream*)stream name:(NSString*)name title:(NSString*)title;
 
 @end

@@ -18,7 +18,7 @@
 #import "VMessage.h"
 #import "VConversation+RestKit.h"
 
-#import "VSequenceFilter+RestKit.h"
+#import "VStream.h"
 
 #import "VStreamTableViewController.h"
 
@@ -40,18 +40,18 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             success(operation, fullResponse, resultObjects);
         }
         
-        [self refreshSequenceFilter:[VStreamTableViewController ownerStream].currentFilter
-                       successBlock:nil
-                          failBlock:nil];
+        [self refreshStream:[VStreamTableViewController ownerStream].currentStream
+               successBlock:nil
+                  failBlock:nil];
         
-        [self refreshSequenceFilter:[VStreamTableViewController communityStream].currentFilter
-                       successBlock:nil
-                          failBlock:nil];
+        [self refreshStream:[VStreamTableViewController communityStream].currentStream
+               successBlock:nil
+                  failBlock:nil];
     };
     
-    return [self refreshSequenceFilter:[VStreamTableViewController homeStream].currentFilter
-                          successBlock:fullSuccess
-                             failBlock:fail];
+    return [self refreshStream:[VStreamTableViewController homeStream].currentStream
+                  successBlock:fullSuccess
+                     failBlock:fail];
 }
 
 #pragma mark - Comment
@@ -67,8 +67,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            NSManagedObjectContext* currentContext = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
-            VSequence* sequenceInContext = (VSequence*)[currentContext objectWithID:sequence.objectID];
+            VSequence* sequenceInContext = (VSequence*)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
             
             if (refresh)
             {
@@ -492,25 +491,29 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Sequence
 
-- (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
-                                              successBlock:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)refreshStream:(VStream*)stream
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
 {
-    return [self loadSequenceFilter:filter isRefresh:YES successBlock:success failBlock:fail];
+    return [self loadStream:stream isRefresh:YES successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream*)stream
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
-    return [self loadSequenceFilter:filter isRefresh:NO successBlock:success failBlock:fail];
+    return [self loadStream:stream isRefresh:NO successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadSequenceFilter:(VSequenceFilter*)filter
-                                              isRefresh:(BOOL)refresh
-                                           successBlock:(VSuccessBlock)success
-                                              failBlock:(VFailBlock)fail
+
+- (RKManagedObjectRequestOperation *)loadStream:(VStream*)stream
+                                      isRefresh:(BOOL)refresh
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
+    VAbstractFilter* filter = (VAbstractFilter*)[self.paginationManager filterForPath:stream.apiPath
+                                                                           entityName:[VAbstractFilter entityName]
+                                                                 managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
@@ -519,17 +522,17 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             if (refresh)
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet* filteredSequences = [filter.sequences filteredOrderedSetUsingPredicate:tempFilter];
-                filter.sequences = filteredSequences;
+                NSOrderedSet* filteredSequences = [stream.sequences filteredOrderedSetUsingPredicate:tempFilter];
+                stream.sequences = filteredSequences;
             }
             
-            NSMutableOrderedSet *sequences = [filter.sequences mutableCopy];
+            NSMutableOrderedSet *sequences = [stream.sequences mutableCopy];
             for (VSequence* sequence in resultObjects)
             {
-                VSequence* sequenceInContext = (VSequence*)[filter.managedObjectContext objectWithID:sequence.objectID];
+                VSequence* sequenceInContext = (VSequence*)[stream.managedObjectContext objectWithID:sequence.objectID];
                 [sequences addObject:sequenceInContext];
             }
-            filter.sequences = sequences;
+            stream.sequences = sequences;
         
             if (success)
             {
@@ -580,49 +583,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Filter Fetchers
-
-- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence
-{
-    NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:sequence.managedObjectContext];
-}
-
-- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
-{
-    NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:user.managedObjectContext];
-}
-
-- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString* categoryString = [categories componentsJoinedByString:@","];
-    NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-}
-
-- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString* apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-}
-
-- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString* apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-}
-
-- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
-{
-    user = user ?: self.mainUser;
-    
-    NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
-    apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:user.managedObjectContext];
-}
 
 - (VAbstractFilter*)followerFilterForUser:(VUser*)user
 {
