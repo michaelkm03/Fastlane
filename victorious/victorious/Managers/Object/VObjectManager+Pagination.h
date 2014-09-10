@@ -10,17 +10,15 @@
 
 extern const NSInteger kTooManyNewMessagesErrorCode;
 
-@class VAbstractFilter, VSequenceFilter, VCommentFilter, VSequence, VConversation;
+@class VAbstractFilter, VSequenceFilter, VAsset, VSequence, VConversation;
 
 @interface VObjectManager (Pagination)
 
 #pragma mark Comments
-- (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
-                                                    successBlock:(VSuccessBlock)success
-                                                       failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence*)sequence
+                                                  isRefresh:(BOOL)refresh
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail;
 
 #pragma mark Sequence
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
@@ -89,7 +87,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
 - (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
-- (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 

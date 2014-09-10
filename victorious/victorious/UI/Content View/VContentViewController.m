@@ -777,7 +777,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+            self.realtimeCommentVC.comments = [self.currentAsset.comments array];
             [self showRTC];
         }
                                                                  failBlock:nil];
@@ -1332,7 +1332,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-        self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+        self.realtimeCommentVC.comments = [self.currentAsset.comments array];
     }
                                                      failBlock:^(NSOperation* operation, NSError* error)
     {

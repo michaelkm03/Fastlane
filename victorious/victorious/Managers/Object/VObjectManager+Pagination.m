@@ -19,7 +19,6 @@
 #import "VConversation+RestKit.h"
 
 #import "VSequenceFilter+RestKit.h"
-#import "VCommentFilter+RestKit.h"
 
 #import "VStreamTableViewController.h"
 
@@ -56,51 +55,35 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Comment
-
-- (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence*)sequence
+                                                  isRefresh:(BOOL)refresh
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
 {
-    return [self loadCommentFilter:filter
-                     shouldRefresh:YES
-                      successBlock:success
-                         failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
-                                                    successBlock:(VSuccessBlock)success
-                                                       failBlock:(VFailBlock)fail
-{
-    return [self loadCommentFilter:filter
-                     shouldRefresh:NO
-                      successBlock:success
-                         failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)loadCommentFilter:(VCommentFilter*)filter
-                                         shouldRefresh:(BOOL)refresh
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail
-{
+    NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    VAbstractFilter* filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
+    
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            //If this is a refresh, break the relationship to all the old objects.
+            NSManagedObjectContext* currentContext = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
+            VSequence* sequenceInContext = (VSequence*)[currentContext objectWithID:sequence.objectID];
+            
             if (refresh)
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"mediaType CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet* filteredComments = [filter.comments filteredOrderedSetUsingPredicate:tempFilter];
-                filter.comments = filteredComments;
+                NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+                [comments addObjectsFromArray:sequence.comments.array];
+                sequenceInContext.comments = [comments copy];
             }
-
-            NSMutableOrderedSet *comments = [filter.comments mutableCopy];
-            for (VComment* comment in resultObjects)
+            else
             {
-                VComment* commentInContext = (VComment*)[filter.managedObjectContext objectWithID:comment.objectID];
-                [comments addObject:commentInContext];
+                NSMutableOrderedSet* comments = [sequence.comments mutableCopy];
+                [comments addObjectsFromArray:resultObjects];
+                sequenceInContext.comments = [comments copy];
             }
-            filter.comments = comments;
+            
+            [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
             
             if (success)
             {
@@ -639,12 +622,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
     return (VSequenceFilter*)[self.paginationManager filterForPath:apiPath entityName:[VSequenceFilter entityName] managedObjectContext:user.managedObjectContext];
-}
-
-- (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence
-{
-    NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
-    return (VCommentFilter*)[self.paginationManager filterForPath:apiPath entityName:[VCommentFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
 - (VAbstractFilter*)followerFilterForUser:(VUser*)user

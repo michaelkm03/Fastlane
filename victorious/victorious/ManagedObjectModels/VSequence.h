@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 8/14/14.
+//  Created by Will Long on 9/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -30,7 +30,7 @@
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
@@ -43,11 +43,16 @@
 
 @interface VSequence (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;
+- (void)insertComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeCommentsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInCommentsAtIndex:(NSUInteger)idx withObject:(VComment *)value;
+- (void)replaceCommentsAtIndexes:(NSIndexSet *)indexes withComments:(NSArray *)values;
 - (void)addCommentsObject:(VComment *)value;
 - (void)removeCommentsObject:(VComment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
-
+- (void)addComments:(NSOrderedSet *)values;
+- (void)removeComments:(NSOrderedSet *)values;
 - (void)addFiltersObject:(VSequenceFilter *)value;
 - (void)removeFiltersObject:(VSequenceFilter *)value;
 - (void)addFilters:(NSSet *)values;
