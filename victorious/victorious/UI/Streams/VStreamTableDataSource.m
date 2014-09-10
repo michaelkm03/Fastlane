@@ -59,10 +59,11 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     }
     
     _stream = stream;
-    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
     
     if (stream)
     {
+        self.filter = [[VObjectManager sharedManager] filterForStream:stream];
+        
         [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
 }
