@@ -40,6 +40,7 @@
 #import "VStream+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+#import "VAbstractFilter.h"
 
 #import "VAnalyticsRecorder.h"
 
@@ -165,8 +166,8 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
-#warning fix this
-    if (!self.tableDataSource.count)// && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.tableDataSource.stream])
+    VAbstractFilter* filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
+    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
     {
         [self refresh:nil];
     }
@@ -513,8 +514,7 @@
 
 - (VStream*)defaultStream
 {
-#warning cleanup
-    return _defaultStream ?: [VStream streamForCategories:[self sequenceCategories]];// [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+    return _defaultStream ?: [VStream streamForCategories:[self sequenceCategories]];
 }
 
 - (NSArray*)sequenceCategories
@@ -703,14 +703,13 @@
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-#warning fix this
-//    if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
-//        self.tableDataSource.count &&
-//        ![self.tableDataSource isFilterLoading] &&
-//        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-//    {
+    if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
+        self.tableDataSource.count &&
+        ![self.tableDataSource isFilterLoading] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
         [self loadNextPageAction];
-//    }
+    }
     
     // Notify the container about the scroll so it can handle the header
     if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])

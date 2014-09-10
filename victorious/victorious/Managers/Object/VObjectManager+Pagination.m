@@ -511,9 +511,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = (VAbstractFilter*)[self.paginationManager filterForPath:stream.apiPath
-                                                                           entityName:[VAbstractFilter entityName]
-                                                                 managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
+    VAbstractFilter* filter = (VAbstractFilter*)[self filterForStream:stream];
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
@@ -607,6 +605,13 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
+}
+
+- (VAbstractFilter*)filterForStream:(VStream*)stream
+{
+    return [self.paginationManager filterForPath:stream.apiPath
+                                      entityName:[VAbstractFilter entityName]
+                            managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }
 
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID

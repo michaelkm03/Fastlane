@@ -22,6 +22,8 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 @property (nonatomic) BOOL insertingContent;
 @property (nonatomic) BOOL isLoading;
 
+@property (nonatomic, strong) VAbstractFilter* filter;
+
 @end
 
 @implementation VStreamTableDataSource
@@ -57,6 +59,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     }
     
     _stream = stream;
+    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
     
     if (stream)
     {
@@ -126,8 +129,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (BOOL)isFilterLoading
 {
-    return self.isLoading;// || [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.stream];
-#warning fix this;
+    return self.isLoading || [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.filter];
 }
 
 #pragma mark - UITableViewDataSource methods

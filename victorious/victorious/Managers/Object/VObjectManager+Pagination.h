@@ -82,13 +82,8 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
                                                                            failBlock:(VFailBlock)fail;
 
-//#pragma mark Filters
-//- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;
-//- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
-//- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
-//- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
-//- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
-//- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
+#pragma mark Filters
+- (VAbstractFilter*)filterForStream:(VStream*)stream;
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 
