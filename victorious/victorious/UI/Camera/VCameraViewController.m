@@ -169,8 +169,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         self.switchCameraModeButton.hidden = YES;
     }
-    
-    [self checkForMicrophoneAuthorization];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -201,6 +199,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         NSLog(@"Not prepared yet");
     }
+    
+    // Check for Mic Permissions
+    [self checkForMicrophoneAuthorization];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
