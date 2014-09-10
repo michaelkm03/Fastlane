@@ -22,6 +22,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 
+#import "VStream.h"
+
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
@@ -75,12 +77,12 @@
 {
     [super viewDidLoad];
     
-    self.createButton.hidden = [self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController ownerStream].defaultFilter.filterAPIPath];
+    self.createButton.hidden = [self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController ownerStream].defaultStream.apiPath];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
     
-    if (![self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController homeStream].defaultFilter.filterAPIPath])
+    if (![self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController homeStream].defaultStream.apiPath])
     {
         [self.filterControls removeSegmentAtIndex:VStreamFilterFollowing animated:NO];
     }
@@ -125,18 +127,18 @@
 {
     if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
     {
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorLeftUnselected"]
                          forLeftSegmentState:UIControlStateNormal
-                           rightSegmentState:UIControlStateNormal
-                                  barMetrics:UIBarMetricsDefault];
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"Segmented control seperator"]
-                         forLeftSegmentState:UIControlStateSelected
                            rightSegmentState:UIControlStateSelected
                                   barMetrics:UIBarMetricsDefault];
-        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Unselected"]
+        [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorRightUnselected"]
+                         forLeftSegmentState:UIControlStateSelected
+                           rightSegmentState:UIControlStateNormal
+                                  barMetrics:UIBarMetricsDefault];
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderUnselected"]
                                        forState:UIControlStateNormal
                                      barMetrics:UIBarMetricsDefault];
-        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"Segmented control border Selected"]
+        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderSelected"]
                                        forState:UIControlStateSelected
                                      barMetrics:UIBarMetricsDefault];
     }

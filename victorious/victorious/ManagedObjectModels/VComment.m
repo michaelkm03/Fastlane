@@ -2,13 +2,12 @@
 //  VComment.m
 //  victorious
 //
-//  Created by Lawrence Leach on 8/7/14.
+//  Created by Will Long on 9/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VComment.h"
 #import "VAsset.h"
-#import "VCommentFilter.h"
 #import "VNotification.h"
 #import "VSequence.h"
 #import "VUser.h"
@@ -32,9 +31,8 @@
 @dynamic thumbnailUrl;
 @dynamic userId;
 @dynamic asset;
-@dynamic filters;
+@dynamic notification;
 @dynamic sequence;
 @dynamic user;
-@dynamic notification;
 
 @end

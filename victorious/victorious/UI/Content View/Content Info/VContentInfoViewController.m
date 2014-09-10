@@ -14,6 +14,7 @@
 #import "VStreamTableViewController.h"
 
 #import "VSequence+Fetcher.h"
+#import "VStream+Fetcher.h"
 #import "VUser.h"
 
 #import "VThemeManager.h"
@@ -276,12 +277,12 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (IBAction)pressedRemixes:(id)sender
 {
-    VSequenceFilter *filter = [[VObjectManager sharedManager] remixFilterforSequence:self.sequence];
-    VStreamTableViewController  *stream = [VStreamTableViewController streamWithDefaultFilter:filter name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-    stream.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-    stream.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-    stream.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-    [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:stream] animated:YES];
+    VStream *stream = [VStream remixStreamForSequence:self.sequence];
+    VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
+    streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
+    streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
+    streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
+    [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
 }
 
 - (IBAction)pressedComment:(id)sender

@@ -151,7 +151,6 @@ static const CGFloat kShareMargin = 34.0f;
     [self configureNavigationBar];
         
     self.userEnteredText = @"";
-    self.captionType = VCaptionTypeNormal;
     
     // Force Meme text to start at max
     self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
@@ -168,6 +167,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
     self.captionButton.selected = self.captionType == VCaptionTypeNormal;
     self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
+    [self updateUI];
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled] || [self.mediaURL v_hasVideoExtension])
     {
@@ -220,7 +220,10 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
-    [self updateUI];
+    if ([self isViewLoaded])
+    {
+        [self updateUI];
+    }
 }
 
 #pragma mark - Internal Methods
@@ -241,7 +244,7 @@ static const CGFloat kShareMargin = 34.0f;
     UITextView *changedTextView = nil;
     switch (self.captionType)
     {        case VCaptionTypeNormal:
-            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                   attributes:[self captionAttributes]];
             self.captionTextView.hidden = NO;
             changedTextView = self.captionTextView;
@@ -250,7 +253,7 @@ static const CGFloat kShareMargin = 34.0f;
         case VCaptionTypeMeme:
         {
             NSRange currentCursorLocation = [self.memeTextView selectedRange];
-            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
+            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString] ?: @""
                                                                                attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
@@ -282,7 +285,7 @@ static const CGFloat kShareMargin = 34.0f;
             break;
         }
         case VCaptionTypeQuote:
-            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
             self.blackBackgroundView.hidden = NO;

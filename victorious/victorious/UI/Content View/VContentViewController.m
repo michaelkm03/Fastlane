@@ -38,6 +38,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Login.h"
 
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
@@ -48,6 +49,7 @@
 #import "VElapsedTimeFormatter.h"
 
 #import "VUser+Fetcher.h"
+#import "VUser+RestKit.h"
 
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
@@ -296,6 +298,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [[VThemeManager sharedThemeManager] applyStyling];
+    [self updateRepostedButtonStateForCurrentUser];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -575,34 +578,52 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
-    
-    if (![self.sequence.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]
-        && ![self.sequence.parentUser.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+    [self updateRepostedButtonStateForCurrentUser];
+}
+
+- (void)updateRepostedButtonStateForCurrentUser
+{
+    if (!self.sequence)
     {
-        [[VObjectManager sharedManager] fetchUserInteractionsForSequence:sequence.remoteId
-                                                          withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
-         {
-             NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"RepostedContentView", @"") : NSLocalizedString(@"RepostContentView", @"");
-             
-             if (userInteractions.hasReposted)
+        return;
+    }
+    
+    if ([[VObjectManager sharedManager] isAuthorized])
+    {
+        self.repostButton.enabled = NO;
+        if (![self.sequence.user isEqualToUser:[VObjectManager sharedManager].mainUser] &&
+            ![self.sequence.parentUser isEqualToUser:[VObjectManager sharedManager].mainUser])
+        {
+            [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
+                                                              withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
              {
-                 UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-                 [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
-                 self.repostButton.adjustsImageWhenDisabled = NO;
-                 [self.repostButton setTitle:repostButtonTitle
-                                    forState:UIControlStateNormal];
-             }
-             else
-             {
-                 self.repostButton.enabled = YES;
-             }
-         }];
+                 NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"RepostedContentView", @"") : NSLocalizedString(@"RepostContentView", @"");
+                 
+                 if (userInteractions.hasReposted)
+                 {
+                     UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+                     [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+                     self.repostButton.adjustsImageWhenDisabled = NO;
+                     [self.repostButton setTitle:repostButtonTitle
+                                        forState:UIControlStateNormal];
+                     [self.repostButton setNeedsLayout];
+                 }
+                 else
+                 {
+                     self.repostButton.enabled = YES;
+                 }
+             }];
+        }
+        else
+        {
+            UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+            [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+            self.repostButton.adjustsImageWhenDisabled = NO;
+        }
     }
     else
     {
-        UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
-        self.repostButton.adjustsImageWhenDisabled = NO;
+        self.repostButton.enabled = YES;
     }
 }
 
@@ -756,7 +777,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+            self.realtimeCommentVC.comments = [self.currentAsset.comments array];
             [self showRTC];
         }
                                                                  failBlock:nil];
@@ -1311,7 +1332,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-        self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+        self.realtimeCommentVC.comments = [self.currentAsset.comments array];
     }
                                                      failBlock:^(NSOperation* operation, NSError* error)
     {
