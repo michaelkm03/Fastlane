@@ -37,7 +37,9 @@ typedef NS_ENUM(NSInteger, VContentViewState)
     UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
     
-    NSLog(@"current content offset: %@", NSStringFromCGPoint(self.collectionView.contentOffset));
+//    NSLog(@"current content offset: %@", NSStringFromCGPoint(self.collectionView.contentOffset));
+    
+    __block BOOL layoutAttributesForContentView = NO;
     
     [attributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
     {
@@ -47,6 +49,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             {
                 [self layoutAttributesForConetntViewState:VContentViewStateFullSize
                               withInitialLayoutAttributes:layoutAttributes];
+                layoutAttributesForContentView = YES;
             }
             else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
             {
@@ -59,6 +62,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             {
                 [self layoutAttributesForConetntViewState:VContentViewStateShrinking
                               withInitialLayoutAttributes:layoutAttributes];
+                layoutAttributesForContentView = YES;
             }
             else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
             {
@@ -70,6 +74,13 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             }
         }
     }];
+    
+    if (!layoutAttributesForContentView)
+    {
+        [attributes addObject:[self layoutAttributesForConetntViewState:VContentViewStateFloating
+                                            withInitialLayoutAttributes:nil]];
+    }
+    
     return attributes;
 }
 
@@ -116,6 +127,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
         NSIndexPath *contentViewIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:contentViewIndexPath];
         layoutAttributes.center = CGPointMake(160.0f, 160.0f);
+        layoutAttributes.size = CGSizeMake(320.0f, 320.0f);
     }
     
     switch (contentViewState) {
@@ -129,8 +141,19 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             CGFloat percentCompleted = (deltaCatchPointToTop / 320.0f);
             
             layoutAttributes.zIndex = 1000;
-            layoutAttributes.center = CGPointMake(CGRectGetMidX(self.collectionView.bounds) + fminf((percentCompleted* 100.0f), 100.0f), layoutAttributes.center.y + self.collectionView.contentOffset.y - fminf((percentCompleted * 160.0f), 160.0f));
-            layoutAttributes.transform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, 0.35f), fmaxf(1.0f - percentCompleted, 0.35f));
+            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320.0f, 320.0f);
+
+            NSLog(@"percent completed: %f", percentCompleted);
+            
+            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, 0.21f), fmaxf(1.0f - percentCompleted, 0.21f));
+            CGFloat xTranslation = fminf(100.0f, 100.0f * percentCompleted);
+            CGFloat yTranslation = fmaxf(-60.0f, -60.0f * percentCompleted);
+            NSLog(@"x:%f y:%f", xTranslation, yTranslation);
+            CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
+                                                                                      yTranslation);
+            CGAffineTransform combinedTransform = CGAffineTransformConcat(scaleTransform, translationTransform);
+            
+            layoutAttributes.transform = combinedTransform;
         }
             break;
     }

@@ -34,10 +34,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 #pragma mark - UIViewController
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+    self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+    
     // Register nibs
     [self.contentCollectionView registerNib:[VContentCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
@@ -151,6 +158,28 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeMake(320, 20);
         case VContentViewSectionCount:
             return CGSizeZero;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]] == NSOrderedSame)
+    {
+        [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
+                                            animated:YES];
+    }
+}
+
+#pragma mark UIScrollView
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if (targetContentOffset->y < (110.0f))
+    {
+        *targetContentOffset = CGPointMake(0, 0);
     }
 }
 
