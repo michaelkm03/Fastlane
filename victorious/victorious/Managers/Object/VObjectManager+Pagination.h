@@ -83,7 +83,7 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                                                            failBlock:(VFailBlock)fail;
 
 #pragma mark Filters
-- (VAbstractFilter*)filterForStream:(VStream*)stream;
+- (VAbstractFilter*)filterForStream:(VStream*)stream; ///<Returns the filter object for a stream.  Returns nil if the Stream or stream.apiPath is nil or empty an empty string.
 - (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 

@@ -2920,9 +2920,7 @@
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/victoriousTests/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -3105,9 +3103,7 @@
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/victoriousTests/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -3128,9 +3124,7 @@
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/victoriousTests/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -3235,9 +3229,7 @@
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/victoriousTests/3rd",
-					Party,
-					SDKs,
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

@@ -609,6 +609,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter*)filterForStream:(VStream*)stream
 {
+    if (!stream.apiPath || !stream.apiPath.length)
+    {
+        return nil;
+    }
+    
     return [self.paginationManager filterForPath:stream.apiPath
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
