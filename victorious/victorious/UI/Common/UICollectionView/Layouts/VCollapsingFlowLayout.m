@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
                                                                                                                                           withIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
         CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
-        dropDownHeaderLayoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, fmaxf(120, (1 - percentCompleted) * 321));
+        dropDownHeaderLayoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, fmaxf(110, (1 - percentCompleted) * 321));
         dropDownHeaderLayoutAttributes.zIndex = 999;
         [attributes addObject:dropDownHeaderLayoutAttributes];
     }

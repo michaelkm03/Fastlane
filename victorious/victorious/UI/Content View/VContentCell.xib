@@ -20,6 +20,10 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="testContentImage" translatesAutoresizingMaskIntoConstraints="NO" id="wnm-9P-vEu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -30,4 +34,7 @@
             </constraints>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="testContentImage" width="320" height="320"/>
+    </resources>
 </document>

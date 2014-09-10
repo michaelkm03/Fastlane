@@ -66,6 +66,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     return YES;
 }
 
+#pragma mark - IBActions
+
+- (IBAction)pressedClose:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
+
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
@@ -183,9 +192,71 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if (targetContentOffset->y < (110.0f))
+    void (^delayedContentOffsetBlock)(void);
+    
+    if (targetContentOffset->y < 55.0f)
     {
-        *targetContentOffset = CGPointMake(0, 0);
+        if (velocity.y > 0.0f) {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            };
+        }
+        else
+        {
+            *targetContentOffset = CGPointMake(0, 0);
+        }
+    }
+    else if ( (targetContentOffset->y >= 55.0f) && (targetContentOffset->y < (110.0f)))
+    {
+        if (velocity.y > 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, 110.0);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, 110.0f) animated:YES];
+            };
+        }
+    }
+    else if ((targetContentOffset->y >= 110.0f) && (targetContentOffset->y < (110.0f + 100.0f)))
+    {
+        if (velocity.y < 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, 110.0f);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0.0f, 110.0f) animated:YES];
+            };
+        }
+    }
+    else if ((targetContentOffset->y >= (110.0f + 100.0f) && (targetContentOffset->y < (110.0f + 320.0f))))
+    {
+        if (velocity.y > 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, 320.0f);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, 320.0f) animated:YES];
+            };
+        }
+        
+    }
+    
+    if (delayedContentOffsetBlock)
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            delayedContentOffsetBlock();
+        });
     }
 }
 
