@@ -9,8 +9,9 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
-#import "VSequenceFilter.h"
 #import "VStreamTableDataSource.h"
+
+#import "VStream.h"
 
 static char KVOContext;
 
@@ -21,16 +22,18 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 @property (nonatomic) BOOL insertingContent;
 @property (nonatomic) BOOL isLoading;
 
+@property (nonatomic, strong) VAbstractFilter* filter;
+
 @end
 
 @implementation VStreamTableDataSource
 
-- (instancetype)initWithFilter:(VSequenceFilter *)filter
+- (instancetype)initWithStream:(VStream*)stream
 {
     self = [super init];
     if (self)
     {
-        self.filter = filter;
+        self.stream = stream;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentWillBeCreated:) name:VObjectManagerContentWillBeCreatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentWasCreated:)    name:VObjectManagerContentWasCreatedNotification    object:nil];
     }
@@ -39,50 +42,51 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)dealloc
 {
-    self.filter = nil;
+    self.stream = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setFilter:(VSequenceFilter *)filter
+- (void)setStream:(VStream *)stream
 {
-    if (filter == _filter)
+    if (stream == _stream)
     {
         return;
     }
     
-    if (_filter)
+    if (_stream)
     {
-        [_filter removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) context:&KVOContext];
+        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) context:&KVOContext];
     }
     
-    _filter = filter;
+    _stream = stream;
+    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
     
-    if (filter)
+    if (stream)
     {
-        [filter addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
 }
 
 - (VSequence *)sequenceAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.filter.sequences[indexPath.row];
+    return self.stream.sequences[indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForSequence:(VSequence *)sequence
 {
-    NSUInteger index = [self.filter.sequences indexOfObject:sequence];
+    NSUInteger index = [self.stream.sequences indexOfObject:sequence];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
 }
 
 - (NSUInteger)count
 {
-    return self.filter.sequences.count;
+    return self.stream.sequences.count;
 }
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
-    [[VObjectManager sharedManager] refreshSequenceFilter:self.filter
+    [[VObjectManager sharedManager] refreshStream:self.stream
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if (successBlock)
@@ -104,7 +108,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 - (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
-    [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:self.filter
+    [[VObjectManager sharedManager] loadNextPageOfStream:self.stream
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if (successBlock)
@@ -150,7 +154,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)contentWillBeCreated:(NSNotification *)notification
 {
-    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.filter.objectID])
+    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.stream.objectID])
     {
         self.insertingContent = YES;
         [self.tableView beginUpdates];
@@ -159,7 +163,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)contentWasCreated:(NSNotification *)notification
 {
-    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.filter.objectID])
+    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.stream.objectID])
     {
         NSUInteger index = [notification.userInfo[VObjectManagerContentIndexKey] unsignedIntegerValue];
         
@@ -173,7 +177,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self.filter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
         if (!self.insertingContent)
         {

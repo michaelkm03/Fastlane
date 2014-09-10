@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class VStream;
+
 /**
  *  Posted whenever the underlying data source chages.
  */
 UIKIT_EXTERN NSString *const VStreamTableDataSourceDidChangeNotification;
 
-@class VSequence, VSequenceFilter, VStreamTableDataSource;
+@class VSequence, VSequenceFilter, VAbstractFilter, VStreamTableDataSource;
 
 @protocol VStreamTableDataDelegate <NSObject>
 
@@ -26,9 +28,10 @@ UIKIT_EXTERN NSString *const VStreamTableDataSourceDidChangeNotification;
 
 @property (nonatomic, weak)   id<VStreamTableDataDelegate>  delegate;
 @property (nonatomic, weak)   UITableView                  *tableView; ///< The UITableView object to which the receiver is providing data
-@property (nonatomic)         VSequenceFilter              *filter;    ///< Changing this property will send a -reloadData message to your table view
+@property (nonatomic)         VStream                      *stream;    ///< Changing this property will send a -reloadData message to your table view
+@property (nonatomic, readonly) VAbstractFilter            *filter;    ///< Filter associated with the stream object.  Changing the stream object changes this property
 
-- (instancetype)initWithFilter:(VSequenceFilter *)filter;
+- (instancetype)initWithStream:(VStream*)stream;
 - (VSequence *)sequenceAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForSequence:(VSequence *)sequence;
 - (NSUInteger)count;

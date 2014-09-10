@@ -22,6 +22,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 
+#import "VStream.h"
+
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
@@ -75,12 +77,12 @@
 {
     [super viewDidLoad];
     
-    self.createButton.hidden = [self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController ownerStream].defaultFilter.filterAPIPath];
+    self.createButton.hidden = [self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController ownerStream].defaultStream.apiPath];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
     
-    if (![self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController homeStream].defaultFilter.filterAPIPath])
+    if (![self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController homeStream].defaultStream.apiPath])
     {
         [self.filterControls removeSegmentAtIndex:VStreamFilterFollowing animated:NO];
     }

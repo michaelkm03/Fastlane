@@ -37,8 +37,10 @@
 //Data Models
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
+#import "VStream+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+#import "VAbstractFilter.h"
 
 #import "VAnalyticsRecorder.h"
 
@@ -53,7 +55,7 @@
 @property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
-@property (strong, nonatomic) VSequenceFilter* defaultFilter;
+@property (strong, nonatomic) VStream* defaultStream;
 
 @property (strong, nonatomic) NSString* streamName;
 
@@ -65,44 +67,43 @@
 
 + (instancetype)homeStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:
-                                      [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"home" title:NSLocalizedString(@"Home", nil)];
+    VStream* defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)communityStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VUGCCategories()];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"ugc" title:NSLocalizedString(@"Community", nil)];
+    VStream* defaultStream = [VStream streamForCategories: VUGCCategories()];
+    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"ugc" title:NSLocalizedString(@"Community", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)ownerStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VOwnerCategories()];
-    return [self streamWithDefaultFilter:defaultFilter name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
+    VStream* defaultStream = [VStream streamForCategories: VOwnerCategories()];
+    return [self streamWithDefaultStream:defaultStream name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
 }
 
 + (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForHashTag:hashtag];
-    return [self streamWithDefaultFilter:defaultFilter name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
+    VStream* defaultStream = [VStream streamForHashTag:hashtag];
+    return [self streamWithDefaultStream:defaultStream name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
 }
 
-+ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter name:(NSString*)name title:(NSString*)title
++ (instancetype)streamWithDefaultStream:(VStream*)stream name:(NSString*)name title:(NSString*)title
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamTableViewController* stream = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    VStreamTableViewController* streamTableView = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
     
-    stream.streamName = name;
-    stream.title = title;
-    stream.defaultFilter = filter;
-    stream.currentFilter = filter;
+    streamTableView.streamName = name;
+    streamTableView.title = title;
+    streamTableView.defaultStream = stream;
+    streamTableView.currentStream = stream;
     
-    return stream;
+    return streamTableView;
 }
 
 - (void)dealloc
@@ -116,9 +117,9 @@
     
     self.hasRefreshed = NO;
     
-    self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
+    self.tableDataSource = [[VStreamTableDataSource alloc] initWithStream:[self currentStream]];
     self.tableDataSource.delegate = self;
-    self.tableDataSource.filter = self.currentFilter;
+    self.tableDataSource.stream = self.currentStream;
     self.tableDataSource.tableView = self.tableView;
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.delegate = self;
@@ -165,7 +166,8 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
-    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.tableDataSource.filter])
+    VAbstractFilter* filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
+    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
     {
         [self refresh:nil];
     }
@@ -219,20 +221,20 @@
     switch (self.filterType)
     {
         case VStreamFilterFeatured:
-            self.currentFilter = [self hotFilter];
+            self.currentStream = [VStream hotSteamForSteamName:self.streamName];
             break;
             
         case VStreamFilterRecent:
-            self.currentFilter = [self defaultFilter];
+            self.currentStream = [self defaultStream];
             break;
             
         case VStreamFilterFollowing:
-            self.currentFilter = [self followingFilter];
+            self.currentStream = [VStream followerStreamForStreamName:self.streamName user:nil];
             break;
             
         default:
             VLog(@"Unknown filter type, using default filter");
-            self.currentFilter = [self defaultFilter];
+            self.currentStream = [self defaultStream];
             break;
     }
     
@@ -244,12 +246,12 @@
     }
 }
 
-- (void)setCurrentFilter:(VSequenceFilter *)currentFilter
+- (void)setCurrentStream:(VStream *)currentStream
 {
-    _currentFilter = currentFilter;
+    _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        self.tableDataSource.filter = currentFilter;
+        self.tableDataSource.stream = currentStream;
     }
 }
 
@@ -462,7 +464,7 @@
     
     void (^noContentUpdates)(void);
     
-    if (self.tableDataSource.filter.sequences.count <= 0)
+    if (self.tableDataSource.stream.sequences.count <= 0)
     {
         if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
         {
@@ -510,17 +512,9 @@
 
 #pragma mark - Predicates
 
-- (VSequenceFilter*)defaultFilter
+- (VStream*)defaultStream
 {
-    return _defaultFilter ?: [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
-}
-- (VSequenceFilter*)hotFilter
-{
-    return [[VObjectManager sharedManager] hotSequenceFilterForStream:self.streamName];
-}
-- (VSequenceFilter*)followingFilter
-{
-    return [[VObjectManager sharedManager] followerSequenceFilterForStream:self.streamName user:nil];
+    return _defaultStream ?: [VStream streamForCategories:[self sequenceCategories]];
 }
 
 - (NSArray*)sequenceCategories

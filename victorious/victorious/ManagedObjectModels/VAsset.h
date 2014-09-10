@@ -2,7 +2,7 @@
 //  VAsset.h
 //  victorious
 //
-//  Created by Lawrence Leach on 9/3/14.
+//  Created by Will Long on 9/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -17,18 +17,23 @@
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * loop;
 @property (nonatomic, retain) NSNumber * nodeId;
-@property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) VNode *node;
 @end
 
 @interface VAsset (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;
+- (void)insertComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeCommentsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInCommentsAtIndex:(NSUInteger)idx withObject:(VComment *)value;
+- (void)replaceCommentsAtIndexes:(NSIndexSet *)indexes withComments:(NSArray *)values;
 - (void)addCommentsObject:(VComment *)value;
 - (void)removeCommentsObject:(VComment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
-
+- (void)addComments:(NSOrderedSet *)values;
+- (void)removeComments:(NSOrderedSet *)values;
 @end
