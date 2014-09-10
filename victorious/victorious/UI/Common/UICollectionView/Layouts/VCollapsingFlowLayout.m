@@ -181,15 +181,21 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
         case VContentViewStateShrinking:
         case VContentViewStateFloating:
         {
+            NSLog(@"Content Offset%@", NSStringFromCGPoint(self.collectionView.contentOffset));
+            
             CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-            CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
+            CGFloat percentCompleted = (deltaCatchPointToTop / (320 - 110));
+            
+            NSLog(@"%f", percentCompleted);
             
             layoutAttributes.zIndex = kVContentViewFloatingZIndex;
             layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, CGRectGetWidth(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds));
 
-            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor), fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor));
-            CGFloat xTranslation = fminf(kVContentViewFloatingYTranslation, kVContentViewFloatingYTranslation * percentCompleted);
-            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted * 2.5);
+            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f),
+                                                                          fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f));
+            
+            CGFloat xTranslation = fminf(kVContentViewFloatingYTranslation, kVContentViewFloatingYTranslation * percentCompleted * 0.8f);
+            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted);
             
             CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                                       yTranslation);
