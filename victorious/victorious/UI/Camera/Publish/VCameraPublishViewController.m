@@ -244,7 +244,7 @@ static const CGFloat kShareMargin = 34.0f;
     UITextView *changedTextView = nil;
     switch (self.captionType)
     {        case VCaptionTypeNormal:
-            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                   attributes:[self captionAttributes]];
             self.captionTextView.hidden = NO;
             changedTextView = self.captionTextView;
@@ -253,7 +253,7 @@ static const CGFloat kShareMargin = 34.0f;
         case VCaptionTypeMeme:
         {
             NSRange currentCursorLocation = [self.memeTextView selectedRange];
-            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
+            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString] ?: @""
                                                                                attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
@@ -285,7 +285,7 @@ static const CGFloat kShareMargin = 34.0f;
             break;
         }
         case VCaptionTypeQuote:
-            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
             self.blackBackgroundView.hidden = NO;
