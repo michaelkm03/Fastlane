@@ -149,9 +149,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
-    [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
-    [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
-    self.recordButton.userInteractionEnabled = YES;
+    [self activateDeactivateRecordButton:YES];
+    
     
     self.focusView = [[VCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
     self.focusView.camera = self.camera;
@@ -200,8 +199,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         NSLog(@"Not prepared yet");
     }
     
-    // Check for Mic Permissions
-    [self checkForMicrophoneAuthorization];
+    // Check for Mic Permission if doing video
+    if (self.camera.sessionPreset == self.videoQuality)
+    {
+        [self checkForMicrophoneAuthorization];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -250,9 +252,31 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                      otherButtonTitles:nil];
                                [alert show];
+                               [self activateDeactivateRecordButton:NO];
                            });
         }
     }];
+}
+
+
+#pragma mark - Activate / Deactivate Record Button
+
+- (void)activateDeactivateRecordButton:(BOOL)activate
+{
+    if (activate)
+    {
+        [self.recordButton setAlpha:1.0f];
+        [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
+        [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
+        self.recordButton.userInteractionEnabled = YES;
+    }
+    else
+    {
+        [self.recordButton setAlpha:0.2f];
+        [self.recordButton removeGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
+        [self.recordButton removeGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
+        self.recordButton.userInteractionEnabled = NO;
+    }
 }
 
 
@@ -361,7 +385,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
         self.camera.sessionPreset = self.videoQuality;
-        [self configureUIforVideoCaptureAnimated:YES completion:nil];
+        [self configureUIforVideoCaptureAnimated:YES completion:^{
+            [self checkForMicrophoneAuthorization];
+        }];
     }
     else if (self.camera.sessionPreset == self.videoQuality)
     {
