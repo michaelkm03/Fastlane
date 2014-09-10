@@ -134,11 +134,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
-            return CGSizeMake(320, 320);
+            return [VContentCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
-            return CGSizeMake(320, 110);
+            return [VRealTimeCommentsCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
-            return CGSizeMake(320, 60);
+            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), 60);
         case VContentViewSectionCount:
             return CGSizeZero;
     }
@@ -155,7 +155,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionRealTimeComments:
             return CGSizeZero;
         case VContentViewSectionAllComments:
-            return CGSizeMake(320, 20);
+            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), 20);
         case VContentViewSectionCount:
             return CGSizeZero;
     }

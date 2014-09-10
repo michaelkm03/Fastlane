@@ -10,4 +10,9 @@
 
 @implementation VRealTimeCommentsCell
 
++ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), 110.0f);
+}
+
 @end

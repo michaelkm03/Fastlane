@@ -11,4 +11,8 @@
 + (NSString *)suggestedReuseIdentifier;
 + (UINib *)nibForCell;
 
+@optional
+
++ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds;
+
 @end

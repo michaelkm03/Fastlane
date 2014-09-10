@@ -10,6 +10,11 @@
 
 @implementation VContentCell
 
++ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+}
+
 - (BOOL)shouldPan
 {
     return NO;
