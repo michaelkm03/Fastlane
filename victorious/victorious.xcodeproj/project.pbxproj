@@ -344,6 +344,8 @@
 		D8B3F8BC19BE93B80009B7CD /* VBaseCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BB19BE93B80009B7CD /* VBaseCollectionReusableView.m */; };
 		D8B3F8C019BE968C0009B7CD /* VConditionalPanningCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */; };
 		D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */; };
+		D8B6771119BFDA8F008DA0E9 /* VDropdownTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B6771019BFDA8F008DA0E9 /* VDropdownTitleView.m */; };
+		D8B6771319BFDA98008DA0E9 /* VDropdownTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B6771219BFDA98008DA0E9 /* VDropdownTitleView.xib */; };
 		D8DE612B19BE566D00F7731E /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612A19BE566D00F7731E /* VNewContentViewController.m */; };
 		D8DE612D19BE575B00F7731E /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8DE612C19BE575B00F7731E /* ContentView.storyboard */; };
 		D8DE613019BE7ED300F7731E /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612F19BE7ED300F7731E /* VContentCell.m */; };
@@ -989,6 +991,9 @@
 		D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConditionalPanningCollectionView.m; sourceTree = "<group>"; };
 		D8B3F8C419BE9D480009B7CD /* VCollapsingFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollapsingFlowLayout.h; sourceTree = "<group>"; };
 		D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollapsingFlowLayout.m; sourceTree = "<group>"; };
+		D8B6770F19BFDA8F008DA0E9 /* VDropdownTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDropdownTitleView.h; sourceTree = "<group>"; };
+		D8B6771019BFDA8F008DA0E9 /* VDropdownTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDropdownTitleView.m; sourceTree = "<group>"; };
+		D8B6771219BFDA98008DA0E9 /* VDropdownTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDropdownTitleView.xib; sourceTree = "<group>"; };
 		D8DE612919BE566D00F7731E /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
 		D8DE612A19BE566D00F7731E /* VNewContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNewContentViewController.m; sourceTree = "<group>"; };
 		D8DE612C19BE575B00F7731E /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -1340,10 +1345,14 @@
 				D8DE613819BE802300F7731E /* AllComments */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				0314D36519B46B5E00FA363C /* Content Info */,
+				D8DE612C19BE575B00F7731E /* ContentView.storyboard */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
 				0314D37619B46B5E00FA363C /* VActionBarViewController.h */,
 				0314D37719B46B5E00FA363C /* VActionBarViewController.m */,
+				D8DE612E19BE7ED300F7731E /* VContentCell.h */,
+				D8DE612F19BE7ED300F7731E /* VContentCell.m */,
+				D8DE613119BE7EE800F7731E /* VContentCell.xib */,
 				0314D37819B46B5E00FA363C /* VContentTitleTextView.h */,
 				0314D37919B46B5E00FA363C /* VContentTitleTextView.m */,
 				0314D37A19B46B5E00FA363C /* VContentViewController+Images.h */,
@@ -1353,14 +1362,13 @@
 				0314D37E19B46B5E00FA363C /* VContentViewController+Videos.m */,
 				0314D37F19B46B5E00FA363C /* VContentViewController.h */,
 				0314D38019B46B5E00FA363C /* VContentViewController.m */,
+				D8B6770F19BFDA8F008DA0E9 /* VDropdownTitleView.h */,
+				D8B6771019BFDA8F008DA0E9 /* VDropdownTitleView.m */,
+				D8B6771219BFDA98008DA0E9 /* VDropdownTitleView.xib */,
 				0314D38119B46B5E00FA363C /* VEmotiveBallisticsBarViewController.h */,
 				0314D38219B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m */,
 				D8DE612919BE566D00F7731E /* VNewContentViewController.h */,
 				D8DE612A19BE566D00F7731E /* VNewContentViewController.m */,
-				D8DE612C19BE575B00F7731E /* ContentView.storyboard */,
-				D8DE612E19BE7ED300F7731E /* VContentCell.h */,
-				D8DE612F19BE7ED300F7731E /* VContentCell.m */,
-				D8DE613119BE7EE800F7731E /* VContentCell.xib */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2455,6 +2463,7 @@
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
+				D8B6771319BFDA98008DA0E9 /* VDropdownTitleView.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
@@ -2639,6 +2648,7 @@
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				0314D4CD19B46B5E00FA363C /* VRemixVideoRangeSlider.m in Sources */,
 				0314D4E319B46B5E00FA363C /* VFindTwitterFriendsTableViewController.m in Sources */,
+				D8B6771119BFDA8F008DA0E9 /* VDropdownTitleView.m in Sources */,
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				0314D4C919B46B5E00FA363C /* VRemixSliderLeft.m in Sources */,
