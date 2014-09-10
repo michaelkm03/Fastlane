@@ -15,6 +15,7 @@
 
 // Accessory Views
 #import "VSectionHandleReusableView.h"
+#import "VDropdownTitleView.h"
 
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
@@ -55,6 +56,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VDropdownTitleView nibForCell]
+                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                        withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -114,7 +118,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
-            return nil;
+            return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                      withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
+                                                             forIndexPath:indexPath];
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:

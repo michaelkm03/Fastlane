@@ -66,12 +66,19 @@ typedef NS_ENUM(NSInteger, VContentViewState)
             {
                 layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y + 320.0f, 320, 110);
             }
-            else
-            {
-                
-            }
         }
     }];
+    
+    if (self.collectionView.contentOffset.y > self.catchPoint)
+    {
+        UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                                                          withIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
+        CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
+        dropDownHeaderLayoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, fmaxf(120, (1 - percentCompleted) * 321));
+        dropDownHeaderLayoutAttributes.zIndex = 999;
+        [attributes addObject:dropDownHeaderLayoutAttributes];
+    }
     
     if (!layoutAttributesForContentView)
     {
@@ -90,6 +97,17 @@ typedef NS_ENUM(NSInteger, VContentViewState)
                              withInitialLayoutAttributes:nil];
     }
     return [super layoutAttributesForItemAtIndexPath:indexPath];
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind
+                                                                     atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]])
+    {
+
+    }
+    return [super layoutAttributesForSupplementaryViewOfKind:kind
+                                                 atIndexPath:indexPath];
 }
 
 #pragma mark - Convenience
@@ -148,7 +166,7 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 
             CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor), fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor));
             CGFloat xTranslation = fminf(kVContentViewFloatingYTranslation, kVContentViewFloatingYTranslation * percentCompleted);
-            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted);
+            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted * 2.5);
             
             CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                                       yTranslation);
