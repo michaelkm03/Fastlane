@@ -34,10 +34,8 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 {
     NSMutableArray *attributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [self layoutAttributesForItemAtIndexPath:[self realTimeCommentsIndexPath]];
     self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
-    
-//    NSLog(@"current content offset: %@", NSStringFromCGPoint(self.collectionView.contentOffset));
     
     __block BOOL layoutAttributesForContentView = NO;
     
@@ -47,7 +45,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
         {
             if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
             {
-                [self layoutAttributesForConetntViewState:VContentViewStateFullSize
+                [self layoutAttributesForContentViewState:VContentViewStateFullSize
                               withInitialLayoutAttributes:layoutAttributes];
                 layoutAttributesForContentView = YES;
             }
@@ -60,7 +58,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
         {
             if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
             {
-                [self layoutAttributesForConetntViewState:VContentViewStateShrinking
+                [self layoutAttributesForContentViewState:VContentViewStateShrinking
                               withInitialLayoutAttributes:layoutAttributes];
                 layoutAttributesForContentView = YES;
             }
@@ -77,7 +75,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
     
     if (!layoutAttributesForContentView)
     {
-        [attributes addObject:[self layoutAttributesForConetntViewState:VContentViewStateFloating
+        [attributes addObject:[self layoutAttributesForContentViewState:VContentViewStateFloating
                                             withInitialLayoutAttributes:nil]];
     }
     
@@ -88,7 +86,7 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 {
     if ([indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
     {
-        return [self layoutAttributesForConetntViewState:VContentViewStateFloating
+        return [self layoutAttributesForContentViewState:VContentViewStateFloating
                              withInitialLayoutAttributes:nil];
     }
     return [super layoutAttributesForItemAtIndexPath:indexPath];
@@ -118,7 +116,12 @@ typedef NS_ENUM(NSInteger, VContentViewState)
     return [NSIndexPath indexPathForRow:0 inSection:1];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForConetntViewState:(VContentViewState)contentViewState
+static const CGFloat kVContentViewFloatingZIndex = 1000.0f;
+static const CGFloat kVContentViewFloatingYTranslation = 120.0f;
+static const CGFloat kVContentViewFloatingXTranslation = -90.0f;
+static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewState:(VContentViewState)contentViewState
                                               withInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes;
@@ -126,26 +129,26 @@ typedef NS_ENUM(NSInteger, VContentViewState)
     {
         NSIndexPath *contentViewIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:contentViewIndexPath];
-        layoutAttributes.center = CGPointMake(160.0f, 160.0f);
-        layoutAttributes.size = CGSizeMake(320.0f, 320.0f);
+        layoutAttributes.center = CGPointMake(CGRectGetWidth(self.collectionView.bounds)/2, CGRectGetWidth(self.collectionView.bounds)/2);
+        layoutAttributes.size = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds));
     }
     
     switch (contentViewState) {
         case VContentViewStateFullSize:
-            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320, 320);
+            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, CGRectGetWidth(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds));
             break;
         case VContentViewStateShrinking:
         case VContentViewStateFloating:
         {
             CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-            CGFloat percentCompleted = (deltaCatchPointToTop / 320.0f);
+            CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
             
-            layoutAttributes.zIndex = 1000;
-            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, 320.0f, 320.0f);
+            layoutAttributes.zIndex = kVContentViewFloatingZIndex;
+            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, CGRectGetWidth(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds));
 
-            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, 0.21f), fmaxf(1.0f - percentCompleted, 0.21f));
-            CGFloat xTranslation = fminf(100.0f, 100.0f * percentCompleted);
-            CGFloat yTranslation = fmaxf(-60.0f, -60.0f * percentCompleted);
+            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor), fmaxf(1.0f - percentCompleted, kVContentViewFloatingScalingFactor));
+            CGFloat xTranslation = fminf(kVContentViewFloatingYTranslation, kVContentViewFloatingYTranslation * percentCompleted);
+            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted);
             
             CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                                       yTranslation);
