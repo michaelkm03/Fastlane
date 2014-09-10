@@ -161,6 +161,13 @@ static VLargeNumberFormatter* largeNumberFormatter;
     }
     
     self.usernameLabel.text = self.sequence.user.name;
+    
+    // Check if sequence is a remix or repost and adjust usernameLabel constraint
+    if ([self remixRepostCheck:self.sequence.category])
+    {
+        NSLog(@"\n\n-----\nThis is repost or remix\n-----\n\n");
+        [self.usernameLabel removeConstraint:<#(NSLayoutConstraint *)#>]
+    }
 
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
@@ -238,6 +245,15 @@ static VLargeNumberFormatter* largeNumberFormatter;
 - (void)setHeight:(CGFloat)height
 {
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
+}
+
+- (BOOL)remixRepostCheck:(NSString*)sequenceCategory
+{
+    if ([sequenceCategory rangeOfString:@"remix"].location == NSNotFound && [sequenceCategory rangeOfString:@"repost"].location == NSNotFound)
+    {
+        return NO;
+    }
+    return YES;
 }
 
 - (IBAction)commentButtonAction:(id)sender
