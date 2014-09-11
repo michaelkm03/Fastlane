@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VStreamDirectoryDataSource, VAbstractFilter;
+@class VStreamDirectoryDataSource, VAbstractFilter, VDirectory, VDirectoryItem;
 
 @protocol VStreamDirectoryDataDelegate <NSObject>
 
@@ -21,10 +21,12 @@
 
 @property (nonatomic, weak) id<VStreamDirectoryDataDelegate> delegate;
 @property (nonatomic, strong) VAbstractFilter *filter;
+@property (nonatomic, strong) VDirectory *directory;
 
-- (instancetype)initWithFilter:(VAbstractFilter *)filter;
-- (VAbstractFilter *)filterAtIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForFilter:(VAbstractFilter *)sequence;
+- (instancetype)initWithDirectory:(VDirectory*)directory;
+
+- (VDirectoryItem *)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)indexPathForItem:(VDirectoryItem *)directoryItem;
 - (NSUInteger)count;
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
 - (void)loadNextPageWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;

@@ -11,31 +11,33 @@
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
 
+#import "VDirectory.h"
+
 @implementation VStreamDirectoryDataSource
 
-- (instancetype)initWithFilter:(VAbstractFilter *)filter
+- (instancetype)initWithDirectory:(VDirectory *)directory
 {
     self = [self init];
     if (self)
     {
-        self.filter = filter;
+        self.directory = directory;
     }
     return self;
 }
 
-- (VAbstractFilter *)filterAtIndexPath:(NSIndexPath *)indexPath
+- (VDirectoryItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    return [self.directory.directoryItems objectAtIndex:indexPath.row];
 }
 
-- (NSIndexPath *)indexPathForFilter:(VAbstractFilter *)sequence
+- (NSIndexPath *)indexPathForItem:(VDirectoryItem *)directoryItem
 {
-    return nil;
+    return [NSIndexPath indexPathForRow:[self.directory.directoryItems indexOfObject:directoryItem] inSection:0];
 }
 
 - (NSUInteger)count
 {
-    return 0;
+    return self.directory.directoryItems.count;
 }
 
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDirectory;
+
 @interface VStreamDirectoryCollectionView : UICollectionView
+
+@property (nonatomic, readonly) VDirectory* directory;
+
+- (instancetype)initWithDirectory:(VDirectory *)directory;
 
 @end

@@ -8,15 +8,24 @@
 
 #import "VStreamDirectoryCollectionView.h"
 
+NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
+
+@interface VStreamDirectoryCollectionView ()
+
+@property (nonatomic, strong) VDirectory* directory;
+
+@end
+
+
 @implementation VStreamDirectoryCollectionView
 
-- (id)initWithFrame:(CGRect)frame
++ (instancetype)streamDirectoryForDirectory:(VDirectory*)directory
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamDirectoryCollectionView* streamDirectory = (VStreamDirectoryCollectionView*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
+    streamDirectory.directory = directory;
+    
+    return streamDirectory;
 }
 
 /*
