@@ -98,7 +98,9 @@ static const CGFloat kVContentViewLayoutContentZIndex = 999.0f;
         dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
                                                           self.collectionView.contentOffset.y,
                                                           CGRectGetWidth(self.collectionView.frame),
-                                                          fmaxf(self.catchPoint, (1 - percentCompleted) * (1 + CGRectGetHeight(layoutAttributesForContentView.frame))));
+                                                          // Swap these implementations for header resizing
+//                                                          fmaxf(self.catchPoint, (1 - percentCompleted) * (1 + CGRectGetHeight(layoutAttributesForContentView.frame)))
+                                                          110.0f);
         dropDownHeaderLayoutAttributes.zIndex = kVContentViewFloatingZIndex;
         [attributes addObject:dropDownHeaderLayoutAttributes];
     }
