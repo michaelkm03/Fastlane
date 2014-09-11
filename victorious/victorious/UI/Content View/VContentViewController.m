@@ -63,7 +63,7 @@ static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 static const CGFloat kActionConstraintConstantCollapsed     =   0.0f;
-static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
+static const CGFloat kActionConstraintConstantExpandedOffset = 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
@@ -1428,7 +1428,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-    VStreamContainerViewController* container =[VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    VStreamContainerViewController* container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     container.shouldShowHeaderLogo = NO;
     [self.navigationController pushViewController:container animated:YES];
 }

@@ -82,7 +82,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSString *titleText = [NSString stringWithFormat:@"#%@",self.hashTag];
+    NSString *titleText = [NSString stringWithFormat:@"#%@", self.hashTag];
     self.headerLabel.text = NSLocalizedString(titleText, nil);
     
     [self.streamViewController setHashTag:self.hashTag];

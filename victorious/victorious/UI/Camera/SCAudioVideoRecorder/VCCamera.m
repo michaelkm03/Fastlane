@@ -551,7 +551,8 @@ typedef UIView View;
 		self.currentVideoDeviceInput = [self addInputToSession:captureSession device:device withMediaType:@"Video" error:error];
         [self.currentVideoDeviceInput.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:(__bridge void *)VCCameraFocusObserverContext];
         [self addObserver:self forKeyPath:@"currentVideoDeviceInput.device.focusMode" options:NSKeyValueObservingOptionNew context:VCCameraFocusModeObserverContext];
-        if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)]) {
+        if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)])
+        {
             AVCaptureFocusMode initialFocusMode = [device focusMode];
             [self.delegate cameraUpdateFocusMode:[NSString stringWithFormat:@"focus: %@", [self stringForFocusMode:initialFocusMode]]];
         }
@@ -676,7 +677,8 @@ typedef UIView View;
 - (void)_sessionRuntimeErrored:(NSNotification *)notification
 {
     [self dispatchBlockOnAskedQueue:^{
-        if ([notification object] == session) {
+        if ([notification object] == session)
+        {
             NSError *error = [[notification userInfo] objectForKey:AVCaptureSessionErrorKey];
             if (error)
             {
@@ -808,7 +810,8 @@ typedef UIView View;
         CGRect cleanAperture;
         for (AVCaptureInputPort *port in [self.currentVideoDeviceInput ports])
         {
-            if ([port mediaType] == AVMediaTypeVideo) {
+            if ([port mediaType] == AVMediaTypeVideo)
+            {
                 cleanAperture = CMVideoFormatDescriptionGetCleanAperture([port formatDescription], YES);
                 CGSize apertureSize = cleanAperture.size;
                 CGPoint point = viewCoordinates;
@@ -879,9 +882,11 @@ typedef UIView View;
 - (void) autoFocusAtPoint:(CGPoint)point
 {
     AVCaptureDevice *device = [self.currentVideoDeviceInput device];
-    if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+    if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+    {
         NSError *error;
-        if ([device lockForConfiguration:&error]) {
+        if ([device lockForConfiguration:&error])
+        {
             [device setFocusPointOfInterest:point];
             [device setFocusMode:AVCaptureFocusModeAutoFocus];
             [device unlockForConfiguration];

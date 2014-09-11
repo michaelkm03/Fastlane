@@ -54,15 +54,19 @@
 
 - (void)continueAnimating
 {
-    if (self.selectedState != VShareViewSelectedStateLimbo) {
+    if (self.selectedState != VShareViewSelectedStateLimbo)
+    {
         return;
     }
     [UIView animateWithDuration:0.5f
                           delay:0.0f
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear
-                     animations:^{
+                     animations:^
+                     {
                          self.backgroundImageView.transform = CGAffineTransformConcat(self.backgroundImageView.transform, CGAffineTransformMakeRotation(M_PI/3));
-                     } completion:^(BOOL finished) {
+                     }
+                     completion:^(BOOL finished)
+                     {
                          [self continueAnimating];
                      }];
 }

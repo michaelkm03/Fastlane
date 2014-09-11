@@ -174,9 +174,12 @@
 {
     [super viewDidAppear:animated];
     
-    if (!self.registrationModel.username) {
+    if (!self.registrationModel.username)
+    {
         [self.usernameTextField becomeFirstResponder];
-    } else if (!self.registrationModel.taglineText) {
+    }
+    else if (!self.registrationModel.taglineText)
+    {
         [self.taglineTextView becomeFirstResponder];
     }
 
@@ -290,7 +293,8 @@
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
 
-    if ([self.taglineTextView isFirstResponder]) {
+    if ([self.taglineTextView isFirstResponder])
+    {
         [UIView animateWithDuration:animationDuration
                               delay:0.0f
                             options:(animationCurve << 16)
@@ -445,7 +449,8 @@
 
     if ([self shouldCreateProfile])
     {
-        if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter) {
+        if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
+        {
             [self didSignUpWithUser:self.profile];
             return;
         }
@@ -510,22 +515,22 @@
     
     if (!self.usernameTextField.text.length > 0)
     {
-        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredName", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
     }
     
     if (!self.locationTextField.text.length > 0)
     {
-        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredLoc", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
     if (!self.registrationModel.profileImageURL)
     {
-        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredPhoto", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
 
     if (![self.agreeSwitch isOn])
     {
-        [errorMsg appendFormat:@"\n%@",NSLocalizedString(@"ProfileRequiredToS", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredToS", @"")];
     }
     
     
@@ -574,7 +579,8 @@
     self.usernameTextField.text = self.registrationModel.username;
     self.locationTextField.text = self.registrationModel.locationText;
     self.taglineTextView.text = self.registrationModel.taglineText;
-    if (self.registrationModel.selectedImage) {
+    if (self.registrationModel.selectedImage)
+    {
         self.profileImageView.image = self.registrationModel.selectedImage;
     }
 }
@@ -583,9 +589,12 @@
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    if (notification.object == self.usernameTextField) {
+    if (notification.object == self.usernameTextField)
+    {
         self.registrationModel.username = self.usernameTextField.text;
-    } else if (notification.object == self.locationTextField) {
+    }
+    else if (notification.object == self.locationTextField)
+    {
         self.registrationModel.locationText = self.locationTextField.text;
     }
 }
