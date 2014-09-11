@@ -149,6 +149,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
+    [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
+    [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
+
+    
     [self activateDeactivateRecordButton:YES];
     
     
@@ -267,8 +271,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (activate)
     {
         [self.recordButton setAlpha:1.0f];
-        [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
-        [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
         self.recordButton.userInteractionEnabled = YES;
     }
     else
