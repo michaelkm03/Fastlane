@@ -76,6 +76,9 @@
     
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.tintColor = transparentAccent;
+    
     self.progressBarImageViews = [[NSMutableArray alloc] init];
     self.arrowImageView.image = [self.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.arrowImageView.tintColor = self.commentBackgroundView.backgroundColor;
@@ -166,8 +169,9 @@
         xCenter += imageHeight / 2;
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
         UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+        progressBarImage.tintColor = transparentAccent;
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
-                         placeholderImage:[[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent]];
+                         placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];
@@ -235,9 +239,8 @@
         return;
     }
     
-    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
     [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl]
-                          placeholderImage:[[UIImage imageNamed:@"profile_full"] v_imageWithColor:transparentAccent]];
+                          placeholderImage:[[UIImage imageNamed:@"profile_full"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
     self.commentLabel.text = currentComment.text;
