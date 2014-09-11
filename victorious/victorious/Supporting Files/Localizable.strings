@@ -248,6 +248,9 @@
 "FindContacts"          =   "Search and invite your friends from your contacts";
 "Access Your Contacts"  =   "Access Your Contacts";
 
+"AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
+"AccessMicrophoneRestricted" =  "Unable access microphone due to restrictions on your device.";
+
 "AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
 "AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
 
