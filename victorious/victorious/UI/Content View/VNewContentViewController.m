@@ -8,6 +8,9 @@
 
 #import "VNewContentViewController.h"
 
+// Layout
+#import "VCollapsingFlowLayout.h"
+
 // Cells
 #import "VContentCell.h"
 #import "VRealTimeCommentsCell.h"
@@ -194,7 +197,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     void (^delayedContentOffsetBlock)(void);
     
-    if (targetContentOffset->y < 55.0f)
+    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
     {
         if (velocity.y > 0.0f) {
             delayedContentOffsetBlock = ^void(void)
@@ -207,45 +212,53 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             *targetContentOffset = CGPointMake(0, 0);
         }
     }
-    else if ( (targetContentOffset->y >= 55.0f) && (targetContentOffset->y < (110.0f)))
+    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
     {
         if (velocity.y > 0.0f)
         {
-            *targetContentOffset = CGPointMake(0, 110.0);
+            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
         }
         else
         {
             delayedContentOffsetBlock = ^void(void)
             {
-                [scrollView setContentOffset:CGPointMake(0, 110.0f) animated:YES];
+                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
+                                    animated:YES];
             };
         }
     }
-    else if ((targetContentOffset->y >= 110.0f) && (targetContentOffset->y < (110.0f + 100.0f)))
+    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
     {
         if (velocity.y < 0.0f)
         {
-            *targetContentOffset = CGPointMake(0, 110.0f);
+            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
         }
         else
         {
             delayedContentOffsetBlock = ^void(void)
             {
-                [scrollView setContentOffset:CGPointMake(0.0f, 110.0f) animated:YES];
+                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
+                                    animated:YES];
             };
         }
     }
-    else if ((targetContentOffset->y >= (110.0f + 100.0f) && (targetContentOffset->y < (110.0f + 320.0f))))
+    else if (
+             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
+             &&
+             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
+             &&
+             (targetContentOffset->y < (layout.sizeForContentView.height))
+            )
     {
         if (velocity.y > 0.0f)
         {
-            *targetContentOffset = CGPointMake(0, 320.0f);
+            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
         }
         else
         {
             delayedContentOffsetBlock = ^void(void)
             {
-                [scrollView setContentOffset:CGPointMake(0, 320.0f) animated:YES];
+                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
             };
         }
         

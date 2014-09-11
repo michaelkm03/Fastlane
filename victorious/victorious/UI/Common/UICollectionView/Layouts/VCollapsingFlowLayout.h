@@ -10,4 +10,8 @@
 
 @interface VCollapsingFlowLayout : UICollectionViewFlowLayout
 
+@property (nonatomic, assign, readonly) CGFloat dropDownHeaderMiniumHeight;
+@property (nonatomic, assign, readonly) CGSize sizeForContentView;
+@property (nonatomic, assign, readonly) CGSize sizeForRealTimeComentsView;
+
 @end

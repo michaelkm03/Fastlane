@@ -17,16 +17,19 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 @interface VCollapsingFlowLayout ()
 
-@property (nonatomic, assign) CGFloat catchPoint;
-@property (nonatomic, assign) CGSize sizeForContentView;
-@property (nonatomic, assign) CGSize sizeForRealTimeComentsView;
+@property (nonatomic, assign, readwrite) CGFloat catchPoint;
+@property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
+@property (nonatomic, assign, readwrite) CGSize sizeForContentView;
+@property (nonatomic, assign, readwrite) CGSize sizeForRealTimeComentsView;
 
 @end
 
 static const CGFloat kVContentViewFloatingZIndex = 1000.0f;
+static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
 static const CGFloat kVContentViewFloatingYTranslation = 120.0f;
 static const CGFloat kVContentViewFloatingXTranslation = -90.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
+static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 
 @implementation VCollapsingFlowLayout
 
@@ -35,11 +38,27 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
     self = [super init];
     if (self)
     {
-        self.sizeForContentView = CGSizeZero;
-        self.sizeForRealTimeComentsView = CGSizeZero;
-        self.catchPoint = 0.0f;
+        [self sharedInit];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.sizeForContentView = CGSizeZero;
+    self.sizeForRealTimeComentsView = CGSizeZero;
+    self.catchPoint = 0.0f;
+    self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
 }
 
 #pragma mark - UICollectionViewFlowLayout
@@ -71,8 +90,8 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
             {
                 layoutAttributes.frame = CGRectMake(CGRectGetMinX(layoutAttributes.frame),
                                                     self.collectionView.contentOffset.y + self.sizeForContentView.height,
-                                                    CGRectGetWidth(self.collectionView.frame),
-                                                    CGRectGetHeight(layoutAttributes.frame));
+                                                    self.sizeForRealTimeComentsView.width,
+                                                    self.sizeForRealTimeComentsView.height);
             }
         }
         else
@@ -88,8 +107,8 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
                 {
                     layoutAttributes.frame = CGRectMake(CGRectGetMinX(layoutAttributes.frame),
                                                         self.collectionView.contentOffset.y + self.sizeForContentView.height,
-                                                        CGRectGetWidth(self.collectionView.frame),
-                                                        CGRectGetHeight(layoutAttributes.frame));
+                                                        self.sizeForRealTimeComentsView.width,
+                                                        self.sizeForRealTimeComentsView.height);
                 }
             }
         }
@@ -100,15 +119,15 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
         
         UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                                                                                           withIndexPath:[self contentViewIndexPath]];
-        CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-        CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
+//        CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
+//        CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
         dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
                                                           self.collectionView.contentOffset.y,
                                                           CGRectGetWidth(self.collectionView.frame),
                                                           // Swap these implementations for header resizing
 //                                                          fmaxf(self.catchPoint, (1 - percentCompleted) * (1 + CGRectGetHeight(layoutAttributesForContentView.frame)))
-                                                          110.0f);
-        dropDownHeaderLayoutAttributes.zIndex = kVContentViewFloatingZIndex;
+                                                          self.dropDownHeaderMiniumHeight);
+        dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
         [attributes addObject:dropDownHeaderLayoutAttributes];
     }
     
@@ -175,6 +194,7 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
                                               withInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes;
+    
     if (!initialLayoutAttributes)
     {
         NSIndexPath *contentViewIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -182,6 +202,8 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
         layoutAttributes.center = CGPointMake(self.sizeForContentView.width/2, self.sizeForContentView.width/2);
         layoutAttributes.size = self.sizeForContentView;
     }
+    
+    layoutAttributes.zIndex = kVContentViewFloatingZIndex;
     
     switch (contentViewState) {
         case VContentViewStateFullSize:
@@ -194,10 +216,12 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
         case VContentViewStateFloating:
         {
             CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-            CGFloat percentCompleted = (deltaCatchPointToTop / (320 - 110));
+            CGFloat percentCompleted = (deltaCatchPointToTop / (self.sizeForContentView.height - self.dropDownHeaderMiniumHeight));
             
-            layoutAttributes.zIndex = kVContentViewFloatingZIndex;
-            layoutAttributes.frame = CGRectMake(0, self.collectionView.contentOffset.y, CGRectGetWidth(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds));
+            layoutAttributes.frame = CGRectMake(0,
+                                                self.collectionView.contentOffset.y,
+                                                self.sizeForContentView.width,
+                                                self.sizeForContentView.height);
 
             CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f),
                                                                           fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f));
