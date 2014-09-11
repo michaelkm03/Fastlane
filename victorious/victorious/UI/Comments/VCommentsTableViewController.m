@@ -130,7 +130,7 @@
 
 #pragma mark - Public Mehtods
 
-- (void)addedNewComment:(VComment*)comment
+- (void)addedNewComment:(VComment *)comment
 {
     [self setHasComments:YES];
     [self.tableView reloadData];
@@ -186,7 +186,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment* comment = (VComment*)[self.sequence.comments objectAtIndex:indexPath.row];
+    VComment* comment = (VComment *)[self.sequence.comments objectAtIndex:indexPath.row];
     return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 

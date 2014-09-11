@@ -367,7 +367,7 @@
 
 #pragma mark - State
 
-- (void)didSignUpWithUser:(VUser*)mainUser
+- (void)didSignUpWithUser:(VUser *)mainUser
 {
     self.profile = mainUser;
     
@@ -424,7 +424,7 @@
      }];
 }
 
-- (void)didFailWithError:(NSError*)error
+- (void)didFailWithError:(NSError *)error
 {
     
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")

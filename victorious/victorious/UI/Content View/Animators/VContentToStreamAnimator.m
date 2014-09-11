@@ -27,7 +27,7 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VContentViewController *contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     
@@ -56,18 +56,18 @@
 
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context
 {
-    VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VContentViewController *contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
     {
-        streamVC = (VStreamTableViewController*)toVC;
+        streamVC = (VStreamTableViewController *)toVC;
     }
     else
     {
-        streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+        streamVC = ((VStreamContainerViewController *)toVC).streamTable;
     }
 
     [UIView animateWithDuration:.2
@@ -83,7 +83,7 @@
          //Reselect the cell; it will be unselected if the fetched results controller was updated
          [streamVC.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
          
-         VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:path];
+         VStreamViewCell* selectedCell = (VStreamViewCell *) [streamVC.tableView cellForRowAtIndexPath:path];
          [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
                                                           selectedCell.frame.origin.y - [contentVC contentMediaViewOffset])
                                      animated:NO];
@@ -97,13 +97,13 @@
                   [UIView animateWithDuration:.2f
                                    animations:^
                    {
-                       [(VStreamContainerViewController*)toVC showHeader];
+                       [(VStreamContainerViewController *)toVC showHeader];
                    }
                                    completion:^(BOOL finished)
                    {
                        toVC.view.userInteractionEnabled = YES;
                        contentVC.view.userInteractionEnabled = YES;
-                       [[[(VStreamContainerViewController*)toVC tableViewController] tableView] setBackgroundView:nil];
+                       [[[(VStreamContainerViewController *)toVC tableViewController] tableView] setBackgroundView:nil];
                        [context completeTransition:![context transitionWasCancelled]];
                    }];
               }

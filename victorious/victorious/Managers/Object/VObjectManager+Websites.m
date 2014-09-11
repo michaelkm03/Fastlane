@@ -13,7 +13,7 @@
 
 @implementation VObjectManager (Websites)
 
-- (RKManagedObjectRequestOperation*)fetchToSWithCompletionBlock:(VWebsiteCompletion)completionBlock
+- (RKManagedObjectRequestOperation *)fetchToSWithCompletionBlock:(VWebsiteCompletion)completionBlock
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {

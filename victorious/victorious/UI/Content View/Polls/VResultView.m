@@ -51,7 +51,7 @@
     self.resultLabel = nil;
 }
 
-- (UIView*)resultArrow
+- (UIView *)resultArrow
 {
     if (!_resultArrow)
     {
@@ -87,7 +87,7 @@
     return _resultArrow;
 }
 
-- (UILabel*)resultLabel
+- (UILabel *)resultLabel
 {
     if (!_resultLabel)
     {

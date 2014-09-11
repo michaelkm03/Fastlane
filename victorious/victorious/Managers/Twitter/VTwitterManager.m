@@ -38,7 +38,7 @@
     return self.secret && self.oauthToken && self.twitterId;
 }
 
-- (void)refreshTwitterTokenWithIdentifier:(NSString*)identifier
+- (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
                            completionBlock:(void(^)(void))completionBlock
 {
     ACAccountStore* account = [[ACAccountStore alloc] init];

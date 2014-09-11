@@ -11,6 +11,6 @@
 
 @interface VComment (RestKit)
 
-+ (NSArray*)descriptors;
++ (NSArray *)descriptors;
 
 @end

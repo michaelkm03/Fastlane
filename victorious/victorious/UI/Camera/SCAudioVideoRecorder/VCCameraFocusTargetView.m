@@ -135,7 +135,7 @@
     self.insideCircle.frame = frame;
 }
 
-- (UIImage*)insideFocusTargetImage
+- (UIImage *)insideFocusTargetImage
 {
     return self.insideCircle.image;
 }
@@ -145,7 +145,7 @@
     self.insideCircle.image = insideFocusTargetImage;
 }
 
-- (UIImage*)outsideFocusTargetImage
+- (UIImage *)outsideFocusTargetImage
 {
     return self.outsideCircle.image;
 }

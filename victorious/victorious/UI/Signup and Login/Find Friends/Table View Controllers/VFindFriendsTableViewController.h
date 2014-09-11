@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
                         if an error occurred, or an empty array if no friends
                         are found.
  */
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray*, NSError*))completionBlock;
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock;
 
 /**
  Returns a set of VUser objects, one for

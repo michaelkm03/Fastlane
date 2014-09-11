@@ -12,6 +12,6 @@ typedef void (^VWebsiteCompletion) (NSOperation* completion, NSString* htmlStrin
 
 @interface VObjectManager (Websites)
 
-- (RKManagedObjectRequestOperation*)fetchToSWithCompletionBlock:(VWebsiteCompletion)completionBlock;
+- (RKManagedObjectRequestOperation *)fetchToSWithCompletionBlock:(VWebsiteCompletion)completionBlock;
 
 @end

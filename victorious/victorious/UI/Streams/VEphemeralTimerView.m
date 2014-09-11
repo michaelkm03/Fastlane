@@ -177,7 +177,7 @@
     [self.timerLayer addAnimation:[self newEraseAnimation] forKey:TimerAnimationKey];
 }
 
-- (CAAnimation*)newDrawAnimation
+- (CAAnimation *)newDrawAnimation
 {
     CABasicAnimation* drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     
@@ -199,7 +199,7 @@
     return drawAnimation;
 }
 
-- (CAAnimation*)newEraseAnimation
+- (CAAnimation *)newEraseAnimation
 {
     CABasicAnimation* eraseAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
 

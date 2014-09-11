@@ -11,6 +11,6 @@
 
 @interface VMessage (RestKit)
 
-+ (NSArray*)descriptors;
++ (NSArray *)descriptors;
 
 @end

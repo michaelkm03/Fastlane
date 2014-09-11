@@ -47,8 +47,8 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 + (instancetype)homeStream;
 + (instancetype)communityStream;
 + (instancetype)ownerStream;
-+ (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag;
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag;
 
-+ (instancetype)streamWithDefaultStream:(VStream*)stream name:(NSString*)name title:(NSString*)title;
++ (instancetype)streamWithDefaultStream:(VStream *)stream name:(NSString *)name title:(NSString *)title;
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation UIButton (VImageLoading)
 
-- (void)setImageWithURL:(NSURL*)url
+- (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
                forState:(UIControlState)state
 {

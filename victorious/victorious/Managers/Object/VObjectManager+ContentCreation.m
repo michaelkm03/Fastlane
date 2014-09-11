@@ -34,7 +34,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 @implementation VObjectManager (ContentCreation)
 
 #pragma mark - Remix
-- (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
+- (RKManagedObjectRequestOperation *)fetchRemixMP4UrlForSequenceID:(NSNumber *)sequenceID
                                              atStartTime:(CGFloat)startTime
                                                 duration:(CGFloat)duration
                                          completionBlock:(VRemixCompletionBlock)completionBlock
@@ -65,15 +65,15 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Sequence Methods
-- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
-                                    description:(NSString*)description
-                                       question:(NSString*)question
-                                    answer1Text:(NSString*)answer1Text
-                                    answer2Text:(NSString*)answer2Text
-                                      media1Url:(NSURL*)media1Url
-                                      media2Url:(NSURL*)media2Url
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
+- (AFHTTPRequestOperation *)createPollWithName:(NSString *)name
+                                   description:(NSString *)description
+                                      question:(NSString *)question
+                                   answer1Text:(NSString *)answer1Text
+                                   answer2Text:(NSString *)answer2Text
+                                     media1Url:(NSURL *)media1Url
+                                     media2Url:(NSURL *)media2Url
+                                  successBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
 {
     if (!media1Url || !media2Url)
     {
@@ -119,16 +119,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
-- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
-                                     description:(NSString*)description
-                                     captionType:(VCaptionType)type
-                                       expiresAt:(NSString*)expiresAt
-                                    parentNodeId:(NSNumber*)parentNodeId
-                                           speed:(CGFloat)speed
-                                        loopType:(VLoopType)loopType
-                                        mediaURL:(NSURL*)mediaUrl
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
+- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
+                                    description:(NSString *)description
+                                    captionType:(VCaptionType)type
+                                      expiresAt:(NSString *)expiresAt
+                                   parentNodeId:(NSNumber *)parentNodeId
+                                          speed:(CGFloat)speed
+                                       loopType:(VLoopType)loopType
+                                       mediaURL:(NSURL *)mediaUrl
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
     if (!mediaUrl)
     {
@@ -192,10 +192,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                                        withName:(NSString*)name
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
+                                       withName:(NSString *)name
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
     parameters[@"parent_node_id"] = node.remoteId ?: [NSNull null];
@@ -211,7 +211,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             failBlock:fail];
 }
 
-- (NSString*)stringForLoopType:(VLoopType)type
+- (NSString *)stringForLoopType:(VLoopType)type
 {
     if (type == VLoopRepeat)
     {
@@ -226,10 +226,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     return @"once";
 }
 
-- (VSequence*)newSequenceWithID:(NSNumber*)remoteID
-                           name:(NSString*)name
-                    description:(NSString*)description
-                   mediaURLPath:(NSString*)mediaURLPath
+- (VSequence *)newSequenceWithID:(NSNumber *)remoteID
+                           name:(NSString *)name
+                    description:(NSString *)description
+                   mediaURLPath:(NSString *)mediaURLPath
 {
     VSequence* tempSequence = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VSequence entityName]];
     
@@ -247,13 +247,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     return tempSequence;
 }
 
-- (VSequence*)newPollWithID:(NSNumber*)remoteID
-                       name:(NSString*)name
-                description:(NSString*)description
-                answer1Text:(NSString*)answer1Text
-                answer2Text:(NSString*)answer2Text
-          firstMediaURLPath:(NSString*)firstmediaURLPath
-         secondMediaURLPath:(NSString*)secondMediaURLPath
+- (VSequence *)newPollWithID:(NSNumber *)remoteID
+                       name:(NSString *)name
+                description:(NSString *)description
+                answer1Text:(NSString *)answer1Text
+                answer2Text:(NSString *)answer2Text
+          firstMediaURLPath:(NSString *)firstmediaURLPath
+         secondMediaURLPath:(NSString *)secondMediaURLPath
 {
     VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
     tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
@@ -281,10 +281,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Comment
 
-- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString*)text
-                                              mediaURL:(NSURL*)mediaURL
+- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
+                                              mediaURL:(NSURL *)mediaURL
                                                 toAsset:(VAsset *)asset
-                                                atTime:(NSNumber*)time
+                                                atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
@@ -298,10 +298,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                           failBlock:fail];
 }
 
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                      mediaURL:(NSURL*)mediaURL
-                                    toSequence:(VSequence*)sequence
-                                     andParent:(VComment*)parent
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
+                                      mediaURL:(NSURL *)mediaURL
+                                    toSequence:(VSequence *)sequence
+                                     andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
@@ -324,12 +324,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
  @param parent Parent comment that is being replied to
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                      mediaURL:(NSURL*)mediaURL
-                                    toSequence:(VSequence*)sequence
-                                         asset:(VAsset*)asset
-                                     andParent:(VComment*)parent
-                                        atTime:(NSNumber*)time
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
+                                      mediaURL:(NSURL *)mediaURL
+                                    toSequence:(VSequence *)sequence
+                                         asset:(VAsset *)asset
+                                     andParent:(VComment *)parent
+                                        atTime:(NSNumber *)time
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
@@ -385,10 +385,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
-- (VComment*)newCommentWithID:(NSNumber*)remoteID
-                   onSequence:(VSequence*)sequence
-                         text:(NSString*)text
-                 mediaURLPath:(NSString*)mediaURLPath
+- (VComment *)newCommentWithID:(NSNumber *)remoteID
+                   onSequence:(VSequence *)sequence
+                         text:(NSString *)text
+                 mediaURLPath:(NSString *)mediaURLPath
 {
     VComment* tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
     
@@ -405,7 +405,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [sequence addCommentsObject:tempComment];
     sequence.commentCount = @(sequence.commentCount.integerValue + 1);
     
-    VUser* userInContext = (VUser*)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
+    VUser* userInContext = (VUser *)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
     [userInContext addCommentsObject:tempComment];
     
     NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithObject:[sequence.managedObjectContext objectWithID:tempComment.objectID]];
@@ -463,8 +463,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
-- (VMessage *)messageWithText:(NSString*)text
-                 mediaURLPath:(NSString*)mediaURLPath
+- (VMessage *)messageWithText:(NSString *)text
+                 mediaURLPath:(NSString *)mediaURLPath
 {
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage* tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
@@ -481,7 +481,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Helper methods
 
-- (NSString*)localImageURLForVideo:(NSString*)localVideoPath
+- (NSString *)localImageURLForVideo:(NSString *)localVideoPath
 {
     if (!localVideoPath)
     {

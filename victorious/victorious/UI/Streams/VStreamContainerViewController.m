@@ -33,10 +33,10 @@
 
 @implementation VStreamContainerViewController
 
-+ (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable
++ (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -44,10 +44,10 @@
     return container;
 }
 
-+ (instancetype)modalContainerForStreamTable:(VStreamTableViewController*)streamTable
++ (instancetype)modalContainerForStreamTable:(VStreamTableViewController *)streamTable
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -58,7 +58,7 @@
 + (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -66,9 +66,9 @@
     return container;
 }
 
-- (VStreamTableViewController*)streamTable
+- (VStreamTableViewController *)streamTable
 {
-    return (VStreamTableViewController*)self.tableViewController;
+    return (VStreamTableViewController *)self.tableViewController;
 }
 
 - (void)viewDidLoad
@@ -325,7 +325,7 @@
 {
     if ([self.streamTable respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
     {
-        return [(UIViewController<UINavigationControllerDelegate>*)self.streamTable navigationController:navigationController
+        return [(UIViewController<UINavigationControllerDelegate> *)self.streamTable navigationController:navigationController
                                                                          animationControllerForOperation:operation
                                                                                       fromViewController:fromVC
                                                                                         toViewController:toVC];

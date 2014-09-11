@@ -14,8 +14,7 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) NSString *hashTag;
--(id)initWithHashTag:(NSString*)hashTag;
-//+ (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable andHashTag:(NSString*)hashTag;
 
+- (id)initWithHashTag:(NSString *)hashTag;
 
 @end

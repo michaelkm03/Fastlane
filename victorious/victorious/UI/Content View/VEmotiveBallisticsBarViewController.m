@@ -40,7 +40,7 @@
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VEmotiveBallisticsBarViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kEmotiveBallisticsBarStoryboardID];
+        sharedInstance = (VEmotiveBallisticsBarViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kEmotiveBallisticsBarStoryboardID];
     });
     
     return sharedInstance;
@@ -89,10 +89,10 @@
         __block NSManagedObjectContext* context = nil;
         [self.voteCounts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
         {
-            NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber*)key).integerValue];
+            NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber *)key).integerValue];
             
-            VVoteResult* vote = (VVoteResult*)[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] anyObject];
-            vote.count = @(vote.count.integerValue + ((NSNumber*)obj).integerValue);
+            VVoteResult* vote = (VVoteResult *)[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] anyObject];
+            vote.count = @(vote.count.integerValue + ((NSNumber *)obj).integerValue);
             context = vote.managedObjectContext;
         }];
         [context saveToPersistentStore:nil];
@@ -167,7 +167,7 @@
     [self throwEmotive:self.rightButton toPoint:CGPointMake(x, y)];
 }
 
-- (void)handlePan:(UIPanGestureRecognizer*)recognizer
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer
 {
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -185,11 +185,11 @@
         lastPosition.y = fminf(lastPosition.y, self.target.center.y + (self.target.frame.size.height / 4));
         lastPosition.y = fmaxf(lastPosition.y, self.target.center.y - (self.target.frame.size.height / 4));
 
-        [self throwEmotive:(UIButton*)recognizer.view toPoint:lastPosition];
+        [self throwEmotive:(UIButton *)recognizer.view toPoint:lastPosition];
     }
 }
 
-- (void)throwEmotive:(UIButton*)emotive toPoint:(CGPoint)point
+- (void)throwEmotive:(UIButton *)emotive toPoint:(CGPoint)point
 {
     
     if (emotive == self.leftButton)
@@ -259,7 +259,7 @@
      }];
 }
 
-- (void)removeThrownImage:(UIImageView*)thrownImage
+- (void)removeThrownImage:(UIImageView *)thrownImage
 {
     [thrownImage removeFromSuperview];
 }

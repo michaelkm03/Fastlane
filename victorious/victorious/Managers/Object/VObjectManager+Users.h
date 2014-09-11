@@ -17,15 +17,15 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
 
 @interface VObjectManager (Users)
 
-- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
+- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;

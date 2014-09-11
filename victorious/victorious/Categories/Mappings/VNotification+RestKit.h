@@ -10,6 +10,6 @@
 #import "NSManagedObject+RestKit.h"
 
 @interface VNotification (RestKit)
-+ (NSArray*)descriptors;
++ (NSArray *)descriptors;
 
 @end

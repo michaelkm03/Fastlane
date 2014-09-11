@@ -96,7 +96,7 @@
     self.currentComment = [self commentAtTime:timeAtTouch];
 }
 
-- (VComment*)commentAtTime:(CGFloat)time
+- (VComment *)commentAtTime:(CGFloat)time
 {
     VComment* currentComment;
     for (VComment* comment in self.comments)
@@ -274,8 +274,8 @@
         lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:self.mediaButton.imageView.image
                                                                      videoURL:[NSURL URLWithString: self.currentComment.mediaUrl]];
         
-        ((VVideoLightboxViewController*)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
-        ((VVideoLightboxViewController*)lightbox).titleForAnalytics = @"Video Realtime Comment";
+        ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
     }
     else if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeImage])
     {

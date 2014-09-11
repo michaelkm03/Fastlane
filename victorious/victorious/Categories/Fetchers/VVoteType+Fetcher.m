@@ -18,12 +18,12 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
 
 @implementation VVoteType (Fetcher)
 
-+ (VVoteType*)likeVote
++ (VVoteType *)likeVote
 {
     return [self voteAtIndex:VVoteTypeLike];
 }
 
-+ (VVoteType*)dislikeVote
++ (VVoteType *)dislikeVote
 {
     return [self voteAtIndex:VVoteTypeDislike];
 }
@@ -52,10 +52,10 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
     return [allVoteTypes objectAtIndex:index];
 }
 
-- (NSArray*)imageURLs
+- (NSArray *)imageURLs
 {
     NSMutableArray* urls = [[NSMutableArray alloc] init];
-    for (NSString* urlString in (NSArray*)self.images)
+    for (NSString* urlString in (NSArray *)self.images)
     {
         [urls addObject:[NSURL URLWithString:urlString]];
     }

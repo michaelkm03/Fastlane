@@ -15,7 +15,7 @@
     return @"Message";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"text" : VSelectorName(text),
@@ -39,7 +39,7 @@
     return mapping;
 }
 
-+ (NSArray*)descriptors
++ (NSArray *)descriptors
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET

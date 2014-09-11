@@ -16,7 +16,7 @@
 
 - (void)textLayoutHappenedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView; ///< Notifies the delegate that the text has been placed into the container
 - (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView; ///< Notifies the delegate that the user tapped the "see more" button
-- (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString*)tag; ///< Notifies the delegate that the user tapped a hash tag button in the header
+- (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag; ///< Notifies the delegate that the user tapped a hash tag button in the header
 
 @end
 

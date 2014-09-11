@@ -17,7 +17,7 @@
     return @"Notification";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"id" : VSelectorName(remoteId),
@@ -37,7 +37,7 @@
     return mapping;
 }
 
-+ (NSArray*)descriptors
++ (NSArray *)descriptors
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodGET

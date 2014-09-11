@@ -11,6 +11,6 @@
 
 @interface VUnreadConversation (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor *)descriptor;
 
 @end

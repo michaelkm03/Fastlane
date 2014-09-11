@@ -14,7 +14,7 @@
 
 @implementation VRTCUserPostedAtFormatter
 
-+ (NSAttributedString*)formatRTCUserName:(NSString*)username
++ (NSAttributedString *)formatRTCUserName:(NSString *)username
 {
     NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:username
                                                                                    attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];

@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, VCCameraFocusMode)
 
 // Focus
 - (void)cameraWillStartFocus:(VCCamera *)camera;
-- (void)cameraDidStartFocus:(VCCamera*)camera;
+- (void)cameraDidStartFocus:(VCCamera *)camera;
 - (void)cameraDidStopFocus:(VCCamera *)camera;
 - (void)camera:(VCCamera *)camera didFailFocus:(NSError *)error;
 
@@ -67,9 +67,9 @@ typedef enum
     
 }
 
-+ (VCCamera*) camera;
-- (instancetype)initWithSessionPreset:(NSString*)sessionPreset;
-- (void)initialize:(void(^)(NSError * audioError, NSError * videoError))completionHandler;
++ (VCCamera *) camera;
+- (instancetype)initWithSessionPreset:(NSString *)sessionPreset;
+- (void)initialize:(void(^)(NSError *audioError, NSError *videoError))completionHandler;
 - (BOOL)isReady;
 
 @property (strong, nonatomic, readonly) AVCaptureSession * session;

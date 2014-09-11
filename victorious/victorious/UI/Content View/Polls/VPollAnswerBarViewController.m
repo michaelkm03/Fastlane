@@ -40,7 +40,7 @@
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VPollAnswerBarViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kPollAnswerBarStoryboardID];
+        sharedInstance = (VPollAnswerBarViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kPollAnswerBarStoryboardID];
     });
     
     return sharedInstance;
@@ -129,7 +129,7 @@
     }
 }
 
-- (void)answerAnimationForAnswerID:(NSNumber*)answerID
+- (void)answerAnimationForAnswerID:(NSNumber *)answerID
 {
     CGRect emptyFrame   = CGRectInset(self.selectedContainmentView.frame, 0, 0);
     CGRect fullFrame    = CGRectInset(self.selectedContainmentView.frame, 0, 0);
@@ -140,7 +140,7 @@
     CGRect initialAnswerFrame   = CGRectInset(self.selectedAnswerView.frame, 0, 0);
     CGRect finalAnswerFrame     = CGRectInset(self.selectedAnswerView.frame, 0, 0);
     
-    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+    if ([answerID isEqualToNumber:((VAnswer *)[self.answers firstObject]).remoteId])
     {
         emptyFrame.origin.x = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
         emptyFrame.size.width = 0;
@@ -200,7 +200,7 @@
     
     VAnswer* chosenAnswer;
     
-    NSInteger tag = ((UIButton*)sender).tag;
+    NSInteger tag = ((UIButton *)sender).tag;
     if ((NSUInteger)tag >= [self.answers count])
     {
         chosenAnswer = [self.answers lastObject];
@@ -214,7 +214,7 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Answered Poll" label:self.sequence.name value:nil];
 }
 
-- (void)answerPollWithAnswer:(VAnswer*)answer
+- (void)answerPollWithAnswer:(VAnswer *)answer
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -256,13 +256,13 @@
       }];
 }
 
-- (UIButton*)buttonForAnswerID:(NSNumber*)answerID
+- (UIButton *)buttonForAnswerID:(NSNumber *)answerID
 {
-    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+    if ([answerID isEqualToNumber:((VAnswer *)[self.answers firstObject]).remoteId])
     {
         return self.leftButton;
     }
-    else if ([answerID isEqualToNumber:((VAnswer*)[self.answers lastObject]).remoteId])
+    else if ([answerID isEqualToNumber:((VAnswer *)[self.answers lastObject]).remoteId])
     {
         return self.rightButton;
     }

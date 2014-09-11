@@ -145,7 +145,7 @@
     [alert show];
 }
 
-- (void)didFailWithError:(NSError*)error
+- (void)didFailWithError:(NSError *)error
 {
     if (error.code != kVUserBannedError)
     {

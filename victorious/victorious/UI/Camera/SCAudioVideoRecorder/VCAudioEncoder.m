@@ -34,7 +34,7 @@
     return self;
 }
 
-- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
+- (AVAssetWriterInput *)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
 {
     
     Float64 sampleRate = self.outputSampleRate;

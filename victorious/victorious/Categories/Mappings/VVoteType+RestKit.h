@@ -11,6 +11,6 @@
 
 @interface VVoteType (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor *)descriptor;
 
 @end

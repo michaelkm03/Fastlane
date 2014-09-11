@@ -16,6 +16,6 @@
 
 - (void)handleOpenURL:(NSURL *)aURL;
 
-- (NSURL*)contentDeeplinkForSequence:(VSequence*)sequence;
+- (NSURL *)contentDeeplinkForSequence:(VSequence *)sequence;
 
 @end

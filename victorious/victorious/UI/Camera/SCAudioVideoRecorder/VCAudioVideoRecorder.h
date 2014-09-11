@@ -26,11 +26,11 @@ extern NSString * const VCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 - (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime;
 - (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordAudioSample:(CMTime)sampleTime;
 - (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime;
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL*)recordedFile
-                      error:(NSError*)error;
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinalizeAudioMixAtUrl:(NSURL*)recordedFile;
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError*)error;
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError*)error;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile
+                      error:(NSError *)error;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinalizeAudioMixAtUrl:(NSURL *)recordedFile;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError *)error;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError *)error;
 
 // Photo
 - (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error;
@@ -56,8 +56,8 @@ extern NSString * const VCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 - (void) capturePhoto;
 #endif
 
-- (NSURL*) prepareRecordingOnTempDir:(NSError**)error;
-- (void) prepareRecordingAtUrl:(NSURL*)url error:(NSError**)error;
+- (NSURL *) prepareRecordingOnTempDir:(NSError**)error;
+- (void) prepareRecordingAtUrl:(NSURL *)url error:(NSError**)error;
 
 - (void) record;
 - (void) pause;
