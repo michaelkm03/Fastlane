@@ -6,14 +6,20 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamDirectoryDataSource.h"
+#import "VDirectoryDataSource.h"
 
+//UI
+#import "VDirectoryItemCell.h"
+
+//Managers
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
 
+//Data Models
 #import "VDirectory.h"
+#import "VStream.h"
 
-@implementation VStreamDirectoryDataSource
+@implementation VDirectoryDataSource
 
 - (instancetype)initWithDirectory:(VDirectory *)directory
 {
@@ -64,7 +70,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    VDirectoryItem* item = [self.directory.directoryItems objectAtIndex:indexPath.row];
+    VDirectoryItemCell *cell;
+    if ([item isKindOfClass:[VStream class]])
+    {
+         cell = [collectionView dequeueReusableCellWithReuseIdentifier:kVStreamDirectoryItemCellName forIndexPath:indexPath];
+    }
+    return cell;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

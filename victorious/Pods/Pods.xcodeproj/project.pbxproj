@@ -183,7 +183,6 @@
 		BE025F1B28EC4880A062A8ED /* LCLNSLog_RK.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B37757719F941A1A31C196B /* LCLNSLog_RK.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
 		BE1ED2D3DA4D4AA996495368 /* RKRelationshipMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB00C3AACE54E11A0C94214 /* RKRelationshipMapping.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
 		BE6747BBEEFA4DAEAFC64518 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A106A630CEB94AB6B3B45F2B /* Foundation.framework */; };
-		BEA78C3819C13493006A1ABC /* VDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C3719C13493006A1ABC /* VDirectory.m */; };
 		BF6F855DB50E4DFB971C1F8B /* NSData+SHA256Digest.m in Sources */ = {isa = PBXBuildFile; fileRef = 383ECF3C1F94492FB3173643 /* NSData+SHA256Digest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
 		C139D15479EA4D42BAB67CC0 /* RKRequestDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F74FA174FD4114A50A25D6 /* RKRequestDescriptor.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
 		C190203EB11A422690FCF4F7 /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 99A195D7277049E3AFFD1F1F /* AFXMLRequestOperation.h */; };
@@ -559,8 +558,6 @@
 		B94D5A5FBD4E4717A8AF8BEA /* RKValueTransformers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RKValueTransformers.m; path = Code/RKValueTransformers.m; sourceTree = "<group>"; };
 		BAE0A5F0EA73465E86ED1BF2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		BB360EA5834040E38F55E873 /* RKObjectRequestOperationSubclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RKObjectRequestOperationSubclass.h; path = Code/Network/RKObjectRequestOperationSubclass.h; sourceTree = "<group>"; };
-		BEA78C3619C13493006A1ABC /* VDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDirectory.h; path = ../victorious/ManagedObjectModels/VDirectory.h; sourceTree = "<group>"; };
-		BEA78C3719C13493006A1ABC /* VDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDirectory.m; path = ../victorious/ManagedObjectModels/VDirectory.m; sourceTree = "<group>"; };
 		BEFD47A5F52444B2881031F5 /* Pods-TransitionKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TransitionKit-dummy.m"; sourceTree = "<group>"; };
 		BF2F5B89B6394B15ADCC8A83 /* RKDictionaryUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RKDictionaryUtilities.h; path = Code/Support/RKDictionaryUtilities.h; sourceTree = "<group>"; };
 		C02368636FE14C11B114B32F /* RKOperationStateMachine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RKOperationStateMachine.h; path = Code/Support/RKOperationStateMachine.h; sourceTree = "<group>"; };
@@ -884,8 +881,6 @@
 			isa = PBXGroup;
 			children = (
 				473F7A2286D046EFBEF5B1CA /* Podfile */,
-				BEA78C3619C13493006A1ABC /* VDirectory.h */,
-				BEA78C3719C13493006A1ABC /* VDirectory.m */,
 				C4BBB978022249BF9C00EE6C /* Frameworks */,
 				2B03E99FCEDF46DCBB2DB3AE /* Pods */,
 				B65A2EB73EE7491CAF1AE33E /* Products */,
@@ -1679,7 +1674,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA78C3819C13493006A1ABC /* VDirectory.m in Sources */,
 				4DEF9E7A1A98422ABA1C0929 /* Pods-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

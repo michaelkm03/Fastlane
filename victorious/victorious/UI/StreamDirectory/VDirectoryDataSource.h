@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class VStreamDirectoryDataSource, VAbstractFilter, VDirectory, VDirectoryItem;
+@class VDirectoryDataSource, VAbstractFilter, VDirectory, VDirectoryItem;
 
 @protocol VStreamDirectoryDataDelegate <NSObject>
 
 @required
-- (UITableViewCell *)dataSource:(VStreamDirectoryDataSource *)dataSource cellForFilter:(VAbstractFilter*)filter atIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)dataSource:(VDirectoryDataSource *)dataSource cellForItem:(VDirectoryItem*)item atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface VStreamDirectoryDataSource : NSObject <UICollectionViewDataSource>
+@interface VDirectoryDataSource : NSObject <UICollectionViewDataSource>
 
 @property (nonatomic, weak) id<VStreamDirectoryDataDelegate> delegate;
 @property (nonatomic, strong) VAbstractFilter *filter;
