@@ -240,7 +240,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 // Check if we have microphone access
 - (void)checkForMicrophoneAuthorization
 {
-    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted){
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted)
+    {
         
         if (!granted)
         {
@@ -273,8 +274,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     else
     {
         [self.recordButton setAlpha:0.2f];
-        [self.recordButton removeGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
-        [self.recordButton removeGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
         self.recordButton.userInteractionEnabled = NO;
     }
 }
@@ -385,7 +384,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
         self.camera.sessionPreset = self.videoQuality;
-        [self configureUIforVideoCaptureAnimated:YES completion:^{
+        [self configureUIforVideoCaptureAnimated:YES completion:^
+        {
             [self checkForMicrophoneAuthorization];
         }];
     }
