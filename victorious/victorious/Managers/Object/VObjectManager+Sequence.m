@@ -253,10 +253,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - UserInteractions
 
-- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequenceID.stringValue, self.mainUser.remoteId.stringValue]
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId.stringValue, self.mainUser.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

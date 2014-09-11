@@ -20,8 +20,6 @@
 #import "VNode+RestKit.h"
 #import "VInteraction+RestKit.h"
 #import "VAnswer+RestKit.h"
-#import "VSequenceFilter.h"
-#import "VCommentFilter.h"
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
@@ -410,10 +408,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VUser* userInContext = (VUser*)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
     [userInContext addCommentsObject:tempComment];
     
-    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
-    NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithObject:[filter.managedObjectContext objectWithID:tempComment.objectID]];
-    [comments addObjectsFromArray:filter.comments.array];
-    filter.comments = comments;
+    NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithObject:[sequence.managedObjectContext objectWithID:tempComment.objectID]];
+    [comments addObjectsFromArray:sequence.comments.array];
+    sequence.comments = comments;
     [tempComment.managedObjectContext saveToPersistentStore:nil];
     
     return tempComment;

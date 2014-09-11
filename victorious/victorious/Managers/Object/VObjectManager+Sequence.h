@@ -57,7 +57,7 @@ extern NSString* const kPollResultsLoaded;
 
 #pragma mark - UserInteractions
 
-- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
 
 @end

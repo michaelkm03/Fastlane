@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+@class RKEntityMapping;
 
 @interface NSManagedObject (RestKit)
 
