@@ -28,7 +28,7 @@
 }
 
 //As suggest by iamamused http://stackoverflow.com/questions/19274789/change-image-tintcolor-in-ios7
-- (UIImage *)v_imageWithColor:(UIColor *)color
+- (UIImage *)v_imageByMaskingImageWithColor:(UIColor *)color
 {
     UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
     CGContextRef context = UIGraphicsGetCurrentContext();

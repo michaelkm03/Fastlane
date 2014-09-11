@@ -112,7 +112,7 @@
     _selectedColor = selectedColor;
     
     UIImage* image = [self.shareButton backgroundImageForState:UIControlStateSelected];
-    UIImage* imageWithColor = [image v_imageWithColor:selectedColor];
+    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:selectedColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected | UIControlStateHighlighted];
     
@@ -124,7 +124,7 @@
     _defaultColor = defaultColor;
     
     UIImage* image = [self.shareButton backgroundImageForState:UIControlStateNormal];
-    UIImage* imageWithColor = [image v_imageWithColor:defaultColor];
+    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:defaultColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateNormal];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateHighlighted];
     

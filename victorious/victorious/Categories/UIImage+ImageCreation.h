@@ -11,7 +11,19 @@
 @interface UIImage (ImageCreation)
 
 + (UIImage *)resizeableImageWithColor:(UIColor *)color;
-- (UIImage *)v_imageWithColor:(UIColor *)color;
-- (UIImage*)scaleToSize:(CGSize)size;
+
+/**
+ Creates and returns a new image by using the receiver as a mask over
+ a solid color. 
+ 
+ @discussion
+ This is the exact same thing you get if you pair
+ a templated UIImage (renderingMode is AlwaysTemplate) with a tint 
+ color on UIImageView. Before using this method, consider whether 
+ the tintColor technique would work just as well.
+ */
+- (UIImage *)v_imageByMaskingImageWithColor:(UIColor *)color;
+
+- (UIImage *)scaleToSize:(CGSize)size;
 
 @end
