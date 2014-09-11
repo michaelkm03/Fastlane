@@ -84,7 +84,7 @@ static char kActionSheetDelegateKey;
         
         va_list buttonTitles;
         va_start(buttonTitles, firstButtonTitle);
-        for (id buttonTitle = firstButtonTitle; buttonTitle != nil; buttonTitle = va_arg(buttonTitles, NSString*))
+        for (id buttonTitle = firstButtonTitle; buttonTitle != nil; buttonTitle = va_arg(buttonTitles, NSString *))
         {
             void (^handler)(void) = va_arg(buttonTitles, void (^)(void));
             NSInteger index = [self addButtonWithTitle:buttonTitle];

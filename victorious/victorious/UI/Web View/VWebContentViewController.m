@@ -32,7 +32,8 @@
 {
     [super viewDidLoad];
     
-    if (!self.activitiyIndicator) {
+    if (!self.activitiyIndicator)
+    {
         self.activitiyIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.activitiyIndicator.center = self.view.center;
         [self.view addSubview:self.activitiyIndicator];
@@ -51,7 +52,8 @@
     
     self.webView.delegate = self;
     
-    if (self.urlToView) {
+    if (self.urlToView)
+    {
         NSURLRequest *requestWithURL = [NSURLRequest requestWithURL:self.urlToView];
         [self.webView loadRequest:requestWithURL];
     }

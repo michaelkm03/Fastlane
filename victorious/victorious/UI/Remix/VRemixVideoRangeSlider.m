@@ -132,7 +132,7 @@
 
 -(void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
 {
-    _videoPlayerViewController=videoPlayerViewController;
+    _videoPlayerViewController = videoPlayerViewController;
     _videoPlayerViewController.delegate = self;
     
     double interval = .1f;
@@ -373,7 +373,7 @@
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] initWithCapacity:picsCnt];
     
-    for (int i=0; i<picsCnt; i++)
+    for (int i = 0; i < picsCnt; i++)
     {
         time4Pic = i * picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds * time4Pic / _backgroundView.frame.size.width, 600);

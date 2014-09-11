@@ -461,7 +461,7 @@
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
     int time4Pic = 0;
     
-    for (int i=0; i<picsCnt; i++)
+    for (int i = 0; i < picsCnt; i++)
     {
         time4Pic = i * picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds * time4Pic / background.frame.size.width, 600);

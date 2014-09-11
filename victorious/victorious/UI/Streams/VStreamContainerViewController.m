@@ -154,7 +154,8 @@
     if (sender) // sender is nil if this method is called directly (not in response to a user touch)
     {
         NSString *eventAction = nil;
-        switch (self.filterControls.selectedSegmentIndex) {
+        switch (self.filterControls.selectedSegmentIndex)
+        {
             case VStreamFilterFeatured:
                 eventAction = @"Selected Filter: Featured";
                 break;

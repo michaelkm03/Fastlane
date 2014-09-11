@@ -258,7 +258,7 @@
     [self.secondResultView setProgress:0 animated:NO];
     
     NSInteger totalVotes = 0;
-    for(VPollResult* result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults)
     {
         totalVotes+= result.count.integerValue;
     }
@@ -266,7 +266,7 @@
     
     VLog(@"Answer: %@", answerId);
     
-    for(VPollResult* result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults)
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
         

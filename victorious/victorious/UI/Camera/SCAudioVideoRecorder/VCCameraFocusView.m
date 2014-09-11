@@ -30,7 +30,8 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
+    if (self)
+    {
         [self commonInit];
     }
     return self;
@@ -40,7 +41,8 @@
 {
     self = [super initWithCoder:aDecoder];
     
-    if (self) {
+    if (self)
+    {
         [self commonInit];
     }
     
@@ -94,7 +96,8 @@
 // Auto focus at a particular point. The focus mode will change to locked once the auto focus happens.
 - (void)tapToAutoFocus:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (self.camera.isFocusSupported) {
+    if (self.camera.isFocusSupported)
+    {
         CGPoint tapPoint = [gestureRecognizer locationInView:self];
         CGPoint convertedFocusPoint = [self.camera convertToPointOfInterestFromViewCoordinates:tapPoint];
         self.cameraFocusTargetView.center = tapPoint;
@@ -106,7 +109,8 @@
 // Change to continuous auto focus. The camera will constantly focus at the point choosen.
 - (void)tapToContinouslyAutoFocus:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (self.camera.isFocusSupported) {
+    if (self.camera.isFocusSupported)
+    {
         self.cameraFocusTargetView.center = self.center;
         [self.camera continuousFocusAtPoint:CGPointMake(.5f, .5f)];
     }

@@ -201,7 +201,7 @@
 - (void)didFailWithError:(NSError*)error
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
-    if(error.code != kVUserBannedError)
+    if (error.code != kVUserBannedError)
     {
         NSString*       message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
                                             : NSLocalizedString(@"LoginFailMessage", @"");

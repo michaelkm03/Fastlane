@@ -44,7 +44,7 @@
         NSRange tagRange = [tagRangeValue rangeValue];
         if (tagRange.location && tagRange.length < fieldText.length)
         {
-            NSRange tagRangeWithHash = {tagRange.location - 1,tagRange.length + 1};
+            NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
             [fieldText addAttributes:attributes range:tagRangeWithHash];
         }
     }];

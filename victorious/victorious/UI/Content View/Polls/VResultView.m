@@ -31,7 +31,8 @@
 - (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress
 {
     self = [super initWithFrame:frame];
-    if (self) {
+    if (self)
+    {
         // Initialization code
         self.isVertical = YES;
         [self setProgress:progress animated:NO];
@@ -57,7 +58,7 @@
         UIImage* arrowImage;
         if (self.isVertical)
         {
-            arrowImage =[UIImage imageNamed:@"ResultArrowVertical"];
+            arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
             UIEdgeInsets edgeInsets;
             edgeInsets.left = 01.0f;
             edgeInsets.top = 10.0f;
@@ -67,7 +68,7 @@
         }
         else
         {
-            arrowImage =[UIImage imageNamed:@"ResultArrowVertical"];
+            arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
             UIEdgeInsets edgeInsets;
             edgeInsets.left = 10.0f;
             edgeInsets.top = 01.0f;

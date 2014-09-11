@@ -63,7 +63,7 @@ NSString *const kSelectorCellIdentifier = @"cell";
     
     id itemForCell = [self.items objectAtIndex:indexPath.row];
     
-    self.configureBlock(cell,itemForCell);
+    self.configureBlock(cell, itemForCell);
     
     return cell;
 }

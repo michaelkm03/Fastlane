@@ -141,7 +141,7 @@
     // Limit text input to maxCharacterLength
     if ([self.delegate respondsToSelector:@selector(shouldLimitTextEntryForInputAccessoryView:)])
     {
-        if(![self.delegate shouldLimitTextEntryForInputAccessoryView:self])
+        if (![self.delegate shouldLimitTextEntryForInputAccessoryView:self])
         {
             return;
         }

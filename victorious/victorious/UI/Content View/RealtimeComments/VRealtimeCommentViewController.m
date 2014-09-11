@@ -112,7 +112,8 @@
         }
     }
     
-    if (!currentComment) {
+    if (!currentComment)
+    {
         return [self.comments firstObject];
     }
     
