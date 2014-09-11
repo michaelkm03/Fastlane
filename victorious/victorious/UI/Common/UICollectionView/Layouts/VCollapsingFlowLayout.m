@@ -17,7 +17,11 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 @interface VCollapsingFlowLayout ()
 
-@property (nonatomic, assign, readwrite) CGFloat catchPoint;
+@property (nonatomic, assign) CGFloat catchPoint;
+@property (nonatomic, assign) CGFloat contentViewMaxXTranslation;
+@property (nonatomic, assign) CGFloat contentViewMaxYTranslation;
+
+// Publicly Readonly
 @property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
 @property (nonatomic, assign, readwrite) CGSize sizeForContentView;
 @property (nonatomic, assign, readwrite) CGSize sizeForRealTimeComentsView;
@@ -26,10 +30,10 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 static const CGFloat kVContentViewFloatingZIndex = 1000.0f;
 static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
-static const CGFloat kVContentViewFloatingYTranslation = 120.0f;
-static const CGFloat kVContentViewFloatingXTranslation = -90.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
+static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
+static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
 
 @implementation VCollapsingFlowLayout
 
@@ -58,6 +62,8 @@ static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
     self.sizeForContentView = CGSizeZero;
     self.sizeForRealTimeComentsView = CGSizeZero;
     self.catchPoint = 0.0f;
+    self.contentViewMaxXTranslation = 0.0f;
+    self.contentViewMaxYTranslation = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
 }
 
@@ -166,6 +172,18 @@ static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
         self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
         self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
     }
+    
+    // Calculate translation from top right
+    if (self.contentViewMaxXTranslation == 0.0f)
+    {
+        CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
+        self.contentViewMaxXTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
+    }
+    if (self.contentViewMaxYTranslation == 0.0f)
+    {
+        CGFloat minimizedHeight = self.sizeForContentView.height * kVContentViewFloatingScalingFactor;
+        self.contentViewMaxYTranslation = (-self.sizeForContentView.height * 0.5f) + (minimizedHeight * 0.5f) + kVConentViewFloatingTopSpace;
+    }
 }
 
 - (VContentViewState)currentContentViewState
@@ -222,12 +240,12 @@ static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
                                                 self.collectionView.contentOffset.y,
                                                 self.sizeForContentView.width,
                                                 self.sizeForContentView.height);
-
-            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f),
-                                                                          fminf(fmaxf((1.0f + kVContentViewFloatingScalingFactor) - percentCompleted, kVContentViewFloatingScalingFactor), 1.0f));
             
-            CGFloat xTranslation = fminf(kVContentViewFloatingYTranslation, kVContentViewFloatingYTranslation * percentCompleted);
-            CGFloat yTranslation = fmaxf(kVContentViewFloatingXTranslation, kVContentViewFloatingXTranslation * percentCompleted);
+            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor),
+                                                                          fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor));
+            
+            CGFloat xTranslation = fminf(self.contentViewMaxXTranslation, self.contentViewMaxXTranslation * percentCompleted);
+            CGFloat yTranslation = fmaxf(self.contentViewMaxYTranslation, self.contentViewMaxYTranslation * percentCompleted);
             
             CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                                       yTranslation);
