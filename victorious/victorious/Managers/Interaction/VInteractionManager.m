@@ -23,7 +23,7 @@
 
 @implementation VInteractionManager
 
-- (instancetype)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate
+- (instancetype)initWithNode:(VNode *)node delegate:(id<VInteractionManagerDelegate>)delegate
 {
     self = [super init];
     if (self)
@@ -77,7 +77,7 @@
     [self.timers removeAllObjects];
 }
 
-- (void)timerFiredInteraction:(NSTimer*)timer
+- (void)timerFiredInteraction:(NSTimer *)timer
 {
     [self.delegate firedInteraction:timer.userInfo];
 }

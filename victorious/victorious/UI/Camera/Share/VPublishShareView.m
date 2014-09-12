@@ -34,7 +34,7 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString*)title image:(UIImage*)image
+- (id)initWithTitle:(NSString *)title image:(UIImage *)image
 {
     self = [self init];
     if (self)

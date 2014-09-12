@@ -20,8 +20,8 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VContentViewController* contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     commentsContainer.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;

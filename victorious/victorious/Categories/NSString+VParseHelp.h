@@ -11,9 +11,9 @@
 
 @interface NSString (VParseHelp)
 
-- (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes;
+- (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary *)attributes;
 
-- (NSURL*)mp4UrlFromM3U8;
+- (NSURL *)mp4UrlFromM3U8;
 
 - (BOOL) isEmpty;
 - (BOOL) isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;

@@ -16,7 +16,7 @@
     return @"Answer";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"label" : VSelectorName(label),

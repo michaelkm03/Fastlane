@@ -89,7 +89,7 @@ static NSMutableDictionary *messageViewControllers;
 {
     [super viewWillAppear:animated];
 
-    VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
+    VMessageViewController* messageVC = (VMessageViewController *)self.conversationTableViewController;
     self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
 }
 
@@ -141,7 +141,7 @@ static NSMutableDictionary *messageViewControllers;
 - (void)setOtherUser:(VUser *)otherUser
 {
     _otherUser = otherUser;
-    ((VMessageViewController*)self.conversationTableViewController).otherUser = otherUser;
+    ((VMessageViewController *)self.conversationTableViewController).otherUser = otherUser;
     if ([self isViewLoaded])
     {
         [self addBackgroundImage];

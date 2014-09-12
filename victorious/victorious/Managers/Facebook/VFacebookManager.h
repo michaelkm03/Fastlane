@@ -16,7 +16,7 @@
 /**
  Login to Facebook with a previously stored token
  */
-- (void)loginWithStoredTokenOnSuccess:(void (^)())successBlock onFailure:(void (^)(NSError*))failureBlock;
+- (void)loginWithStoredTokenOnSuccess:(void (^)())successBlock onFailure:(void (^)(NSError *))failureBlock;
 
 /**
  Attempt to login to Facebook
@@ -61,8 +61,8 @@
 /**
  Presents the FB share dialog if the native app is install, else defaults to the web based flow
  */
-- (void)shareLink:(NSURL*)link
-      description:(NSString*)description
-             name:(NSString*)name
-       previewUrl:(NSURL*)previewUrl;
+- (void)shareLink:(NSURL *)link
+      description:(NSString *)description
+             name:(NSString *)name
+       previewUrl:(NSURL *)previewUrl;
 @end

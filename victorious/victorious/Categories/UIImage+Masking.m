@@ -10,7 +10,7 @@
 
 @implementation UIImage (Masking)
 
-- (UIImage*)maskImage:(UIImage *)image withMask:(UIImage *)mask
+- (UIImage *)maskImage:(UIImage *)image withMask:(UIImage *)mask
 {
     CGImageRef imageReference = image.CGImage;
     CGImageRef maskReference = mask.CGImage;

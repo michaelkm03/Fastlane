@@ -20,7 +20,7 @@
 }
 #endif
 
-+ (void)mixAudio:(AVAsset*)audioAsset startTime:(CMTime)startTime withVideo:(NSURL*)inputUrl affineTransform:(CGAffineTransform)affineTransform  toUrl:(NSURL*)outputUrl outputFileType:(NSString*)outputFileType withMaxDuration:(CMTime)maxDuration withCompletionBlock:(void(^)(NSError *))completionBlock
++ (void)mixAudio:(AVAsset *)audioAsset startTime:(CMTime)startTime withVideo:(NSURL *)inputUrl affineTransform:(CGAffineTransform)affineTransform  toUrl:(NSURL *)outputUrl outputFileType:(NSString *)outputFileType withMaxDuration:(CMTime)maxDuration withCompletionBlock:(void(^)(NSError *))completionBlock
 {
 	NSError * error = nil;
 	AVMutableComposition * composition = [[AVMutableComposition alloc] init];
@@ -28,7 +28,7 @@
 	AVMutableCompositionTrack * audioTrackComposition = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
 	AVURLAsset * fileAsset = [AVURLAsset URLAssetWithURL:inputUrl options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:AVURLAssetPreferPreciseDurationAndTimingKey]];
 	NSArray * videoTracks = [fileAsset tracksWithMediaType:AVMediaTypeVideo];
-	CMTime duration = ((AVAssetTrack*)[videoTracks objectAtIndex:0]).timeRange.duration;
+	CMTime duration = ((AVAssetTrack *)[videoTracks objectAtIndex:0]).timeRange.duration;
 	
 	// We check if the recorded time if more than the limit
 	if (CMTIME_COMPARE_INLINE(duration, >, maxDuration))

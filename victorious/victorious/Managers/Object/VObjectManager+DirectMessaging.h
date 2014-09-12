@@ -12,26 +12,26 @@
 
 @interface VObjectManager (DirectMessaging)
 
-- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser *)user
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
+- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber *)conversationID
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
                                                                        failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation *)conversation
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *) flagConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *) flagConversation:(VConversation *)conversation
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 

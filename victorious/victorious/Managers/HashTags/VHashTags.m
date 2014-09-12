@@ -10,7 +10,7 @@
 
 @implementation VHashTags
 
-+(NSArray*)detectHashTags:(NSString*)fieldText
++(NSArray *)detectHashTags:(NSString *)fieldText
 {
     if (!fieldText)
     {
@@ -35,8 +35,8 @@
     return [NSArray arrayWithArray:array];
 }
 
-+ (void)formatHashTagsInString:(NSMutableAttributedString*)fieldText
-                 withTagRanges:(NSArray*)tagRanges
++ (void)formatHashTagsInString:(NSMutableAttributedString *)fieldText
+                 withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes
 {
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)

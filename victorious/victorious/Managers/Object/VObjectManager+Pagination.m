@@ -55,7 +55,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Comment
-- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                   isRefresh:(BOOL)refresh
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
@@ -67,7 +67,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            VSequence* sequenceInContext = (VSequence*)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+            VSequence* sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
             
             if (refresh)
             {
@@ -234,21 +234,21 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Message
 
-- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation *)conversation
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
     return [self loadConversation:conversation shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation *)conversation
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
     return [self loadConversation:conversation shouldRefresh:NO successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)loadConversation:(VConversation *)conversation
                                         shouldRefresh:(BOOL)refresh
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
@@ -324,21 +324,21 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Following
 
-- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser *)user
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
     return [self loadFollowersForUser:user shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser *)user
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
     return [self loadFollowersForUser:user shouldRefresh:NO successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser *)user
                                             shouldRefresh:(BOOL)refresh
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
@@ -378,21 +378,21 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     }
 }
 
-- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser *)user
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
     return [self loadFollowingsForUser:user shouldRefresh:YES successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser *)user
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail
 {
     return [self loadFollowingsForUser:user shouldRefresh:NO successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadFollowingsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadFollowingsForUser:(VUser *)user
                                              shouldRefresh:(BOOL)refresh
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
@@ -434,7 +434,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Repost
 
-- (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence *)sequence
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
@@ -445,14 +445,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                         failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence *)sequence
                                                          successBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
     return [self loadRepostersForSequence:sequence shouldRefresh:NO successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadRepostersForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)loadRepostersForSequence:(VSequence *)sequence
                                                 shouldRefresh:(BOOL)refresh
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
@@ -469,7 +469,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         
         for (VUser* reposter in resultObjects)
         {
-            VUser* reposterInContext = (VUser*)[sequence.managedObjectContext objectWithID:reposter.objectID];
+            VUser* reposterInContext = (VUser *)[sequence.managedObjectContext objectWithID:reposter.objectID];
             [sequence addRepostersObject:reposterInContext];
         }
         
@@ -491,14 +491,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Sequence
 
-- (RKManagedObjectRequestOperation *)refreshStream:(VStream*)stream
+- (RKManagedObjectRequestOperation *)refreshStream:(VStream *)stream
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
     return [self loadStream:stream isRefresh:YES successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream*)stream
+- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream *)stream
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
@@ -506,12 +506,12 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 
-- (RKManagedObjectRequestOperation *)loadStream:(VStream*)stream
+- (RKManagedObjectRequestOperation *)loadStream:(VStream *)stream
                                       isRefresh:(BOOL)refresh
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = (VAbstractFilter*)[self filterForStream:stream];
+    VAbstractFilter* filter = (VAbstractFilter *)[self filterForStream:stream];
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
@@ -527,7 +527,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             NSMutableOrderedSet *sequences = [stream.sequences mutableCopy];
             for (VSequence* sequence in resultObjects)
             {
-                VSequence* sequenceInContext = (VSequence*)[stream.managedObjectContext objectWithID:sequence.objectID];
+                VSequence* sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
                 [sequences addObject:sequenceInContext];
             }
             stream.sequences = sequences;
@@ -582,32 +582,32 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Filter Fetchers
 
-- (VAbstractFilter*)followerFilterForUser:(VUser*)user
+- (VAbstractFilter *)followerFilterForUser:(VUser *)user
 {
     NSString* apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
-    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
+    return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
-- (VAbstractFilter*)followingFilterForUser:(VUser*)user
+- (VAbstractFilter *)followingFilterForUser:(VUser *)user
 {
     NSString* apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
-    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
+    return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
-- (VAbstractFilter*)repostFilterForSequence:(VSequence*)sequence
+- (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
 {
     NSString* apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
-    return (VAbstractFilter*)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
+    return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
-- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
 }
 
-- (VAbstractFilter*)filterForStream:(VStream*)stream
+- (VAbstractFilter *)filterForStream:(VStream *)stream
 {
     if (!stream.apiPath.length)
     {

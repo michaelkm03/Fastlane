@@ -40,7 +40,7 @@
     return (NSInteger)((Float32)numPixels * bitsPerPixel);
 }
 
-- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
+- (AVAssetWriterInput *)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
 {
     CGSize videoSize = self.outputVideoSize;
     

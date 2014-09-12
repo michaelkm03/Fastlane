@@ -18,7 +18,7 @@
     return @"Sequence";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"category"       :   VSelectorName(category),
@@ -73,7 +73,7 @@
     return mapping;
 }
 
-+ (NSArray*)descriptors
++ (NSArray *)descriptors
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                         method:RKRequestMethodGET

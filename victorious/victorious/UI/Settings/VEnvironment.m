@@ -10,7 +10,7 @@
 
 @implementation VEnvironment
 
-- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber*)appID
+- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID
 {
     self = [super init];
     if (self)

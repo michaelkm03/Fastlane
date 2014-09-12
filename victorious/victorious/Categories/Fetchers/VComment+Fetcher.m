@@ -16,7 +16,7 @@
     return (self.mediaUrl && ![self.mediaUrl isEmpty]) || (self.thumbnailUrl && ![self.thumbnailUrl isEmpty]);
 }
 
-- (NSURL*)previewImageURL
+- (NSURL *)previewImageURL
 {
     NSURL* url;
     if (self.thumbnailUrl && ![self.thumbnailUrl isEmpty])

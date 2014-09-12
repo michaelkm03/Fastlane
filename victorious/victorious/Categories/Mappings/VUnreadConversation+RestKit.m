@@ -15,7 +15,7 @@
     return @"UnreadConversation";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"unread_count" : VSelectorName(count)
@@ -30,7 +30,7 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor *)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET

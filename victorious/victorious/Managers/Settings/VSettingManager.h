@@ -25,10 +25,10 @@ extern  NSString*   const   kVChannelURLSupport;
 + (instancetype)sharedManager;
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary;
-- (NSInteger)variantForExperiment:(NSString*)experimentKey;
-- (BOOL)settingEnabledForKey:(NSString*)settingKey;
+- (NSInteger)variantForExperiment:(NSString *)experimentKey;
+- (BOOL)settingEnabledForKey:(NSString *)settingKey;
 
-- (NSURL*)urlForKey:(NSString*)key;
+- (NSURL *)urlForKey:(NSString *)key;
 
 - (NSString *)exportVideoQuality;
 - (NSString *)captureVideoQuality;

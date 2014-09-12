@@ -129,7 +129,7 @@
     return self.cameraFocusTargetView.frame.size;
 }
 
-- (UIImage*)outsideFocusTargetImage
+- (UIImage *)outsideFocusTargetImage
 {
     return self.cameraFocusTargetView.outsideFocusTargetImage;
 }
@@ -139,7 +139,7 @@
     self.cameraFocusTargetView.outsideFocusTargetImage = outsideFocusTargetImage;
 }
 
-- (UIImage*)insideFocusTargetImage
+- (UIImage *)insideFocusTargetImage
 {
     return self.cameraFocusTargetView.insideFocusTargetImage;
 }

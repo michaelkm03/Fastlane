@@ -88,7 +88,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 {
 #pragma unused (target, flags)
 	NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
-	NSCAssert([(__bridge NSObject*) info isKindOfClass: [VReachability class]], @"info was wrong class in ReachabilityCallback");
+	NSCAssert([(__bridge NSObject *)info isKindOfClass: [VReachability class]], @"info was wrong class in ReachabilityCallback");
 
     VReachability* noteObject = (__bridge VReachability *)info;
     // Post a notification to notify the client that the network reachability changed.

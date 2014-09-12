@@ -43,7 +43,7 @@
 -(id) init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    return (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    return (VHashTagContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     
 }
 

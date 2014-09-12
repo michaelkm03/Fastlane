@@ -44,7 +44,7 @@
     return newImage;
 }
 
-- (UIImage*)scaleToSize:(CGSize)size
+- (UIImage *)scaleToSize:(CGSize)size
 {
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
     

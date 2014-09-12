@@ -11,6 +11,6 @@
 
 @interface VConversation (RestKit)
 
-+ (NSArray*)descriptors;
++ (NSArray *)descriptors;
 
 @end

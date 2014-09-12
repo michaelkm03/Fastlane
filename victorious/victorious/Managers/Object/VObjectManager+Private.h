@@ -17,9 +17,9 @@
 
 @interface VObjectManager (Private)
 
-- (NSManagedObject*)objectForID:(NSNumber*)objectID
-                          idKey:(NSString*)idKey
-                     entityName:(NSString*)entityName
+- (NSManagedObject *)objectForID:(NSNumber *)objectID
+                          idKey:(NSString *)idKey
+                     entityName:(NSString *)entityName
            managedObjectContext:(NSManagedObjectContext *)context;
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
@@ -43,9 +43,9 @@
 /*! Uses multipartFormRestquest to upload media.
  * allURLs key:value must be NSString* parameterName:NSURL* localURL
  * allExtensions must have same keys are allURLs, values are NSString* fileExtension */
-- (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                               toPath:(NSString*)path
-                           parameters:(NSDictionary*)parameters
+- (AFHTTPRequestOperation *)uploadURLs:(NSDictionary *)allUrls
+                               toPath:(NSString *)path
+                           parameters:(NSDictionary *)parameters
                          successBlock:(VSuccessBlock)successBlock
                             failBlock:(VFailBlock)failBlock;
 

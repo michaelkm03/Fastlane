@@ -17,23 +17,23 @@ extern NSString *kLoggedInChangedNotification;
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
-                                                accessSecret:(NSString*)accessSecret
-                                                   twitterId:(NSString*)twitterId
+- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString *)accessToken
+                                                accessSecret:(NSString *)accessSecret
+                                                   twitterId:(NSString *)twitterId
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString*)accessToken
-                                               accessSecret:(NSString*)accessSecret
-                                                  twitterId:(NSString*)twitterId
+- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
+                                               accessSecret:(NSString *)accessSecret
+                                                  twitterId:(NSString *)twitterId
                                                SuccessBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed;
 

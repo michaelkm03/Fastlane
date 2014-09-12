@@ -551,7 +551,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     for (UIButton* button in self.captionButtons)
     {
-        button.selected = (button == (UIButton*)sender);
+        button.selected = (button == (UIButton *)sender);
     }
     
     if (sender == self.memeButton)
@@ -751,7 +751,7 @@ static const CGFloat kShareMargin = 34.0f;
          
          if (facebookSelected)
          {
-             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
              [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
                                                          accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -770,7 +770,7 @@ static const CGFloat kShareMargin = 34.0f;
          
          if (twitterSelected)
          {
-             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
              [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
                                                          accessToken:[VTwitterManager sharedManager].oauthToken
                                                               secret:[VTwitterManager sharedManager].secret

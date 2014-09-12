@@ -28,7 +28,7 @@
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder*)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
@@ -74,7 +74,7 @@
     return self.toolbar;
 }
 
-- (void)deviceDidRotate:(NSNotification*)notification
+- (void)deviceDidRotate:(NSNotification *)notification
 {
     [self.picker setNeedsLayout];
 }

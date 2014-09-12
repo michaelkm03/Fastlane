@@ -66,7 +66,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     return authorized;
 }
 
-- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed
 {
@@ -89,7 +89,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
@@ -113,9 +113,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
 #pragma mark - Twitter
 
-- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
-                                                accessSecret:(NSString*)accessSecret
-                                                   twitterId:(NSString*)twitterId
+- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString *)accessToken
+                                                accessSecret:(NSString *)accessSecret
+                                                   twitterId:(NSString *)twitterId
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
@@ -140,9 +140,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString*)accessToken
-                                               accessSecret:(NSString*)accessSecret
-                                                  twitterId:(NSString*)twitterId
+- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
+                                               accessSecret:(NSString *)accessSecret
+                                                  twitterId:(NSString *)twitterId
                                                SuccessBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed
 {
@@ -293,7 +293,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 }
 
 #pragma mark - LoggedIn
-- (void)loggedInWithUser:(VUser*)user
+- (void)loggedInWithUser:(VUser *)user
 {
     self.mainUser = user;
     

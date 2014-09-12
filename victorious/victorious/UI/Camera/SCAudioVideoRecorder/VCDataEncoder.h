@@ -14,8 +14,8 @@
 @protocol VCDataEncoderDelegate <NSObject>
 
 @optional
-- (void) dataEncoder:(VCDataEncoder*)dataEncoder didEncodeFrame:(CMTime)frameTime;
-- (void) dataEncoder:(VCDataEncoder *)dataEncoder didFailToInitializeEncoder:(NSError*)error;
+- (void) dataEncoder:(VCDataEncoder *)dataEncoder didEncodeFrame:(CMTime)frameTime;
+- (void) dataEncoder:(VCDataEncoder *)dataEncoder didFailToInitializeEncoder:(NSError *)error;
 
 @end
 
@@ -24,11 +24,11 @@
     
 }
 
-- (instancetype)initWithAudioVideoRecorder:(VCAudioVideoRecorder*)audioVideoRecorder;
+- (instancetype)initWithAudioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder;
 - (void)reset;
 
 // Abstract method
-- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError**)error;
+- (AVAssetWriterInput *)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError**)error;
 
 @property (assign, nonatomic) BOOL enabled;
 @property (strong, nonatomic) AVAssetWriterInput * writerInput;

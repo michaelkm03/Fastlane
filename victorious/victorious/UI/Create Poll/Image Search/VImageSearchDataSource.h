@@ -28,12 +28,12 @@
  Perform a search with the given term. When the search completes, 
  the collection view will be sent a -reloadData message.
  */
-- (void)searchWithSearchTerm:(NSString *)searchTerm onCompletion:(void(^)(void))completion onError:(void(^)(NSError*))errorBlock;
+- (void)searchWithSearchTerm:(NSString *)searchTerm onCompletion:(void(^)(void))completion onError:(void(^)(NSError *))errorBlock;
 
 /**
  Load the next page of search results
  */
-- (void)loadNextPageWithCompletion:(void(^)(void))completion error:(void(^)(NSError*))errorBlock;
+- (void)loadNextPageWithCompletion:(void(^)(void))completion error:(void(^)(NSError *))errorBlock;
 
 /**
  Returns the search result at the given index path.

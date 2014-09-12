@@ -143,7 +143,7 @@
      }];
 }
 
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray*, NSError*))completionBlock
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
     NSAssert(NO, @"class %@ needs to implement loadFriendsFromSocialNetworkWithCompletion:", NSStringFromClass([self class]));
 }

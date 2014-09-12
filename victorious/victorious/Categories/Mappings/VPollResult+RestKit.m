@@ -15,7 +15,7 @@
     return @"PollResult";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"sequence_id" : VSelectorName(sequenceId),
@@ -35,7 +35,7 @@
     return mapping;
 }
 
-+ (RKEntityMapping*)entityMappingForUser
++ (RKEntityMapping *)entityMappingForUser
 {
     NSDictionary *propertyMap = @{
                                   @"sequence_id" : VSelectorName(sequenceId),
@@ -52,7 +52,7 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor *)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
@@ -62,7 +62,7 @@
 }
 
 
-+ (RKResponseDescriptor*)byUserDescriptor
++ (RKResponseDescriptor *)byUserDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMappingForUser]
                                                         method:RKRequestMethodGET
@@ -71,7 +71,7 @@
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
-+ (RKResponseDescriptor*)createPollResultDescriptor
++ (RKResponseDescriptor *)createPollResultDescriptor
 {
     
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]

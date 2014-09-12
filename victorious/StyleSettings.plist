@@ -26,5 +26,9 @@
 <true/>
 <key>kRequireSpaceBeforeCaseColons</key>
 <false/>
+<key>kSignatureAsteriskSpacingRule</key>
+<integer>2</integer>
+<key>kViolationsShouldBeErrors</key>
+<false/>
 </dict>
 </plist>

@@ -36,7 +36,7 @@
     }
 }
 
-- (NSString*)stringForSeconds:(Float64)seconds
+- (NSString *)stringForSeconds:(Float64)seconds
 {
     NSString *separator = NSLocalizedString(@"TimeSeparator", @"");
     

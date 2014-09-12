@@ -60,7 +60,7 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
      }];
 }
 
-- (NSURL*)urlForKey:(NSString*)key
+- (NSURL *)urlForKey:(NSString *)key
 {
     NSString* path = [[NSUserDefaults standardUserDefaults] objectForKey:key];
     
@@ -79,17 +79,17 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
     return url;
 }
 
-- (NSString*)emailForKey:(NSString*)key
+- (NSString *)emailForKey:(NSString *)key
 {
     return nil;
 }
 
-- (BOOL)settingEnabledForKey:(NSString*)settingKey
+- (BOOL)settingEnabledForKey:(NSString *)settingKey
 {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:settingKey] boolValue];
 }
 
-- (NSInteger)variantForExperiment:(NSString*)experimentKey
+- (NSInteger)variantForExperiment:(NSString *)experimentKey
 {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:experimentKey] integerValue];
 }

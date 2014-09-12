@@ -20,29 +20,29 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
-                                        withReason:(NSString*)removalReason
+- (RKManagedObjectRequestOperation *)removeComment:(VComment *)comment
+                                        withReason:(NSString *)removalReason
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)flagComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)flagComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
+- (RKManagedObjectRequestOperation *)readComments:(NSArray *)readComments
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
 #pragma mark - Vote Methods
-- (RKManagedObjectRequestOperation *)likeComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)likeComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)dislikeComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)dislikeComment:(VComment *)comment
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unvoteComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)unvoteComment:(VComment *)comment
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 

@@ -22,7 +22,7 @@
 //@property (nonatomic, retain) NSNumber * remoteId;
 //@property (nonatomic, retain) VAsset *assets;
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"display_order"  : VSelectorName(display_order),
@@ -40,7 +40,7 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor *)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET

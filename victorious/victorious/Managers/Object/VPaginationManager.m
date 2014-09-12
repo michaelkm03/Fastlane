@@ -71,7 +71,7 @@
     }
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter*)filter
+- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter *)filter
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
@@ -186,7 +186,7 @@
 
 #pragma mark - Filter Cache
 
-- (VAbstractFilter *)filterForPath:(NSString *)path entityName:(NSString*)entityName managedObjectContext:(NSManagedObjectContext *)context
+- (VAbstractFilter *)filterForPath:(NSString *)path entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)context
 {
     // Check cache
     __block NSManagedObjectID *objectID = nil;

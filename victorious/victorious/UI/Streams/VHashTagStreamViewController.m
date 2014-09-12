@@ -89,7 +89,7 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
 }
 
-- (NSString*)streamName
+- (NSString *)streamName
 {
     return @"hashtag";
 }

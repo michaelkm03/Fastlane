@@ -21,10 +21,10 @@
 - (BOOL)isRemix;
 - (BOOL)isRepost;
 
-- (VNode*)firstNode;
+- (VNode *)firstNode;
 
-- (NSArray*)initialImageURLs;
+- (NSArray *)initialImageURLs;
 
-- (NSNumber*)voteCountForVoteID:(NSNumber*)voteID;
+- (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
 
 @end

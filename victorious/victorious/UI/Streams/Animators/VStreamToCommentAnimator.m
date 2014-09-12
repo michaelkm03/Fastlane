@@ -27,14 +27,14 @@
     
     if ([fromVC isKindOfClass:[VStreamTableViewController class]])
     {
-        streamVC = (VStreamTableViewController*)fromVC;
+        streamVC = (VStreamTableViewController *)fromVC;
     }
     else
     {
-        streamVC = ((VStreamContainerViewController*)fromVC).streamTable;
+        streamVC = ((VStreamContainerViewController *)fromVC).streamTable;
     }
     
-    VCommentsContainerViewController* commentVC = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VCommentsContainerViewController* commentVC = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
     fromVC.view.userInteractionEnabled = NO;
     commentVC.view.userInteractionEnabled = NO;

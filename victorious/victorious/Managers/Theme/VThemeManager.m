@@ -100,7 +100,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
          BOOL valid = YES;
          if ([obj respondsToSelector:@selector(length)])
          {
-             valid = ((NSString*)obj).length;
+             valid = ((NSString *)obj).length;
          }
          
          if (obj && valid)
@@ -216,7 +216,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 #pragma mark - Other
 
-- (UIImage*)themedBackgroundImageForDevice
+- (UIImage *)themedBackgroundImageForDevice
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone &&
         [[UIScreen mainScreen] bounds].size.height == 568.0f)
