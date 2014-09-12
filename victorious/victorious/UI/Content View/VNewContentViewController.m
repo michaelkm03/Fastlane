@@ -30,16 +30,22 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *contentCollectionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceKeyboardContainerToContainerConstraint;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
-@property (strong, nonatomic) IBOutlet UIView *textFieldContainer;
+@property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
+@property (nonatomic, weak) IBOutlet UITextField *textField;
+@property (nonatomic, weak) IBOutlet UIView *textFieldContainer;
 
-@property (readwrite) UIView *inputAccessoryView;
+@property (nonatomic ,readwrite) UIView *inputAccessoryView;
 
 @end
 
 @implementation VNewContentViewController
+
+#pragma mark - UIResponder
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
 
 #pragma mark - UIViewController
 
@@ -68,8 +74,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.contentCollectionView registerNib:[VDropdownTitleView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
+
     
     self.inputAccessoryView = self.textFieldContainer;
+    // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
+    [self becomeFirstResponder];
+    [self resignFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -83,9 +93,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.textFieldContainer = nil;
-    self.inputAccessoryView = nil;
+    [self.textFieldContainer removeFromSuperview];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -97,10 +105,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.textFieldContainer removeFromSuperview];
-    self.textFieldContainer = nil;
-    self.inputAccessoryView = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -223,16 +227,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
                                             animated:YES];
     }
-}
-
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
-- (UIView *)inputAccessoryView
-{
-    return self.textFieldContainer;
 }
 
 #pragma mark UIScrollView
