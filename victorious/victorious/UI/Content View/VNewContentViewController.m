@@ -15,6 +15,7 @@
 #import "VContentCell.h"
 #import "VRealTimeCommentsCell.h"
 #import "VAllCommentCell.h"
+#import "VContentCaptionCell.h"
 
 // Accessory Views
 #import "VSectionHandleReusableView.h"
@@ -22,6 +23,7 @@
 
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
+    VContentViewSectionCaption,
     VContentViewSectionContent,
     VContentViewSectionRealTimeComments,
     VContentViewSectionAllComments,
@@ -62,6 +64,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.contentCollectionView registerNib:[VDropdownTitleView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentCaptionCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentCaptionCell suggestedReuseIdentifier]];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -77,6 +81,13 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                       completion:nil];
 }
 
+#pragma mark - Convenience
+
+- (NSIndexPath *)indexPathForContentView
+{
+    return [NSIndexPath indexPathForRow:0
+                              inSection:VContentViewSectionContent];
+}
 
 #pragma mark - UICollectionViewDataSource
 
@@ -86,6 +97,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = section;
     switch (vSection)
     {
+        case VContentViewSectionCaption:
+            return 1;
         case VContentViewSectionRealTimeComments:
             return 1;
         case VContentViewSectionAllComments:
@@ -108,6 +121,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
+        case VContentViewSectionCaption:
+            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCaptionCell suggestedReuseIdentifier]
+                                                             forIndexPath:indexPath];
         case VContentViewSectionContent:
             return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
@@ -129,6 +145,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
+        case VContentViewSectionCaption:
+            return nil;
         case VContentViewSectionContent:
             return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                       withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
@@ -151,6 +169,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
+        case VContentViewSectionCaption:
+            return [VContentCaptionCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionContent:
             return [VContentCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
@@ -168,6 +188,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     VContentViewSection vSection = section;
     switch (vSection) {
+        case VContentViewSectionCaption:
+            return CGSizeZero;
         case VContentViewSectionContent:
             return CGSizeZero;
         case VContentViewSectionRealTimeComments:
@@ -182,12 +204,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]] == NSOrderedSame)
+    if ([indexPath compare:[self indexPathForContentView]] == NSOrderedSame)
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
                                             animated:YES];
     }
 }
+
 
 #pragma mark UIScrollView
 

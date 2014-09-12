@@ -88,6 +88,7 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     
     [attributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
     {
+
         switch ([self currentState])
         {
             case VContentViewStateBelowFirstCatchPoint:
@@ -100,6 +101,7 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
                 }
                 else if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
                 {
+                    hasLayoutAttributesForContentView = YES;
                     layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                         self.collectionView.contentOffset.y + self.sizeForTitleView.height,
                                                         self.sizeForContentView.width,
@@ -114,84 +116,79 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
                 }
                 break;
             case VContentViewStateGreaterThanOrEqualToFirstCatchPointAndLessThanSecondCatchPoint:
-                
+            {
+                CGFloat deltaToFirstCatchPoint = self.collectionView.contentOffset.y - self.firstCatchPoint;
+            
+                if ([layoutAttributes.indexPath compare:[self titleIndexPath]] == NSOrderedSame)
+                {
+                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                        self.collectionView.contentOffset.y - deltaToFirstCatchPoint,
+                                                        self.sizeForTitleView.width,
+                                                        self.sizeForTitleView.height);
+                }
+                else if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
+                {
+                    hasLayoutAttributesForContentView = YES;
+                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                        self.collectionView.contentOffset.y + self.sizeForTitleView.height - deltaToFirstCatchPoint,
+                                                        self.sizeForContentView.width,
+                                                        self.sizeForContentView.height);
+                }
+                else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
+                {
+                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                        self.collectionView.contentOffset.y + self.sizeForTitleView.height + self.sizeForContentView.height,
+                                                        self.sizeForRealTimeComentsView.width,
+                                                        self.sizeForRealTimeComentsView.height);
+                }
                 break;
+            }
             case VContentViewStateGreaterThanOrEqualToSecondCatchPoint:
+            {
+                CGFloat deltaToSecondCatchPoint = self.collectionView.contentOffset.y - self.secondCatchPoint;
                 
+                if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
+                {
+                    hasLayoutAttributesForContentView = YES;
+                    [self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
+                }
+                else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
+                {
+                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                        self.collectionView.contentOffset.y + self.sizeForTitleView.height + self.sizeForContentView.height,
+                                                        self.sizeForRealTimeComentsView.width,
+                                                        self.sizeForRealTimeComentsView.height);
+                }
                 break;
+            }
+                
         }
-        
-//        if (self.collectionView.contentOffset.y < self.catchPoint)
-//        {
-//            if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
-//            {
-//                [self layoutAttributesForContentViewState:VContentViewStateFullSize
-//                              withInitialLayoutAttributes:layoutAttributes];
-//                hasLayoutAttributesForContentView = YES;
-//            }
-//            else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
-//            {
-//                layoutAttributes.frame = CGRectMake(CGRectGetMinX(layoutAttributes.frame),
-//                                                    self.collectionView.contentOffset.y + self.sizeForContentView.height,
-//                                                    self.sizeForRealTimeComentsView.width,
-//                                                    self.sizeForRealTimeComentsView.height);
-//            }
-//        }
-//        else
-//        {
-//            if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
-//            {
-//                [self layoutAttributesForContentViewState:VContentViewStateShrinking
-//                              withInitialLayoutAttributes:layoutAttributes];
-//                hasLayoutAttributesForContentView = YES;
-//            }
-//            else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
-//            {
-//                {
-//                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(layoutAttributes.frame),
-//                                                        self.collectionView.contentOffset.y + self.sizeForContentView.height,
-//                                                        self.sizeForRealTimeComentsView.width,
-//                                                        self.sizeForRealTimeComentsView.height);
-//                }
-//            }
-//        }
     }];
     
-//    if (self.collectionView.contentOffset.y > self.catchPoint)
-//    {
-//        
-//        UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-//                                                                                                                                          withIndexPath:[self contentViewIndexPath]];
-////        CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-////        CGFloat percentCompleted = (deltaCatchPointToTop / CGRectGetWidth(self.collectionView.bounds));
-//        dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
-//                                                          self.collectionView.contentOffset.y,
-//                                                          CGRectGetWidth(self.collectionView.frame),
-//                                                          // Swap these implementations for header resizing
-////                                                          fmaxf(self.catchPoint, (1 - percentCompleted) * (1 + CGRectGetHeight(layoutAttributesForContentView.frame)))
-//                                                          self.dropDownHeaderMiniumHeight);
-//        dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
-//        [attributes addObject:dropDownHeaderLayoutAttributes];
-//    }
+    if (self.collectionView.contentOffset.y > self.secondCatchPoint)
+    {
+        
+        UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                                                          withIndexPath:[self contentViewIndexPath]];
+//        CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.secondCatchPoint;
+//        CGFloat percentCompleted = (deltaCatchPointToTop / self.secondCatchPoint);
+        dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
+                                                          self.collectionView.contentOffset.y,
+                                                          CGRectGetWidth(self.collectionView.frame),
+                                                          // Swap these implementations for header resizing
+//                                                          fmaxf(self.secondCatchPoint, (1 - percentCompleted) * (1 + self.sizeForContentView.height)));
+                                                          self.dropDownHeaderMiniumHeight);
+        dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
+        [attributes addObject:dropDownHeaderLayoutAttributes];
+    }
     
-//    if (!hasLayoutAttributesForContentView)
-//    {
-//        [attributes addObject:[self layoutAttributesForContentViewState:VContentViewStateFloating
-//                                            withInitialLayoutAttributes:nil]];
-//    }
-//    
+    if (!hasLayoutAttributesForContentView)
+    {
+        [attributes addObject:[self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:nil]];
+    }
+    
     return attributes;
 }
-
-//- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
-//    {
-//        return [self layoutAttributesForContentViewState:VContentViewStateFloating
-//                             withInitialLayoutAttributes:nil];
-//    }
-//    return [super layoutAttributesForItemAtIndexPath:indexPath];
-//}
 
 #pragma mark - Convenience
 
@@ -213,18 +210,24 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
 
 - (void)updateInternalStateWithInitalLayoutAttributes:(NSArray *)initialLayoutAttributes
 {
+    if (CGSizeEqualToSize(self.sizeForTitleView, CGSizeZero))
+    {
+        UICollectionViewLayoutAttributes *layoutAttributesForCaptionView = [initialLayoutAttributes firstObject];
+        self.sizeForTitleView = layoutAttributesForCaptionView.size;
+    }
+    
     if (CGSizeEqualToSize(self.sizeForContentView,CGSizeZero))
     {
-        UICollectionViewLayoutAttributes *layoutAttributesForContentView = [initialLayoutAttributes firstObject];
+        UICollectionViewLayoutAttributes *layoutAttributesForContentView = [initialLayoutAttributes objectAtIndex:1];
         self.sizeForContentView = layoutAttributesForContentView.size;
     }
     
     if (CGSizeEqualToSize(self.sizeForRealTimeComentsView, CGSizeZero))
     {
-        UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
+        UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:2];
         self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
         self.firstCatchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
-        self.secondCatchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame) + CGRectGetHeight()
+        self.secondCatchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame) + self.sizeForTitleView.height;
     }
     
     // Calculate translation from top right
@@ -255,54 +258,34 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     return [NSIndexPath indexPathForRow:0 inSection:2];
 }
 
-//- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewState:(VContentViewState)contentViewState
-//                                              withInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
-//{
-//    UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes;
-//    
-//    if (!initialLayoutAttributes)
-//    {
-//        NSIndexPath *contentViewIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//        layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:contentViewIndexPath];
-//        layoutAttributes.center = CGPointMake(self.sizeForContentView.width/2, self.sizeForContentView.width/2);
-//        layoutAttributes.size = self.sizeForContentView;
-//    }
-//    
-//    layoutAttributes.zIndex = kVContentViewFloatingZIndex;
-//    
-//    switch (contentViewState) {
-//        case VContentViewStateFullSize:
-//            layoutAttributes.frame = CGRectMake(0,
-//                                                self.collectionView.contentOffset.y,
-//                                                self.sizeForContentView.width,
-//                                                self.sizeForContentView.height);
-//            break;
-//        case VContentViewStateShrinking:
-//        case VContentViewStateFloating:
-//        {
-//            CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
-//            CGFloat percentCompleted = (deltaCatchPointToTop / (self.sizeForContentView.height - self.dropDownHeaderMiniumHeight));
-//            
-//            layoutAttributes.frame = CGRectMake(0,
-//                                                self.collectionView.contentOffset.y,
-//                                                self.sizeForContentView.width,
-//                                                self.sizeForContentView.height);
-//            
-//            CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor),
-//                                                                          fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor));
-//            
-//            CGFloat xTranslation = fminf(self.contentViewMaxXTranslation, self.contentViewMaxXTranslation * percentCompleted);
-//            CGFloat yTranslation = fmaxf(self.contentViewMaxYTranslation, self.contentViewMaxYTranslation * percentCompleted);
-//            
-//            CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
-//                                                                                      yTranslation);
-//            CGAffineTransform combinedTransform = CGAffineTransformConcat(scaleTransform, translationTransform);
-//            
-//            layoutAttributes.transform = combinedTransform;
-//        }
-//            break;
-//    }
-//    return layoutAttributes;
-//}
-//
+- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
+{
+    UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
+    
+    layoutAttributes.zIndex = kVContentViewFloatingZIndex;
+    layoutAttributes.center = CGPointMake(self.sizeForContentView.width/2, self.sizeForContentView.width/2);
+    layoutAttributes.size = self.sizeForContentView;
+    CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.secondCatchPoint;
+    CGFloat percentCompleted = (deltaCatchPointToTop / (self.sizeForContentView.height - self.dropDownHeaderMiniumHeight));
+
+    layoutAttributes.frame = CGRectMake(0,
+                                        self.collectionView.contentOffset.y,
+                                        self.sizeForContentView.width,
+                                        self.sizeForContentView.height);
+
+    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor),
+                                                                  fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor));
+
+    CGFloat xTranslation = fminf(self.contentViewMaxXTranslation, self.contentViewMaxXTranslation * percentCompleted);
+    CGFloat yTranslation = fmaxf(self.contentViewMaxYTranslation, self.contentViewMaxYTranslation * percentCompleted);
+
+    CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
+                                                                              yTranslation);
+    CGAffineTransform combinedTransform = CGAffineTransformConcat(scaleTransform, translationTransform);
+
+    layoutAttributes.transform = combinedTransform;
+    
+    return layoutAttributes;
+}
+
 @end

@@ -15,9 +15,4 @@
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
 
-- (BOOL)shouldPan
-{
-    return NO;
-}
-
 @end
