@@ -80,7 +80,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
     
-
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.profileImagePathSmall ?: self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -107,7 +106,11 @@ static VLargeNumberFormatter* largeNumberFormatter;
     self.usernameLabel.text = self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
-    if (!self.sequence.parentUser)
+    if (self.sequence.parentUser)
+    {
+        self.userInfoViewHeightConstraint.constant = 28.0f;
+    }
+    else
     {
         self.userInfoViewHeightConstraint.constant = self.usernameLabel.intrinsicContentSize.height;
     }

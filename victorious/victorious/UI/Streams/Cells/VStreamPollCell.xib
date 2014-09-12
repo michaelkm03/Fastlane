@@ -60,7 +60,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t88-9Z-IQI" userLabel="userInfoView">
-                                        <rect key="frame" x="57" y="15" width="197" height="32"/>
+                                        <rect key="frame" x="57" y="16" width="197" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8DR-he-6KO">
@@ -151,12 +151,12 @@
                                 <constraints>
                                     <constraint firstItem="w2h-He-l05" firstAttribute="leading" secondItem="f6x-4t-qP9" secondAttribute="leading" id="5Ti-Mq-5vy"/>
                                     <constraint firstItem="kwb-5e-ITN" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" id="5mu-KV-Ki6"/>
-                                    <constraint firstItem="t88-9Z-IQI" firstAttribute="centerY" secondItem="JEd-KM-EXM" secondAttribute="centerY" id="8VM-qm-AYr"/>
+                                    <constraint firstItem="t88-9Z-IQI" firstAttribute="centerY" secondItem="JEd-KM-EXM" secondAttribute="centerY" constant="1" id="8VM-qm-AYr"/>
                                     <constraint firstAttribute="trailing" secondItem="kwb-5e-ITN" secondAttribute="trailing" id="Cw7-TM-hSS"/>
                                     <constraint firstItem="4OM-vf-hRY" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="2" id="Eo2-rB-VId"/>
                                     <constraint firstItem="t88-9Z-IQI" firstAttribute="leading" secondItem="f6x-4t-qP9" secondAttribute="leading" constant="57" id="J09-fR-WwW"/>
                                     <constraint firstItem="w2h-He-l05" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" id="cNa-Ej-aFk"/>
-                                    <constraint firstItem="t88-9Z-IQI" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="15" id="gLg-wq-oWn"/>
+                                    <constraint firstItem="t88-9Z-IQI" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="16" id="gLg-wq-oWn"/>
                                     <constraint firstItem="w2h-He-l05" firstAttribute="bottom" secondItem="kwb-5e-ITN" secondAttribute="bottom" id="lc2-hi-efJ"/>
                                     <constraint firstAttribute="trailing" secondItem="4OM-vf-hRY" secondAttribute="trailing" id="pbX-RZ-O3j"/>
                                     <constraint firstAttribute="trailing" secondItem="t88-9Z-IQI" secondAttribute="trailing" constant="66" id="vxc-I6-C18"/>

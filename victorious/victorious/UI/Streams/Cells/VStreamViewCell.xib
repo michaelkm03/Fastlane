@@ -65,7 +65,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qd2-cz-N4a" userLabel="userInfoView">
-                                        <rect key="frame" x="57" y="15" width="197" height="32"/>
+                                        <rect key="frame" x="57" y="16" width="197" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="11Q-zg-ZaU">
@@ -160,10 +160,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="centerY" secondItem="3hK-ft-f7A" secondAttribute="centerY" id="3i0-8x-pwG"/>
+                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="centerY" secondItem="3hK-ft-f7A" secondAttribute="centerY" constant="1" id="3i0-8x-pwG"/>
                                     <constraint firstItem="9PR-2d-ZRh" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" id="7N0-uD-uZs"/>
                                     <constraint firstItem="3mf-KZ-S25" firstAttribute="bottom" secondItem="9PR-2d-ZRh" secondAttribute="bottom" id="KAF-nH-wdS"/>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" constant="15" id="L2K-Rp-QfI"/>
+                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" constant="16" id="L2K-Rp-QfI"/>
                                     <constraint firstItem="qd2-cz-N4a" firstAttribute="leading" secondItem="6WR-6s-hSP" secondAttribute="leading" constant="57" id="NSG-Ej-Uhu"/>
                                     <constraint firstAttribute="trailing" secondItem="TJ6-JD-fgk" secondAttribute="trailing" id="deE-JQ-ied"/>
                                     <constraint firstItem="3mf-KZ-S25" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" id="jXh-B9-msY"/>
