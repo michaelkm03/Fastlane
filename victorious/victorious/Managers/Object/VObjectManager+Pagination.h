@@ -15,7 +15,7 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 @interface VObjectManager (Pagination)
 
 #pragma mark Comments
-- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                   isRefresh:(BOOL)refresh
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
@@ -24,41 +24,41 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)refreshStream:(VStream*)stream
+- (RKManagedObjectRequestOperation *)refreshStream:(VStream *)stream
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream*)stream
+- (RKManagedObjectRequestOperation *)loadNextPageOfStream:(VStream *)stream
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
 #pragma mark Following
-- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser *)user
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser *)user
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser *)user
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser *)user
                                                         successBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail;
 
 #pragma mark Repost
-- (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence *)sequence
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence *)sequence
                                                          successBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;
 
 #pragma mark Direct Messaging
-- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation *)conversation
                                                        successBlock:(VSuccessBlock)success
                                                           failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation *)conversation
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 - (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
@@ -83,8 +83,8 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                                                            failBlock:(VFailBlock)fail;
 
 #pragma mark Filters
-- (VAbstractFilter*)filterForStream:(VStream*)stream; ///<Returns the filter object for a stream.  Returns nil if the Stream or stream.apiPath is nil or empty an empty string.
-- (VAbstractFilter*)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (VAbstractFilter *)filterForStream:(VStream *)stream; ///<Returns the filter object for a stream.  Returns nil if the Stream or stream.apiPath is nil or empty an empty string.
+- (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 
 @end

@@ -11,6 +11,6 @@
 @interface VComment (Fetcher)
 
 - (BOOL)hasMedia;
-- (NSURL*)previewImageURL;
+- (NSURL *)previewImageURL;
 
 @end

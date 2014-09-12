@@ -11,6 +11,6 @@
 @interface NSManagedObject (RestKit)
 
 + (NSString *)entityName;
-+ (RKEntityMapping*)entityMapping;
++ (RKEntityMapping *)entityMapping;
 
 @end

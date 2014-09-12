@@ -10,6 +10,6 @@
 
 @interface VCompositeSnapshotController : NSObject
 
-- (UIImage*)snapshotOfMainView:(UIView*)mainView subViews:(NSArray*)subviews;
+- (UIImage *)snapshotOfMainView:(UIView *)mainView subViews:(NSArray *)subviews;
 
 @end

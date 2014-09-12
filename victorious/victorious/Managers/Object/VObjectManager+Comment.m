@@ -58,7 +58,7 @@
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     [context performBlockAndWait:^(void)
     {
-        comment = (VComment*)[self objectForID:@(commentID)
+        comment = (VComment *)[self objectForID:@(commentID)
                                          idKey:kRemoteIdKey
                                     entityName:[VComment entityName]
                           managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
@@ -121,8 +121,8 @@
            failBlock:fullFail];
 }
 
-- (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
-                                        withReason:(NSString*)removalReason
+- (RKManagedObjectRequestOperation *)removeComment:(VComment *)comment
+                                        withReason:(NSString *)removalReason
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
@@ -150,7 +150,7 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)flagComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)flagComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
@@ -163,8 +163,8 @@
 
 #pragma mark - Vote Methods
 
-- (RKManagedObjectRequestOperation *)voteComment:(VComment*)comment
-                                        voteType:(NSString*)type
+- (RKManagedObjectRequestOperation *)voteComment:(VComment *)comment
+                                        voteType:(NSString *)type
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
@@ -177,21 +177,21 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)likeComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)likeComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
     return [self voteComment:comment voteType:@"like" successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)dislikeComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)dislikeComment:(VComment *)comment
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail
 {
     return [self voteComment:comment voteType:@"dislike" successBlock:success failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)unvoteComment:(VComment*)comment
+- (RKManagedObjectRequestOperation *)unvoteComment:(VComment *)comment
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
@@ -200,7 +200,7 @@
 
 #pragma mark -
 
-- (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
+- (RKManagedObjectRequestOperation *)readComments:(NSArray *)readComments
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
@@ -211,7 +211,7 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)unreadComments:(NSArray*)readComments
+- (RKManagedObjectRequestOperation *)unreadComments:(NSArray *)readComments
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {

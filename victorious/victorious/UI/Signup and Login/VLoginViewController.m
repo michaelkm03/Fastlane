@@ -145,9 +145,9 @@
     [alert show];
 }
 
-- (void)didFailWithError:(NSError*)error
+- (void)didFailWithError:(NSError *)error
 {
-    if(error.code != kVUserBannedError)
+    if (error.code != kVUserBannedError)
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:error.localizedDescription
@@ -234,7 +234,8 @@
                     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
                     NSArray *accounts = [account accountsWithAccountType:accountType];
                     
-                    if (accounts.count == 1) {
+                    if (accounts.count == 1)
+                    {
                         [self attemptLoginWithTwitterAccount:[accounts firstObject]];
                         return;
                     }

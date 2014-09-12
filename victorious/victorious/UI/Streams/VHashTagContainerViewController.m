@@ -43,7 +43,7 @@
 -(id) init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    return (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    return (VHashTagContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     
 }
 
@@ -82,7 +82,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSString *titleText = [NSString stringWithFormat:@"#%@",self.hashTag];
+    NSString *titleText = [NSString stringWithFormat:@"#%@", self.hashTag];
     self.headerLabel.text = NSLocalizedString(titleText, nil);
     
     [self.streamViewController setHashTag:self.hashTag];

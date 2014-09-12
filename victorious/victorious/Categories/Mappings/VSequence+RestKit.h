@@ -11,6 +11,6 @@
 
 @interface VSequence (RestKit)
 
-+ (NSArray*)descriptors;
++ (NSArray *)descriptors;
 
 @end

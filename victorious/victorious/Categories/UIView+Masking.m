@@ -10,12 +10,12 @@
 
 @implementation UIView (Masking)
 
-- (void)maskWithImage:(UIImage*)mask
+- (void)maskWithImage:(UIImage *)mask
 {
     [self maskWithImage:mask size:mask.size];
 }
 
-- (void)maskWithImage:(UIImage*)mask size:(CGSize)maskSize
+- (void)maskWithImage:(UIImage *)mask size:(CGSize)maskSize
 {
     CALayer* maskLayer = [CALayer layer];
     maskLayer.frame = CGRectMake(0, 0, maskSize.width, maskSize.height);

@@ -24,8 +24,8 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    UIViewController* toVC = (VContentInfoViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIViewController* fromVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController* toVC = (VContentInfoViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController* fromVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     UIView* fromSnapshot = [fromVC.view resizableSnapshotViewFromRect:fromVC.view.bounds
                                                    afterScreenUpdates:NO

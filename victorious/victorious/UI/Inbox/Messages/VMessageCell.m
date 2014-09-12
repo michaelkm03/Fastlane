@@ -38,15 +38,12 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    self.chatBubble.image = [[[UIImage imageNamed:kChatBubble] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
     UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.profileImageView.tintColor = transparentAccent;
     [self resetView];
-}
-
-- (UIImage *)chatBubbleImageWithColor:(UIColor *)color
-{
-    return [[[UIImage imageNamed:kChatBubble] v_imageWithColor:color] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -164,13 +161,13 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     if (profileImageOnRight)
     {
         self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowRight] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.chatBubble.image = [self chatBubbleImageWithColor:[self alternateChatBubbleTintColor]];
+        self.chatBubble.tintColor = [self alternateChatBubbleTintColor];
         self.chatBubbleArrow.tintColor = [self alternateChatBubbleTintColor];
     }
     else
     {
         self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowLeft] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.chatBubble.image = [self chatBubbleImageWithColor:[UIColor whiteColor]];
+        self.chatBubble.tintColor = [UIColor whiteColor];
         self.chatBubbleArrow.tintColor = [UIColor whiteColor];
     }
 }
@@ -183,10 +180,9 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 - (void)resetView
 {
-    self.chatBubble.image = [self chatBubbleImageWithColor:[UIColor whiteColor]];
+    self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
-    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.profileImageOnRight = NO;
 }
 

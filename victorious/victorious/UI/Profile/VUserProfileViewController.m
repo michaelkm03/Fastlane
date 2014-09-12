@@ -61,7 +61,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     return viewController;
 }
 
-+ (instancetype)userProfileWithUser:(VUser*)aUser
++ (instancetype)userProfileWithUser:(VUser *)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -74,7 +74,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     return viewController;
 }
 
-+ (instancetype)userProfileWithFollowerOrFollowing:(VUser*)aUser
++ (instancetype)userProfileWithFollowerOrFollowing:(VUser *)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -137,7 +137,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewWillAppear:animated];
     
-    ((VUserProfileHeaderView*)self.tableView.tableHeaderView).user = self.profile;
+    ((VUserProfileHeaderView *)self.tableView.tableHeaderView).user = self.profile;
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -215,7 +215,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                      following:self.profile
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+             VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
              header.editProfileButton.selected = [resultObjects[0] boolValue];
              header.user = header.user;
          }
@@ -292,7 +292,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     else
     {
-        VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+        VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -373,7 +373,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
-    VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+    VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
 
     if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
     {

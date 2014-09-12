@@ -14,19 +14,19 @@
 
 @implementation VStream (Fetcher)
 
-+ (VStream*)remixStreamForSequence:(VSequence*)sequence
++ (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
     NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)streamForUser:(VUser*)user
++ (VStream *)streamForUser:(VUser *)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)streamForCategories:(NSArray*)categories
++ (VStream *)streamForCategories:(NSArray *)categories
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* categoryString = [categories componentsJoinedByString:@","];
@@ -34,21 +34,21 @@
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)hotSteamForSteamName:(NSString*)streamName
++ (VStream *)hotSteamForSteamName:(NSString *)streamName
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)streamForHashTag:(NSString*)hashTag
++ (VStream *)streamForHashTag:(NSString *)hashTag
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString* apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)followerStreamForStreamName:(NSString*)streamName user:(VUser*)user
++ (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
 {
     user = user ?: [VObjectManager sharedManager].mainUser;
     
@@ -57,7 +57,7 @@
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream*)streamForPath:(NSString*)apiPath
++ (VStream *)streamForPath:(NSString *)apiPath
            managedObjectContext:(NSManagedObjectContext *)context
 {
     static NSCache* streamCache;

@@ -25,7 +25,7 @@
 
 @implementation VObjectManager (Users)
 
-- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
@@ -33,7 +33,7 @@
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     [context performBlockAndWait:^(void)
     {
-        user = (VUser*)[self objectForID:userId
+        user = (VUser *)[self objectForID:userId
                                    idKey:kRemoteIdKey
                               entityName:[VUser entityName]
                     managedObjectContext:context];
@@ -60,7 +60,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
+- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
@@ -74,7 +74,7 @@
         NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
         [context performBlockAndWait:^(void)
         {
-            user = (VUser*)[self objectForID:userID
+            user = (VUser *)[self objectForID:userID
                                        idKey:kRemoteIdKey
                                   entityName:[VUser entityName]
                         managedObjectContext:context];
@@ -125,7 +125,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                   forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
@@ -420,10 +420,10 @@
 
 #pragma mark - helpers
 
-- (NSArray*)objectsForEntity:(NSString*)entityName
-                   userIdKey:(NSString*)idKey
-                      userId:(NSNumber*)userId
-                   inContext:(NSManagedObjectContext*)context
+- (NSArray *)objectsForEntity:(NSString *)entityName
+                   userIdKey:(NSString *)idKey
+                      userId:(NSNumber *)userId
+                   inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];

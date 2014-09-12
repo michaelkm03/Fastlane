@@ -33,7 +33,8 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
+    self.profileImageView.tintColor = transparentAccent;
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -55,8 +56,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 - (void)prepareForReuse
 {
     [self.commentTextView resetView];
-    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] v_imageWithColor:transparentAccent];
+    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

@@ -10,10 +10,10 @@
 
 @interface VNode (Fetcher)
 
-- (NSArray*)firstAnswers;
-- (VAsset*)firstAsset;
+- (NSArray *)firstAnswers;
+- (VAsset *)firstAsset;
 
-- (NSArray*)orderedInteractions;
+- (NSArray *)orderedInteractions;
 
 - (BOOL)isPoll;
 

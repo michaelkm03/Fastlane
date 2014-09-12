@@ -24,7 +24,7 @@
  *  @param identifier      The identifier for the account to use.  May be nil.
  *  @param completionBlock Block that will run after completing.
  */
-- (void)refreshTwitterTokenWithIdentifier:(NSString*)identifier
+- (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
                           completionBlock:(void(^)(void))completionBlock;
 
 @end

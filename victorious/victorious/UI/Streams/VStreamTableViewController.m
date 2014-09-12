@@ -87,16 +87,16 @@
     return [self streamWithDefaultStream:defaultStream name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
 }
 
-+ (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
     VStream* defaultStream = [VStream streamForHashTag:hashtag];
     return [self streamWithDefaultStream:defaultStream name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
 }
 
-+ (instancetype)streamWithDefaultStream:(VStream*)stream name:(NSString*)name title:(NSString*)title
++ (instancetype)streamWithDefaultStream:(VStream *)stream name:(NSString *)name title:(NSString *)title
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamTableViewController* streamTableView = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    VStreamTableViewController* streamTableView = (VStreamTableViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
     
     streamTableView.streamName = name;
     streamTableView.title = title;
@@ -138,7 +138,7 @@
     self.clearsSelectionOnViewWillAppear = NO;
 }
 
-- (NSCache*)preloadImageCache
+- (NSCache *)preloadImageCache
 {
     if (!_preloadImageCache)
     {
@@ -278,7 +278,7 @@
     }
     
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    VStreamViewCell* cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     if ([cell isKindOfClass:[VStreamPollCell class]])
     {
@@ -512,18 +512,18 @@
 
 #pragma mark - Predicates
 
-- (VStream*)defaultStream
+- (VStream *)defaultStream
 {
     return _defaultStream ?: [VStream streamForCategories:[self sequenceCategories]];
 }
 
-- (NSArray*)sequenceCategories
+- (NSArray *)sequenceCategories
 {
     return nil;
 }
 
 #pragma mark - Actions
-- (void)setBackgroundImageWithURL:(NSURL*)url
+- (void)setBackgroundImageWithURL:(NSURL *)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
@@ -560,8 +560,8 @@
 #pragma mark - Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
     if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
     {
@@ -578,7 +578,7 @@
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
+    VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
     //In this case, we reset them
@@ -668,7 +668,7 @@
          NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
          
          NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
+         VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
          for (VStreamViewCell* cell in [self.tableView visibleCells])

@@ -62,7 +62,7 @@ extern  NSString*   const   kVSecondaryLinkColor;
 - (void)applyClearNavBarStyling;
 - (void)removeNavBarStyling;
 
-- (UIImage*)themedBackgroundImageForDevice;
+- (UIImage *)themedBackgroundImageForDevice;
 
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;

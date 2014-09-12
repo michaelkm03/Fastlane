@@ -29,7 +29,7 @@ typedef enum {
 + (instancetype)inboxContainer
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VInboxContainerViewController* container = (VInboxContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
+    VInboxContainerViewController* container = (VInboxContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
     
     return container;
 }

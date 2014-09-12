@@ -12,7 +12,7 @@
 
 + (instancetype)rootViewController; ///< Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
 
-- (void)transitionToNavStack:(NSArray*)navStack;
+- (void)transitionToNavStack:(NSArray *)navStack;
 
 - (void)presentForceUpgradeScreen;
 

@@ -42,7 +42,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @property (nonatomic, weak) IBOutlet    UILabel*    versionString;
 
-- (NSString*)collectDeviceInfo:(id)sender;
+- (NSString *)collectDeviceInfo:(id)sender;
 @end
 
 @implementation VSettingsViewController
@@ -260,7 +260,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
 }
 
-- (NSString*)collectDeviceInfo:(id)sender
+- (NSString *)collectDeviceInfo:(id)sender
 {
     // Grab App Version
     NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"";
@@ -273,7 +273,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     NSString *iosName = [currentDevice systemName];
     
     // Return the Compiled String of Variables
-    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice: %@\nOS Version: %@ %@\nApp Version: %@ (%@)",device, iosName, iosVersion, appVersion, appBuildNumber];
+    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice: %@\nOS Version: %@ %@\nApp Version: %@ (%@)", device, iosName, iosVersion, appVersion, appBuildNumber];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -287,7 +287,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     if (MFMailComposeResultFailed == result)
     {

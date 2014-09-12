@@ -28,7 +28,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 @implementation VStreamTableDataSource
 
-- (instancetype)initWithStream:(VStream*)stream
+- (instancetype)initWithStream:(VStream *)stream
 {
     self = [super init];
     if (self)

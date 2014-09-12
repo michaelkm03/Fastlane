@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (id)init
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    self = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
+    self = (VContentInfoViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
     [self view];//Initialize all the IBOutlets
     
     return self;

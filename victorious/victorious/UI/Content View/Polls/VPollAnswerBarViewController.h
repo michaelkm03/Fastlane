@@ -14,7 +14,7 @@
 
 @protocol VPollAnswerBarDelegate <NSObject>
 @required
-- (void)answeredPollWithAnswerId:(NSNumber*)answerId;
+- (void)answeredPollWithAnswerId:(NSNumber *)answerId;
 @end
 
 @interface VPollAnswerBarViewController : VActionBarViewController

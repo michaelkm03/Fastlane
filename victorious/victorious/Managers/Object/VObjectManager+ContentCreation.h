@@ -36,37 +36,37 @@ extern NSString * const VObjectManagerContentIndexKey;
 
 @interface VObjectManager (ContentCreation)
 
-- (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
+- (RKManagedObjectRequestOperation *)fetchRemixMP4UrlForSequenceID:(NSNumber *)sequenceID
                                                       atStartTime:(CGFloat)startTime
                                                          duration:(CGFloat)duration
                                                   completionBlock:(VRemixCompletionBlock)completionBlock;
 
-- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
-                                    description:(NSString*)description
-                                       question:(NSString*)question
-                                    answer1Text:(NSString*)answer1Text
-                                    answer2Text:(NSString*)answer2Text
-                                      media1Url:(NSURL*)media1Url
-                                      media2Url:(NSURL*)media2Url
+- (AFHTTPRequestOperation *)createPollWithName:(NSString *)name
+                                    description:(NSString *)description
+                                       question:(NSString *)question
+                                    answer1Text:(NSString *)answer1Text
+                                    answer2Text:(NSString *)answer2Text
+                                      media1Url:(NSURL *)media1Url
+                                      media2Url:(NSURL *)media2Url
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
-                                     description:(NSString*)description
+- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
+                                     description:(NSString *)description
                                      captionType:(VCaptionType)type
-                                       expiresAt:(NSString*)expiresAt
-                                    parentNodeId:(NSNumber*)parentNodeId
+                                       expiresAt:(NSString *)expiresAt
+                                    parentNodeId:(NSNumber *)parentNodeId
                                            speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
-                                        mediaURL:(NSURL*)mediaUrl
+                                        mediaURL:(NSURL *)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
 
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                      mediaURL:(NSURL*)mediaURL
-                                    toSequence:(VSequence*)sequence
-                                     andParent:(VComment*)parent
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
+                                      mediaURL:(NSURL *)mediaURL
+                                    toSequence:(VSequence *)sequence
+                                     andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
@@ -78,10 +78,10 @@ Creates a new realtime comment
  @param asset Asset that comment was posted on
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
-- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString*)text
-                                              mediaURL:(NSURL*)mediaURL
-                                                toAsset:(VAsset*)asset
-                                                atTime:(NSNumber*)time
+- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
+                                              mediaURL:(NSURL *)mediaURL
+                                                toAsset:(VAsset *)asset
+                                                atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 
@@ -89,8 +89,8 @@ Creates a new realtime comment
  Creates a new message, but does not send it to the server.
  See sendMessage:successBlock:failBlock: for that.
  */
-- (VMessage *)messageWithText:(NSString*)text
-                 mediaURLPath:(NSString*)mediaURLPath;
+- (VMessage *)messageWithText:(NSString *)text
+                 mediaURLPath:(NSString *)mediaURLPath;
 
 /**
  Sends a new message to the server
@@ -100,14 +100,14 @@ Creates a new realtime comment
                            successBlock:(VSuccessBlock)success
                               failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                                        withName:(NSString*)name
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
+                                       withName:(NSString *)name
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
-- (VSequence*)newSequenceWithID:(NSNumber*)remoteID
-                           name:(NSString*)name
-                    description:(NSString*)description
-                   mediaURLPath:(NSString*)mediaURLPath;
+- (VSequence *)newSequenceWithID:(NSNumber *)remoteID
+                           name:(NSString *)name
+                    description:(NSString *)description
+                   mediaURLPath:(NSString *)mediaURLPath;
 
 @end

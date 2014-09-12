@@ -101,13 +101,13 @@
     return false;
 }
 
-- (VNode*)firstNode
+- (VNode *)firstNode
 {
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
     return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
 }
 
-- (NSArray*)initialImageURLs
+- (NSArray *)initialImageURLs
 {
     NSMutableArray* urls = [[NSMutableArray alloc] initWithCapacity:10];
 
@@ -134,7 +134,7 @@
     return [urls copy];
 }
 
-- (NSNumber*)voteCountForVoteID:(NSNumber*)voteID
+- (NSNumber *)voteCountForVoteID:(NSNumber *)voteID
 {
     if (!voteID)
     {

@@ -109,7 +109,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleContentURL:(NSArray *)captures
 {
-    NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
+    NSNumber* sequenceId = @(((NSString *)[captures firstObject]).intValue);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
@@ -123,7 +123,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
-         VSequence* sequence = (VSequence*)[resultObjects firstObject];
+         VSequence* sequence = (VSequence *)[resultObjects firstObject];
          contentView.sequence = sequence;
          
          VRootViewController* root = [VRootViewController rootViewController];
@@ -139,7 +139,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleProfileURL:(NSArray *)captures
 {
-    NSNumber* userID = @(((NSString*)[captures firstObject]).intValue);
+    NSNumber* userID = @(((NSString *)[captures firstObject]).intValue);
     if (!userID)
     {
         [self showMissingContentAlert];
@@ -175,7 +175,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleConversationURL:(NSArray *)captures
 {
-    NSNumber* conversationId = @(((NSString*)[captures firstObject]).intValue);
+    NSNumber* conversationId = @(((NSString *)[captures firstObject]).intValue);
     if (!conversationId)
     {
         [self showMissingContentAlert];
@@ -185,7 +185,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] conversationByID:conversationId
                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VConversation* conversation = (VConversation*)[resultObjects firstObject];
+         VConversation* conversation = (VConversation *)[resultObjects firstObject];
          VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
          VMessageContainerViewController* messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
@@ -202,7 +202,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleCommentURL:(NSArray *)captures
 {
-    NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
+    NSNumber* sequenceId = @(((NSString *)[captures firstObject]).intValue);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
@@ -217,7 +217,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
-         VSequence* sequence = (VSequence*)[resultObjects firstObject];
+         VSequence* sequence = (VSequence *)[resultObjects firstObject];
          contentView.sequence = sequence;
          commentsContainer.sequence = sequence;
          
@@ -234,8 +234,8 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleResetPasswordURL:(NSArray *)captures
 {
-    NSString* userToken = ((NSString*)[captures firstObject]);
-    NSString* deviceToken = (NSString*)[captures lastObject];
+    NSString* userToken = ((NSString *)[captures firstObject]);
+    NSString* deviceToken = (NSString *)[captures lastObject];
     if (!userToken || !deviceToken)
     {
         [self showMissingContentAlert];
@@ -252,7 +252,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 #pragma mark - Deeplink generation
 
-- (NSURL*)contentDeeplinkForSequence:(VSequence *)sequence
+- (NSURL *)contentDeeplinkForSequence:(VSequence *)sequence
 {
     //TODO: Fetch the actual deeplink prefix from the info.plist
     return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId.stringValue]];

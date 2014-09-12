@@ -8,8 +8,6 @@
 
 #import "VStreamContainerViewController.h"
 
-#import "VSystemVersionDetection.h"
-
 #import "VLoginViewController.h"
 
 #import "VHashTagStreamViewController.h"
@@ -35,10 +33,10 @@
 
 @implementation VStreamContainerViewController
 
-+ (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable
++ (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -46,10 +44,10 @@
     return container;
 }
 
-+ (instancetype)modalContainerForStreamTable:(VStreamTableViewController*)streamTable
++ (instancetype)modalContainerForStreamTable:(VStreamTableViewController *)streamTable
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -60,7 +58,7 @@
 + (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -68,9 +66,9 @@
     return container;
 }
 
-- (VStreamTableViewController*)streamTable
+- (VStreamTableViewController *)streamTable
 {
-    return (VStreamTableViewController*)self.tableViewController;
+    return (VStreamTableViewController *)self.tableViewController;
 }
 
 - (void)viewDidLoad
@@ -125,23 +123,20 @@
 
 - (void)configureSegmentedControl
 {
-    if ([VSystemVersionDetection majorVersionNumber] > 7 || [VSystemVersionDetection minorVersionNumber] >= 1)
-    {
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorLeftUnselected"]
-                         forLeftSegmentState:UIControlStateNormal
-                           rightSegmentState:UIControlStateSelected
-                                  barMetrics:UIBarMetricsDefault];
-        [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorRightUnselected"]
-                         forLeftSegmentState:UIControlStateSelected
-                           rightSegmentState:UIControlStateNormal
-                                  barMetrics:UIBarMetricsDefault];
-        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderUnselected"]
-                                       forState:UIControlStateNormal
-                                     barMetrics:UIBarMetricsDefault];
-        [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderSelected"]
-                                       forState:UIControlStateSelected
-                                     barMetrics:UIBarMetricsDefault];
-    }
+    [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorLeftUnselected"]
+                     forLeftSegmentState:UIControlStateNormal
+                       rightSegmentState:UIControlStateSelected
+                              barMetrics:UIBarMetricsDefault];
+    [self.filterControls setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorRightUnselected"]
+                     forLeftSegmentState:UIControlStateSelected
+                       rightSegmentState:UIControlStateNormal
+                              barMetrics:UIBarMetricsDefault];
+    [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderUnselected"]
+                                   forState:UIControlStateNormal
+                                 barMetrics:UIBarMetricsDefault];
+    [self.filterControls setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderSelected"]
+                                   forState:UIControlStateSelected
+                                 barMetrics:UIBarMetricsDefault];
 }
 
 - (IBAction)changedFilterControls:(id)sender
@@ -159,7 +154,8 @@
     if (sender) // sender is nil if this method is called directly (not in response to a user touch)
     {
         NSString *eventAction = nil;
-        switch (self.filterControls.selectedSegmentIndex) {
+        switch (self.filterControls.selectedSegmentIndex)
+        {
             case VStreamFilterFeatured:
                 eventAction = @"Selected Filter: Featured";
                 break;
@@ -329,7 +325,7 @@
 {
     if ([self.streamTable respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
     {
-        return [(UIViewController<UINavigationControllerDelegate>*)self.streamTable navigationController:navigationController
+        return [(UIViewController<UINavigationControllerDelegate> *)self.streamTable navigationController:navigationController
                                                                          animationControllerForOperation:operation
                                                                                       fromViewController:fromVC
                                                                                         toViewController:toVC];

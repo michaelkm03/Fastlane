@@ -10,7 +10,7 @@
 
 @implementation VHashTags
 
-+(NSArray*)detectHashTags:(NSString*)fieldText
++(NSArray *)detectHashTags:(NSString *)fieldText
 {
     if (!fieldText)
     {
@@ -35,8 +35,8 @@
     return [NSArray arrayWithArray:array];
 }
 
-+ (void)formatHashTagsInString:(NSMutableAttributedString*)fieldText
-                 withTagRanges:(NSArray*)tagRanges
++ (void)formatHashTagsInString:(NSMutableAttributedString *)fieldText
+                 withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes
 {
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
@@ -44,7 +44,7 @@
         NSRange tagRange = [tagRangeValue rangeValue];
         if (tagRange.location && tagRange.length < fieldText.length)
         {
-            NSRange tagRangeWithHash = {tagRange.location - 1,tagRange.length + 1};
+            NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
             [fieldText addAttributes:attributes range:tagRangeWithHash];
         }
     }];

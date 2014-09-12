@@ -63,7 +63,7 @@ static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 static const CGFloat kActionConstraintConstantCollapsed     =   0.0f;
-static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
+static const CGFloat kActionConstraintConstantExpandedOffset = 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
@@ -95,7 +95,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 -(id)init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    self = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+    self = (VContentViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
 
     return self;
 }
@@ -132,12 +132,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         if ([vc isKindOfClass:[VRealtimeCommentViewController class]])
         {
-            self.realtimeCommentVC = (VRealtimeCommentViewController*)vc;
+            self.realtimeCommentVC = (VRealtimeCommentViewController *)vc;
             self.realtimeCommentVC.delegate = self;
         }
         else if ([vc isKindOfClass:[VKeyboardBarViewController class]])
         {
-            self.keyboardBarVC = (VKeyboardBarViewController*)vc;
+            self.keyboardBarVC = (VKeyboardBarViewController *)vc;
             self.keyboardBarVC.delegate = self;
         }
     }
@@ -548,7 +548,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     return MIN(currentContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
 }
 
-+ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence*)sequence
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     CGFloat currentContentViewOffset = sequence.nameEmbeddedInContent.boolValue ? kMaximumNoCaptionContentViewOffset : kMaximumContentViewOffset;
     return MIN(currentContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
@@ -556,7 +556,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark -
 
--(VInteractionManager*)interactionManager
+-(VInteractionManager *)interactionManager
 {
     if (!_interactionManager)
     {
@@ -1158,7 +1158,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.willComment = YES;
 }
 #pragma mark - VInteractionManagerDelegate
-- (void)firedInteraction:(VInteraction*)interaction
+- (void)firedInteraction:(VInteraction *)interaction
 {
     VLog(@"Interaction fired:%@", interaction);
 }
@@ -1166,15 +1166,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
     if ([toVC isKindOfClass:[VContentInfoViewController class]] || [fromVC isKindOfClass:[VContentInfoViewController class]])
     {
         VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
         animator.isPresenting = operation == UINavigationControllerOperationPush;
         animator.fromChildContainerView =  self.mediaView;
-        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
+        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController *)toVC).mediaContainerView : self.mediaSuperview;
         
         if (animator.isPresenting)
         {
@@ -1355,7 +1355,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
      }];
 }
 
-- (void)keyboardWillShow:(NSNotification*)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
     CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardEndFrame = [self.view convertRect:keyboardEndFrame fromView:self.view.window];
@@ -1384,7 +1384,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [UIView commitAnimations];
 }
 
-- (void)keyboardWillHide:(NSNotification*)notification
+- (void)keyboardWillHide:(NSNotification *)notification
 {
     self.isShowingKeyboard = NO;
     self.keyboardOverlapsMedia = NO;
@@ -1428,7 +1428,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-    VStreamContainerViewController* container =[VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    VStreamContainerViewController* container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     container.shouldShowHeaderLogo = NO;
     [self.navigationController pushViewController:container animated:YES];
 }

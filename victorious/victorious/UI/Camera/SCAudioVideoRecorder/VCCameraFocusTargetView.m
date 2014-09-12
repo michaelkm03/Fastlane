@@ -100,9 +100,9 @@
     scaleAniamtion.fromValue = [NSNumber numberWithFloat:1.0f];
     scaleAniamtion.toValue = [NSNumber numberWithFloat:.0f];
     
-    CABasicAnimation *fadeAnim=[CABasicAnimation animationWithKeyPath:@"opacity"];
-    fadeAnim.fromValue=[NSNumber numberWithDouble:1.0];
-    fadeAnim.toValue=[NSNumber numberWithDouble:0.0];
+    CABasicAnimation *fadeAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    fadeAnim.fromValue = [NSNumber numberWithDouble:1.0];
+    fadeAnim.toValue = [NSNumber numberWithDouble:0.0];
     
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.beginTime = CACurrentMediaTime() + 0.3;
@@ -135,7 +135,7 @@
     self.insideCircle.frame = frame;
 }
 
-- (UIImage*)insideFocusTargetImage
+- (UIImage *)insideFocusTargetImage
 {
     return self.insideCircle.image;
 }
@@ -145,7 +145,7 @@
     self.insideCircle.image = insideFocusTargetImage;
 }
 
-- (UIImage*)outsideFocusTargetImage
+- (UIImage *)outsideFocusTargetImage
 {
     return self.outsideCircle.image;
 }

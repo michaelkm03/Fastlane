@@ -89,7 +89,7 @@
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
-- (void)transitionToNavStack:(NSArray*)navStack
+- (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
     for (UIViewController* vc in self.contentViewController.viewControllers)
@@ -109,14 +109,14 @@
 {
     if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
     {
-        return [(UIViewController<UINavigationControllerDelegate>*)fromVC navigationController:navigationController
+        return [(UIViewController<UINavigationControllerDelegate> *)fromVC navigationController:navigationController
                                                                animationControllerForOperation:operation
                                                                             fromViewController:fromVC
                                                                               toViewController:toVC];
     }
     else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
     {
-        return [(UIViewController<UINavigationControllerDelegate>*)toVC navigationController:navigationController
+        return [(UIViewController<UINavigationControllerDelegate> *)toVC navigationController:navigationController
                                                                animationControllerForOperation:operation
                                                                             fromViewController:fromVC
                                                                               toViewController:toVC];

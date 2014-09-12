@@ -236,8 +236,6 @@
 		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
-		03AC453219B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */; };
-		03AC453519B972C000CE4351 /* VSystemVersionDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453419B972C000CE4351 /* VSystemVersionDetection.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
 		03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856D19B42C9100E27D05 /* LICENSE.txt */; };
@@ -789,10 +787,6 @@
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
-		03AC453019B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextViewWithCorrectIntrinsicContentSize.h; sourceTree = "<group>"; };
-		03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextViewWithCorrectIntrinsicContentSize.m; sourceTree = "<group>"; };
-		03AC453319B972C000CE4351 /* VSystemVersionDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSystemVersionDetection.h; sourceTree = "<group>"; };
-		03AC453419B972C000CE4351 /* VSystemVersionDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSystemVersionDetection.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		03C1856D19B42C9100E27D05 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -1195,10 +1189,6 @@
 				0314D30E19B46B5E00FA363C /* VPickerTextField.m */,
 				0314D30F19B46B5E00FA363C /* VSetExpirationViewController.h */,
 				0314D31019B46B5E00FA363C /* VSetExpirationViewController.m */,
-				03AC453319B972C000CE4351 /* VSystemVersionDetection.h */,
-				03AC453419B972C000CE4351 /* VSystemVersionDetection.m */,
-				03AC453019B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.h */,
-				03AC453119B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m */,
 			);
 			path = Publish;
 			sourceTree = "<group>";
@@ -2318,6 +2308,7 @@
 				BE171D741868BE64004E5202 /* Resources */,
 				BED94623E5054C5785E419C3 /* Copy Pods Resources */,
 				3FF8C50618A5A06A00812968 /* Set Build Number */,
+				03CE66F819B50C340011BB9E /* Objective Clean */,
 				032948A81970BDA700208FBA /* Crashlytics */,
 			);
 			buildRules = (
@@ -2483,6 +2474,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\n";
+		};
+		03CE66F819B50C340011BB9E /* Objective Clean */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Objective Clean";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ -d \"${LOCAL_APPS_DIR}/Objective-Clean.app\" ]]; then\n\"${LOCAL_APPS_DIR}\"/Objective-Clean.app/Contents/Resources/ObjClean.app/Contents/MacOS/ObjClean \"${SRCROOT}\"?!Pods,!3rd\\ Party\\ SDKs\nelse\necho \"warning: You have to install Objective-Clean to build this project!\"\nexit 1\nfi\n";
 		};
 		3FF8C50618A5A06A00812968 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2720,7 +2725,6 @@
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				0314D49419B46B5E00FA363C /* VContentViewController+Polls.m in Sources */,
-				03AC453219B96BED00CE4351 /* VTextViewWithCorrectIntrinsicContentSize.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				0314D47419B46B5E00FA363C /* VCVideoPlayerToolbarView.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
@@ -2768,7 +2772,6 @@
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
-				03AC453519B972C000CE4351 /* VSystemVersionDetection.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
@@ -2911,7 +2914,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				ProductPrefix = "staging-";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3010,7 +3013,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				ProductPrefix = "debug-";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3064,7 +3067,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				ProductPrefix = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3217,7 +3220,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				ProductPrefix = "qa-";
 				RUN_CLANG_STATIC_ANALYZER = YES;

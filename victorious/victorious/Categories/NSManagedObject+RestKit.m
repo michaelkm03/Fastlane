@@ -15,7 +15,7 @@
     return nil;
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     return nil;
 }

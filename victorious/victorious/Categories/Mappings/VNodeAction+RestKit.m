@@ -15,7 +15,7 @@
     return @"NodeAction";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"won_goto_node" : VSelectorName(wonGotoNode),

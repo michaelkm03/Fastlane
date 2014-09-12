@@ -25,6 +25,6 @@ typedef NS_ENUM(NSInteger, VShareViewSelectedState)
 
 @property (nonatomic) VShareViewSelectedState selectedState;
 
-- (id)initWithTitle:(NSString*)title image:(UIImage*)image;
+- (id)initWithTitle:(NSString *)title image:(UIImage *)image;
 
 @end

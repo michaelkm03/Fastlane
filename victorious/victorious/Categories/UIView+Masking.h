@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (Masking)
-- (void)maskWithImage:(UIImage*) mask;
-- (void)maskWithImage:(UIImage*)mask size:(CGSize)maskSize;
+
+- (void)maskWithImage:(UIImage *)mask;
+- (void)maskWithImage:(UIImage *)mask size:(CGSize)maskSize;
 - (void)removeMask;
+
 @end
