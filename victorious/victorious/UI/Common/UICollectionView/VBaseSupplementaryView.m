@@ -1,16 +1,16 @@
 //
-//  VBaseCollectionViewCell.m
+//  VBaseSupplementaryView.m
 //  victorious
 //
-//  Created by Michael Sena on 9/8/14.
+//  Created by Michael Sena on 9/12/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
+#import "VBaseSupplementaryView.h"
 
-@implementation VBaseCollectionViewCell
+@implementation VBaseSupplementaryView
 
-#pragma mark - VSharedCollectionViewMethods
+#pragma mark - VSharedCollectionReusableViewMethods
 
 + (NSString *)suggestedReuseIdentifier
 {
@@ -21,13 +21,6 @@
 {
     return [UINib nibWithNibName:NSStringFromClass([self class])
                           bundle:nil];
-}
-
-#pragma mark - Public Interface
-
-- (BOOL)shouldPan
-{
-    return YES;
 }
 
 @end

@@ -159,7 +159,7 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
 
 - (void)calculateSizesAndTranslationsIfNeededWithInitialAttributes:(NSArray *)initialLayoutAttributes
 {
-    if (CGSizeEqualToSize(self.sizeForContentView,CGSizeZero))
+    if (CGSizeEqualToSize(self.sizeForContentView, CGSizeZero))
     {
         UICollectionViewLayoutAttributes *layoutAttributesForContentView = [initialLayoutAttributes firstObject];
         self.sizeForContentView = layoutAttributesForContentView.size;

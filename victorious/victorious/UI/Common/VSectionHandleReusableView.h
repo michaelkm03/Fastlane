@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionReusableView.h"
+#import "VBaseSupplementaryView.h"
 
-@interface VSectionHandleReusableView : VBaseCollectionReusableView
+@interface VSectionHandleReusableView : VBaseSupplementaryView
 
 @end
