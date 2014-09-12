@@ -15,6 +15,6 @@
 @property (nonatomic, readonly) VDirectory* directory;
 @property (strong, nonatomic, readonly) VDirectoryDataSource* directoryDataSource;
 
-+ (instancetype)streamDirectoryForDirectory:(VDirectory*)directory;
++ (instancetype)streamDirectoryForDirectory:(VDirectory *)directory;
 
 @end

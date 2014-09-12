@@ -318,6 +318,8 @@
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECDA19105DB8009DD407 /* VAnswer.m */; };
 		BE99CEF419C2686F005881AC /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE99CEF319C2686F005881AC /* VStreamDirectoryItemCell.xib */; };
+		BE99CEF719C36064005881AC /* VNavigationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE99CEF619C36064005881AC /* VNavigationHeaderView.m */; };
+		BE99CEF919C36080005881AC /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE99CEF819C36080005881AC /* VNavigationHeaderView.xib */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BC519BFA40C006A1ABC /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BC419BFA40C006A1ABC /* VComment.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
@@ -927,6 +929,9 @@
 		BE89ECD919105DB8009DD407 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
 		BE89ECDA19105DB8009DD407 /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
 		BE99CEF319C2686F005881AC /* VStreamDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
+		BE99CEF519C36064005881AC /* VNavigationHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationHeaderView.h; sourceTree = "<group>"; };
+		BE99CEF619C36064005881AC /* VNavigationHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationHeaderView.m; sourceTree = "<group>"; };
+		BE99CEF819C36080005881AC /* VNavigationHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNavigationHeaderView.xib; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA78BC319BFA40C006A1ABC /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
@@ -1279,6 +1284,9 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
+				BE99CEF519C36064005881AC /* VNavigationHeaderView.h */,
+				BE99CEF619C36064005881AC /* VNavigationHeaderView.m */,
+				BE99CEF819C36080005881AC /* VNavigationHeaderView.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2422,6 +2430,7 @@
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
 				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
+				BE99CEF919C36080005881AC /* VNavigationHeaderView.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
@@ -2766,6 +2775,7 @@
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
 				0314D46719B46B5E00FA363C /* VExpirationPickerTextField.m in Sources */,
+				BE99CEF719C36064005881AC /* VNavigationHeaderView.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */,

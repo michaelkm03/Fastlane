@@ -13,7 +13,7 @@
 @protocol VStreamDirectoryDataDelegate <NSObject>
 
 @required
-- (UITableViewCell *)dataSource:(VDirectoryDataSource *)dataSource cellForItem:(VDirectoryItem*)item atIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)dataSource:(VDirectoryDataSource *)dataSource cellForItem:(VDirectoryItem *)item atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -23,7 +23,7 @@
 @property (nonatomic, strong) VAbstractFilter *filter;
 @property (nonatomic, strong) VDirectory *directory;
 
-- (instancetype)initWithDirectory:(VDirectory*)directory;
+- (instancetype)initWithDirectory:(VDirectory *)directory;
 
 - (VDirectoryItem *)itemAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForItem:(VDirectoryItem *)directoryItem;

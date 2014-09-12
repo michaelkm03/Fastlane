@@ -38,15 +38,15 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 + (instancetype)streamDirectoryForDirectory:(VDirectory*)directory
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VDirectoryCollectionViewController* streamDirectory = (VDirectoryCollectionViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VDirectoryCollectionViewController *streamDirectory = (VDirectoryCollectionViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
     
 #warning test code
-    VDirectory* aDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+    VDirectory *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     aDirectory.name = @"test";
-    VStream* homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStream* communityStream = [VStream streamForCategories: VUGCCategories()];
-    VStream* ownerStream = [VStream streamForCategories: VOwnerCategories()];
+    VStream *homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+    VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
+    VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
     homeStream.name = @"Home";
     homeStream.previewImage = @"http://victorious.com/img/logo.png";
     [homeStream addDirectoriesObject:aDirectory];
@@ -59,7 +59,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     ownerStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
     [ownerStream addDirectoriesObject:aDirectory];
     
-    for (VSequence* sequence in homeStream.sequences)
+    for (VSequence *sequence in homeStream.sequences)
     {
         [sequence addDirectoriesObject:aDirectory];
     }
@@ -93,21 +93,21 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 #pragma mark - CollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VDirectoryItem* item = [self.directoryDataSource itemAtIndexPath:indexPath];
+    VDirectoryItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[VStream class]])
     {
-        VStreamTableViewController* streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
+        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
         [self.navigationController pushViewController:streamTable animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])
     {
-        VContentViewController* contentViewController = [[VContentViewController alloc] init];
+        VContentViewController *contentViewController = [[VContentViewController alloc] init];
         contentViewController.sequence = (VSequence *)item;
         [self.navigationController pushViewController:contentViewController animated:YES];
     }
     else if ([item isKindOfClass:[VDirectory class]])
     {
-        VDirectoryCollectionViewController* directoryVC = [VDirectoryCollectionViewController streamDirectoryForDirectory:(VDirectory*)item];
+        VDirectoryCollectionViewController *directoryVC = [VDirectoryCollectionViewController streamDirectoryForDirectory:(VDirectory*)item];
         [self.navigationController pushViewController:directoryVC animated:YES];
     }
 }

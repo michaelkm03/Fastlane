@@ -70,7 +70,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VDirectoryItem* item = [self.directory.directoryItems objectAtIndex:indexPath.row];
+    VDirectoryItem *item = [self.directory.directoryItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;
 //    if ([item isKindOfClass:[VStream class]])
 //    {
