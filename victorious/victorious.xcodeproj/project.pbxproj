@@ -334,8 +334,6 @@
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
-		D86A748719C2519900F46CBF /* VContentCaptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86A748619C2519900F46CBF /* VContentCaptionCell.m */; };
-		D86A748919C251A400F46CBF /* VContentCaptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86A748819C251A400F46CBF /* VContentCaptionCell.xib */; };
 		D879548719C12F5000C12906 /* VAbstractPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = D879547E19C12F5000C12906 /* VAbstractPaginator.m */; };
 		D879548819C12F5000C12906 /* VDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548019C12F5000C12906 /* VDirectory.m */; };
 		D879548919C12F5000C12906 /* VDirectoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548219C12F5000C12906 /* VDirectoryItem.m */; };
@@ -974,9 +972,6 @@
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
-		D86A748519C2519900F46CBF /* VContentCaptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCaptionCell.h; sourceTree = "<group>"; };
-		D86A748619C2519900F46CBF /* VContentCaptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentCaptionCell.m; sourceTree = "<group>"; };
-		D86A748819C251A400F46CBF /* VContentCaptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentCaptionCell.xib; sourceTree = "<group>"; };
 		D879547D19C12F5000C12906 /* VAbstractPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPaginator.h; sourceTree = "<group>"; };
 		D879547E19C12F5000C12906 /* VAbstractPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPaginator.m; sourceTree = "<group>"; };
 		D879547F19C12F5000C12906 /* VDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectory.h; sourceTree = "<group>"; };
@@ -1376,9 +1371,6 @@
 				0314D38219B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m */,
 				D8DE612919BE566D00F7731E /* VNewContentViewController.h */,
 				D8DE612A19BE566D00F7731E /* VNewContentViewController.m */,
-				D86A748519C2519900F46CBF /* VContentCaptionCell.h */,
-				D86A748619C2519900F46CBF /* VContentCaptionCell.m */,
-				D86A748819C251A400F46CBF /* VContentCaptionCell.xib */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2475,7 +2467,6 @@
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
-				D86A748919C251A400F46CBF /* VContentCaptionCell.xib in Resources */,
 				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
@@ -2650,7 +2641,6 @@
 				0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				0314D4CD19B46B5E00FA363C /* VRemixVideoRangeSlider.m in Sources */,
-				D86A748719C2519900F46CBF /* VContentCaptionCell.m in Sources */,
 				0314D4E319B46B5E00FA363C /* VFindTwitterFriendsTableViewController.m in Sources */,
 				D8B6771119BFDA8F008DA0E9 /* VDropdownTitleView.m in Sources */,
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,

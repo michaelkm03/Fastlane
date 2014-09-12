@@ -15,7 +15,6 @@
 #import "VContentCell.h"
 #import "VRealTimeCommentsCell.h"
 #import "VAllCommentCell.h"
-#import "VContentCaptionCell.h"
 
 // Accessory Views
 #import "VSectionHandleReusableView.h"
@@ -23,7 +22,6 @@
 
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
-    VContentViewSectionCaption,
     VContentViewSectionContent,
     VContentViewSectionRealTimeComments,
     VContentViewSectionAllComments,
@@ -64,8 +62,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.contentCollectionView registerNib:[VDropdownTitleView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentCaptionCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCaptionCell suggestedReuseIdentifier]];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -97,8 +93,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = section;
     switch (vSection)
     {
-        case VContentViewSectionCaption:
-            return 1;
         case VContentViewSectionRealTimeComments:
             return 1;
         case VContentViewSectionAllComments:
@@ -121,9 +115,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
-        case VContentViewSectionCaption:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCaptionCell suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
         case VContentViewSectionContent:
             return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
@@ -145,8 +136,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
-        case VContentViewSectionCaption:
-            return nil;
         case VContentViewSectionContent:
             return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                       withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
@@ -169,8 +158,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
-        case VContentViewSectionCaption:
-            return [VContentCaptionCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionContent:
             return [VContentCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
@@ -187,9 +174,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 referenceSizeForHeaderInSection:(NSInteger)section
 {
     VContentViewSection vSection = section;
-    switch (vSection) {
-        case VContentViewSectionCaption:
-            return CGSizeZero;
+    switch (vSection)
+    {
         case VContentViewSectionContent:
             return CGSizeZero;
         case VContentViewSectionRealTimeComments:
@@ -214,86 +200,86 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark UIScrollView
 
-//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
-//                     withVelocity:(CGPoint)velocity
-//              targetContentOffset:(inout CGPoint *)targetContentOffset
-//{
-//    void (^delayedContentOffsetBlock)(void);
-//    
-//    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
-//    
-//    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
-//    {
-//        if (velocity.y > 0.0f) {
-//            delayedContentOffsetBlock = ^void(void)
-//            {
-//                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-//            };
-//        }
-//        else
-//        {
-//            *targetContentOffset = CGPointMake(0, 0);
-//        }
-//    }
-//    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
-//    {
-//        if (velocity.y > 0.0f)
-//        {
-//            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
-//        }
-//        else
-//        {
-//            delayedContentOffsetBlock = ^void(void)
-//            {
-//                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
-//                                    animated:YES];
-//            };
-//        }
-//    }
-//    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
-//    {
-//        if (velocity.y < 0.0f)
-//        {
-//            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
-//        }
-//        else
-//        {
-//            delayedContentOffsetBlock = ^void(void)
-//            {
-//                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
-//                                    animated:YES];
-//            };
-//        }
-//    }
-//    else if (
-//             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
-//             &&
-//             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
-//             &&
-//             (targetContentOffset->y < (layout.sizeForContentView.height))
-//            )
-//    {
-//        if (velocity.y > 0.0f)
-//        {
-//            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
-//        }
-//        else
-//        {
-//            delayedContentOffsetBlock = ^void(void)
-//            {
-//                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
-//            };
-//        }
-//        
-//    }
-//    
-//    if (delayedContentOffsetBlock)
-//    {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-//        {
-//            delayedContentOffsetBlock();
-//        });
-//    }
-//}
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    void (^delayedContentOffsetBlock)(void);
+    
+    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
+    {
+        if (velocity.y > 0.0f) {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            };
+        }
+        else
+        {
+            *targetContentOffset = CGPointMake(0, 0);
+        }
+    }
+    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
+    {
+        if (velocity.y > 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
+                                    animated:YES];
+            };
+        }
+    }
+    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
+    {
+        if (velocity.y < 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
+                                    animated:YES];
+            };
+        }
+    }
+    else if (
+             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
+             &&
+             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
+             &&
+             (targetContentOffset->y < (layout.sizeForContentView.height))
+            )
+    {
+        if (velocity.y > 0.0f)
+        {
+            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
+        }
+        else
+        {
+            delayedContentOffsetBlock = ^void(void)
+            {
+                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
+            };
+        }
+        
+    }
+    
+    if (delayedContentOffsetBlock)
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            delayedContentOffsetBlock();
+        });
+    }
+}
 
 @end
