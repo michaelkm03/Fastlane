@@ -64,6 +64,13 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.contentCollectionView flashScrollIndicators];
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
