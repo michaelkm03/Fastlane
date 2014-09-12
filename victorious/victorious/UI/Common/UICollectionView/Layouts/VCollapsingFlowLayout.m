@@ -17,8 +17,8 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 @interface VCollapsingFlowLayout ()
 
 @property (nonatomic, assign) CGFloat catchPoint;
-@property (nonatomic, assign) CGFloat contentViewMaxXTranslation;
-@property (nonatomic, assign) CGFloat contentViewMaxYTranslation;
+@property (nonatomic, assign) CGFloat contentViewXTargetTranslation;
+@property (nonatomic, assign) CGFloat contentViewYTargetTranslation;
 
 // Publicly Readonly
 @property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
@@ -61,8 +61,8 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     self.sizeForContentView = CGSizeZero;
     self.sizeForRealTimeComentsView = CGSizeZero;
     self.catchPoint = 0.0f;
-    self.contentViewMaxXTranslation = 0.0f;
-    self.contentViewMaxYTranslation = 0.0f;
+    self.contentViewXTargetTranslation = 0.0f;
+    self.contentViewYTargetTranslation = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
 }
 
@@ -174,15 +174,14 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     }
     
     // Calculate translation from top right
-    if (self.contentViewMaxXTranslation == 0.0f)
+    if (self.contentViewXTargetTranslation == 0.0f)
     {
         CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
-        self.contentViewMaxXTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
+        self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
     }
-    if (self.contentViewMaxYTranslation == 0.0f)
+    if (self.contentViewYTargetTranslation == 0.0f)
     {
-        CGFloat minimizedHeight = self.sizeForContentView.height * kVContentViewFloatingScalingFactor;
-        self.contentViewMaxYTranslation = (-self.sizeForContentView.height * 0.5f) + (minimizedHeight * 0.5f) + kVConentViewFloatingTopSpace;
+        self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.5f);
     }
 }
 
@@ -201,7 +200,7 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
     
     layoutAttributes.zIndex = kVContentViewFloatingZIndex;
-    layoutAttributes.center = CGPointMake(self.sizeForContentView.width/2, self.sizeForContentView.width/2);
+    layoutAttributes.center = CGPointMake(self.sizeForContentView.width * 0.5f, self.sizeForContentView.width * 0.5f);
     layoutAttributes.size = self.sizeForContentView;
     CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
     CGFloat percentCompleted = (deltaCatchPointToTop / (self.sizeForContentView.height - self.dropDownHeaderMiniumHeight));
@@ -214,8 +213,8 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor),
                                                                   fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor));
 
-    CGFloat xTranslation = fminf(self.contentViewMaxXTranslation, self.contentViewMaxXTranslation * percentCompleted);
-    CGFloat yTranslation = fmaxf(self.contentViewMaxYTranslation, self.contentViewMaxYTranslation * percentCompleted);
+    CGFloat xTranslation = fminf(self.contentViewXTargetTranslation, self.contentViewXTargetTranslation * percentCompleted);
+    CGFloat yTranslation = fmaxf(self.contentViewYTargetTranslation, self.contentViewYTargetTranslation * percentCompleted);
 
     CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                               yTranslation);
