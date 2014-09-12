@@ -339,6 +339,8 @@
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
+		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
+		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
@@ -971,6 +973,11 @@
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
+		D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSharedCollectionReusableViewMethods.h; sourceTree = "<group>"; };
+		D836883F19C370C400070F22 /* VBaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseCollectionViewCell.h; sourceTree = "<group>"; };
+		D836884019C370C400070F22 /* VBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCollectionViewCell.m; sourceTree = "<group>"; };
+		D836884219C3718A00070F22 /* VBaseSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseSupplementaryView.h; sourceTree = "<group>"; };
+		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4B199403B400D2A07F /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
@@ -1253,6 +1260,7 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
@@ -2240,6 +2248,18 @@
 			path = OCMock;
 			sourceTree = "<group>";
 		};
+		D836883C19C36FF200070F22 /* UICollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */,
+				D836883F19C370C400070F22 /* VBaseCollectionViewCell.h */,
+				D836884019C370C400070F22 /* VBaseCollectionViewCell.m */,
+				D836884219C3718A00070F22 /* VBaseSupplementaryView.h */,
+				D836884319C3718A00070F22 /* VBaseSupplementaryView.m */,
+			);
+			path = UICollectionView;
+			sourceTree = "<group>";
+		};
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -2568,7 +2588,9 @@
 				0314D48E19B46B5E00FA363C /* VCommentToContentAnimator.m in Sources */,
 				0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
+				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				0314D4CD19B46B5E00FA363C /* VRemixVideoRangeSlider.m in Sources */,
