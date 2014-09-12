@@ -24,4 +24,15 @@
  */
 + (UINib *)nibForCell;
 
+@optional
+
+/**
+ *  A convenience for interrogating a estimated or default size from the given reusable view.
+ *
+ *  @param bounds The bounds of the collectionView in which this reusable view will be added.
+ *
+ *  @return An estimated or default size for the reusable view.
+ */
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
+
 @end
