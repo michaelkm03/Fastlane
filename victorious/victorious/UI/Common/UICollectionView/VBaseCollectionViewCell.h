@@ -11,7 +11,7 @@
 #import "VSharedCollectionReusableViewMethods.h"
 
 /**
- *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All ColleciontViewCell subclasses should subclass VBaseCollectionViewCell.
+ *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All CollectionViewCell subclasses should subclass VBaseCollectionViewCell.
  */
 @interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
