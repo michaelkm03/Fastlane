@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VPaginationManager.h"
 #import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
@@ -415,6 +416,11 @@
         self.hasRefreshed = YES;
         [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"RefreshError", @"");
+        hud.userInteractionEnabled = NO;
+        [hud hide:YES afterDelay:3.0];
     }];
     
     [self.refreshControl beginRefreshing];
