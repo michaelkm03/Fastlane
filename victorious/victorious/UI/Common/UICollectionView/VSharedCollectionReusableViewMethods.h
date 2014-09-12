@@ -13,14 +13,14 @@
 /**
  *  A convenience for data sources to have a reuse identifier for a given reusable view.
  *
- *  @return An appropriate reuasble view identifier.
+ *  @return An appropriate reusable view identifier.
  */
 + (NSString *)suggestedReuseIdentifier;
 
 /**
  *  A convenience for data sources to have a nib for a given reusable view.
  *
- *  @return An approbirate nib for a givne cell.
+ *  @return An appropriate nib for a given cell.
  */
 + (UINib *)nibForCell;
 
