@@ -10,6 +10,9 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 
+/**
+ *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All ColleciontViewCell subclasses should subclass VBaseCollectionViewCell
+ */
 @interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @end

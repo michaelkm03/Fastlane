@@ -10,6 +10,9 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 
+/**
+ *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All supplementary views should subclass VBaseSupplementaryView.
+ */
 @interface VBaseSupplementaryView : UICollectionReusableView <VSharedCollectionReusableViewMethods>
 
 @end
