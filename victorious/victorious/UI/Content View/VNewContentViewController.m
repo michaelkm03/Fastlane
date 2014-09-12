@@ -191,86 +191,86 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark UIScrollView
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
-                     withVelocity:(CGPoint)velocity
-              targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    void (^delayedContentOffsetBlock)(void);
-    
-    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
-    {
-        if (velocity.y > 0.0f) {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-            };
-        }
-        else
-        {
-            *targetContentOffset = CGPointMake(0, 0);
-        }
-    }
-    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
-                                    animated:YES];
-            };
-        }
-    }
-    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
-    {
-        if (velocity.y < 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
-                                    animated:YES];
-            };
-        }
-    }
-    else if (
-             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
-             &&
-             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
-             &&
-             (targetContentOffset->y < (layout.sizeForContentView.height))
-            )
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
-            };
-        }
-        
-    }
-    
-    if (delayedContentOffsetBlock)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            delayedContentOffsetBlock();
-        });
-    }
-}
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+//                     withVelocity:(CGPoint)velocity
+//              targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    void (^delayedContentOffsetBlock)(void);
+//    
+//    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+//    
+//    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
+//    {
+//        if (velocity.y > 0.0f) {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+//            };
+//        }
+//        else
+//        {
+//            *targetContentOffset = CGPointMake(0, 0);
+//        }
+//    }
+//    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
+//    {
+//        if (velocity.y > 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
+//                                    animated:YES];
+//            };
+//        }
+//    }
+//    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
+//    {
+//        if (velocity.y < 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
+//                                    animated:YES];
+//            };
+//        }
+//    }
+//    else if (
+//             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
+//             &&
+//             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
+//             &&
+//             (targetContentOffset->y < (layout.sizeForContentView.height))
+//            )
+//    {
+//        if (velocity.y > 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
+//            };
+//        }
+//        
+//    }
+//    
+//    if (delayedContentOffsetBlock)
+//    {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+//        {
+//            delayedContentOffsetBlock();
+//        });
+//    }
+//}
 
 @end
