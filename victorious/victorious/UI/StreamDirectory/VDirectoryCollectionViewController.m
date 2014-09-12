@@ -11,7 +11,12 @@
 #import "VDirectoryDataSource.h"
 #import "VDirectoryItemCell.h"
 
+#import "VStreamTableViewController.h"
+#import "VContentViewController.h"
+
+//Data Models
 #import "VDirectory.h"
+#import "VSequence.h"
 
 #warning test imports
 #import "VObjectManager.h"
@@ -21,7 +26,7 @@
 
 NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
-@interface VDirectoryCollectionViewController ()
+@interface VDirectoryCollectionViewController () <UICollectionViewDelegate>
 
 @property (strong, nonatomic, readwrite) VDirectoryDataSource* directoryDataSource;
 @property (nonatomic, strong) VDirectory* directory;
@@ -54,6 +59,9 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     ownerStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
     [ownerStream addDirectoriesObject:aDirectory];
     
+    VSequence* firstHomeSequence = [homeStream.sequences firstObject];
+    [firstHomeSequence addDirectoriesObject:aDirectory];
+    
     streamDirectory.directory = aDirectory;
     
     return streamDirectory;
@@ -76,7 +84,28 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     _directory = directory;
     if ([self isViewLoaded])
     {
-//        self.directoryDataSource.directory
+        self.directoryDataSource.directory = directory;
+    }
+}
+
+#pragma mark - CollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VDirectoryItem* item = [self.directoryDataSource itemAtIndexPath:indexPath];
+    if ([item isKindOfClass:[VStream class]])
+    {
+        VStreamTableViewController* streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
+        [self.navigationController pushViewController:streamTable animated:YES];
+    }
+    else if ([item isKindOfClass:[VSequence class]])
+    {
+        VContentViewController* contentViewController = [[VContentViewController alloc] init];
+        contentViewController.sequence = (VSequence *)item;
+        [self.navigationController pushViewController:contentViewController animated:YES];
+    }
+    else if ([item isKindOfClass:[VDirectory class]])
+    {
+        
     }
 }
 

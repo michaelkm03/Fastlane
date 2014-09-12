@@ -72,10 +72,10 @@
 {
     VDirectoryItem* item = [self.directory.directoryItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;
-    if ([item isKindOfClass:[VStream class]])
-    {
+//    if ([item isKindOfClass:[VStream class]])
+//    {
          cell = [collectionView dequeueReusableCellWithReuseIdentifier:kVStreamDirectoryItemCellName forIndexPath:indexPath];
-    }
+//    }
     cell.directoryItem = item;
     return cell;
 }
