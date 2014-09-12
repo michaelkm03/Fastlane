@@ -8,7 +8,7 @@
 
 #import "VTableViewCell.h"
 
-@class VSequence;
+@class VSequence, VStreamCellHeaderView;
 
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
@@ -17,14 +17,16 @@ extern NSString *kStreamsWillCommentNotification;
 
 @interface VStreamViewCell : VTableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *playButtonImage;
-@property (weak, nonatomic) IBOutlet UIImageView *animationImage;
-@property (weak, nonatomic) IBOutlet UIImageView *animationBackgroundImage;
-@property (weak, nonatomic) IBOutlet UIImageView *lowerGradientView;
-@property (weak, nonatomic) IBOutlet UIView *overlayView;
-@property (weak, nonatomic) IBOutlet UIView *shadeView;
-@property (weak, nonatomic) VSequence* sequence;
+@property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
+@property (nonatomic, weak) IBOutlet UIImageView            *playButtonImage;
+@property (nonatomic, weak) IBOutlet UIImageView            *animationImage;
+@property (nonatomic, weak) IBOutlet UIImageView            *animationBackgroundImage;
+@property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
+@property (nonatomic, weak) IBOutlet UIView                 *overlayView;
+@property (nonatomic, weak) IBOutlet UIView                 *shadeView;
+@property (nonatomic, strong) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
+
+@property (nonatomic, weak) VSequence                       *sequence;
 
 - (void) hideOverlays;
 - (void) showOverlays;
