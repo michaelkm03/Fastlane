@@ -43,7 +43,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     VStream* communityStream = [VStream streamForCategories: VUGCCategories()];
     VStream* ownerStream = [VStream streamForCategories: VOwnerCategories()];
     homeStream.name = @"Home";
-    homeStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
+    homeStream.previewImage = @"http://victorious.com/img/logo.png";
     [homeStream addDirectoriesObject:aDirectory];
     
     communityStream.name = @"Community";

@@ -76,6 +76,7 @@
     {
          cell = [collectionView dequeueReusableCellWithReuseIdentifier:kVStreamDirectoryItemCellName forIndexPath:indexPath];
     }
+    cell.directoryItem = item;
     return cell;
 }
 
