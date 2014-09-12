@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iL5-FN-2xy" customClass="VConditionalPanningCollectionView">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iL5-FN-2xy" customClass="VConditionalPanningCollectionView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="c6j-mR-qft" customClass="VCollapsingFlowLayout">
@@ -51,18 +51,39 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4W7-uy-Hkk" userLabel="textField Container" customClass="VTextContainerView">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMe-eN-odG">
+                                        <rect key="frame" x="30" y="7" width="260" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="9O1-S6-jeB" id="0gl-24-W6O"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="VZa-rD-tbV"/>
+                                    <constraint firstAttribute="height" constant="44" id="zob-a7-tZB"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="iL5-FN-2xy" secondAttribute="trailing" id="1IO-fT-h2v"/>
-                            <constraint firstItem="iL5-FN-2xy" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="9pb-Bh-I3Z"/>
-                            <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="FlH-k6-cIS"/>
-                            <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="iL5-FN-2xy" secondAttribute="bottom" id="nTg-Hf-Cd5"/>
+                            <constraint firstItem="4W7-uy-Hkk" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="0YB-yy-rYu"/>
+                            <constraint firstAttribute="trailing" secondItem="4W7-uy-Hkk" secondAttribute="trailing" id="AOB-xB-ZmE"/>
+                            <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="4W7-uy-Hkk" secondAttribute="bottom" id="Mcr-xL-Du1"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
+                        <outlet property="textField" destination="vMe-eN-odG" id="3E1-gq-Xj6"/>
+                        <outlet property="textFieldContainer" destination="4W7-uy-Hkk" id="HCV-0O-DAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
