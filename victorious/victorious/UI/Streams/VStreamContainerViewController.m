@@ -194,6 +194,14 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
+    
+    UIViewController *newContentVC = [[UIStoryboard storyboardWithName:@"ContentView"
+                                                                bundle:nil] instantiateInitialViewController];
+    
+    [self presentViewController:newContentVC animated:YES completion:nil];
+
+    return;
+    
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
