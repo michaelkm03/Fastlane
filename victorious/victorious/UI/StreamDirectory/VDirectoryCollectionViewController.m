@@ -59,8 +59,10 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     ownerStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
     [ownerStream addDirectoriesObject:aDirectory];
     
-    VSequence* firstHomeSequence = [homeStream.sequences firstObject];
-    [firstHomeSequence addDirectoriesObject:aDirectory];
+    for (VSequence* sequence in homeStream.sequences)
+    {
+        [sequence addDirectoriesObject:aDirectory];
+    }
     
     streamDirectory.directory = aDirectory;
     
@@ -105,7 +107,8 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     }
     else if ([item isKindOfClass:[VDirectory class]])
     {
-        
+        VDirectoryCollectionViewController* directoryVC = [VDirectoryCollectionViewController streamDirectoryForDirectory:(VDirectory*)item];
+        [self.navigationController pushViewController:directoryVC animated:YES];
     }
 }
 
