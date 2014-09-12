@@ -163,7 +163,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return [VRealTimeCommentsCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
-            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), 60);
+            return [VAllCommentCell desiredSizeForCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionCount:
             return CGSizeZero;
     }
@@ -181,7 +181,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionRealTimeComments:
             return CGSizeZero;
         case VContentViewSectionAllComments:
-            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), 20);
+            return [VSectionHandleReusableView desiredSizeForCollectionViewBounds:collectionView.bounds];
         case VContentViewSectionCount:
             return CGSizeZero;
     }
@@ -210,7 +210,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
     {
-        if (velocity.y > 0.0f) {
+        if (velocity.y > 0.0f)
+        {
             delayedContentOffsetBlock = ^void(void)
             {
                 [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
@@ -270,7 +271,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                 [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
             };
         }
-        
     }
     
     if (delayedContentOffsetBlock)

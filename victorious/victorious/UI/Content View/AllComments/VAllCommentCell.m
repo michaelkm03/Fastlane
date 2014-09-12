@@ -10,4 +10,9 @@
 
 @implementation VAllCommentCell
 
++ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), 60.0f);
+}
+
 @end
