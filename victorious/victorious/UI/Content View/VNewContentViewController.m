@@ -37,8 +37,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (readwrite) UIView *inputAccessoryView;
 
-@property (nonatomic, assign) BOOL willStartShowingKeyboard;
-
 @end
 
 @implementation VNewContentViewController
@@ -54,7 +52,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewDidLoad];
 
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 44.0f, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.textFieldContainer.bounds.size.height, 0);
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -71,38 +69,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
     
-
-//    self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-    // Notifications
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardFrameWillChange:)
-//                                                 name:UIKeyboardDidChangeFrameNotification
-//                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
-                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(windowHidden)
-//                                                 name:UIWindowDidBecomeHiddenNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(windowReisngKey)
-//                                                 name:UIWindowDidResignKeyNotification
-//                                               object:nil];
-    
     self.inputAccessoryView = self.textFieldContainer;
-    
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -130,6 +97,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (IBAction)pressedClose:(id)sender
 {
+    [self.textFieldContainer removeFromSuperview];
+    self.textFieldContainer = nil;
+    self.inputAccessoryView = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -140,58 +111,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     return [NSIndexPath indexPathForRow:0
                               inSection:VContentViewSectionContent];
-}
-
-#pragma mark - Notification Handlers
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    
-}
-
-- (void)keyboardFrameWillChange:(NSNotification *)notification
-{
-//    self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-//    [self.view addSubview:self.textFieldContainer];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    if (!self.willStartShowingKeyboard) {
-        self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-        [self.view addSubview:self.textFieldContainer];
-    }
-
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification
-{
-    self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-    [self.view addSubview:self.textFieldContainer];
-}
-
-- (void)windowHidden
-{
-//    self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-//    [self.view addSubview:self.textFieldContainer];
-}
-
-- (void)windowReisngKey
-{
-//    self.textFieldContainer.frame = CGRectMake(0, 568-44, 320, 44);
-//    [self.view addSubview:self.textFieldContainer];
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    self.willStartShowingKeyboard = YES;
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    self.willStartShowingKeyboard = NO;
-    return YES;
 }
 
 #pragma mark - UICollectionViewDataSource
