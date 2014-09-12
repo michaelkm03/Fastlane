@@ -32,7 +32,6 @@ static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
-static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
 
 @implementation VCollapsingFlowLayout
 
@@ -77,7 +76,7 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
 {
     NSMutableArray *attributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    [self updateInternalStateWithInitalLayoutAttributes:attributes];
+    [self calculateSizesAndTranslationsIfNeededWithInitialAttributes:attributes];
     
     __block BOOL hasLayoutAttributesForContentView = NO;
     
@@ -158,7 +157,7 @@ static const CGFloat kVConentViewFloatingTopSpace = 40.0f;
     }
 }
 
-- (void)updateInternalStateWithInitalLayoutAttributes:(NSArray *)initialLayoutAttributes
+- (void)calculateSizesAndTranslationsIfNeededWithInitialAttributes:(NSArray *)initialLayoutAttributes
 {
     if (CGSizeEqualToSize(self.sizeForContentView,CGSizeZero))
     {
