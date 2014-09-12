@@ -1344,13 +1344,13 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				D858E66719C29BE000E4B24D /* UICollectionReusableView */,
 				D8DE613819BE802300F7731E /* AllComments */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				0314D36519B46B5E00FA363C /* Content Info */,
 				D8DE612C19BE575B00F7731E /* ContentView.storyboard */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
+				D858E66719C29BE000E4B24D /* UICollectionReusableView */,
 				0314D37619B46B5E00FA363C /* VActionBarViewController.h */,
 				0314D37719B46B5E00FA363C /* VActionBarViewController.m */,
 				0314D37819B46B5E00FA363C /* VContentTitleTextView.h */,
