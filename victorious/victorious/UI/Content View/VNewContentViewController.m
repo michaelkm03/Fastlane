@@ -275,6 +275,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     if (delayedContentOffsetBlock)
     {
+        // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
             delayedContentOffsetBlock();
