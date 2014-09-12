@@ -346,6 +346,8 @@
 		D879548A19C12F5000C12906 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D879548319C12F5000C12906 /* victoriOS.xcdatamodeld */; };
 		D879548B19C12F5000C12906 /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548619C12F5000C12906 /* VStream.m */; };
 		D879548E19C12F9500C12906 /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548D19C12F9500C12906 /* VStream+Fetcher.m */; };
+		D8A4C97819C3A48100E7EBDF /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A4C97719C3A48100E7EBDF /* VKeyboardInputAccessoryView.m */; };
+		D8A4C97A19C3A48B00E7EBDF /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8A4C97919C3A48B00E7EBDF /* VKeyboardInputAccessoryView.xib */; };
 		D8B3F8B719BE93140009B7CD /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */; };
 		D8B3F8B919BE93720009B7CD /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */; };
 		D8B3F8BC19BE93B80009B7CD /* VBaseCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BB19BE93B80009B7CD /* VBaseCollectionReusableView.m */; };
@@ -992,6 +994,9 @@
 		D879548619C12F5000C12906 /* VStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStream.m; sourceTree = "<group>"; };
 		D879548C19C12F9500C12906 /* VStream+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStream+Fetcher.h"; sourceTree = "<group>"; };
 		D879548D19C12F9500C12906 /* VStream+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStream+Fetcher.m"; sourceTree = "<group>"; };
+		D8A4C97619C3A48100E7EBDF /* VKeyboardInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardInputAccessoryView.h; sourceTree = "<group>"; };
+		D8A4C97719C3A48100E7EBDF /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
+		D8A4C97919C3A48B00E7EBDF /* VKeyboardInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
 		D8B3F8B519BE93140009B7CD /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
 		D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
@@ -1337,6 +1342,9 @@
 				0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */,
 				0314D34C19B46B5E00FA363C /* VKeyboardBarViewController.h */,
 				0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */,
+				D8A4C97619C3A48100E7EBDF /* VKeyboardInputAccessoryView.h */,
+				D8A4C97719C3A48100E7EBDF /* VKeyboardInputAccessoryView.m */,
+				D8A4C97919C3A48B00E7EBDF /* VKeyboardInputAccessoryView.xib */,
 			);
 			path = "Keyboard Bar";
 			sourceTree = "<group>";
@@ -2494,6 +2502,7 @@
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
 				D858E67619C29C0500E4B24D /* VRealTimeCommentsCell.xib in Resources */,
 				0314D4F919B46B5E00FA363C /* VStreamPollCell.xib in Resources */,
+				D8A4C97A19C3A48B00E7EBDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				0314D4C319B46B5E00FA363C /* VUserProfileHeaderView.xib in Resources */,
@@ -2871,6 +2880,7 @@
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
 				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,
+				D8A4C97819C3A48100E7EBDF /* VKeyboardInputAccessoryView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				0314D47719B46B5E00FA363C /* VElapsedTimeFormatter.m in Sources */,

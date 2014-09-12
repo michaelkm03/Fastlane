@@ -16,9 +16,12 @@
 #import "VRealTimeCommentsCell.h"
 #import "VAllCommentCell.h"
 
-// Accessory Views
+// Supplementary Views
 #import "VSectionHandleReusableView.h"
 #import "VDropdownTitleView.h"
+
+// Input Acceossry
+#import "VKeyboardInputAccessoryView.h"
 
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
@@ -31,10 +34,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet UITextField *textField;
-@property (nonatomic, weak) IBOutlet UIView *textFieldContainer;
 
-@property (nonatomic ,readwrite) UIView *inputAccessoryView;
+@property (nonatomic ,readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
 @end
 
@@ -57,8 +58,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+    self.inputAccessoryView.frame = CGRectMake(0,
+                                               CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
+                                               CGRectGetWidth(self.view.bounds),
+                                               self.inputAccessoryView.intrinsicContentSize.height);
+    [self.view addSubview:self.inputAccessoryView];
 
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.textFieldContainer.bounds.size.height, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -76,7 +84,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 
     
-    self.inputAccessoryView = self.textFieldContainer;
+//    self.inputAccessoryView = self.textFieldContainer;
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
     [self becomeFirstResponder];
     [self resignFirstResponder];
@@ -93,7 +101,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewWillDisappear:animated];
     
-    [self.textFieldContainer removeFromSuperview];
+    [self.inputAccessoryView removeFromSuperview];
 }
 
 - (BOOL)prefersStatusBarHidden
