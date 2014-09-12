@@ -38,14 +38,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
-//@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *parentLabel;
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
-@property (nonatomic, weak) IBOutlet UIButton       *profileImageButton;
-@property (nonatomic, weak) IBOutlet UIImageView    *dateImageView;
-@property (nonatomic, weak) IBOutlet UIButton       *commentButton;
-@property (nonatomic, weak) IBOutlet UIButton       *commentHitboxButton;
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;

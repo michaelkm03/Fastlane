@@ -19,6 +19,7 @@
 #import "VLargeNumberFormatter.h"
 #import "UIImage+ImageCreation.h"
 #import "UIButton+VImageLoading.h"
+#import "VConstants.h"
 
 
 static VLargeNumberFormatter* largeNumberFormatter;
@@ -53,15 +54,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
     
     self.commentViews = [[NSMutableArray alloc] init];
 
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
-
 }
 
 - (void)layoutSubviews
@@ -81,6 +73,14 @@ static VLargeNumberFormatter* largeNumberFormatter;
 {
     _sequence = sequence;
     
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
+    [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
+    
+
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.profileImagePathSmall ?: self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
