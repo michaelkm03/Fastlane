@@ -348,7 +348,6 @@
 		D879548E19C12F9500C12906 /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548D19C12F9500C12906 /* VStream+Fetcher.m */; };
 		D8B3F8B719BE93140009B7CD /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */; };
 		D8B3F8B919BE93720009B7CD /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */; };
-		D8B3F8C019BE968C0009B7CD /* VConditionalPanningCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */; };
 		D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */; };
 		D8DE612B19BE566D00F7731E /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612A19BE566D00F7731E /* VNewContentViewController.m */; };
 		D8DE612D19BE575B00F7731E /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8DE612C19BE575B00F7731E /* ContentView.storyboard */; };
@@ -994,8 +993,6 @@
 		D8B3F8B519BE93140009B7CD /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
 		D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
-		D8B3F8BE19BE968C0009B7CD /* VConditionalPanningCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConditionalPanningCollectionView.h; sourceTree = "<group>"; };
-		D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConditionalPanningCollectionView.m; sourceTree = "<group>"; };
 		D8B3F8C419BE9D480009B7CD /* VCollapsingFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollapsingFlowLayout.h; sourceTree = "<group>"; };
 		D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollapsingFlowLayout.m; sourceTree = "<group>"; };
 		D8DE612919BE566D00F7731E /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -1309,8 +1306,6 @@
 				D8B3F8B519BE93140009B7CD /* VSectionHandleReusableView.h */,
 				D8B3F8B619BE93140009B7CD /* VSectionHandleReusableView.m */,
 				D8B3F8B819BE93720009B7CD /* VSectionHandleReusableView.xib */,
-				D8B3F8BE19BE968C0009B7CD /* VConditionalPanningCollectionView.h */,
-				D8B3F8BF19BE968C0009B7CD /* VConditionalPanningCollectionView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2686,7 +2681,6 @@
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */,
-				D8B3F8C019BE968C0009B7CD /* VConditionalPanningCollectionView.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,

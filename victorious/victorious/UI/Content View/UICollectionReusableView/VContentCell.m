@@ -10,7 +10,7 @@
 
 @implementation VContentCell
 
-+ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }

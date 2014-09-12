@@ -10,7 +10,7 @@
 
 @implementation VSectionHandleReusableView
 
-+ (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), 20.0f);
 }
