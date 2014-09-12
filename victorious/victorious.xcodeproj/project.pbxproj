@@ -328,7 +328,7 @@
 		BEA78C2219C00328006A1ABC /* VDirectoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2119C00328006A1ABC /* VDirectoryItem.m */; };
 		BEA78C2819C00328006A1ABC /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2719C00328006A1ABC /* VStream.m */; };
 		BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */; };
-		BEA78C3119C10B32006A1ABC /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2E19C10B32006A1ABC /* VDirectoryCollectionViewController.m */; };
+		BEA78C3119C10B32006A1ABC /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2E19C10B32006A1ABC /* VDirectoryViewController.m */; };
 		BEA78C3219C10B32006A1ABC /* VDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C3019C10B32006A1ABC /* VDirectoryDataSource.m */; };
 		BEA78C3E19C134B4006A1ABC /* VDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C3D19C134B4006A1ABC /* VDirectory.m */; };
 		BEBAA94819C2623E00D54CCF /* VDirectoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBAA94719C2623E00D54CCF /* VDirectoryItemCell.m */; };
@@ -956,8 +956,8 @@
 		BEA78C2719C00328006A1ABC /* VStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStream.m; sourceTree = "<group>"; };
 		BEA78C2919C008F0006A1ABC /* VStream+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStream+Fetcher.h"; sourceTree = "<group>"; };
 		BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStream+Fetcher.m"; sourceTree = "<group>"; };
-		BEA78C2D19C10B32006A1ABC /* VDirectoryCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionViewController.h; sourceTree = "<group>"; };
-		BEA78C2E19C10B32006A1ABC /* VDirectoryCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionViewController.m; sourceTree = "<group>"; };
+		BEA78C2D19C10B32006A1ABC /* VDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryViewController.h; sourceTree = "<group>"; };
+		BEA78C2E19C10B32006A1ABC /* VDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryViewController.m; sourceTree = "<group>"; };
 		BEA78C2F19C10B32006A1ABC /* VDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryDataSource.h; sourceTree = "<group>"; };
 		BEA78C3019C10B32006A1ABC /* VDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryDataSource.m; sourceTree = "<group>"; };
 		BEA78C3C19C134B4006A1ABC /* VDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectory.h; sourceTree = "<group>"; };
@@ -2264,8 +2264,8 @@
 			isa = PBXGroup;
 			children = (
 				BEBAA94519C2623E00D54CCF /* Cells */,
-				BEA78C2D19C10B32006A1ABC /* VDirectoryCollectionViewController.h */,
-				BEA78C2E19C10B32006A1ABC /* VDirectoryCollectionViewController.m */,
+				BEA78C2D19C10B32006A1ABC /* VDirectoryViewController.h */,
+				BEA78C2E19C10B32006A1ABC /* VDirectoryViewController.m */,
 				BEA78C2F19C10B32006A1ABC /* VDirectoryDataSource.h */,
 				BEA78C3019C10B32006A1ABC /* VDirectoryDataSource.m */,
 			);
@@ -2793,7 +2793,7 @@
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
 				0314D4ED19B46B5E00FA363C /* VLoginTransitionAnimator.m in Sources */,
 				0314D50619B46B5E00FA363C /* VWebContentViewController.m in Sources */,
-				BEA78C3119C10B32006A1ABC /* VDirectoryCollectionViewController.m in Sources */,
+				BEA78C3119C10B32006A1ABC /* VDirectoryViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,

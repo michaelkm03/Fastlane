@@ -10,10 +10,11 @@
 
 @class VDirectory, VDirectoryDataSource;
 
-@interface VDirectoryCollectionViewController : UICollectionViewController
+@interface VDirectoryViewController : UIViewController
 
 @property (nonatomic, readonly) VDirectory* directory;
 @property (strong, nonatomic, readonly) VDirectoryDataSource* directoryDataSource;
+@property (weak, nonatomic, readonly) UICollectionView *collectionView;
 
 + (instancetype)streamDirectoryForDirectory:(VDirectory *)directory;
 

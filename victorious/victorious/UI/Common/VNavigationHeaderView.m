@@ -20,13 +20,15 @@
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic) NSInteger lastSelectedControl;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;
+
 @end
 
 @implementation VNavigationHeaderView
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[VNavigationHeaderView alloc] init];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
     
@@ -36,7 +38,7 @@
 
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[VNavigationHeaderView alloc] init];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
     
@@ -48,10 +50,7 @@
 {
     if (!titles.count)
     {
-        self.segmentedControl.hidden = YES;
-        CGRect newBounds = self.bounds;
-        newBounds.size.height = CGRectGetMinY(self.segmentedControl.frame);
-        self.bounds = newBounds;
+        self.heightConstraint.constant = CGRectGetMinY(self.segmentedControl.frame);
     }
     else
     {
@@ -63,28 +62,18 @@
     }
 }
 
-- (void)awakeFromNib
+- (void)updateUI
 {
-    [super awakeFromNib];
-    
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
-    for (UIButton* button in @[self.menuButton, self.addButton, self.backButton])
-    {
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        UIImage* image = [button.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [button setImage:image forState:UIControlStateNormal];
-    }
-        
+    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    UIImage* image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.menuButton setImage:image forState:UIControlStateNormal];
+    
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
-    [self configureSegmentedControl];
-}
-
-- (void)configureSegmentedControl
-{
     self.segmentedControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.segmentedControl.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     self.segmentedControl.layer.cornerRadius = 4;

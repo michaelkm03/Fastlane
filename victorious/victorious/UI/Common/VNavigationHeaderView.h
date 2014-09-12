@@ -10,10 +10,10 @@
 
 @protocol VNavigationHeaderDelegate <NSObject>
 
+@optional
 - (void)backButtonPressed;
 - (void)menuButtonPressed;
 - (void)addButtonPressed;
-
 /**
  *  Callback that handles the changed index
  *
@@ -35,5 +35,6 @@
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;
 
 - (void)showHeaderLogo;
+- (void)updateUI;
 
 @end
