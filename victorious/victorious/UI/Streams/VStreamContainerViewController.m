@@ -25,7 +25,7 @@
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
-@interface VStreamContainerViewController () <VCreateSequenceDelegate>
+@interface VStreamContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIButton* createButton;
 
@@ -232,7 +232,7 @@
                                                                                                    action:@"Selected Create Poll"
                                                                                                     label:nil
                                                                                                     value:nil];
-                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerWithDelegate:self];
+                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];
     [actionSheet showInView:self.view];
@@ -271,52 +271,6 @@
     };
     [navigationController pushViewController:cameraViewController animated:NO];
     [self presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)createPollWithQuestion:(NSString *)question
-                   answer1Text:(NSString *)answer1Text
-                   answer2Text:(NSString *)answer2Text
-                     media1URL:(NSURL *)media1URL
-                     media2URL:(NSURL *)media2URL
-{
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-    };
-    
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        NSLog(@"%@", error);
-        
-        if (kVStillTranscodingError == error.code)
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-        else
-        {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-    };
-    
-    [[VObjectManager sharedManager] createPollWithName:question
-                                           description:@"<none>"
-                                              question:question
-                                           answer1Text:answer1Text
-                                           answer2Text:answer2Text
-                                             media1Url:media1URL
-                                             media2Url:media2URL
-                                          successBlock:success
-                                             failBlock:fail];
 }
 
 #pragma mark - Navigation

@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 - (void)streamWillDisappear;
 @end
 
-@interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
+@interface VStreamTableViewController : UITableViewController <VAnimation>
 
 @property (nonatomic)         VStreamFilter    filterType;
 @property (nonatomic, strong) VStream *currentStream;

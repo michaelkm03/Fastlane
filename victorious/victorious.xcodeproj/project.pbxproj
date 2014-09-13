@@ -581,7 +581,6 @@
 		0314D38C19B46B5E00FA363C /* VImageSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchViewController.m; sourceTree = "<group>"; };
 		0314D38D19B46B5E00FA363C /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatePollViewController.h; sourceTree = "<group>"; };
 		0314D38E19B46B5E00FA363C /* VCreatePollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatePollViewController.m; sourceTree = "<group>"; };
-		0314D38F19B46B5E00FA363C /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateSequenceDelegate.h; sourceTree = "<group>"; };
 		0314D39119B46B5E00FA363C /* VForceUpgradeAnimatedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeAnimatedTransition.h; sourceTree = "<group>"; };
 		0314D39219B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeAnimatedTransition.m; sourceTree = "<group>"; };
 		0314D39319B46B5E00FA363C /* VForceUpgradeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeViewController.h; sourceTree = "<group>"; };
@@ -1382,7 +1381,6 @@
 				0314D38419B46B5E00FA363C /* Image Search */,
 				0314D38D19B46B5E00FA363C /* VCreatePollViewController.h */,
 				0314D38E19B46B5E00FA363C /* VCreatePollViewController.m */,
-				0314D38F19B46B5E00FA363C /* VCreateSequenceDelegate.h */,
 			);
 			path = "Create Poll";
 			sourceTree = "<group>";
