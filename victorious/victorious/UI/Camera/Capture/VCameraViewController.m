@@ -9,10 +9,10 @@
 @import AVFoundation;
 @import AssetsLibrary;
 
+#import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
+#import "VCameraCaptureController.h"
 #import "VCameraViewController.h"
-#import "VCCamera.h"
-#import "VCCameraFocusView.h"
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
@@ -20,9 +20,11 @@
 #import "UIImage+Resize.h"
 #import "VSettingManager.h"
 
-const   NSTimeInterval  kAnimationDuration      =   0.4;
+static const NSTimeInterval kAnimationDuration = 0.4;
+static const CGFloat kDisabledRecordButtonAlpha = 0.2f;
+static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
-@interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
@@ -30,7 +32,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 @property (nonatomic, weak) IBOutlet    UIView*             progressView;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet    UIView*             previewView;
+@property (nonatomic, strong) IBOutlet    UIView*           previewView; // This is STRONG on purpose.
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 
 @property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           deleteButton;
@@ -39,8 +42,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (nonatomic, weak) IBOutlet    UIButton*           capturePhotoButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraModeButton;
 
-@property (strong, nonatomic) VCCamera* camera;
-@property (strong, nonatomic) VCCameraFocusView* focusView;
+@property (nonatomic, strong) VCameraCaptureController *camera;
+//@property (nonatomic, strong) VCCameraFocusView* focusView;
 
 @property (nonatomic)                   BOOL                allowVideo;
 @property (nonatomic)                   BOOL                allowPhotos;
@@ -54,11 +57,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @end
 
 @implementation VCameraViewController
-
-+ (BOOL)isCameraAvailable
-{
-    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-}
 
 + (VCameraViewController *)cameraViewController
 {
@@ -119,6 +117,14 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     [super viewDidLoad];
     
+    self.camera = [[VCameraCaptureController alloc] init];
+    [self.camera setSessionPreset:self.initialCaptureMode completion:nil];
+    
+    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.camera.captureSession];
+    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.previewView.layer addSublayer:self.previewLayer];
+
+#if 0
     self.camera = [[VCCamera alloc] initWithSessionPreset:self.initialCaptureMode];
     self.camera.delegate = self;
     self.camera.enableSound = YES;
@@ -131,7 +137,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
     BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
     
-    self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
     if (hasRearCamera)
     {
         self.camera.cameraDevice = VCCameraDeviceBack;
@@ -141,24 +146,20 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.camera.cameraDevice = VCCameraDeviceFront;
     }
     
-    [self.camera initialize:^(NSError * audioError, NSError * videoError)
-     {
-		[self prepareCamera];
-    }];
-
-    UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
-    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
-
-    [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
-    [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
-
-    
-    [self activateDeactivateRecordButton:YES];
-    
-    
     self.focusView = [[VCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
     self.focusView.camera = self.camera;
     [self.previewView addSubview:self.focusView];
+
+#endif
+    self.switchCameraButton.hidden = self.camera.devices.count <= 1;
+    
+    UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
+    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
+    
+    [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
+    [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
+    [self setRecordButtonEnabled:YES];
     
     if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
     {
@@ -174,13 +175,43 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.previewLayer.frame = self.previewView.layer.bounds;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
     
-    [self setOpenAlbumButtonImageWithLatestPhoto:[self.camera.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] animated:NO];
+    [self setOpenAlbumButtonImageWithLatestPhoto:[self isInPhotoCaptureMode] animated:NO];
+
+    [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+    [self.camera startRunningWithCompletion:^(NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+            if (error)
+            {
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.labelText = NSLocalizedString(@"CameraFailed", @"");
+                [hud hide:YES afterDelay:10.0];
+            }
+            else
+            {
+                // Check for mic permission if doing video
+                if ([self.camera.captureSession.sessionPreset isEqualToString:self.videoQuality])
+                {
+                    [self checkForMicrophoneAuthorization];
+                }
+            }
+        });
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -193,6 +224,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         [self clearRecordedVideoAnimated:NO];
     }
     
+#if 0
     if (self.camera.isReady)
     {
         NSLog(@"Starting to run");
@@ -203,11 +235,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         NSLog(@"Not prepared yet");
     }
     
-    // Check for Mic Permission if doing video
-    if (self.camera.sessionPreset == self.videoQuality)
-    {
-        [self checkForMicrophoneAuthorization];
-    }
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -219,9 +247,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-
-    [self.camera stopRunningSession];
-    [self.camera cancel];
+    [self.camera stopRunningWithCompletion:nil];
 }
 
 - (BOOL)shouldAutorotate
@@ -246,7 +272,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted)
     {
-        
         if (!granted)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -257,35 +282,74 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                      otherButtonTitles:nil];
                                [alert show];
-                               [self activateDeactivateRecordButton:NO];
+                               [self setRecordButtonEnabled:NO];
                            });
         }
     }];
 }
 
 
-#pragma mark - Activate / Deactivate Record Button
+#pragma mark - Enable/Disable Controls
 
-- (void)activateDeactivateRecordButton:(BOOL)activate
+- (void)setRecordButtonEnabled:(BOOL)enabled
 {
-    if (activate)
+    if (enabled)
     {
-        [self.recordButton setAlpha:1.0f];
+        [self.recordButton setAlpha:kEnabledRecordButtonAlpha];
         self.recordButton.userInteractionEnabled = YES;
     }
     else
     {
-        [self.recordButton setAlpha:0.2f];
+        [self.recordButton setAlpha:kDisabledRecordButtonAlpha];
         self.recordButton.userInteractionEnabled = NO;
     }
 }
 
+- (void)setAllControlsEnabled:(BOOL)enabled
+{
+    if (enabled)
+    {
+        if ([self isInPhotoCaptureMode])
+        {
+            self.capturePhotoButton.alpha = kEnabledRecordButtonAlpha;
+        }
+        else
+        {
+            self.recordButton.alpha = kEnabledRecordButtonAlpha;
+        }
+        self.recordButton.userInteractionEnabled = YES;
+        self.capturePhotoButton.userInteractionEnabled = YES;
+        self.flashButton.enabled = YES;
+        self.switchCameraButton.enabled = YES;
+        self.switchCameraModeButton.enabled = YES;
+        self.openAlbumButton.enabled = YES;
+        self.nextButton.enabled = YES;
+    }
+    else
+    {
+        if ([self isInPhotoCaptureMode])
+        {
+            self.capturePhotoButton.alpha = kDisabledRecordButtonAlpha;
+        }
+        else
+        {
+            self.recordButton.alpha = kDisabledRecordButtonAlpha;
+        }
+        self.recordButton.userInteractionEnabled = NO;
+        self.capturePhotoButton.userInteractionEnabled = NO;
+        self.flashButton.enabled = NO;
+        self.switchCameraButton.enabled = NO;
+        self.switchCameraModeButton.enabled = NO;
+        self.openAlbumButton.enabled = NO;
+        self.nextButton.enabled = NO;
+    }
+}
 
 #pragma mark - Actions
 
 - (IBAction)closeAction:(id)sender
 {
-    [self.camera cancel];
+//    [self.camera cancel];
     if (self.completionBlock)
     {
         self.completionBlock(NO, nil, nil);
@@ -294,34 +358,76 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (IBAction)reverseCameraAction:(id)sender
 {
-    [self.camera switchCamera];
-    [UIView animateWithDuration:kAnimationDuration
-                     animations:^(void)
+    if (self.camera.devices.count > 1)
     {
-        [self configureFlashButton];
-    }];
+        AVCaptureDevice *newDevice;
+        if ([self.camera.devices indexOfObject:self.camera.currentDevice] == 1)
+        {
+            newDevice = self.camera.devices[0];
+        }
+        else
+        {
+            newDevice = self.camera.devices[1];
+        }
+
+        [self setAllControlsEnabled:NO];
+        
+        UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
+        snapshot.frame = self.previewView.frame;
+        [self.previewView.superview addSubview:snapshot];
+        self.previewView.alpha = 0.0f;
+        
+        [MBProgressHUD showHUDAddedTo:snapshot animated:YES];
+        __typeof(self) __weak weakSelf = self;
+        [self.camera setCurrentDevice:newDevice withCompletion:^(NSError *error)
+        {
+            __typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    [MBProgressHUD hideAllHUDsForView:snapshot animated:NO];
+                    [strongSelf setAllControlsEnabled:YES];
+                    
+                    [UIView animateWithDuration:kAnimationDuration
+                                     animations:^(void)
+                    {
+                        snapshot.alpha = 0.0f;
+                        strongSelf.previewView.alpha = 1.0f;
+                        [strongSelf configureFlashButton];
+                    }
+                                     completion:^(BOOL finished)
+                    {
+                        [snapshot removeFromSuperview];
+                    }];
+                });
+            }
+        }];
+    }
 }
 
 - (IBAction)nextAction:(id)sender
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Video" label:nil value:nil];
-    [self.camera stop];
+//    [self.camera stop];
 }
 
 - (IBAction)switchFlashAction:(id)sender
 {
-    switch (self.camera.flashMode)
+    if ([self.camera.currentDevice lockForConfiguration:nil])
     {
-        case VCFlashModeOff:
-            self.camera.flashMode = VCFlashModeOn;
-            break;
-        case VCFlashModeOn:
-            self.camera.flashMode = VCFlashModeOff;
-            break;
-        default:
-            break;
+        switch (self.camera.currentDevice.flashMode)
+        {
+            case AVCaptureFlashModeOff:
+                self.camera.currentDevice.flashMode = AVCaptureFlashModeOn;
+                break;
+            default:
+                self.camera.currentDevice.flashMode = AVCaptureFlashModeOff;
+                break;
+        }
+        [self configureFlashButton];
+        [self.camera.currentDevice unlockForConfiguration];
     }
-    [self configureFlashButton];
 }
 
 - (IBAction)openAlbumAction:(id)sender
@@ -348,17 +454,20 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)handleRecordTapGesture:(UIGestureRecognizer *)gesture
 {
-    [UIView animateWithDuration:kAnimationDuration animations:^{
+    [UIView animateWithDuration:kAnimationDuration animations:^(void)
+    {
         self.toolTipImageView.alpha = 1.0;
     }];
 }
 
 - (void)handleRecordLongTapGesture:(UIGestureRecognizer *)gesture
 {
-    [UIView animateWithDuration:kAnimationDuration animations:^{
+    [UIView animateWithDuration:kAnimationDuration animations:^(void)
+    {
         self.toolTipImageView.alpha = 0.0;
     }];
 
+#if 0
     if (self.camera.isPrepared)
     {
         if (gesture.state == UIGestureRecognizerStateBegan)
@@ -372,31 +481,89 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
             [self.camera pause];
         }
     }
+#endif
 }
 
 - (IBAction)capturePhoto:(id)sender
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Photo" label:nil value:nil];
-    [self.camera capturePhoto];
+    [self.camera captureStillWithCompletion:^(NSURL *imageURL, NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            if (error)
+            {
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.labelText = NSLocalizedString(@"StillCaptureFailed", @"");
+                [hud hide:YES afterDelay:3.0];
+            }
+            else
+            {
+                [self moveToPreviewViewControllerWithContentURL:imageURL];
+            }
+        });
+    }];
 }
 
 - (IBAction)switchMediaTypeAction:(id)sender
 {
-    if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
+    void (^showSwitchingError)() = ^(void)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
-        self.camera.sessionPreset = self.videoQuality;
-        [self configureUIforVideoCaptureAnimated:YES completion:^
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"CameraSwitchFailed", @"");
+        [hud hide:YES afterDelay:3.0];
+    };
+    
+    NSString *newSessionPreset;
+    void (^completion)();
+    
+    if ([self isInPhotoCaptureMode])
+    {
+        newSessionPreset = self.videoQuality;
+        completion = ^(void)
         {
-            [self checkForMicrophoneAuthorization];
-        }];
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
+            [self configureUIforVideoCaptureAnimated:YES completion:^(void)
+            {
+                [self checkForMicrophoneAuthorization];
+            }];
+        };
     }
-    else if (self.camera.sessionPreset == self.videoQuality)
+    else
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Photo Capture" label:nil value:nil];
-        self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
-        [self configureUIforPhotoCaptureAnimated:YES completion:nil];
+        newSessionPreset = AVCaptureSessionPresetPhoto;
+        completion = ^(void)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Photo Capture" label:nil value:nil];
+            [self configureUIforPhotoCaptureAnimated:YES completion:nil];
+        };
     }
+    
+    [self setAllControlsEnabled:NO];
+    [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+    typeof(self) __weak weakSelf = self;
+    [self.camera setSessionPreset:newSessionPreset completion:^(BOOL wasSet)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf)
+            {
+                [strongSelf setAllControlsEnabled:YES];
+                [MBProgressHUD hideAllHUDsForView:strongSelf.previewView animated:YES];
+                if (wasSet)
+                {
+                    completion();
+                }
+                else
+                {
+                    showSwitchingError();
+                }
+            }
+        });
+    }];
 }
 
 - (IBAction)trashAction:(id)sender
@@ -497,30 +664,29 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
 }
 
+- (BOOL)isInPhotoCaptureMode
+{
+    return [self.camera.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto];
+}
+
 - (void)configureFlashButton
 {
-    if (self.camera.sessionPreset != AVCaptureSessionPresetPhoto)
+    if (![self isInPhotoCaptureMode])
     {
         self.flashButton.alpha = 0.0f;
         return;
     }
     
-    switch (self.camera.cameraDevice)
+    if (self.camera.currentDevice.flashAvailable)
     {
-        case VCCameraDeviceFront:
-            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront] ? 1.0f : 0.0f;
-            break;
-            
-        case VCCameraDeviceBack:
-            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ? 1.0f : 0.0f;
-            break;
-            
-        default:
-            self.flashButton.alpha = 0.0f;
-            break;
+        self.flashButton.alpha = 1.0f;
+    }
+    else
+    {
+        self.flashButton.alpha = 0.0f;
     }
     
-    self.flashButton.selected = self.camera.flashMode != VCFlashModeOff;
+    self.flashButton.selected = self.camera.currentDevice.flashMode != AVCaptureFlashModeOff;
 }
 
 - (BOOL)cameraSupportsMedia:(NSString *)mediaType sourceType:(UIImagePickerControllerSourceType)sourceType
@@ -645,32 +811,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }];
 }
 
-- (void)prepareCamera
-{
-	if (![self.camera isPrepared])
-    {
-		NSError * error;
-		[self.camera prepareRecordingOnTempDir:&error];
-		
-		if (error != nil)
-        {
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Failed to start camera"
-                                                                 message:[error localizedFailureReason]
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"OK", nil];
-            [alertView show];
-			VLog(@"%@", error);
-		}
-        else
-        {
-			VLog(@"- CAMERA READY -");
-		}
-	}
-}
-
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
+    NSLog(@"totalRecorded: %f", totalRecorded);
     if (!totalRecorded)
     {
         self.progressView.hidden = YES;
@@ -693,8 +836,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)clearRecordedVideoAnimated:(BOOL)animated
 {
-    [self.camera cancel];
-    [self prepareCamera];
+//    [self.camera cancel];
+//    [self prepareCamera];
     [self updateProgressForSecond:0];
     
     self.inTrashState = NO;
@@ -751,6 +894,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 #pragma mark - SCAudioVideoRecorderDelegate
 
+#if 0
 - (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
 {
     if (!self.inRecordVideoState)
@@ -870,31 +1014,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     VLog(@"DidFailFocus");
     [self.focusView hideFocusAnimation];
 }
-
-// Session
-- (void)cameraSessionWillStart:(VCAudioVideoRecorder *)audioVideoRecorder
-{
-}
-
-- (void)cameraSessionDidStart:(VCAudioVideoRecorder *)audioVideoRecorder
-{
-}
-
-- (void)cameraSessionWillStop:(VCAudioVideoRecorder *)audioVideoRecorder
-{
-}
-
-- (void)cameraSessionDidStop:(VCAudioVideoRecorder *)audioVideoRecorder
-{
-}
-
-- (void)cameraUpdateFocusMode:(NSString *)focusModeString
-{
-}
-
-- (void)camera:(VCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture
-{
-}
+#endif
 
 #pragma mark - UIImagePickerControllerDelegate
 
@@ -909,7 +1029,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Image From Library" label:nil value:nil];
         UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
+//        [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
     
     // Handle a movied picked from a photo album
@@ -917,7 +1037,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
         NSURL* movieURL = info[UIImagePickerControllerMediaURL];
-        [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
+//        [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -928,8 +1048,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.didSelectAssetFromLibrary = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    [self.camera cancel];
-    [self prepareCamera];
+//    [self.camera cancel];
+//    [self prepareCamera];
     [self updateProgressForSecond:0];
 }
 

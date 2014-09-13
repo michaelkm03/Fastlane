@@ -233,6 +233,7 @@
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
+		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
@@ -785,6 +786,8 @@
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
+		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
+		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerializationTests.m; sourceTree = "<group>"; };
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
@@ -1134,12 +1137,11 @@
 			isa = PBXGroup;
 			children = (
 				0314D2EC19B46B5D00FA363C /* Camera.storyboard */,
+				0395575719C142C2005E32FB /* Capture */,
 				0314D2ED19B46B5D00FA363C /* Preview */,
 				0314D30419B46B5D00FA363C /* Publish */,
 				0314D31119B46B5E00FA363C /* SCAudioVideoRecorder */,
 				0314D33019B46B5E00FA363C /* Share */,
-				0314D33C19B46B5E00FA363C /* VCameraViewController.h */,
-				0314D33D19B46B5E00FA363C /* VCameraViewController.m */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -1740,6 +1742,17 @@
 				036AE5EC18FF0C0600A74BDA /* VReachability.m */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		0395575719C142C2005E32FB /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				0395575819C14439005E32FB /* VCameraCaptureController.h */,
+				0395575919C14439005E32FB /* VCameraCaptureController.m */,
+				0314D33C19B46B5E00FA363C /* VCameraViewController.h */,
+				0314D33D19B46B5E00FA363C /* VCameraViewController.m */,
+			);
+			path = Capture;
 			sourceTree = "<group>";
 		};
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
@@ -2594,6 +2607,7 @@
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
+				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
 				0314D4C819B46B5E00FA363C /* VRemixSelectViewController.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
