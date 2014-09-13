@@ -1674,6 +1674,8 @@
 			children = (
 				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
+				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
+				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 				0314D43C19B46B5E00FA363C /* VStreamPollCell.h */,
 				0314D43D19B46B5E00FA363C /* VStreamPollCell.m */,
 				0314D43E19B46B5E00FA363C /* VStreamPollCell.xib */,
@@ -1683,8 +1685,6 @@
 				0314D44219B46B5E00FA363C /* VStreamViewCell.xib */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
-				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
-				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
