@@ -99,6 +99,7 @@
                                         <constraints>
                                             <constraint firstItem="11Q-zg-ZaU" firstAttribute="leading" secondItem="qd2-cz-N4a" secondAttribute="leading" id="4at-Qs-B2i"/>
                                             <constraint firstItem="hHA-wD-uPO" firstAttribute="top" secondItem="qd2-cz-N4a" secondAttribute="top" id="4i1-uK-BGE"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hHA-wD-uPO" secondAttribute="trailing" constant="10" id="QXW-CL-9G9"/>
                                             <constraint firstItem="MSS-x7-CuA" firstAttribute="leading" secondItem="11Q-zg-ZaU" secondAttribute="trailing" constant="9" id="RLw-GR-73u"/>
                                             <constraint firstItem="0vX-54-vcX" firstAttribute="top" secondItem="11Q-zg-ZaU" secondAttribute="bottom" constant="-1" id="U1d-a4-Tss"/>
                                             <constraint firstAttribute="height" constant="32" id="XcJ-e7-aFa"/>

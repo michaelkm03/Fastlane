@@ -96,6 +96,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bQO-lI-gbL" secondAttribute="trailing" constant="10" id="0zT-14-SFM"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kqf-zj-sQD" secondAttribute="trailing" constant="10" id="1nV-mf-Ctp"/>
                                             <constraint firstItem="kqf-zj-sQD" firstAttribute="leading" secondItem="IZt-54-tyx" secondAttribute="trailing" id="2uC-6l-okV"/>
                                             <constraint firstItem="bQO-lI-gbL" firstAttribute="top" secondItem="G35-EF-flf" secondAttribute="bottom" constant="-1" id="9Rq-4P-gFM"/>
                                             <constraint firstItem="G35-EF-flf" firstAttribute="leading" secondItem="6gn-Zt-jUo" secondAttribute="leading" id="BZt-6f-DZi"/>

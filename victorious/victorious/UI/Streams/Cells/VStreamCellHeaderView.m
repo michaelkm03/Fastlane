@@ -24,6 +24,8 @@
 
 static VLargeNumberFormatter* largeNumberFormatter;
 
+static const CGFloat kUserInfoViewMaxHeight = 28.0f;
+
 @implementation VStreamCellHeaderView
 
 - (id)initWithFrame:(CGRect)frame
@@ -106,9 +108,10 @@ static VLargeNumberFormatter* largeNumberFormatter;
     self.usernameLabel.text = self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
+    // Check if this is a repost / remix
     if (self.sequence.parentUser)
     {
-        self.userInfoViewHeightConstraint.constant = 28.0f;
+        self.userInfoViewHeightConstraint.constant = kUserInfoViewMaxHeight;
     }
     else
     {
