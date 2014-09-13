@@ -164,17 +164,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
-        VSequence* newSequence = [self newSequenceWithID:sequenceID
-                                                    name:name
-                                             description:description
-                                            mediaURLPath:[mediaUrl absoluteString]];
         
         //Try to fetch the sequence
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
 
         if (success)
         {
-            success(operation, fullResponse, @[newSequence]);
+            success(operation, fullResponse, resultObjects);
         }
     };
     
