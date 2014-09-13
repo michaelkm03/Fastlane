@@ -101,7 +101,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         
         if (success)
         {
-            success(operation, fullResponse, nil);
+            success(operation, fullResponse, resultObjects);
         }
     };
     
