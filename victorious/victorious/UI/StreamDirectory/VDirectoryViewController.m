@@ -32,9 +32,9 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readwrite) VDirectoryDataSource *directoryDataSource;
-@property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
 @property (nonatomic, strong) VDirectory *directory;
 
+@property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
 @end
@@ -100,8 +100,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
                                                                           constant:0.0f];
     
     [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
-    [self.view layoutIfNeeded];
-    [self setNeedsStatusBarAppearanceUpdate];
     
     self.directoryDataSource = [[VDirectoryDataSource alloc] initWithDirectory:self.directory];
     self.collectionView.dataSource = self.directoryDataSource;
@@ -139,7 +137,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 }
 
 #pragma mark - Header
-
 
 - (void)hideHeader
 {
