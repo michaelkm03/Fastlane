@@ -1,5 +1,5 @@
 //
-//  VUserInfoStreamView.h
+//  VStreamCellHeaderView.h
 //  victorious
 //
 //  Created by Lawrence Leach on 9/10/14.

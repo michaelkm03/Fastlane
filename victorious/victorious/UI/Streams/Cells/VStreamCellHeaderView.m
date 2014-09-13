@@ -1,5 +1,5 @@
 //
-//  VUserInfoStreamView.m
+//  VStreamCellHeaderView.m
 //  victorious
 //
 //  Created by Lawrence Leach on 9/10/14.
@@ -22,7 +22,7 @@
 #import "VConstants.h"
 
 
-static VLargeNumberFormatter* largeNumberFormatter;
+static VLargeNumberFormatter *largeNumberFormatter;
 
 static const CGFloat kUserInfoViewMaxHeight = 28.0f;
 
@@ -75,6 +75,7 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
 {
     _sequence = sequence;
     
+    // Style the ui
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
@@ -88,10 +89,12 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
 
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
 
+    // Get comment count (if any)
     NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
     
+    // Format repost / remix string
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
     {
@@ -105,10 +108,12 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
     
     self.parentLabel.text = parentUserString;
     
+    // Set username and format date
     self.usernameLabel.text = self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
-    // Check if this is a repost / remix
+    
+    // Check if this is a repost / remix and size the userInfoView accordingly
     if (self.sequence.parentUser)
     {
         self.userInfoViewHeightConstraint.constant = kUserInfoViewMaxHeight;
