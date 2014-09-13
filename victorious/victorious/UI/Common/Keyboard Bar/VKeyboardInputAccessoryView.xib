@@ -14,21 +14,29 @@
                     <rect key="frame" x="0.0" y="0.0" width="55" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="45" id="dDt-TX-MmB"/>
                         <constraint firstAttribute="width" constant="55" id="svz-Vr-ycF"/>
                     </constraints>
                     <state key="normal" title="📷">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="pressedAttachments:" destination="4R1-Iz-B2b" eventType="touchUpInside" id="LMf-oR-T8T"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sf4-eg-OpA" userLabel="Send Button">
                     <rect key="frame" x="265" y="0.0" width="55" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="45" id="8lH-V1-zKQ"/>
                         <constraint firstAttribute="width" constant="55" id="CFZ-H7-Iz8"/>
                     </constraints>
                     <state key="normal" title="Send">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="pressedSend:" destination="4R1-Iz-B2b" eventType="touchUpInside" id="Etj-tG-i4b"/>
+                    </connections>
                 </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rf1-jW-e0u" userLabel="EditingView">
                     <rect key="frame" x="55" y="5" width="210" height="35"/>
@@ -49,19 +57,25 @@
             <constraints>
                 <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="trailing" id="2ev-Cm-vM4"/>
                 <constraint firstAttribute="bottom" secondItem="xNE-2e-L1E" secondAttribute="bottom" id="9AR-c3-ZRh"/>
-                <constraint firstItem="Sf4-eg-OpA" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" id="IiI-jB-1aW"/>
-                <constraint firstItem="xNE-2e-L1E" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" id="P3V-4v-X92"/>
                 <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YZC-40-a60" secondAttribute="trailing" constant="10" id="PGu-2i-SKd"/>
                 <constraint firstItem="rf1-jW-e0u" firstAttribute="leading" secondItem="xNE-2e-L1E" secondAttribute="trailing" id="U1R-dt-vxw"/>
                 <constraint firstItem="YZC-40-a60" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="leading" constant="5" id="c4y-6C-Cp8"/>
                 <constraint firstAttribute="bottom" secondItem="rf1-jW-e0u" secondAttribute="bottom" constant="5" id="dUC-yX-OIj"/>
+                <constraint firstItem="rf1-jW-e0u" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" constant="5" id="eRB-c0-lGG"/>
                 <constraint firstAttribute="centerY" secondItem="YZC-40-a60" secondAttribute="centerY" id="gwJ-Js-j0p"/>
-                <constraint firstItem="rf1-jW-e0u" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" constant="5" id="lq7-Sk-iSE"/>
                 <constraint firstItem="xNE-2e-L1E" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" id="mFM-q7-3ml"/>
                 <constraint firstAttribute="bottom" secondItem="Sf4-eg-OpA" secondAttribute="bottom" id="np7-Bq-PYE"/>
                 <constraint firstAttribute="trailing" secondItem="Sf4-eg-OpA" secondAttribute="trailing" id="r66-Fc-kSw"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="attachmentsButton" destination="xNE-2e-L1E" id="dDB-tw-RFl"/>
+                <outlet property="editingTextView" destination="rf1-jW-e0u" id="iXk-mI-XeQ"/>
+                <outlet property="placeholderLabel" destination="YZC-40-a60" id="g1x-a4-AmU"/>
+                <outlet property="sendButton" destination="Sf4-eg-OpA" id="9yB-no-TC5"/>
+                <outlet property="verticalSpaceTextViewToBottomContainerConstraint" destination="dUC-yX-OIj" id="Wdd-DR-xCo"/>
+                <outlet property="verticalSpaceTextViewTopToContainerConstraint" destination="eRB-c0-lGG" id="njB-cf-D6T"/>
+            </connections>
         </view>
     </objects>
 </document>

@@ -1,4 +1,4 @@
-//
+ //
 //  VNewContentViewController.m
 //  victorious
 //
@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 
@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [super viewDidLoad];
     
     self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+    self.inputAccessoryView.delegate = self;
     self.inputAccessoryView.frame = CGRectMake(0,
                                                CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
                                                CGRectGetWidth(self.view.bounds),
@@ -83,6 +84,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidChangeFrame:)
+                                                 name:UIKeyboardDidChangeFrameNotification
+                                               object:nil];
     
 //    self.inputAccessoryView = self.textFieldContainer;
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
@@ -107,6 +112,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+#pragma mark - Notification Handlers
+
+- (void)keyboardDidChangeFrame:(NSNotification *)notification
+{
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+    self.contentCollectionView.contentInset = newInsets;
+    self.contentCollectionView.scrollIndicatorInsets = newInsets;
+    
+    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
 }
 
 #pragma mark - IBActions
@@ -320,6 +339,25 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             delayedContentOffsetBlock();
         });
     }
+}
+
+#pragma mark - VKeyboardInputAccessoryViewDelegate
+
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+                         wantsSize:(CGSize)size
+{
+    self.inputAccessoryView.frame = CGRectMake(0, 0, size.width, size.height);
+    [self.inputAccessoryView layoutIfNeeded];
+}
+
+- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+//TODO: Implement adding a comment
+}
+
+- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+//TODO: Implement the ability to select an item from the camera roll/etc.
 }
 
 @end

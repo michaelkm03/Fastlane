@@ -8,9 +8,15 @@
 
 #import "VKeyboardInputAccessoryView.h"
 
-@interface VKeyboardInputAccessoryView ()
+@interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
+@property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
+@property (nonatomic, weak) IBOutlet UIButton *sendButton;
+@property (nonatomic, weak) IBOutlet UITextView *editingTextView;
+@property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewToBottomContainerConstraint;
 
 @end
 
@@ -28,11 +34,79 @@
     return [nibContents firstObject];
 }
 
-#pragma mark - AutoLayout
+#pragma mark - UIView
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.editingTextView.delegate = self;
+}
 
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake(320.0f, 45.0f);
+}
+
+#pragma mark - Property Accessors
+
+- (void)setPlaceholderText:(NSString *)placeholderText
+{
+    _placeholderText = placeholderText;
+    
+    self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
+                                                                           attributes:[self textEntryAttributes]];
+}
+
+- (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
+{
+    _selectedThumbnail = selectedThumbnail;
+    
+    [self.attachmentsButton setImage:selectedThumbnail
+                            forState:UIControlStateNormal];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedSend:(id)sender
+{
+    [self.delegate pressedSendOnKeyboardInputAccessoryView:self];
+}
+
+- (IBAction)pressedAttachments:(id)sender
+{
+    [self.delegate pressedAttachmentOnKeyboardInputAccessoryView:self];
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
+    self.sendButton.enabled = (textView.text.length == 0) ? NO : YES;
+    
+    CGFloat desiredHeight = self.verticalSpaceTextViewTopToContainerConstraint.constant + self.verticalSpaceTextViewToBottomContainerConstraint.constant + self.editingTextView.contentSize.height;
+    if (self.frame.size.height < desiredHeight)
+    {
+        if (self.maximumAllowedSize.height <= desiredHeight)
+        {
+            return;
+        }
+
+        [self.delegate keyboardInputAccessoryView:self
+                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fminf(desiredHeight, self.maximumAllowedSize.height))];
+    }
+    else if (CGRectGetHeight(self.frame) > desiredHeight)
+    {
+        [self.delegate keyboardInputAccessoryView:self
+                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.intrinsicContentSize.height))];
+    }
+}
+
+#pragma mark - Convenience
+
+- (NSDictionary *)textEntryAttributes
+{
+    return @{};
 }
 
 @end
