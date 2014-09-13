@@ -96,19 +96,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
-        VSequence* newSequence = [self newPollWithID:sequenceID
-                                                name:name
-                                         description:description
-                                         answer1Text:answer1Text
-                                         answer2Text:answer2Text
-                                   firstMediaURLPath:[media1Url absoluteString]
-                                  secondMediaURLPath:[media2Url absoluteString]];
         
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
         
         if (success)
         {
-            success(operation, fullResponse, @[newSequence]);
+            success(operation, fullResponse, nil);
         }
     };
     
@@ -224,59 +217,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     }
 
     return @"once";
-}
-
-- (VSequence *)newSequenceWithID:(NSNumber *)remoteID
-                           name:(NSString *)name
-                    description:(NSString *)description
-                   mediaURLPath:(NSString *)mediaURLPath
-{
-    VSequence* tempSequence = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VSequence entityName]];
-    
-    tempSequence.remoteId = remoteID;
-    tempSequence.name = name;
-    tempSequence.sequenceDescription = description;
-    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
-    tempSequence.status = kTemporaryContentStatus;
-    tempSequence.display_order = @(-1);
-    tempSequence.category = [self.mainUser isOwner] ? kVOwnerImageCategory : kVUGCImageCategory;
-    tempSequence.previewImage = [self localImageURLForVideo:mediaURLPath];
-
-    [self.mainUser addPostedSequencesObject:tempSequence];
-    
-    return tempSequence;
-}
-
-- (VSequence *)newPollWithID:(NSNumber *)remoteID
-                       name:(NSString *)name
-                description:(NSString *)description
-                answer1Text:(NSString *)answer1Text
-                answer2Text:(NSString *)answer2Text
-          firstMediaURLPath:(NSString *)firstmediaURLPath
-         secondMediaURLPath:(NSString *)secondMediaURLPath
-{
-    VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
-    tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
-    
-    VNode* node = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VNode entityName]];
-    VInteraction* interaction = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VInteraction entityName]];
-
-    VAnswer* firstAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
-    firstAnswer.label = answer1Text;
-    firstAnswer.display_order = @(1);
-    firstAnswer.thumbnailUrl = [self localImageURLForVideo:firstmediaURLPath];
-    [interaction addAnswersObject:firstAnswer];
-    
-    VAnswer* secondAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
-    secondAnswer.label = answer2Text;
-    secondAnswer.display_order = @(2);
-    secondAnswer.thumbnailUrl = [self localImageURLForVideo:secondMediaURLPath];
-    [interaction addAnswersObject:secondAnswer];
-    
-    [node addInteractionsObject:interaction];
-    [tempPoll addNodesObject:node];
-    
-    return tempPoll;
 }
 
 #pragma mark - Comment
