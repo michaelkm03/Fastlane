@@ -16,9 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iL5-FN-2xy">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DRU-0d-Xgx" userLabel="Blurred Background Image View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iL5-FN-2xy" userLabel="Content Collection View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="c6j-mR-qft" customClass="VCollapsingFlowLayout">
                                     <size key="itemSize" width="320" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -31,7 +36,7 @@
                                     <outlet property="delegate" destination="9O1-S6-jeB" id="qei-BW-BGM"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToS-oB-8Vg">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToS-oB-8Vg" userLabel="Close Button">
                                 <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="X">
@@ -42,7 +47,7 @@
                                     <action selector="pressedClose:" destination="9O1-S6-jeB" eventType="touchUpInside" id="cl5-b7-AK2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p1f-ge-RSn">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p1f-ge-RSn" userLabel="More Buton">
                                 <rect key="frame" x="274" y="0.0" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="titleEdgeInsets" minX="0.0" minY="-8" maxX="0.0" maxY="0.0"/>
@@ -52,16 +57,21 @@
                                 </state>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="iL5-FN-2xy" secondAttribute="trailing" id="1IO-fT-h2v"/>
+                            <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="DRU-0d-Xgx" secondAttribute="bottom" id="7Z0-lf-xNw"/>
                             <constraint firstItem="iL5-FN-2xy" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="9pb-Bh-I3Z"/>
+                            <constraint firstItem="DRU-0d-Xgx" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="D0c-mu-myW"/>
                             <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="FlH-k6-cIS"/>
+                            <constraint firstItem="DRU-0d-Xgx" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="UCM-D2-PqF"/>
+                            <constraint firstAttribute="trailing" secondItem="DRU-0d-Xgx" secondAttribute="trailing" id="gsG-Xa-7Uz"/>
                             <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="iL5-FN-2xy" secondAttribute="bottom" id="nTg-Hf-Cd5"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="blurredBackgroundImageView" destination="DRU-0d-Xgx" id="Fc0-AK-MDc"/>
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
                     </connections>
                 </viewController>

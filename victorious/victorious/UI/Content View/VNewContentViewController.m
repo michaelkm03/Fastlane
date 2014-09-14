@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
+@property (weak, nonatomic) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UICollectionView *contentCollectionView;
 
 @end
