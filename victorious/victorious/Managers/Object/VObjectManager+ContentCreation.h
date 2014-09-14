@@ -105,9 +105,4 @@ Creates a new realtime comment
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (VSequence *)newSequenceWithID:(NSNumber *)remoteID
-                           name:(NSString *)name
-                    description:(NSString *)description
-                   mediaURLPath:(NSString *)mediaURLPath;
-
 @end
