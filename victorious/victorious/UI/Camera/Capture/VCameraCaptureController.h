@@ -68,7 +68,7 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  
  @param completion Will be called on a private queue when the image has been captured
  */
-- (void)captureStillWithCompletion:(void(^)(NSURL *imageURL, NSError *error))completion;
+- (void)captureStillWithCompletion:(void(^)(UIImage *image, NSError *error))completion;
 
 /**
  Shuts down the camera

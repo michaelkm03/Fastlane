@@ -22,10 +22,10 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 @interface VCameraCaptureController ()
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
-@property (nonatomic, strong) dispatch_queue_t sessionSetupQueue;
-@property (nonatomic, strong) AVCaptureInput *currentInput; ///< This property should only be accessed from the sessionSetupQueue
-@property (nonatomic, strong) AVCaptureOutput *videoOutput; ///< This property should only be accessed from the sessionSetupQueue
-@property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionSetupQueue
+@property (nonatomic, strong) dispatch_queue_t sessionQueue;
+@property (nonatomic, strong) AVCaptureInput *currentInput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
 
 @end
 
@@ -40,7 +40,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     if (self)
     {
         _captureSession = [[AVCaptureSession alloc] init];
-        _sessionSetupQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
+        _sessionQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
         _currentDevice = defaultCaptureDevice();
     }
     return self;
@@ -73,7 +73,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 - (void)setCurrentDevice:(AVCaptureDevice *)currentDevice withCompletion:(void (^)(NSError *))completion
 {
     _currentDevice = currentDevice;
-    dispatch_async(self.sessionSetupQueue, ^(void)
+    dispatch_async(self.sessionQueue, ^(void)
     {
         NSError *error = nil;
         if (self.currentInput)
@@ -91,7 +91,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)setSessionPreset:(NSString *)sessionPreset completion:(void (^)(BOOL))completion
 {
-    dispatch_async(self.sessionSetupQueue, ^(void)
+    dispatch_async(self.sessionQueue, ^(void)
     {
         if ([self.captureSession canSetSessionPreset:sessionPreset])
         {
@@ -112,7 +112,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)startRunningWithCompletion:(void(^)(NSError *))completion
 {
-    dispatch_async(self.sessionSetupQueue, ^(void)
+    dispatch_async(self.sessionQueue, ^(void)
     {
         if (!self.currentInput)
         {
@@ -150,7 +150,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         if (!self.imageOutput)
         {
             AVCaptureStillImageOutput *imageOutput = [[AVCaptureStillImageOutput alloc] init];
-            imageOutput.outputSettings = @{ AVVideoCodecKey: AVVideoCodecJPEG, AVVideoQualityKey: @(VConstantJPEGCompressionQuality) };
+            imageOutput.outputSettings = @{ AVVideoCodecKey: AVVideoCodecJPEG, AVVideoQualityKey: @(1) }; // full quality, because we're going to decode, filter, and re-encode this image
             if ([self.captureSession canAddOutput:imageOutput])
             {
                 [self.captureSession addOutput:imageOutput];
@@ -177,9 +177,23 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     });
 }
 
-- (void)captureStillWithCompletion:(void (^)(NSURL *, NSError *))completion
+- (void)stopRunningWithCompletion:(void(^)(void))completion
 {
-    dispatch_async(self.sessionSetupQueue, ^(void)
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        [self.captureSession stopRunning];
+        if (completion)
+        {
+            completion();
+        }
+    });
+}
+
+#pragma mark - Capture
+
+- (void)captureStillWithCompletion:(void (^)(UIImage *, NSError *))completion
+{
+    dispatch_async(self.sessionQueue, ^(void)
     {
         if (!self.imageOutput)
         {
@@ -197,50 +211,49 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         {
             [self applyDeviceOrientation:[[UIDevice currentDevice] orientation] toConnection:videoConnection];
             [self.imageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
-            {
-                if (error)
-                {
-                    if (completion)
-                    {
-                        completion(nil, error);
-                    }
-                    return;
-                }
-                
-                if (!imageDataSampleBuffer)
-                {
-                    if (completion)
-                    {
-                        completion(nil, [NSError errorWithDomain:VCameraCaptureControllerErrorDomain
-                                                            code:VCameraCaptureControllerErrorCode
-                                                        userInfo:@{NSLocalizedDescriptionKey: @"Unable to capture image"}]);
-                    }
-                    return;
-                }
-                
-                NSData *jpegData = nil;
-                @try
-                {
-                    jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                }
-                @catch (NSException *exception)
-                {
-                    if (completion)
-                    {
-                        completion(nil, [NSError errorWithDomain:VCameraCaptureControllerErrorDomain
-                                                            code:VCameraCaptureControllerErrorCode
-                                                        userInfo:@{NSLocalizedDescriptionKey: @"Unable to capture image"}]);
-                    }
-                    return;
-                }
-                
-                if (completion)
-                {
-                    NSURL *fileURL = [self temporaryFileURL];
-                    [jpegData writeToURL:fileURL atomically:YES];
-                    completion(fileURL, nil);
-                }
-            }];
+             {
+                 if (error)
+                 {
+                     if (completion)
+                     {
+                         completion(nil, error);
+                     }
+                     return;
+                 }
+                 
+                 if (!imageDataSampleBuffer)
+                 {
+                     if (completion)
+                     {
+                         completion(nil, [NSError errorWithDomain:VCameraCaptureControllerErrorDomain
+                                                             code:VCameraCaptureControllerErrorCode
+                                                         userInfo:@{NSLocalizedDescriptionKey: @"Unable to capture image"}]);
+                     }
+                     return;
+                 }
+                 
+                 NSData *jpegData = nil;
+                 @try
+                 {
+                     jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                 }
+                 @catch (NSException *exception)
+                 {
+                     if (completion)
+                     {
+                         completion(nil, [NSError errorWithDomain:VCameraCaptureControllerErrorDomain
+                                                             code:VCameraCaptureControllerErrorCode
+                                                         userInfo:@{NSLocalizedDescriptionKey: @"Unable to capture image"}]);
+                     }
+                     return;
+                 }
+                 
+                 if (completion)
+                 {
+                     UIImage *image = [UIImage imageWithData:jpegData];
+                     completion(image, nil);
+                 }
+             }];
         }
         else
         {
@@ -281,25 +294,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 break;
         }
     }
-}
-
-- (NSURL *)temporaryFileURL
-{
-    NSUUID *uuid = [NSUUID UUID];
-    NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:VConstantMediaExtensionJPG];
-    return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tempFilename]];
-}
-
-- (void)stopRunningWithCompletion:(void(^)(void))completion
-{
-    dispatch_async(self.sessionSetupQueue, ^(void)
-    {
-        [self.captureSession stopRunning];
-        if (completion)
-        {
-            completion();
-        }
-    });
 }
 
 #pragma mark -

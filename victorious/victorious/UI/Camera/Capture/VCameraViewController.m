@@ -32,8 +32,9 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
 @property (nonatomic, weak) IBOutlet    UIView*             progressView;
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
-@property (nonatomic, strong) IBOutlet    UIView*           previewView; // This is STRONG on purpose.
+@property (nonatomic, weak) IBOutlet    UIView*             previewView;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, strong)           UIView*             previewSnapshot;
 
 @property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           deleteButton;
@@ -184,10 +185,13 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     self.navigationController.navigationBarHidden = YES;
-    
     [self setOpenAlbumButtonImageWithLatestPhoto:[self isInPhotoCaptureMode] animated:NO];
+    
+    if (self.previewSnapshot)
+    {
+        [self restoreLivePreview];
+    }
 
     [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
     [self.camera startRunningWithCompletion:^(NSError *error)
@@ -372,12 +376,8 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
         [self setAllControlsEnabled:NO];
         
-        UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
-        snapshot.frame = self.previewView.frame;
-        [self.previewView.superview addSubview:snapshot];
-        self.previewView.alpha = 0.0f;
-        
-        [MBProgressHUD showHUDAddedTo:snapshot animated:YES];
+        [self replacePreviewViewWithSnapshot];
+        [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
         __typeof(self) __weak weakSelf = self;
         [self.camera setCurrentDevice:newDevice withCompletion:^(NSError *error)
         {
@@ -386,19 +386,19 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [MBProgressHUD hideAllHUDsForView:snapshot animated:NO];
+                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
                     [strongSelf setAllControlsEnabled:YES];
                     
                     [UIView animateWithDuration:kAnimationDuration
                                      animations:^(void)
                     {
-                        snapshot.alpha = 0.0f;
+                        strongSelf.previewSnapshot.alpha = 0.0f;
                         strongSelf.previewView.alpha = 1.0f;
                         [strongSelf configureFlashButton];
                     }
                                      completion:^(BOOL finished)
                     {
-                        [snapshot removeFromSuperview];
+                        [strongSelf restoreLivePreview];
                     }];
                 });
             }
@@ -487,12 +487,17 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 - (IBAction)capturePhoto:(id)sender
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Photo" label:nil value:nil];
-    [self.camera captureStillWithCompletion:^(NSURL *imageURL, NSError *error)
+    [self replacePreviewViewWithSnapshot];
+    [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
+    [self setAllControlsEnabled:NO];
+    [self.camera captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             if (error)
             {
+                [self setAllControlsEnabled:YES];
+                [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
                 hud.mode = MBProgressHUDModeText;
                 hud.labelText = NSLocalizedString(@"StillCaptureFailed", @"");
@@ -500,7 +505,12 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
             }
             else
             {
-                [self moveToPreviewViewControllerWithContentURL:imageURL];
+                NSURL *fileURL = [self temporaryFileURL];
+                NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
+                [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
+                [self moveToPreviewViewControllerWithContentURL:fileURL];
+                [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
+                [self setAllControlsEnabled:YES];
             }
         });
     }];
@@ -680,13 +690,12 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
     if (self.camera.currentDevice.flashAvailable)
     {
         self.flashButton.alpha = 1.0f;
+        self.flashButton.selected = self.camera.currentDevice.flashMode != AVCaptureFlashModeOff;
     }
     else
     {
         self.flashButton.alpha = 0.0f;
     }
-    
-    self.flashButton.selected = self.camera.currentDevice.flashMode != AVCaptureFlashModeOff;
 }
 
 - (BOOL)cameraSupportsMedia:(NSString *)mediaType sourceType:(UIImagePickerControllerSourceType)sourceType
@@ -866,6 +875,50 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
     }
 }
 
+- (NSURL *)temporaryFileURL
+{
+    NSUUID *uuid = [NSUUID UUID];
+    NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:VConstantMediaExtensionJPG];
+    return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tempFilename]];
+}
+
+- (UIImage *)squareImageByCroppingImage:(UIImage *)image
+{
+    CGFloat minDimension = fminf(image.size.width, image.size.height);
+    CGFloat x = (image.size.width - minDimension) / 2.0f;
+    CGFloat y = (image.size.height - minDimension) / 2.0f;
+    
+    CGRect cropRect;
+    if (image.imageOrientation == UIImageOrientationRight || image.imageOrientation == UIImageOrientationLeft)
+    {
+        cropRect = CGRectMake(y, x, minDimension, minDimension);
+    }
+    else
+    {
+        cropRect = CGRectMake(x, y, minDimension, minDimension);
+    }
+    
+    UIImage *croppedImage = [image croppedImage:cropRect];
+    croppedImage = [croppedImage fixOrientation];
+    return croppedImage;
+}
+
+- (void)replacePreviewViewWithSnapshot
+{
+    UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
+    snapshot.frame = self.previewView.frame;
+    [self.previewView.superview addSubview:snapshot];
+    self.previewView.alpha = 0.0f;
+    self.previewSnapshot = snapshot;
+}
+
+- (void)restoreLivePreview ///< The opposite of -replacePreviewViewWithSnapshot
+{
+    self.previewView.alpha = 1.0f;
+    [self.previewSnapshot removeFromSuperview];
+    self.previewSnapshot = nil;
+}
+
 #pragma mark - Navigation
 
 - (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
@@ -981,21 +1034,6 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
         [jpegData writeToURL:tempFile atomically:NO];
         [self moveToPreviewViewControllerWithContentURL:tempFile];
     }
-}
-
-// Camera
-- (void)camera:(VCCamera *)camera didFailWithError:(NSError *)error
-{
-    VLog(@"error : %@", error.description);
-}
-
-// Photo
-- (void)cameraWillCapturePhoto:(VCCamera *)camera
-{
-}
-
-- (void)cameraDidCapturePhoto:(VCCamera *)camera
-{
 }
 
 // Focus
