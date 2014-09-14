@@ -56,7 +56,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6x-4t-qP9" customClass="VStreamCellHeaderView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                                <rect key="frame" x="0.0" y="10" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t88-9Z-IQI" userLabel="userInfoView">
@@ -182,8 +182,8 @@
                             <constraint firstAttribute="trailing" secondItem="f6x-4t-qP9" secondAttribute="trailing" id="1wO-3v-4xV"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" id="3S0-vK-H6e"/>
                             <constraint firstAttribute="trailing" secondItem="0rJ-Vq-OQb" secondAttribute="trailing" constant="20" id="RGb-zA-Vow"/>
-                            <constraint firstItem="f6x-4t-qP9" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" id="cBl-fv-cgY"/>
-                            <constraint firstAttribute="bottom" secondItem="f6x-4t-qP9" secondAttribute="bottom" constant="138" id="dSQ-Ia-tIw"/>
+                            <constraint firstItem="f6x-4t-qP9" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" constant="10" id="cBl-fv-cgY"/>
+                            <constraint firstAttribute="bottom" secondItem="f6x-4t-qP9" secondAttribute="bottom" constant="128" id="dSQ-Ia-tIw"/>
                             <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="20" id="lBp-Vo-p0y"/>
                             <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
                         </constraints>
