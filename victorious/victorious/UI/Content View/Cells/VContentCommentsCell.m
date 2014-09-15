@@ -32,8 +32,12 @@
     self.commentBodyTextView.textContainerInset = UIEdgeInsetsZero;
     
     self.seperatorImageView.image = [self.seperatorImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    // Need to use proper color here
     self.seperatorImageView.tintColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    
+    self.commentersAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.commentersAvatarImageView.bounds) * 0.5f;
+    self.commentersAvatarImageView.image = [self.commentersAvatarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    // Need to use proper color here
+    self.commentersAvatarImageView.tintColor = [UIColor lightGrayColor];
 }
 
 
