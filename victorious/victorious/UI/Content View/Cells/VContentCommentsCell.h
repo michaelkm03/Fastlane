@@ -1,5 +1,5 @@
 //
-//  VImageContentCell.h
+//  VContentCommentsCell.h
 //  victorious
 //
 //  Created by Michael Sena on 9/15/14.
@@ -8,6 +8,6 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@interface VImageContentCell : VBaseCollectionViewCell
+@interface VContentCommentsCell : VBaseCollectionViewCell
 
 @end

@@ -1,5 +1,5 @@
 //
-//  VVideoContentCell.h
+//  VContentVideoCell.h
 //  victorious
 //
 //  Created by Michael Sena on 9/15/14.
@@ -8,6 +8,6 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@interface VVideoContentCell : VBaseCollectionViewCell
+@interface VContentVideoCell : VBaseCollectionViewCell
 
 @end
