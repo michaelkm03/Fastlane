@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VCameraCaptureVideoSize.h"
+
 #import <Foundation/Foundation.h>
 
-@class AVCaptureDevice, AVCaptureSession;
+@class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder;
 
 extern NSString * const VCameraCaptureControllerErrorDomain;
 extern const NSInteger VCameraCaptureControllerErrorCode;
@@ -41,6 +43,18 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  The video device that is currently being captured.
  */
 @property (nonatomic, strong) AVCaptureDevice *currentDevice;
+
+/**
+ The object in this property will be added as a sample buffer
+ delegate, so it can begin receiving frames and writing them
+ to disk.
+ */
+@property (nonatomic, strong) VCameraVideoEncoder *videoEncoder;
+
+/**
+ Returns the size, in pixels, of the video output
+ */
+@property (nonatomic, readonly) VCameraCaptureVideoSize videoSize;
 
 /**
  Sets the capture session quality level or bitrate

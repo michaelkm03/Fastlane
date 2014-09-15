@@ -105,6 +105,8 @@
 "CameraFailed"          =   "Unable to start camera";
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
 "StillCaptureFailed"    =   "Unable to take picture";
+"VideoCaptureFailed"    =   "Unable to record video";
+"VideoSaveFailed"       =   "Unable to save video";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";

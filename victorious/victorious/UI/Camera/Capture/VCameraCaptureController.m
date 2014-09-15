@@ -7,6 +7,7 @@
 //
 
 #import "VCameraCaptureController.h"
+#import "VCameraVideoEncoder.h"
 #import "VConstants.h"
 
 @import AVFoundation;
@@ -23,8 +24,10 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue;
-@property (nonatomic, strong) AVCaptureInput *currentInput; ///< This property should only be accessed from the sessionQueue
-@property (nonatomic, strong) AVCaptureOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureInput *videoInput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureInput *audioInput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong) AVCaptureAudioDataOutput *audioOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
 
 @end
@@ -62,6 +65,24 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     return defaultCaptureDevice();
 }
 
+- (VCameraCaptureVideoSize)videoSize
+{
+    __block VCameraCaptureVideoSize videoSize;
+    dispatch_sync(self.sessionQueue, ^(void)
+    {
+        if (!self.videoOutput)
+        {
+            videoSize = VCameraCaptureVideoSizeZero;
+            return;
+        }
+        
+        NSDictionary* videoSettings = self.videoOutput.videoSettings;
+        videoSize.height = [videoSettings[@"Height"] integerValue];
+        videoSize.width = [videoSettings[@"Width"] integerValue];
+    });
+    return videoSize;
+}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-property-ivar"
 - (void)setCurrentDevice:(AVCaptureDevice *)currentDevice
@@ -76,11 +97,11 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     dispatch_async(self.sessionQueue, ^(void)
     {
         NSError *error = nil;
-        if (self.currentInput)
+        if (self.videoInput)
         {
-            [self.captureSession removeInput:self.currentInput];
-            self.currentInput = nil;
-            [self setCaptureSessionInputWithDevice:currentDevice error:&error];
+            [self.captureSession removeInput:self.videoInput];
+            self.videoInput = nil;
+            [self setVideoInputWithDevice:currentDevice error:&error];
         }
         if (completion)
         {
@@ -108,19 +129,61 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     });
 }
 
+- (void)setVideoEncoder:(VCameraVideoEncoder *)videoEncoder
+{
+    if (videoEncoder == _videoEncoder)
+    {
+        return;
+    }
+    
+    _videoEncoder = videoEncoder;
+    
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        [self.videoOutput setSampleBufferDelegate:videoEncoder queue:videoEncoder.encoderQueue];
+        [self.audioOutput setSampleBufferDelegate:videoEncoder queue:videoEncoder.encoderQueue];
+    });
+}
+
 #pragma mark - Start/Stop
 
 - (void)startRunningWithCompletion:(void(^)(NSError *))completion
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        if (!self.currentInput)
+        if (!self.videoInput)
         {
             NSError *error = nil;
-            if (![self setCaptureSessionInputWithDevice:self.currentDevice error:&error])
+            if (![self setVideoInputWithDevice:self.currentDevice error:&error])
             {
                 if (completion)
                 {
+                    completion(error);
+                }
+                return;
+            }
+        }
+        
+        if (!self.audioInput)
+        {
+            NSError *error = nil;
+            AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+            AVCaptureDeviceInput *audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
+            if (audioInput && [self.captureSession canAddInput:audioInput])
+            {
+                [self.captureSession addInput:audioInput];
+                self.audioInput = audioInput;
+            }
+            else
+            {
+                if (completion)
+                {
+                    if (!error)
+                    {
+                        error = [NSError errorWithDomain:VCameraCaptureControllerErrorDomain
+                                                    code:VCameraCaptureControllerErrorCode
+                                                userInfo:@{ NSLocalizedDescriptionKey: @"Unable to add audio input"}];
+                    }
                     completion(error);
                 }
                 return;
@@ -142,6 +205,26 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                     completion([NSError errorWithDomain:VCameraCaptureControllerErrorDomain
                                                    code:VCameraCaptureControllerErrorCode
                                                userInfo:@{NSLocalizedDescriptionKey: @"Unable to add video output"}]);
+                }
+                return;
+            }
+        }
+        
+        if (!self.audioOutput)
+        {
+            AVCaptureAudioDataOutput *audioOutput = [[AVCaptureAudioDataOutput alloc] init];
+            if ([self.captureSession canAddOutput:audioOutput])
+            {
+                [self.captureSession addOutput:audioOutput];
+                self.audioOutput = audioOutput;
+            }
+            else
+            {
+                if (completion)
+                {
+                    completion([NSError errorWithDomain:VCameraCaptureControllerErrorDomain
+                                                   code:VCameraCaptureControllerErrorCode
+                                               userInfo:@{NSLocalizedDescriptionKey: @"Unable to add audio output"}]);
                 }
                 return;
             }
@@ -298,14 +381,14 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 #pragma mark -
 
-- (BOOL)setCaptureSessionInputWithDevice:(AVCaptureDevice *)device error:(NSError *__autoreleasing*)error
+- (BOOL)setVideoInputWithDevice:(AVCaptureDevice *)device error:(NSError *__autoreleasing*)error
 {
     NSError *myError = nil;
     AVCaptureInput *input = [[AVCaptureDeviceInput alloc] initWithDevice:device error:&myError];
     if (input && [self.captureSession canAddInput:input])
     {
         [self.captureSession addInput:input];
-        self.currentInput = input;
+        self.videoInput = input;
         return YES;
     }
 

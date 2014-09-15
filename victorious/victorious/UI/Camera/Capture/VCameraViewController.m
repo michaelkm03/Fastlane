@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
 #import "VCameraCaptureController.h"
+#import "VCameraVideoEncoder.h"
 #import "VCameraViewController.h"
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
@@ -24,7 +25,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 static const CGFloat kDisabledRecordButtonAlpha = 0.2f;
 static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
-@interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
@@ -409,6 +410,10 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 - (IBAction)nextAction:(id)sender
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Video" label:nil value:nil];
+    [self setAllControlsEnabled:NO];
+    [self replacePreviewViewWithSnapshot];
+    [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
+    [self.camera.videoEncoder finishRecording];
 //    [self.camera stop];
 }
 
@@ -467,6 +472,41 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
         self.toolTipImageView.alpha = 0.0;
     }];
 
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        if (!self.camera.videoEncoder)
+        {
+            VCameraCaptureVideoSize size = self.camera.videoSize;
+            VCameraVideoEncoder *encoder = nil;
+            if (size.width && size.height)
+            {
+                encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:size error:nil];
+                encoder.delegate = self;
+            }
+            if (!encoder)
+            {
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
+                [hud hide:YES afterDelay:3.0];
+                return;
+            }
+            self.camera.videoEncoder = encoder;
+        }
+        else
+        {
+            self.camera.videoEncoder.recording = YES;
+        }
+        self.switchCameraButton.enabled = NO;
+        self.switchCameraModeButton.enabled = NO;
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        self.camera.videoEncoder.recording = NO;
+        self.switchCameraButton.enabled = YES;
+        self.switchCameraModeButton.enabled = YES;
+    }
+    
 #if 0
     if (self.camera.isPrepared)
     {
@@ -505,7 +545,7 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
             }
             else
             {
-                NSURL *fileURL = [self temporaryFileURL];
+                NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPEG];
                 NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
                 [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
                 [self moveToPreviewViewControllerWithContentURL:fileURL];
@@ -587,6 +627,7 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
     else
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
+        self.camera.videoEncoder = nil;
         [self clearRecordedVideoAnimated:YES];
     }
 }
@@ -855,6 +896,7 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
     void (^animations)() = ^(void)
     {
+        [self.view layoutIfNeeded];
         self.nextButton.alpha = 0.0f;
         self.openAlbumButton.alpha = 1.0f;
         self.deleteButton.alpha = 0.0f;
@@ -875,10 +917,10 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
     }
 }
 
-- (NSURL *)temporaryFileURL
+- (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
 {
     NSUUID *uuid = [NSUUID UUID];
-    NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:VConstantMediaExtensionJPG];
+    NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:extension];
     return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tempFilename]];
 }
 
@@ -943,6 +985,50 @@ static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 
     previewViewController.didSelectAssetFromLibrary = self.didSelectAssetFromLibrary;
     [self.navigationController pushViewController:previewViewController animated:YES];
+}
+
+#pragma mark - VCameraVideoEncoderDelegate methods
+
+- (void)videoEncoder:(VCameraVideoEncoder *)videoEncoder hasEncodedTotalTime:(CMTime)time
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        if (!self.inRecordVideoState)
+        {
+            [UIView animateWithDuration:kAnimationDuration
+                             animations:^(void)
+            {
+                self.nextButton.alpha = 1.0f;
+                self.openAlbumButton.alpha = 0.0;
+                self.deleteButton.alpha = 1.0;
+            }];
+            self.inRecordVideoState = YES;
+        }
+        
+        [self updateProgressForSecond:CMTimeGetSeconds(time)];
+    });
+}
+
+- (void)videoEncoderDidFinish:(VCameraVideoEncoder *)videoEncoder withError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        [self setAllControlsEnabled:YES];
+        [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
+        if (error)
+        {
+            [self restoreLivePreview];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"VideoSaveFailed", @"");
+            [hud hide:YES afterDelay:3.0];
+        }
+        else
+        {
+            [self moveToPreviewViewControllerWithContentURL:videoEncoder.fileURL];
+        }
+        self.camera.videoEncoder = nil;
+    });
 }
 
 #pragma mark - SCAudioVideoRecorderDelegate
