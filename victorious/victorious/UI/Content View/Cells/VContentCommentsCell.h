@@ -10,4 +10,12 @@
 
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
++ (CGSize)sizeWithCommentBody:(NSString *)commentBody;
+
+@property (weak, nonatomic) IBOutlet UIImageView *commentersAvatarImageView;
+@property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
+@property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
+@property (weak, nonatomic) IBOutlet UITextView *commentBodyTextView;
+
 @end

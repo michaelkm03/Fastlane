@@ -14,7 +14,7 @@
 // Cells
 #import "VContentCell.h"
 #import "VRealTimeCommentsCell.h"
-#import "VAllCommentCell.h"
+#import "VContentCommentsCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -88,8 +88,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
                  forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VAllCommentCell nibForCell]
-                 forCellWithReuseIdentifier:[VAllCommentCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -194,7 +194,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionAllComments:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VAllCommentCell suggestedReuseIdentifier]
+            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionCount:
             return nil;
@@ -235,7 +235,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
-            return [VAllCommentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            return [VContentCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionCount:
             return CGSizeZero;
     }
