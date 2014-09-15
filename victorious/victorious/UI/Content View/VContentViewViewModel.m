@@ -42,7 +42,7 @@
         }
         else
         {
-            // Unsupported type
+            _type = VContentViewTypeInvalid;
         }
     }
     return self;

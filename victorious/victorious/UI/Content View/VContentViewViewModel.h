@@ -14,6 +14,10 @@
 typedef NS_ENUM(NSInteger, VContentViewType)
 {
     /**
+     *  Invalid content type,
+     */
+    VContentViewTypeInvalid,
+    /**
      *  Image content type.
      */
     VContentViewTypeImage,
