@@ -59,7 +59,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9SX-yp-jyk" customClass="VStreamCellHeaderView">
-                                <rect key="frame" x="0.0" y="10" width="320" height="75"/>
+                                <rect key="frame" x="0.0" y="7" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gn-Zt-jUo" userLabel="userInfoView">
@@ -185,9 +185,9 @@
                             <constraint firstAttribute="trailing" secondItem="9SX-yp-jyk" secondAttribute="trailing" id="DFO-sh-Sg2"/>
                             <constraint firstItem="9SX-yp-jyk" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" id="FHd-eu-TNR"/>
                             <constraint firstAttribute="trailing" secondItem="h1o-6t-QRB" secondAttribute="trailing" constant="20" id="QAI-dt-cFq"/>
-                            <constraint firstAttribute="bottom" secondItem="9SX-yp-jyk" secondAttribute="bottom" constant="234" id="UbK-VJ-LJe"/>
+                            <constraint firstAttribute="bottom" secondItem="9SX-yp-jyk" secondAttribute="bottom" constant="237" id="UbK-VJ-LJe"/>
                             <constraint firstItem="h1o-6t-QRB" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" constant="20" id="f9s-Dm-zNx"/>
-                            <constraint firstItem="9SX-yp-jyk" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="10" id="lns-fU-e5k"/>
+                            <constraint firstItem="9SX-yp-jyk" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="7" id="lns-fU-e5k"/>
                             <constraint firstAttribute="bottom" secondItem="h1o-6t-QRB" secondAttribute="bottom" constant="20" id="xiX-Zz-86n"/>
                         </constraints>
                     </view>
