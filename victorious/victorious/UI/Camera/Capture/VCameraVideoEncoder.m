@@ -172,6 +172,21 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
             }
         }];
     }
+    else
+    {
+        id<VCameraVideoEncoderDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(videoEncoderDidFinish:withError:)])
+        {
+            NSError *error = self.writer.error;
+            if (!error)
+            {
+                error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain
+                                            code:VCameraVideoEncoderErrorCode
+                                        userInfo:@{ NSLocalizedDescriptionKey: @"Tried to finish recording but no recording is happening" }];
+            }
+            [delegate videoEncoderDidFinish:self withError:error];
+        }
+    }
 }
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate methods

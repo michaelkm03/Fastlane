@@ -269,7 +269,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    [self.camera stopRunningWithCompletion:nil];
+    if (self.camera.captureSession.running)
+    {
+        [self.camera stopRunningWithCompletion:nil];
+    }
+    [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
 }
 
 - (BOOL)shouldAutorotate
@@ -502,32 +506,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-        if (!self.camera.videoEncoder)
-        {
-            VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
-            if (!encoder)
-            {
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-                hud.mode = MBProgressHUDModeText;
-                hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
-                [hud hide:YES afterDelay:3.0];
-                return;
-            }
-            encoder.delegate = self;
-            self.camera.videoEncoder = encoder;
-        }
-        else
-        {
-            self.camera.videoEncoder.recording = YES;
-        }
-        self.switchCameraButton.enabled = NO;
-        self.switchCameraModeButton.enabled = NO;
+        [self startRecording];
     }
     else if (gesture.state == UIGestureRecognizerStateEnded)
     {
-        self.camera.videoEncoder.recording = NO;
-        self.switchCameraButton.enabled = YES;
-        self.switchCameraModeButton.enabled = YES;
+        [self stopRecording];
     }
     
 #if 0
@@ -668,6 +651,37 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 }
 
 #pragma mark - Support
+
+- (void)startRecording
+{
+    if (!self.camera.videoEncoder)
+    {
+        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
+        if (!encoder)
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
+            [hud hide:YES afterDelay:3.0];
+            return;
+        }
+        encoder.delegate = self;
+        self.camera.videoEncoder = encoder;
+    }
+    else
+    {
+        self.camera.videoEncoder.recording = YES;
+    }
+    self.switchCameraButton.enabled = NO;
+    self.switchCameraModeButton.enabled = NO;
+}
+
+- (void)stopRecording
+{
+    self.camera.videoEncoder.recording = NO;
+    self.switchCameraButton.enabled = YES;
+    self.switchCameraModeButton.enabled = YES;
+}
 
 - (void)configureUIforVideoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
 {
@@ -1036,6 +1050,24 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         }
         
         [self updateProgressForSecond:CMTimeGetSeconds(time)];
+        
+        if (CMTimeGetSeconds(time) >= VConstantsMaximumVideoDuration)
+        {
+            [self stopRecording];
+            [self nextAction:nil];
+        }
+    });
+}
+
+- (void)videoEncoder:(VCameraVideoEncoder *)videoEncoder didEncounterError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        videoEncoder.recording = NO;
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
+        [hud hide:YES afterDelay:3.0];
     });
 }
 
@@ -1056,8 +1088,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         else
         {
             [self moveToPreviewViewControllerWithContentURL:videoEncoder.fileURL];
+            self.camera.videoEncoder = nil;
         }
-        self.camera.videoEncoder = nil;
     });
 }
 

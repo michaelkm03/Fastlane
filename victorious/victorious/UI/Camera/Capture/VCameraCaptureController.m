@@ -119,13 +119,13 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         return;
     }
     
-    _videoEncoder = videoEncoder;
-    
-    dispatch_async(self.sessionQueue, ^(void)
+    dispatch_sync(self.sessionQueue, ^(void)
     {
         [self.videoOutput setSampleBufferDelegate:videoEncoder queue:videoEncoder.encoderQueue];
         [self.audioOutput setSampleBufferDelegate:videoEncoder queue:videoEncoder.encoderQueue];
     });
+
+    _videoEncoder = videoEncoder;
 }
 
 #pragma mark - Start/Stop
