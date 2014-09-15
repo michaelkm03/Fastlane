@@ -334,6 +334,11 @@
 		D800F78319C3920C00E60413 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D800F78219C3920C00E60413 /* VBaseSupplementaryView.m */; };
 		D80E6E2719C75C0E009840F0 /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E2619C75C0E009840F0 /* VContentViewViewModel.m */; };
 		D80E6E2919C7647B009840F0 /* VContentViewViewModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E2819C7647B009840F0 /* VContentViewViewModelTests.m */; };
+		D80E6E2E19C77F28009840F0 /* VAllCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E2C19C77F28009840F0 /* VAllCommentCell.m */; };
+		D80E6E2F19C77F28009840F0 /* VAllCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80E6E2D19C77F28009840F0 /* VAllCommentCell.xib */; };
+		D80E6E3219C77F4C009840F0 /* VVideoContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E3119C77F4C009840F0 /* VVideoContentCell.m */; };
+		D80E6E3519C77F57009840F0 /* VImageContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E3419C77F57009840F0 /* VImageContentCell.m */; };
+		D80E6E3819C77F60009840F0 /* VPollContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E3719C77F60009840F0 /* VPollContentCell.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D858E67119C29C0500E4B24D /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D858E66919C29C0500E4B24D /* VContentCell.m */; };
@@ -355,8 +360,6 @@
 		D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */; };
 		D8DE612B19BE566D00F7731E /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE612A19BE566D00F7731E /* VNewContentViewController.m */; };
 		D8DE612D19BE575B00F7731E /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8DE612C19BE575B00F7731E /* ContentView.storyboard */; };
-		D8DE613B19BE807000F7731E /* VAllCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DE613A19BE807000F7731E /* VAllCommentCell.m */; };
-		D8DE613D19BE807D00F7731E /* VAllCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8DE613C19BE807D00F7731E /* VAllCommentCell.xib */; };
 		DB1FF51619B808B8002D204E /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1FF51519B808B8002D204E /* VAsset.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF44199403B300D2A07F /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF43199403B300D2A07F /* VComment.m */; };
@@ -975,6 +978,15 @@
 		D80E6E2519C75C0E009840F0 /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D80E6E2619C75C0E009840F0 /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D80E6E2819C7647B009840F0 /* VContentViewViewModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModelTests.m; sourceTree = "<group>"; };
+		D80E6E2B19C77F28009840F0 /* VAllCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAllCommentCell.h; sourceTree = "<group>"; };
+		D80E6E2C19C77F28009840F0 /* VAllCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAllCommentCell.m; sourceTree = "<group>"; };
+		D80E6E2D19C77F28009840F0 /* VAllCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VAllCommentCell.xib; sourceTree = "<group>"; };
+		D80E6E3019C77F4C009840F0 /* VVideoContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoContentCell.h; sourceTree = "<group>"; };
+		D80E6E3119C77F4C009840F0 /* VVideoContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoContentCell.m; sourceTree = "<group>"; };
+		D80E6E3319C77F57009840F0 /* VImageContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageContentCell.h; sourceTree = "<group>"; };
+		D80E6E3419C77F57009840F0 /* VImageContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageContentCell.m; sourceTree = "<group>"; };
+		D80E6E3619C77F60009840F0 /* VPollContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollContentCell.h; sourceTree = "<group>"; };
+		D80E6E3719C77F60009840F0 /* VPollContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollContentCell.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D858E66819C29C0500E4B24D /* VContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCell.h; sourceTree = "<group>"; };
@@ -1008,9 +1020,6 @@
 		D8DE612919BE566D00F7731E /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
 		D8DE612A19BE566D00F7731E /* VNewContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNewContentViewController.m; sourceTree = "<group>"; };
 		D8DE612C19BE575B00F7731E /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
-		D8DE613919BE807000F7731E /* VAllCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAllCommentCell.h; sourceTree = "<group>"; };
-		D8DE613A19BE807000F7731E /* VAllCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAllCommentCell.m; sourceTree = "<group>"; };
-		D8DE613C19BE807D00F7731E /* VAllCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VAllCommentCell.xib; sourceTree = "<group>"; };
 		DB1FF51419B808B8002D204E /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAsset.h; path = victorious/ManagedObjectModels/VAsset.h; sourceTree = "<group>"; };
 		DB1FF51519B808B8002D204E /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAsset.m; path = victorious/ManagedObjectModels/VAsset.m; sourceTree = "<group>"; };
 		DB478CE419B68E1800462C37 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -1337,7 +1346,7 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				D8DE613819BE802300F7731E /* AllComments */,
+				D80E6E2A19C77F0B009840F0 /* Cells */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				0314D36519B46B5E00FA363C /* Content Info */,
 				D8DE612C19BE575B00F7731E /* ContentView.storyboard */,
@@ -2279,6 +2288,22 @@
 			path = AppSpecific;
 			sourceTree = "<group>";
 		};
+		D80E6E2A19C77F0B009840F0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D80E6E2B19C77F28009840F0 /* VAllCommentCell.h */,
+				D80E6E2C19C77F28009840F0 /* VAllCommentCell.m */,
+				D80E6E2D19C77F28009840F0 /* VAllCommentCell.xib */,
+				D80E6E3019C77F4C009840F0 /* VVideoContentCell.h */,
+				D80E6E3119C77F4C009840F0 /* VVideoContentCell.m */,
+				D80E6E3319C77F57009840F0 /* VImageContentCell.h */,
+				D80E6E3419C77F57009840F0 /* VImageContentCell.m */,
+				D80E6E3619C77F60009840F0 /* VPollContentCell.h */,
+				D80E6E3719C77F60009840F0 /* VPollContentCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		D858E66719C29BE000E4B24D /* UICollectionReusableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2326,16 +2351,6 @@
 				D8B3F8C519BE9D480009B7CD /* VCollapsingFlowLayout.m */,
 			);
 			path = Layouts;
-			sourceTree = "<group>";
-		};
-		D8DE613819BE802300F7731E /* AllComments */ = {
-			isa = PBXGroup;
-			children = (
-				D8DE613919BE807000F7731E /* VAllCommentCell.h */,
-				D8DE613A19BE807000F7731E /* VAllCommentCell.m */,
-				D8DE613C19BE807D00F7731E /* VAllCommentCell.xib */,
-			);
-			path = AllComments;
 			sourceTree = "<group>";
 		};
 		DB8D3A10198039BD005DD36D /* HashTags */ = {
@@ -2443,7 +2458,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
-				D8DE613D19BE807D00F7731E /* VAllCommentCell.xib in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				0314D4B919B46B5E00FA363C /* Main.storyboard in Resources */,
 				0314D4D519B46B5E00FA363C /* settings.storyboard in Resources */,
@@ -2471,6 +2485,7 @@
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
+				D80E6E2F19C77F28009840F0 /* VAllCommentCell.xib in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
@@ -2676,6 +2691,7 @@
 				0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
+				D80E6E2E19C77F28009840F0 /* VAllCommentCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				0314D46119B46B5E00FA363C /* VMediaPreviewViewController.m in Sources */,
 				0314D48419B46B5E00FA363C /* VCommentToStreamAnimator.m in Sources */,
@@ -2762,6 +2778,7 @@
 				BEBF512D19BA15B7007AB3BA /* VMessage.m in Sources */,
 				0314D45C19B46B5E00FA363C /* VPhotoFilter.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
+				D80E6E3519C77F57009840F0 /* VImageContentCell.m in Sources */,
 				0314D06119B4666A00FA363C /* NSManagedObject+RestKit.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				0314D4C719B46B5E00FA363C /* VRemixResizableBubble.m in Sources */,
@@ -2775,6 +2792,7 @@
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				D879548B19C12F5000C12906 /* VStream.m in Sources */,
+				D80E6E3819C77F60009840F0 /* VPollContentCell.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -2789,6 +2807,7 @@
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
+				D80E6E3219C77F4C009840F0 /* VVideoContentCell.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				0314D49419B46B5E00FA363C /* VContentViewController+Polls.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
@@ -2838,7 +2857,6 @@
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
-				D8DE613B19BE807000F7731E /* VAllCommentCell.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
