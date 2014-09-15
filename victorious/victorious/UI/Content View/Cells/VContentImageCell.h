@@ -10,6 +10,6 @@
 
 @interface VContentImageCell : VBaseCollectionViewCell
 
-@property (nonatomic, strong) UIImage *contentImage;
+@property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 
 @end

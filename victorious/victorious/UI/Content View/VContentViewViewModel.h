@@ -8,10 +8,12 @@
 
 #import "VSequence.h"
 
+#import "VNode.h"
+
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
  */
-typedef NS_ENUM(NSInteger, VContentViewType)
+typedef NS_ENUM(NSInteger, VNodeContentViewType)
 {
     /**
      *  Invalid content type,
@@ -48,8 +50,18 @@ typedef NS_ENUM(NSInteger, VContentViewType)
 @property (nonatomic, strong, readonly) VSequence *sequence;
 
 /**
+ *  The current node in the sequence.
+ */
+@property (nonatomic, strong, readonly) VNode *currentNode;
+
+/**
  *  The type of sequence this view model represents.
  */
-@property (nonatomic, assign, readonly) VContentViewType type;
+@property (nonatomic, assign, readonly) VNodeContentViewType type;
+
+/**
+ *  For content type image this will be a convenient url request for setting the image.
+ */
+@property (nonatomic, readonly) NSURLRequest *imageURLRequest;
 
 @end

@@ -10,8 +10,6 @@
 
 @interface VContentImageCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
-
 @end
 
 @implementation VContentImageCell
@@ -21,14 +19,6 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
-}
-
-#pragma mark - Property Accessors
-
-- (void)setContentImage:(UIImage *)contentImage
-{
-    _contentImage = contentImage;
-    self.contentImageView.image = contentImage;
 }
 
 @end

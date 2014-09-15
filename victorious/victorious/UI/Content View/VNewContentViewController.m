@@ -13,6 +13,8 @@
 
 // Cells
 #import "VContentCell.h"
+#import "VContentVideoCell.h"
+#import "VContentImageCell.h"
 #import "VRealTimeCommentsCell.h"
 #import "VContentCommentsCell.h"
 
@@ -86,6 +88,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     // Register nibs
     [self.contentCollectionView registerNib:[VContentCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
                  forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
@@ -188,8 +194,27 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
+            switch (self.viewModel.type)
+        {
+            case VContentViewTypeInvalid:
+                return nil;
+            case VContentViewTypeImage:
+            {
+                VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+                                                                                         forIndexPath:indexPath];
+                [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
+                                                  placeholderImage:nil
+                                                           success:nil
+                                                           failure:nil];
+                return imageCell;
+            }
+            case VContentViewTypeVideo:
+                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+            case VContentViewTypePoll:
+                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+        }
         case VContentViewSectionRealTimeComments:
             return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];

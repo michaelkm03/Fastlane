@@ -10,6 +10,8 @@
 
 // Model Categories
 #import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
+#import "VAsset+Fetcher.h"
 
 @interface VContentViewViewModel ()
 
@@ -44,6 +46,8 @@
         {
             _type = VContentViewTypeInvalid;
         }
+        
+        _currentNode = [sequence firstNode];
     }
     return self;
 }
@@ -54,6 +58,26 @@
                             reason:@"-init is not allowed. Use the designate initializer: \"-initWithSequence:\""
                            userInfo:nil] raise];
     return nil;
+}
+
+#pragma mark - Property Accessors
+
+- (NSURLRequest *)imageURLRequest
+{
+    NSURL* imageUrl;
+    if (self.type == VContentViewTypeImage)
+    {
+        VAsset *currentAsset = [self.currentNode firstAsset];
+        imageUrl = [NSURL URLWithString:currentAsset.data];
+    }
+    else
+    {
+        imageUrl = [NSURL URLWithString:self.sequence.previewImage];
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    return request;
 }
 
 @end
