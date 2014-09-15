@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate>
 
+@property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
+
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
@@ -40,6 +42,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @end
 
 @implementation VNewContentViewController
+
+#pragma mark - Factory Methods
+
++ (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
+{
+    VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
+    
+    contentViewController.viewModel = viewModel;
+    	
+    return contentViewController;
+}
 
 #pragma mark - UIResponder
 

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VContentViewViewModel.h"
+
 @interface VNewContentViewController : UIViewController
+
++ (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel;
+
+@property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
 @end

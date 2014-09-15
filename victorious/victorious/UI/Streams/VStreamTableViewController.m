@@ -16,6 +16,7 @@
 
 #import "VCommentsContainerViewController.h"
 #import "VContentViewController.h"
+#import "VNewContentViewController.h"
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
@@ -267,59 +268,64 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.lastSelectedIndexPath = indexPath;
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    [self presentViewController:contentViewController
+                       animated:YES
+                     completion:nil];
+//    self.lastSelectedIndexPath = indexPath;
     
-    self.contentViewController = [[VContentViewController alloc] init];
+//    self.contentViewController = [[VContentViewController alloc] init];
     
-    VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
-    {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
+//    VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+//    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
+//    {
+//        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        return;
+//    }
     
-    self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    VStreamViewCell* cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+//    self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+//    VStreamViewCell* cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+//    
+//    if ([cell isKindOfClass:[VStreamPollCell class]])
+//    {
+//        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
+//        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
+//        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
+//    }
+//    
+//    //Every time we go to the content view, update the sequence
+//    [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
+//                                     successBlock:nil
+//                                        failBlock:nil];
+//    
+//    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+//    [self.delegate streamWillDisappear];
     
-    if ([cell isKindOfClass:[VStreamPollCell class]])
-    {
-        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
-        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
-        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
-    }
-    
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
-                                     successBlock:nil
-                                        failBlock:nil];
-    
-    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
-    [self.delegate streamWillDisappear];
-    
-    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
-    if (tableView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
-    {
-        [self.navigationController pushViewController:self.contentViewController animated:YES];
-    }
-    else
-    {
-        self.tableView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-             usingSpringWithDamping:1.0f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-            [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
-        }
-                         completion:^(BOOL finished)
-        {
-            self.tableView.userInteractionEnabled = YES;
-            [self.navigationController pushViewController:self.contentViewController animated:YES];
-        }];
-
-    }
+//    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
+//    if (tableView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
+//    {
+//        [self.navigationController pushViewController:self.contentViewController animated:YES];
+//    }
+//    else
+//    {
+//        self.tableView.userInteractionEnabled = NO;
+//        [UIView animateWithDuration:0.2f
+//                              delay:0.0f
+//             usingSpringWithDamping:1.0f
+//              initialSpringVelocity:0.0f
+//                            options:UIViewAnimationOptionBeginFromCurrentState
+//                         animations:^
+//        {
+//            [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+//        }
+//                         completion:^(BOOL finished)
+//        {
+//            self.tableView.userInteractionEnabled = YES;
+//            [self.navigationController pushViewController:self.contentViewController animated:YES];
+//        }];
+//
+//    }
 }
 
 #pragma mark - Cells
@@ -564,21 +570,21 @@
 }
 
 #pragma mark - Navigation
-- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
-{
-    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
-    {
-        return [[VStreamToContentAnimator alloc] init];;
-    }
-    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
-    {
-        return [[VStreamToCommentAnimator alloc] init];
-    }
-    return nil;
-}
+//- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+//                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+//                                                fromViewController:(UIViewController *)fromVC
+//                                                  toViewController:(UIViewController *)toVC
+//{
+//    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
+//    {
+//        return [[VStreamToContentAnimator alloc] init];;
+//    }
+//    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
+//    {
+//        return [[VStreamToCommentAnimator alloc] init];
+//    }
+//    return nil;
+//}
 
 #pragma mark - VAnimation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
