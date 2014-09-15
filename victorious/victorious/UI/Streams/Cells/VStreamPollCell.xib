@@ -49,7 +49,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Vq-OQb">
-                                <rect key="frame" x="20" y="172" width="280" height="21"/>
+                                <rect key="frame" x="20" y="175" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -106,7 +106,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4OM-vf-hRY" userLabel="Comment Button">
-                                        <rect key="frame" x="254" y="2" width="66" height="44"/>
+                                        <rect key="frame" x="254" y="4" width="66" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="66" id="KKT-Xe-lQF"/>
@@ -154,7 +154,7 @@
                                     <constraint firstItem="kwb-5e-ITN" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" id="5mu-KV-Ki6"/>
                                     <constraint firstItem="t88-9Z-IQI" firstAttribute="centerY" secondItem="JEd-KM-EXM" secondAttribute="centerY" constant="1" id="8VM-qm-AYr"/>
                                     <constraint firstAttribute="trailing" secondItem="kwb-5e-ITN" secondAttribute="trailing" id="Cw7-TM-hSS"/>
-                                    <constraint firstItem="4OM-vf-hRY" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="2" id="Eo2-rB-VId"/>
+                                    <constraint firstItem="4OM-vf-hRY" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="4" id="Eo2-rB-VId"/>
                                     <constraint firstItem="t88-9Z-IQI" firstAttribute="leading" secondItem="f6x-4t-qP9" secondAttribute="leading" constant="57" id="J09-fR-WwW"/>
                                     <constraint firstItem="w2h-He-l05" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" id="cNa-Ej-aFk"/>
                                     <constraint firstItem="t88-9Z-IQI" firstAttribute="top" secondItem="f6x-4t-qP9" secondAttribute="top" constant="16" id="gLg-wq-oWn"/>
@@ -184,12 +184,12 @@
                             <constraint firstAttribute="trailing" secondItem="0rJ-Vq-OQb" secondAttribute="trailing" constant="20" id="RGb-zA-Vow"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" constant="7" id="cBl-fv-cgY"/>
                             <constraint firstAttribute="bottom" secondItem="f6x-4t-qP9" secondAttribute="bottom" constant="131" id="dSQ-Ia-tIw"/>
-                            <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="20" id="lBp-Vo-p0y"/>
+                            <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="17" id="lBp-Vo-p0y"/>
                             <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="Fse-X8-bIf">
-                        <rect key="frame" x="127" y="71" width="66" height="72"/>
+                        <rect key="frame" x="127" y="74" width="66" height="72"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>

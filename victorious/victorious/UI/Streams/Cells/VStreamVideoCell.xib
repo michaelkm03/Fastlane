@@ -109,7 +109,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gCa-dw-c9s" userLabel="Comment Button">
-                                        <rect key="frame" x="254" y="2" width="66" height="44"/>
+                                        <rect key="frame" x="254" y="5" width="66" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="TPR-Ii-Do5"/>
@@ -164,7 +164,7 @@
                                     <constraint firstItem="6gn-Zt-jUo" firstAttribute="leading" secondItem="Izg-9w-06b" secondAttribute="trailing" constant="5" id="pfc-62-g1M"/>
                                     <constraint firstAttribute="trailing" secondItem="Fe2-3I-Ckc" secondAttribute="trailing" id="vGY-w2-1ip"/>
                                     <constraint firstItem="iBZ-pH-hkO" firstAttribute="bottom" secondItem="Fe2-3I-Ckc" secondAttribute="bottom" id="wMg-KK-gRt"/>
-                                    <constraint firstItem="gCa-dw-c9s" firstAttribute="top" secondItem="9SX-yp-jyk" secondAttribute="top" constant="2" id="wO7-Z0-Jei"/>
+                                    <constraint firstItem="gCa-dw-c9s" firstAttribute="top" secondItem="9SX-yp-jyk" secondAttribute="top" constant="5" id="wO7-Z0-Jei"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="commentButton" destination="gCa-dw-c9s" id="oAL-Cx-i4E"/>
