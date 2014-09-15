@@ -192,6 +192,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     if (!self.audioInput && !isVideo)
     {
         NSDictionary *videoSettings = @{ AVVideoCodecKey: AVVideoCodecH264,
+                                         AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
                                          AVVideoWidthKey: @(self.videoSize.width),
                                          AVVideoHeightKey: @(self.videoSize.height),
                                     };

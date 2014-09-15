@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "AVCaptureConnection+VOrientation.h"
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VConstants.h"
@@ -63,24 +64,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 - (AVCaptureDevice *)defaultDevice
 {
     return defaultCaptureDevice();
-}
-
-- (VCameraCaptureVideoSize)videoSize
-{
-    __block VCameraCaptureVideoSize videoSize;
-    dispatch_sync(self.sessionQueue, ^(void)
-    {
-        if (!self.videoOutput)
-        {
-            videoSize = VCameraCaptureVideoSizeZero;
-            return;
-        }
-        
-        NSDictionary* videoSettings = self.videoOutput.videoSettings;
-        videoSize.height = [videoSettings[@"Height"] integerValue];
-        videoSize.width = [videoSettings[@"Width"] integerValue];
-    });
-    return videoSize;
 }
 
 #pragma clang diagnostic push
@@ -292,7 +275,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         AVCaptureConnection *videoConnection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
         if (videoConnection)
         {
-            [self applyDeviceOrientation:[[UIDevice currentDevice] orientation] toConnection:videoConnection];
+            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
             [self.imageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
              {
                  if (error)
@@ -350,33 +333,20 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     });
 }
 
-- (void)applyDeviceOrientation:(UIDeviceOrientation)orientation toConnection:(AVCaptureConnection *)connection
+- (void)setVideoOrientationToCurrentDeviceOrientationWithCompletion:(void (^)(void))completion
 {
-    if (connection.supportsVideoOrientation)
+    dispatch_async(self.sessionQueue, ^(void)
     {
-        switch (orientation)
+        AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+        if (videoConnection)
         {
-            case UIDeviceOrientationUnknown:
-                [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-                break;
-            case UIDeviceOrientationPortrait:
-                [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                break;
-            case UIDeviceOrientationPortraitUpsideDown:
-                [connection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-                break;
-            case UIDeviceOrientationLandscapeLeft:
-                [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
-                break;
-            case UIDeviceOrientationLandscapeRight:
-                [connection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-                break;
-            case UIDeviceOrientationFaceUp:
-            case UIDeviceOrientationFaceDown:
-                [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                break;
+            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
         }
-    }
+        if (completion)
+        {
+            completion();
+        }
+    });
 }
 
 #pragma mark -

@@ -52,11 +52,6 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 @property (nonatomic, strong) VCameraVideoEncoder *videoEncoder;
 
 /**
- Returns the size, in pixels, of the video output
- */
-@property (nonatomic, readonly) VCameraCaptureVideoSize videoSize;
-
-/**
  Sets the capture session quality level or bitrate
  
  @param completion Will be called on a private queue when the session has been set.
@@ -76,6 +71,16 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  @param completion Will be called on a private queue when the capture device is fully swapped.
  */
 - (void)setCurrentDevice:(AVCaptureDevice *)currentDevice withCompletion:(void(^)(NSError *))completion;
+
+/**
+ Takes the current device orientation and applies it to the
+ video input. It is not necessary to call this prior to 
+ taking a still image, but it should be called prior to
+ recording any video.
+ 
+ @param completion Will be called on a private queue when the orientation has been updated
+ */
+- (void)setVideoOrientationToCurrentDeviceOrientationWithCompletion:(void(^)(void))completion;
 
 /**
  Captures a still image from the current capture session in JPEG format
