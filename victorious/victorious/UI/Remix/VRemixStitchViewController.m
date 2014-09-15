@@ -322,14 +322,12 @@
     if (self.selectingBeforeURL)
     {
         self.beforeURL = url;
-        self.beforeButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.27 blue:0.20 alpha:1.0];
         [self.beforeButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.beforeButton withURL:url];
     }
     else if (self.selectingAfterURL)
     {
         self.afterURL = url;
-        self.afterButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.27 blue:0.20 alpha:1.0];
         [self.afterButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.afterButton withURL:url];
     }
