@@ -544,15 +544,19 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             }
             else
             {
-                NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPEG];
-                NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
-                [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
-                [self moveToPreviewViewControllerWithContentURL:fileURL];
-                [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
+                [self moveToPreviewControllerWithImage:image];
                 [self setAllControlsEnabled:YES];
             }
         });
     }];
+}
+
+- (void)moveToPreviewControllerWithImage:(UIImage *)image
+{
+    NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
+    NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
+    [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
+    [self moveToPreviewViewControllerWithContentURL:fileURL];
 }
 
 - (IBAction)switchMediaTypeAction:(id)sender
@@ -1199,27 +1203,25 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+
     self.didSelectAssetFromLibrary = YES;
-    
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     
-    // Handle a still image picked from a photo album
-    if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Image From Library" label:nil value:nil];
-        UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        [self moveToPreviewControllerWithImage:originalImage];
 //        [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
-    
-    // Handle a movied picked from a photo album
-    else if (CFStringCompare((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
+    else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
-        NSURL* movieURL = info[UIImagePickerControllerMediaURL];
+        NSURL *movieURL = info[UIImagePickerControllerMediaURL];
+        [self moveToPreviewViewControllerWithContentURL:movieURL];
 //        [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
