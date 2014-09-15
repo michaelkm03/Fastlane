@@ -192,6 +192,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 return;
             }
         }
+        [self _setVideoOrientationToCurrentDeviceOrientationWithCompletion:nil];
         
         if (!self.audioOutput)
         {
@@ -337,16 +338,21 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
-        if (videoConnection)
-        {
-            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
-        }
-        if (completion)
-        {
-            completion();
-        }
+        [self _setVideoOrientationToCurrentDeviceOrientationWithCompletion:completion];
     });
+}
+
+- (void)_setVideoOrientationToCurrentDeviceOrientationWithCompletion:(void (^)(void))completion
+{
+    AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+    if (videoConnection)
+    {
+        [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
+    }
+    if (completion)
+    {
+        completion();
+    }
 }
 
 #pragma mark -

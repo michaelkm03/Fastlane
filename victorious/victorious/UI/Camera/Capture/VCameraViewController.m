@@ -116,6 +116,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.initialCaptureMode = self.videoQuality;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -194,44 +199,32 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         [self restoreLivePreview];
     }
-
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
     [self.camera startRunningWithCompletion:^(NSError *error)
     {
-        void (^c)(void) = ^(void)
+        dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
+            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+            if (error)
             {
-                [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-                if (error)
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.labelText = NSLocalizedString(@"CameraFailed", @"");
+                [hud hide:YES afterDelay:10.0];
+            }
+            else
+            {
+                // Check for mic permission if doing video
+                if ([self.camera.captureSession.sessionPreset isEqualToString:self.videoQuality])
                 {
-                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-                    hud.mode = MBProgressHUDModeText;
-                    hud.labelText = NSLocalizedString(@"CameraFailed", @"");
-                    [hud hide:YES afterDelay:10.0];
+                    [self checkForMicrophoneAuthorization];
                 }
-                else
-                {
-                    // Check for mic permission if doing video
-                    if ([self.camera.captureSession.sessionPreset isEqualToString:self.videoQuality])
-                    {
-                        [self checkForMicrophoneAuthorization];
-                    }
-                }
-            });
-        };
-        if (self.camera.captureSession.sessionPreset == AVCaptureSessionPresetPhoto)
-        {
-            c();
-        }
-        else
-        {
-            [self.camera setVideoOrientationToCurrentDeviceOrientationWithCompletion:c];
-        }
+            }
+        });
     }];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
