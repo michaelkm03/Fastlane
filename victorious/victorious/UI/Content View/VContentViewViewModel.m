@@ -80,4 +80,10 @@
     return request;
 }
 
+- (NSURL *)videoURL
+{
+    VAsset *currentAsset = [self.currentNode firstAsset];
+    return [NSURL URLWithString:currentAsset.data];
+}
+
 @end

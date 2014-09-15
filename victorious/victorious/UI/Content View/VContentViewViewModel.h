@@ -64,4 +64,9 @@ typedef NS_ENUM(NSInteger, VNodeContentViewType)
  */
 @property (nonatomic, readonly) NSURLRequest *imageURLRequest;
 
+/**
+ *  For content type video this will be a convenient url for the videoplayer.
+ */
+@property (nonatomic, readonly) NSURL *videoURL;
+
 @end

@@ -209,8 +209,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                 return imageCell;
             }
             case VContentViewTypeVideo:
-                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
+            {
+                VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
+                                                                                         forIndexPath:indexPath];
+                videoCell.videoURL = self.viewModel.videoURL;
+                return videoCell;
+            }
             case VContentViewTypePoll:
                 return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];

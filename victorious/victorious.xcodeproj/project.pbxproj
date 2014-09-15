@@ -346,6 +346,7 @@
 		D80E6E5519C780F2009840F0 /* VContentImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80E6E5419C780F2009840F0 /* VContentImageCell.xib */; };
 		D80E6E5819C78359009840F0 /* VContentCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80E6E5719C78359009840F0 /* VContentCommentsCell.m */; };
 		D80E6E5A19C7836A009840F0 /* VContentCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80E6E5919C7836A009840F0 /* VContentCommentsCell.xib */; };
+		D80E6E5C19C7ADBE009840F0 /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80E6E5B19C7ADBE009840F0 /* VContentVideoCell.xib */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D879548719C12F5000C12906 /* VAbstractPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = D879547E19C12F5000C12906 /* VAbstractPaginator.m */; };
@@ -998,6 +999,7 @@
 		D80E6E5619C78359009840F0 /* VContentCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCommentsCell.h; sourceTree = "<group>"; };
 		D80E6E5719C78359009840F0 /* VContentCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentCommentsCell.m; sourceTree = "<group>"; };
 		D80E6E5919C7836A009840F0 /* VContentCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentCommentsCell.xib; sourceTree = "<group>"; };
+		D80E6E5B19C7ADBE009840F0 /* VContentVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentVideoCell.xib; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D879547D19C12F5000C12906 /* VAbstractPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPaginator.h; sourceTree = "<group>"; };
@@ -2295,22 +2297,23 @@
 				D80E6E3C19C78096009840F0 /* VContentCell.h */,
 				D80E6E3D19C78096009840F0 /* VContentCell.m */,
 				D80E6E3E19C78096009840F0 /* VContentCell.xib */,
+				D80E6E5619C78359009840F0 /* VContentCommentsCell.h */,
+				D80E6E5719C78359009840F0 /* VContentCommentsCell.m */,
+				D80E6E5919C7836A009840F0 /* VContentCommentsCell.xib */,
+				D80E6E4E19C780AB009840F0 /* VContentImageCell.h */,
+				D80E6E4F19C780AB009840F0 /* VContentImageCell.m */,
+				D80E6E5419C780F2009840F0 /* VContentImageCell.xib */,
+				D80E6E5119C780B3009840F0 /* VContentPollCell.h */,
+				D80E6E5219C780B3009840F0 /* VContentPollCell.m */,
+				D80E6E4B19C780A3009840F0 /* VContentVideoCell.h */,
+				D80E6E4C19C780A3009840F0 /* VContentVideoCell.m */,
+				D80E6E5B19C7ADBE009840F0 /* VContentVideoCell.xib */,
 				D80E6E3F19C78096009840F0 /* VDropdownTitleView.h */,
 				D80E6E4019C78096009840F0 /* VDropdownTitleView.m */,
 				D80E6E4119C78096009840F0 /* VDropdownTitleView.xib */,
 				D80E6E4219C78096009840F0 /* VRealTimeCommentsCell.h */,
 				D80E6E4319C78096009840F0 /* VRealTimeCommentsCell.m */,
 				D80E6E4419C78096009840F0 /* VRealTimeCommentsCell.xib */,
-				D80E6E4B19C780A3009840F0 /* VContentVideoCell.h */,
-				D80E6E4C19C780A3009840F0 /* VContentVideoCell.m */,
-				D80E6E4E19C780AB009840F0 /* VContentImageCell.h */,
-				D80E6E4F19C780AB009840F0 /* VContentImageCell.m */,
-				D80E6E5419C780F2009840F0 /* VContentImageCell.xib */,
-				D80E6E5119C780B3009840F0 /* VContentPollCell.h */,
-				D80E6E5219C780B3009840F0 /* VContentPollCell.m */,
-				D80E6E5619C78359009840F0 /* VContentCommentsCell.h */,
-				D80E6E5719C78359009840F0 /* VContentCommentsCell.m */,
-				D80E6E5919C7836A009840F0 /* VContentCommentsCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2498,6 +2501,7 @@
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
+				D80E6E5C19C7ADBE009840F0 /* VContentVideoCell.xib in Resources */,
 				D8DE612D19BE575B00F7731E /* ContentView.storyboard in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
