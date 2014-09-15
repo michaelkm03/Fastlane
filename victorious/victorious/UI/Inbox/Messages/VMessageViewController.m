@@ -26,6 +26,8 @@
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 
+#import "VUnreadConversation.h"
+
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
 @property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;
@@ -100,6 +102,14 @@
         }
         self.shouldScrollToBottom = YES;
     }
+    
+    //Update the unread count in case its changed.
+    [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VUnreadConversation* unreadConversations = [resultObjects firstObject];
+         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
+     }
+                                                                      failBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -113,6 +123,14 @@
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
     [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
+    
+    //Update the unread count in case its changed.
+    [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VUnreadConversation* unreadConversations = [resultObjects firstObject];
+         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
+     }
+                                                                      failBlock:nil];
 }
 
 - (void)loadNextPageAction
