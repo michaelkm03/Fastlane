@@ -34,7 +34,6 @@
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="display_order" attributeType="Integer 32" minValueString="-1" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
@@ -205,7 +204,7 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
-        <element name="Comment" positionX="1080" positionY="5" width="128" height="328"/>
+        <element name="Comment" positionX="1080" positionY="5" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Directory" positionX="853" positionY="-643" width="128" height="58"/>
         <element name="DirectoryItem" positionX="853" positionY="-531" width="128" height="103"/>
