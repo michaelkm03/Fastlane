@@ -11,8 +11,8 @@
 
 @interface VPollResult (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
-+ (RKResponseDescriptor*)byUserDescriptor;
-+ (RKResponseDescriptor*)createPollResultDescriptor;
++ (RKResponseDescriptor *)descriptor;
++ (RKResponseDescriptor *)byUserDescriptor;
++ (RKResponseDescriptor *)createPollResultDescriptor;
 
 @end

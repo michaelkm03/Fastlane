@@ -9,6 +9,7 @@
 
 
 "Home"                  =   "Home";
+"Channel"               =   "Channel";
 "Community"             =   "Community";
 "Inbox"                 =   "Inbox";
 "Comments"              =   "Comments";
@@ -78,6 +79,9 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
+"NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
+"NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
+
 "OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
@@ -136,6 +140,8 @@
 
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Something went wrong, and we are unable to complete the upload at this time.";
+
+"RefreshError"          =   "Unable to refresh.";
 
 "MediaAlreadyCreated"   =   "Media was already created.";
 
@@ -245,6 +251,9 @@
 "Access Your Contacts"  =   "Access your Contacts";
 "ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.";
 
+"AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
+"AccessMicrophoneRestricted" =  "Unable access microphone due to restrictions on your device.";
+
 "AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
 "AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
 
@@ -287,9 +296,10 @@
 "remixes"               =   "remixes";
 "reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
+"REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
-"RepostContentView"     =   "REPOST";
-"RpostedContentView"    =   "REPOSTED";
+"RepostContentView"     =   " REPOST";
+"RepostedContentView"   =   " REPOSTED";
 "comments"              =   "comments";
 
 "repostedFromFormat"      =   "Repost from %@";
@@ -304,5 +314,6 @@
 
 "areYouSure"            =   "Are You Sure?";
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
+"captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
 "SupportEmailSubject"  =   "Feedback on";

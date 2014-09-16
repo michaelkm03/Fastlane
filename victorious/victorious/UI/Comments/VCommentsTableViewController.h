@@ -16,7 +16,7 @@
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 
-- (void)addedNewComment:(VComment*)comment;
+- (void)addedNewComment:(VComment *)comment;
 
 @end
 

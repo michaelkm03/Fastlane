@@ -30,7 +30,7 @@
     }
 }
 
-- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray*, NSError*))completionBlock
+- (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
     [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {

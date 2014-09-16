@@ -14,6 +14,7 @@
 #import "VUser+RestKit.h"
 
 #import "UIButton+VImageLoading.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VUserProfileViewController.h"
 
@@ -42,10 +43,21 @@ CGFloat const kVConversationCellHeight = 72;
     _conversation = conversation;
     
     self.usernameLabel.text  = conversation.user.name;
+    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    self.profileImageView.tintColor = transparentAccent;
     [self.profileImageView setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
-                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+                          placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
+
+    if (self.conversation.isRead.boolValue)
+    {
+        self.backgroundColor = [UIColor whiteColor];
+    }
+    else
+    {
+        self.backgroundColor = [UIColor colorWithRed:.90 green:.91 blue:.93 alpha:1];
+    }
 }
 
 - (IBAction)profileButtonAction:(id)sender

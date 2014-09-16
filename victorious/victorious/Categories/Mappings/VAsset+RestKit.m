@@ -15,7 +15,7 @@
     return @"Asset";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),
@@ -40,7 +40,7 @@
     return mapping;
 }
 
-+ (RKEntityMapping*)entityMappingForVVoteType
++ (RKEntityMapping *)entityMappingForVVoteType
 {
 
     RKEntityMapping *mapping = [RKEntityMapping

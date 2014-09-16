@@ -443,7 +443,7 @@ static const char kVideoPlayerKey;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     CMTime currentTime = videoPlayer.currentTime;
-    if(CMTIME_IS_INVALID(currentTime) || CMTIME_IS_INDEFINITE(currentTime))
+    if (CMTIME_IS_INVALID(currentTime) || CMTIME_IS_INDEFINITE(currentTime))
     {
         return;
     }

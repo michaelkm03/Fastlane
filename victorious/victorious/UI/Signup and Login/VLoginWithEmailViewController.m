@@ -100,6 +100,11 @@
     return YES;
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
@@ -183,7 +188,7 @@
 
 #pragma mark - State
 
-- (void)didLoginWithUser:(VUser*)mainUser
+- (void)didLoginWithUser:(VUser *)mainUser
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Email" label:nil value:nil];
@@ -193,10 +198,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)didFailWithError:(NSError*)error
+- (void)didFailWithError:(NSError *)error
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
-    if(error.code != kVUserBannedError)
+    if (error.code != kVUserBannedError)
     {
         NSString*       message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
                                             : NSLocalizedString(@"LoginFailMessage", @"");
@@ -334,7 +339,7 @@
     }
     else if ([toVC isKindOfClass:[VEnterResetTokenViewController class]])
     {
-        ((VEnterResetTokenViewController*)toVC).deviceToken = self.deviceToken;
+        ((VEnterResetTokenViewController *)toVC).deviceToken = self.deviceToken;
     }
     else if ([toVC isKindOfClass:[VLoginViewController class]])
     {

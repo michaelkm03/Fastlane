@@ -17,7 +17,7 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser *)user
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
@@ -47,7 +47,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
+- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber *)conversationID
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
@@ -73,10 +73,14 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
+    //Mark the most recent message as read so there is no server delay.
+    conversation.isRead = @(YES);
+    [conversation.managedObjectContext saveToPersistentStore:nil];
+    
     return [self POST:@"/api/message/mark_conversation_read"
                object:nil
            parameters:@{@"conversation_id" : conversation.remoteId ?: [NSNull null]}
@@ -93,7 +97,7 @@
     {
         if ([resultObjects firstObject])
         {
-            self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
+            self.mainUser.unreadConversation = (VUnreadConversation *)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
         }
 
         if (success)
@@ -109,7 +113,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation *)conversation
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
@@ -120,7 +124,7 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *) flagConversation:(VConversation*)conversation
+- (RKManagedObjectRequestOperation *) flagConversation:(VConversation *)conversation
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {

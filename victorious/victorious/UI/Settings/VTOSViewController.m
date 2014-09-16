@@ -29,7 +29,8 @@
     [self.activitiyIndicator startAnimating];
     [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error) {
         [self.activitiyIndicator stopAnimating];
-        if (error) {
+        if (error)
+        {
             [self webView:self.webView didFailLoadWithError:error];
             return;
         }

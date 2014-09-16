@@ -10,7 +10,7 @@
 
 NSArray* VOwnerCategories()
 {
-    return @[kVOwnerPollCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
+    return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
 }
 NSArray* VUGCCategories()
 {
@@ -18,21 +18,21 @@ NSArray* VUGCCategories()
 }
 NSArray* VImageCategories()
 {
-    return @[kVUGCImageCategory,kVUGCImageRepostCategory,kVOwnerImageCategory,kVOwnerImageRepostCategory,kVUGCImageMemeCategory,kVUGCImageQuoteCategory,kVOwnerImageMemeCategory,kVOwnerImageQuoteCategory];
+    return @[kVUGCImageCategory, kVUGCImageRepostCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory];
 }
 NSArray* VVideoCategories()
 {
-    return @[kVOwnerVideoCategory,kVOwnerVideoRemixCategory,kVOwnerVideoRepostCategory,kVUGCVideoCategory,kVUGCVideoRemixCategory,kVUGCVideoRepostCategory];
+    return @[kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory];
 }
 NSArray* VPollCategories()
 {
-    return @[kVOwnerPollCategory,kVUGCPollCategory];
+    return @[kVOwnerPollCategory, kVUGCPollCategory];
 }
 NSArray* VRepostCategories()
 {
-    return @[kVOwnerVideoRepostCategory,kVUGCVideoRepostCategory,kVOwnerImageRepostCategory,kVUGCImageRepostCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
+    return @[kVOwnerVideoRepostCategory, kVUGCVideoRepostCategory, kVOwnerImageRepostCategory, kVUGCImageRepostCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
 }
 NSArray* VRemixCategories()
 {
-    return @[kVOwnerVideoRemixCategory,kVUGCVideoRemixCategory];
+    return @[kVOwnerVideoRemixCategory, kVUGCVideoRemixCategory];
 }

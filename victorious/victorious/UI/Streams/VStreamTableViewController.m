@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VPaginationManager.h"
 #import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
@@ -23,6 +24,9 @@
 #import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
+// Views
+#import "VNoContentView.h"
+
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
@@ -34,8 +38,10 @@
 //Data Models
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
+#import "VStream+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+#import "VAbstractFilter.h"
 
 #import "VAnalyticsRecorder.h"
 
@@ -50,9 +56,11 @@
 @property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
-@property (strong, nonatomic) VSequenceFilter* defaultFilter;
+@property (strong, nonatomic) VStream* defaultStream;
 
 @property (strong, nonatomic) NSString* streamName;
+
+@property (nonatomic, assign) BOOL hasRefreshed;
 
 @end
 
@@ -60,44 +68,43 @@
 
 + (instancetype)homeStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:
-                                      [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"home" title:NSLocalizedString(@"Home", nil)];
+    VStream* defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)communityStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VUGCCategories()];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"ugc" title:NSLocalizedString(@"Community", nil)];
+    VStream* defaultStream = [VStream streamForCategories: VUGCCategories()];
+    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"ugc" title:NSLocalizedString(@"Community", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)ownerStream
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VOwnerCategories()];
-    return [self streamWithDefaultFilter:defaultFilter name:@"owner" title:[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    VStream* defaultStream = [VStream streamForCategories: VOwnerCategories()];
+    return [self streamWithDefaultStream:defaultStream name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
 }
 
-+ (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
-    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForHashTag:hashtag];
-    return [self streamWithDefaultFilter:defaultFilter name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
+    VStream* defaultStream = [VStream streamForHashTag:hashtag];
+    return [self streamWithDefaultStream:defaultStream name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
 }
 
-+ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter name:(NSString*)name title:(NSString*)title
++ (instancetype)streamWithDefaultStream:(VStream *)stream name:(NSString *)name title:(NSString *)title
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamTableViewController* stream = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    VStreamTableViewController* streamTableView = (VStreamTableViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
     
-    stream.streamName = name;
-    stream.title = title;
-    stream.defaultFilter = filter;
-    stream.currentFilter = filter;
+    streamTableView.streamName = name;
+    streamTableView.title = title;
+    streamTableView.defaultStream = stream;
+    streamTableView.currentStream = stream;
     
-    return stream;
+    return streamTableView;
 }
 
 - (void)dealloc
@@ -109,23 +116,30 @@
 {
     [super viewDidLoad];
     
-    self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
+    self.hasRefreshed = NO;
+    
+    self.tableDataSource = [[VStreamTableDataSource alloc] initWithStream:[self currentStream]];
     self.tableDataSource.delegate = self;
-    self.tableDataSource.filter = self.currentFilter;
+    self.tableDataSource.stream = self.currentStream;
     self.tableDataSource.tableView = self.tableView;
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self registerCells];
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(willCommentSequence:)
-     name:kStreamsWillCommentNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willCommentSequence:)
+                                                 name:kStreamsWillCommentNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamTableDataSourceDidChangeNotification
+                                               object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
 }
 
-- (NSCache*)preloadImageCache
+- (NSCache *)preloadImageCache
 {
     if (!_preloadImageCache)
     {
@@ -133,6 +147,13 @@
         self.preloadImageCache.countLimit = 20;
     }
     return _preloadImageCache;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateNoContentViewAnimated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -146,7 +167,8 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
-    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.tableDataSource.filter])
+    VAbstractFilter* filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
+    if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
     {
         [self refresh:nil];
     }
@@ -199,21 +221,21 @@
     
     switch (self.filterType)
     {
-        case VStreamHotFilter:
-            self.currentFilter = [self hotFilter];
+        case VStreamFilterFeatured:
+            self.currentStream = [VStream hotSteamForSteamName:self.streamName];
             break;
             
-        case VStreamRecentFilter:
-            self.currentFilter = [self defaultFilter];
+        case VStreamFilterRecent:
+            self.currentStream = [self defaultStream];
             break;
             
-        case VStreamFollowingFilter:
-            self.currentFilter = [self followingFilter];
+        case VStreamFilterFollowing:
+            self.currentStream = [VStream followerStreamForStreamName:self.streamName user:nil];
             break;
             
         default:
             VLog(@"Unknown filter type, using default filter");
-            self.currentFilter = [self defaultFilter];
+            self.currentStream = [self defaultStream];
             break;
     }
     
@@ -225,12 +247,12 @@
     }
 }
 
-- (void)setCurrentFilter:(VSequenceFilter *)currentFilter
+- (void)setCurrentStream:(VStream *)currentStream
 {
-    _currentFilter = currentFilter;
+    _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        self.tableDataSource.filter = currentFilter;
+        self.tableDataSource.stream = currentStream;
     }
 }
 
@@ -257,7 +279,7 @@
     }
     
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    VStreamViewCell* cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     if ([cell isKindOfClass:[VStreamPollCell class]])
     {
@@ -381,6 +403,8 @@
 {
     [self.tableDataSource refreshWithSuccess:^(void)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
         if (completionBlock)
         {
@@ -389,7 +413,14 @@
     }
                                      failure:^(NSError *error)
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"RefreshError", @"");
+        hud.userInteractionEnabled = NO;
+        [hud hide:YES afterDelay:3.0];
     }];
     
     [self.refreshControl beginRefreshing];
@@ -428,28 +459,77 @@
     self.tableView.tableFooterView = nil;
 }
 
+#pragma mark No Content
+
+- (void)updateNoContentViewAnimated:(BOOL)animated
+{
+    if (![self hasNoContentView])
+    {
+        return;
+    }
+    
+    void (^noContentUpdates)(void);
+    
+    if (self.tableDataSource.stream.sequences.count <= 0)
+    {
+        if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
+        {
+            VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+            self.tableView.backgroundView = noContentView;
+            noContentView.titleLabel.text = self.noContentTitle;
+            noContentView.messageLabel.text = self.noContentMessage;
+            noContentView.iconImageView.image = self.noContentImage;
+            noContentView.alpha = 0.0f;
+        }
+        
+        self.refreshControl.layer.zPosition = self.tableView.backgroundView.layer.zPosition + 1;
+
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = (self.hasRefreshed && [self hasNoContentView]) ? 1.0f : 0.0f;
+        };
+    }
+    else
+    {
+        noContentUpdates = ^void(void)
+        {
+            self.tableView.backgroundView.alpha = 0.0f;
+        };
+    }
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:noContentUpdates
+                         completion:nil];
+    }
+    else
+    {
+        noContentUpdates();
+    }
+}
+
+- (BOOL)hasNoContentView
+{
+    return (self.noContentImage || self.noContentTitle || self.noContentMessage);
+}
+
 #pragma mark - Predicates
 
-- (VSequenceFilter*)defaultFilter
+- (VStream *)defaultStream
 {
-    return _defaultFilter ?: [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
-}
-- (VSequenceFilter*)hotFilter
-{
-    return [[VObjectManager sharedManager] hotSequenceFilterForStream:self.streamName];
-}
-- (VSequenceFilter*)followingFilter
-{
-    return [[VObjectManager sharedManager] followerSequenceFilterForStream:self.streamName user:nil];
+    return _defaultStream ?: [VStream streamForCategories:[self sequenceCategories]];
 }
 
-- (NSArray*)sequenceCategories
+- (NSArray *)sequenceCategories
 {
     return nil;
 }
 
 #pragma mark - Actions
-- (void)setBackgroundImageWithURL:(NSURL*)url
+- (void)setBackgroundImageWithURL:(NSURL *)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
@@ -477,11 +557,17 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
+- (void)dataSourceDidChange:(NSNotification *)notification
+{
+    self.hasRefreshed = YES;
+    [self updateNoContentViewAnimated:YES];
+}
+
 #pragma mark - Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
     if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
     {
@@ -498,7 +584,7 @@
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
+    VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
     //In this case, we reset them
@@ -588,7 +674,7 @@
          NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
          
          NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
+         VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
          for (VStreamViewCell* cell in [self.tableView visibleCells])

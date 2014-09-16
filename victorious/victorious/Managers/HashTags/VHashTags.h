@@ -19,8 +19,8 @@
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
-+ (void)formatHashTagsInString:(NSMutableAttributedString*)fieldText
-                 withTagRanges:(NSArray*)tagRanges
++ (void)formatHashTagsInString:(NSMutableAttributedString *)fieldText
+                 withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes;
 
 /**
@@ -30,6 +30,6 @@
  *
  *  @return An arry of NSRanges wrapped in NSValues.
  */
-+(NSArray*)detectHashTags:(NSString*)fieldText;
++(NSArray *)detectHashTags:(NSString *)fieldText;
 
 @end

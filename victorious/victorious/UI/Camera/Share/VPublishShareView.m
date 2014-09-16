@@ -34,7 +34,7 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString*)title image:(UIImage*)image
+- (id)initWithTitle:(NSString *)title image:(UIImage *)image
 {
     self = [self init];
     if (self)
@@ -54,15 +54,19 @@
 
 - (void)continueAnimating
 {
-    if (self.selectedState != VShareViewSelectedStateLimbo) {
+    if (self.selectedState != VShareViewSelectedStateLimbo)
+    {
         return;
     }
     [UIView animateWithDuration:0.5f
                           delay:0.0f
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear
-                     animations:^{
+                     animations:^
+                     {
                          self.backgroundImageView.transform = CGAffineTransformConcat(self.backgroundImageView.transform, CGAffineTransformMakeRotation(M_PI/3));
-                     } completion:^(BOOL finished) {
+                     }
+                     completion:^(BOOL finished)
+                     {
                          [self continueAnimating];
                      }];
 }
@@ -112,7 +116,7 @@
     _selectedColor = selectedColor;
     
     UIImage* image = [self.shareButton backgroundImageForState:UIControlStateSelected];
-    UIImage* imageWithColor = [image v_imageWithColor:selectedColor];
+    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:selectedColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected | UIControlStateHighlighted];
     
@@ -124,7 +128,7 @@
     _defaultColor = defaultColor;
     
     UIImage* image = [self.shareButton backgroundImageForState:UIControlStateNormal];
-    UIImage* imageWithColor = [image v_imageWithColor:defaultColor];
+    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:defaultColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateNormal];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateHighlighted];
     

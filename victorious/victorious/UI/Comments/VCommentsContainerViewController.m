@@ -44,7 +44,7 @@
 + (instancetype)commentsContainerView
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
+    VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
 
     return commentsContainerViewController;
 }
@@ -84,9 +84,9 @@
     [self.view addSubview:self.backButton];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
@@ -135,7 +135,7 @@
         NSLog(@"%@", resultObjects);
         [progressHUD hide:YES];
     
-        [((VCommentsTableViewController*)self.conversationTableViewController) addedNewComment:[resultObjects firstObject]];
+        [((VCommentsTableViewController *)self.conversationTableViewController) addedNewComment:[resultObjects firstObject]];
     };
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
@@ -159,8 +159,8 @@
 
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
     if (operation == UINavigationControllerOperationPop
         && [toVC isKindOfClass:[VContentViewController class]])

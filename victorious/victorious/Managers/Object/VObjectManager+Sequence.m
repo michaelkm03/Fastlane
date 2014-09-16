@@ -21,7 +21,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
+- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber *)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
@@ -31,7 +31,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                        loadAttempt:0];
 }
 
-- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber*)sequenceID
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber *)sequenceID
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
@@ -73,7 +73,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Flag
 
-- (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)flagSequence:(VSequence *)sequence
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
@@ -87,7 +87,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 #pragma mark - Sharing
 
 - (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString*)accessToken
+                                                 accessToken:(NSString *)accessToken
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
@@ -103,8 +103,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 }
 
 - (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString*)accessToken
-                                                      secret:(NSString*)secret
+                                                 accessToken:(NSString *)accessToken
+                                                      secret:(NSString *)secret
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
@@ -123,9 +123,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequence Vote Methods
 
-- (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
-                                        voteTypes:(NSArray*)voteTypes
-                                       votecounts:(NSArray*)voteCounts
+- (RKManagedObjectRequestOperation *)voteSequence:(VSequence *)sequence
+                                        voteTypes:(NSArray *)voteTypes
+                                       votecounts:(NSArray *)voteCounts
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
@@ -143,8 +143,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Poll Methods
 
-- (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
-                                     withAnswer:(VAnswer*)answer
+- (RKManagedObjectRequestOperation *)answerPoll:(VSequence *)poll
+                                     withAnswer:(VAnswer *)answer
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
@@ -179,7 +179,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser *)user
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
@@ -196,7 +196,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         for (VPollResult* pollResult in resultObjects)
         {
-            VPollResult* poll = (VPollResult*)[user.managedObjectContext objectWithID:[pollResult objectID]];
+            VPollResult* poll = (VPollResult *)[user.managedObjectContext objectWithID:[pollResult objectID]];
             [user addPollResultsObject: poll];
         }
         
@@ -217,7 +217,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence *)sequence
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
@@ -232,7 +232,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         for (VPollResult* result in resultObjects)
         {
             result.sequenceId = sequence.remoteId;
-            result.sequence = (VSequence*)[result.managedObjectContext objectWithID:[sequence objectID]];
+            result.sequence = (VSequence *)[result.managedObjectContext objectWithID:[sequence objectID]];
             context = result.managedObjectContext;
         }
         
@@ -253,10 +253,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - UserInteractions
 
-- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequenceID.stringValue, self.mainUser.remoteId.stringValue]
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId.stringValue, self.mainUser.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

@@ -41,8 +41,6 @@
         int thumbWidth = ceil(frame.size.width*0.05);
         
         _backgroundView = [[UIControl alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
-        _backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
-        _backgroundView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
         [self addSubview:_backgroundView];
         
         
@@ -132,7 +130,7 @@
 
 -(void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
 {
-    _videoPlayerViewController=videoPlayerViewController;
+    _videoPlayerViewController = videoPlayerViewController;
     _videoPlayerViewController.delegate = self;
     
     double interval = .1f;
@@ -373,7 +371,7 @@
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] initWithCapacity:picsCnt];
     
-    for (int i=0; i<picsCnt; i++)
+    for (int i = 0; i < picsCnt; i++)
     {
         time4Pic = i * picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds * time4Pic / _backgroundView.frame.size.width, 600);
@@ -397,6 +395,7 @@
                  int total = (i+1) * tmp.frame.size.width;
                  
                  CGRect currentFrame = tmp.frame;
+                 currentFrame.origin.y = SLIDER_BORDERS_SIZE;
                  currentFrame.origin.x = i * currentFrame.size.width;
                  if (total > _backgroundView.frame.size.width)
                  {

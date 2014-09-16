@@ -13,9 +13,9 @@
 //
 // Internal methods and fields
 //
-- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder*)encoder;
+- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder *)encoder;
 - (void) dispatchBlockOnAskedQueue:(void(^)())block;
-+ (NSError*) createError:(NSString*)name;
++ (NSError *) createError:(NSString *)name;
 
 @property (assign, nonatomic) BOOL shouldComputeOffset;
 @property (assign, nonatomic) CMTime startedTime;

@@ -39,20 +39,18 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 #endif
 }
 
-@property (strong, nonatomic) AVCaptureVideoDataOutput * videoOutput;
-@property (strong, nonatomic) AVCaptureAudioDataOutput * audioOutput;
+@property (strong, nonatomic) AVCaptureVideoDataOutput *videoOutput;
+@property (strong, nonatomic) AVCaptureAudioDataOutput *audioOutput;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (strong, nonatomic) VCVideoEncoder * videoEncoder;
-@property (strong, nonatomic) VCAudioEncoder * audioEncoder;
-@property (strong, nonatomic) NSURL * outputFileUrl;
-@property (strong, nonatomic) AVPlayer * playbackPlayer;
+@property (strong, nonatomic) VCVideoEncoder *videoEncoder;
+@property (strong, nonatomic) VCAudioEncoder *audioEncoder;
+@property (strong, nonatomic) NSURL *outputFileUrl;
+@property (strong, nonatomic) AVPlayer *playbackPlayer;
 @property (assign, nonatomic) CMTime currentRecordingTime;
 
 @end
 
-////////////////////////////////////////////////////////////
-// IMPLEMENTATION
-/////////////////////
+#pragma mark - Implementation
 
 @implementation VCAudioVideoRecorder
 
@@ -140,9 +138,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	
 }
 
-//
-// Video Recorder methods
-//
+#pragma mark - Video Recorder methods
 
 - (void)prepareRecordingAtCameraRoll:(NSError **)error
 {
@@ -150,23 +146,24 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	shouldWriteToCameraRoll = YES;
 }
 
-- (NSURL*)prepareRecordingOnTempDir:(NSError **)error
+- (NSURL *)prepareRecordingOnTempDir:(NSError **)error
 {
 	long timeInterval =  (long)[[NSDate date] timeIntervalSince1970];
-    NSString* fileName = [NSString stringWithFormat:@"%ld%@", timeInterval, @"VCVideo.mp4"];
-	NSURL * fileUrl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+    NSString *fileName = [NSString stringWithFormat:@"%ld%@", timeInterval, @"VCVideo.mp4"];
+	NSURL *fileUrl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
     [[NSFileManager defaultManager] removeItemAtURL:fileUrl error:nil];
     
-	NSError * recordError = nil;
+	NSError *recordError = nil;
 	[self prepareRecordingAtUrl:fileUrl error:&recordError];
     
-	if (recordError != nil) {
-		if (error != nil) {
+	if (recordError != nil)
+    {
+		if (error != nil)
+        {
 			*error = recordError;
 		}
 		[self removeFile:fileUrl];
 		fileUrl = nil;
-        
 	}
     
 	return fileUrl;
@@ -186,9 +183,9 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 		shouldWriteToCameraRoll = NO;
 		self.currentTimeOffset = CMTimeMake(0, 1);
 		
-		NSError * assetError;
+		NSError *assetError;
 		
-		AVAssetWriter * writer = [[AVAssetWriter alloc] initWithURL:fileUrl fileType:self.outputFileType error:&assetError];
+		AVAssetWriter *writer = [[AVAssetWriter alloc] initWithURL:fileUrl fileType:self.outputFileType error:&assetError];
 		
 		if (assetError == nil)
         {
@@ -216,7 +213,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	}
 }
 
-- (void)removeFile:(NSURL *)fileURL {
+- (void)removeFile:(NSURL *)fileURL
+{
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *filePath = [fileURL path];
 	if ([fileManager fileExistsAtPath:filePath])
@@ -226,9 +224,9 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	}
 }
 
-- (void)finalizeAudioMixForUrl:(NSURL*)fileUrl withCompletionBlock:(void(^)(NSError *))completionBlock
+- (void)finalizeAudioMixForUrl:(NSURL *)fileUrl withCompletionBlock:(void(^)(NSError *))completionBlock
 {
-	NSError * error = nil;
+	NSError *error = nil;
 	if (self.playbackAsset != nil)
     {
         if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:willFinalizeAudioMixAtUrl:)])
@@ -237,12 +235,12 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
         }
         
 		// Move the file to a temporary one
-		NSURL * oldUrl = [[fileUrl URLByDeletingPathExtension] URLByAppendingPathExtension:@"old.mp4"];
+		NSURL *oldUrl = [[fileUrl URLByDeletingPathExtension] URLByAppendingPathExtension:@"old.mp4"];
 		[[NSFileManager defaultManager] moveItemAtURL:fileUrl toURL:oldUrl error:&error];
 		
 		if (error == nil)
         {
-			[VCAudioTools mixAudio:self.playbackAsset startTime:self.playbackStartTime withVideo:oldUrl affineTransform:self.videoEncoder.outputAffineTransform toUrl:fileUrl outputFileType:self.outputFileType withMaxDuration:self.recordingDurationLimit withCompletionBlock:^(NSError * error2) {
+			[VCAudioTools mixAudio:self.playbackAsset startTime:self.playbackStartTime withVideo:oldUrl affineTransform:self.videoEncoder.outputAffineTransform toUrl:fileUrl outputFileType:self.outputFileType withMaxDuration:self.recordingDurationLimit withCompletionBlock:^(NSError *error2) {
 				if (error2 == nil)
                 {
 					[self removeFile:oldUrl];
@@ -262,20 +260,20 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	}
 }
 
-- (void)assetWriterFinished:(NSURL*)fileUrl
+- (void)assetWriterFinished:(NSURL *)fileUrl
 {
 	self.assetWriter = nil;
 	self.outputFileUrl = nil;
 	[self.audioEncoder reset];
 	[self.videoEncoder reset];
 	
-	[self finalizeAudioMixForUrl:fileUrl withCompletionBlock:^(NSError * error)
+	[self finalizeAudioMixForUrl:fileUrl withCompletionBlock:^(NSError *error)
      {
 		if (shouldWriteToCameraRoll && error == nil)
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-			ALAssetsLibrary * library = [[ALAssetsLibrary alloc] init];
-			[library writeVideoAtPathToSavedPhotosAlbum:fileUrl completionBlock:^(NSURL *assetUrl, NSError * error)
+			ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+			[library writeVideoAtPathToSavedPhotosAlbum:fileUrl completionBlock:^(NSURL *assetUrl, NSError *error)
              {
 				[self pleaseDontReleaseObject:library];
 				
@@ -297,7 +295,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	}];
 }
 
-- (void)finishWriter:(NSURL*)fileUrl
+- (void)finishWriter:(NSURL *)fileUrl
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     [self.assetWriter finishWritingWithCompletionHandler:^ {
@@ -311,16 +309,18 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 #endif
 }
 
-- (void)notifyRecordFinishedAtUrl:(NSURL*)url withError:(NSError*)error
+- (void)notifyRecordFinishedAtUrl:(NSURL *)url withError:(NSError *)error
 {
-	[self dispatchBlockOnAskedQueue:^{
-		if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:didFinishRecordingAtUrl:error:)]) {
+	[self dispatchBlockOnAskedQueue:^(void)
+    {
+		if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:didFinishRecordingAtUrl:error:)])
+        {
 			[self.delegate audioVideoRecorder:self didFinishRecordingAtUrl:url error:error];
 		}
 	}];
 }
 
-- (void) startBackgroundTask
+- (void)startBackgroundTask
 {
 	[self stopBackgroundTask];
 	
@@ -331,7 +331,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 #endif
 }
 
-- (void) stopBackgroundTask
+- (void)stopBackgroundTask
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	if (_backgroundIdentifier != UIBackgroundTaskInvalid)
@@ -342,15 +342,16 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 #endif
 }
 
-// Photo
+#pragma mark - Photo
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+
 - (UIImage *)_uiimageFromJPEGData:(NSData *)jpegData
 {
 	return [UIImage imageWithData:jpegData];
 }
 
-- (void) capturePhoto
+- (void)capturePhoto
 {
     if (self.stillImageOutput)
     {
@@ -453,6 +454,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
          }];
     }
 }
+
 #endif
 
 - (void)stop
@@ -479,8 +481,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 
 - (void)stopInternal
 {
-	NSURL * fileUrl = self.outputFileUrl;
-	NSError * error = self.assetWriter.error;
+	NSURL *fileUrl = self.outputFileUrl;
+	NSError *error = self.assetWriter.error;
 	
 	switch (self.assetWriter.status)
     {
@@ -567,8 +569,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 - (void)resetInternal
 {
 	[self stopBackgroundTask];
-	AVAssetWriter * writer = self.assetWriter;
-	NSURL * fileUrl = self.outputFileUrl;
+	AVAssetWriter *writer = self.assetWriter;
+	NSURL *fileUrl = self.outputFileUrl;
 	
 	audioEncoderReady = NO;
 	videoEncoderReady = NO;
@@ -629,14 +631,16 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 
 - (void)dataEncoder:(VCDataEncoder *)dataEncoder didFailToInitializeEncoder:(NSError *)error
 {
-    [self dispatchBlockOnAskedQueue: ^ {
+    [self dispatchBlockOnAskedQueue:^(void)
+    {
         if (dataEncoder == self.audioEncoder)
         {
             if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:didFailToInitializeAudioEncoder:)])
             {
                 [self.delegate audioVideoRecorder:self didFailToInitializeAudioEncoder:error];
             }
-        } else if (dataEncoder == self.videoEncoder)
+        }
+        else if (dataEncoder == self.videoEncoder)
         {
             if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:didFailToInitializeVideoEncoder:)])
             {
@@ -662,12 +666,12 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	}
 }
 
-+ (NSError*)createError:(NSString*)name
++ (NSError *)createError:(NSString *)name
 {
 	return [NSError errorWithDomain:kVictoriousErrorDomain code:500 userInfo:[NSDictionary dictionaryWithObject:name forKey:NSLocalizedDescriptionKey]];
 }
 
-- (void)prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder*)encoder
+- (void)prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder *)encoder
 {
     // Set an encoder as ready if it's the caller or if it's not enabled
     audioEncoderReady |= (encoder == self.audioEncoder) | !self.audioEncoder.enabled;

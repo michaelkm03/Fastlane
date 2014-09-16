@@ -36,22 +36,19 @@
 
 #import "VNoContentView.h"
 
-#import "VCommentFilter.h"
-
-
 @import Social;
 
 @interface VCommentsTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) UIImageView* backgroundImageView;
-@property (nonatomic, strong) VCommentFilter* filter;
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
 
 @end
 
 @implementation VCommentsTableViewController
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -88,10 +85,11 @@
     }
 }
 
+#pragma mark - Property Accessors
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    self.filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
 
     [self setHasComments:self.sequence.commentCount.integerValue];
     
@@ -108,15 +106,6 @@
     {
         self.needsRefresh = NO;
     }
-}
-
-- (NSMutableArray *)newlyReadComments
-{
-    if (_newlyReadComments == nil)
-    {
-        _newlyReadComments = [[NSMutableArray alloc] init];
-    }
-    return _newlyReadComments;
 }
 
 - (void)setHasComments:(BOOL)hasComments
@@ -139,11 +128,13 @@
     }
 }
 
-- (void)addedNewComment:(VComment*)comment
+#pragma mark - Public Mehtods
+
+- (void)addedNewComment:(VComment *)comment
 {
     [self setHasComments:YES];
     [self.tableView reloadData];
-    NSIndexPath* pathForComment = [NSIndexPath indexPathForRow:[self.filter.comments indexOfObject:comment] inSection:0];
+    NSIndexPath* pathForComment = [NSIndexPath indexPathForRow:[self.sequence.comments indexOfObject:comment] inSection:0];
     [self.tableView scrollToRowAtIndexPath:pathForComment atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
@@ -151,14 +142,14 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshCommentFilter:self.filter
-                                                                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+                                                                                              isRefresh:YES
+                                                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
-                                                  }
-                                                                                            failBlock:^(NSOperation* operation, NSError* error)
+                                                  } failBlock:^(NSOperation* operation, NSError* error)
                                                   {
                                                       self.needsRefresh = NO;
                                                       [self.refreshControl endRefreshing];
@@ -169,14 +160,17 @@
     }
 }
 
+#pragma mark - Pagination
+
 - (void)loadNextPageAction
 {
-    [[VObjectManager sharedManager] loadNextPageOfCommentFilter:self.filter
-                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+                                                 isRefresh:YES
+                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.tableView reloadData];
      }
-                                                      failBlock:nil];
+                                                 failBlock:nil];
 }
 
 #pragma mark - Table view data source
@@ -187,19 +181,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.filter.comments count];
+    return [self.sequence.comments count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment* comment = (VComment*)[self.filter.comments objectAtIndex:indexPath.row];
+    VComment* comment = (VComment *)[self.sequence.comments objectAtIndex:indexPath.row];
     return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
-    VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
+    VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     if ([comment.sequence.category isEqualToString:@"ugc_image"] ||
@@ -254,12 +248,6 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VComment* comment = (VComment*)[self.filter.comments objectAtIndex:indexPath.row];
-    [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -272,7 +260,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = [self.filter.comments objectAtIndex:indexPath.row];
+    VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
@@ -305,7 +293,6 @@
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                           otherButtonTitles:nil];
              [alert show];
-
          }];
     }
                                            otherButtonTitlesAndBlocks:
@@ -321,19 +308,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{    
-    //Whenever we leave this view we need to tell the server what was read.
-    if ([VObjectManager sharedManager].mainUser && [self.newlyReadComments count])
-    {
-        __block NSMutableArray* readComments = self.newlyReadComments;
-        [[VObjectManager sharedManager] readComments:readComments
-                                         successBlock:nil
-                                            failBlock:^(NSOperation* operation, NSError* error)
-                                            {
-                                                VLog(@"Warning: failed to mark following comments as read: %@", readComments);
-                                            }];
-    }
-    self.newlyReadComments = nil;
+{
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }

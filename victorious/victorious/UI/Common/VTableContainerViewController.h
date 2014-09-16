@@ -11,6 +11,7 @@
 @interface VTableContainerViewController : UIViewController <UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel* headerLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *headerImageView;
 @property (nonatomic, weak) IBOutlet UIButton* menuButton;
 @property (nonatomic, weak) IBOutlet UIButton* backButton;
 @property (nonatomic, weak) IBOutlet UIView* headerView;

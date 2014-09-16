@@ -45,7 +45,7 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
     return @[@"public_profile", @"user_birthday", @"email"];
 }
 
-- (NSArray*)publishPermissions
+- (NSArray *)publishPermissions
 {
     return @[kPublishActionsPermissionKey];
 }
@@ -71,7 +71,7 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
     [self loginWithBehavior:behavior permissions:[self readPermissions] onSuccess:successBlock onFailure:failureBlock];
 }
 
-- (void)loginWithBehavior:(FBSessionLoginBehavior)behavior permissions:(NSArray*)permissions
+- (void)loginWithBehavior:(FBSessionLoginBehavior)behavior permissions:(NSArray *)permissions
                 onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
 {
     if ([FBSession activeSession].state != FBSessionStateCreatedTokenLoaded)
@@ -197,10 +197,10 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 }
 
 #pragma mark - Sharing
-- (void)shareLink:(NSURL*)link
-      description:(NSString*)description
-             name:(NSString*)name
-       previewUrl:(NSURL*)previewUrl
+- (void)shareLink:(NSURL *)link
+      description:(NSString *)description
+             name:(NSString *)name
+       previewUrl:(NSURL *)previewUrl
 {
     FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
     params.link = link;

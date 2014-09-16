@@ -62,7 +62,7 @@ static char KVOContext;
 + (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    VCreatePollViewController* createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = delegate;
     return createView;
 }
@@ -116,7 +116,7 @@ static char KVOContext;
                                  context:&KVOContext];
     self.leftAnswerTextView.text = self.leftAnswerPrompt.text; // temporarily
     self.leftAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.leftAnswerTextView];
-    ((VContentInputAccessoryView*)self.leftAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
+    ((VContentInputAccessoryView *)self.leftAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
     self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -127,7 +127,7 @@ static char KVOContext;
                                   context:&KVOContext];
     self.rightAnswerTextView.text = self.rightAnswerPrompt.text; // temporarily
     self.rightAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.rightAnswerTextView];
-    ((VContentInputAccessoryView*)self.rightAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
+    ((VContentInputAccessoryView *)self.rightAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
     [self.answersSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.leftAnswerTextView
                                                                       attribute:NSLayoutAttributeCenterY

@@ -16,48 +16,48 @@ extern NSString* const kPollResultsLoaded;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
+- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber *)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)flagSequence:(VSequence *)sequence
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString*)accessToken
+                                                 accessToken:(NSString *)accessToken
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString*)accessToken
-                                                      secret:(NSString*)secret
+                                                 accessToken:(NSString *)accessToken
+                                                      secret:(NSString *)secret
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
-                                        voteTypes:(NSArray*)voteTypes
-                                       votecounts:(NSArray*)voteCounts
+- (RKManagedObjectRequestOperation *)voteSequence:(VSequence *)sequence
+                                        voteTypes:(NSArray *)voteTypes
+                                       votecounts:(NSArray *)voteCounts
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 #pragma mark - Poll Methods
 
-- (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
-                                     withAnswer:(VAnswer*)answer
+- (RKManagedObjectRequestOperation *)answerPoll:(VSequence *)poll
+                                     withAnswer:(VAnswer *)answer
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence *)sequence
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
+- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser *)user
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
 
 #pragma mark - UserInteractions
 
-- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
 
 @end

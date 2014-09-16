@@ -28,7 +28,7 @@
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder*)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
@@ -67,14 +67,14 @@
 
         UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(clear:)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem *doneButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
         [self.toolbar setItems:@[clearButton, flexibleSpace, doneButton]];
     }
     
     return self.toolbar;
 }
 
-- (void)deviceDidRotate:(NSNotification*)notification
+- (void)deviceDidRotate:(NSNotification *)notification
 {
     [self.picker setNeedsLayout];
 }

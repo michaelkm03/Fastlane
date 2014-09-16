@@ -10,7 +10,7 @@
 
 @implementation VCompositeSnapshotController
 
-- (UIImage*)snapshotOfMainView:(UIView*)mainView subViews:(NSArray*)subviews
+- (UIImage *)snapshotOfMainView:(UIView *)mainView subViews:(NSArray *)subviews
 {
     UIView* compositeView = [[UIView alloc] initWithFrame:mainView.frame];
     

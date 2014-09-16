@@ -63,6 +63,7 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 @property (nonatomic, weak) IBOutlet UITextView *memeTextView;
 @property (nonatomic, weak) IBOutlet UITextView *quoteTextView;
 @property (nonatomic, strong) IBOutletCollection(UITextView) NSArray *inputTextViews;
+@property (nonatomic, assign) BOOL memeTextFits;
 
 // Caption Buttons
 @property (nonatomic, strong) IBOutletCollection(UIButton) NSArray *captionButtons;
@@ -127,6 +128,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.snapshotController = [[VCompositeSnapshotController alloc] init];
     
     self.userEnteredText = @"";
+    self.memeTextFits = NO;
     
     // iPhone 4 special cases
     if (CGRectGetHeight(self.view.bounds) <= 480)
@@ -149,7 +151,6 @@ static const CGFloat kShareMargin = 34.0f;
     [self configureNavigationBar];
         
     self.userEnteredText = @"";
-    self.captionType = VCaptionTypeNormal;
     
     // Force Meme text to start at max
     self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
@@ -166,6 +167,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
     self.captionButton.selected = self.captionType == VCaptionTypeNormal;
     self.quoteButton.selected = self.captionType == VCaptionTypeQuote;
+    [self updateUI];
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled] || [self.mediaURL v_hasVideoExtension])
     {
@@ -218,7 +220,10 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setCaptionType:(VCaptionType)captionType
 {
     _captionType = captionType;
-    [self updateUI];
+    if ([self isViewLoaded])
+    {
+        [self updateUI];
+    }
 }
 
 #pragma mark - Internal Methods
@@ -239,7 +244,7 @@ static const CGFloat kShareMargin = 34.0f;
     UITextView *changedTextView = nil;
     switch (self.captionType)
     {        case VCaptionTypeNormal:
-            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                   attributes:[self captionAttributes]];
             self.captionTextView.hidden = NO;
             changedTextView = self.captionTextView;
@@ -248,7 +253,7 @@ static const CGFloat kShareMargin = 34.0f;
         case VCaptionTypeMeme:
         {
             NSRange currentCursorLocation = [self.memeTextView selectedRange];
-            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString]
+            self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString] ?: @""
                                                                                attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
@@ -262,6 +267,10 @@ static const CGFloat kShareMargin = 34.0f;
                 self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
             }
             {
+                if (_memeTextFits)
+                {
+                    break;
+                }
                 while (((CGSize) [self.memeTextView sizeThatFits:self.memeTextView.frame.size]).height > kPublishMaxMemeFontSize)
                 {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize-1];
@@ -271,11 +280,12 @@ static const CGFloat kShareMargin = 34.0f;
                 {
                     self.memeTextView.font = [self.memeTextView.font fontWithSize:self.memeTextView.font.pointSize+1];
                 }
+                self.memeTextFits = YES;
             }
             break;
         }
         case VCaptionTypeQuote:
-            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText
+            self.quoteTextView.attributedText = [[NSAttributedString alloc] initWithString:self.userEnteredText ?: @""
                                                                                 attributes:[self quoteAttributes]];
             self.quoteTextView.hidden = NO;
             self.blackBackgroundView.hidden = NO;
@@ -324,7 +334,7 @@ static const CGFloat kShareMargin = 34.0f;
     paragraphStyle.alignment                = NSTextAlignmentCenter;
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMinMemeFontSize],
+             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.memeTextFits ? self.memeTextView.font.pointSize : kPublishMinMemeFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor blackColor],
              NSStrokeWidthAttributeName : @(-5.0)
@@ -541,7 +551,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     for (UIButton* button in self.captionButtons)
     {
-        button.selected = (button == (UIButton*)sender);
+        button.selected = (button == (UIButton *)sender);
     }
     
     if (sender == self.memeButton)
@@ -559,15 +569,50 @@ static const CGFloat kShareMargin = 34.0f;
         self.captionType = VCaptionTypeNormal;
         [self.captionTextView becomeFirstResponder];
     }
-    
-    [self textViewDidChange:nil];
 }
 
 - (IBAction)goBack:(id)sender
 {
-    if (self.completion)
+    NSString *finalText = @"";
+    switch (self.captionType)
     {
-        self.completion(NO);
+        case VCaptionTypeNormal:
+            finalText = self.captionTextView.text;
+            break;
+        case VCaptionTypeMeme:
+            finalText = self.memeTextView.text;
+            break;
+        case VCaptionTypeQuote:
+            finalText = self.quoteTextView.text;
+            break;
+    }
+    
+    if (finalText.length)
+    {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"captionIsntPublished", nil)
+                                                        cancelButtonTitle:NSLocalizedString(@"Stay", @"")
+                                                           onCancelButton:nil
+                                                   destructiveButtonTitle:NSLocalizedString(@"BackButton", @"")
+                                                      onDestructiveButton:^(void)
+                                      {
+                                          [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                       action:@"Camera Publish Back"
+                                                                                                        label:nil
+                                                                                                        value:nil];
+                                          if (self.completion)
+                                          {
+                                              self.completion(NO);
+                                          }
+                                      }
+                                               otherButtonTitlesAndBlocks:nil];
+        [actionSheet showInView:self.view];
+    }
+    else
+    {
+        if (self.completion)
+        {
+            self.completion(NO);
+        }
     }
 }
 
@@ -706,7 +751,7 @@ static const CGFloat kShareMargin = 34.0f;
          
          if (facebookSelected)
          {
-             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
              [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
                                                          accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -725,7 +770,7 @@ static const CGFloat kShareMargin = 34.0f;
          
          if (twitterSelected)
          {
-             NSInteger sequenceId = ((NSString*)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
+             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
              [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
                                                          accessToken:[VTwitterManager sharedManager].oauthToken
                                                               secret:[VTwitterManager sharedManager].secret
@@ -807,6 +852,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    self.memeTextFits = NO;
     [self updateUI];
 }
 

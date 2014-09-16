@@ -16,13 +16,14 @@
     return @"Conversation";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"conversation_id" : VSelectorName(remoteId),
                                   @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id),
                                   @"text" : VSelectorName(lastMessageText),
                                   @"posted_at": VSelectorName(postedAt),
+                                  @"is_read": VSelectorName(isRead),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -36,7 +37,7 @@
     return mapping;
 }
 
-+ (NSArray*)descriptors
++ (NSArray *)descriptors
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET

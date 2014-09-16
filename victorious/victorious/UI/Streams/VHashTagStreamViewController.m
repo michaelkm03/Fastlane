@@ -22,6 +22,7 @@
 //Data Models
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
+#import "VStream+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
@@ -61,7 +62,7 @@
 {
     _hashTag = hashTag;
     
-    self.currentFilter = [[VObjectManager sharedManager] sequenceFilterForHashTag:hashTag];
+    self.currentStream = [VStream streamForHashTag:hashTag];
     
     [self refreshWithCompletion:nil];
 }
@@ -88,7 +89,7 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
 }
 
-- (NSString*)streamName
+- (NSString *)streamName
 {
     return @"hashtag";
 }

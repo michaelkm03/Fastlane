@@ -178,7 +178,8 @@
     CGFloat verticalRatio = bounds.height / self.size.height;
     CGFloat ratio;
     
-    switch (contentMode) {
+    switch (contentMode)
+    {
         case UIViewContentModeScaleAspectFill:
             ratio = MAX(horizontalRatio, verticalRatio);
             break;

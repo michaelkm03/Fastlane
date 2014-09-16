@@ -46,7 +46,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 + (instancetype)inboxViewController
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    return (VInboxViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
+    return (VInboxViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
 }
 
 - (void)viewDidLoad
@@ -155,14 +155,14 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
         VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VConversationCell *)theCell setConversation:info];
-        ((VConversationCell*)theCell).parentTableViewController = self;
+        ((VConversationCell *)theCell).parentTableViewController = self;
     }
     else
     {
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
         VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VNotificationCell *)theCell setNotifcation:info];
-        ((VNotificationCell*)theCell).parentTableViewController = self;
+        ((VNotificationCell *)theCell).parentTableViewController = self;
     }
 
     return theCell;

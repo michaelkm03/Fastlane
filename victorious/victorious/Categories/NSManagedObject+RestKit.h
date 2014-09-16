@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+@class RKEntityMapping;
 
 @interface NSManagedObject (RestKit)
 
 + (NSString *)entityName;
-+ (RKEntityMapping*)entityMapping;
++ (RKEntityMapping *)entityMapping;
 
 @end

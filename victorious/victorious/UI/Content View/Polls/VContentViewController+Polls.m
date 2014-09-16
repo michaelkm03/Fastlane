@@ -50,8 +50,8 @@
 {
     if ([self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
-        ((VPollAnswerBarViewController*)self.actionBarVC).orImageView.hidden = NO;
-            [((VPollAnswerBarViewController*)self.actionBarVC) checkIfAnswered];
+        ((VPollAnswerBarViewController *)self.actionBarVC).orImageView.hidden = NO;
+            [((VPollAnswerBarViewController *)self.actionBarVC) checkIfAnswered];
         self.orImageView.hidden = YES;
         
     }
@@ -62,12 +62,12 @@
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     
-    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl]
+    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer *)[answers firstObject]).mediaUrl]
                                 placeholderImage:self.leftPollThumbnail];
-    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]
+    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer *)[answers lastObject]).mediaUrl]
                                  placeholderImage:self.rightPollThumbnail];
  
-    if ([((VAnswer*)[answers firstObject]).mediaUrl v_hasVideoExtension])
+    if ([((VAnswer *)[answers firstObject]).mediaUrl v_hasVideoExtension])
     {
         self.firstPollPlayIcon.hidden = NO;
     }
@@ -75,7 +75,7 @@
     {
         self.firstPollPlayIcon.hidden = YES;
     }
-    if ([((VAnswer*)[answers lastObject]).mediaUrl v_hasVideoExtension])
+    if ([((VAnswer *)[answers lastObject]).mediaUrl v_hasVideoExtension])
     {
         self.secondPollPlayIcon.hidden = NO;
     }
@@ -112,7 +112,7 @@
         otherPlayIcon = self.secondPollPlayIcon;
         thumbnailWidthConstraint = self.leftImageViewWidthConstraint;
         thumbnailHeightConstraint = self.leftImageViewHeightConstraint;
-        contentURL = [NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl];
+        contentURL = [NSURL URLWithString:((VAnswer *)[answers firstObject]).mediaUrl];
     }
     else if (sender == self.secondPollButton)
     {
@@ -122,7 +122,7 @@
         otherPlayIcon = self.firstPollPlayIcon;
         thumbnailWidthConstraint = self.rightImageViewWidthConstraint;
         thumbnailHeightConstraint = self.rightImageViewHeightConstraint;
-        contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
+        contentURL = [NSURL URLWithString:((VAnswer *)[answers lastObject]).mediaUrl];
     }
 
     CGFloat previousWidth = thumbnailWidthConstraint.constant;
@@ -258,7 +258,7 @@
     [self.secondResultView setProgress:0 animated:NO];
     
     NSInteger totalVotes = 0;
-    for(VPollResult* result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults)
     {
         totalVotes+= result.count.integerValue;
     }
@@ -266,7 +266,7 @@
     
     VLog(@"Answer: %@", answerId);
     
-    for(VPollResult* result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults)
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
         
@@ -305,14 +305,14 @@
     }
 }
 
-- (VResultView*)resultViewForAnswerId:(NSNumber*)answerId
+- (VResultView *)resultViewForAnswerId:(NSNumber *)answerId
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    if ([answerId isEqualToNumber:((VAnswer*)[answers firstObject]).remoteId])
+    if ([answerId isEqualToNumber:((VAnswer *)[answers firstObject]).remoteId])
     {
         return self.firstResultView;
     }
-    else if ([answerId isEqualToNumber:((VAnswer*)[answers lastObject]).remoteId])
+    else if ([answerId isEqualToNumber:((VAnswer *)[answers lastObject]).remoteId])
     {
         return self.secondResultView;
     }

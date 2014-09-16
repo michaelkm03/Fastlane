@@ -279,11 +279,11 @@
                      failBlock:failBlock];
 }
 
-- (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                               toPath:(NSString*)path
-                           parameters:(NSDictionary*)parameters
-                         successBlock:(VSuccessBlock)successBlock
-                            failBlock:(VFailBlock)failBlock
+- (AFHTTPRequestOperation *)uploadURLs:(NSDictionary *)allUrls
+                                toPath:(NSString *)path
+                            parameters:(NSDictionary *)parameters
+                          successBlock:(VSuccessBlock)successBlock
+                             failBlock:(VFailBlock)failBlock
 {
     if ([path isEmpty])
     {
@@ -353,7 +353,7 @@
     return operation;
 }
 
-- (NSError*)errorForResponse:(NSDictionary*)responseObject
+- (NSError *)errorForResponse:(NSDictionary *)responseObject
 {
     if ([responseObject[@"error"] integerValue] == 0)
     {
@@ -363,17 +363,17 @@
     NSString* errorMessage = responseObject[@"message"];
     if ([errorMessage isKindOfClass:[NSArray class]])
     {
-        errorMessage = [(NSArray*)errorMessage componentsJoinedByString:@", "];
+        errorMessage = [(NSArray *)errorMessage componentsJoinedByString:@", "];
     }
     
     return [NSError errorWithDomain:kVictoriousErrorDomain code:[responseObject[@"error"] integerValue]
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
-- (NSManagedObject*)objectForID:(NSNumber*)objectID
-                          idKey:(NSString*)idKey
-                     entityName:(NSString*)entityName
-           managedObjectContext:(NSManagedObjectContext *)context
+- (NSManagedObject *)objectForID:(NSNumber *)objectID
+                           idKey:(NSString *)idKey
+                      entityName:(NSString *)entityName
+            managedObjectContext:(NSManagedObjectContext *)context
 {
     NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
@@ -413,7 +413,7 @@
                                                    parameters:parameters];
 }
 
-- (void)updateHTTPHeadersForPath:(NSString*)path method:(RKRequestMethod)method
+- (void)updateHTTPHeadersForPath:(NSString *)path method:(RKRequestMethod)method
 {
     
     AFHTTPClient* client = [self HTTPClient];

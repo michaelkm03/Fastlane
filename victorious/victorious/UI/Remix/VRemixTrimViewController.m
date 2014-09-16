@@ -52,6 +52,11 @@
     self.trimSlider.delegate = self;
     [self.trimControlContainer addSubview:self.trimSlider];
     
+    NSArray* buttons = @[self.takeImageSnapShotButton, self.loopButton, self.rateButton, self.muteButton];
+    for (UIButton* button in buttons)
+    {
+        button.imageView.contentMode = UIViewContentModeCenter;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -66,10 +71,10 @@
     [self.navigationController setNavigationBarHidden:NO];
     
     // Set the Custom Next Button
-    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blueColor]];
-
+    UIImage *prevButtonImage = [[UIImage imageNamed:@"btnPrevArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:prevButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(goBack:)];
 }
 
 - (void)viewDidAppear:(BOOL)animated

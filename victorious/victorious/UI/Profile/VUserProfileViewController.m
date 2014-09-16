@@ -24,6 +24,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 
+#import "VStream+Fetcher.h"
+
 #import "VObjectManager+ContentCreation.h"
 
 #import "VInboxContainerViewController.h"
@@ -59,7 +61,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     return viewController;
 }
 
-+ (instancetype)userProfileWithUser:(VUser*)aUser
++ (instancetype)userProfileWithUser:(VUser *)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -72,7 +74,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     return viewController;
 }
 
-+ (instancetype)userProfileWithFollowerOrFollowing:(VUser*)aUser
++ (instancetype)userProfileWithFollowerOrFollowing:(VUser *)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -135,7 +137,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewWillAppear:animated];
     
-    ((VUserProfileHeaderView*)self.tableView.tableHeaderView).user = self.profile;
+    ((VUserProfileHeaderView *)self.tableView.tableHeaderView).user = self.profile;
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -196,7 +198,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
-    self.currentFilter = [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
+    self.currentStream = [VStream streamForUser:self.profile];
     if ([self isViewLoaded])
     {
         [self refresh:nil];
@@ -213,7 +215,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                      following:self.profile
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+             VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
              header.editProfileButton.selected = [resultObjects[0] boolValue];
              header.user = header.user;
          }
@@ -290,7 +292,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     else
     {
-        VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+        VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -361,7 +363,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (IBAction)createButtonAction:(id)sender
 {
-    [self.currentFilter addObserver:self
+    [self.currentStream addObserver:self
                          forKeyPath:@"sequences"
                             options:NSKeyValueObservingOptionNew
                             context:VUserProfileViewContext];
@@ -371,7 +373,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
-    VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+    VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
 
     if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
     {
@@ -419,7 +421,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         return;
     }
     
-    if (object == self.currentFilter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
         if (self.tableDataSource.count)
         {
@@ -427,7 +429,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         }
     }
     
-    [self.currentFilter removeObserver:self
+    [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(sequences))];
 }
 

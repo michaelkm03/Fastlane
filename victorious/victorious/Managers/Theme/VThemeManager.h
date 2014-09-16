@@ -11,8 +11,11 @@
 #pragma mark - New Theme Constants
 extern  NSString*   const   kVChannelName;
 
+// Images
+
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
+extern  NSString*   const   VThemeManagerHomeHeaderImageKey;
 
 //Fonts
 extern  NSString*   const   kVHeaderFont;
@@ -59,7 +62,7 @@ extern  NSString*   const   kVSecondaryLinkColor;
 - (void)applyClearNavBarStyling;
 - (void)removeNavBarStyling;
 
-- (UIImage*)themedBackgroundImageForDevice;
+- (UIImage *)themedBackgroundImageForDevice;
 
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;

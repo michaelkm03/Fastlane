@@ -198,8 +198,10 @@ static const NSInteger kCharacterLimit = 255;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"]) {
-        switch (textView.returnKeyType) {
+    if ([text isEqualToString:@"\n"])
+    {
+        switch (textView.returnKeyType)
+        {
             case UIReturnKeyGo:
             case UIReturnKeyDone:
             case UIReturnKeySend:

@@ -97,12 +97,12 @@ typedef UIView View;
 	}
 }
 
-+ (VCCamera*) camera
++ (VCCamera *) camera
 {
     return [[VCCamera alloc] init];
 }
 
-- (AVCaptureDeviceInput*) addInputToSession:(AVCaptureSession*)captureSession device:(AVCaptureDevice*)device withMediaType:(NSString*)mediaType error:(NSError**)error
+- (AVCaptureDeviceInput *) addInputToSession:(AVCaptureSession *)captureSession device:(AVCaptureDevice *)device withMediaType:(NSString *)mediaType error:(NSError**)error
 {
 	AVCaptureDeviceInput *input = nil;
     if (device)
@@ -126,7 +126,7 @@ typedef UIView View;
 	return input;
 }
 
-- (AVCaptureDevice*)videoDeviceWithPosition:(AVCaptureDevicePosition)position
+- (AVCaptureDevice *)videoDeviceWithPosition:(AVCaptureDevicePosition)position
 {
 	NSArray * videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
 	
@@ -172,7 +172,7 @@ typedef UIView View;
     }
 }
 
-- (void)initialize:(void(^)(NSError * audioError, NSError * videoError))completionHandler
+- (void)initialize:(void(^)(NSError *audioError, NSError *videoError))completionHandler
 {
     if (![self isReady])
     {
@@ -254,7 +254,7 @@ typedef UIView View;
     }
 }
 
-- (AVCaptureConnection*) getVideoConnection
+- (AVCaptureConnection *) getVideoConnection
 {
 	for (AVCaptureConnection * connection in self.videoOutput.connections)
     {
@@ -270,7 +270,7 @@ typedef UIView View;
 	return nil;
 }
 
-- (NSString*) previewVideoGravityToString
+- (NSString *) previewVideoGravityToString
 {
     switch (self.previewVideoGravity)
     {
@@ -307,7 +307,7 @@ typedef UIView View;
     }
 }
 
-- (View*) previewView
+- (View *) previewView
 {
     return _previewView;
 }
@@ -350,7 +350,7 @@ typedef UIView View;
 	return self.cachedVideoOrientation;
 }
 
-- (NSString*) sessionPreset
+- (NSString *) sessionPreset
 {
 	return _sessionPreset;
 }
@@ -516,7 +516,7 @@ typedef UIView View;
     return NO;
 }
 
-- (BOOL)formatInRange:(AVCaptureDeviceFormat*)format frameRate:(NSInteger)frameRate dimensions:(CMVideoDimensions)dimensions
+- (BOOL)formatInRange:(AVCaptureDeviceFormat *)format frameRate:(NSInteger)frameRate dimensions:(CMVideoDimensions)dimensions
 {
     CMVideoDimensions size = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
     
@@ -534,7 +534,7 @@ typedef UIView View;
     return NO;
 }
 
-- (void) initializeCamera:(AVCaptureSession*)captureSession error:(NSError**)error
+- (void) initializeCamera:(AVCaptureSession *)captureSession error:(NSError**)error
 {
 	if (self.currentVideoDeviceInput != nil)
     {
@@ -551,7 +551,8 @@ typedef UIView View;
 		self.currentVideoDeviceInput = [self addInputToSession:captureSession device:device withMediaType:@"Video" error:error];
         [self.currentVideoDeviceInput.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:(__bridge void *)VCCameraFocusObserverContext];
         [self addObserver:self forKeyPath:@"currentVideoDeviceInput.device.focusMode" options:NSKeyValueObservingOptionNew context:VCCameraFocusModeObserverContext];
-        if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)]) {
+        if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)])
+        {
             AVCaptureFocusMode initialFocusMode = [device focusMode];
             [self.delegate cameraUpdateFocusMode:[NSString stringWithFormat:@"focus: %@", [self stringForFocusMode:initialFocusMode]]];
         }
@@ -585,7 +586,7 @@ typedef UIView View;
 	}
 }
 
-- (void)addObserverForSession:(AVCaptureSession*)theSession
+- (void)addObserverForSession:(AVCaptureSession *)theSession
 {
     // add notification observers
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -676,7 +677,8 @@ typedef UIView View;
 - (void)_sessionRuntimeErrored:(NSNotification *)notification
 {
     [self dispatchBlockOnAskedQueue:^{
-        if ([notification object] == session) {
+        if ([notification object] == session)
+        {
             NSError *error = [[notification userInfo] objectForKey:AVCaptureSessionErrorKey];
             if (error)
             {
@@ -808,7 +810,8 @@ typedef UIView View;
         CGRect cleanAperture;
         for (AVCaptureInputPort *port in [self.currentVideoDeviceInput ports])
         {
-            if ([port mediaType] == AVMediaTypeVideo) {
+            if ([port mediaType] == AVMediaTypeVideo)
+            {
                 cleanAperture = CMVideoFormatDescriptionGetCleanAperture([port formatDescription], YES);
                 CGSize apertureSize = cleanAperture.size;
                 CGPoint point = viewCoordinates;
@@ -879,9 +882,11 @@ typedef UIView View;
 - (void) autoFocusAtPoint:(CGPoint)point
 {
     AVCaptureDevice *device = [self.currentVideoDeviceInput device];
-    if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+    if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+    {
         NSError *error;
-        if ([device lockForConfiguration:&error]) {
+        if ([device lockForConfiguration:&error])
+        {
             [device setFocusPointOfInterest:point];
             [device setFocusMode:AVCaptureFocusModeAutoFocus];
             [device unlockForConfiguration];
@@ -1017,7 +1022,7 @@ typedef UIView View;
 	}
 }
 
-- (AVCaptureDevice*) currentDevice
+- (AVCaptureDevice *) currentDevice
 {
     return self.currentVideoDeviceInput.device;
 }

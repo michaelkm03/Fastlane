@@ -81,8 +81,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    self.nameLabel.text = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
-    
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
 
@@ -114,13 +112,18 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         switch (indexPath.row)
         {
             case VMenuRowHome:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]];
+            {
+                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+                homeContainer.shouldShowHeaderLogo = YES;
+                navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
+            }
             break;
-            
             case VMenuRowOwnerChannel:
+            {
                 navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
                 [self.sideMenuViewController hideMenuViewController];
+            }
             break;
             
             case VMenuRowCommunityChannel:

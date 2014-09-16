@@ -130,7 +130,7 @@
         return;
     }
     
-    switch(type)
+    switch (type)
     {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -169,7 +169,7 @@
         return;
     }
 
-    switch(type)
+    switch (type)
     {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];

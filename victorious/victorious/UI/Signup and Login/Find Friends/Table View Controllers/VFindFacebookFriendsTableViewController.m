@@ -30,7 +30,7 @@
             completionBlock(YES, nil);
         }
     };
-    void (^failure)(NSError*) = ^(NSError *error)
+    void (^failure)(NSError *) = ^(NSError *error)
     {
         if (completionBlock)
         {

@@ -19,7 +19,7 @@
     return @"Interaction";
 }
 
-+ (RKEntityMapping*)entityMapping
++ (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),

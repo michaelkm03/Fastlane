@@ -2,7 +2,7 @@
 //  VMessage.m
 //  victorious
 //
-//  Created by Lawrence Leach on 8/7/14.
+//  Created by Will Long on 9/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 
 @implementation VMessage
 
-@dynamic isRead;
 @dynamic mediaPath;
 @dynamic postedAt;
 @dynamic remoteId;
@@ -22,8 +21,7 @@
 @dynamic text;
 @dynamic thumbnailPath;
 @dynamic conversation;
-@dynamic lastMessageInverse;
-@dynamic sender;
 @dynamic notification;
+@dynamic sender;
 
 @end

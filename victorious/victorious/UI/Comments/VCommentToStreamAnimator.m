@@ -20,18 +20,18 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
     {
-        streamVC = (VStreamTableViewController*)toVC;
+        streamVC = (VStreamTableViewController *)toVC;
     }
     else
     {
-        streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+        streamVC = ((VStreamContainerViewController *)toVC).streamTable;
     }
     
     commentsContainer.view.userInteractionEnabled = NO;
@@ -47,7 +47,7 @@
          {
              [UIView animateWithDuration:.6f animations:^
               {
-                  [(VStreamContainerViewController*)toVC showHeader];
+                  [(VStreamContainerViewController *)toVC showHeader];
               }];
          }
          

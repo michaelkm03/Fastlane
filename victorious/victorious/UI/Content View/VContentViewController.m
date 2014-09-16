@@ -38,6 +38,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Login.h"
 
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
@@ -48,6 +49,7 @@
 #import "VElapsedTimeFormatter.h"
 
 #import "VUser+Fetcher.h"
+#import "VUser+RestKit.h"
 
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
@@ -61,7 +63,7 @@ static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 static const CGFloat kActionConstraintConstantCollapsed     =   0.0f;
-static const CGFloat kActionConstraintConstantExpandedOffset= 420.0f;
+static const CGFloat kActionConstraintConstantExpandedOffset = 420.0f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
@@ -93,7 +95,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 -(id)init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    self = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+    self = (VContentViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
 
     return self;
 }
@@ -130,12 +132,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         if ([vc isKindOfClass:[VRealtimeCommentViewController class]])
         {
-            self.realtimeCommentVC = (VRealtimeCommentViewController*)vc;
+            self.realtimeCommentVC = (VRealtimeCommentViewController *)vc;
             self.realtimeCommentVC.delegate = self;
         }
         else if ([vc isKindOfClass:[VKeyboardBarViewController class]])
         {
-            self.keyboardBarVC = (VKeyboardBarViewController*)vc;
+            self.keyboardBarVC = (VKeyboardBarViewController *)vc;
             self.keyboardBarVC.delegate = self;
         }
     }
@@ -296,6 +298,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [[VThemeManager sharedThemeManager] applyStyling];
+    [self updateRepostedButtonStateForCurrentUser];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -545,7 +548,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     return MIN(currentContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
 }
 
-+ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence*)sequence
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     CGFloat currentContentViewOffset = sequence.nameEmbeddedInContent.boolValue ? kMaximumNoCaptionContentViewOffset : kMaximumContentViewOffset;
     return MIN(currentContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
@@ -553,7 +556,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark -
 
--(VInteractionManager*)interactionManager
+-(VInteractionManager *)interactionManager
 {
     if (!_interactionManager)
     {
@@ -575,28 +578,53 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
-    
-    [[VObjectManager sharedManager] fetchUserInteractionsForSequence:sequence.remoteId
-                                                      withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
-     {
-         NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"REPOSTED", @"") : NSLocalizedString(@"RepostContentView", @"");
-         if (userInteractions.hasReposted)
-         {
-             UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-             [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
-             self.repostButton.adjustsImageWhenDisabled = NO;
-             self.repostButton.enabled = NO;
-             repostButtonTitle = [NSString stringWithFormat:@" %@", repostButtonTitle];
-         }
-         else
-         {
-             repostButtonTitle = [NSString stringWithFormat:@"  %@", repostButtonTitle];
-         }
-         
+    [self updateRepostedButtonStateForCurrentUser];
+}
 
-         [self.repostButton setTitle:repostButtonTitle
-                            forState:UIControlStateNormal];
-     }];
+- (void)updateRepostedButtonStateForCurrentUser
+{
+    if (!self.sequence)
+    {
+        return;
+    }
+    
+    if ([[VObjectManager sharedManager] isAuthorized])
+    {
+        self.repostButton.enabled = NO;
+        if (![self.sequence.user isEqualToUser:[VObjectManager sharedManager].mainUser] &&
+            ![self.sequence.parentUser isEqualToUser:[VObjectManager sharedManager].mainUser])
+        {
+            [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
+                                                              withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
+             {
+                 NSString *repostButtonTitle = userInteractions.hasReposted ? NSLocalizedString(@"RepostedContentView", @"") : NSLocalizedString(@"RepostContentView", @"");
+                 
+                 if (userInteractions.hasReposted)
+                 {
+                     UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+                     [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+                     self.repostButton.adjustsImageWhenDisabled = NO;
+                     [self.repostButton setTitle:repostButtonTitle
+                                        forState:UIControlStateNormal];
+                     [self.repostButton setNeedsLayout];
+                 }
+                 else
+                 {
+                     self.repostButton.enabled = YES;
+                 }
+             }];
+        }
+        else
+        {
+            UIColor *primaryAccentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+            [self.repostButton setBackgroundColor:[primaryAccentColor colorWithAlphaComponent:0.1f]];
+            self.repostButton.adjustsImageWhenDisabled = NO;
+        }
+    }
+    else
+    {
+        self.repostButton.enabled = YES;
+    }
 }
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
@@ -749,7 +777,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+            self.realtimeCommentVC.comments = [self.currentAsset.comments array];
             [self showRTC];
         }
                                                                  failBlock:nil];
@@ -873,8 +901,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         return;
     }
-    else
+    else //We're trying to post a RTC
     {
+        if (![VObjectManager sharedManager].mainUser)
+        {
+            [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+            return;
+        }
+        
         self.keyboardBarContainer.hidden = NO;
         self.keyboardBarContainer.alpha = 0;
         
@@ -1124,7 +1158,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.willComment = YES;
 }
 #pragma mark - VInteractionManagerDelegate
-- (void)firedInteraction:(VInteraction*)interaction
+- (void)firedInteraction:(VInteraction *)interaction
 {
     VLog(@"Interaction fired:%@", interaction);
 }
@@ -1132,15 +1166,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
     if ([toVC isKindOfClass:[VContentInfoViewController class]] || [fromVC isKindOfClass:[VContentInfoViewController class]])
     {
         VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
         animator.isPresenting = operation == UINavigationControllerOperationPush;
         animator.fromChildContainerView =  self.mediaView;
-        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
+        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController *)toVC).mediaContainerView : self.mediaSuperview;
         
         if (animator.isPresenting)
         {
@@ -1298,7 +1332,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-        self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+        self.realtimeCommentVC.comments = [self.currentAsset.comments array];
     }
                                                      failBlock:^(NSOperation* operation, NSError* error)
     {
@@ -1321,7 +1355,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
      }];
 }
 
-- (void)keyboardWillShow:(NSNotification*)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
     CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardEndFrame = [self.view convertRect:keyboardEndFrame fromView:self.view.window];
@@ -1350,7 +1384,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [UIView commitAnimations];
 }
 
-- (void)keyboardWillHide:(NSNotification*)notification
+- (void)keyboardWillHide:(NSNotification *)notification
 {
     self.isShowingKeyboard = NO;
     self.keyboardOverlapsMedia = NO;
@@ -1394,8 +1428,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-    VStreamContainerViewController* container =[VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
-    
+    VStreamContainerViewController* container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    container.shouldShowHeaderLogo = NO;
     [self.navigationController pushViewController:container animated:YES];
 }
 

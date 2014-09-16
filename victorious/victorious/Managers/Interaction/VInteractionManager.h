@@ -12,7 +12,7 @@
 
 @protocol VInteractionManagerDelegate <NSObject>
 @required
-- (void)firedInteraction:(VInteraction*)interaction;
+- (void)firedInteraction:(VInteraction *)interaction;
 @end
 
 @interface VInteractionManager : NSObject
@@ -22,7 +22,7 @@
 @property (readonly, nonatomic) CGFloat lastInteractionTimeout;
 @property (weak, nonatomic) id<VInteractionManagerDelegate> delegate;
 
-- (instancetype)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate;
+- (instancetype)initWithNode:(VNode *)node delegate:(id<VInteractionManagerDelegate>)delegate;
 - (void)startInteractionTimerAtTime:(CGFloat)seconds;
 - (void)pauseInterationTimer;
 

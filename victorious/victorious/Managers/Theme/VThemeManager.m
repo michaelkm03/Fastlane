@@ -13,6 +13,7 @@ NSString*   const   kVChannelName                       =   @"channel.name";
 
 NSString*   const   kVMenuBackgroundImage               =   @"Default";
 NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
+NSString*   const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts
 
@@ -99,7 +100,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
          BOOL valid = YES;
          if ([obj respondsToSelector:@selector(length)])
          {
-             valid = ((NSString*)obj).length;
+             valid = ((NSString *)obj).length;
          }
          
          if (obj && valid)
@@ -215,7 +216,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 #pragma mark - Other
 
-- (UIImage*)themedBackgroundImageForDevice
+- (UIImage *)themedBackgroundImageForDevice
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone &&
         [[UIScreen mainScreen] bounds].size.height == 568.0f)
@@ -267,6 +268,17 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (UIImage *)themedImageForKey:(NSString *)key
 {
+    // This is a terrible hack. By default the header image is a 1x1 pt image. If this is what we get back in themedImageForKey return nil.
+    if ([key isEqualToString:VThemeManagerHomeHeaderImageKey])
+    {
+        UIImage *headerImage = [UIImage imageNamed:VThemeManagerHomeHeaderImageKey];
+        if ((headerImage.size.width == 1) && (headerImage.size.height == 1))
+        {
+            return nil;
+        }
+        return headerImage;
+    }
+    
     return [UIImage imageNamed:key];
 }
 

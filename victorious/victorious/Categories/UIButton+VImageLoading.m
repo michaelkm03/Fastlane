@@ -11,7 +11,7 @@
 
 @implementation UIButton (VImageLoading)
 
-- (void)setImageWithURL:(NSURL*)url
+- (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
                forState:(UIControlState)state
 {
@@ -25,7 +25,7 @@
     
     __weak UIButton* weakSelf = self;
     [self.imageView setImageWithURLRequest:request
-                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                          placeholderImage:placeholderImage
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                                    {
                                        __strong UIButton* strongSelf = weakSelf;

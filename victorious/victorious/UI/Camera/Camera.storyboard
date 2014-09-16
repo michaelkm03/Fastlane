@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
-                                <rect key="frame" x="0.0" y="529" width="321" height="64"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
+                                <rect key="frame" x="0.0" y="0.0" width="321" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-I5-ldA" userLabel="Close Button">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
@@ -472,7 +472,7 @@ and don't forget #hashtags</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Publish" id="bCT-xK-bEO">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="gEL-hj-iBw">
+                        <barButtonItem key="leftBarButtonItem" image="btnPrevArrowWhiteDs" id="gEL-hj-iBw">
                             <connections>
                                 <action selector="goBack:" destination="1zz-KC-cVA" id="nXM-hH-lpw"/>
                             </connections>
@@ -673,7 +673,7 @@ and don't forget #hashtags</string>
         </scene>
     </scenes>
     <resources>
-        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="btnPrevArrowWhiteDs" width="40" height="40"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonDelete" width="60" height="60"/>
         <image name="cameraButtonFlashOff" width="24" height="32"/>

@@ -72,10 +72,10 @@
     self.afterButton.userInteractionEnabled = YES;
     [self.afterButton maskWithImage:[UIImage imageNamed:@"cameraRightMask"]];
     
-    UIImage *prevButtonImage = [[UIImage imageNamed:@"btnPrevArrowWhite"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *prevButtonImage = [[UIImage imageNamed:@"btnPrevArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:prevButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(goBack:)];
 
-    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
     
     //[self setupProgressObserver];
@@ -322,14 +322,12 @@
     if (self.selectingBeforeURL)
     {
         self.beforeURL = url;
-        self.beforeButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.27 blue:0.20 alpha:1.0];
         [self.beforeButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.beforeButton withURL:url];
     }
     else if (self.selectingAfterURL)
     {
         self.afterURL = url;
-        self.afterButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.27 blue:0.20 alpha:1.0];
         [self.afterButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.afterButton withURL:url];
     }
@@ -461,7 +459,7 @@
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
     int time4Pic = 0;
     
-    for (int i=0; i<picsCnt; i++)
+    for (int i = 0; i < picsCnt; i++)
     {
         time4Pic = i * picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds * time4Pic / background.frame.size.width, 600);

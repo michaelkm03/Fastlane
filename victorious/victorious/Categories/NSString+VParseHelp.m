@@ -10,7 +10,7 @@
 
 @implementation NSString (VParseHelp)
 
-- (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes
+- (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary *)attributes
 {
     NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin |
         NSStringDrawingUsesFontLeading;
@@ -23,7 +23,7 @@
     return CGSizeMake(ceil(boundingRect.size.width), ceil(boundingRect.size.height));
 }
 
-- (NSURL*)mp4UrlFromM3U8
+- (NSURL *)mp4UrlFromM3U8
 {
     if (![[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {

@@ -170,7 +170,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)composeMessageToUser:(VUser*)profile
+-(void)composeMessageToUser:(VUser *)profile
 {
     if (![VObjectManager sharedManager].mainUser)
     {

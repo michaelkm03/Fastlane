@@ -293,7 +293,7 @@
                                             <constraint firstAttribute="height" constant="28" id="e3o-K7-Qpn"/>
                                         </constraints>
                                         <segments>
-                                            <segment title="Hot"/>
+                                            <segment title="Featured"/>
                                             <segment title="Recent"/>
                                             <segment title="Following"/>
                                         </segments>
@@ -302,13 +302,17 @@
                                             <action selector="changedFilterControls:" destination="OrJ-Wr-Uhc" eventType="valueChanged" id="ZWO-So-Mqe"/>
                                         </connections>
                                     </segmentedControl>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8u-6Dv">
-                                        <rect key="frame" x="52" y="10" width="210" height="50"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8u-6Dv" userLabel="Header Label">
+                                        <rect key="frame" x="55" y="10" width="210" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXn-4e-5VR" userLabel="Header Image">
+                                        <rect key="frame" x="55" y="18" width="210" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -334,6 +338,7 @@
                     <connections>
                         <outlet property="createButton" destination="oOz-qF-TD2" id="zlN-c0-Oz4"/>
                         <outlet property="filterControls" destination="Fdy-7V-EvU" id="nuT-B0-rLP"/>
+                        <outlet property="headerImageView" destination="wXn-4e-5VR" id="K1i-aL-9Ep"/>
                         <outlet property="headerLabel" destination="QiD-8u-6Dv" id="lNi-dD-Ckb"/>
                         <outlet property="headerView" destination="uAX-J4-ubb" id="hnT-wI-TLl"/>
                         <outlet property="headerYConstraint" destination="sbd-TC-btl" id="yOm-aI-O3B"/>
@@ -518,7 +523,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Owner Channel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JET-Uy-VNX">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Channel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JET-Uy-VNX">
                                                     <rect key="frame" x="20" y="4" width="280" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -877,7 +882,7 @@
                                             <action selector="pressedRemix:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="CzY-CR-QCw"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbm-gr-rvF">
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbm-gr-rvF">
                                         <rect key="frame" x="214" y="63" width="107" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
