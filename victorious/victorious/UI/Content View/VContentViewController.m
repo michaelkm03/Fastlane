@@ -766,7 +766,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if (!self.currentAsset)
     {
-        self.currentAsset = [self.currentNode firstAsset];
+        self.currentAsset = [self.currentNode.assets.array firstObject];
     }
     
     if ([self.currentAsset isVideo])

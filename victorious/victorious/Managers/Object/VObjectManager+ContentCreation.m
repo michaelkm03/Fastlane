@@ -333,7 +333,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempComment.sequenceId = sequence.remoteId;
     tempComment.mediaType = kTemporaryContentStatus;
-    tempComment.display_order = @(-1);
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;

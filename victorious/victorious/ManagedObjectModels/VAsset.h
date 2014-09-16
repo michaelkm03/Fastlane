@@ -2,7 +2,7 @@
 //  VAsset.h
 //  victorious
 //
-//  Created by Will Long on 9/9/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @interface VAsset : NSManagedObject
 
 @property (nonatomic, retain) NSString * data;
-@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * loop;
 @property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSNumber * remoteId;

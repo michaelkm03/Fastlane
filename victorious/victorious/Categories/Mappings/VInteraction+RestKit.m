@@ -23,7 +23,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),
-                                  @"display_order" : VSelectorName(display_order),
                                   @"start_time" : VSelectorName(startTime),
                                   @"type" : VSelectorName(type),
                                   @"interaction_id" : VSelectorName(remoteId),
