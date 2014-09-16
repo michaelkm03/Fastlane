@@ -103,13 +103,13 @@
         self.shouldScrollToBottom = YES;
     }
     
-    //Update the unread count in case its changed.
-    [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation
+                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VUnreadConversation* unreadConversations = [resultObjects firstObject];
-         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
+         //Update the unread count in case its changed.  Call it after the conversation is marked to avoid a race condition
+         [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
      }
-                                                                      failBlock:nil];
+                                                 failBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -122,15 +122,6 @@
 {
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
-    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
-    
-    //Update the unread count in case its changed.
-    [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         VUnreadConversation* unreadConversations = [resultObjects firstObject];
-         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
-     }
-                                                                      failBlock:nil];
 }
 
 - (void)loadNextPageAction

@@ -12,6 +12,7 @@
 
 #import "VMessage.h"
 #import "VUser.h"
+#import "VUnreadConversation.h"
 
 #import "VConversation+RestKit.h"
 
@@ -89,8 +90,8 @@
     
 }
 
-- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
-                                                                       failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)updateUnreadMessageCountWithSuccessBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail
 {
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -99,6 +100,8 @@
         {
             self.mainUser.unreadConversation = (VUnreadConversation *)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
         }
+    
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:self.mainUser.unreadConversation.count.integerValue];
 
         if (success)
         {

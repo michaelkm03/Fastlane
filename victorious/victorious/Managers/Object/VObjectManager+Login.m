@@ -300,7 +300,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
     
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
-    [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
+    [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }
