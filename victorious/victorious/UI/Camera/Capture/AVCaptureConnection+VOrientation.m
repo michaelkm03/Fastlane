@@ -14,27 +14,34 @@
 {
     if (self.supportsVideoOrientation)
     {
+        AVCaptureVideoOrientation newOrientation;
         switch (orientation)
         {
-            case UIDeviceOrientationUnknown:
-                [self setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-                break;
             case UIDeviceOrientationPortrait:
-                [self setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                break;
-            case UIDeviceOrientationPortraitUpsideDown:
-                [self setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-                break;
-            case UIDeviceOrientationLandscapeLeft:
-                [self setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
-                break;
-            case UIDeviceOrientationLandscapeRight:
-                [self setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-                break;
             case UIDeviceOrientationFaceUp:
             case UIDeviceOrientationFaceDown:
-                [self setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                newOrientation = AVCaptureVideoOrientationPortrait;
                 break;
+                
+            case UIDeviceOrientationPortraitUpsideDown:
+                newOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
+                break;
+                
+            case UIDeviceOrientationLandscapeLeft:
+                newOrientation = AVCaptureVideoOrientationLandscapeRight;
+                break;
+                
+            case UIDeviceOrientationLandscapeRight:
+                newOrientation = AVCaptureVideoOrientationLandscapeLeft;
+                break;
+                
+            case UIDeviceOrientationUnknown:
+            default:
+                return;
+        }
+        if (self.videoOrientation != newOrientation)
+        {
+            self.videoOrientation = newOrientation;
         }
     }
 }
