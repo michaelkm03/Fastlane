@@ -12,7 +12,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 110.0f);
+    return CGSizeMake(CGRectGetWidth(bounds), 92);
 }
 
 @end

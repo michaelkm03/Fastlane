@@ -375,32 +375,32 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             *targetContentOffset = CGPointMake(0, 0);
         }
     }
-    else if ( (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight * 0.5f)) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight)))
+    else if ( (targetContentOffset->y >= (layout.sizeForRealTimeComentsView.height * 0.5f)) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height)))
     {
         if (velocity.y > 0.0f)
         {
-            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
         }
         else
         {
             delayedContentOffsetBlock = ^void(void)
             {
-                [scrollView setContentOffset:CGPointMake(0, layout.dropDownHeaderMiniumHeight)
+                [scrollView setContentOffset:CGPointMake(0, layout.sizeForRealTimeComentsView.height)
                                     animated:YES];
             };
         }
     }
-    else if ((targetContentOffset->y >= layout.dropDownHeaderMiniumHeight) && (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f))))
+    else if ((targetContentOffset->y >= layout.sizeForRealTimeComentsView.height) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height + (layout.sizeForContentView.height * 0.5f))))
     {
         if (velocity.y < 0.0f)
         {
-            *targetContentOffset = CGPointMake(0, layout.dropDownHeaderMiniumHeight);
+            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
         }
         else
         {
             delayedContentOffsetBlock = ^void(void)
             {
-                [scrollView setContentOffset:CGPointMake(0.0f, layout.dropDownHeaderMiniumHeight)
+                [scrollView setContentOffset:CGPointMake(0.0f, layout.sizeForRealTimeComentsView.height)
                                     animated:YES];
             };
         }
