@@ -17,16 +17,6 @@
     return firstInteraction.answers.array;
 }
 
-- (VAsset *)firstAsset
-{
-    return [self.assets.array firstObject];
-}
-
-- (NSArray *)orderedInteractions
-{
-    return self.interactions.array;
-}
-
 - (BOOL)isPoll
 {
     NSArray* firstAnswers = [self firstAnswers];

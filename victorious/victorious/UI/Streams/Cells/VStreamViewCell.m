@@ -151,7 +151,8 @@ static VLargeNumberFormatter* largeNumberFormatter;
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
     
-    if ([[[_sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    VAsset* firstAsset = [[_sequence firstNode].assets.array firstObject];
+    if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
     {
         self.playButtonImage.hidden = NO;
     }
