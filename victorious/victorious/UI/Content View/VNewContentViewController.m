@@ -93,8 +93,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
     [self.view addSubview:self.inputAccessoryView];
-
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
+    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -181,6 +181,16 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                               inSection:VContentViewSectionContent];
 }
 
+- (void)configureCommentCell:(VContentCommentsCell *)commentCell
+                   withIndex:(NSInteger)index
+{
+    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
+    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
+    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarULRForCommentIndex:index];
+    commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
+    commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
@@ -253,14 +263,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionCount:
             return nil;
     }
-}
-
-- (void)configureCommentCell:(VContentCommentsCell *)commentCell
-                   withIndex:(NSInteger)index
-{
-    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
-    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarULRForCommentIndex:index];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView

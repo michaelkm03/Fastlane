@@ -36,6 +36,14 @@ typedef NS_ENUM(NSInteger, VContentViewType)
     VContentViewTypePoll
 };
 
+/**
+ * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
+ * 
+ * The VContentViewViewModel arranges the comments associated with a given sequence into an ordered list sorted by most recent. 
+ *
+ 
+NOTE: Currently this VContentViewViewModel only supports single node, single asset sequences.
+ */
 @interface VContentViewViewModel : NSObject
 
 /**
@@ -94,6 +102,25 @@ typedef NS_ENUM(NSInteger, VContentViewType)
  *  @return The user's name who posted a given comment.
  */
 - (NSString *)commenterNameForCommentIndex:(NSInteger)commentIndex;
+
+/**
+ *  Returns the text to place in the time ago/ time since label for a given comment view.
+ *
+ *  @param commentIndex The corresponding index of the comment.
+ *
+ *  @return The formatted time ago text for the given coment.
+ */
+- (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex;
+
+
+/**
+ *  Returns the text to place in the real time comment label for a given comment view.
+ *
+ *  @param commentIndex The corresponding index of the comment.
+ *
+ *  @return The formatted real time comment text for the given coment.
+ */
+- (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex;
 
 /**
  *  Returns the avatar URL for the user who posted a given comment. May return nil if no avatar URL exists.

@@ -20,6 +20,9 @@
 #import "VObjectManager+Pagination.h"
 #import "VComment+Fetcher.h"
 
+// Formatters
+#import "NSDate+timeSince.h"
+#import "VRTCUserPostedAtFormatter.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 
@@ -122,10 +125,20 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSArray *)comments
 {
-    NSMutableArray *comments = [NSMutableArray new];
-    [self.sequence.comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [comments addObject:obj];
+    NSArray *comments = [self.sequence.comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+     {
+         NSComparisonResult result = [comment1.postedAt compare:comment2.postedAt];
+         switch (result)
+         {
+             case NSOrderedAscending:
+                 return NSOrderedDescending;
+             case NSOrderedSame:
+                 return NSOrderedSame;
+             case NSOrderedDescending:
+                 return NSOrderedAscending;
+         }
     }];
+
     _comments = [NSArray arrayWithArray:_comments];
     return comments;
 }
@@ -147,6 +160,19 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return commentForIndex.user.name;
+}
+
+- (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return [commentForIndex.postedAt timeSince];
+}
+
+- (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
+                                                                   andPostedTime:commentForIndex.realtime] string];
 }
 
 - (NSURL *)commenterAvatarULRForCommentIndex:(NSInteger)commentIndex
