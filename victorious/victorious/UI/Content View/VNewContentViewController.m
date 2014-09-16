@@ -52,8 +52,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     
     contentViewController.viewModel = viewModel;
-    	
+    
+    [[NSNotificationCenter defaultCenter] addObserver:contentViewController
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:viewModel];
+    
     return contentViewController;
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIResponder
@@ -147,6 +159,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                             CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
 }
 
+- (void)commentsDidUpdate:(NSNotification *)notification
+{
+    NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+    [self.contentCollectionView reloadSections:commentsIndexSet];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
@@ -171,12 +189,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSection vSection = section;
     switch (vSection)
     {
+        case VContentViewSectionContent:
+            return 1;
         case VContentViewSectionRealTimeComments:
             return 1;
         case VContentViewSectionAllComments:
-            return 50;
-        case VContentViewSectionContent:
-            return 1;
+            return self.viewModel.comments.count;
         case VContentViewSectionCount:
             return 0;
     }
@@ -244,9 +262,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:
-            return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                      withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
+            return (self.viewModel.comments.count == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                   withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
+                                                                                                          forIndexPath:indexPath];
         case VContentViewSectionCount:
             return nil;
     }
@@ -282,7 +300,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionRealTimeComments:
             return CGSizeZero;
         case VContentViewSectionAllComments:
-            return [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            return (self.viewModel.comments.count == 0) ? CGSizeZero : [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
         case VContentViewSectionCount:
             return CGSizeZero;
     }

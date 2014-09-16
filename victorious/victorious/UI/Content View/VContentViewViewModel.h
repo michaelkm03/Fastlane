@@ -8,7 +8,7 @@
 
 #import "VSequence.h"
 
-#import "VNode.h"
+UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -68,5 +68,10 @@ typedef NS_ENUM(NSInteger, VContentViewType)
  *  If a video content has any real time comments this will be YES.
  */
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
+
+/**
+ *  An array of all comments on this sequence. Sorted by most recent.
+ */
+@property (nonatomic, readonly) NSArray *comments;
 
 @end

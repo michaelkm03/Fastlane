@@ -13,6 +13,9 @@
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VObjectManager+Comment.h"
+#import "VObjectManager+Pagination.h"
+
+NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 
 @interface VContentViewViewModel ()
 
@@ -50,11 +53,21 @@
             _type = VContentViewTypeInvalid;
         }
 
+        _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode firstAsset];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
                                                                 successBlock:nil
                                                                    failBlock:nil];
+        
+        [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+                                                     isRefresh:NO
+                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+                                                      //
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
+                                                                                                          object:self];
+                                                  }
+                                                     failBlock:nil];
     }
     return self;
 }
@@ -98,6 +111,16 @@
     VAsset *currentAsset = [self.currentNode firstAsset];
     NSArray *realTimeComments = [currentAsset.comments array];
     return (realTimeComments.count > 0) ? YES : NO;
+}
+
+- (NSArray *)comments
+{
+//    NSArray *comments = [self.sequence.comments array];
+    NSMutableArray *comments = [NSMutableArray new];
+    [self.sequence.comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [comments addObject:obj];
+    }];
+    return comments;
 }
 
 @end
