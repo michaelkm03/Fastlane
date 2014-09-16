@@ -320,7 +320,6 @@
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BC519BFA40C006A1ABC /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BC419BFA40C006A1ABC /* VComment.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
-		BEA78BE819BFD39B006A1ABC /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BE719BFD39B006A1ABC /* VAsset.m */; };
 		BEA78C1F19C00327006A1ABC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C1E19C00327006A1ABC /* VSequence.m */; };
 		BEA78C2219C00328006A1ABC /* VDirectoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2119C00328006A1ABC /* VDirectoryItem.m */; };
 		BEA78C2519C00328006A1ABC /* VDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2419C00328006A1ABC /* VDirectory.m */; };
@@ -341,11 +340,11 @@
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
+		DB2BE2E519C8DBD2004A9FF6 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78BE719BFD39B006A1ABC /* VAsset.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
-		DBA3DAB519B92A070014330D /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = DB478CE519B68E1800462C37 /* VAsset.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -972,8 +971,6 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		DB478CE419B68E1800462C37 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
-		DB478CE519B68E1800462C37 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSharedCollectionReusableViewMethods.h; sourceTree = "<group>"; };
@@ -2644,9 +2641,9 @@
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
-				DBA3DAB519B92A070014330D /* VAsset.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
+				DB2BE2E519C8DBD2004A9FF6 /* VAsset.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D46F19B46B5E00FA363C /* VCCameraFocusTargetView.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
@@ -2707,7 +2704,6 @@
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
-				BEA78BE819BFD39B006A1ABC /* VAsset.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
