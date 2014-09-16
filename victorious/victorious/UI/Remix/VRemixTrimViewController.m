@@ -52,6 +52,11 @@
     self.trimSlider.delegate = self;
     [self.trimControlContainer addSubview:self.trimSlider];
     
+    NSArray* buttons = @[self.takeImageSnapShotButton, self.loopButton, self.rateButton, self.muteButton];
+    for (UIButton* button in buttons)
+    {
+        button.imageView.contentMode = UIViewContentModeCenter;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
