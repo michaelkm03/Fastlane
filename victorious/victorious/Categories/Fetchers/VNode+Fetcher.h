@@ -11,9 +11,6 @@
 @interface VNode (Fetcher)
 
 - (NSArray *)firstAnswers;
-- (VAsset *)firstAsset;
-
-- (NSArray *)orderedInteractions;
 
 - (BOOL)isPoll;
 
