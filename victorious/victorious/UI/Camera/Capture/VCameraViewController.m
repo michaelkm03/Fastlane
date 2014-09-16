@@ -23,6 +23,8 @@
 #import "VSettingManager.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
+static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
+static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
 static const CGFloat kDisabledRecordButtonAlpha = 0.2f;
 static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
@@ -47,7 +49,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraModeButton;
 
 @property (nonatomic, strong) VCameraCaptureController *camera;
-//@property (nonatomic, strong) VCCameraFocusView* focusView;
 
 @property (nonatomic)                   BOOL                allowVideo;
 @property (nonatomic)                   BOOL                allowPhotos;
@@ -215,7 +216,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
                 hud.mode = MBProgressHUDModeText;
                 hud.labelText = NSLocalizedString(@"CameraFailed", @"");
-                [hud hide:YES afterDelay:10.0];
+                [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
             }
             else
             {
@@ -542,7 +543,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
                 hud.mode = MBProgressHUDModeText;
                 hud.labelText = NSLocalizedString(@"StillCaptureFailed", @"");
-                [hud hide:YES afterDelay:3.0];
+                [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
             }
             else
             {
@@ -568,7 +569,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.labelText = NSLocalizedString(@"CameraSwitchFailed", @"");
-        [hud hide:YES afterDelay:3.0];
+        [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
     };
     
     NSString *newSessionPreset;
@@ -685,7 +686,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:strongSelf.previewView animated:YES];
                         hud.mode = MBProgressHUDModeText;
                         hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
-                        [hud hide:YES afterDelay:3.0];
+                        [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
                         return;
                     }
                     encoder.delegate = strongSelf;
@@ -1091,7 +1092,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
-        [hud hide:YES afterDelay:3.0];
+        [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
     });
 }
 
@@ -1107,7 +1108,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
             hud.mode = MBProgressHUDModeText;
             hud.labelText = NSLocalizedString(@"VideoSaveFailed", @"");
-            [hud hide:YES afterDelay:3.0];
+            [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
         }
         else
         {
