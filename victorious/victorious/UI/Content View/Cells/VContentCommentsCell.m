@@ -58,16 +58,22 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.commentersAvatarImageView.tintColor = [UIColor lightGrayColor];
     
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
+
+    [self prepareContentAndMediaView];
+}
+
+- (void)prepareContentAndMediaView
+{
     [self.commentAndMediaView resetView];
+    self.commentAndMediaView.hasMedia = NO;
+    self.commentAndMediaView.mediaThumbnailView.hidden = YES;
 }
 
 #pragma mark - UIColleciontReusableView
 
 - (void)prepareForReuse
 {
-    [self.commentAndMediaView resetView];
-    self.commentAndMediaView.hasMedia = NO;
-    self.commentAndMediaView.mediaThumbnailView.hidden = YES;
+    [self prepareContentAndMediaView];
 }
 
 #pragma mark - Property Accessor

@@ -8,17 +8,24 @@
 
 #import "VContentViewViewModel.h"
 
+// Models
+#import "VComment.h"
+#import "VUser.h"
+
 // Model Categories
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
+#import "VComment+Fetcher.h"
+
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 
 @interface VContentViewViewModel ()
 
+@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
@@ -115,12 +122,44 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSArray *)comments
 {
-//    NSArray *comments = [self.sequence.comments array];
     NSMutableArray *comments = [NSMutableArray new];
     [self.sequence.comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [comments addObject:obj];
     }];
+    _comments = [NSArray arrayWithArray:_comments];
     return comments;
 }
+
+- (NSInteger)commentCount
+{
+    return self.comments.count;
+}
+
+#pragma mark - Public Methods
+
+- (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.text;
+}
+
+- (NSString *)commenterNameForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.user.name;
+}
+
+- (NSURL *)commenterAvatarULRForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return [NSURL URLWithString:commentForIndex.user.pictureUrl];
+}
+
+- (BOOL)commentHasMediaForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.hasMedia;
+}
+
 
 @end

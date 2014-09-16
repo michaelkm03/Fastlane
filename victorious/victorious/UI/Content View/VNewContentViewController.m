@@ -25,11 +25,6 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
-// Models Ugh
-#import "VComment.h"
-#import "VUser.h"
-#import "VComment+Fetcher.h"
-
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
@@ -199,7 +194,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return 1;
         case VContentViewSectionAllComments:
-            return self.viewModel.comments.count;
+            return self.viewModel.commentCount;
         case VContentViewSectionCount:
             return 0;
     }
@@ -250,12 +245,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
             
-            VComment *commentForIndexPath = [self.viewModel.comments objectAtIndex:indexPath.row];
-            
             [self configureCommentCell:commentCell
-                           withComment:commentForIndexPath];
-            
-            
+                             withIndex:indexPath.row];
             
             return commentCell;
         }
@@ -265,12 +256,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 }
 
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
-                 withComment:(VComment *)comment
+                   withIndex:(NSInteger)index
 {
-    commentCell.commentBody = comment.text;
-    commentCell.commenterName = comment.user.name;
-    commentCell.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
-    commentCell.hasMedia = NO;
+    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
+    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
+    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarULRForCommentIndex:index];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
@@ -287,7 +277,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:
-            return (self.viewModel.comments.count == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+            return (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                                                    withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
                                                                                                           forIndexPath:indexPath];
         case VContentViewSectionCount:
@@ -297,7 +287,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 #pragma mark - UICollectionViewDelegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
@@ -308,10 +300,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
         {
-            VComment *commentForIndexPath = [self.viewModel.comments objectAtIndex:indexPath.row];
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:commentForIndexPath.text
-                                               andHasMedia:commentForIndexPath.hasMedia];
+                                               commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
+                                               andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
             
         case VContentViewSectionCount:
@@ -331,7 +322,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionRealTimeComments:
             return CGSizeZero;
         case VContentViewSectionAllComments:
-            return (self.viewModel.comments.count == 0) ? CGSizeZero : [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            return (self.viewModel.commentCount == 0) ? CGSizeZero : [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
         case VContentViewSectionCount:
             return CGSizeZero;
     }
