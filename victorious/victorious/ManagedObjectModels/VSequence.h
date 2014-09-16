@@ -1,9 +1,9 @@
 //
 //  VSequence.h
-//  Pods
+//  victorious
 //
 //  Created by Will Long on 9/16/14.
-//
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -28,7 +28,7 @@
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSOrderedSet *comments;
-@property (nonatomic, retain) NSSet *nodes;
+@property (nonatomic, retain) NSOrderedSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
@@ -50,11 +50,16 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
+- (void)insertObject:(VNode *)value inNodesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromNodesAtIndex:(NSUInteger)idx;
+- (void)insertNodes:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeNodesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInNodesAtIndex:(NSUInteger)idx withObject:(VNode *)value;
+- (void)replaceNodesAtIndexes:(NSIndexSet *)indexes withNodes:(NSArray *)values;
 - (void)addNodesObject:(VNode *)value;
 - (void)removeNodesObject:(VNode *)value;
-- (void)addNodes:(NSSet *)values;
-- (void)removeNodes:(NSSet *)values;
-
+- (void)addNodes:(NSOrderedSet *)values;
+- (void)removeNodes:(NSOrderedSet *)values;
 - (void)addPollResultsObject:(VPollResult *)value;
 - (void)removePollResultsObject:(VPollResult *)value;
 - (void)addPollResults:(NSSet *)values;

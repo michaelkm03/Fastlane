@@ -2,7 +2,7 @@
 //  VNode.m
 //  victorious
 //
-//  Created by Will Long on 8/14/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,7 +15,6 @@
 
 @implementation VNode
 
-@dynamic display_order;
 @dynamic remoteId;
 @dynamic shareUrlPath;
 @dynamic assets;

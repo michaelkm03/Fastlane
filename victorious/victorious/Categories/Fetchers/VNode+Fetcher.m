@@ -21,8 +21,7 @@
 
 - (VAsset *)firstAsset
 {
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    return [[[self.assets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+    return [self.assets.array firstObject];
 }
 
 - (NSArray *)orderedInteractions
