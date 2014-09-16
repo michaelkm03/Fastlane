@@ -71,10 +71,10 @@
     [self.navigationController setNavigationBarHidden:NO];
     
     // Set the Custom Next Button
-    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowAccent"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blueColor]];
-
+    UIImage *prevButtonImage = [[UIImage imageNamed:@"btnPrevArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:prevButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(goBack:)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
