@@ -2,7 +2,7 @@
 //  VAnswer.m
 //  victorious
 //
-//  Created by Will Long on 4/29/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -10,10 +10,10 @@
 #import "VAnswerAction.h"
 #import "VInteraction.h"
 
+
 @implementation VAnswer
 
 @dynamic currency;
-@dynamic display_order;
 @dynamic isCorrect;
 @dynamic label;
 @dynamic mediaUrl;

@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * shareUrlPath;
 @property (nonatomic, retain) NSOrderedSet *assets;
-@property (nonatomic, retain) NSSet *interactions;
+@property (nonatomic, retain) NSOrderedSet *interactions;
 @property (nonatomic, retain) VNodeAction *nodeAction;
 @property (nonatomic, retain) VSequence *sequence;
 @end
@@ -33,9 +33,14 @@
 - (void)removeAssetsObject:(VAsset *)value;
 - (void)addAssets:(NSOrderedSet *)values;
 - (void)removeAssets:(NSOrderedSet *)values;
+- (void)insertObject:(VInteraction *)value inInteractionsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromInteractionsAtIndex:(NSUInteger)idx;
+- (void)insertInteractions:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeInteractionsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInInteractionsAtIndex:(NSUInteger)idx withObject:(VInteraction *)value;
+- (void)replaceInteractionsAtIndexes:(NSIndexSet *)indexes withInteractions:(NSArray *)values;
 - (void)addInteractionsObject:(VInteraction *)value;
 - (void)removeInteractionsObject:(VInteraction *)value;
-- (void)addInteractions:(NSSet *)values;
-- (void)removeInteractions:(NSSet *)values;
-
+- (void)addInteractions:(NSOrderedSet *)values;
+- (void)removeInteractions:(NSOrderedSet *)values;
 @end

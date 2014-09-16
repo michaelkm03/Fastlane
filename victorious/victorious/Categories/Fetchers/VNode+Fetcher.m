@@ -13,10 +13,8 @@
 
 - (NSArray *)firstAnswers
 {
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    VInteraction* firstInteraction =  [[self.interactions sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
-    
-    return [[firstInteraction.answers allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+    VInteraction* firstInteraction =  [self.interactions.array firstObject];
+    return firstInteraction.answers.array;
 }
 
 - (VAsset *)firstAsset
@@ -26,8 +24,7 @@
 
 - (NSArray *)orderedInteractions
 {
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startTime" ascending:YES];
-    return [[self.interactions allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+    return self.interactions.array;
 }
 
 - (BOOL)isPoll
