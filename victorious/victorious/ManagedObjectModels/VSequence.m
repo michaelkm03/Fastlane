@@ -1,9 +1,9 @@
 //
 //  VSequence.m
-//  victorious
+//  Pods
 //
-//  Created by Will Long on 9/9/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Will Long on 9/16/14.
+//
 //
 
 #import "VSequence.h"
@@ -20,7 +20,6 @@
 @dynamic category;
 @dynamic commentCount;
 @dynamic createdBy;
-@dynamic display_order;
 @dynamic expiresAt;
 @dynamic gameStatus;
 @dynamic isComplete;
@@ -32,12 +31,12 @@
 @dynamic sequenceDescription;
 @dynamic status;
 @dynamic comments;
-@dynamic streams;
 @dynamic nodes;
 @dynamic parentUser;
 @dynamic pollResults;
 @dynamic remixers;
 @dynamic reposters;
+@dynamic streams;
 @dynamic user;
 @dynamic voteResults;
 

@@ -1,9 +1,9 @@
 //
 //  VSequence.h
-//  victorious
+//  Pods
 //
-//  Created by Will Long on 9/9/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Will Long on 9/16/14.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -17,7 +17,6 @@
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSNumber * commentCount;
 @property (nonatomic, retain) NSNumber * createdBy;
-@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSDate * expiresAt;
 @property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * isComplete;
@@ -29,12 +28,12 @@
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSOrderedSet *comments;
-@property (nonatomic, retain) NSSet *streams;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
 @property (nonatomic, retain) NSSet *reposters;
+@property (nonatomic, retain) NSSet *streams;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
 @end
@@ -51,11 +50,6 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
-- (void)addStreamsObject:(VStream *)value;
-- (void)removeStreamsObject:(VStream *)value;
-- (void)addStreams:(NSSet *)values;
-- (void)removeStreams:(NSSet *)values;
-
 - (void)addNodesObject:(VNode *)value;
 - (void)removeNodesObject:(VNode *)value;
 - (void)addNodes:(NSSet *)values;
@@ -75,6 +69,11 @@
 - (void)removeRepostersObject:(VUser *)value;
 - (void)addReposters:(NSSet *)values;
 - (void)removeReposters:(NSSet *)values;
+
+- (void)addStreamsObject:(VStream *)value;
+- (void)removeStreamsObject:(VStream *)value;
+- (void)addStreams:(NSSet *)values;
+- (void)removeStreams:(NSSet *)values;
 
 - (void)addVoteResultsObject:(VVoteResult *)value;
 - (void)removeVoteResultsObject:(VVoteResult *)value;

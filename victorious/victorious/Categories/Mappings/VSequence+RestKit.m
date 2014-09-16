@@ -23,7 +23,6 @@
     NSDictionary *propertyMap = @{
                                   @"category"       :   VSelectorName(category),
                                   // for some reason this cannot be camelCase...
-                                  @"display_order"  : 	VSelectorName(display_order),
                                   @"id"             :   VSelectorName(remoteId),
                                   @"created_by"     :   VSelectorName(createdBy),
                                   @"name"           :   VSelectorName(name),
@@ -62,14 +61,6 @@
     [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
 
-    return mapping;
-}
-
-+ (RKEntityMapping *)entityMappingWithoutDisplayOrder
-{
-    RKEntityMapping *mapping = [self entityMapping];
-    RKPropertyMapping *pm = [mapping propertyMappingsBySourceKeyPath][@"display_order"];
-    [mapping removePropertyMapping:pm];
     return mapping;
 }
 
@@ -117,7 +108,7 @@
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMappingWithoutDisplayOrder]
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"
                                                           keyPath:@"payload"
