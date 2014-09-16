@@ -28,13 +28,6 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit. Lorem ipsum dolor sit. Lore ipsum dolor sit.Lorem ipsum " selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAM-pX-yPt" userLabel="Comment body">
-                        <rect key="frame" x="51" y="25" width="249" height="48"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUD-zJ-JyM" userLabel="Timestamp Label">
                         <rect key="frame" x="99" y="15" width="14" height="10"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -63,6 +56,14 @@
                             <constraint firstAttribute="height" constant="1" id="Ibr-yJ-6U8"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-el-glf" userLabel="Comment and Media View" customClass="VCommentTextAndMediaView">
+                        <rect key="frame" x="56" y="32" width="219" height="41"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="41" id="JxE-Il-zdE"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -70,25 +71,25 @@
             <constraints>
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="top" secondItem="B70-TN-WQd" secondAttribute="top" constant="-4" id="1k2-Wy-5cX"/>
                 <constraint firstAttribute="trailing" secondItem="9lE-ff-0O9" secondAttribute="trailing" constant="15" id="3nB-PL-7yr"/>
-                <constraint firstAttribute="trailing" secondItem="sAM-pX-yPt" secondAttribute="trailing" constant="20" id="6lW-v8-zzi"/>
-                <constraint firstItem="sAM-pX-yPt" firstAttribute="leading" secondItem="B70-TN-WQd" secondAttribute="leading" constant="-5" id="6zT-7Z-Hk3"/>
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="leading" secondItem="vCF-vU-SYK" secondAttribute="leading" constant="16" id="ABs-dn-yup"/>
                 <constraint firstItem="bUD-zJ-JyM" firstAttribute="leading" secondItem="daH-W6-ypI" secondAttribute="trailing" constant="5" id="B1y-Of-yNY"/>
-                <constraint firstItem="sAM-pX-yPt" firstAttribute="top" secondItem="B70-TN-WQd" secondAttribute="bottom" id="FCc-jc-2rg"/>
+                <constraint firstItem="rjx-el-glf" firstAttribute="top" secondItem="B70-TN-WQd" secondAttribute="bottom" constant="7" id="DkZ-pB-6NQ"/>
                 <constraint firstAttribute="bottom" secondItem="Adc-3N-IK1" secondAttribute="bottom" id="PJo-ek-B1A"/>
+                <constraint firstAttribute="bottom" secondItem="rjx-el-glf" secondAttribute="bottom" constant="11" id="V6S-j7-cvX"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="leading" secondItem="B70-TN-WQd" secondAttribute="trailing" constant="6" id="ZaK-1h-kkO"/>
-                <constraint firstAttribute="bottom" secondItem="sAM-pX-yPt" secondAttribute="bottom" constant="11" id="ai2-m5-dWi"/>
                 <constraint firstItem="9lE-ff-0O9" firstAttribute="top" secondItem="vCF-vU-SYK" secondAttribute="top" constant="14" id="bRL-EG-eHb"/>
                 <constraint firstItem="bUD-zJ-JyM" firstAttribute="centerY" secondItem="daH-W6-ypI" secondAttribute="centerY" id="bZ4-xd-Fhy"/>
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="top" secondItem="vCF-vU-SYK" secondAttribute="top" constant="10" id="eNm-g8-1fZ"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="PCz-Qy-bMd" secondAttribute="trailing" constant="8" id="psG-gM-2YS"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="centerY" secondItem="B70-TN-WQd" secondAttribute="centerY" id="tQ3-pq-7tQ"/>
+                <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="45" id="tU8-Zn-C2v"/>
+                <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="rjx-el-glf" secondAttribute="leading" id="taJ-He-cGE"/>
                 <constraint firstAttribute="trailing" secondItem="Adc-3N-IK1" secondAttribute="trailing" id="tg1-Rb-Iqh"/>
                 <constraint firstItem="Adc-3N-IK1" firstAttribute="leading" secondItem="vCF-vU-SYK" secondAttribute="leading" id="wVD-Ji-XTf"/>
             </constraints>
             <size key="customSize" width="50" height="156"/>
             <connections>
-                <outlet property="commentBodyTextView" destination="sAM-pX-yPt" id="VQ5-F2-rGR"/>
+                <outlet property="commentAndMediaView" destination="rjx-el-glf" id="szO-B1-sFS"/>
                 <outlet property="commentersAvatarImageView" destination="PCz-Qy-bMd" id="MZE-A4-c1E"/>
                 <outlet property="commentersUsernameLabel" destination="B70-TN-WQd" id="5g1-Il-DlD"/>
                 <outlet property="realtimeCommentLocationLabel" destination="9lE-ff-0O9" id="30h-zG-ZOm"/>

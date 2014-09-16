@@ -266,8 +266,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                  withComment:(VComment *)comment
 {
-    commentCell.commentBodyTextView.text = comment.text;
-    commentCell.commentersUsernameLabel.text = comment.user.name;
+    commentCell.commentAndTextMediaView.text = comment.text;
+    commentCell.commenterName = comment.user.name;
+    commentCell.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
@@ -304,7 +305,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
-            return [VContentCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        {
+            VComment *commentForIndexPath = [self.viewModel.comments objectAtIndex:indexPath.row];
+            return [VContentCommentsCell sizeWithCommentBody:commentForIndexPath.text];
+        }
+            
         case VContentViewSectionCount:
             return CGSizeZero;
     }

@@ -8,14 +8,17 @@
 
 #import "VBaseCollectionViewCell.h"
 
+//Subviews
+#import "VCommentTextAndMediaView.h"
+
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
 + (CGSize)sizeWithCommentBody:(NSString *)commentBody;
 
-@property (weak, nonatomic) IBOutlet UIImageView *commentersAvatarImageView;
-@property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
-@property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
-@property (weak, nonatomic) IBOutlet UITextView *commentBodyTextView;
+@property (nonatomic, strong) NSURL *URLForCommenterAvatar;
+@property (nonatomic, strong) NSString *commenterName;
+@property (nonatomic, strong) NSString *timestampText;
+@property (nonatomic, strong) NSString *realTimeCommentText;
+@property (nonatomic, weak, readonly) VCommentTextAndMediaView *commentAndTextMediaView;
 
 @end
