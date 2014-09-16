@@ -153,7 +153,7 @@ static NSMutableDictionary *messageViewControllers;
 
 - (void)hideKeyboardBarIfNeeded
 {
-    if (self.otherUser.isDirectMessagingDisabled)
+    if (self.otherUser.isDirectMessagingDisabled.boolValue)
     {
         self.keyboardBarViewController.view.hidden = YES;
     }
