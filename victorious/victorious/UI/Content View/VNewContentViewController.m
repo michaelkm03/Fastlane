@@ -193,7 +193,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     {
         commentCell.hasMedia = YES;
         commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
-        commentCell.mediaIsVideo = [self.viewModel commentMdiaIsVideForCommentIndex:index];
+        commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
     }
 }
 

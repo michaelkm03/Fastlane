@@ -161,6 +161,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return Whether or not the media for the comment is a video.
  */
-- (BOOL)commentMdiaIsVideForCommentIndex:(NSInteger)commentIndex;
+- (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
 
 @end

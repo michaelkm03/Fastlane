@@ -207,7 +207,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return commentForIndex.previewImageURL;
 }
 
-- (BOOL)commentMdiaIsVideForCommentIndex:(NSInteger)commentIndex
+- (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex
 {
     if (![self commentHasMediaForCommentIndex:commentIndex])
     {
