@@ -103,8 +103,7 @@
 
 - (VNode *)firstNode
 {
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+    return [self.nodes.array firstObject];
 }
 
 - (NSArray *)initialImageURLs

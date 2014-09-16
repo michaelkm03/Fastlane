@@ -2,7 +2,7 @@
 //  VAsset.m
 //  victorious
 //
-//  Created by Will Long on 9/9/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @implementation VAsset
 
 @dynamic data;
-@dynamic display_order;
 @dynamic loop;
 @dynamic nodeId;
 @dynamic remoteId;

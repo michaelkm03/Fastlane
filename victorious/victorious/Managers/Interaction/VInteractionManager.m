@@ -30,7 +30,7 @@
     {
         self.delegate = delegate;
         self.node = node;
-        self.interactions = [node orderedInteractions];
+        self.interactions = node.interactions.array;
     }
     return self;
 }
