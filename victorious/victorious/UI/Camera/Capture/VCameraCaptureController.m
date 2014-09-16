@@ -25,6 +25,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTaskID;
 @property (nonatomic, strong) AVCaptureInput *videoInput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureInput *audioInput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
@@ -46,8 +47,15 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         _captureSession = [[AVCaptureSession alloc] init];
         _sessionQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
         _currentDevice = defaultCaptureDevice();
+        _backgroundTaskID = UIBackgroundTaskInvalid;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(captureSessionWasInterrupted:) name:AVCaptureSessionWasInterruptedNotification object:_captureSession];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Properties
@@ -235,6 +243,19 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
+        typeof(self) __weak weakSelf = self;
+        self.backgroundTaskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
+        {
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf)
+            {
+                dispatch_sync(self.sessionQueue, ^(void)
+                {
+                    [strongSelf _stopRunningWithCompletion:nil];
+                });
+            }
+        }];
+        
         [self.captureSession startRunning];
         
         if (completion)
@@ -248,12 +269,18 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        [self.captureSession stopRunning];
-        if (completion)
-        {
-            completion();
-        }
+        [self _stopRunningWithCompletion:completion];
     });
+}
+
+- (void)_stopRunningWithCompletion:(void(^)(void))completion
+{
+    [self.captureSession stopRunning];
+    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+    if (completion)
+    {
+        completion();
+    }
 }
 
 #pragma mark - Capture
@@ -379,6 +406,16 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         *error = myError;
     }
     return NO;
+}
+
+#pragma mark - Notifications
+
+- (void)captureSessionWasInterrupted:(NSNotification *)notification
+{
+    if (self.videoEncoder.recording)
+    {
+        self.videoEncoder.recording = NO;
+    }
 }
 
 @end

@@ -19,7 +19,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
 @property (nonatomic, strong) AVAssetWriterInput *audioInput;
 @property (nonatomic) CMTime lastFrameTimeRecorded;
-@property (nonatomic) CMTime frameTimeOffset; //< the difference between the frame timestamps we're getting from the source, and our output frame timestamps.
+@property (nonatomic) CMTime frameTimeOffset; ///< the difference between the frame timestamps we're getting from the source, and our output frame timestamps.
 @property (nonatomic, getter = isRecordingPaused) BOOL recordingPaused;
 
 @end
