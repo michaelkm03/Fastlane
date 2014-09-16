@@ -9,6 +9,7 @@
 @import AVFoundation;
 @import AssetsLibrary;
 
+#import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
 #import "MBProgressHUD.h"
 #import "VAnalyticsRecorder.h"
 #import "VCameraCaptureController.h"
@@ -132,6 +133,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [self.previewView.layer addSublayer:self.previewLayer];
 
+    UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
+    [self.previewView addGestureRecognizer:focusTap];
+    
 #if 0
     self.camera = [[VCCamera alloc] initWithSessionPreset:self.initialCaptureMode];
     self.camera.delegate = self;
@@ -645,6 +649,22 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     }
 }
 
+- (void)focus:(UITapGestureRecognizer *)tapGesture
+{
+    CGPoint tapPoint = [tapGesture locationInView:self.previewView];
+    CGPoint convertedFocusPoint = [self.previewLayer v_convertPoint:tapPoint];
+    AVCaptureDevice *currentDevice = self.camera.currentDevice;
+    if ([currentDevice isFocusPointOfInterestSupported] && [currentDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+    {
+        if ([currentDevice lockForConfiguration:nil])
+        {
+            [currentDevice setFocusPointOfInterest:convertedFocusPoint];
+            [currentDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+            [currentDevice unlockForConfiguration];
+        }
+    }
+}
+
 #pragma mark - Support
 
 - (void)startRecording
@@ -918,8 +938,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    NSLog(@"totalRecorded: %f", totalRecorded);
-    
     CGFloat progress = ABS(totalRecorded / VConstantsMaximumVideoDuration);
     NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
                                                                              attribute:NSLayoutAttributeWidth
@@ -1240,7 +1258,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     
 //    [self.camera cancel];
 //    [self prepareCamera];
-    [self updateProgressForSecond:0];
 }
 
 @end
