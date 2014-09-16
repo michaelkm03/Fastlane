@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSString *commenterName;
 @property (nonatomic, strong) NSString *timestampText;
 @property (nonatomic, strong) NSString *realTimeCommentText;
-@property (nonatomic, weak, readonly) VCommentTextAndMediaView *commentAndTextMediaView;
+
+// Comment Configuration
+@property (nonatomic, strong) NSString *commentBody;
+@property (nonatomic, assign) BOOL hasMedia;
 
 @end

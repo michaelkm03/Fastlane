@@ -52,9 +52,31 @@
     self.commentersAvatarImageView.tintColor = [UIColor lightGrayColor];
     
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
+    [self.commentAndMediaView resetView];
+}
+
+#pragma mark - UIColleciontReusableView
+
+- (void)prepareForReuse
+{
+    [self.commentAndMediaView resetView];
+    self.commentAndMediaView.hasMedia = NO;
+    self.commentAndMediaView.mediaThumbnailView.hidden = YES;
 }
 
 #pragma mark - Property Accessor
+
+- (void)setHasMedia:(BOOL)hasMedia
+{
+    _hasMedia = hasMedia;
+    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
+}
+
+- (void)setCommentBody:(NSString *)commentBody
+{
+    _commentBody = commentBody;
+    self.commentAndMediaView.text = commentBody;
+}
 
 - (void)setCommenterName:(NSString *)commenterName
 {

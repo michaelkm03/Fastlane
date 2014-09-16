@@ -266,9 +266,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                  withComment:(VComment *)comment
 {
-    commentCell.commentAndTextMediaView.text = comment.text;
+    commentCell.commentBody = comment.text;
     commentCell.commenterName = comment.user.name;
     commentCell.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
+    commentCell.hasMedia = NO;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
