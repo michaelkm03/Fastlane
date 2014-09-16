@@ -7,6 +7,7 @@
 //
 
 #import "VStreamViewCell.h"
+#import "VStreamCellHeaderView.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
 #import "VThemeManager.h"
@@ -30,35 +31,22 @@
 
 #import "VEphemeralTimerView.h"
 
-#import "VUserProfileViewController.h"
-
-#import "VLargeNumberFormatter.h"
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *parentLabel;
-@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
-@property (weak, nonatomic) IBOutlet UIImageView *dateImageView;
-@property (weak, nonatomic) IBOutlet UIButton *commentButton;
-@property (weak, nonatomic) IBOutlet UIButton *commentHitboxButton;
+@property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
 
-@property (nonatomic) BOOL animating;
-@property (nonatomic) NSUInteger originalHeight;
+@property (nonatomic) BOOL                          animating;
+@property (nonatomic) NSUInteger                    originalHeight;
 
-@property (strong, nonatomic) NSMutableArray* commentViews;
-
-@property (strong, nonatomic) VEphemeralTimerView* ephemeralTimerView;
-
-@property (nonatomic, strong) NSArray *hashTagRanges;
+@property (nonatomic, strong) VEphemeralTimerView   *ephemeralTimerView;
+@property (nonatomic, strong) NSArray               *hashTagRanges;
 
 @end
 
-static VLargeNumberFormatter* largeNumberFormatter;
+
 
 @implementation VStreamViewCell
 
@@ -66,29 +54,21 @@ static VLargeNumberFormatter* largeNumberFormatter;
 {
     [super awakeFromNib];
     
-    if (!largeNumberFormatter)
-    {
-        largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
-    }
     
     self.originalHeight = self.frame.size.height;
     
-    self.commentViews = [[NSMutableArray alloc] init];
-    
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
     self.ephemeralTimerView.center = self.center;
     [self addSubview:self.ephemeralTimerView];
+ 
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    [self addSubview:self.streamCellHeaderView];
+
 }
 
 - (void)contentExpired
@@ -101,12 +81,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
 {
 //    self.shadeView.backgroundColor = [UIColor clearColor];
     self.previewImageView.alpha = 1.0f;
-}
-
-- (void)layoutSubviews
-{
-    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
-    self.profileImageButton.clipsToBounds = YES;
 }
 
 - (NSDictionary *)attributesForCellText
@@ -122,6 +96,9 @@ static VLargeNumberFormatter* largeNumberFormatter;
     _sequence = sequence;
     
     [self removeExpiredOverlay];
+
+    [self.streamCellHeaderView setSequence:self.sequence];
+    [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
 
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
@@ -147,9 +124,13 @@ static VLargeNumberFormatter* largeNumberFormatter;
      }
                                           failure:nil];
     
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.profileImagePathSmall ?: self.sequence.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
+    // Hide Comment Button if Viewing from the User Profile
+    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
+    {
+        [self.streamCellHeaderView hideCommentsButton];
+        [self.streamCellHeaderView setIsFromProfile:YES];
+    }
+
     
     VAsset* firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
@@ -161,8 +142,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
         self.playButtonImage.hidden = YES;
     }
     
-    self.usernameLabel.text = self.sequence.user.name;
-
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
         NSString *text = self.sequence.name;
@@ -197,29 +176,6 @@ static VLargeNumberFormatter* largeNumberFormatter;
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
-    self.dateLabel.text = [self.sequence.releasedAt timeSince];
-    NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
-    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
-    
-    // Hide Comment Button if Viewing from the User Profile
-    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
-    {
-        [self.commentButton setHidden:YES];
-        [self.commentHitboxButton setHidden:YES];
-    }
-    
-    NSString* parentUserString;
-    if ([self.sequence isRepost] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    if ([self.sequence isRemix] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    self.parentLabel.text = parentUserString;
     
     if (_sequence.expiresAt)
     {
@@ -239,6 +195,15 @@ static VLargeNumberFormatter* largeNumberFormatter;
 - (void)setHeight:(CGFloat)height
 {
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
+}
+
+- (BOOL)remixRepostCheck:(NSString*)sequenceCategory
+{
+    if ([sequenceCategory rangeOfString:@"remix"].location == NSNotFound && [sequenceCategory rangeOfString:@"repost"].location == NSNotFound)
+    {
+        return NO;
+    }
+    return YES;
 }
 
 - (IBAction)commentButtonAction:(id)sender
