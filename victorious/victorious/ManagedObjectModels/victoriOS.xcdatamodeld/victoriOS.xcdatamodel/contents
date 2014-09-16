@@ -43,7 +43,7 @@
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parentId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -212,6 +212,8 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="178"/>
         <element name="Comment" positionX="1080" positionY="5" width="128" height="328"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
+        <element name="Directory" positionX="853" positionY="-643" width="128" height="58"/>
+        <element name="DirectoryItem" positionX="853" positionY="-531" width="128" height="103"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
@@ -226,7 +228,5 @@
         <element name="User" positionX="1321" positionY="-324" width="128" height="388"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
-        <element name="Directory" positionX="853" positionY="-643" width="128" height="58"/>
-        <element name="DirectoryItem" positionX="853" positionY="-531" width="128" height="103"/>
     </elements>
 </model>

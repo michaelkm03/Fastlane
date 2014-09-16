@@ -312,6 +312,8 @@
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE6425BE19B8D55900A9371F /* NSString+RFC2822Date.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6425BD19B8D55900A9371F /* NSString+RFC2822Date.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
+		BE799BA219C8BC9E0023CE88 /* VSequence+OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BA119C8BC9E0023CE88 /* VSequence+OrderedSet.m */; };
+		BE799BA519C8C48B0023CE88 /* VAsset+OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BA419C8C48B0023CE88 /* VAsset+OrderedSet.m */; };
 		BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */; };
 		BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E9018EB762A009E488E /* VVoteResult.m */; };
 		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
@@ -914,6 +916,10 @@
 		BE6425BD19B8D55900A9371F /* NSString+RFC2822Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RFC2822Date.m"; sourceTree = "<group>"; };
 		BE6C15231880A31A00469BA8 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
 		BE6C15241880A31A00469BA8 /* VAnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswerAction.m; sourceTree = "<group>"; };
+		BE799BA019C8BC9E0023CE88 /* VSequence+OrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+OrderedSet.h"; sourceTree = "<group>"; };
+		BE799BA119C8BC9E0023CE88 /* VSequence+OrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+OrderedSet.m"; sourceTree = "<group>"; };
+		BE799BA319C8C48B0023CE88 /* VAsset+OrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+OrderedSet.h"; sourceTree = "<group>"; };
+		BE799BA419C8C48B0023CE88 /* VAsset+OrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+OrderedSet.m"; sourceTree = "<group>"; };
 		BE7D2E8C18EB65ED009E488E /* VVoteResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteResult+RestKit.h"; sourceTree = "<group>"; };
 		BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteResult+RestKit.m"; sourceTree = "<group>"; };
 		BE7D2E8F18EB762A009E488E /* VVoteResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteResult.h; sourceTree = "<group>"; };
@@ -2003,6 +2009,7 @@
 		BE171DAE1868C211004E5202 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BE799B9C19C8BC3C0023CE88 /* OrderedSet */,
 				03FDA09D197A0AEC00405361 /* CIImage+VImage.h */,
 				03FDA09E197A0AEC00405361 /* CIImage+VImage.m */,
 				BE171DAF1868C211004E5202 /* Fetchers */,
@@ -2221,6 +2228,17 @@
 				0314D08119B4688E00FA363C /* Info.plist */,
 			);
 			path = AppSpecific;
+			sourceTree = "<group>";
+		};
+		BE799B9C19C8BC3C0023CE88 /* OrderedSet */ = {
+			isa = PBXGroup;
+			children = (
+				BE799BA019C8BC9E0023CE88 /* VSequence+OrderedSet.h */,
+				BE799BA119C8BC9E0023CE88 /* VSequence+OrderedSet.m */,
+				BE799BA319C8C48B0023CE88 /* VAsset+OrderedSet.h */,
+				BE799BA419C8C48B0023CE88 /* VAsset+OrderedSet.m */,
+			);
+			name = OrderedSet;
 			sourceTree = "<group>";
 		};
 		BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */ = {
@@ -2658,6 +2676,7 @@
 				0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */,
 				0314D4DF19B46B5E00FA363C /* VFindFacebookFriendsTableViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
+				BE799BA519C8C48B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				0314D47619B46B5E00FA363C /* VCVideoPlayerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
@@ -2700,6 +2719,7 @@
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				0314D49E19B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m in Sources */,
+				BE799BA219C8BC9E0023CE88 /* VSequence+OrderedSet.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
