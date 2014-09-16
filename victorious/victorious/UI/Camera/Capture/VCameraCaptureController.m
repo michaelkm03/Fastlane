@@ -142,11 +142,15 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        if (!self.videoInput)
+        AVAuthorizationStatus videoAuthorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        if (!self.videoInput &&
+            videoAuthorizationStatus != AVAuthorizationStatusDenied &&
+            videoAuthorizationStatus != AVAuthorizationStatusRestricted)
         {
             NSError *error = nil;
             if (![self setVideoInputWithDevice:self.currentDevice error:&error])
             {
+                VLog(@"Error adding video input: %@", error.localizedDescription);
                 if (completion)
                 {
                     completion(error);
@@ -155,7 +159,10 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
-        if (!self.audioInput)
+        AVAuthorizationStatus audioAuthorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+        if (!self.audioInput &&
+            audioAuthorizationStatus != AVAuthorizationStatusDenied &&
+            audioAuthorizationStatus != AVAuthorizationStatusRestricted)
         {
             NSError *error = nil;
             AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
@@ -175,6 +182,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                                                     code:VCameraCaptureControllerErrorCode
                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to add audio input"}];
                     }
+                    VLog(@"Error adding audio input: %@", error.localizedDescription);
                     completion(error);
                 }
                 return;
@@ -191,6 +199,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
             else
             {
+                VLog(@"[AVCaptureSession canAddOutput] returned NO while adding video output");
                 if (completion)
                 {
                     completion([NSError errorWithDomain:VCameraCaptureControllerErrorDomain
@@ -212,6 +221,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
             else
             {
+                VLog(@"[AVCaptureSession canAddOutput] returned NO while adding audio output");
                 if (completion)
                 {
                     completion([NSError errorWithDomain:VCameraCaptureControllerErrorDomain
@@ -233,6 +243,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
             else
             {
+                VLog(@"[AVCaptureSession canAddOutput] returned NO while adding image output");
                 if (completion)
                 {
                     completion([NSError errorWithDomain:VCameraCaptureControllerErrorDomain

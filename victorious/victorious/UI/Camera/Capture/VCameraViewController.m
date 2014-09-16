@@ -50,7 +50,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 @property (nonatomic, strong) VCameraCaptureController *camera;
 
-@property (nonatomic)                   BOOL                allowVideo;
+@property (nonatomic)                   BOOL                allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
+@property (nonatomic)                   BOOL                videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic)                   BOOL                allowPhotos;
 @property (nonatomic, copy)             NSString*           initialCaptureMode;
 
@@ -114,6 +115,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     self.allowVideo = YES;
     self.allowPhotos = YES;
+    self.videoEnabled = YES;
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
 }
@@ -205,28 +207,52 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         [self restoreLivePreview];
     }
     
-    [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-    [self.camera startRunningWithCompletion:^(NSError *error)
+    [self setAllControlsEnabled:NO];
+    [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
     {
-        dispatch_async(dispatch_get_main_queue(), ^(void)
+        if (granted)
         {
-            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-            if (error)
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted)
             {
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-                hud.mode = MBProgressHUDModeText;
-                hud.labelText = NSLocalizedString(@"CameraFailed", @"");
-                [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
-            }
-            else
-            {
-                // Check for mic permission if doing video
-                if ([self.camera.captureSession.sessionPreset isEqualToString:self.videoQuality])
+                dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [self checkForMicrophoneAuthorization];
-                }
-            }
-        });
+                    self.videoEnabled = granted;
+                    [self.camera startRunningWithCompletion:^(NSError *error)
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+                            if (error)
+                            {
+                                VLog(@"Error starting capture session: %@", error);
+                                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                                hud.mode = MBProgressHUDModeText;
+                                hud.labelText = NSLocalizedString(@"CameraFailed", @"");
+                                [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
+                                self.openAlbumButton.enabled = YES;
+                            }
+                            else
+                            {
+                                [self setAllControlsEnabled:YES];
+                                if (!self.videoEnabled && ![self.camera.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto])
+                                {
+                                    [self notifyUserOfFailedMicPermission];
+                                }
+                            }
+                        });
+                    }];
+                });
+            }];
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+                [self notifyUserOfFailedCameraPermission];
+            });
+        }
     }];
 }
 
@@ -287,29 +313,45 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     return YES;
 }
 
-#pragma mark - Check Microphone Permissions
+#pragma mark - Permissions
 
-// Check if we have microphone access
-- (void)checkForMicrophoneAuthorization
+- (void)notifyUserOfFailedCameraPermission
 {
-    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted)
+    NSString *errorMessage;
+    if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusRestricted)
     {
-        if (!granted)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-                           {
-                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                               message:NSLocalizedString(@"AccessMicrophoneDenied", @"")
-                                                                              delegate:nil
-                                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                     otherButtonTitles:nil];
-                               [alert show];
-                               [self setRecordButtonEnabled:NO];
-                           });
-        }
-    }];
+        errorMessage = NSLocalizedString(@"AccessCameraRestricted", @"");
+    }
+    else
+    {
+        errorMessage = NSLocalizedString(@"AccessCameraDenied", @"");
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
+- (void)notifyUserOfFailedMicPermission
+{
+    NSString *errorMessage;
+    if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio] == AVAuthorizationStatusRestricted)
+    {
+        errorMessage = NSLocalizedString(@"AccessMicrophoneRestricted", @"");
+    }
+    else
+    {
+        errorMessage = NSLocalizedString(@"AccessMicrophoneDenied", @"");
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 #pragma mark - Enable/Disable Controls
 
@@ -335,11 +377,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         {
             self.capturePhotoButton.alpha = kEnabledRecordButtonAlpha;
         }
-        else
+        else if (self.videoEnabled)
         {
             self.recordButton.alpha = kEnabledRecordButtonAlpha;
+            self.recordButton.userInteractionEnabled = YES;
         }
-        self.recordButton.userInteractionEnabled = YES;
         self.capturePhotoButton.userInteractionEnabled = YES;
         self.flashButton.enabled = YES;
         self.switchCameraButton.enabled = YES;
@@ -356,8 +398,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         else
         {
             self.recordButton.alpha = kDisabledRecordButtonAlpha;
+            self.recordButton.userInteractionEnabled = NO;
         }
-        self.recordButton.userInteractionEnabled = NO;
         self.capturePhotoButton.userInteractionEnabled = NO;
         self.flashButton.enabled = NO;
         self.switchCameraButton.enabled = NO;
@@ -581,10 +623,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         completion = ^(void)
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
-            [self configureUIforVideoCaptureAnimated:YES completion:^(void)
-            {
-                [self checkForMicrophoneAuthorization];
-            }];
+            [self configureUIforVideoCaptureAnimated:YES completion:nil];
         };
     }
     else
@@ -733,6 +772,12 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
         [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
+        
+        if (!self.videoEnabled)
+        {
+            [self setRecordButtonEnabled:NO];
+            [self notifyUserOfFailedMicPermission];
+        }
         
         if (completion)
         {
