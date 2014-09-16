@@ -13,7 +13,9 @@
 
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
-+ (CGSize)sizeWithCommentBody:(NSString *)commentBody;
++ (CGSize)sizeWithFullWidth:(CGFloat)width
+                commentBody:(NSString *)commentBody
+                andHasMedia:(BOOL)hasMedia;
 
 @property (nonatomic, strong) NSURL *URLForCommenterAvatar;
 @property (nonatomic, strong) NSString *commenterName;

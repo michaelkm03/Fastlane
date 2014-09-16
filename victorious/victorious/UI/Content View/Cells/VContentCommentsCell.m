@@ -8,7 +8,10 @@
 
 #import "VContentCommentsCell.h"
 
+// Subviews
 #import "VCommentTextAndMediaView.h"
+
+static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 @interface VContentCommentsCell ()
 
@@ -30,12 +33,15 @@
     return CGSizeMake(CGRectGetWidth(bounds), 70.0f);
 }
 
-+ (CGSize)sizeWithCommentBody:(NSString *)commentBody
++ (CGSize)sizeWithFullWidth:(CGFloat)width
+                commentBody:(NSString *)commentBody
+                andHasMedia:(BOOL)hasMedia
 {
-    CGFloat size = [VCommentTextAndMediaView estimatedHeightWithWidth:200.0f
-                                                                text:commentBody
-                                                           withMedia:NO];
-    return CGSizeMake(320.0f, size+32+11);
+    CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
+                                                                   text:commentBody
+                                                              withMedia:hasMedia];
+    CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
+    return CGSizeMake(width, finalHeight);
 }
 
 #pragma mark - NSObject

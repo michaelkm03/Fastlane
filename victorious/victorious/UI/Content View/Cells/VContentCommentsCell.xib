@@ -22,20 +22,20 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B70-TN-WQd" userLabel="Commenter's UserName">
-                        <rect key="frame" x="56" y="14" width="23" height="11"/>
+                        <rect key="frame" x="56" y="14" width="31" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUD-zJ-JyM" userLabel="Timestamp Label">
-                        <rect key="frame" x="99" y="15" width="14" height="10"/>
+                        <rect key="frame" x="107" y="15" width="20" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="daH-W6-ypI" userLabel="Clock icon">
-                        <rect key="frame" x="85" y="15" width="9" height="9"/>
+                        <rect key="frame" x="93" y="17" width="9" height="9"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="9" id="Xfc-ua-hKu"/>
@@ -43,9 +43,9 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="at 0:18" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lE-ff-0O9" userLabel="RTC at label">
-                        <rect key="frame" x="275" y="14" width="30" height="11"/>
+                        <rect key="frame" x="269" y="14" width="36" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="singlePixelLine" translatesAutoresizingMaskIntoConstraints="NO" id="Adc-3N-IK1">
@@ -57,7 +57,7 @@
                         </constraints>
                     </imageView>
                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-el-glf" userLabel="Comment and Media View" customClass="VCommentTextAndMediaView">
-                        <rect key="frame" x="56" y="32" width="219" height="41"/>
+                        <rect key="frame" x="56" y="36" width="239" height="37"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -71,6 +71,7 @@
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="leading" secondItem="vCF-vU-SYK" secondAttribute="leading" constant="16" id="ABs-dn-yup"/>
                 <constraint firstItem="bUD-zJ-JyM" firstAttribute="leading" secondItem="daH-W6-ypI" secondAttribute="trailing" constant="5" id="B1y-Of-yNY"/>
                 <constraint firstItem="rjx-el-glf" firstAttribute="top" secondItem="B70-TN-WQd" secondAttribute="bottom" constant="7" id="DkZ-pB-6NQ"/>
+                <constraint firstItem="9lE-ff-0O9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bUD-zJ-JyM" secondAttribute="trailing" constant="8" id="N64-rH-KGG"/>
                 <constraint firstAttribute="bottom" secondItem="Adc-3N-IK1" secondAttribute="bottom" id="PJo-ek-B1A"/>
                 <constraint firstAttribute="bottom" secondItem="rjx-el-glf" secondAttribute="bottom" constant="11" id="V6S-j7-cvX"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="leading" secondItem="B70-TN-WQd" secondAttribute="trailing" constant="6" id="ZaK-1h-kkO"/>
@@ -79,7 +80,7 @@
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="top" secondItem="vCF-vU-SYK" secondAttribute="top" constant="10" id="eNm-g8-1fZ"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="PCz-Qy-bMd" secondAttribute="trailing" constant="8" id="psG-gM-2YS"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="centerY" secondItem="B70-TN-WQd" secondAttribute="centerY" id="tQ3-pq-7tQ"/>
-                <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="45" id="tU8-Zn-C2v"/>
+                <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="25" id="tU8-Zn-C2v"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="rjx-el-glf" secondAttribute="leading" id="taJ-He-cGE"/>
                 <constraint firstAttribute="trailing" secondItem="Adc-3N-IK1" secondAttribute="trailing" id="tg1-Rb-Iqh"/>
                 <constraint firstItem="Adc-3N-IK1" firstAttribute="leading" secondItem="vCF-vU-SYK" secondAttribute="leading" id="wVD-Ji-XTf"/>

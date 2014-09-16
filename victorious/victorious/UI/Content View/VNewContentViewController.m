@@ -28,6 +28,7 @@
 // Models Ugh
 #import "VComment.h"
 #import "VUser.h"
+#import "VComment+Fetcher.h"
 
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
@@ -308,7 +309,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionAllComments:
         {
             VComment *commentForIndexPath = [self.viewModel.comments objectAtIndex:indexPath.row];
-            return [VContentCommentsCell sizeWithCommentBody:commentForIndexPath.text];
+            return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+                                               commentBody:commentForIndexPath.text
+                                               andHasMedia:commentForIndexPath.hasMedia];
         }
             
         case VContentViewSectionCount:
