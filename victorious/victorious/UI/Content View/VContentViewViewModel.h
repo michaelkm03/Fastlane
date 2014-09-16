@@ -19,7 +19,7 @@ UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification
 typedef NS_ENUM(NSInteger, VContentViewType)
 {
     /**
-     *  Invalid content type,
+     *  Invalid content type, use to fail gracefully.
      */
     VContentViewTypeInvalid,
     /**
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, VContentViewType)
 /**
  * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
  * 
- * The VContentViewViewModel arranges the comments associated with a given sequence into an ordered list sorted by most recent. 
+ * The VContentViewViewModel arranges the comments associated with a given sequence into an ordered list sorted by most recent. Use the "___ForCommentIndex:" methods to gain access to this list.
  *
  
 NOTE: Currently this VContentViewViewModel only supports single node, single asset sequences.
@@ -71,7 +71,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSURLRequest *imageURLRequest;
 
 /**
- *  For content type image this will be name for the sequence.
+ *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
 
