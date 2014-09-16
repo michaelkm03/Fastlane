@@ -82,17 +82,22 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 {
     dispatch_async(self.encoderQueue, ^(void)
     {
-        if (_recording && !recording)
-        {
-            self.recordingPaused = YES;
-        }
-        _recording = recording;
+        [self _setRecording:recording];
     });
+}
+
+- (void)_setRecording:(BOOL)recording
+{
+    if (_recording && !recording)
+    {
+        self.recordingPaused = YES;
+    }
+    _recording = recording;
 }
 
 #pragma mark -
 
-- (BOOL)encodeFrame:(CMSampleBufferRef)sampleBuffer isVideo:(BOOL)isVideo
+- (BOOL)writeFrame:(CMSampleBufferRef)sampleBuffer isVideo:(BOOL)isVideo
 {
     if (CMSampleBufferDataIsReady(sampleBuffer))
     {
@@ -111,16 +116,14 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         {
             if (self.videoInput.readyForMoreMediaData == YES)
             {
-                [self.videoInput appendSampleBuffer:sampleBuffer];
-                return YES;
+                return [self.videoInput appendSampleBuffer:sampleBuffer];
             }
         }
         else
         {
             if (self.audioInput.readyForMoreMediaData)
             {
-                [self.audioInput appendSampleBuffer:sampleBuffer];
-                return YES;
+                return [self.audioInput appendSampleBuffer:sampleBuffer];
             }
         }
     }
@@ -146,54 +149,57 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 
 - (void)finishRecording
 {
-    if (self.writer.status == AVAssetWriterStatusWriting)
+    dispatch_async(self.encoderQueue, ^(void)
     {
-        self.recording = NO;
-        [self.writer finishWritingWithCompletionHandler:^(void)
+        if (self.writer.status == AVAssetWriterStatusWriting)
+        {
+            self.recording = NO;
+            [self.writer finishWritingWithCompletionHandler:^(void)
+            {
+                id<VCameraVideoEncoderDelegate> delegate = self.delegate;
+                if ([delegate respondsToSelector:@selector(videoEncoderDidFinish:withError:)])
+                {
+                    if (self.writer.status == AVAssetWriterStatusFailed)
+                    {
+                        NSError *error = self.writer.error;
+                        if (!error)
+                        {
+                            error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain
+                                                        code:VCameraVideoEncoderErrorCode
+                                                    userInfo:@{ NSLocalizedDescriptionKey: @"Unable to finish recording" }];
+                        }
+                        [delegate videoEncoderDidFinish:self withError:error];
+                    }
+                    else
+                    {
+                        [delegate videoEncoderDidFinish:self withError:nil];
+                    }
+                }
+            }];
+        }
+        else
         {
             id<VCameraVideoEncoderDelegate> delegate = self.delegate;
             if ([delegate respondsToSelector:@selector(videoEncoderDidFinish:withError:)])
             {
-                if (self.writer.status == AVAssetWriterStatusFailed)
+                NSError *error = self.writer.error;
+                if (!error)
                 {
-                    NSError *error = self.writer.error;
-                    if (!error)
-                    {
-                        error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain
-                                                    code:VCameraVideoEncoderErrorCode
-                                                userInfo:@{ NSLocalizedDescriptionKey: @"Unable to finish recording" }];
-                    }
-                    [delegate videoEncoderDidFinish:self withError:error];
+                    error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain
+                                                code:VCameraVideoEncoderErrorCode
+                                            userInfo:@{ NSLocalizedDescriptionKey: @"Tried to finish recording but no recording is happening" }];
                 }
-                else
-                {
-                    [delegate videoEncoderDidFinish:self withError:nil];
-                }
+                [delegate videoEncoderDidFinish:self withError:error];
             }
-        }];
-    }
-    else
-    {
-        id<VCameraVideoEncoderDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(videoEncoderDidFinish:withError:)])
-        {
-            NSError *error = self.writer.error;
-            if (!error)
-            {
-                error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain
-                                            code:VCameraVideoEncoderErrorCode
-                                        userInfo:@{ NSLocalizedDescriptionKey: @"Tried to finish recording but no recording is happening" }];
-            }
-            [delegate videoEncoderDidFinish:self withError:error];
         }
-    }
+    });
 }
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate methods
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    if (!_recording || !_fileURL) // direct ivar access because calling the property getters would likely deadlock.
+    if (!_recording || !_fileURL) // direct ivar access because calling the property getters would surely deadlock.
     {
         return;
     }
@@ -249,8 +255,29 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     if (self.videoInput && self.audioInput)
     {
         CMSampleBufferRef adjustedSampleBuffer = [self copySample:sampleBuffer andAdjustTimeByOffset:self.frameTimeOffset];
-        [self encodeFrame:adjustedSampleBuffer isVideo:isVideo];
+
+        BOOL success = [self writeFrame:adjustedSampleBuffer isVideo:isVideo];
+        if (!success)
+        {
+            [self _setRecording:NO];
+            id<VCameraVideoEncoderDelegate> delegate = self.delegate;
+            if ([delegate respondsToSelector:@selector(videoEncoder:didEncounterError:)])
+            {
+                NSError *error = self.writer.error;
+                if (!error)
+                {
+                    error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain code:VCameraVideoEncoderErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Video frame write failed"}];
+                }
+                [delegate videoEncoder:self didEncounterError:error];
+            }
+        }
+        
         CFRelease(adjustedSampleBuffer);
+        
+        if (!success)
+        {
+            return;
+        }
     }
     
     if (!isVideo)
