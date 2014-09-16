@@ -33,4 +33,12 @@
     [self bringSubviewToFront:self.label];
 }
 
+#pragma mark - Property Accessors
+
+- (void)setTitleText:(NSString *)titleText
+{
+    _titleText = titleText;
+    self.label.text = titleText;
+}
+
 @end

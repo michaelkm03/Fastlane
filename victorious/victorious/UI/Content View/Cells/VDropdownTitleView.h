@@ -10,4 +10,6 @@
 
 @interface VDropdownTitleView : VBaseSupplementaryView
 
+@property (nonatomic, strong) NSString *titleText;
+
 @end

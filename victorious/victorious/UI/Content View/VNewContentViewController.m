@@ -273,9 +273,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
-            return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                      withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
+        {
+            VDropdownTitleView *titleView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                               withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
+                                                                                      forIndexPath:indexPath];
+            titleView.titleText = self.viewModel.name;
+            return titleView;
+        }
+            
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:

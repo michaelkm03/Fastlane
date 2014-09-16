@@ -71,6 +71,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSURLRequest *imageURLRequest;
 
 /**
+ *  For content type image this will be name for the sequence.
+ */
+@property (nonatomic, readonly) NSString *name;
+
+/**
  *  For content type video this will be a convenient url for the videoplayer.
  */
 @property (nonatomic, readonly) NSURL *videoURL;

@@ -110,6 +110,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return request;
 }
 
+- (NSString *)name
+{
+    return self.sequence.name;
+}
+
 - (NSURL *)videoURL
 {
     VAsset *currentAsset = [self.currentNode firstAsset];
