@@ -25,6 +25,10 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
+// Models Ugh
+#import "VComment.h"
+#import "VUser.h"
+
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
@@ -241,11 +245,29 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                              forIndexPath:indexPath];
         case VContentViewSectionAllComments:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
+        {
+            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
+                                                                                          forIndexPath:indexPath];
+            
+            VComment *commentForIndexPath = [self.viewModel.comments objectAtIndex:indexPath.row];
+            
+            [self configureCommentCell:commentCell
+                           withComment:commentForIndexPath];
+            
+            
+            
+            return commentCell;
+        }
         case VContentViewSectionCount:
             return nil;
     }
+}
+
+- (void)configureCommentCell:(VContentCommentsCell *)commentCell
+                 withComment:(VComment *)comment
+{
+    commentCell.commentBodyTextView.text = comment.text;
+    commentCell.commentersUsernameLabel.text = comment.user.name;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
