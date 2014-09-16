@@ -12,6 +12,8 @@
 
 - (UIImage *)squareImageScaledToSize:(CGFloat)newSize
 {
+#warning this is where the squish happens
+    
     double ratio;
     double delta;
     CGPoint offset;
