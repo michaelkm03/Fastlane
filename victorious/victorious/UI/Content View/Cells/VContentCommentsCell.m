@@ -84,21 +84,32 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
 }
 
+- (void)setMediaPreviewURL:(NSURL *)mediaPreviewURL
+{
+    _mediaPreviewURL = [mediaPreviewURL copy];
+    [self.commentAndMediaView.mediaThumbnailView setImageWithURL:mediaPreviewURL];
+}
+
+- (void)setMediaIsVideo:(BOOL)mediaIsVideo
+{
+    self.commentAndMediaView.playIcon.hidden = !mediaIsVideo;
+}
+
 - (void)setCommentBody:(NSString *)commentBody
 {
-    _commentBody = commentBody;
+    _commentBody = [commentBody  copy];
     self.commentAndMediaView.text = commentBody;
 }
 
 - (void)setCommenterName:(NSString *)commenterName
 {
-    _commenterName = commenterName;
+    _commenterName = [commenterName copy];
     self.commentersUsernameLabel.text = commenterName;
 }
 
 - (void)setURLForCommenterAvatar:(NSURL *)URLForCommenterAvatar
 {
-    _URLForCommenterAvatar = URLForCommenterAvatar;
+    _URLForCommenterAvatar = [URLForCommenterAvatar copy];
     [self.commentersAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:URLForCommenterAvatar]
                                           placeholderImage:nil
                                                    success:nil
@@ -107,13 +118,13 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 - (void)setTimestampText:(NSString *)timestampText
 {
-    _timestampText = timestampText;
+    _timestampText = [timestampText copy];
     self.timestampLabel.text = timestampText;
 }
 
 - (void)setRealTimeCommentText:(NSString *)realTimeCommentText
 {
-    _realTimeCommentText = realTimeCommentText;
+    _realTimeCommentText = [realTimeCommentText copy];
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
 }
 @end

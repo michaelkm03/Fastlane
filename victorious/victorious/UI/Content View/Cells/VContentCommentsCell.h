@@ -8,22 +8,21 @@
 
 #import "VBaseCollectionViewCell.h"
 
-//Subviews
-#import "VCommentTextAndMediaView.h"
-
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
 + (CGSize)sizeWithFullWidth:(CGFloat)width
                 commentBody:(NSString *)commentBody
                 andHasMedia:(BOOL)hasMedia;
 
-@property (nonatomic, strong) NSURL *URLForCommenterAvatar;
-@property (nonatomic, strong) NSString *commenterName;
-@property (nonatomic, strong) NSString *timestampText;
-@property (nonatomic, strong) NSString *realTimeCommentText;
+@property (nonatomic, copy) NSURL *URLForCommenterAvatar;
+@property (nonatomic, copy) NSString *commenterName;
+@property (nonatomic, copy) NSString *timestampText;
+@property (nonatomic, copy) NSString *realTimeCommentText;
 
 // Comment Configuration
-@property (nonatomic, strong) NSString *commentBody;
+@property (nonatomic, copy) NSString *commentBody;
 @property (nonatomic, assign) BOOL hasMedia;
+@property (nonatomic, copy) NSURL *mediaPreviewURL;
+@property (nonatomic, assign) BOOL mediaIsVideo;
 
 @end

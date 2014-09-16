@@ -145,4 +145,22 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (BOOL)commentHasMediaForCommentIndex:(NSInteger)commentIndex;
 
+/**
+ *  Returns a preview image url for the media for a given comment. Raises an exception if comment has no media.
+ *
+ *  @param commentIndex The index of the comment.
+ *
+ *  @return The preview image URL.
+ */
+- (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
+
+/**
+ *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
+ *
+ *  @param commentIndex The index of the comment.
+ *
+ *  @return Whether or not the media for the comment is a video.
+ */
+- (BOOL)commentMdiaIsVideForCommentIndex:(NSInteger)commentIndex;
+
 @end

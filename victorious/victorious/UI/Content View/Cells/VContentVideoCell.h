@@ -10,6 +10,6 @@
 
 @interface VContentVideoCell : VBaseCollectionViewCell
 
-@property (nonatomic, strong) NSURL *videoURL;
+@property (nonatomic, copy) NSURL *videoURL;
 
 @end

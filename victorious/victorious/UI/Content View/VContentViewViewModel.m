@@ -24,6 +24,9 @@
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
 
+// Media
+#import "NSURL+MediaType.h"
+
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 
 @interface VContentViewViewModel ()
@@ -192,5 +195,28 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return commentForIndex.hasMedia;
 }
 
+- (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex
+{
+    if (![self commentHasMediaForCommentIndex:commentIndex])
+    {
+        [[NSException exceptionWithName:NSInternalInconsistencyException
+                                 reason:[NSString stringWithFormat:@"No media for comment index: %@", @(commentIndex)]
+                               userInfo:nil] raise];
+    }
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.previewImageURL;
+}
+
+- (BOOL)commentMdiaIsVideForCommentIndex:(NSInteger)commentIndex
+{
+    if (![self commentHasMediaForCommentIndex:commentIndex])
+    {
+        [[NSException exceptionWithName:NSInternalInconsistencyException
+                                 reason:[NSString stringWithFormat:@"No media for comment index: %@", @(commentIndex)]
+                               userInfo:nil] raise];
+    }
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
+}
 
 @end

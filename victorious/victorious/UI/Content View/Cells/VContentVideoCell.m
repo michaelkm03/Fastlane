@@ -37,7 +37,7 @@
 
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    _videoURL = videoURL;
+    _videoURL = [videoURL copy];
     
     [self.videoPlayerViewController setItemURL:videoURL];
 }

@@ -189,6 +189,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarULRForCommentIndex:index];
     commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
     commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
+    if ([self.viewModel commentHasMediaForCommentIndex:index])
+    {
+        commentCell.hasMedia = YES;
+        commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
+        commentCell.mediaIsVideo = [self.viewModel commentMdiaIsVideForCommentIndex:index];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
