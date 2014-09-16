@@ -31,8 +31,6 @@
 
 #import "VEphemeralTimerView.h"
 
-#import "VUserProfileViewController.h"
-
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
@@ -67,7 +65,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.ephemeralTimerView.delegate = self;
     self.ephemeralTimerView.center = self.center;
     [self addSubview:self.ephemeralTimerView];
-    
+ 
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    [self addSubview:self.streamCellHeaderView];
+
 }
 
 - (void)contentExpired
@@ -97,6 +98,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self removeExpiredOverlay];
 
     [self.streamCellHeaderView setSequence:self.sequence];
+    [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
 
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
@@ -126,6 +128,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
     {
         [self.streamCellHeaderView hideCommentsButton];
+        [self.streamCellHeaderView setIsFromProfile:YES];
     }
 
     

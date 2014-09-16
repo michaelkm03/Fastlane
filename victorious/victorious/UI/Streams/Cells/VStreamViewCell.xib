@@ -63,129 +63,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6WR-6s-hSP" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qd2-cz-N4a" userLabel="userInfoView">
-                                        <rect key="frame" x="57" y="16" width="197" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="11Q-zg-ZaU">
-                                                <rect key="frame" x="0.0" y="-1" width="79" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="MSS-x7-CuA">
-                                                <rect key="frame" x="88" y="4" width="13" height="13"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </imageView>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHA-wD-uPO">
-                                                <rect key="frame" x="101" y="0.0" width="20" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repost by Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vX-54-vcX">
-                                                <rect key="frame" x="0.0" y="19" width="155" height="16"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="11Q-zg-ZaU" firstAttribute="leading" secondItem="qd2-cz-N4a" secondAttribute="leading" id="4at-Qs-B2i"/>
-                                            <constraint firstItem="hHA-wD-uPO" firstAttribute="top" secondItem="qd2-cz-N4a" secondAttribute="top" id="4i1-uK-BGE"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hHA-wD-uPO" secondAttribute="trailing" constant="10" id="QXW-CL-9G9"/>
-                                            <constraint firstItem="MSS-x7-CuA" firstAttribute="leading" secondItem="11Q-zg-ZaU" secondAttribute="trailing" constant="9" id="RLw-GR-73u"/>
-                                            <constraint firstItem="0vX-54-vcX" firstAttribute="top" secondItem="11Q-zg-ZaU" secondAttribute="bottom" constant="-1" id="U1d-a4-Tss"/>
-                                            <constraint firstAttribute="height" constant="32" id="XcJ-e7-aFa"/>
-                                            <constraint firstItem="MSS-x7-CuA" firstAttribute="centerY" secondItem="hHA-wD-uPO" secondAttribute="centerY" id="e8d-Xf-Lyj"/>
-                                            <constraint firstItem="hHA-wD-uPO" firstAttribute="leading" secondItem="MSS-x7-CuA" secondAttribute="trailing" id="gMb-NW-Jcx"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0vX-54-vcX" secondAttribute="trailing" constant="10" id="svj-0o-Mnk"/>
-                                            <constraint firstItem="MSS-x7-CuA" firstAttribute="centerY" secondItem="11Q-zg-ZaU" secondAttribute="centerY" constant="1" id="vHv-PD-sKp"/>
-                                            <constraint firstItem="0vX-54-vcX" firstAttribute="leading" secondItem="qd2-cz-N4a" secondAttribute="leading" id="ztp-55-Bta"/>
-                                        </constraints>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJ6-JD-fgk" userLabel="Comment Button">
-                                        <rect key="frame" x="254" y="5" width="66" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="66" id="b9M-Gj-XNp"/>
-                                            <constraint firstAttribute="height" constant="44" id="h1z-OP-Jib"/>
-                                        </constraints>
-                                        <state key="normal" title=" 32" image="StreamComments"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9PR-2d-ZRh" userLabel="Comment Hitbox Button">
-                                        <rect key="frame" x="245" y="0.0" width="75" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="75" id="a4H-4c-iHS"/>
-                                            <constraint firstAttribute="width" constant="75" id="n7b-ft-I0M"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="commentButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="C9n-0W-Nav"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3hK-ft-f7A" userLabel="Profile Button">
-                                        <rect key="frame" x="20" y="15" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="XKh-4c-x7E"/>
-                                            <constraint firstAttribute="width" constant="32" id="ati-is-ExL"/>
-                                        </constraints>
-                                        <state key="normal" image="profile_thumb">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mf-KZ-S25" userLabel="Profile Hitbox Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="75" id="t1f-R9-qoX"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="profileButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="u11-va-e5b"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="centerY" secondItem="3hK-ft-f7A" secondAttribute="centerY" constant="1" id="3i0-8x-pwG"/>
-                                    <constraint firstItem="9PR-2d-ZRh" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" id="7N0-uD-uZs"/>
-                                    <constraint firstItem="3mf-KZ-S25" firstAttribute="bottom" secondItem="9PR-2d-ZRh" secondAttribute="bottom" id="KAF-nH-wdS"/>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" constant="16" id="L2K-Rp-QfI"/>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="leading" secondItem="6WR-6s-hSP" secondAttribute="leading" constant="57" id="NSG-Ej-Uhu"/>
-                                    <constraint firstAttribute="trailing" secondItem="TJ6-JD-fgk" secondAttribute="trailing" id="deE-JQ-ied"/>
-                                    <constraint firstItem="3mf-KZ-S25" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" id="jXh-B9-msY"/>
-                                    <constraint firstItem="qd2-cz-N4a" firstAttribute="leading" secondItem="3hK-ft-f7A" secondAttribute="trailing" constant="5" id="mHv-Nn-hyP"/>
-                                    <constraint firstAttribute="trailing" secondItem="9PR-2d-ZRh" secondAttribute="trailing" id="qrG-me-ap4"/>
-                                    <constraint firstAttribute="trailing" secondItem="qd2-cz-N4a" secondAttribute="trailing" constant="66" id="r0g-Ij-Lfi"/>
-                                    <constraint firstItem="TJ6-JD-fgk" firstAttribute="top" secondItem="6WR-6s-hSP" secondAttribute="top" constant="5" id="u5z-mK-skZ"/>
-                                    <constraint firstItem="3mf-KZ-S25" firstAttribute="leading" secondItem="6WR-6s-hSP" secondAttribute="leading" id="zMQ-af-gEA"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="commentButton" destination="TJ6-JD-fgk" id="hPt-t0-QKu"/>
-                                    <outlet property="commentHitboxButton" destination="9PR-2d-ZRh" id="HvJ-Zj-aQZ"/>
-                                    <outlet property="dateImageView" destination="MSS-x7-CuA" id="7sx-Z0-hlo"/>
-                                    <outlet property="dateLabel" destination="hHA-wD-uPO" id="f28-Bt-af1"/>
-                                    <outlet property="parentLabel" destination="0vX-54-vcX" id="gps-I2-oOK"/>
-                                    <outlet property="profileHitboxutton" destination="3mf-KZ-S25" id="pBi-bi-V0c"/>
-                                    <outlet property="profileImageButton" destination="3hK-ft-f7A" id="3L0-Gh-oNu"/>
-                                    <outlet property="userInfoView" destination="qd2-cz-N4a" id="DYV-Fo-DTq"/>
-                                    <outlet property="userInfoViewHeightConstraint" destination="XcJ-e7-aFa" id="azQ-1k-vuF"/>
-                                    <outlet property="usernameLabel" destination="11Q-zg-ZaU" id="9aO-LO-0OG"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -229,9 +107,6 @@
     </objects>
     <resources>
         <image name="BottomGradient" width="320" height="102"/>
-        <image name="StreamComments" width="19" height="19"/>
-        <image name="StreamDate" width="13" height="13"/>
-        <image name="profile_thumb" width="32" height="32"/>
         <image name="topGradient" width="320" height="52"/>
     </resources>
 </document>

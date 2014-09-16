@@ -346,6 +346,7 @@
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
+		DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -982,6 +983,7 @@
 		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
+		DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1676,6 +1678,7 @@
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
+				DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */,
 				0314D43C19B46B5E00FA363C /* VStreamPollCell.h */,
 				0314D43D19B46B5E00FA363C /* VStreamPollCell.m */,
 				0314D43E19B46B5E00FA363C /* VStreamPollCell.xib */,
@@ -2388,6 +2391,7 @@
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
+				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,

@@ -23,6 +23,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
 
+@property (nonatomic, strong) UIViewController *parentViewController;
+@property (nonatomic) BOOL isFromProfile;
+
 @property (nonatomic, weak) VSequence *sequence;
 @property (nonatomic, strong) NSMutableArray *commentViews;
 

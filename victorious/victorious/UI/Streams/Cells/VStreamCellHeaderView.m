@@ -7,6 +7,8 @@
 //
 
 #import "VStreamCellHeaderView.h"
+#import "VStreamViewCell.h"
+
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
 #import "VThemeManager.h"
@@ -21,10 +23,12 @@
 #import "UIButton+VImageLoading.h"
 #import "VConstants.h"
 
+#import "VUserProfileViewController.h"
+
 
 static VLargeNumberFormatter *largeNumberFormatter;
 
-static const CGFloat kUserInfoViewMaxHeight = 28.0f;
+static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 
 @implementation VStreamCellHeaderView
 
@@ -55,7 +59,8 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
     }
     
     self.commentViews = [[NSMutableArray alloc] init];
-
+    
+    self.isFromProfile = NO;
 }
 
 - (void)layoutSubviews
@@ -69,6 +74,11 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
 {
     [self.commentButton setHidden:YES];
     [self.commentHitboxButton setHidden:YES];
+}
+
+-(void) setIsFromProfile:(BOOL)isFromProfile
+{
+    _isFromProfile = isFromProfile;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -123,6 +133,28 @@ static const CGFloat kUserInfoViewMaxHeight = 28.0f;
         self.userInfoViewHeightConstraint.constant = self.usernameLabel.intrinsicContentSize.height;
     }
 
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)commentButtonAction:(id)sender
+{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
+}
+
+- (IBAction)profileButtonAction:(id)sender
+{
+    
+    //If this cell is from the profile we should disable going to the profile
+    if (self.isFromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
+    [self.parentViewController.navigationController pushViewController:profileViewController animated:YES];
+    
 }
 
 
