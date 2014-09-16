@@ -12,10 +12,13 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VObjectManager+Comment.h"
 
 @interface VContentViewViewModel ()
 
+@property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
+@property (nonatomic, strong, readwrite) VAsset *currentAsset;
 
 @end
 
@@ -46,8 +49,12 @@
         {
             _type = VContentViewTypeInvalid;
         }
+
+        _currentAsset = [_currentNode firstAsset];
         
-        _currentNode = [sequence firstNode];
+        [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
+                                                                successBlock:nil
+                                                                   failBlock:nil];
     }
     return self;
 }
@@ -84,6 +91,13 @@
 {
     VAsset *currentAsset = [self.currentNode firstAsset];
     return [NSURL URLWithString:currentAsset.data];
+}
+
+- (BOOL)shouldShowRealTimeComents
+{
+    VAsset *currentAsset = [self.currentNode firstAsset];
+    NSArray *realTimeComments = [currentAsset.comments array];
+    return (realTimeComments.count > 0) ? YES : NO;
 }
 
 @end

@@ -13,7 +13,7 @@
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
  */
-typedef NS_ENUM(NSInteger, VNodeContentViewType)
+typedef NS_ENUM(NSInteger, VContentViewType)
 {
     /**
      *  Invalid content type,
@@ -50,14 +50,9 @@ typedef NS_ENUM(NSInteger, VNodeContentViewType)
 @property (nonatomic, strong, readonly) VSequence *sequence;
 
 /**
- *  The current node in the sequence.
+ *  The type of asset we are currently viewing.
  */
-@property (nonatomic, strong, readonly) VNode *currentNode;
-
-/**
- *  The type of sequence this view model represents.
- */
-@property (nonatomic, assign, readonly) VNodeContentViewType type;
+@property (nonatomic, assign, readonly) VContentViewType type;
 
 /**
  *  For content type image this will be a convenient url request for setting the image.
@@ -68,5 +63,10 @@ typedef NS_ENUM(NSInteger, VNodeContentViewType)
  *  For content type video this will be a convenient url for the videoplayer.
  */
 @property (nonatomic, readonly) NSURL *videoURL;
+
+/**
+ *  If a video content has any real time comments this will be YES.
+ */
+@property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 @end
