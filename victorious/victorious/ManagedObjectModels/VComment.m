@@ -17,6 +17,7 @@
 
 @dynamic assetId;
 @dynamic dislikes;
+@dynamic flags;
 @dynamic likes;
 @dynamic mediaType;
 @dynamic mediaUrl;
@@ -28,7 +29,6 @@
 @dynamic text;
 @dynamic thumbnailUrl;
 @dynamic userId;
-@dynamic flags;
 @dynamic asset;
 @dynamic notification;
 @dynamic sequence;
