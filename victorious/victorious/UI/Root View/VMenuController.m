@@ -41,9 +41,11 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuController ()
+
 @property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+
 @end
 
 @implementation VMenuController

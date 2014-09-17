@@ -12,10 +12,12 @@
 #import "UIImage+ImageEffects.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
+
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton*       updateButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
+
 @end
 
 @implementation VResetPasswordViewController

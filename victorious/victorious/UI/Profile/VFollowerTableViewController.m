@@ -15,7 +15,9 @@
 #import "VUserProfileViewController.h"
 
 @interface VFollowerTableViewController ()
+
 @property (nonatomic, strong)   NSArray*    followers;
+
 @end
 
 @implementation VFollowerTableViewController

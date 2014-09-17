@@ -27,4 +27,5 @@
 
 @property (nonatomic, weak, readonly) IBOutlet UIView* commentBackgroundView;
 @property (nonatomic, weak, readonly) IBOutlet UIImageView* arrowImageView;
+
 @end

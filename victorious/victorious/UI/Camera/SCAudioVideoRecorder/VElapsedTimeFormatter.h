@@ -24,4 +24,5 @@
  Returns a string describing the value in the seconds argument.
  */
 - (NSString *)stringForSeconds:(Float64)seconds;
+
 @end

@@ -157,6 +157,4 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     
 }
 
-
-
 @end

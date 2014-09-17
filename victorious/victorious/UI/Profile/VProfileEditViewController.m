@@ -15,7 +15,9 @@
 #import "VThemeManager.h"
 
 @interface VProfileEditViewController ()
+
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
+
 @end
 
 @implementation VProfileEditViewController

@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface VSignupTransitionAnimator : NSObject    <UIViewControllerAnimatedTransitioning>
-@property (nonatomic)   BOOL    presenting;
+
+@property (nonatomic) BOOL presenting;
+
 @end

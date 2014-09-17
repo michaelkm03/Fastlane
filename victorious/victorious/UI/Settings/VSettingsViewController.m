@@ -31,6 +31,7 @@ static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
@@ -43,6 +44,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 @property (nonatomic, weak) IBOutlet    UILabel*    versionString;
 
 - (NSString *)collectDeviceInfo:(id)sender;
+
 @end
 
 @implementation VSettingsViewController

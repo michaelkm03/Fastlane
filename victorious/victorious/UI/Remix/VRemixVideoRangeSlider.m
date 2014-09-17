@@ -10,6 +10,7 @@
 
 
 @interface VRemixVideoRangeSlider () <VCVideoPlayerDelegate>
+
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *centerView;
@@ -24,6 +25,7 @@
 @property (nonatomic, assign) double playerDuration;
 @property (nonatomic, strong) UISlider *progressIndicator;
 @property (nonatomic, strong) id progressObserver;
+
 @end
 
 #define SLIDER_BORDERS_SIZE 3.0f

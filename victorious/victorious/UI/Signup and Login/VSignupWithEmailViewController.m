@@ -19,6 +19,7 @@
 #import "VAnalyticsRecorder.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
@@ -26,6 +27,7 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
 @property (nonatomic, strong)   VRegistrationModel* registrationModel;
+
 @end
 
 @implementation VSignupWithEmailViewController

@@ -15,7 +15,9 @@
 #import "VNoContentView.h"
 
 @interface VFollowingTableViewController ()
+
 @property (nonatomic, strong)   NSArray*    following;
+
 @end
 
 @implementation VFollowingTableViewController

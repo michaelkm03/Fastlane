@@ -20,7 +20,9 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @protocol VStreamTableDelegate <NSObject>
 @optional
+
 - (void)streamWillDisappear;
+
 @end
 
 @interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>

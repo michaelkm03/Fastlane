@@ -19,8 +19,10 @@
 @import Accounts;
 
 @interface VObjectManager (UserProperties)
+
 @property (nonatomic, strong) VSuccessBlock fullSuccess;
 @property (nonatomic, strong) VFailBlock fullFail;
+
 @end
 
 @implementation VObjectManager (Users)
