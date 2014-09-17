@@ -31,34 +31,32 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 @interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
 
-@property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           flashButton;
+@property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
+@property (nonatomic, weak) IBOutlet UIButton *nextButton;
+@property (nonatomic, weak) IBOutlet UIButton *flashButton;
+@property (nonatomic, weak) IBOutlet UIView *progressView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressViewWidthConstraint;
+@property (nonatomic, weak) IBOutlet UIView *previewView;
 
-@property (nonatomic, weak) IBOutlet    UIView*             progressView;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
-@property (nonatomic, weak) IBOutlet    UIView*             previewView;
+@property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
+@property (nonatomic, weak) IBOutlet UIButton *deleteButton;
+@property (nonatomic, weak) IBOutlet UIView *recordButton;
+@property (nonatomic, weak) IBOutlet UIImageView *toolTipImageView;
+@property (nonatomic, weak) IBOutlet UIButton *capturePhotoButton;
+@property (nonatomic, weak) IBOutlet UIButton *switchCameraModeButton;
+
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, strong)           UIView*             previewSnapshot;
-
-@property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           deleteButton;
-@property (nonatomic, weak) IBOutlet    UIView*             recordButton;
-@property (nonatomic, weak) IBOutlet    UIImageView*        toolTipImageView;
-@property (nonatomic, weak) IBOutlet    UIButton*           capturePhotoButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           switchCameraModeButton;
+@property (nonatomic, strong) UIView *previewSnapshot;
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
-@property (nonatomic)                   BOOL                allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
-@property (nonatomic)                   BOOL                videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
-@property (nonatomic)                   BOOL                allowPhotos;
-@property (nonatomic, copy)             NSString*           initialCaptureMode;
-
-@property (nonatomic)                   BOOL                inTrashState;
-@property (nonatomic)                   BOOL                inRecordVideoState;
-
-@property (nonatomic, copy)             NSString*           videoQuality;
+@property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
+@property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
+@property (nonatomic) BOOL allowPhotos;
+@property (nonatomic) BOOL inTrashState;
+@property (nonatomic) BOOL inRecordVideoState;
+@property (nonatomic, copy) NSString *initialCaptureMode;
+@property (nonatomic, copy) NSString *videoQuality;
 
 @end
 

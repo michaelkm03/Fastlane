@@ -76,10 +76,12 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-property-ivar"
+
 - (void)setCurrentDevice:(AVCaptureDevice *)currentDevice
 {
     [self setCurrentDevice:currentDevice withCompletion:nil];
 }
+
 #pragma clang diagnostic pop
 
 - (void)setCurrentDevice:(AVCaptureDevice *)currentDevice withCompletion:(void (^)(NSError *))completion
