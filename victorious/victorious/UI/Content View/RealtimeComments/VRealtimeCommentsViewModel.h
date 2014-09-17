@@ -19,6 +19,8 @@
 @property (nonatomic, readonly) NSInteger numberOfRealTimeComments;
 - (NSURL *)avatarURLForRealTimeCommentAtIndex:(NSInteger)index;
 
+@property (nonatomic, copy) void (^onCurrentRealTimeComentChange)(void);
+
 @property (nonatomic, readonly) NSString *usernameForCurrentRealtimeComment;
 @property (nonatomic, readonly) NSURL *avatarURLForCurrentRealtimeComent;
 @property (nonatomic, readonly) NSString *timeAgoTextForCurrentRealtimeComment;

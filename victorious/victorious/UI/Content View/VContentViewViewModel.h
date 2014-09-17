@@ -8,10 +8,14 @@
 
 #import "VSequence.h"
 
+#import "VRealtimeCommentsViewModel.h"
+
 /**
  *  Posted whenever new comments are made available for a given sequence. This can be initial/update/pagination.
  */
 UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+
+UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -64,6 +68,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The type of asset we are currently viewing.
  */
 @property (nonatomic, assign, readonly) VContentViewType type;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 
 /**
  *  For content type image this will be a convenient url request for setting the image.

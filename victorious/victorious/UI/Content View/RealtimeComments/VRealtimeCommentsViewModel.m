@@ -85,6 +85,16 @@
     }];
 }
 
+- (void)setCurrentComment:(VComment *)currentComment
+{
+    _currentComment = currentComment;
+    
+    if (self.onCurrentRealTimeComentChange)
+    {
+        self.onCurrentRealTimeComentChange();
+    }
+}
+
 #pragma mark - Public Methods
 
 - (NSURL *)avatarURLForRealTimeCommentAtIndex:(NSInteger)index

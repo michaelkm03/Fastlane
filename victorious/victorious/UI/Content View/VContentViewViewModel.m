@@ -28,6 +28,7 @@
 #import "NSURL+MediaType.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
+NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"VContentViewViewModelDidUpdateRealTimeCommentsNotification";
 
 @interface VContentViewViewModel ()
 
@@ -70,16 +71,20 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         _currentAsset = [_currentNode firstAsset];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
-                                                                successBlock:nil
+                                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
+                                                                 object:self];
+         }
                                                                    failBlock:nil];
         
         [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                      isRefresh:NO
-                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
-                                                      //
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                                                                          object:self];
-                                                  }
+                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
+                                                                 object:self];
+         }
                                                      failBlock:nil];
     }
     return self;
