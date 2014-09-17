@@ -349,6 +349,7 @@
 		D80E6E5C19C7ADBE009840F0 /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80E6E5B19C7ADBE009840F0 /* VContentVideoCell.xib */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
+		D837C12219C935C200554B44 /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D837C12119C935C200554B44 /* VRealtimeCommentsViewModel.m */; };
 		D879548719C12F5000C12906 /* VAbstractPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = D879547E19C12F5000C12906 /* VAbstractPaginator.m */; };
 		D879548819C12F5000C12906 /* VDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548019C12F5000C12906 /* VDirectory.m */; };
 		D879548919C12F5000C12906 /* VDirectoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D879548219C12F5000C12906 /* VDirectoryItem.m */; };
@@ -1002,6 +1003,8 @@
 		D80E6E5B19C7ADBE009840F0 /* VContentVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentVideoCell.xib; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
+		D837C12019C935C200554B44 /* VRealtimeCommentsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRealtimeCommentsViewModel.h; sourceTree = "<group>"; };
+		D837C12119C935C200554B44 /* VRealtimeCommentsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealtimeCommentsViewModel.m; sourceTree = "<group>"; };
 		D879547D19C12F5000C12906 /* VAbstractPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPaginator.h; sourceTree = "<group>"; };
 		D879547E19C12F5000C12906 /* VAbstractPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPaginator.m; sourceTree = "<group>"; };
 		D879547F19C12F5000C12906 /* VDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectory.h; sourceTree = "<group>"; };
@@ -1423,6 +1426,8 @@
 				0314D37319B46B5E00FA363C /* VRealtimeCommentViewController.m */,
 				0314D37419B46B5E00FA363C /* VRTCUserPostedAtFormatter.h */,
 				0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */,
+				D837C12019C935C200554B44 /* VRealtimeCommentsViewModel.h */,
+				D837C12119C935C200554B44 /* VRealtimeCommentsViewModel.m */,
 			);
 			path = RealtimeComments;
 			sourceTree = "<group>";
@@ -2787,6 +2792,7 @@
 				D8B3F8C619BE9D480009B7CD /* VCollapsingFlowLayout.m in Sources */,
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */,
+				D837C12219C935C200554B44 /* VRealtimeCommentsViewModel.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				D879548B19C12F5000C12906 /* VStream.m in Sources */,
