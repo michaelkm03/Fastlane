@@ -36,6 +36,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 @property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
+@property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 
 @end
 
@@ -73,6 +74,18 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
                                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
+             // Ensure we have all VComments
+             [resultObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+             {
+                 if (![obj isKindOfClass:[VComment class]])
+                 {
+                     return;
+                 }
+             }];
+             
+             self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:resultObjects
+                                                                                                 totalTime:CGFLOAT_MAX];
+             
              [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
                                                                  object:self];
          }

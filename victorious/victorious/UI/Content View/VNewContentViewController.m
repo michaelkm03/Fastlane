@@ -53,11 +53,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     
     contentViewController.viewModel = viewModel;
     
-    [[NSNotificationCenter defaultCenter] addObserver:contentViewController
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:viewModel];
-    
     return contentViewController;
 }
 
@@ -119,6 +114,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(realtimeCommentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateRealTimeCommentsNotification
+                                               object:self.viewModel];
     
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
     [self becomeFirstResponder];
@@ -163,6 +167,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
     [self.contentCollectionView reloadSections:commentsIndexSet];
+}
+
+- (void)realtimeCommentsDidUpdate:(NSNotification *)notification
+{
+#warning Update RTC view.
 }
 
 #pragma mark - IBActions
