@@ -88,6 +88,7 @@
 }
 
 #pragma mark - Comment Selection
+
 - (IBAction)respondToCommentSelection:(UITapGestureRecognizer *)recognizer
 {
     CGPoint location = [recognizer locationInView:self.progressBackgroundView];
@@ -121,6 +122,7 @@
 }
 
 #pragma mark - Setters
+
 - (void)setEndTime:(CGFloat)endTime
 {
     if (isnan(endTime) || endTime < 1)

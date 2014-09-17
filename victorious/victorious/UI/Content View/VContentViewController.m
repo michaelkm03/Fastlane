@@ -762,6 +762,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Sequence Logic
+
 - (void)loadNextAsset
 {
     if (!self.currentAsset)
@@ -791,6 +792,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Button Actions
+
 - (IBAction)pressedRemix:(id)sender
 {
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
@@ -1103,7 +1105,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [alert show];
 }
 
-
 #pragma mark - NSURLSessionDownloadDelegate
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
@@ -1148,6 +1149,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - VContentInfoDelegate
+
 - (void)didCloseFromInfo
 {
     self.willClose = YES;
@@ -1157,13 +1159,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     self.willComment = YES;
 }
+
 #pragma mark - VInteractionManagerDelegate
+
 - (void)firedInteraction:(VInteraction *)interaction
 {
     VLog(@"Interaction fired:%@", interaction);
 }
 
 #pragma mark - Navigation
+
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController *)fromVC
@@ -1321,6 +1326,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - VKeyboardBarDelegate Methods
+
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     [self didCancelKeyboardBar:keyboardBar];
@@ -1399,6 +1405,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     [UIView commitAnimations];
 }
+
 #pragma mark - VRealtimeCommentDelegate methods
 
 -(void)willShowRTCMedia

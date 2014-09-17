@@ -323,6 +323,7 @@
 }
 
 #pragma mark - Cells
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
@@ -394,6 +395,7 @@
 }
 
 #pragma mark - Refresh
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:nil];
@@ -529,6 +531,7 @@
 }
 
 #pragma mark - Actions
+
 - (void)setBackgroundImageWithURL:(NSURL *)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
@@ -564,6 +567,7 @@
 }
 
 #pragma mark - Navigation
+
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController *)fromVC
@@ -581,6 +585,7 @@
 }
 
 #pragma mark - VAnimation
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
@@ -707,6 +712,7 @@
 }
 
 #pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&

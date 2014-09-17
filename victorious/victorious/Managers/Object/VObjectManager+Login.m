@@ -167,6 +167,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 }
 
 #pragma mark - Victorious
+
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password
                                                    successBlock:(VSuccessBlock)success
@@ -293,6 +294,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 }
 
 #pragma mark - LoggedIn
+
 - (void)loggedInWithUser:(VUser *)user
 {
     self.mainUser = user;

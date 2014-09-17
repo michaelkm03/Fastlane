@@ -128,6 +128,7 @@
 }
 
 #pragma mark - UITextFieldDelegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [[VObjectManager sharedManager] resetPasswordWithUserToken:textField.text

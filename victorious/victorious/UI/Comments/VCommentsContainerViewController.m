@@ -178,6 +178,7 @@
 }
 
 #pragma mark - Animations
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;

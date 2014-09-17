@@ -119,7 +119,6 @@
     //[self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
 }
 
-
 #pragma mark - Video Methods
 
 -(void)setupProgressObserver
@@ -178,7 +177,8 @@
 }
 
 #pragma mark - VCVideoPlayerDelegate
--(void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)

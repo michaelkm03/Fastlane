@@ -35,6 +35,7 @@
 }
 
 #pragma mark - Animation
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     CGRect frame = self.view.frame;

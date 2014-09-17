@@ -75,6 +75,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 }
 
 #pragma mark - Segmented Control
+
 - (void)toggleFilterControl:(NSInteger)idx
 {
     VModeSelect = idx;
@@ -126,6 +127,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 }
 
 #pragma mark - UITabvleViewDataSource
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];

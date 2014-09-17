@@ -314,6 +314,7 @@
 }
 
 #pragma mark - Status bar appearance management
+
 - (void)updateStatusBar
 {
     [UIView animateWithDuration:0.3f animations:^{
