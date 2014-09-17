@@ -81,7 +81,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 {
     _user = user;
     
-    UIImage* defaultBackgroundImage = self.profileImageView.image ? self.profileImageView.image
+    UIImage *defaultBackgroundImage = self.profileImageView.image ? self.profileImageView.image
     : [UIImage imageNamed:@"profileGenericUser"];
     [self.profileImageView setImageWithURL:[NSURL URLWithString:self.user.profileImagePathOriginal ?: self.user.pictureUrl]
                           placeholderImage:defaultBackgroundImage];
@@ -100,10 +100,10 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
         self.taglineLabel.text = @"";
     }
         
-    __block VLargeNumberFormatter* largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    __block VLargeNumberFormatter *largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
-                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          self.followersLabel.text = [largeNumberFormatter stringForInteger:[resultObjects[0] integerValue]];
          self.followingLabel.text = [largeNumberFormatter stringForInteger:[resultObjects[1] integerValue]];
@@ -127,7 +127,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
             self.editProfileButton.alpha = 0.0f;
             [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                          following:self.user
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  self.editProfileButton.selected = [resultObjects[0] boolValue];
                  [UIView animateWithDuration:0.2f

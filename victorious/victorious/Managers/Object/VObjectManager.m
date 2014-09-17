@@ -58,7 +58,7 @@
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[kVUserAgentHeader];
     
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSNumber* appID = [VObjectManager currentEnvironment].appID;
+    NSNumber *appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [[manager HTTPClient] setDefaultHeader:kVUserAgentHeader value:userAgent];
     
@@ -138,7 +138,7 @@
                                       successBlock:(VSuccessBlock)successBlock
                                          failBlock:(VFailBlock)failBlock
 {
-    NSURL* url = [NSURL URLWithString:path];
+    NSURL *url = [NSURL URLWithString:path];
     if ([path isEmpty] || !url)
     {
         //Something has gone horribly wrong, so fail.
@@ -152,10 +152,10 @@
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
 
-     void (^rkSuccessBlock) (RKObjectRequestOperation*, RKMappingResult*) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+     void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
-        NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
-        VErrorMessage* error;
+        NSMutableArray *mappedObjects = [mappingResult.array mutableCopy];
+        VErrorMessage *error;
         for (id object in mappedObjects)
         {
             if ([object isKindOfClass:[VErrorMessage class]])
@@ -184,7 +184,7 @@
         }
         else if (error.errorCode)
         {
-            NSError* nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+            NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
@@ -195,9 +195,9 @@
         }
     };
     
-    VFailBlock rkFailBlock = ^(NSOperation* operation, NSError* error)
+    VFailBlock rkFailBlock = ^(NSOperation *operation, NSError *error)
     {
-        RKErrorMessage* rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
+        RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
         {
             self.mainUser = nil;
@@ -228,7 +228,7 @@
     else if(errorCode == kVUserBannedError)
     {
         self.mainUser = nil;
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                                message:NSLocalizedString(@"UserBannedMessage", @"")
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -305,10 +305,10 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+              NSString *extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
               if (extension)
               {
-                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
+                  NSString *mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
                     ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj
@@ -360,7 +360,7 @@
         return nil;
     }
     
-    NSString* errorMessage = responseObject[@"message"];
+    NSString *errorMessage = responseObject[@"message"];
     if ([errorMessage isKindOfClass:[NSArray class]])
     {
         errorMessage = [(NSArray *)errorMessage componentsJoinedByString:@", "];
@@ -375,14 +375,14 @@
                       entityName:(NSString *)entityName
             managedObjectContext:(NSManagedObjectContext *)context
 {
-    NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
+    NSManagedObject *object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
     {
         return object;
     }
     
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
+    NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
     [request setPredicate:idFilter];
     NSError *error = nil;
     object = [[context executeFetchRequest:request error:&error] firstObject];
@@ -417,13 +417,13 @@
 - (void)updateHTTPHeadersForPath:(NSString *)path method:(RKRequestMethod)method
 {
     
-    AFHTTPClient* client = [self HTTPClient];
+    AFHTTPClient *client = [self HTTPClient];
     
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString* userAgent = (client.defaultHeaders)[kVUserAgentHeader];
+    NSString *userAgent = (client.defaultHeaders)[kVUserAgentHeader];
     
-    __block NSString* token;
-    __block NSNumber* userID;
+    __block NSString *token;
+    __block NSNumber *userID;
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
     [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)

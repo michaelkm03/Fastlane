@@ -28,18 +28,18 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)failed
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[kVPayloadKey];
+        NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSDictionary* newTheme = payload[@"appearance"];
+        NSDictionary *newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
         {
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
         }
         
-        NSDictionary* videoQuality = payload[@"video_quality"];
+        NSDictionary *videoQuality = payload[@"video_quality"];
         if ([videoQuality isKindOfClass:[NSDictionary class]])
         {
             [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
@@ -73,7 +73,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -95,7 +95,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -124,7 +124,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                  @"access_secret":  accessSecret ?: @"",
                                  @"twitter_id":     twitterId ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -150,7 +150,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                  @"access_secret":  accessSecret ?: @"",
                                  @"twitter_id":     twitterId ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -175,7 +175,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"email": email ?: @"", @"password": password ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -201,7 +201,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                  @"password": password ?: @"",
                                  @"name": username ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
@@ -226,7 +226,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithCapacity:5];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     if (email)
     {
@@ -249,13 +249,13 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         [params setObject:tagline forKey:@"profile_tagline"];
     }
     
-    NSDictionary* allURLs = nil;
+    NSDictionary *allURLs = nil;
     if (profileImageURL)
     {
         allURLs = @{@"profile_image":profileImageURL};
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = self.mainUser;
         if (email)
@@ -316,32 +316,32 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         return nil;
     }
 
-    RKManagedObjectRequestOperation* operation = [self GET:@"/api/logout"
+    RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
               object:nil
            parameters:nil
          successBlock:nil
             failBlock:nil];
     
     //Delete all conversations / pollresults for the user!
-    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
     [context performBlockAndWait:^(void)
     {
-        NSFetchRequest * allConversations = [[NSFetchRequest alloc] init];
+        NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
         [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
         [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
         
-        NSArray * conversations = [context executeFetchRequest:allConversations error:nil];
-        for (NSManagedObject* conversation in conversations)
+        NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
+        for (NSManagedObject *conversation in conversations)
         {
             [context deleteObject:conversation];
         }
         
-        NSFetchRequest * allPollResults = [[NSFetchRequest alloc] init];
+        NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
         [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
         [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
         
-        NSArray * pollResults = [context executeFetchRequest:allPollResults error:nil];
-        for (NSManagedObject* pollResult in pollResults)
+        NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
+        for (NSManagedObject *pollResult in pollResults)
         {
             [context deleteObject:pollResult];
         }
@@ -366,11 +366,11 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"email": email ?: @""};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[kVPayloadKey][@"device_token"]];
+            NSArray *results = @[fullResponse[kVPayloadKey][@"device_token"]];
             
             if (success)
             {

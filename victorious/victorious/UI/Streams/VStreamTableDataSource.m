@@ -22,7 +22,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 @property (nonatomic) BOOL insertingContent;
 @property (nonatomic) BOOL isLoading;
 
-@property (nonatomic, strong) VAbstractFilter* filter;
+@property (nonatomic, strong) VAbstractFilter *filter;
 
 @end
 
@@ -87,7 +87,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] refreshStream:self.stream
-                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (successBlock)
         {
@@ -95,7 +95,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
         }
         self.isLoading = NO;
     }
-                                                failBlock:^(NSOperation* operation, NSError* error)
+                                                failBlock:^(NSOperation *operation, NSError *error)
     {
         if (failureBlock)
         {
@@ -109,7 +109,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] loadNextPageOfStream:self.stream
-                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (successBlock)
         {
@@ -117,7 +117,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
         }
         self.isLoading = NO;
     }
-                                                       failBlock:^(NSOperation* operation, NSError* error)
+                                                       failBlock:^(NSOperation *operation, NSError *error)
     {
         if (failureBlock)
         {

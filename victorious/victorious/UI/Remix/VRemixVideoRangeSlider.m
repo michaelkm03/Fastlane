@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *centerView;
 @property (nonatomic, strong) UIView *progressView;
-@property (nonatomic, strong) AVURLAsset* videoAsset;
+@property (nonatomic, strong) AVURLAsset *videoAsset;
 @property (nonatomic, strong) VRemixSliderLeft *leftThumb;
 @property (nonatomic, strong) VRemixSliderRight *rightThumb;
 @property (nonatomic, strong) VRemixResizableBubble *popoverBubble;
@@ -386,10 +386,10 @@
      {
          if (result == AVAssetImageGeneratorSucceeded)
          {
-             UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
+             UIImage      *thumb = [[UIImage alloc] initWithCGImage:image];
              
              dispatch_async(dispatch_get_main_queue(), ^{
-                 UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                 UIImageView  *tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
                  tmp.image = thumb;
                  tmp.backgroundColor = [UIColor redColor];
                  tmp.contentMode = UIViewContentModeScaleAspectFill;

@@ -23,7 +23,7 @@
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    VContentViewController* contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VContentViewController *contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
     commentsContainer.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;

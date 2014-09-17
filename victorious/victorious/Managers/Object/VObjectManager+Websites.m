@@ -15,16 +15,16 @@
 
 - (RKManagedObjectRequestOperation *)fetchToSWithCompletionBlock:(VWebsiteCompletion)completionBlock
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (completionBlock)
         {
-            NSString* htmlString = fullResponse[kVPayloadKey][@"html"];
+            NSString *htmlString = fullResponse[kVPayloadKey][@"html"];
             completionBlock(operation, htmlString, nil);
         }
     };
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"Failed with error: %@", error);
         if (completionBlock)

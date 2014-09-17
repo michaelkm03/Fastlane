@@ -50,7 +50,7 @@
     
     if (cleanWhileSpace)
     {
-        NSString* aString = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *aString = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if ([aString length] == 0)
         {
             return YES;

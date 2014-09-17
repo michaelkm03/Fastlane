@@ -8,31 +8,31 @@
 
 #import "VConstants.h"
 
-NSArray* VOwnerCategories()
+NSArray *VOwnerCategories()
 {
     return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
 }
-NSArray* VUGCCategories()
+NSArray *VUGCCategories()
 {
     return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCImageRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
 }
-NSArray* VImageCategories()
+NSArray *VImageCategories()
 {
     return @[kVUGCImageCategory, kVUGCImageRepostCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVUGCImageMemeCategory, kVUGCImageQuoteCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory];
 }
-NSArray* VVideoCategories()
+NSArray *VVideoCategories()
 {
     return @[kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVUGCVideoCategory, kVUGCVideoRemixCategory, kVUGCVideoRepostCategory];
 }
-NSArray* VPollCategories()
+NSArray *VPollCategories()
 {
     return @[kVOwnerPollCategory, kVUGCPollCategory];
 }
-NSArray* VRepostCategories()
+NSArray *VRepostCategories()
 {
     return @[kVOwnerVideoRepostCategory, kVUGCVideoRepostCategory, kVOwnerImageRepostCategory, kVUGCImageRepostCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory, kVUGCMemeRepostCategory, kVUGCQuoteRepostCategory];
 }
-NSArray* VRemixCategories()
+NSArray *VRemixCategories()
 {
     return @[kVOwnerVideoRemixCategory, kVUGCVideoRemixCategory];
 }

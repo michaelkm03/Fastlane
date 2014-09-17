@@ -70,7 +70,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate, NSURLSessionDownloadDelegate>
 
 @property (nonatomic, readonly) BOOL isViewingTitle;
-@property (nonatomic) VElapsedTimeFormatter* timeFormatter;
+@property (nonatomic) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL keyboardOverlapsMedia;
 @property (nonatomic) BOOL isShowingKeyboard;
 
@@ -116,20 +116,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     UIView *maskingView = self.maskingView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[maskingView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(maskingView)]];
     
-    for (UIButton* button in [self.navButtonCollection arrayByAddingObjectsFromArray:self.actionButtonCollection])
+    for (UIButton *button in [self.navButtonCollection arrayByAddingObjectsFromArray:self.actionButtonCollection])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     }
     
-    for (UIButton* button in self.actionButtonCollection)
+    for (UIButton *button in self.actionButtonCollection)
     {
         [button.layer setBorderWidth:1.0];
         [button.layer setBorderColor:[[UIColor colorWithWhite:.4 alpha:.2] CGColor]];
         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     }
     
-    for (UIViewController* vc in self.childViewControllers)
+    for (UIViewController *vc in self.childViewControllers)
     {
         if ([vc isKindOfClass:[VRealtimeCommentViewController class]])
         {
@@ -450,7 +450,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self updateConstraintsForTextSize:self.descriptionLabel.locationForLastLineOfText];
         [self.view layoutIfNeeded];
         
-        for (UIButton* button in self.actionButtonCollection)
+        for (UIButton *button in self.actionButtonCollection)
             button.alpha = 0.0f;
         
         self.descriptionLabel.alpha = 1.0f;
@@ -507,7 +507,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
         
-        for (UIButton* button in self.actionButtonCollection)
+        for (UIButton *button in self.actionButtonCollection)
             button.alpha = 1.0f;
         
         self.descriptionLabel.alpha = 1.0f;
@@ -570,7 +570,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     _sequence = sequence;
 
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [self.backgroundImage setBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                 placeholderImage:placeholderImage
                                        tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
@@ -700,19 +700,19 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return;
     }
     
-    VActionBarViewController* newActionBar;
+    VActionBarViewController *newActionBar;
     
     //Find the appropriate target based on what view is hidden
     
     if ([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
-        VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
+        VPollAnswerBarViewController *pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
         pollAnswerBar.delegate = self;
         newActionBar = pollAnswerBar;
     }
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
-        VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+        VEmotiveBallisticsBarViewController *emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
         emotiveBallistics.target = self.previewImage;
         newActionBar = emotiveBallistics;
     }
@@ -777,7 +777,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
         
         [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
-                                                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             self.realtimeCommentVC.comments = [self.currentAsset.comments array];
             [self showRTC];
@@ -811,7 +811,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return;
     }
     
-    NSString* label = [self.sequence.remoteId.stringValue stringByAppendingPathComponent:self.sequence.name];
+    NSString *label = [self.sequence.remoteId.stringValue stringByAppendingPathComponent:self.sequence.name];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
     
     if ([self.currentAsset isVideo])
@@ -821,7 +821,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.sequenceID = [self.sequence.remoteId integerValue];
         self.nodeID = [self.currentNode.remoteId integerValue];
         
-        UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.sourceURL sequenceID:self.sequenceID nodeID:self.nodeID];
+        UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.sourceURL sequenceID:self.sequenceID nodeID:self.nodeID];
         [self presentViewController:remixVC animated:YES completion:
          ^{
              [self.videoPlayer.player pause];
@@ -830,7 +830,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
     else
     {
-        UINavigationController * __weak weakNav = self.navigationController;
+        UINavigationController *__weak weakNav = self.navigationController;
         VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
         publishViewController.previewImage = self.previewImage.image;
         publishViewController.parentID = self.sequenceID;
@@ -934,7 +934,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)goToCommentView
 {
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = self.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
@@ -949,8 +949,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     //Remove the styling for the mail view.
     [[VThemeManager sharedThemeManager] removeStyling];
     
-    NSString* shareText;
-    NSString* analyticsContentTypeText = @"";
+    NSString *shareText;
+    NSString *analyticsContentTypeText = @"";
     if ([self.sequence.user isOwner])
     {
         if ([self.sequence isPoll])
@@ -985,13 +985,13 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         }
     }
     
-    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
+    VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
                                                                   shareText,
                                                                   [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null]]
                                           applicationActivities:@[fbActivity]];
-    NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
@@ -1049,7 +1049,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedMore:(id)sender
 {
-    VContentInfoViewController* contentInfo = [[VContentInfoViewController alloc] init];
+    VContentInfoViewController *contentInfo = [[VContentInfoViewController alloc] init];
     contentInfo.sequence = self.sequence;
     contentInfo.backgroundImage = self.backgroundImage.image;
     contentInfo.delegate = self;
@@ -1065,7 +1065,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
     
-    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError* error)
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError *error)
      {
          if (completion)
          {
@@ -1086,19 +1086,19 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.progressHUD.mode = MBProgressHUDModeDeterminate;
     self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
-    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration  *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfig.allowsCellularAccess = YES;
     
-    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
+    NSURLSession               *session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                                         delegate:self
                                                                    delegateQueue:nil];
-    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:segmentURL];
+    NSURLSessionDownloadTask   *task = [session downloadTaskWithURL:segmentURL];
     [task resume];
 }
 
 - (void)showSegmentDownloadFailureAlert
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
                                                            message:NSLocalizedString(@"TryAgain", @"")
                                                           delegate:nil
                                                  cancelButtonTitle:nil
@@ -1177,7 +1177,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if ([toVC isKindOfClass:[VContentInfoViewController class]] || [fromVC isKindOfClass:[VContentInfoViewController class]])
     {
-        VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
+        VContentToInfoAnimator *animator = [[VContentToInfoAnimator alloc] init];
         animator.isPresenting = operation == UINavigationControllerOperationPush;
         animator.fromChildContainerView =  self.mediaView;
         animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController *)toVC).mediaContainerView : self.mediaSuperview;
@@ -1268,7 +1268,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          self.firstPollButton.alpha = 1;
          self.secondPollButton.alpha = 1;
          
-         for (UIView* view in self.view.subviews)
+         for (UIView *view in self.view.subviews)
          {
              if (CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
              {
@@ -1300,7 +1300,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [UIView animateWithDuration:duration
                      animations:^
      {
-         for (UIView* view in self.view.subviews)
+         for (UIView *view in self.view.subviews)
          {
              if (!CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
              {
@@ -1336,12 +1336,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                       mediaURL:mediaURL
                                                        toAsset:self.currentAsset
                                                         atTime:@(self.commentTime)
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
         self.realtimeCommentVC.comments = [self.currentAsset.comments array];
     }
-                                                     failBlock:^(NSOperation* operation, NSError* error)
+                                                     failBlock:^(NSOperation *operation, NSError *error)
     {
         VLog(@"Failed with error: %@", error);
     }];
@@ -1436,7 +1436,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-    VStreamContainerViewController* container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     container.shouldShowHeaderLogo = NO;
     [self.navigationController pushViewController:container animated:YES];
 }

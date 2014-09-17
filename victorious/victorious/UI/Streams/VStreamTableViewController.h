@@ -29,11 +29,11 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @property (nonatomic)         VStreamFilter    filterType;
 @property (nonatomic, strong) VStream *currentStream;
-@property (nonatomic, readonly) VStream* defaultStream;
+@property (nonatomic, readonly) VStream *defaultStream;
 
-@property (strong, nonatomic, readonly) VStreamTableDataSource* tableDataSource;
-@property (strong, nonatomic) VSequence* selectedSequence;
-@property (strong, nonatomic) NSArray* repositionedCells;;
+@property (strong, nonatomic, readonly) VStreamTableDataSource *tableDataSource;
+@property (strong, nonatomic) VSequence *selectedSequence;
+@property (strong, nonatomic) NSArray *repositionedCells;;
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
 @property (nonatomic, readonly) NSString *viewName; ///< The view name that will be sent to the analytics server, can be overridden by subclasses
 

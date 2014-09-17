@@ -28,18 +28,18 @@
 
 @interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate>
 
-@property (nonatomic, strong)           VUser*          profile;
+@property (nonatomic, strong)           VUser          *profile;
 
-@property (nonatomic, weak) IBOutlet    UIButton*       facebookButton;
-@property (nonatomic, weak) IBOutlet    UIButton*       twitterButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *facebookButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *twitterButton;
 
-@property (nonatomic, weak) IBOutlet    UIImageView*    backgroundImageView;
-@property (nonatomic, weak) IBOutlet    UILabel*        fauxEmailLoginButton;
-@property (nonatomic, weak) IBOutlet    UILabel*        fauxPasswordLoginButton;
+@property (nonatomic, weak) IBOutlet    UIImageView    *backgroundImageView;
+@property (nonatomic, weak) IBOutlet    UILabel        *fauxEmailLoginButton;
+@property (nonatomic, weak) IBOutlet    UILabel        *fauxPasswordLoginButton;
 
-@property (nonatomic, weak) IBOutlet    UILabel*        facebookButtonLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*        twitterButtonLabel;
-@property (nonatomic, weak) IBOutlet    UIButton*       loginEmailButton;
+@property (nonatomic, weak) IBOutlet    UILabel        *facebookButtonLabel;
+@property (nonatomic, weak) IBOutlet    UILabel        *twitterButtonLabel;
+@property (nonatomic, weak) IBOutlet    UIButton       *loginEmailButton;
 
 @property (nonatomic, assign)           VLoginType      loginType;
 
@@ -49,7 +49,7 @@
 
 + (VLoginViewController *)loginViewController
 {
-    UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    UIStoryboard   *storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -57,7 +57,7 @@
 {
     [super viewDidLoad];
 
-    UIImage*    backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
+    UIImage    *backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                                    applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
     
     self.backgroundImageView.image = backgroundImage;
@@ -87,7 +87,7 @@
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
-    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage    *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
@@ -130,7 +130,7 @@
 
 - (void)addGradientToImageView:(UIView *)view
 {
-    CAGradientLayer*    gradient    =   [CAGradientLayer layer];
+    CAGradientLayer    *gradient    =   [CAGradientLayer layer];
     gradient.frame = view.bounds;
     gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
                         (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
@@ -151,7 +151,7 @@
 {
     if (error.code != kVUserBannedError)
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -198,8 +198,8 @@
     [self disableButtons];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Twitter" label:nil value:nil];
     
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
     {
         if (!granted)
@@ -232,8 +232,8 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
-                    ACAccountStore* account = [[ACAccountStore alloc] init];
-                    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+                    ACAccountStore *account = [[ACAccountStore alloc] init];
+                    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
                     NSArray *accounts = [account accountsWithAccountType:accountType];
                     
                     if (accounts.count == 1)
@@ -298,7 +298,7 @@
 {
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
-        VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         
@@ -306,14 +306,14 @@
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
-        VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
-        VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
@@ -326,14 +326,14 @@
 {
     if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
     {
-        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }
     
     if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
     {
-        VSignupTransitionAnimator* animator = [[VSignupTransitionAnimator alloc] init];
+        VSignupTransitionAnimator *animator = [[VSignupTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }

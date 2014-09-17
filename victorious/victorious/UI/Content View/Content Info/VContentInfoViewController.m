@@ -31,15 +31,15 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 @interface VContentInfoViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel* nameLabel;
-@property (nonatomic, weak) IBOutlet UILabel* createdByLabel;
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *createdByLabel;
 
-@property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
-@property (nonatomic, weak) IBOutlet UIImageView* backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
-@property (nonatomic, weak) IBOutlet UIButton* reportButton;
+@property (nonatomic, weak) IBOutlet UIButton *reportButton;
 
-@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end
 
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (id)init
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     self = (VContentInfoViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
     [self view];//Initialize all the IBOutlets
     
@@ -78,7 +78,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
         self.mediaContainerView.hidden = CGRectIntersectsRect(self.mediaContainerView.frame, self.tableView.frame);
     }];
     
-    UIColor* secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    UIColor *secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.nameLabel.textColor = secondaryLinkColor;
@@ -155,12 +155,12 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contentinfo"];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contentinfo"];
     cell.clipsToBounds = YES;
     
-    NSMutableAttributedString* attributedText;
+    NSMutableAttributedString *attributedText;
     NSInteger countLength;
-    UIImage* image;
+    UIImage *image;
     
     switch (indexPath.row)
     {
@@ -237,9 +237,9 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedReport:(id)sender
 {
     [[VObjectManager sharedManager] flagSequence:self.sequence
-                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                 message:NSLocalizedString(@"ReportContentMessage", @"")
                                                                delegate:nil
                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -247,11 +247,11 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
          [alert show];
          
      }
-                                       failBlock:^(NSOperation* operation, NSError* error)
+                                       failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed to flag sequence %@", self.sequence);
          
-         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                 message:NSLocalizedString(@"ErrorOccured", @"")
                                                                delegate:nil
                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -297,7 +297,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (IBAction)pressedReposts:(id)sender
 {
-    VReposterTableViewController* vc = [[VReposterTableViewController alloc] init];
+    VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
     vc.sequence = self.sequence;
     [self.navigationController pushViewController:vc animated:YES];
 }

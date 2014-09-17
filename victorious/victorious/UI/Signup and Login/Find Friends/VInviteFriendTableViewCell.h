@@ -11,6 +11,6 @@ static NSString * const kFollowCellReuseID = @"followerCell";
 @class VUser;
 
 @interface VInviteFriendTableViewCell : UITableViewCell
-@property (nonatomic, strong)   VUser*  profile;
+@property (nonatomic, strong)   VUser  *profile;
 
 @end

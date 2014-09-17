@@ -18,9 +18,9 @@ typedef enum {
 } vFilterBy;
 
 @interface VInboxContainerViewController ()
-@property (weak, nonatomic) IBOutlet UIView* noMessagesView;
-@property (weak, nonatomic) IBOutlet UILabel* noMessagesTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel* noMessagesMessageLabel;
+@property (weak, nonatomic) IBOutlet UIView *noMessagesView;
+@property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
 
 @end
 
@@ -28,8 +28,8 @@ typedef enum {
 
 + (instancetype)inboxContainer
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VInboxContainerViewController* container = (VInboxContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VInboxContainerViewController *container = (VInboxContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
     
     return container;
 }

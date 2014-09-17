@@ -62,7 +62,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
-    NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSURL  *openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];

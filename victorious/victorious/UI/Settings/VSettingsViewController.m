@@ -38,10 +38,10 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* labels;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* rightLabels;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
-@property (nonatomic, weak) IBOutlet    UILabel*    versionString;
+@property (nonatomic, weak) IBOutlet    UILabel    *versionString;
 
 - (NSString *)collectDeviceInfo:(id)sender;
 
@@ -69,7 +69,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
          label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
      }];
     
-    NSString*   appVersionString    =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString   *appVersionString    =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.versionString.text = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), appVersionString];
     self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
@@ -174,7 +174,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VWebContentViewController*  viewController = segue.destinationViewController;
+    VWebContentViewController  *viewController = segue.destinationViewController;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
@@ -234,7 +234,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         
-        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+        MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
         NSString *msgBody = [self collectDeviceInfo:nil];
@@ -253,7 +253,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
     else
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
                                                                message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
                                                               delegate:self
                                                      cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
@@ -293,7 +293,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     if (MFMailComposeResultFailed == result)
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
                                                                message:error.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")

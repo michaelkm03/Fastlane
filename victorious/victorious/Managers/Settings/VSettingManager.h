@@ -9,16 +9,16 @@
 #import <Foundation/Foundation.h>
 
 //Settings
-extern  NSString*   const   kVCaptureVideoQuality;
-extern  NSString*   const   kVExportVideoQuality;
-extern  NSString*   const   kVRealtimeCommentsEnabled;
-extern  NSString*   const   kVMemeAndQuoteEnabled;
+extern NSString * const kVCaptureVideoQuality;
+extern NSString * const kVExportVideoQuality;
+extern NSString * const kVRealtimeCommentsEnabled;
+extern NSString * const kVMemeAndQuoteEnabled;
 //URLs
-extern  NSString*   const   kVTermsOfServiceURL;
-extern  NSString*   const   kVPrivacyUrl;
+extern NSString * const kVTermsOfServiceURL;
+extern NSString * const kVPrivacyUrl;
 
-extern  NSString*   const   kVAppStoreURL;
-extern  NSString*   const   kVChannelURLSupport;
+extern NSString * const kVAppStoreURL;
+extern NSString * const kVChannelURLSupport;
 
 @interface VSettingManager : NSObject
 

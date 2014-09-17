@@ -14,22 +14,22 @@
 #import "VEnvironment.h"
 
 //Settings
-NSString*   const   kVCaptureVideoQuality               =   @"capture";
-NSString*   const   kVExportVideoQuality                =   @"remix";
+NSString * const   kVCaptureVideoQuality               =   @"capture";
+NSString * const   kVExportVideoQuality                =   @"remix";
 
-NSString*   const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
-NSString*   const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
+NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
+NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
 
 //URLs
-NSString*   const   kVTermsOfServiceURL                 =   @"url.tos";
-NSString*   const   kVAppStoreURL                       =   @"url.appstore";
-NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
+NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
+NSString * const   kVAppStoreURL                       =   @"url.appstore";
+NSString * const   kVPrivacyUrl                        =   @"url.privacy";
 
 @implementation VSettingManager
 
 + (instancetype)sharedManager
 {
-    static  VSettingManager*  sharedManager;
+    static  VSettingManager  *sharedManager;
     static  dispatch_once_t onceToken;
     
     dispatch_once(&onceToken,
@@ -45,7 +45,7 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
     self    =   [super init];
     if (self)
     {
-        NSURL*  defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
+        NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
     }
     
@@ -62,9 +62,9 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
 
 - (NSURL *)urlForKey:(NSString *)key
 {
-    NSString* path = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:key];
     
-    NSURL* url;
+    NSURL *url;
     
     //If it contains :// its a valid URL
     if ([path rangeOfString:@"://"].length)
@@ -96,7 +96,7 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
 
 - (NSString *)exportVideoQuality
 {
-    NSString*   value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVExportVideoQuality];
+    NSString   *value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVExportVideoQuality];
     
     if ([value isEqualToString:@"low"])
     {
@@ -118,7 +118,7 @@ NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
 
 - (NSString *)captureVideoQuality
 {
-    NSString*   value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVCaptureVideoQuality];
+    NSString   *value   =   [[NSUserDefaults standardUserDefaults] objectForKey:kVCaptureVideoQuality];
     
     if ([value isEqualToString:@"low"])
     {

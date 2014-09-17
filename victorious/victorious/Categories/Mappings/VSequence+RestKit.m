@@ -52,7 +52,7 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     
     mapping.forceCollectionMapping = YES;
-    RKRelationshipMapping* voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
+    RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];

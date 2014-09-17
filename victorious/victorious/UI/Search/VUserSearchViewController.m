@@ -185,9 +185,9 @@
 - (void)runUserSearch:(id)sender
 {
     
-    VSuccessBlock searchSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.foundUsers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setHaveSearchResults:self.foundUsers.count];
         self.tableView.hidden = NO;
@@ -198,7 +198,7 @@
         });
     };
     
-    VFailBlock searchFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
         [self setHaveSearchResults:NO];
         self.tableView.hidden = YES;

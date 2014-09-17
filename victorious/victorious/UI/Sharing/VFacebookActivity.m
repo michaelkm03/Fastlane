@@ -12,7 +12,7 @@
 
 #import "VFacebookManager.h"
 
-static NSString* const VFacebookActivityType = @"com.victorious.facebook";
+static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
 @implementation VFacebookActivity
 
@@ -46,8 +46,8 @@ static NSString* const VFacebookActivityType = @"com.victorious.facebook";
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
-    VSequence* sequence;
-    NSURL* shareUrl;
+    VSequence *sequence;
+    NSURL *shareUrl;
     for (id item in activityItems)
     {
         if ([item isKindOfClass:[VSequence class]])

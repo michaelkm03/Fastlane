@@ -33,7 +33,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -61,24 +61,24 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
-    VAbstractFilter* filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            VSequence* sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
             
             if (refresh)
             {
-                NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+                NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
                 [comments addObjectsFromArray:sequence.comments.array];
                 sequenceInContext.comments = [comments copy];
             }
             else
             {
-                NSMutableOrderedSet* comments = [sequence.comments mutableCopy];
+                NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
                 [comments addObjectsFromArray:resultObjects];
                 sequenceInContext.comments = [comments copy];
             }
@@ -91,8 +91,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             }
         };
         
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VComment* comment in resultObjects)
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VComment *comment in resultObjects)
         {
             if (!comment.user)
             {
@@ -102,11 +102,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         if ([nonExistantUsers count])
         {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  paginationBlock();
              }
-                                             failBlock:^(NSOperation* operation, NSError* error)
+                                             failBlock:^(NSOperation *operation, NSError *error)
              {
                  VLog(@"Failed with error: %@", error);
                  paginationBlock();
@@ -183,11 +183,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                       withSuccessBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSManagedObjectContext* context = nil;
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VConversation* conversation in resultObjects)
+        NSManagedObjectContext *context = nil;
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VConversation *conversation in resultObjects)
         {
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
@@ -219,7 +219,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        VAbstractFilter* listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
+        VAbstractFilter *listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
         if (refresh)
         {
             requestOperation = [self.paginationManager refreshFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
@@ -255,7 +255,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                             failBlock:(VFailBlock)fail
 {
     NSManagedObjectID *conversationID = conversation.objectID;
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSArray *resultObjectsInReverseOrder = [[resultObjects reverseObjectEnumerator] allObjects];
         VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
@@ -290,7 +290,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                          successBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VMessage *latestMessage = [conversation.messages lastObject];
         NSUInteger indexOfLatestMessage = [resultObjects indexOfObject:latestMessage];
@@ -344,10 +344,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self followerFilterForUser:user];
+    VAbstractFilter *filter = [self followerFilterForUser:user];
     
     NSManagedObjectID *userObjectID = user.objectID;
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
@@ -358,7 +358,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [user removeFollowers:user.followers];
         }
         
-        for (VUser* follower in resultObjects)
+        for (VUser *follower in resultObjects)
         {
             [user addFollowersObject:follower];
         }
@@ -398,10 +398,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self followingFilterForUser:user];
+    VAbstractFilter *filter = [self followingFilterForUser:user];
     
     NSManagedObjectID *userObjectID = user.objectID;
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
@@ -412,7 +412,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [user removeFollowing:user.followers];
         }
         
-        for (VUser* follower in resultObjects)
+        for (VUser *follower in resultObjects)
         {
             [user addFollowingObject:follower];
         }
@@ -439,7 +439,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self repostFilterForSequence:sequence];
+    VAbstractFilter *filter = [self repostFilterForSequence:sequence];
     filter.currentPageNumber = @(0);
     return [self loadNextPageOfRepostersForSequence:sequence
                                      successBlock:success
@@ -458,9 +458,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = [self repostFilterForSequence:sequence];
+    VAbstractFilter *filter = [self repostFilterForSequence:sequence];
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
         if ([filter.currentPageNumber isEqualToNumber:@(0)])
@@ -468,9 +468,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [sequence removeReposters:sequence.reposters];
         }
         
-        for (VUser* reposter in resultObjects)
+        for (VUser *reposter in resultObjects)
         {
-            VUser* reposterInContext = (VUser *)[sequence.managedObjectContext objectWithID:reposter.objectID];
+            VUser *reposterInContext = (VUser *)[sequence.managedObjectContext objectWithID:reposter.objectID];
             [sequence addRepostersObject:reposterInContext];
         }
         
@@ -512,23 +512,23 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    VAbstractFilter* filter = (VAbstractFilter *)[self filterForStream:stream];
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VAbstractFilter *filter = (VAbstractFilter *)[self filterForStream:stream];
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
             //If this is the first page, break the relationship to all the old objects.
             if (refresh)
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet* filteredSequences = [stream.sequences filteredOrderedSetUsingPredicate:tempFilter];
+                NSPredicate *tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
+                NSOrderedSet *filteredSequences = [stream.sequences filteredOrderedSetUsingPredicate:tempFilter];
                 stream.sequences = filteredSequences;
             }
             
             NSMutableOrderedSet *sequences = [stream.sequences mutableCopy];
-            for (VSequence* sequence in resultObjects)
+            for (VSequence *sequence in resultObjects)
             {
-                VSequence* sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
+                VSequence *sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
                 [sequences addObject:sequenceInContext];
             }
             stream.sequences = sequences;
@@ -540,8 +540,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         };
         
         //Don't complete the fetch until we have the users
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VSequence* sequence in resultObjects)
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VSequence *sequence in resultObjects)
         {
             if (!sequence.user)
             {
@@ -555,11 +555,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         if ([nonExistantUsers count])
         {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
             {
                 paginationBlock();
             }
-                                             failBlock:^(NSOperation* operation, NSError* error)
+                                             failBlock:^(NSOperation *operation, NSError *error)
             {
                 VLog(@"Failed with error: %@", error);
                 paginationBlock();
@@ -585,19 +585,19 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)followerFilterForUser:(VUser *)user
 {
-    NSString* apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VAbstractFilter *)followingFilterForUser:(VUser *)user
 {
-    NSString* apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
 }
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
 {
-    NSString* apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
