@@ -135,6 +135,7 @@
 }
 
 #pragma mark - Actions
+
 - (IBAction)pressedPostiveEmotive:(id)sender
 {
     if (![VObjectManager sharedManager].mainUser)

@@ -82,6 +82,8 @@ static NSMutableDictionary *messageViewControllers;
     self.keyboardBarViewController.hideAccessoryBar = YES;
     
     [self addBackgroundImage];
+    [self hideKeyboardBarIfNeeded];
+    
     [self.view bringSubviewToFront:self.busyView];
 }
 
@@ -145,6 +147,15 @@ static NSMutableDictionary *messageViewControllers;
     if ([self isViewLoaded])
     {
         [self addBackgroundImage];
+        [self hideKeyboardBarIfNeeded];
+    }
+}
+
+- (void)hideKeyboardBarIfNeeded
+{
+    if (self.otherUser.isDirectMessagingDisabled.boolValue)
+    {
+        self.keyboardBarViewController.view.hidden = YES;
     }
 }
 

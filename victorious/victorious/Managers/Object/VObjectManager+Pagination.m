@@ -55,6 +55,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 #pragma mark - Comment
+
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                   isRefresh:(BOOL)refresh
                                                successBlock:(VSuccessBlock)success

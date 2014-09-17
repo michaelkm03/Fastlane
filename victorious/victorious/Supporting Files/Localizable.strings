@@ -141,6 +141,8 @@
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Something went wrong, and we are unable to complete the upload at this time.";
 
+"RefreshError"          =   "Unable to refresh.";
+
 "MediaAlreadyCreated"   =   "Media was already created.";
 
 "FollowError"           =   "There was an error following this user.";

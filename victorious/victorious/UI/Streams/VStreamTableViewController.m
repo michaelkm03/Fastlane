@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VPaginationManager.h"
 #import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
@@ -322,6 +323,7 @@
 }
 
 #pragma mark - Cells
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
@@ -393,6 +395,7 @@
 }
 
 #pragma mark - Refresh
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:nil];
@@ -415,6 +418,11 @@
         self.hasRefreshed = YES;
         [self updateNoContentViewAnimated:YES];
         [self.refreshControl endRefreshing];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"RefreshError", @"");
+        hud.userInteractionEnabled = NO;
+        [hud hide:YES afterDelay:3.0];
     }];
     
     [self.refreshControl beginRefreshing];
@@ -523,6 +531,7 @@
 }
 
 #pragma mark - Actions
+
 - (void)setBackgroundImageWithURL:(NSURL *)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
@@ -558,6 +567,7 @@
 }
 
 #pragma mark - Navigation
+
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController *)fromVC
@@ -575,6 +585,7 @@
 }
 
 #pragma mark - VAnimation
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
@@ -701,6 +712,7 @@
 }
 
 #pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&

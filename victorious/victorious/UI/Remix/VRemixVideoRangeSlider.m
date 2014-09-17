@@ -41,8 +41,6 @@
         int thumbWidth = ceil(frame.size.width*0.05);
         
         _backgroundView = [[UIControl alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
-        _backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
-        _backgroundView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
         [self addSubview:_backgroundView];
         
         
@@ -397,6 +395,7 @@
                  int total = (i+1) * tmp.frame.size.width;
                  
                  CGRect currentFrame = tmp.frame;
+                 currentFrame.origin.y = SLIDER_BORDERS_SIZE;
                  currentFrame.origin.x = i * currentFrame.size.width;
                  if (total > _backgroundView.frame.size.width)
                  {

@@ -117,7 +117,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [self addCreateButton];
     }
-    else if (!self.isMe)
+    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
@@ -411,6 +411,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - KVO
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change

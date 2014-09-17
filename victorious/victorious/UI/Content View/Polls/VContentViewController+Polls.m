@@ -19,6 +19,7 @@
 @implementation VContentViewController (Polls)
 
 #pragma mark - Animation
+
 - (void)pollAnimation
 {
     self.orImageView.hidden = ![self.currentNode isPoll];
@@ -58,6 +59,7 @@
 }
 
 #pragma mark - Poll
+
 - (void)loadPoll
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
@@ -250,6 +252,7 @@
 }
 
 #pragma mark - VPollAnswerBarDelegate
+
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId
 {
     self.firstResultView.hidden = NO;

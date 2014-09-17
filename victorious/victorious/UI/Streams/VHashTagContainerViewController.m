@@ -103,7 +103,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
 #pragma mark - VAnimation
 
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion

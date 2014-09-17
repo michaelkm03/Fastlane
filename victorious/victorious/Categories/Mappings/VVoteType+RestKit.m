@@ -17,11 +17,6 @@
     return @"VoteType";
 }
 
-//@property (nonatomic, retain) NSNumber * display_order;
-//@property (nonatomic, retain) NSString * name;
-//@property (nonatomic, retain) NSNumber * remoteId;
-//@property (nonatomic, retain) VAsset *assets;
-
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{

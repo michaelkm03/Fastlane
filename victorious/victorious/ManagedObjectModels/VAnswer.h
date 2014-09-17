@@ -2,7 +2,7 @@
 //  VAnswer.h
 //  victorious
 //
-//  Created by Will Long on 4/29/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @interface VAnswer : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * currency;
-@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * isCorrect;
 @property (nonatomic, retain) NSString * label;
 @property (nonatomic, retain) NSString * mediaUrl;
