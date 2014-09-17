@@ -10,10 +10,9 @@
 
 @interface VRealtimeCommentsViewModel : NSObject
 
-- (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments
-                               totalTime:(CGFloat)totalTime;
+- (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments;
 
-@property (nonatomic, readonly) CGFloat totalTime;
+@property (nonatomic, assign) CGFloat totalTime;
 @property (nonatomic, assign) CGFloat currentTime;
 
 @property (nonatomic, readonly) NSInteger numberOfRealTimeComments;

@@ -10,7 +10,7 @@
 
 #import "VCVideoPlayerViewController.h"
 
-@interface VContentVideoCell ()
+@interface VContentVideoCell () <VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 
@@ -29,6 +29,7 @@
 {
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
                                                                                    bundle:nil];
+    self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
@@ -40,6 +41,16 @@
     _videoURL = [videoURL copy];
     
     [self.videoPlayerViewController setItemURL:videoURL];
+}
+
+#pragma mark - VCVideoPlayerDelegate
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
+      didPlayToTime:(CMTime)time
+{
+    [self.delegate videoCell:self
+               didPlayToTime:time
+                   totalTime:[videoPlayer playerItemDuration]];
 }
 
 @end

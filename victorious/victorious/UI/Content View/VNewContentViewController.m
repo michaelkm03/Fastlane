@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 
@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
-#warning Update RTC view.
+
 }
 
 #pragma mark - IBActions
@@ -443,6 +443,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             delayedContentOffsetBlock();
         });
     }
+}
+
+#pragma mark - VContentVideoCellDelgetate
+
+- (void)videoCell:(VContentVideoCell *)videoCell
+    didPlayToTime:(CMTime)time
+        totalTime:(CMTime)totalTime
+{
+    self.viewModel.realTimeCommentsViewModel.currentTime = CMTimeGetSeconds(time);
+    self.viewModel.realTimeCommentsViewModel.totalTime = CMTimeGetSeconds(totalTime);
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate

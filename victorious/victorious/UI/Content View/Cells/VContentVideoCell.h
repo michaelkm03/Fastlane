@@ -8,8 +8,22 @@
 
 #import "VBaseCollectionViewCell.h"
 
+@class VContentVideoCell;
+
+@import AVFoundation;
+
+@protocol VContentVideoCellDelgetate <NSObject>
+
+- (void)videoCell:(VContentVideoCell *)videoCell
+    didPlayToTime:(CMTime)time
+        totalTime:(CMTime)time;
+
+@end
+
 @interface VContentVideoCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSURL *videoURL;
+
+@property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
 
 @end

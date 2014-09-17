@@ -25,12 +25,10 @@
 #pragma mark - Initializer
 
 - (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments
-                               totalTime:(CGFloat)totalTime
 {
     self = [super init];
     if (self)
     {
-        _totalTime = totalTime;
         _realTimeComments = realtimeComments;
         _currentTime = 0.0f;
     }
