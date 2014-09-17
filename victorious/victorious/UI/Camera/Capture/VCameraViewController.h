@@ -16,6 +16,11 @@
  @param finished YES if the user chose media, NO if the user cancelled.
  */
 @property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
+
+/**
+ If YES, the most recently captured media was
+ selected from the user's asset library.
+ */
 @property (nonatomic) BOOL didSelectAssetFromLibrary;
 
 /**
