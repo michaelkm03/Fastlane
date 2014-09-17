@@ -38,8 +38,6 @@
 <false/>
 <key>kNumberOfEmptyLinesAboveEnd</key>
 <integer>1</integer>
-<key>kNumberOfEmptyLinesAboveCategory</key>
-<integer>1</integer>
 <key>kRequireSpaceBeforeProtocolDeclarations</key>
 <true/>
 <key>kAllowSingleLineIfStatements</key>
@@ -48,5 +46,9 @@
 <integer>1</integer>
 <key>kRequireSpaceBetweenTernaryOperators</key>
 <true/>
+<key>kRequireSpaceAfterMethodType</key>
+<true/>
+<key>kNumberOfEmptyLinesAfterImplementation</key>
+<integer>1</integer>
 </dict>
 </plist>

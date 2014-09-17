@@ -27,7 +27,6 @@
 
 #import "MBProgressHUD.h"
 
-
 @interface VHashTagContainerViewController () <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
@@ -38,8 +37,7 @@
 
 @implementation VHashTagContainerViewController
 
-
--(id) init
+- (id)init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     return (VHashTagContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];

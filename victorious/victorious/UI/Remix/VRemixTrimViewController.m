@@ -59,7 +59,7 @@
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
@@ -210,7 +210,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction)takeSnapShotAction:(id)sender
+- (IBAction)takeSnapShotAction:(id)sender
 {
     // Pause the Current Video If It Is Playing
     if (self.videoPlayerViewController.isPlaying)

@@ -50,7 +50,7 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
--(BOOL)prefersStatusBarHidden
+- (BOOL)prefersStatusBarHidden
 {
     return NO;
 }

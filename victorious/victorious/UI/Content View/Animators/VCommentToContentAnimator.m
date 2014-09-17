@@ -14,7 +14,6 @@
 
 @implementation VCommentToContentAnimator
 
-
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     return .5f;

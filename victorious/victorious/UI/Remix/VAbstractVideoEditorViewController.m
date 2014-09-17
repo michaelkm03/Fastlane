@@ -53,7 +53,7 @@
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.videoPlayerViewController.player play];
@@ -157,7 +157,7 @@
     }
 }
 
--(void)setPlaybackLooping:(VLoopType)playbackLooping
+- (void)setPlaybackLooping:(VLoopType)playbackLooping
 {
     _playbackLooping = playbackLooping;
 

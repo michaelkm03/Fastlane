@@ -233,7 +233,7 @@
     return NO;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     BOOL ans = YES;
     if (textField == self.usernameTextField)
@@ -249,7 +249,7 @@
     return ans;
 }
 
--(void)characterCountdown:(id)sender
+- (void)characterCountdown:(id)sender
 {
     self.usernameCountDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength - self.usernameTextField.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
@@ -335,7 +335,7 @@
 
 #pragma mark - CCLocationManagerDelegate
 
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     [self.locationManager  stopMonitoringSignificantLocationChanges];
 

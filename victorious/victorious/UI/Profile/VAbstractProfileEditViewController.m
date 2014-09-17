@@ -99,7 +99,7 @@
 
 #pragma mark - UITextFieldDelegate
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [textField setTintColor:[UIColor blueColor]];
 }
@@ -126,7 +126,7 @@
 }
 
 
--(void)textViewDidBeginEditing:(UITextView *)textView
+- (void)textViewDidBeginEditing:(UITextView *)textView
 {
     if (textView == self.taglineTextView)
     {

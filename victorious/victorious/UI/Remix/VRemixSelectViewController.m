@@ -80,7 +80,7 @@
                                                                                         NSFontAttributeName:[UIFont systemFontOfSize:17]}];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
@@ -114,13 +114,13 @@
     [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.videoPlayerViewController.startSeconds];
 }
 
--(IBAction)scrubberDidStartMoving:(id)sender
+- (IBAction)scrubberDidStartMoving:(id)sender
 {
     self.restoreAfterScrubbingRate = self.videoPlayerViewController.player.rate;
     [self.videoPlayerViewController.player setRate:0.0f];
 }
 
--(IBAction)scrubberDidMove:(id)sender
+- (IBAction)scrubberDidMove:(id)sender
 {
     CMTime playerDuration = [self.videoPlayerViewController playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
@@ -141,7 +141,7 @@
     }
 }
 
--(IBAction)scrubberDidEndMoving:(id)sender
+- (IBAction)scrubberDidEndMoving:(id)sender
 {
 	if (self.restoreAfterScrubbingRate)
 	{

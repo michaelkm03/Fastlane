@@ -93,7 +93,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @implementation VContentViewController
 
--(id)init
+- (id)init
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     self = (VContentViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
@@ -557,7 +557,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark -
 
--(VInteractionManager *)interactionManager
+- (VInteractionManager *)interactionManager
 {
     if (!_interactionManager)
     {
@@ -1409,7 +1409,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark - VRealtimeCommentDelegate methods
 
--(void)willShowRTCMedia
+- (void)willShowRTCMedia
 {
     [self pauseVideo];
 }

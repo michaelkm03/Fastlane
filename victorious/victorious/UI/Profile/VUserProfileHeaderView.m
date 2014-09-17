@@ -161,7 +161,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     }
 }
 
--(IBAction)pressedFollowering:(id)sender
+- (IBAction)pressedFollowering:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(followingHandler)])
     {
