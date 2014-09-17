@@ -400,6 +400,7 @@
 }
 
 #pragma mark - Subclass
+
 - (id)appropriateObjectRequestOperationWithObject:(id)object
                                            method:(RKRequestMethod)method
                                              path:(NSString *)path

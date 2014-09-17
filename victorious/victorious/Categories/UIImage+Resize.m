@@ -199,8 +199,7 @@
 
 @end
 
-#pragma mark -
-#pragma mark Private helper methods
+#pragma mark - Private helper methods
 
 @implementation UIImage (Resize_Private)
 

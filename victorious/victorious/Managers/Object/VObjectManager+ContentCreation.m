@@ -34,6 +34,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 @implementation VObjectManager (ContentCreation)
 
 #pragma mark - Remix
+
 - (RKManagedObjectRequestOperation *)fetchRemixMP4UrlForSequenceID:(NSNumber *)sequenceID
                                              atStartTime:(CGFloat)startTime
                                                 duration:(CGFloat)duration
@@ -65,6 +66,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Sequence Methods
+
 - (AFHTTPRequestOperation *)createPollWithName:(NSString *)name
                                    description:(NSString *)description
                                       question:(NSString *)question

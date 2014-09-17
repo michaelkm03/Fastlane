@@ -97,7 +97,6 @@
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 
-
 #pragma mark - Header
 
 - (BOOL)isHeaderVisible
@@ -128,7 +127,6 @@
     [self.view layoutIfNeeded];
     [self setNeedsStatusBarAppearanceUpdate];
 }
-
 
 #pragma mark - FilterControls
 

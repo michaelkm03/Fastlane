@@ -138,7 +138,6 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     _locationForLastLineOfText = lastLineOfTextLocation;
 }
 
-
 #pragma mark - See More button positioning
 
 - (CGRect)lastLineFragmentInTextView
