@@ -222,6 +222,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             {
                 [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
                 [self notifyUserOfFailedCameraPermission];
+                self.openAlbumButton.enabled = YES;
             });
         }
     }];
