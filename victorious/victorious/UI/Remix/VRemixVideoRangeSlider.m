@@ -125,12 +125,12 @@
     return self;
 }
 
--(void)dealloc
+- (void)dealloc
 {
     [self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
 }
 
--(void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
+- (void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
 {
     _videoPlayerViewController = videoPlayerViewController;
     _videoPlayerViewController.delegate = self;
@@ -183,7 +183,7 @@
     }
 }
 
--(void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -193,7 +193,7 @@
     }
 }
 
--(void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
+- (void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
 {
     CGRect currentFrame = _popoverBubble.frame;
     currentFrame.size.width = width;
@@ -206,14 +206,14 @@
     _bubbleText.frame = currentFrame;
 }
 
--(void)setMaxGap:(NSInteger)maxGap
+- (void)setMaxGap:(NSInteger)maxGap
 {
     _leftPosition = 0;
     _rightPosition = _frameWidth * maxGap / _durationSeconds;
     _maxGap = maxGap;
 }
 
--(void)setMinGap:(NSInteger)minGap
+- (void)setMinGap:(NSInteger)minGap
 {
     _leftPosition = 0;
     _rightPosition = _frameWidth * minGap / _durationSeconds;
@@ -360,7 +360,7 @@
 
 #pragma mark - Video
 
--(void)getMovieFrames
+- (void)getMovieFrames
 {
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.videoAsset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
@@ -461,18 +461,18 @@
     }
 }
 
--(void)setTimeLabel
+- (void)setTimeLabel
 {
     self.bubbleText.text = [self trimIntervalString];
 }
 
--(NSString *)trimDurationString
+- (NSString *)trimDurationString
 {
     int delta = floor(self.rightPosition - self.leftPosition);
     return [NSString stringWithFormat:@"%d", delta];
 }
 
--(NSString *)trimIntervalString
+- (NSString *)trimIntervalString
 {
     NSString *from = [self timeToStr:self.leftPosition];
     NSString *to = [self timeToStr:self.rightPosition];

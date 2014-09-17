@@ -76,7 +76,7 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentHitboxButton setHidden:YES];
 }
 
--(void) setIsFromProfile:(BOOL)isFromProfile
+- (void)setIsFromProfile:(BOOL)isFromProfile
 {
     _isFromProfile = isFromProfile;
 }

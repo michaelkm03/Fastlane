@@ -131,7 +131,7 @@
     }
 }
 
--(void)setProgress:(CGFloat)progress
+- (void)setProgress:(CGFloat)progress
 {
     //Sanity check that it is within 0 and 1
     progress = MIN(progress, 1);

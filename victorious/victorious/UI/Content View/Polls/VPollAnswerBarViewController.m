@@ -188,7 +188,7 @@
 
 #pragma mark - Button actions
 
--(IBAction)pressedAnswerButton:(id)sender
+- (IBAction)pressedAnswerButton:(id)sender
 {
     if (![VObjectManager sharedManager].mainUser)
     {

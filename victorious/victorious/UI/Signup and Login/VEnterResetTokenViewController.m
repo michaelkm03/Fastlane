@@ -89,7 +89,7 @@
 
 
 
--(IBAction)pressedResend:(id)sender
+- (IBAction)pressedResend:(id)sender
 {
     [[self view] endEditing:YES];
     

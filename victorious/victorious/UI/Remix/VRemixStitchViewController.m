@@ -81,7 +81,7 @@
     //[self setupProgressObserver];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 }
@@ -121,7 +121,7 @@
 
 #pragma mark - Video Methods
 
--(void)setupProgressObserver
+- (void)setupProgressObserver
 {
     // Set This Controller as the Video Player Delegate
     self.videoPlayerViewController.delegate = self;
@@ -144,7 +144,7 @@
                              }];
 }
 
--(CMTime)playerItemDuration
+- (CMTime)playerItemDuration
 {
     AVPlayerItem *thePlayerItem = self.videoPlayerViewController.player.currentItem;
     if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
@@ -157,7 +157,7 @@
     }
 }
 
--(void)syncProgressIndicator
+- (void)syncProgressIndicator
 {
     CMTime playerDuration = [self playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
