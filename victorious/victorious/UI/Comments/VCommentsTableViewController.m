@@ -196,17 +196,7 @@
     VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
-    if ([comment.sequence.category isEqualToString:@"ugc_image"] ||
-        [comment.sequence.category isEqualToString:@"ugc_poll"] ||
-        [comment.sequence.category isEqualToString:@"ugc_image_repost"] ||
-        [comment.sequence.category isEqualToString:@"ugc_image_secret"] ||
-        [comment.sequence.category isEqualToString:@"ugc_image_meme"] ||
-        [comment.sequence.category isEqualToString:@"owner_image_secret"] ||
-        [comment.sequence.category isEqualToString:@"owner_image"] ||
-        [comment.sequence.category isEqualToString:@"owner_image_meme"] ||
-        [comment.sequence.category isEqualToString:@"owner_image_repost"] ||
-        [comment.sequence.category isEqualToString:@"owner_poll"]
-        )
+    if (comment.realtime.integerValue < 0)
     {
         
         cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name];
