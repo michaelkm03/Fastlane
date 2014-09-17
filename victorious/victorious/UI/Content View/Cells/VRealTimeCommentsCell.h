@@ -10,4 +10,13 @@
 
 @interface VRealTimeCommentsCell : VBaseCollectionViewCell
 
+- (void)configureWithCurrentUserAvatarURL:(NSURL *)currentAvatarURL
+                          currentUsername:(NSString *)username
+                       currentTimeAgoText:(NSString *)timeAgoText
+                       currentCommentBody:(NSString *)commentBody
+                               atTimeText:(NSString *)atTimeText;
+
+- (void)addAvatarWithURL:(NSURL *)avatarURL
+     withPercentLocation:(CGFloat)percentLocation;
+
 @end

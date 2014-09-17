@@ -39,6 +39,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
+
+@property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
+
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
 @end
@@ -171,7 +174,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
-
+    self.viewModel.realTimeCommentsViewModel.onCurrentRealTimeComentChange = ^void(void)
+    {
+#warning Update RTC 
+    };
 }
 
 #pragma mark - IBActions
@@ -263,8 +269,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                  forIndexPath:indexPath];
         }
         case VContentViewSectionRealTimeComments:
-            return [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
-                                                             forIndexPath:indexPath];
+        {
+            self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
+                                                      forIndexPath:indexPath];
+            return self.realTimeComentsCell;
+        }
         case VContentViewSectionAllComments:
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]

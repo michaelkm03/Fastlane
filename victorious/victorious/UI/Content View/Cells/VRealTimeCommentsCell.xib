@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1808" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,7 +16,6 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PhZ-3x-B2L" userLabel="RTC Bar View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="3rQ-J9-slK"/>
@@ -23,7 +23,6 @@
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fEu-0z-toW" userLabel="Current RTC Avatar Image View">
                         <rect key="frame" x="16" y="32" width="32" height="32"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="e5l-bf-yJn"/>
                             <constraint firstAttribute="width" constant="32" id="q7i-zg-kMH"/>
@@ -31,33 +30,27 @@
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="realtime-comment-arrow" translatesAutoresizingMaskIntoConstraints="NO" id="yKh-oI-9xZ" userLabel="RTC Arrow Image View">
                         <rect key="frame" x="-58" y="-72" width="18" height="7"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jon Snow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JM-hU-CGn" userLabel="RTC Current User Name Label">
                         <rect key="frame" x="57" y="32" width="77" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="f0V-Wi-SVG">
                         <rect key="frame" x="142" y="38" width="9" height="9"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="36 h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPB-km-P8f">
                         <rect key="frame" x="165" y="32" width="34" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ygritte NO!!!!!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ7-vM-BF3" userLabel="RTC Current Comment Label">
                         <rect key="frame" x="57" y="53" width="104" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="at 0:05" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTk-W8-8lh" userLabel="RTC Comment At Label">
                         <rect key="frame" x="247" y="32" width="53" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -82,10 +75,23 @@
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="baseline" secondItem="qPB-km-P8f" secondAttribute="baseline" id="x0g-an-8Rd"/>
                 <constraint firstItem="qPB-km-P8f" firstAttribute="leading" secondItem="f0V-Wi-SVG" secondAttribute="trailing" constant="14" id="xF5-GY-ja1"/>
             </constraints>
+            <connections>
+                <outlet property="currentAtTimeLabel" destination="hTk-W8-8lh" id="vdj-m0-pql"/>
+                <outlet property="currentCommentBodyLabel" destination="ZJ7-vM-BF3" id="Puy-Lm-ZvA"/>
+                <outlet property="currentTimeAgoLabel" destination="qPB-km-P8f" id="qF0-Uf-fYs"/>
+                <outlet property="currentUserAvatar" destination="fEu-0z-toW" id="YfC-fa-k4U"/>
+                <outlet property="currentUserNameLabel" destination="5JM-hU-CGn" id="1ch-PI-b0A"/>
+                <outlet property="realtimeCommentStrip" destination="PhZ-3x-B2L" id="8BI-8d-3hG"/>
+            </connections>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="conversationClock" width="9" height="9"/>
         <image name="realtime-comment-arrow" width="18" height="7"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
