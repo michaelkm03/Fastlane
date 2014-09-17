@@ -13,12 +13,14 @@
 #import "VConstants.h"
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField*   oldPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField*   changedPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField*   confirmPasswordTextField;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* labels;
 @property (strong, nonatomic) IBOutletCollection(UITextField) NSArray* textFields;
+
 @end
 
 @implementation VChangePasswordViewController

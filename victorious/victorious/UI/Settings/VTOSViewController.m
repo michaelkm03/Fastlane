@@ -11,6 +11,7 @@
 #import "VObjectManager+Websites.h"
 
 @interface VTOSViewController ()    <UIWebViewDelegate>
+
 @end
 
 @implementation VTOSViewController

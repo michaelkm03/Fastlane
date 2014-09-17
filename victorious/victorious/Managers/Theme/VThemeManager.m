@@ -54,6 +54,7 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 @interface      VThemeManager   ()
+
 @end
 
 @implementation VThemeManager

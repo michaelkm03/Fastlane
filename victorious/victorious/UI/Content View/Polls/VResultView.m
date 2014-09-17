@@ -11,9 +11,11 @@
 #import "VThemeManager.h"
 
 @interface VResultView ()
+
 @property (nonatomic) CGFloat progress;
 @property (strong, nonatomic) UIImageView* resultArrow;
 @property (strong, nonatomic) UILabel* resultLabel;
+
 @end
 
 @implementation VResultView

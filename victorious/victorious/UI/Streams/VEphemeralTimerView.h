@@ -10,7 +10,9 @@
 
 @protocol VEphemeralTimerViewDelegate <NSObject>
 @required
+
 - (void)contentExpired;
+
 @end
 
 @interface VEphemeralTimerView : UIView

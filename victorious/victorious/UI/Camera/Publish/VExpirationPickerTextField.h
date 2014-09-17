@@ -10,9 +10,13 @@
 
 @protocol VExpirationPickerTextFieldDelegate <VPickerTextFieldDelegate>
 @required
+
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectExpirationDate:(NSDate *)expirationDate;
+
 @end
 
 @interface VExpirationPickerTextField : VPickerTextField
+
 @property (nonatomic, weak) id<VExpirationPickerTextFieldDelegate> pickerDelegate;
+
 @end

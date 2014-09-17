@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Masking)
+
 - (UIImage *)maskImage:(UIImage *)image withMask:(UIImage *)mask;
+
 @end

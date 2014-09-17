@@ -13,4 +13,5 @@
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
                forState:(UIControlState)state;
+
 @end

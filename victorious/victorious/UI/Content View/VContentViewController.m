@@ -88,6 +88,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @property (nonatomic, strong) NSURL *targetURL;
 @property (nonatomic) NSInteger sequenceID;
 @property (nonatomic) NSInteger nodeID;
+
 @end
 
 @implementation VContentViewController

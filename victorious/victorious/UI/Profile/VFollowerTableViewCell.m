@@ -12,10 +12,12 @@
 #import "VThemeManager.h"
 
 @interface      VFollowerTableViewCell ()
+
 @property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
 @property (nonatomic, weak)     IBOutlet    UIButton*           followButton;
+
 @end
 
 @implementation VFollowerTableViewCell

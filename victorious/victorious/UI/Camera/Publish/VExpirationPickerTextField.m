@@ -9,12 +9,14 @@
 #import "VExpirationPickerTextField.h"
 
 @interface VExpirationPickerTextField   ()
+
 @property   (nonatomic, strong) NSArray*        numbers;
 @property   (nonatomic, strong) NSArray*        units;
 @property   (nonatomic, strong) NSArray*        unitsPlural;
 
 @property   (nonatomic)         NSInteger       selectedValue;
 @property   (nonatomic)         NSInteger       selectedCalendarUnit;
+
 @end
 
 @implementation VExpirationPickerTextField

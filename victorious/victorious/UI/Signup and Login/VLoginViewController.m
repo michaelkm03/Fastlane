@@ -27,6 +27,7 @@
 @import Social;
 
 @interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate>
+
 @property (nonatomic, strong)           VUser*          profile;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       facebookButton;
@@ -41,6 +42,7 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       loginEmailButton;
 
 @property (nonatomic, assign)           VLoginType      loginType;
+
 @end
 
 @implementation VLoginViewController
@@ -386,6 +388,5 @@
          [self didFailWithError:error];
      }];
 }
-
 
 @end

@@ -12,7 +12,9 @@
 
 @protocol VInteractionManagerDelegate <NSObject>
 @required
+
 - (void)firedInteraction:(VInteraction *)interaction;
+
 @end
 
 @interface VInteractionManager : NSObject

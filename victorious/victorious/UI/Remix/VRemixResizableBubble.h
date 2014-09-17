@@ -3,4 +3,5 @@
 //
 
 @interface VRemixResizableBubble : UIView
+
 @end

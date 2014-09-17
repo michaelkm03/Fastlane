@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
+typedef NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
 {
     VAccountUpdateViewControllerBadPasswordErrorCode
 };
 
 @interface VChangePasswordViewController : UIViewController
+
 @end

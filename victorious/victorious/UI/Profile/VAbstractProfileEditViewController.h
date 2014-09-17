@@ -9,6 +9,7 @@
 @class VUser;
 
 @interface VAbstractProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UINavigationControllerDelegate>
+
 @property (nonatomic, strong)   VUser*          profile;
 
 @property (nonatomic, strong)   NSURL*          updatedProfileImage;
@@ -20,4 +21,5 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView*    profileImageView;
 @property (nonatomic, weak) IBOutlet UIButton*       cameraButton;
+
 @end

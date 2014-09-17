@@ -9,4 +9,5 @@
 extern NSString *const VMenuControllerDidSelectRowNotification;
 
 @interface VMenuController : UITableViewController
+
 @end

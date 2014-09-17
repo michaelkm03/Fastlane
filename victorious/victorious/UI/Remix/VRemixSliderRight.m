@@ -75,5 +75,4 @@
     CGColorSpaceRelease(colorSpace);
 }
 
-
 @end

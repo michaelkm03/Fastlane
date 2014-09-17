@@ -10,9 +10,6 @@
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
-@interface VAbstractVideoEditorViewController ()
-@end
-
 @implementation VAbstractVideoEditorViewController
 
 - (void)viewDidLoad

@@ -31,5 +31,4 @@ extern NSString *kStreamsWillCommentNotification;
 - (void) hideOverlays;
 - (void) showOverlays;
 
-
 @end
