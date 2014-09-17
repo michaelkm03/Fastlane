@@ -117,7 +117,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [self addCreateButton];
     }
-    else if (!self.isMe)
+    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
