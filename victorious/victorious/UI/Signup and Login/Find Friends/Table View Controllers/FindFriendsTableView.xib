@@ -116,7 +116,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="463"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wtx-Nu-lyk" userLabel="Bottom Info View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtx-Nu-lyk" userLabel="Bottom Info View">
                             <rect key="frame" x="0.0" y="373" width="320" height="90"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -166,10 +166,14 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="wtx-Nu-lyk" secondAttribute="trailing" id="1Es-5s-n85"/>
                         <constraint firstItem="7dw-z9-qes" firstAttribute="leading" secondItem="0Kn-17-2W3" secondAttribute="leading" constant="48" id="9DC-uB-Vdi"/>
                         <constraint firstAttribute="trailing" secondItem="7dw-z9-qes" secondAttribute="trailing" constant="48" id="D63-4m-iCW"/>
+                        <constraint firstAttribute="bottom" secondItem="wtx-Nu-lyk" secondAttribute="bottom" id="PCn-oB-jut"/>
                         <constraint firstItem="tbC-61-nna" firstAttribute="top" secondItem="7dw-z9-qes" secondAttribute="bottom" constant="41" id="Yle-yu-qHG"/>
+                        <constraint firstItem="wtx-Nu-lyk" firstAttribute="leading" secondItem="0Kn-17-2W3" secondAttribute="leading" id="crY-dV-Psv"/>
                         <constraint firstItem="7dw-z9-qes" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="97" id="dDz-zA-hNe"/>
+                        <constraint firstItem="wtx-Nu-lyk" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="373" id="jEi-wV-Y1p"/>
                         <constraint firstAttribute="centerX" secondItem="tbC-61-nna" secondAttribute="centerX" id="kdQ-qL-WAa"/>
                     </constraints>
                 </view>

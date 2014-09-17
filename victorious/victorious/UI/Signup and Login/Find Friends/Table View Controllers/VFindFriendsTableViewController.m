@@ -11,6 +11,7 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
+#import "VObjectManager+Users.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -206,7 +207,24 @@
     {
         [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
+    
+    VSuccessBlock successBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSLog(@"\n\n-----\nSuccess Block:\n%@\n-----\n\n", resultObjects);
+    };
+    
+    [self loadBatchOfFollowers:self.selectedUsers withSuccess:successBlock withFailure:nil];
 }
+
+- (void)loadBatchOfFollowers:(NSArray *)followers withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    
+    [[VObjectManager sharedManager] followUsers:followers
+                               withSuccessBlock:successBlock
+                                      failBlock:failureBlock];
+
+}
+
 
 - (IBAction)makeButtonGray:(UIButton *)sender
 {

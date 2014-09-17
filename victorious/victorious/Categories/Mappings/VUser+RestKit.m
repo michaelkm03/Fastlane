@@ -140,7 +140,7 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/friend/find/facebook/:token"
-                                                         keyPath:@"payload.attributes"
+                                                         keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
@@ -152,7 +152,7 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/friend/find/twitter/:token/:secret"
-                                                         keyPath:@"payload.attributes"
+                                                         keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
