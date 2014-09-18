@@ -8,6 +8,11 @@
 
 #import "VBaseSupplementaryView.h"
 
+/**
+ *  A title view for content view that should exist below the content view (in z index).
+ */
 @interface VDropdownTitleView : VBaseSupplementaryView
+
+@property (nonatomic, strong) NSString *titleText;
 
 @end
