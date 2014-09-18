@@ -11,7 +11,7 @@
 
 @class VSequence, VComment, VConversation, VAsset, VMessage, VNode;
 
-typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
+typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL *remixMp4Url, NSError *error);
 
 /**
  Notification posted when new content is created by the user and will be added to a filter

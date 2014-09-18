@@ -50,5 +50,7 @@
 <true/>
 <key>kNumberOfEmptyLinesAfterImplementation</key>
 <integer>1</integer>
+<key>kAsteriskSpacingRule</key>
+<integer>2</integer>
 </dict>
 </plist>

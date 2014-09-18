@@ -10,8 +10,8 @@
 
 @interface VFetchedResultsTableViewController : UITableViewController   <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, strong)   NSFetchedResultsController*     fetchedResultsController;
-@property (nonatomic, strong)   UIActivityIndicatorView*        bottomRefreshIndicator;
+@property (nonatomic, strong)   NSFetchedResultsController     *fetchedResultsController;
+@property (nonatomic, strong)   UIActivityIndicatorView        *bottomRefreshIndicator;
 
 @property (nonatomic, weak) id<UITableViewDelegate>delegate;
 

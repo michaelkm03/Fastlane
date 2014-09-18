@@ -10,9 +10,9 @@
 
 @interface VExpirationPickerTextField   ()
 
-@property   (nonatomic, strong) NSArray*        numbers;
-@property   (nonatomic, strong) NSArray*        units;
-@property   (nonatomic, strong) NSArray*        unitsPlural;
+@property   (nonatomic, strong) NSArray        *numbers;
+@property   (nonatomic, strong) NSArray        *units;
+@property   (nonatomic, strong) NSArray        *unitsPlural;
 
 @property   (nonatomic)         NSInteger       selectedValue;
 @property   (nonatomic)         NSInteger       selectedCalendarUnit;
@@ -49,7 +49,7 @@
 
 - (void)createNumbersComponent
 {
-    NSMutableArray*     numbers = [[NSMutableArray alloc] initWithCapacity:365];
+    NSMutableArray     *numbers = [[NSMutableArray alloc] initWithCapacity:365];
     
     for (NSUInteger num = 1; num < 365; num++)
     {
@@ -142,8 +142,8 @@
 {
     [self resignFirstResponder];
     
-    NSCalendar*         calendar    =   [NSCalendar autoupdatingCurrentCalendar];
-    NSDateComponents*   components  =   [[NSDateComponents alloc] init];
+    NSCalendar         *calendar    =   [NSCalendar autoupdatingCurrentCalendar];
+    NSDateComponents   *components  =   [[NSDateComponents alloc] init];
     if (self.selectedCalendarUnit == 0)
     {
         components.minute = self.selectedValue;

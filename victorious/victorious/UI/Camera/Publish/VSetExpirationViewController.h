@@ -17,7 +17,7 @@
 
 @interface VSetExpirationViewController : UIViewController
 
-@property (nonatomic, strong)   UIImage*    previewImage;
+@property (nonatomic, strong)   UIImage    *previewImage;
 @property (nonatomic, weak)     id<VSetExpirationDelegate>  delegate;
 
 @end

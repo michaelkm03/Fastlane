@@ -18,8 +18,8 @@
 @interface VEphemeralTimerView : UIView
 
 @property (nonatomic) NSUInteger timerWidth;
-@property (strong, nonatomic) UIColor* timerColor;
-@property (copy, nonatomic) NSDate* expireDate;
+@property (strong, nonatomic) UIColor *timerColor;
+@property (copy, nonatomic) NSDate *expireDate;
 
 @property (weak, nonatomic) id<VEphemeralTimerViewDelegate> delegate;
 

@@ -16,7 +16,7 @@
 
 @interface VFollowerTableViewController ()
 
-@property (nonatomic, strong)   NSArray*    followers;
+@property (nonatomic, strong)   NSArray    *followers;
 
 @end
 
@@ -63,8 +63,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser*  user = self.followers[indexPath.row];
-    VUserProfileViewController* profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
+    VUser  *user = self.followers[indexPath.row];
+    VUserProfileViewController *profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
     [self.navigationController pushViewController:profileVC animated:YES];
 }
 
@@ -89,16 +89,16 @@
 
 - (void)refreshFollowersList
 {
-    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
     };
     
-    VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock followerFail = ^(NSOperation *operation, NSError *error)
     {
         if (error.code)
         {
@@ -115,10 +115,10 @@
 
 - (void)loadMoreFollowers
 {
-    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet* uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSet *uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
         self.followers = [[uniqueFollowers allObjects] sortedArrayUsingDescriptors:@[sort]];
         [self setHasFollowers:self.followers.count];
         
@@ -134,7 +134,7 @@
 {
     if (!hasFollowers)
     {
-        VNoContentView* noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noFollowersView;
         noFollowersView.titleLabel.text = NSLocalizedString(@"NoFollowersTitle", @"");
         noFollowersView.messageLabel.text = NSLocalizedString(@"NoFollowersMessage", @"");

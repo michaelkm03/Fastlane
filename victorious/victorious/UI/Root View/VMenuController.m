@@ -56,7 +56,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         UIFont*     font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+         UIFont     *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
          label.font = [font fontWithSize:22.0];
          label.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
      }];
@@ -106,8 +106,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UINavigationController* navigationController = self.sideMenuViewController.contentViewController;
-    UIViewController* currentViewController = [navigationController.viewControllers lastObject];
+    UINavigationController *navigationController = self.sideMenuViewController.contentViewController;
+    UIViewController *currentViewController = [navigationController.viewControllers lastObject];
     
     if (0 == indexPath.section)
     {
@@ -205,7 +205,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     if (1 == section)
     {
-        UIView* sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
+        UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
         sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         return sectionHeader;
     }

@@ -13,10 +13,10 @@
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
-@property (nonatomic, weak) IBOutlet    UITextField*    confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton*       updateButton;
-@property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
+@property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
+@property (nonatomic, weak) IBOutlet    UITextField    *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet    UIButton       *updateButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
 
 @end
 
@@ -73,11 +73,11 @@
                                                   profileImageURL:nil
                                                          location:nil
                                                           tagline:nil
-                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              [self dismissViewControllerAnimated:YES completion:NO];
          }
-                                                        failBlock:^(NSOperation* operation, NSError* error)
+                                                        failBlock:^(NSOperation *operation, NSError *error)
          {
              [self dismissViewControllerAnimated:YES completion:NO];
          }];
@@ -102,7 +102,7 @@
         return YES;
     }
     
-    UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                        message:NSLocalizedString(@"PasswordNotMatching", @"")
                                                       delegate:nil
                                              cancelButtonTitle:nil

@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSURL *urlToView;
 
-@property (nonatomic, weak, readonly) IBOutlet UIWebView* webView;
+@property (nonatomic, weak, readonly) IBOutlet UIWebView *webView;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *activitiyIndicator;
 
 @end

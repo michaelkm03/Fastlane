@@ -39,9 +39,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate>
 
-@property   (nonatomic, strong) VUser*                  profile;
+@property   (nonatomic, strong) VUser                  *profile;
 
-@property (nonatomic, strong) UIImageView*              backgroundImageView;
+@property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property   (nonatomic) BOOL                            isMe;
 
 @end
@@ -50,7 +50,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 + (instancetype)userProfileWithSelf
 {
-    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
                                                                                        style:UIBarButtonItemStylePlain
@@ -63,7 +63,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 + (instancetype)userProfileWithUser:(VUser *)aUser
 {
-    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
                                                                                        style:UIBarButtonItemStylePlain
@@ -76,7 +76,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 + (instancetype)userProfileWithFollowerOrFollowing:(VUser *)aUser
 {
-    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
                                                                                        style:UIBarButtonItemStyleBordered
@@ -106,7 +106,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
    
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    VUserProfileHeaderView* headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
+    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
                                                                                               screenHeight - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))];
     headerView.user = self.profile;
     headerView.delegate = self;
@@ -141,7 +141,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
-    UIImage*    defaultBackgroundImage;
+    UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
     {
         defaultBackgroundImage = self.backgroundImageView.image;
@@ -165,7 +165,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
     BOOL fromInbox = NO;
-    for (UIViewController* vc in self.navigationController.viewControllers)
+    for (UIViewController *vc in self.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VInboxContainerViewController class]])
         {
@@ -213,9 +213,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                      following:self.profile
-                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+             VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
              header.editProfileButton.selected = [resultObjects[0] boolValue];
              header.user = header.user;
          }
@@ -266,7 +266,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                                                             target:nil
                                                                             action:nil];
 
-    VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+    VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
     if ([self.navigationController.viewControllers containsObject:composeController])
     {
@@ -292,7 +292,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     else
     {
-        VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+        VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -300,7 +300,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
             header.editProfileButton.enabled = YES;
             [header.followButtonActivityIndicator stopAnimating];
             
-            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:nil
+            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:nil
                                                                    message:NSLocalizedString(@"UnfollowError", @"")
                                                                   delegate:nil
                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -346,17 +346,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
-        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
+        VProfileEditViewController *controller = (VProfileEditViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toFollowers"])
     {
-        VFollowerTableViewController*   controller = (VFollowerTableViewController *)segue.destinationViewController;
+        VFollowerTableViewController   *controller = (VFollowerTableViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toFollowing"])
     {
-        VFollowingTableViewController*   controller = (VFollowingTableViewController *)segue.destinationViewController;
+        VFollowingTableViewController   *controller = (VFollowingTableViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
 }
@@ -373,7 +373,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
-    VUserProfileHeaderView* header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+    VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
 
     if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
     {

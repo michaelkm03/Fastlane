@@ -10,7 +10,7 @@
 
 @interface      VExpirationDatePicker ()
 
-@property (nonatomic, strong)   UIDatePicker*   datePicker;
+@property (nonatomic, strong)   UIDatePicker   *datePicker;
 
 @end
 

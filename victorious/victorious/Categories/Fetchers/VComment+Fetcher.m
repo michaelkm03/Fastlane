@@ -18,7 +18,7 @@
 
 - (NSURL *)previewImageURL
 {
-    NSURL* url;
+    NSURL *url;
     if (self.thumbnailUrl && ![self.thumbnailUrl isEmpty])
     {
         url = [[NSURL alloc] initWithString:self.thumbnailUrl];

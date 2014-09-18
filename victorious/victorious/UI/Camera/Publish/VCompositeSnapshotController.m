@@ -12,12 +12,12 @@
 
 - (UIImage *)snapshotOfMainView:(UIView *)mainView subViews:(NSArray *)subviews
 {
-    UIView* compositeView = [[UIView alloc] initWithFrame:mainView.frame];
+    UIView *compositeView = [[UIView alloc] initWithFrame:mainView.frame];
     
     UIGraphicsBeginImageContextWithOptions(compositeView.bounds.size, YES, 0);
     [mainView drawViewHierarchyInRect:compositeView.bounds afterScreenUpdates:YES];
     
-    for (UIView* subview in subviews)
+    for (UIView *subview in subviews)
     {
         CGRect rect = [mainView convertRect:subview.frame fromView:subview.superview];
         [subview drawViewHierarchyInRect:rect afterScreenUpdates:YES];

@@ -104,7 +104,7 @@
 
 - (IBAction)muteAudioClicked:(id)sender
 {
-    UIButton*   button = (UIButton *)sender;
+    UIButton   *button = (UIButton *)sender;
     button.selected = !button.selected;
     self.shouldMuteAudio = button.selected;
     self.videoPlayerViewController.player.muted = self.shouldMuteAudio;

@@ -18,16 +18,16 @@
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
+@property (nonatomic, weak)     IBOutlet    UIView             *thumbnail;
 
-@property (nonatomic, weak)     IBOutlet    UIView*             beforeButton;
-@property (nonatomic, weak)     IBOutlet    UIView*             afterButton;
+@property (nonatomic, weak)     IBOutlet    UIView             *beforeButton;
+@property (nonatomic, weak)     IBOutlet    UIView             *afterButton;
 
-@property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
-@property (nonatomic, strong)   AVAssetExportSession*           exportSession;
+@property (nonatomic, strong)   AVAssetImageGenerator          *imageGenerator;
+@property (nonatomic, strong)   AVAssetExportSession           *exportSession;
 
-@property (nonatomic, strong)   NSURL*                          beforeURL;
-@property (nonatomic, strong)   NSURL*                          afterURL;
+@property (nonatomic, strong)   NSURL                          *beforeURL;
+@property (nonatomic, strong)   NSURL                          *afterURL;
 
 @property (nonatomic)           BOOL                            selectingBeforeURL;
 @property (nonatomic)           BOOL                            selectingAfterURL;
@@ -232,7 +232,7 @@
     
     if (self.beforeURL)
     {
-        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+        UIActionSheet  *sheet   =   [[UIActionSheet alloc] initWithTitle:nil
                                                                 delegate:self
                                                        cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
                                                   destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
@@ -252,7 +252,7 @@
     
     if (self.afterURL)
     {
-        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+        UIActionSheet  *sheet   =   [[UIActionSheet alloc] initWithTitle:nil
                                                                 delegate:self
                                                        cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
                                                   destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
@@ -337,38 +337,38 @@
 
 - (void)compositeVideo
 {
-    AVMutableComposition*       mutableComposition      =   [AVMutableComposition composition];
-    AVMutableCompositionTrack*  videoCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    AVMutableCompositionTrack*  audioCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-    NSMutableArray*             instructions            =   [NSMutableArray arrayWithCapacity:3];
+    AVMutableComposition       *mutableComposition      =   [AVMutableComposition composition];
+    AVMutableCompositionTrack  *videoCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    AVMutableCompositionTrack  *audioCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+    NSMutableArray             *instructions            =   [NSMutableArray arrayWithCapacity:3];
 
     if (self.beforeURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction  *instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.sourceURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction  *instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.afterURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction  *instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
-    AVMutableVideoComposition*  mainCompositionInst = [AVMutableVideoComposition videoComposition];
+    AVMutableVideoComposition  *mainCompositionInst = [AVMutableVideoComposition videoComposition];
     mainCompositionInst.instructions = instructions;
     mainCompositionInst.frameDuration = CMTimeMake(1, 30);
     mainCompositionInst.renderSize = CGSizeMake(320.0, 320.0);
     
-    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+    NSURL      *target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
     
-    NSString*   videoQuality = [[VSettingManager sharedManager] exportVideoQuality];
+    NSString   *videoQuality = [[VSettingManager sharedManager] exportVideoQuality];
 
     self.exportSession  = [[AVAssetExportSession alloc] initWithAsset:mutableComposition presetName:videoQuality];
     self.exportSession.outputURL = target;
@@ -399,9 +399,9 @@
 
 - (AVMutableVideoCompositionInstruction *)addAssetURL:(NSURL *)assetURL videoCompositionTrack:(AVMutableCompositionTrack *)videoCompositionTrack audioCompositionTrack:(AVMutableCompositionTrack *)audioCompositionTrack atTime:(CMTime)insertionTime
 {
-    AVURLAsset*     asset       =   [AVURLAsset URLAssetWithURL:assetURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES }];
-    AVAssetTrack*   videoTrack  =   [asset tracksWithMediaType:AVMediaTypeVideo][0];
-    AVAssetTrack*   audiotrack  =   [asset tracksWithMediaType:AVMediaTypeAudio][0];
+    AVURLAsset     *asset       =   [AVURLAsset URLAssetWithURL:assetURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES }];
+    AVAssetTrack   *videoTrack  =   [asset tracksWithMediaType:AVMediaTypeVideo][0];
+    AVAssetTrack   *audiotrack  =   [asset tracksWithMediaType:AVMediaTypeAudio][0];
 
     [videoCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:videoTrack atTime:insertionTime error:nil];
     if (audioCompositionTrack)
@@ -409,10 +409,10 @@
         [audioCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:audiotrack atTime:insertionTime error:nil];
     }
 
-    AVMutableVideoCompositionInstruction*   instruction =   [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    AVMutableVideoCompositionInstruction   *instruction =   [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     instruction.timeRange = CMTimeRangeMake(insertionTime, asset.duration);
     
-    AVMutableVideoCompositionLayerInstruction*  videoLayerInstruction   = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
+    AVMutableVideoCompositionLayerInstruction  *videoLayerInstruction   = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
     CGAffineTransform                           transform = videoTrack.preferredTransform;
     BOOL                                        isAssetPortrait         =   NO;
     if (transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0)
@@ -448,7 +448,7 @@
 
 - (void)setupThumbnailStrip:(UIView *)background withURL:(NSURL *)aURL
 {
-    AVAsset*    asset = [AVAsset assetWithURL:aURL];
+    AVAsset    *asset = [AVAsset assetWithURL:aURL];
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
     self.imageGenerator.appliesPreferredTrackTransform = YES;
@@ -473,10 +473,10 @@
      {
          if (result == AVAssetImageGeneratorSucceeded)
          {
-             UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
+             UIImage      *thumb = [[UIImage alloc] initWithCGImage:image];
              
              dispatch_async(dispatch_get_main_queue(), ^{
-                 UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                 UIImageView  *tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
                  tmp.image = thumb;
                  tmp.backgroundColor = [UIColor redColor];
                  tmp.contentMode = UIViewContentModeScaleAspectFill;

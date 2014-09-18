@@ -12,12 +12,12 @@
 
 @interface VInviteFriendTableViewCell ()
 
-@property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
-@property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
-@property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        followIconImageView;
-@property (nonatomic, strong)               UIImage*            followIcon;
-@property (nonatomic, strong)               UIImage*            unfollowIcon;
+@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
+@property (nonatomic, weak)     IBOutlet    UIImageView        *followIconImageView;
+@property (nonatomic, strong)               UIImage            *followIcon;
+@property (nonatomic, strong)               UIImage            *unfollowIcon;
 
 @end
 

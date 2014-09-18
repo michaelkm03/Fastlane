@@ -40,9 +40,9 @@
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    UIViewController*               fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController*               toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView*                         containerView = [transitionContext containerView];
+    UIViewController               *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController               *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIView                         *containerView = [transitionContext containerView];
     NSTimeInterval                  duration = [self transitionDuration:transitionContext];
     
     if (self.presenting)

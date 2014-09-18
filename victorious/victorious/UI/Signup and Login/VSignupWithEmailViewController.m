@@ -23,10 +23,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
-@property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
-@property (nonatomic, strong)   VUser*  profile;
-@property (nonatomic, strong)   VRegistrationModel* registrationModel;
+@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *signupButton;
+@property (nonatomic, strong)   VUser  *profile;
+@property (nonatomic, strong)   VRegistrationModel *registrationModel;
 
 @end
 
@@ -111,11 +111,11 @@
 
 - (BOOL)shouldSignUpWithEmailAddress:(NSString *)emailAddress password:(NSString *)password
 {
-    NSError*    theError;
+    NSError    *theError;
 
     if (![self validateEmailAddress:&emailAddress error:&theError])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -127,7 +127,7 @@
 
     if (![self validatePassword:&password error:&theError])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -139,7 +139,7 @@
 
     if (![self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:NSLocalizedString(@"PasswordNotMatching", @"")
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -163,13 +163,13 @@
     @"9][0-9]?|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
     @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
-    NSPredicate*  emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
+    NSPredicate  *emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
     if (!(*ioValue && [emailTest evaluateWithObject:*ioValue]))
     {
         if (outError != NULL)
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignupErrorCodeBadEmailAddress
                                                    userInfo:userInfoDict];
@@ -188,7 +188,7 @@
         if (outError != NULL)
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignupErrorCodeBadPassword
                                                    userInfo:userInfoDict];
@@ -262,7 +262,7 @@
 {
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
-        VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         self.registrationModel.email = self.emailTextField.text;
@@ -276,7 +276,7 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    VSignupTransitionAnimator*   animator = [[VSignupTransitionAnimator alloc] init];
+    VSignupTransitionAnimator   *animator = [[VSignupTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
 }

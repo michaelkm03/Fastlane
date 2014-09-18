@@ -24,10 +24,10 @@
 
 @interface VEmotiveBallisticsBarViewController ()
 
-@property (strong, nonatomic) VVoteType* likeVote;
-@property (strong, nonatomic) VVoteType* dislikeVote;
-@property (strong, nonatomic) NSMutableDictionary* voteCounts; ///< Holds the new votes that have been cast by the user
-@property (strong, nonatomic) NSMutableDictionary* voteCountsForDisplay; ///< Holds the total of this user's votes and remote users' votes
+@property (strong, nonatomic) VVoteType *likeVote;
+@property (strong, nonatomic) VVoteType *dislikeVote;
+@property (strong, nonatomic) NSMutableDictionary *voteCounts; ///< Holds the new votes that have been cast by the user
+@property (strong, nonatomic) NSMutableDictionary *voteCountsForDisplay; ///< Holds the total of this user's votes and remote users' votes
 @property (strong, nonatomic) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
@@ -36,10 +36,10 @@
 
 + (instancetype)sharedInstance
 {
-    static  VEmotiveBallisticsBarViewController*   sharedInstance;
+    static  VEmotiveBallisticsBarViewController   *sharedInstance;
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         sharedInstance = (VEmotiveBallisticsBarViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kEmotiveBallisticsBarStoryboardID];
     });
     
@@ -81,17 +81,17 @@
 {
     [super viewDidDisappear:animated];
     
-    NSArray* voteTypes = [self.voteCounts allKeys];
+    NSArray *voteTypes = [self.voteCounts allKeys];
     if ([voteTypes count])
     {
-        NSArray* voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
+        NSArray *voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
         
-        __block NSManagedObjectContext* context = nil;
+        __block NSManagedObjectContext *context = nil;
         [self.voteCounts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
         {
-            NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber *)key).integerValue];
+            NSPredicate *sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber *)key).integerValue];
             
-            VVoteResult* vote = (VVoteResult *)[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] anyObject];
+            VVoteResult *vote = (VVoteResult *)[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] anyObject];
             vote.count = @(vote.count.integerValue + ((NSNumber *)obj).integerValue);
             context = vote.managedObjectContext;
         }];
@@ -199,7 +199,7 @@
         self.voteCountsForDisplay[self.likeVote.remoteId] = @(voteCount);
         [self updateVoteCountDisplay];
         
-        NSNumber* currentCount = [self.voteCounts objectForKey:self.likeVote.remoteId.stringValue];
+        NSNumber *currentCount = [self.voteCounts objectForKey:self.likeVote.remoteId.stringValue];
         currentCount = @(currentCount.integerValue + 1);
         [self.voteCounts setObject:currentCount forKey:self.likeVote.remoteId.stringValue];
     }
@@ -209,7 +209,7 @@
         self.voteCountsForDisplay[self.dislikeVote.remoteId] = @(voteCount);
         [self updateVoteCountDisplay];
         
-        NSNumber* currentCount = [self.voteCounts objectForKey:self.dislikeVote.remoteId.stringValue];
+        NSNumber *currentCount = [self.voteCounts objectForKey:self.dislikeVote.remoteId.stringValue];
         currentCount = @(currentCount.integerValue + 1);
         [self.voteCounts setObject:currentCount forKey:self.dislikeVote.remoteId.stringValue];
     }
@@ -217,14 +217,14 @@
     UIView *thrownImageSuperview = self.parentViewController.view ?: self.view;
     
     point = [self.target convertPoint:point toView:thrownImageSuperview];
-    __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
+    __block UIImageView *thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
     thrownImage.frame = CGRectMake(0, 0, 110, 110);
     thrownImage.center = [emotive.superview convertPoint:emotive.center toView:thrownImageSuperview];
     
-    NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
+    NSMutableArray *emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
     {
-        UIImage* nextImage;
+        UIImage *nextImage;
         if (emotive == self.leftButton && i<13)
         {
             nextImage = [UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]];

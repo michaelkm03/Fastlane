@@ -16,7 +16,7 @@
 
 @interface VReposterTableViewController ()
 
-@property (nonatomic, strong) NSArray* reposters;
+@property (nonatomic, strong) NSArray *reposters;
 
 @end
 
@@ -96,16 +96,16 @@
 
 - (void)refreshRepostersList
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.reposters = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setHasReposters:(self.reposters.count>0)];
         
         [self.tableView reloadData];
     };
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.tableView reloadData];
         [self setHasReposters:NO];
@@ -118,10 +118,10 @@
 
 - (void)loadMoreReposters
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet* uniqueReposters = [NSSet setWithArray:[self.reposters arrayByAddingObjectsFromArray:resultObjects]];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSet *uniqueReposters = [NSSet setWithArray:[self.reposters arrayByAddingObjectsFromArray:resultObjects]];
         self.reposters = [[uniqueReposters allObjects] sortedArrayUsingDescriptors:@[sort]];
         [self setHasReposters:self.reposters.count];
         
@@ -137,7 +137,7 @@
 {
     if (!hasReposters)
     {
-        VNoContentView* noRepostersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *noRepostersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noRepostersView;
         noRepostersView.titleLabel.text = NSLocalizedString(@"NoRepostersTitle", @"");
         noRepostersView.messageLabel.text = NSLocalizedString(@"NoRepostersMessage", @"");

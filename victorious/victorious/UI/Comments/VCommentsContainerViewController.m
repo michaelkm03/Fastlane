@@ -30,10 +30,10 @@
 
 @interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton* backButton;
-@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-@property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @end
 
@@ -43,8 +43,8 @@
 
 + (instancetype)commentsContainerView
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCommentsContainerViewController *commentsContainerViewController = (VCommentsContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
 
     return commentsContainerViewController;
 }
@@ -54,9 +54,9 @@
     _sequence = sequence;
     
     [self.backgroundImage removeFromSuperview];
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [newBackgroundView setExtraLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                        placeholderImage:placeholderImage];
     
@@ -69,7 +69,7 @@
     [super viewDidLoad];
     
     //Load the image on first load
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:placeholderImage];
     
@@ -126,11 +126,11 @@
         return;
     }
     
-    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [progressHUD hide:YES];
@@ -138,7 +138,7 @@
         [((VCommentsTableViewController *)self.conversationTableViewController) addedNewComment:[resultObjects firstObject]];
     };
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [progressHUD hide:YES];
     };
@@ -165,13 +165,13 @@
     if (operation == UINavigationControllerOperationPop
         && [toVC isKindOfClass:[VContentViewController class]])
     {
-        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
+        VCommentToContentAnimator *animator = [[VCommentToContentAnimator alloc] init];
         return animator;
     }
     else if (operation == UINavigationControllerOperationPop
              && [toVC isKindOfClass:[VStreamContainerViewController class]])
     {
-        VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
+        VCommentToStreamAnimator *animator = [[VCommentToStreamAnimator alloc] init];
         return animator;
     }
     return nil;
@@ -251,7 +251,7 @@
      {
          frame.origin.x = CGRectGetWidth(self.conversationTableViewController.view.frame);
          self.conversationTableViewController.view.frame = frame;
-         for (UIView* view in self.view.subviews)
+         for (UIView *view in self.view.subviews)
          {
              if ([view isKindOfClass:[UIImageView class]])
              {

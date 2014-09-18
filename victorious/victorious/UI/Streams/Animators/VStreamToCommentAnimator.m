@@ -22,7 +22,7 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    UIViewController* fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VStreamTableViewController *streamVC;
     
     if ([fromVC isKindOfClass:[VStreamTableViewController class]])
@@ -34,7 +34,7 @@
         streamVC = ((VStreamContainerViewController *)fromVC).streamTable;
     }
     
-    VCommentsContainerViewController* commentVC = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VCommentsContainerViewController *commentVC = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
     fromVC.view.userInteractionEnabled = NO;
     commentVC.view.userInteractionEnabled = NO;

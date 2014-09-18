@@ -10,8 +10,8 @@
 
 @interface VObjectManager ()
 
-@property (nonatomic, strong) NSCache* objectCache;
-@property (nonatomic, strong) VUser*  mainUser;
+@property (nonatomic, strong) NSCache *objectCache;
+@property (nonatomic, strong) VUser  *mainUser;
 
 @end
 
@@ -41,8 +41,8 @@
                                   failBlock:(VFailBlock)failBlock;
 
 /*! Uses multipartFormRestquest to upload media.
- * allURLs key:value must be NSString* parameterName:NSURL* localURL
- * allExtensions must have same keys are allURLs, values are NSString* fileExtension */
+ * allURLs key:value must be NSString *parameterName:NSURL *localURL
+ * allExtensions must have same keys are allURLs, values are NSString *fileExtension */
 - (AFHTTPRequestOperation *)uploadURLs:(NSDictionary *)allUrls
                                toPath:(NSString *)path
                            parameters:(NSDictionary *)parameters

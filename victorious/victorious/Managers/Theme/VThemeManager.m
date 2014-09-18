@@ -9,59 +9,57 @@
 #import "VThemeManager.h"
 
 #pragma mark - new theme constants
-NSString*   const   kVChannelName                       =   @"channel.name";
 
-NSString*   const   kVMenuBackgroundImage               =   @"Default";
-NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
-NSString*   const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
+NSString * const   kVChannelName                       =   @"channel.name";
+
+NSString * const   kVMenuBackgroundImage               =   @"Default";
+NSString * const   kVMenuBackgroundImage5              =   @"Default-568h";
+NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts
 
-NSString*   const   kVHeaderFont                        =   @"font.header";
+NSString * const   kVHeaderFont                        =   @"font.header";
 
-NSString*   const   kVHeading1Font                      =   @"font.heading1";
-NSString*   const   kVHeading2Font                      =   @"font.heading2";
-NSString*   const   kVHeading3Font                      =   @"font.heading3";
-NSString*   const   kVHeading4Font                      =   @"font.heading4";
+NSString * const   kVHeading1Font                      =   @"font.heading1";
+NSString * const   kVHeading2Font                      =   @"font.heading2";
+NSString * const   kVHeading3Font                      =   @"font.heading3";
+NSString * const   kVHeading4Font                      =   @"font.heading4";
 
-NSString*   const   kVParagraphFont                     =   @"font.paragraph";
+NSString * const   kVParagraphFont                     =   @"font.paragraph";
 
-NSString*   const   kVLabel1Font                        =   @"font.label1";
-NSString*   const   kVLabel2Font                        =   @"font.label2";
-NSString*   const   kVLabel3Font                        =   @"font.label3";
-NSString*   const   kVLabel4Font                        =   @"font.label4";
+NSString * const   kVLabel1Font                        =   @"font.label1";
+NSString * const   kVLabel2Font                        =   @"font.label2";
+NSString * const   kVLabel3Font                        =   @"font.label3";
+NSString * const   kVLabel4Font                        =   @"font.label4";
 
-NSString*   const   kVButton1Font                       =   @"font.button1";
-NSString*   const   kVButton2Font                       =   @"font.button2";
-
+NSString * const   kVButton1Font                       =   @"font.button1";
+NSString * const   kVButton2Font                       =   @"font.button2";
 
 #pragma mark - Colors
-NSString*   const   kVBackgroundColor                   =   @"color.background";
-NSString*   const   kVSecondaryBackgroundColor          =   @"color.bacground.secondary";
 
-NSString*   const   kVMainTextColor                     =   @"color.text";
-NSString*   const   kVContentTextColor                  =   @"color.text.content";
+NSString * const   kVBackgroundColor                   =   @"color.background";
+NSString * const   kVSecondaryBackgroundColor          =   @"color.bacground.secondary";
 
-NSString*   const   kVAccentColor                       =   @"color.accent";
-NSString*   const   kVSecondaryAccentColor              =   @"color.accent.secondary";
+NSString * const   kVMainTextColor                     =   @"color.text";
+NSString * const   kVContentTextColor                  =   @"color.text.content";
 
-NSString*   const   kVLinkColor                         =   @"color.link";
-NSString*   const   kVSecondaryLinkColor                =   @"color.link.secondary";
+NSString * const   kVAccentColor                       =   @"color.accent";
+NSString * const   kVSecondaryAccentColor              =   @"color.accent.secondary";
 
-NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
+NSString * const   kVLinkColor                         =   @"color.link";
+NSString * const   kVSecondaryLinkColor                =   @"color.link.secondary";
+
+NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
 
 #pragma mark - Feedback Support
-NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
-@interface      VThemeManager   ()
-
-@end
+NSString * const   kVChannelURLSupport                 =   @"email.support";
 
 @implementation VThemeManager
 
 + (VThemeManager *)sharedThemeManager
 {
-    static  VThemeManager*  sharedThemeManager;
+    static  VThemeManager  *sharedThemeManager;
     static  dispatch_once_t onceToken;
     
     dispatch_once(&onceToken,
@@ -77,7 +75,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
     self    =   [super init];
     if (self)
     {
-        NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"defaultTheme" withExtension:@"plist"];
+        NSURL  *defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"defaultTheme" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultThemeURL]];
     }
     
@@ -94,7 +92,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (void)updateToNewTheme
 {
-    NSDictionary* newTheme = [[NSUserDefaults standardUserDefaults] objectForKey:kVNewThemeKey];
+    NSDictionary *newTheme = [[NSUserDefaults standardUserDefaults] objectForKey:kVNewThemeKey];
     
     [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
      {
@@ -232,7 +230,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (UIColor *)themedColorForKey:(NSString *)key
 {
-    NSDictionary*   colorDictionary =   [self themedValueForKey:key];
+    NSDictionary   *colorDictionary =   [self themedValueForKey:key];
     if (nil == colorDictionary)
     {
         return [UIColor clearColor];
@@ -242,7 +240,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
     CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
     CGFloat         blue            =   [colorDictionary[@"blue"] doubleValue] / 255.0;
     CGFloat         alpha           =   [colorDictionary[@"alpha"] doubleValue];
-    UIColor*        color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    UIColor        *color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
     return color;
 }
 
@@ -259,7 +257,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (NSURL *)themedImageURLForKey:(NSString *)key
 {
-    NSURL*  url =   [self themedURLForKey:key];
+    NSURL  *url =   [self themedURLForKey:key];
     if (!url)
     {
         url = [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
@@ -285,8 +283,8 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 
 - (UIFont *)themedFontForKey:(NSString *)key
 {
-    NSDictionary*   fontDictionary = [self themedValueForKey:key];
-    NSString*       fontName    =   fontDictionary[@"fontName"];
+    NSDictionary   *fontDictionary = [self themedValueForKey:key];
+    NSString       *fontName    =   fontDictionary[@"fontName"];
     CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
     
     if (0 == fontSize)
@@ -294,7 +292,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
         fontSize = [UIFont systemFontSize];
     }
     
-    UIFont* font = [UIFont fontWithName:fontName size:fontSize];
+    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
     if (font)
     {
         return font;

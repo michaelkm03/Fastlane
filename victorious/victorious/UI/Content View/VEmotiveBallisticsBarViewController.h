@@ -14,6 +14,6 @@
 
 @interface VEmotiveBallisticsBarViewController : VActionBarViewController
 
-@property (weak, nonatomic) UIView* target;
+@property (weak, nonatomic) UIView *target;
 
 @end
