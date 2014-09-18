@@ -10,10 +10,6 @@
 
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
-+ (CGSize)sizeWithFullWidth:(CGFloat)width
-                commentBody:(NSString *)commentBody
-                andHasMedia:(BOOL)hasMedia;
-
 @property (nonatomic, copy) NSURL *URLForCommenterAvatar;
 @property (nonatomic, copy) NSString *commenterName;
 @property (nonatomic, copy) NSString *timestampText;
@@ -24,5 +20,9 @@
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
+
++ (CGSize)sizeWithFullWidth:(CGFloat)width
+                commentBody:(NSString *)commentBody
+                andHasMedia:(BOOL)hasMedia;
 
 @end
