@@ -1,5 +1,5 @@
 //
-//  VStream.m
+//  VStream+RestKit.h
 //  victorious
 //
 //  Created by Will Long on 9/18/14.
@@ -7,13 +7,7 @@
 //
 
 #import "VStream.h"
-#import "VSequence.h"
 
-
-@implementation VStream
-
-@dynamic apiPath;
-@dynamic streamContentType;
-@dynamic sequences;
+@interface VStream (RestKit)
 
 @end
