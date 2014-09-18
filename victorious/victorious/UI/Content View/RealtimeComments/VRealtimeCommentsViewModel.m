@@ -71,6 +71,12 @@
 
 - (void)setCurrentTime:(CMTime)currentTime
 {
+    // We're going back in time. Need to reset currentcomment
+    if (CMTimeGetSeconds(_currentTime) < CMTimeGetSeconds(currentTime))
+    {
+        self.currentComment = nil;
+    }
+    
     _currentTime = currentTime;
  
     if (CMTimeGetSeconds(currentTime) < self.currentComment.realtime.floatValue)

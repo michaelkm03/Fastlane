@@ -165,7 +165,8 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
         self.sizeForContentView = layoutAttributesForContentView.size;
     }
     
-    if (CGSizeEqualToSize(self.sizeForRealTimeComentsView, CGSizeZero))
+#warning This needs to be better aware of the presence or not of RTC
+    if (CGSizeEqualToSize(self.sizeForRealTimeComentsView, CGSizeZero) && (initialLayoutAttributes.count > 1))
     {
         UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
         self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
