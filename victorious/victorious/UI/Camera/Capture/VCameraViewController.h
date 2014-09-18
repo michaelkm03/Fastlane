@@ -16,9 +16,12 @@
  @param finished YES if the user chose media, NO if the user cancelled.
  */
 @property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
-@property (nonatomic)                   BOOL                didSelectAssetFromLibrary;
 
-+ (BOOL)isCameraAvailable;
+/**
+ If YES, the most recently captured media was
+ selected from the user's asset library.
+ */
+@property (nonatomic) BOOL didSelectAssetFromLibrary;
 
 /**
  Returns an instance of this class that will initially show a video capture screen.
