@@ -42,9 +42,9 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 
-static const CGFloat kPublishKeyboardOffset = 106.0f;
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
+static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of space by which we push the canvas "up" for the 3.5" devices
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
 
@@ -136,7 +136,7 @@ static const CGFloat kShareMargin = 34.0f;
         self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
         self.shareViewHeightConstraint.constant = 80.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
-        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
+        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - kCanvasOffsetForSmallPhones;
         [self.view layoutIfNeeded];
     }
     
@@ -897,37 +897,34 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (CGRectGetHeight(self.view.bounds) > 480.0f)
-    {
-        return;
-    }
-    
+    CGRect keyboardFrame;
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
     
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0f
-                        options:(animationCurve << 16)
-                     animations:^
-     {
-         self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset - ((CGRectGetHeight(self.view.bounds) <= 480.0f) ? 0.0f : 20.0f);
-         [self.view layoutIfNeeded];
-     }
-                     completion:nil];
+    // an amount by which we push the canvas up to dodge the keyboard
+    CGFloat keyboardDodgeOffset = MAX(0, CGRectGetHeight(self.canvasView.bounds) - kCanvasOffsetForSmallPhones - CGRectGetHeight(self.view.bounds) + CGRectGetHeight(keyboardFrame));
     
+    if (keyboardDodgeOffset)
+    {
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0f
+                            options:(animationCurve << 16)
+                         animations:^
+        {
+            self.topOfCanvasToContainerConstraint.constant = -44 - keyboardDodgeOffset;
+            [self.view layoutIfNeeded];
+        }
+                        completion:nil];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    if (CGRectGetHeight(self.view.bounds) > 480.0f)
-    {
-        return;
-    }
-    
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
@@ -938,7 +935,7 @@ static const CGFloat kShareMargin = 34.0f;
     [UIView animateWithDuration:animationDuration delay:0
                         options:(animationCurve << 16) animations:^
      {
-         self.topOfCanvasToContainerConstraint.constant = -64 - ((self.view.frame.size.height <= 480.0f) ? 0.0f : 20.0f);
+         self.topOfCanvasToContainerConstraint.constant = -44 - ((CGRectGetHeight(self.view.frame) > 480.0f) ? 0.0f : kCanvasOffsetForSmallPhones);
          [self.view layoutIfNeeded];
      }
                      completion:nil];
