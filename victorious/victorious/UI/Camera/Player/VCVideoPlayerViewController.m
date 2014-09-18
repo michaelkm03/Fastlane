@@ -81,7 +81,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                      options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
                      context:NULL];
     
-    VCVideoPlayerViewController * __weak weakSelf = self;
+    VCVideoPlayerViewController *__weak weakSelf = self;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^(CMTime time)
@@ -172,7 +172,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
     if (loopCount > 1)
     {
-        AVMutableComposition * composition = [AVMutableComposition composition];
+        AVMutableComposition *composition = [AVMutableComposition composition];
         CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
         
         for (NSUInteger i = 0; i < loopCount; i++)
@@ -473,7 +473,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)refreshNaturalSizePropertyFromTrack:(AVPlayerItemTrack *)track inItem:(AVPlayerItem *)item
 {
-    VCVideoPlayerViewController * __weak weakSelf = self;
+    VCVideoPlayerViewController *__weak weakSelf = self;
     AVAssetTrack *assetTrack = track.assetTrack;
     [assetTrack loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(naturalSize))] completionHandler:^(void)
     {

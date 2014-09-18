@@ -134,7 +134,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 {
     CMItemCount count;
     CMSampleBufferGetSampleTimingInfoArray(sample, 0, nil, &count);
-    CMSampleTimingInfo *pInfo = malloc(sizeof(CMSampleTimingInfo) * count);
+    CMSampleTimingInfo *pInfo = malloc(sizeof(CMSampleTimingInfo)* count);
     CMSampleBufferGetSampleTimingInfoArray(sample, count, pInfo, &count);
     for (CMItemCount i = 0; i < count; i++)
     {

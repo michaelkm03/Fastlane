@@ -139,7 +139,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     
     self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
     
-    UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
+    UIImage *flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
     
@@ -464,13 +464,13 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (IBAction)openAlbumAction:(id)sender
 {
-    UIImagePickerController*    controller = [[UIImagePickerController alloc] init];
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
     
     controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     controller.allowsEditing = NO;
     controller.delegate = self;
 
-    NSMutableArray* mediaTypes  = [[NSMutableArray alloc] init];
+    NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
     if (self.allowPhotos)
     {
         [mediaTypes addObject:(NSString *)kUTTypeImage];
@@ -810,11 +810,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         return NO;
     }
     
-    NSArray* availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
     
     [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
      {
-         NSString*   type = (NSString *)obj;
+         NSString *type = (NSString *)obj;
          if ([type isEqualToString:mediaType])
          {
              results = YES;
