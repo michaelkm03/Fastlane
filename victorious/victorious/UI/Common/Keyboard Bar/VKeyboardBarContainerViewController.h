@@ -11,7 +11,7 @@
 @interface VKeyboardBarContainerViewController : UIViewController <VKeyboardBarDelegate>
 
 @property (weak, nonatomic) VKeyboardBarViewController *keyboardBarViewController;
-@property (strong, nonatomic) IBOutlet UIView* topConstraintView;
+@property (strong, nonatomic) IBOutlet UIView *topConstraintView;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
 
 @end

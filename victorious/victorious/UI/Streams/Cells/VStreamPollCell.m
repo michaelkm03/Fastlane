@@ -24,11 +24,11 @@
 NSString * const VStreamPollCellNibName = @"VStreamPollCell";
 
 @interface VStreamPollCell ()
-@property (nonatomic, weak) VAnswer* firstAnswer;
-@property (nonatomic, weak) VAnswer* secondAnswer;
+@property (nonatomic, weak) VAnswer *firstAnswer;
+@property (nonatomic, weak) VAnswer *secondAnswer;
 
-@property (nonatomic, copy) NSURL* firstAssetUrl;
-@property (nonatomic, copy) NSURL* secondAssetUrl;
+@property (nonatomic, copy) NSURL *firstAssetUrl;
+@property (nonatomic, copy) NSURL *secondAssetUrl;
 
 @end
 
@@ -43,7 +43,7 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
 {
     [super setSequence:sequence];
     
-    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    NSArray *answers = [[self.sequence firstNode] firstAnswers];
     self.firstAnswer = [answers firstObject];
     if ([answers count] >= 2)
     {
@@ -58,7 +58,7 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
     self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.firstAssetUrl];
@@ -104,4 +104,5 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
      }
                                           failure:nil];
 }
+
 @end

@@ -10,7 +10,7 @@
 #import "VConstants.h"
 #import "VSequenceUserInteractions.h"
 
-extern NSString* const kPollResultsLoaded;
+extern NSString * const kPollResultsLoaded;
 
 @class VAnswer, VSequence, VVoteType;
 

@@ -20,11 +20,12 @@
 
 @property (nonatomic, weak) id<VRealtimeCommentDelegate> delegate;
 
-@property (nonatomic, strong) NSArray* comments;
+@property (nonatomic, strong) NSArray *comments;
 
 @property (nonatomic) CGFloat currentTime; ///Current time of the media
 @property (nonatomic) CGFloat endTime;  ///End time of the media.  Defaults to CGFloatMax if not defined (to avoid divide by 0 crashes)
 
-@property (nonatomic, weak, readonly) IBOutlet UIView* commentBackgroundView;
-@property (nonatomic, weak, readonly) IBOutlet UIImageView* arrowImageView;
+@property (nonatomic, weak, readonly) IBOutlet UIView *commentBackgroundView;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView *arrowImageView;
+
 @end

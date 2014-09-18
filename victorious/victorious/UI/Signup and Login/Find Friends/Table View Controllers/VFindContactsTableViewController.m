@@ -175,11 +175,11 @@
     if (allEmailAddresses.count)
     {
         [[VObjectManager sharedManager] findFriendsByEmails:allEmailAddresses
-                                           withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                           withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             completionBlock(resultObjects, nil);
         }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  failBlock:^(NSOperation *operation, NSError *error)
         {
             completionBlock(nil, error);
         }];

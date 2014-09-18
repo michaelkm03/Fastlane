@@ -100,8 +100,8 @@
         NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         NSMutableArray *users = [[NSMutableArray alloc] init];
-        NSError * __block anError = nil;
-        BOOL      __block success = NO;
+        NSError *__block anError = nil;
+        BOOL     __block success = NO;
         
         for (ACAccount *account in accounts)
         {
@@ -118,13 +118,13 @@
                 NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
                 NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
                 
-                NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
-                NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+                NSString *oauthToken = [parsedData objectForKey:@"oauth_token"];
+                NSString *tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
                 
                 [[VObjectManager sharedManager] findFriendsBySocial:kVTwitterSocialSelector
                                                               token:oauthToken
                                                              secret:tokenSecret
-                                                   withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                   withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                 {
                     success = YES;
                     [users addObjectsFromArray:resultObjects];

@@ -19,6 +19,7 @@
 @implementation VContentViewController (Polls)
 
 #pragma mark - Animation
+
 - (void)pollAnimation
 {
     self.orImageView.hidden = ![self.currentNode isPoll];
@@ -26,7 +27,7 @@
     self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
     self.orAnimator.delegate = self;
     
-    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
+    UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
     gravityBehavior.magnitude = 4;
     [self.orAnimator addBehavior:gravityBehavior];
     
@@ -34,7 +35,7 @@
     elasticityBehavior.elasticity = 0.2f;
     [self.orAnimator addBehavior:elasticityBehavior];
     
-    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
+    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
     collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
     [self.orAnimator addBehavior:collisionBehavior];
     
@@ -58,9 +59,10 @@
 }
 
 #pragma mark - Poll
+
 - (void)loadPoll
 {
-    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    NSArray *answers = [[self.sequence firstNode] firstAnswers];
     
     [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer *)[answers firstObject]).mediaUrl]
                                 placeholderImage:self.leftPollThumbnail];
@@ -96,8 +98,8 @@
         return;
     }
     
-    NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    NSURL* contentURL;
+    NSArray *answers = [[self.sequence firstNode] firstAnswers];
+    NSURL *contentURL;
     UIImageView *thumbnailView;
     UIImageView *otherThumbnailView;
     UIView *playIcon;
@@ -174,7 +176,7 @@
             self.previewImage.image = thumbnailView.image;
             self.pollPreviewView.hidden = YES;
             [self playVideoAtURL:contentURL withPreviewView:self.previewImage];
-            VContentViewController * __weak weakSelf = self;
+            VContentViewController *__weak weakSelf = self;
             self.onVideoCompletionBlock = ^(void)
             {
                 VContentViewController *strongSelf = weakSelf;
@@ -186,7 +188,7 @@
         }
     }];
     
-    VContentViewController * __weak weakSelf = self;
+    VContentViewController *__weak weakSelf = self;
     self.collapsePollMedia = ^(BOOL animated, void (^completion)())
     {
         if ([contentURL v_hasVideoExtension])
@@ -250,6 +252,7 @@
 }
 
 #pragma mark - VPollAnswerBarDelegate
+
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId
 {
     self.firstResultView.hidden = NO;
@@ -268,7 +271,7 @@
     
     for (VPollResult *result in self.sequence.pollResults)
     {
-        VResultView* resultView = [self resultViewForAnswerId:result.answerId];
+        VResultView *resultView = [self resultViewForAnswerId:result.answerId];
         
         CGFloat progress = result.count.doubleValue / totalVotes;
         
@@ -288,7 +291,7 @@
     if (self.collapsePollMedia)
     {
         void (^previousCollapsePollMedia)(BOOL, void(^)()) = self.collapsePollMedia;
-        VContentViewController * __weak weakSelf = self;
+        VContentViewController *__weak weakSelf = self;
         self.collapsePollMedia = ^(BOOL animated, void (^completion)())
         {
             previousCollapsePollMedia(animated, completion);
@@ -307,7 +310,7 @@
 
 - (VResultView *)resultViewForAnswerId:(NSNumber *)answerId
 {
-    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    NSArray *answers = [[self.sequence firstNode] firstAnswers];
     if ([answerId isEqualToNumber:((VAnswer *)[answers firstObject]).remoteId])
     {
         return self.firstResultView;

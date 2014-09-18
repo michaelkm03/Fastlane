@@ -92,7 +92,7 @@
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController * __weak weakNav = navigationController;
+    UINavigationController *__weak weakNav = navigationController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)
@@ -129,11 +129,11 @@
                      media2URL:(NSURL *)media2URL
 {
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSLog(@"%@", resultObjects);
     };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         NSLog(@"%@", error);
         NSString *title, *message;
@@ -148,7 +148,7 @@
             title = NSLocalizedString(@"PollUploadTitle", @"");
             message = error.localizedDescription;
         }
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                         message:message
                                                        delegate:nil
                                               cancelButtonTitle:nil

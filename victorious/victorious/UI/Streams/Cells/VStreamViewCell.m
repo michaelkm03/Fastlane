@@ -132,7 +132,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
 
     
-    VAsset* firstAsset = [[_sequence firstNode].assets.array firstObject];
+    VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
     {
         self.playButtonImage.hidden = NO;
@@ -215,7 +215,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     //If this cell is from the profile we should disable going to the profile
     BOOL fromProfile = NO;
-    for (UIViewController* vc in self.parentTableViewController.navigationController.viewControllers)
+    for (UIViewController *vc in self.parentTableViewController.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VUserProfileViewController class]])
         {
@@ -227,7 +227,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         return;
     }
     
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

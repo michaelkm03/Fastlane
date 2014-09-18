@@ -40,7 +40,7 @@
 
 @interface VCommentsTableViewController ()
 
-@property (nonatomic, strong) UIImageView* backgroundImageView;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
 
@@ -113,7 +113,7 @@
     _hasComments = hasComments;
     if (!hasComments)
     {
-        VNoContentView* noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noCommentsView;
         noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
         noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");
@@ -134,7 +134,7 @@
 {
     [self setHasComments:YES];
     [self.tableView reloadData];
-    NSIndexPath* pathForComment = [NSIndexPath indexPathForRow:[self.sequence.comments indexOfObject:comment] inSection:0];
+    NSIndexPath *pathForComment = [NSIndexPath indexPathForRow:[self.sequence.comments indexOfObject:comment] inSection:0];
     [self.tableView scrollToRowAtIndexPath:pathForComment atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
@@ -142,14 +142,14 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+    RKManagedObjectRequestOperation *operation = [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                                                               isRefresh:YES
-                                                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                                                           successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
-                                                  } failBlock:^(NSOperation* operation, NSError* error)
+                                                  } failBlock:^(NSOperation *operation, NSError *error)
                                                   {
                                                       self.needsRefresh = NO;
                                                       [self.refreshControl endRefreshing];
@@ -166,7 +166,7 @@
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                  isRefresh:YES
-                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [self.tableView reloadData];
      }
@@ -174,6 +174,7 @@
 }
 
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -186,7 +187,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment* comment = (VComment *)[self.sequence.comments objectAtIndex:indexPath.row];
+    VComment *comment = (VComment *)[self.sequence.comments objectAtIndex:indexPath.row];
     return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 
@@ -230,7 +231,7 @@
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -261,11 +262,11 @@
                                                   onDestructiveButton:^(void)
     {
         [[VObjectManager sharedManager] flagComment:comment
-                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              VLog(@"resultObjects: %@", resultObjects);
              
-             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                     message:NSLocalizedString(@"ReportCommentMessage", @"")
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -273,11 +274,11 @@
              [alert show];
 
          }
-                                          failBlock:^(NSOperation* operation, NSError* error)
+                                          failBlock:^(NSOperation *operation, NSError *error)
          {
              VLog(@"Failed to flag comment %@", comment);
             
-             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                     message:NSLocalizedString(@"ErrorOccured", @"")
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")

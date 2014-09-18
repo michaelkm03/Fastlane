@@ -64,7 +64,7 @@ NSString * const kVReachabilityChangedNotification = @"kVReachabilityChangedNoti
 
 #define kShouldPrintReachabilityFlags 1
 
-static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char* comment)
+static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char *comment)
 {
 #if kShouldPrintReachabilityFlags
 
@@ -84,13 +84,13 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
 #endif
 }
 
-static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void* info)
+static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
 #pragma unused (target, flags)
 	NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
 	NSCAssert([(__bridge NSObject *)info isKindOfClass: [VReachability class]], @"info was wrong class in ReachabilityCallback");
 
-    VReachability* noteObject = (__bridge VReachability *)info;
+    VReachability *noteObject = (__bridge VReachability *)info;
     // Post a notification to notify the client that the network reachability changed.
     [[NSNotificationCenter defaultCenter] postNotificationName: kVReachabilityChangedNotification object: noteObject];
 }
@@ -107,7 +107,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 {
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
 
-	VReachability* returnValue = NULL;
+	VReachability *returnValue = NULL;
 
 	if (reachability != NULL)
 	{

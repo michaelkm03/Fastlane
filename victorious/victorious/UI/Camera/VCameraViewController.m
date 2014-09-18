@@ -24,32 +24,32 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 @interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           flashButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *switchCameraButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *nextButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *flashButton;
 
-@property (nonatomic, weak) IBOutlet    UIView*             progressView;
-@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet    UIView*             previewView;
+@property (nonatomic, weak) IBOutlet    UIView             *progressView;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint *progressViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet    UIView             *previewView;
 
-@property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           deleteButton;
-@property (nonatomic, weak) IBOutlet    UIView*             recordButton;
-@property (nonatomic, weak) IBOutlet    UIImageView*        toolTipImageView;
-@property (nonatomic, weak) IBOutlet    UIButton*           capturePhotoButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           switchCameraModeButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *openAlbumButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *deleteButton;
+@property (nonatomic, weak) IBOutlet    UIView             *recordButton;
+@property (nonatomic, weak) IBOutlet    UIImageView        *toolTipImageView;
+@property (nonatomic, weak) IBOutlet    UIButton           *capturePhotoButton;
+@property (nonatomic, weak) IBOutlet    UIButton           *switchCameraModeButton;
 
-@property (strong, nonatomic) VCCamera* camera;
-@property (strong, nonatomic) VCCameraFocusView* focusView;
+@property (strong, nonatomic) VCCamera *camera;
+@property (strong, nonatomic) VCCameraFocusView *focusView;
 
 @property (nonatomic)                   BOOL                allowVideo;
 @property (nonatomic)                   BOOL                allowPhotos;
-@property (nonatomic, copy)             NSString*           initialCaptureMode;
+@property (nonatomic, copy)             NSString           *initialCaptureMode;
 
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
 
-@property (nonatomic, copy)             NSString*           videoQuality;
+@property (nonatomic, copy)             NSString           *videoQuality;
 
 @end
 
@@ -146,7 +146,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 		[self prepareCamera];
     }];
 
-    UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
+    UIImage *flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
     [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
@@ -326,13 +326,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (IBAction)openAlbumAction:(id)sender
 {
-    UIImagePickerController*    controller = [[UIImagePickerController alloc] init];
+    UIImagePickerController    *controller = [[UIImagePickerController alloc] init];
     
     controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     controller.allowsEditing = NO;
     controller.delegate = self;
 
-    NSMutableArray* mediaTypes  = [[NSMutableArray alloc] init];
+    NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
     if (self.allowPhotos)
     {
         [mediaTypes addObject:(NSString *)kUTTypeImage];
@@ -532,11 +532,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         return NO;
     }
     
-    NSArray* availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
     
     [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
      {
-         NSString*   type = (NSString *)obj;
+         NSString   *type = (NSString *)obj;
          if ([type isEqualToString:mediaType])
          {
              results = YES;
@@ -908,7 +908,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Image From Library" label:nil value:nil];
-        UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
         [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
     
@@ -916,7 +916,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     else if (CFStringCompare((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
-        NSURL* movieURL = info[UIImagePickerControllerMediaURL];
+        NSURL *movieURL = info[UIImagePickerControllerMediaURL];
         [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
     }
     

@@ -10,9 +10,9 @@
 
 @interface VTwitterManager : NSObject
 
-@property (nonatomic, readonly) NSString* oauthToken;
-@property (nonatomic, readonly) NSString* secret;
-@property (nonatomic, readonly) NSString* twitterId;
+@property (nonatomic, readonly) NSString *oauthToken;
+@property (nonatomic, readonly) NSString *secret;
+@property (nonatomic, readonly) NSString *twitterId;
 
 + (VTwitterManager *)sharedManager;
 

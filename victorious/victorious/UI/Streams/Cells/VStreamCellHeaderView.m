@@ -77,7 +77,7 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentHitboxButton setHidden:YES];
 }
 
--(void) setIsFromProfile:(BOOL)isFromProfile
+- (void)setIsFromProfile:(BOOL)isFromProfile
 {
     _isFromProfile = isFromProfile;
 }
@@ -101,12 +101,12 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
 
     // Get comment count (if any)
-    NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+    NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
     
     // Format repost / remix string
-    NSString* parentUserString;
+    NSString *parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
     {
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
@@ -153,11 +153,9 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
         return;
     }
     
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentViewController.navigationController pushViewController:profileViewController animated:YES];
     
 }
-
-
 
 @end

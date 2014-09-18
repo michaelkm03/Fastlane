@@ -12,7 +12,7 @@
 
 @interface VVideoPreviewViewController ()
 
-@property (nonatomic, strong) VCVideoPlayerViewController* videoPlayerViewController;
+@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 
 @end
 

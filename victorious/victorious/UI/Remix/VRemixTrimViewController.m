@@ -20,12 +20,12 @@
 
 @interface VRemixTrimViewController ()  <VRemixVideoRangeSliderDelegate, UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
-@property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
+@property (nonatomic, weak)     IBOutlet    UIView             *trimControlContainer;
+@property (nonatomic, strong)   VRemixVideoRangeSlider         *trimSlider;
 
-@property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
+@property (nonatomic, strong)   AVURLAsset                     *sourceAsset;
 
-@property (nonatomic, strong)   AVAssetExportSession*           exportSession;
+@property (nonatomic, strong)   AVAssetExportSession           *exportSession;
 
 @property (nonatomic)           CGFloat                         startSeconds;
 @property (nonatomic)           CGFloat                         endSeconds;
@@ -52,14 +52,14 @@
     self.trimSlider.delegate = self;
     [self.trimControlContainer addSubview:self.trimSlider];
     
-    NSArray* buttons = @[self.takeImageSnapShotButton, self.loopButton, self.rateButton, self.muteButton];
-    for (UIButton* button in buttons)
+    NSArray *buttons = @[self.takeImageSnapShotButton, self.loopButton, self.rateButton, self.muteButton];
+    for (UIButton *button in buttons)
     {
         button.imageView.contentMode = UIViewContentModeCenter;
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
@@ -160,15 +160,15 @@
         [self.videoPlayerViewController.player pause];
     }
 
-    MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD  *hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Just a moment";
     hud.detailsLabelText = @"Trimming Video...";
 
-    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+    NSURL      *target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
 
-    AVAsset*        anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
-    NSArray*        compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:anAsset];
+    AVAsset        *anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
+    NSArray        *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:anAsset];
     if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
     {
         self.exportSession  =   [[AVAssetExportSession alloc] initWithAsset:anAsset presetName:AVAssetExportPresetPassthrough];
@@ -210,7 +210,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction)takeSnapShotAction:(id)sender
+- (IBAction)takeSnapShotAction:(id)sender
 {
     // Pause the Current Video If It Is Playing
     if (self.videoPlayerViewController.isPlaying)
@@ -296,7 +296,7 @@
 {
     if ([segue.identifier isEqualToString:@"toStitch"])
     {
-        VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
+        VRemixStitchViewController     *stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
         stitchViewController.sourceURL = self.targetURL;
         stitchViewController.shouldMuteAudio = self.shouldMuteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;

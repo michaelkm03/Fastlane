@@ -423,7 +423,7 @@ static       char    kKVOContext;
                                                mediaURLPath:[mediaURL absoluteString]];
     [context saveToPersistentStore:nil];
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.isLoading = NO;
         message.remoteId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
@@ -467,7 +467,7 @@ static       char    kKVOContext;
     [self.objectManager sendMessage:message
                              toUser:self.otherUser
                        successBlock:success
-                          failBlock:^(NSOperation* operation, NSError* error)
+                          failBlock:^(NSOperation *operation, NSError *error)
     {
         self.isLoading = NO;
         VLog(@"Failed in creating message with error: %@", error);

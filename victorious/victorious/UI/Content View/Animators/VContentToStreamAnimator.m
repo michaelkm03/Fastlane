@@ -29,7 +29,7 @@
 {
     VContentViewController *contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     
     toVC.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;
@@ -58,7 +58,7 @@
 {
     VContentViewController *contentVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
@@ -79,11 +79,11 @@
      }
                      completion:^(BOOL finished)
      {
-         NSIndexPath* path = [streamVC.tableDataSource indexPathForSequence:contentVC.sequence];
+         NSIndexPath *path = [streamVC.tableDataSource indexPathForSequence:contentVC.sequence];
          //Reselect the cell; it will be unselected if the fetched results controller was updated
          [streamVC.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
          
-         VStreamViewCell* selectedCell = (VStreamViewCell *) [streamVC.tableView cellForRowAtIndexPath:path];
+         VStreamViewCell *selectedCell = (VStreamViewCell *) [streamVC.tableView cellForRowAtIndexPath:path];
          [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
                                                           selectedCell.frame.origin.y - [contentVC contentMediaViewOffset])
                                      animated:NO];

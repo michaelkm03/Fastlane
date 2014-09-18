@@ -11,7 +11,7 @@
 
 @interface VWebContentViewController ()
 
-@property (nonatomic, weak, readwrite) IBOutlet UIWebView* webView;
+@property (nonatomic, weak, readwrite) IBOutlet UIWebView *webView;
 @property (nonatomic, strong, readwrite) UIActivityIndicatorView *activitiyIndicator;
 
 @end
@@ -102,7 +102,7 @@
     [self.activitiyIndicator stopAnimating];
     
     // report the error inside the webview
-    NSString* errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
+    NSString *errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
     [self.webView loadHTMLString:errorString baseURL:nil];
 }
 

@@ -27,7 +27,7 @@
 
 @interface VStreamContainerViewController () <VCreateSequenceDelegate>
 
-@property (nonatomic, weak) IBOutlet UIButton* createButton;
+@property (nonatomic, weak) IBOutlet UIButton *createButton;
 
 @end
 
@@ -35,8 +35,8 @@
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamContainerViewController *container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -46,8 +46,8 @@
 
 + (instancetype)modalContainerForStreamTable:(VStreamTableViewController *)streamTable
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamContainerViewController *container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -57,8 +57,8 @@
 
 + (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController* container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamContainerViewController *container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
@@ -77,7 +77,7 @@
     
     self.createButton.hidden = [self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController ownerStream].defaultStream.apiPath];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
     
     if (![self.streamTable.defaultStream.apiPath isEqualToString:[VStreamTableViewController homeStream].defaultStream.apiPath])
@@ -241,8 +241,8 @@
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController * __weak weakNav = navigationController;
-    VCameraViewController * __weak weakCamera = cameraViewController;
+    UINavigationController *__weak weakNav = navigationController;
+    VCameraViewController *__weak weakCamera = cameraViewController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)
@@ -279,18 +279,18 @@
                      media1URL:(NSURL *)media1URL
                      media2URL:(NSURL *)media2URL
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSLog(@"%@", resultObjects);
     };
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         NSLog(@"%@", error);
         
         if (kVStillTranscodingError == error.code)
         {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+            UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
                                                                 delegate:nil
                                                        cancelButtonTitle:nil
@@ -299,7 +299,7 @@
         }
         else
         {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
                                                             message:error.localizedDescription
                                                            delegate:nil
                                                   cancelButtonTitle:nil
