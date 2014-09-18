@@ -8,6 +8,10 @@
 
 #import "VNewContentViewController.h"
 
+// Images
+#import "UIImage+ImageCreation.h"
+#import "UIImageView+Blurring.h"
+
 // Layout
 #import "VCollapsingFlowLayout.h"
 
@@ -132,11 +136,22 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self resignFirstResponder];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.viewModel fetchComments];
+    
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                           placeholderImage:placeholderImage
+                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.viewModel fetchComments];
     [self.contentCollectionView flashScrollIndicators];
 }
 
