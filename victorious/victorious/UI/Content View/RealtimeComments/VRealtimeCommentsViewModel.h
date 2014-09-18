@@ -11,7 +11,7 @@
 @import AVFoundation;
 
 /**
- VRealtimeCommentsViewModel manages the state inherent in displaying and presenting real time comments. It is initialized with an array of comments that it uses as a sort of data source. As the currentTime property is updated so too are the various ___ForCurrentRealTimeComment properites. These reflect the info necessary for display in the UI. In order to display a strip of realTimeComment avatars use the numberOfRealTimeComments and iterate calls to -avatarURLForRealTimeCommentAtIndex: from 0 to the value returned from the numberOfRealTimeComments property.
+ VRealtimeCommentsViewModel manages the state inherent in displaying and presenting real time comments. It is initialized with an array of comments that it uses as a sort of data source. As the currentTime property is updated so too are the various ___ForCurrentRealTimeComment properties. These reflect the info necessary for display in the UI. In order to display a strip of realTimeComment avatars use the numberOfRealTimeComments and iterate calls to -avatarURLForRealTimeCommentAtIndex: from 0 to the value returned from the numberOfRealTimeComments property.
  
  
  */
