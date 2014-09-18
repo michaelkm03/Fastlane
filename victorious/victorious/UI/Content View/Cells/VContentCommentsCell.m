@@ -69,7 +69,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
 }
 
-#pragma mark - UIColleciontReusableView
+#pragma mark - UICollectionReusableView
 
 - (void)prepareForReuse
 {
