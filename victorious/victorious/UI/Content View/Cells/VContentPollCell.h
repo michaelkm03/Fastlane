@@ -8,6 +8,9 @@
 
 #import "VBaseCollectionViewCell.h"
 
+/**
+ *  A UICollectionViewCell for displaying poll content.
+ */
 @interface VContentPollCell : VBaseCollectionViewCell
 
 @end

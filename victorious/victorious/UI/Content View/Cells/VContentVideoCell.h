@@ -12,6 +12,9 @@
 
 @import AVFoundation;
 
+/**
+ *  Informs delegate of play progress.
+ */
 @protocol VContentVideoCellDelgetate <NSObject>
 
 - (void)videoCell:(VContentVideoCell *)videoCell
@@ -20,6 +23,9 @@
 
 @end
 
+/**
+ *  A UICollectionViewCell for displaying video content. Contains a VCVideoPlayerViewController for displaying of video content.
+ */
 @interface VContentVideoCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSURL *videoURL;
