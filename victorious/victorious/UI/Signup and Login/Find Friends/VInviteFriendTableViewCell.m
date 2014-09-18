@@ -10,6 +10,8 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 
+NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
+
 @interface VInviteFriendTableViewCell ()
 
 @property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;

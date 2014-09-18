@@ -12,6 +12,6 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 
 @interface VInviteFriendTableViewCell : UITableViewCell
 
-@property (nonatomic, strong)   VUser*  profile;
+@property (nonatomic, strong)   VUser *profile;
 
 @end

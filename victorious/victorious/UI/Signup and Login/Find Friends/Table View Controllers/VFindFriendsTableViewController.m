@@ -208,7 +208,7 @@
         [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
     
-    VSuccessBlock successBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSLog(@"\n\n-----\nSuccess Block:\n%@\n-----\n\n", resultObjects);
     };

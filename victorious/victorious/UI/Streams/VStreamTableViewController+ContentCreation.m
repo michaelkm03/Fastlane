@@ -22,7 +22,7 @@
 
 @implementation VStreamTableViewController (ContentCreation)
 
--(void)addFriendsButton
+- (void)addFriendsButton
 {
 
     

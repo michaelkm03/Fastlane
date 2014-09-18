@@ -13,7 +13,7 @@
 - (void)addCreateButton;
 - (IBAction)createButtonAction:(id)sender;
 
--(void)addFriendsButton;
+- (void)addFriendsButton;
 - (IBAction)findFriendsAction:(id)sender;
 
 @end
