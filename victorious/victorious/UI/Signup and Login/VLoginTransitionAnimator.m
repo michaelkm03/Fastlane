@@ -19,13 +19,13 @@
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    UIView*                         containerView = [transitionContext containerView];
+    UIView                         *containerView = [transitionContext containerView];
     NSTimeInterval                  duration = [self transitionDuration:transitionContext];
     
     if (self.presenting)
     {
-        VLoginViewController*           fromViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-        VLoginWithEmailViewController*  toViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        VLoginViewController           *fromViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        VLoginWithEmailViewController  *toViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
         //  Get a snapshot of the thing we are transitioning from
         UIView *snapshot = [fromViewController.transitionPlaceholder snapshotViewAfterScreenUpdates:NO];
@@ -60,11 +60,11 @@
     }
     else
     {
-        VLoginWithEmailViewController*  fromViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-        VLoginViewController*           toViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        VLoginWithEmailViewController  *fromViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        VLoginViewController           *toViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
         // Get a snapshot of the image view
-        UIView* snapshot = [fromViewController.transitionPlaceholder snapshotViewAfterScreenUpdates:NO];
+        UIView *snapshot = [fromViewController.transitionPlaceholder snapshotViewAfterScreenUpdates:NO];
         snapshot.frame = [containerView convertRect:fromViewController.transitionPlaceholder.frame fromView:fromViewController.transitionPlaceholder.superview];
         fromViewController.transitionPlaceholder.hidden = YES;
         

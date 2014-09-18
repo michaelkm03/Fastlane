@@ -2,7 +2,7 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 8/19/14.
+//  Created by Will Long on 9/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
+@property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) VConversation *conversation;

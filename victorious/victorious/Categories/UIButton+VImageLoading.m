@@ -23,12 +23,12 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
-    __weak UIButton* weakSelf = self;
+    __weak UIButton *weakSelf = self;
     [self.imageView setImageWithURLRequest:request
                           placeholderImage:placeholderImage
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                                    {
-                                       __strong UIButton* strongSelf = weakSelf;
+                                       __strong UIButton *strongSelf = weakSelf;
                                        [strongSelf setImage:image forState:state];
                                    } failure:nil];
 }

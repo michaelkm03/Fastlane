@@ -12,10 +12,12 @@
 #import "VThemeManager.h"
 
 @interface      VFollowerTableViewCell ()
-@property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
-@property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
-@property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIButton*           followButton;
+
+@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
+@property (nonatomic, weak)     IBOutlet    UIButton           *followButton;
+
 @end
 
 @implementation VFollowerTableViewCell
@@ -44,7 +46,7 @@
     {
         [[VObjectManager sharedManager] isUser:self.owner
                                      following:self.profile
-                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              if (![resultObjects[0] boolValue])
              {

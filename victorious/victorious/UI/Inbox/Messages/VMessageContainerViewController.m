@@ -82,6 +82,8 @@ static NSMutableDictionary *messageViewControllers;
     self.keyboardBarViewController.hideAccessoryBar = YES;
     
     [self addBackgroundImage];
+    [self hideKeyboardBarIfNeeded];
+    
     [self.view bringSubviewToFront:self.busyView];
 }
 
@@ -89,7 +91,7 @@ static NSMutableDictionary *messageViewControllers;
 {
     [super viewWillAppear:animated];
 
-    VMessageViewController* messageVC = (VMessageViewController *)self.conversationTableViewController;
+    VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
     self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
 }
 
@@ -106,9 +108,9 @@ static NSMutableDictionary *messageViewControllers;
                                       VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
                                       
                                       [[VObjectManager sharedManager] flagConversation:messageViewController.tableDataSource.conversation
-                                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                        {
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                           UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                                                   message:NSLocalizedString(@"ReportUserMessage", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -116,11 +118,11 @@ static NSMutableDictionary *messageViewControllers;
                                            [alert show];
                                            
                                        }
-                                                                         failBlock:^(NSOperation* operation, NSError* error)
+                                                                         failBlock:^(NSOperation *operation, NSError *error)
                                        {
                                            VLog(@"Failed to flag conversation %@", messageViewController.tableDataSource.conversation);
                                            
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                           UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                                                   message:NSLocalizedString(@"ErrorOccured", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -145,6 +147,15 @@ static NSMutableDictionary *messageViewControllers;
     if ([self isViewLoaded])
     {
         [self addBackgroundImage];
+        [self hideKeyboardBarIfNeeded];
+    }
+}
+
+- (void)hideKeyboardBarIfNeeded
+{
+    if (self.otherUser.isDirectMessagingDisabled.boolValue)
+    {
+        self.keyboardBarViewController.view.hidden = YES;
     }
 }
 

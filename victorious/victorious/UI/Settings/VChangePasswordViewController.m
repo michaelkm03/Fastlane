@@ -13,12 +13,14 @@
 #import "VConstants.h"
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextField*   oldPasswordTextField;
-@property (weak, nonatomic) IBOutlet UITextField*   changedPasswordTextField;
-@property (weak, nonatomic) IBOutlet UITextField*   confirmPasswordTextField;
 
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* labels;
-@property (strong, nonatomic) IBOutletCollection(UITextField) NSArray* textFields;
+@property (weak, nonatomic) IBOutlet UITextField   *oldPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField   *changedPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField   *confirmPasswordTextField;
+
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+@property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *textFields;
+
 @end
 
 @implementation VChangePasswordViewController
@@ -47,11 +49,11 @@
 
 - (BOOL)shouldUpdatePassword:(NSString *)password confirmation:(NSString *)confirmationPassword
 {
-    NSError*    theError;
+    NSError    *theError;
     
     if (![self validatePassword:&password error:&theError])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -63,7 +65,7 @@
     
     if (![password isEqualToString:confirmationPassword])
     {
-        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                            message:NSLocalizedString(@"PasswordNotMatching", @"")
                                                           delegate:nil
                                                  cancelButtonTitle:nil
@@ -83,7 +85,7 @@
         if (outError != NULL)
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VAccountUpdateViewControllerBadPasswordErrorCode
                                                    userInfo:userInfoDict];
@@ -106,16 +108,16 @@
     {
         [[VObjectManager sharedManager] loginToVictoriousWithEmail:[[VObjectManager sharedManager] mainUser].email
                                                           password:self.oldPasswordTextField.text
-                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  [self.navigationController popViewControllerAnimated:YES];
              };
              
-             VFailBlock fail = ^(NSOperation* operation, NSError* error)
+             VFailBlock fail = ^(NSOperation *operation, NSError *error)
              {
-                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
+                 UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
                                                                         message:error.localizedDescription
                                                                        delegate:nil
                                                               cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -132,9 +134,9 @@
                                                           successBlock:success
                                                              failBlock:fail];
          }
-                                                         failBlock:^(NSOperation* operation, NSError* error)
+                                                         failBlock:^(NSOperation *operation, NSError *error)
          {
-             UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+             UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                 message:NSLocalizedString(@"IncorrectOldPassword", @"")
                                                                delegate:nil
                                                       cancelButtonTitle:nil

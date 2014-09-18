@@ -34,9 +34,9 @@
 #import "MBProgressHUD.h"
 
 @interface VHashTagStreamViewController () <UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIButton* backButton;
-@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
-@property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @end
 
@@ -72,9 +72,9 @@
     _sequence = sequence;
     
     [self.backgroundImage removeFromSuperview];
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [newBackgroundView setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                   placeholderImage:placeholderImage];
     

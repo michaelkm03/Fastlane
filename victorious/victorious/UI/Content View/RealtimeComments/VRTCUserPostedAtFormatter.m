@@ -35,9 +35,9 @@
     VElapsedTimeFormatter *timeFormatter = [[VElapsedTimeFormatter alloc] init];
     NSString *timeText = [timeFormatter stringForSeconds:postedTime.floatValue];
 
-    NSString* fullString = [NSString stringWithFormat:NSLocalizedString(@"RTCUserPostedAtSyntax", nil), username ?: @"", timeText];
+    NSString *fullString = [NSString stringWithFormat:NSLocalizedString(@"RTCUserPostedAtSyntax", nil), username ?: @"", timeText];
     
-    NSMutableAttributedString* nameString = [[NSMutableAttributedString alloc] initWithString:fullString
+    NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:fullString
                                                                                    attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     [nameString addAttribute:NSForegroundColorAttributeName
                        value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]

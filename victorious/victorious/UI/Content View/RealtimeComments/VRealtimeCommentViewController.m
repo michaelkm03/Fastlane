@@ -28,25 +28,25 @@
 
 @interface VRealtimeCommentViewController ()
 
-@property (nonatomic, weak) IBOutlet UIView* progressBackgroundView;
-@property (nonatomic, weak) IBOutlet UIView* progressBarView;
-@property (nonatomic, weak, readwrite) IBOutlet UIView* commentBackgroundView;
+@property (nonatomic, weak) IBOutlet UIView *progressBackgroundView;
+@property (nonatomic, weak) IBOutlet UIView *progressBarView;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *commentBackgroundView;
 
-@property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView* arrowImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *arrowImageView;
 
-@property (nonatomic, weak) IBOutlet UIImageView* playButtonImageView;
-@property (nonatomic, weak) IBOutlet UIButton* mediaButton;
+@property (nonatomic, weak) IBOutlet UIImageView *playButtonImageView;
+@property (nonatomic, weak) IBOutlet UIButton *mediaButton;
 
-@property (nonatomic, weak) IBOutlet UILabel* timeLabel;
-@property (nonatomic, weak) IBOutlet UILabel* nameLabel;
-@property (nonatomic, weak) IBOutlet UILabel* commentLabel;
+@property (nonatomic, weak) IBOutlet UILabel *timeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *commentLabel;
 
-@property (nonatomic) VElapsedTimeFormatter* timeFormatter;
+@property (nonatomic) VElapsedTimeFormatter *timeFormatter;
 
-@property (nonatomic, strong) VComment* currentComment;
+@property (nonatomic, strong) VComment *currentComment;
 
-@property (nonatomic, strong) NSMutableArray* progressBarImageViews;
+@property (nonatomic, strong) NSMutableArray *progressBarImageViews;
 
 @property (nonatomic)   BOOL didSelectComment;
 
@@ -76,7 +76,7 @@
     
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     
-    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
     self.profileImageView.tintColor = transparentAccent;
     
     self.progressBarImageViews = [[NSMutableArray alloc] init];
@@ -88,6 +88,7 @@
 }
 
 #pragma mark - Comment Selection
+
 - (IBAction)respondToCommentSelection:(UITapGestureRecognizer *)recognizer
 {
     CGPoint location = [recognizer locationInView:self.progressBackgroundView];
@@ -98,8 +99,8 @@
 
 - (VComment *)commentAtTime:(CGFloat)time
 {
-    VComment* currentComment;
-    for (VComment* comment in self.comments)
+    VComment *currentComment;
+    for (VComment *comment in self.comments)
     {
         CGFloat startTime = comment.realtime.floatValue;
         if (startTime < time)
@@ -121,6 +122,7 @@
 }
 
 #pragma mark - Setters
+
 - (void)setEndTime:(CGFloat)endTime
 {
     if (isnan(endTime) || endTime < 1)
@@ -140,11 +142,11 @@
 
 - (void)setComments:(NSArray *)comments
 {
-    for (UIImageView* imageView in self.progressBarImageViews)
+    for (UIImageView *imageView in self.progressBarImageViews)
         [imageView removeFromSuperview];
     [self.progressBarImageViews removeAllObjects];
     
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"realtime" ascending:YES];
+    NSSortDescriptor   *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"realtime" ascending:YES];
     
     _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
 
@@ -155,12 +157,12 @@
         return;
     }
     
-    for (VComment* comment in _comments)
+    for (VComment *comment in _comments)
     {
         CGFloat startTime = comment.realtime.floatValue;
         
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
-        UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
+        UIImageView *progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
         progressBarImage.autoresizingMask = UIViewAutoresizingNone;
@@ -169,7 +171,7 @@
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
-        UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+        UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
         progressBarImage.tintColor = transparentAccent;
         [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
                          placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -208,7 +210,7 @@
         {
             return;
         }
-        UIImageView* imageView = [self.progressBarImageViews objectAtIndex:[self.comments indexOfObject:currentComment]];
+        UIImageView *imageView = [self.progressBarImageViews objectAtIndex:[self.comments indexOfObject:currentComment]];
         [UIView animateWithDuration:0.5f
                               delay:0.0f
              usingSpringWithDamping:0.7f
@@ -268,7 +270,7 @@
         [self.delegate willShowRTCMedia];
     }
     
-    VLightboxViewController* lightbox;
+    VLightboxViewController *lightbox;
     if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo])
     {
         lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:self.mediaButton.imageView.image

@@ -9,4 +9,5 @@
 #import "VAbstractProfileEditViewController.h"
 
 @interface VProfileEditViewController : VAbstractProfileEditViewController
+
 @end

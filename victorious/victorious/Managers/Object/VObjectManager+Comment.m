@@ -20,10 +20,10 @@
                                                              successBlock:(VSuccessBlock)success
                                                                 failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VComment* comment in resultObjects)
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VComment *comment in resultObjects)
         {
             if (!comment.user)
             {
@@ -93,7 +93,7 @@
         return nil;
     }
     
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
         //keep trying until we are done transcoding
         if (error.code == kVStillTranscodingError && attemptCount < 15)
@@ -126,9 +126,9 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
-    __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
+    __block VComment *commentToRemove = comment;//keep the comment in memory til we get the response back
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //Since this is a POST not a DELETE we need to manually remove the comment.
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];

@@ -3,4 +3,5 @@
 //
 
 @interface VRemixSliderRight : UIView
+
 @end

@@ -92,7 +92,7 @@
 - (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController* vc in self.contentViewController.viewControllers)
+    for (UIViewController *vc in self.contentViewController.viewControllers)
     {
         [vc dismissViewControllerAnimated:NO completion:nil];
     }

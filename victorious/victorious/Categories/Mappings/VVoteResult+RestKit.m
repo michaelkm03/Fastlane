@@ -9,6 +9,7 @@
 #import "VVoteResult+RestKit.h"
 
 @implementation VVoteResult (RestKit)
+
 + (NSString *)entityName
 {
     return @"VoteResult";

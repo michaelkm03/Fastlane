@@ -12,13 +12,15 @@
 
 @protocol VInteractionManagerDelegate <NSObject>
 @required
+
 - (void)firedInteraction:(VInteraction *)interaction;
+
 @end
 
 @interface VInteractionManager : NSObject
 
-@property (strong, nonatomic) VNode* node;
-@property (readonly, nonatomic) NSArray* interactions;
+@property (strong, nonatomic) VNode *node;
+@property (readonly, nonatomic) NSArray *interactions;
 @property (readonly, nonatomic) CGFloat lastInteractionTimeout;
 @property (weak, nonatomic) id<VInteractionManagerDelegate> delegate;
 

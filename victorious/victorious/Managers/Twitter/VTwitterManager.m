@@ -14,9 +14,9 @@
 
 @interface VTwitterManager()
 
-@property (nonatomic, strong) NSString* oauthToken;
-@property (nonatomic, strong) NSString* secret;
-@property (nonatomic, strong) NSString* twitterId;
+@property (nonatomic, strong) NSString *oauthToken;
+@property (nonatomic, strong) NSString *secret;
+@property (nonatomic, strong) NSString *twitterId;
 
 @end
 
@@ -41,8 +41,8 @@
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
                            completionBlock:(void(^)(void))completionBlock
 {
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
      {
          if (!granted)
@@ -73,8 +73,8 @@
              }
              else
              {
-                 ACAccountStore* account = [[ACAccountStore alloc] init];
-                 ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+                 ACAccountStore *account = [[ACAccountStore alloc] init];
+                 ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
                  
                  ACAccount *twitterAccount;
                  if (identifier)

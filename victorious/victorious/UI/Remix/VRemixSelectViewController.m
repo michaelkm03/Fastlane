@@ -16,16 +16,16 @@
 
 @interface VRemixSelectViewController ()    <NSURLSessionDownloadDelegate>
 
-@property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
+@property (nonatomic, weak)     IBOutlet    UISlider           *scrubber;
 
-@property (nonatomic, weak)     IBOutlet    UILabel*            instructionsText;
-@property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
-@property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
-@property (nonatomic, weak)     IBOutlet    UIButton*           startRemixButton;
+@property (nonatomic, weak)     IBOutlet    UILabel            *instructionsText;
+@property (nonatomic, weak)     IBOutlet    UILabel            *currentTimeLabel;
+@property (nonatomic, weak)     IBOutlet    UILabel            *totalTimeLabel;
+@property (nonatomic, weak)     IBOutlet    UIButton           *startRemixButton;
 
 @property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
 
-@property (nonatomic, strong)   MBProgressHUD*                  progressHUD;
+@property (nonatomic, strong)   MBProgressHUD                  *progressHUD;
 
 @property (nonatomic)           NSInteger                       seqID;
 
@@ -35,8 +35,8 @@
 
 + (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID nodeID:(NSInteger)nodeID
 {
-    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
-    VRemixSelectViewController* rootViewController  =   (VRemixSelectViewController *)remixViewController.topViewController;
+    UINavigationController     *remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
+    VRemixSelectViewController *rootViewController  =   (VRemixSelectViewController *)remixViewController.topViewController;
     rootViewController.sourceURL = url;
     rootViewController.parentID = nodeID;
     rootViewController.seqID = sequenceID;
@@ -51,7 +51,7 @@
     self.videoPlayerViewController.shouldLoop = YES;
     self.videoPlayerViewController.startSeconds = 0;
 
-    UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage    *closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
 
     self.instructionsText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
@@ -80,7 +80,7 @@
                                                                                         NSFontAttributeName:[UIFont systemFontOfSize:17]}];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
@@ -114,13 +114,13 @@
     [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.videoPlayerViewController.startSeconds];
 }
 
--(IBAction)scrubberDidStartMoving:(id)sender
+- (IBAction)scrubberDidStartMoving:(id)sender
 {
     self.restoreAfterScrubbingRate = self.videoPlayerViewController.player.rate;
     [self.videoPlayerViewController.player setRate:0.0f];
 }
 
--(IBAction)scrubberDidMove:(id)sender
+- (IBAction)scrubberDidMove:(id)sender
 {
     CMTime playerDuration = [self.videoPlayerViewController playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
@@ -141,7 +141,7 @@
     }
 }
 
--(IBAction)scrubberDidEndMoving:(id)sender
+- (IBAction)scrubberDidEndMoving:(id)sender
 {
 	if (self.restoreAfterScrubbingRate)
 	{
@@ -156,7 +156,7 @@
 {
     if ([segue.identifier isEqualToString:@"toTrim"])
     {
-        VRemixTrimViewController*     trimViewController = (VRemixTrimViewController *)segue.destinationViewController;
+        VRemixTrimViewController     *trimViewController = (VRemixTrimViewController *)segue.destinationViewController;
         trimViewController.sourceURL = self.targetURL;
         trimViewController.parentID = self.parentID;
     }
@@ -171,7 +171,7 @@
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
-    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError* error)
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError *error)
      {
          if (completion)
          {
@@ -192,19 +192,19 @@
     self.progressHUD.mode = MBProgressHUDModeDeterminate;
     self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
-    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration  *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfig.allowsCellularAccess = YES;
 
-    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
+    NSURLSession               *session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                                         delegate:self
                                                                    delegateQueue:nil];
-    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:segmentURL];
+    NSURLSessionDownloadTask   *task = [session downloadTaskWithURL:segmentURL];
     [task resume];
 }
 
 - (void)showSegmentDownloadFailureAlert
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
                                                            message:NSLocalizedString(@"TryAgain", @"")
                                                           delegate:nil
                                                  cancelButtonTitle:nil

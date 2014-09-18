@@ -44,7 +44,7 @@ static char KVOContext;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftAnswerTextViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightAnswerTextViewHeightConstraint;
 
-@property (weak, nonatomic) IBOutlet UIView* answersSuperview;
+@property (weak, nonatomic) IBOutlet UIView *answersSuperview;
 
 @property (weak, nonatomic) IBOutlet UIView *addMediaView;
 
@@ -61,8 +61,8 @@ static char KVOContext;
 
 + (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreatePollViewController* createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCreatePollViewController *createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = delegate;
     return createView;
 }
@@ -85,7 +85,7 @@ static char KVOContext;
         [obj setConstant:0.5f];
     }];
 
-    UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
     self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 
@@ -384,7 +384,7 @@ static char KVOContext;
         imageSearch.searchTerm = self.leftAnswerTextView.text;
     }
     
-    VImageSearchViewController * __weak weakImageSearch = imageSearch;
+    VImageSearchViewController *__weak weakImageSearch = imageSearch;
     imageSearch.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)

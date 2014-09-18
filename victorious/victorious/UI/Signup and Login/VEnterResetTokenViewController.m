@@ -16,13 +16,13 @@
 
 @interface VEnterResetTokenViewController () <UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel* titleLabel;
-@property (nonatomic, weak) IBOutlet UILabel* messageLabel;
-@property (nonatomic, weak) IBOutlet UILabel* enterCodeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *messageLabel;
+@property (nonatomic, weak) IBOutlet UILabel *enterCodeLabel;
 
-@property (nonatomic, weak) IBOutlet UITextField* codeField;
+@property (nonatomic, weak) IBOutlet UITextField *codeField;
 
-@property (nonatomic, weak) IBOutlet UIButton* resendButton;
+@property (nonatomic, weak) IBOutlet UIButton *resendButton;
 
 @end
 
@@ -30,7 +30,7 @@
 
 + (instancetype)enterResetTokenViewController
 {
-    UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    UIStoryboard   *storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
     return [storyboard instantiateViewControllerWithIdentifier:kEnterResetTokenID];
 }
 
@@ -89,11 +89,11 @@
 
 
 
--(IBAction)pressedResend:(id)sender
+- (IBAction)pressedResend:(id)sender
 {
     [[self view] endEditing:YES];
     
-    UIAlertView* resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
+    UIAlertView *resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
                                                      message:NSLocalizedString(@"ResetPasswordPrompt", @"")
                                                     delegate:self
                                            cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
@@ -111,13 +111,13 @@
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
         [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
-                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              self.deviceToken = resultObjects[0];
          }
-                                                           failBlock:^(NSOperation* operation, NSError* error)
+                                                           failBlock:^(NSOperation *operation, NSError *error)
          {
-             UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
+             UIAlertView   *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
                                                                    message:NSLocalizedString(@"EmailNotFound", @"")
                                                                   delegate:nil
                                                          cancelButtonTitle:nil
@@ -128,17 +128,18 @@
 }
 
 #pragma mark - UITextFieldDelegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [[VObjectManager sharedManager] resetPasswordWithUserToken:textField.text
                                                    deviceToken:self.deviceToken
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [self performSegueWithIdentifier:@"toResetPassword" sender:self];
      }
-                                                     failBlock:^(NSOperation* operation, NSError* error)
+                                                     failBlock:^(NSOperation *operation, NSError *error)
      {
-         UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CannotVerify", @"")
+         UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CannotVerify", @"")
                                                             message:NSLocalizedString(@"IncorrectCode", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:nil

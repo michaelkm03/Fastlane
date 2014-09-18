@@ -22,7 +22,7 @@
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamTableViewController *streamVC;
     
     if ([toVC isKindOfClass:[VStreamTableViewController class]])
