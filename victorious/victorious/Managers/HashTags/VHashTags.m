@@ -10,7 +10,7 @@
 
 @implementation VHashTags
 
-+(NSArray *)detectHashTags:(NSString *)fieldText
++ (NSArray *)detectHashTags:(NSString *)fieldText
 {
     if (!fieldText)
     {

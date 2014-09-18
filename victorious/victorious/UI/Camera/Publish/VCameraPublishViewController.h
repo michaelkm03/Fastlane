@@ -10,9 +10,9 @@
 
 @interface VCameraPublishViewController : UIViewController
 
-@property (nonatomic, strong)   UIImage*        previewImage;
-@property (nonatomic, strong)   NSURL*          mediaURL;
-@property (nonatomic, strong)   NSString*       expirationDateString;
+@property (nonatomic, strong)   UIImage        *previewImage;
+@property (nonatomic, strong)   NSURL          *mediaURL;
+@property (nonatomic, strong)   NSString       *expirationDateString;
 
 @property (nonatomic)   VPlaybackSpeed          playBackSpeed;
 @property (nonatomic)   VLoopType               playbackLooping;

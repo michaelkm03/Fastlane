@@ -14,6 +14,6 @@ extern NSString * const VStreamPollCellNibName;
 
 @interface VStreamPollCell : VStreamViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView* previewImageTwo;
+@property (weak, nonatomic) IBOutlet UIImageView *previewImageTwo;
 
 @end

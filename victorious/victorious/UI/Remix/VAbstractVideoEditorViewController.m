@@ -10,9 +10,6 @@
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
-@interface VAbstractVideoEditorViewController ()
-@end
-
 @implementation VAbstractVideoEditorViewController
 
 - (void)viewDidLoad
@@ -56,7 +53,7 @@
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.videoPlayerViewController.player play];
@@ -107,7 +104,7 @@
 
 - (IBAction)muteAudioClicked:(id)sender
 {
-    UIButton*   button = (UIButton *)sender;
+    UIButton   *button = (UIButton *)sender;
     button.selected = !button.selected;
     self.shouldMuteAudio = button.selected;
     self.videoPlayerViewController.player.muted = self.shouldMuteAudio;
@@ -160,7 +157,7 @@
     }
 }
 
--(void)setPlaybackLooping:(VLoopType)playbackLooping
+- (void)setPlaybackLooping:(VLoopType)playbackLooping
 {
     _playbackLooping = playbackLooping;
 

@@ -13,7 +13,8 @@
 + (NSString *)v_stringWithData:(NSData *)data
 {
     NSUInteger dataLength = [data length];
-    NSMutableString *string = [[NSMutableString alloc] initWithCapacity:(dataLength * 2)];
+    NSUInteger stringLength = dataLength * 2;
+    NSMutableString *string = [[NSMutableString alloc] initWithCapacity:stringLength];
     
     Byte bytes[dataLength];
     [data getBytes:&bytes length:dataLength];

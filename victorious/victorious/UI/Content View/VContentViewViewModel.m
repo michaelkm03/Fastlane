@@ -69,7 +69,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
         }
 
         _currentNode = [sequence firstNode];
-        _currentAsset = [_currentNode firstAsset];
+        _currentAsset = [_currentNode.assets firstObject];
     }
     return self;
 }
@@ -87,7 +87,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
     NSURL* imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        VAsset *currentAsset = [self.currentNode firstAsset];
+        VAsset *currentAsset = [_currentNode.assets firstObject];
         imageUrl = [NSURL URLWithString:currentAsset.data];
     }
     else
@@ -107,13 +107,13 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 
 - (NSURL *)videoURL
 {
-    VAsset *currentAsset = [self.currentNode firstAsset];
+    VAsset *currentAsset = [_currentNode.assets firstObject];
     return [NSURL URLWithString:currentAsset.data];
 }
 
 - (BOOL)shouldShowRealTimeComents
 {
-    VAsset *currentAsset = [self.currentNode firstAsset];
+    VAsset *currentAsset = [_currentNode.assets firstObject];
     NSArray *realTimeComments = [currentAsset.comments array];
     return (realTimeComments.count > 0) ? YES : NO;
 }

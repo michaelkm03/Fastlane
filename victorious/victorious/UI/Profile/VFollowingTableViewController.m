@@ -15,7 +15,9 @@
 #import "VNoContentView.h"
 
 @interface VFollowingTableViewController ()
-@property (nonatomic, strong)   NSArray*    following;
+
+@property (nonatomic, strong)   NSArray    *following;
+
 @end
 
 @implementation VFollowingTableViewController
@@ -51,7 +53,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VFollowerTableViewCell*    cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     return cell;
@@ -59,8 +61,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser*  user = self.following[indexPath.row];
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUser  *user = self.following[indexPath.row];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -85,16 +87,16 @@
 
 - (void)refreshFollowingList
 {
-    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.following = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setIsFollowing:self.following.count];
         
         [self.tableView reloadData];
     };
     
-    VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock followerFail = ^(NSOperation *operation, NSError *error)
     {
         if (error.code)
         {
@@ -111,10 +113,10 @@
 
 - (void)loadMoreFollowings
 {
-    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet* uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSet *uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
         self.following = [[uniqueFollowings allObjects] sortedArrayUsingDescriptors:@[sort]];
         [self setIsFollowing:self.following.count];
         
@@ -130,7 +132,7 @@
 {
     if (!isFollowing)
     {
-        VNoContentView* notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = notFollowingView;
         notFollowingView.titleLabel.text = NSLocalizedString(@"NotFollowingTitle", @"");
         notFollowingView.messageLabel.text = NSLocalizedString(@"NotFollowingMessage", @"");

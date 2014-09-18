@@ -37,7 +37,7 @@
     self = [super initWithMediaURL:mediaURL];
     if (self)
     {
-        _originalImage = _filteredImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should* be a local file URL.
+        _originalImage = _filteredImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should *be a local file URL.
     }
     return self;
 }

@@ -10,11 +10,12 @@
 
 
 @interface VRemixVideoRangeSlider () <VCVideoPlayerDelegate>
+
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *centerView;
 @property (nonatomic, strong) UIView *progressView;
-@property (nonatomic, strong) AVURLAsset* videoAsset;
+@property (nonatomic, strong) AVURLAsset *videoAsset;
 @property (nonatomic, strong) VRemixSliderLeft *leftThumb;
 @property (nonatomic, strong) VRemixSliderRight *rightThumb;
 @property (nonatomic, strong) VRemixResizableBubble *popoverBubble;
@@ -24,6 +25,7 @@
 @property (nonatomic, assign) double playerDuration;
 @property (nonatomic, strong) UISlider *progressIndicator;
 @property (nonatomic, strong) id progressObserver;
+
 @end
 
 #define SLIDER_BORDERS_SIZE 3.0f
@@ -41,8 +43,6 @@
         int thumbWidth = ceil(frame.size.width*0.05);
         
         _backgroundView = [[UIControl alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
-        _backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
-        _backgroundView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
         [self addSubview:_backgroundView];
         
         
@@ -125,12 +125,12 @@
     return self;
 }
 
--(void)dealloc
+- (void)dealloc
 {
     [self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
 }
 
--(void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
+- (void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
 {
     _videoPlayerViewController = videoPlayerViewController;
     _videoPlayerViewController.delegate = self;
@@ -183,7 +183,7 @@
     }
 }
 
--(void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -193,7 +193,7 @@
     }
 }
 
--(void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
+- (void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
 {
     CGRect currentFrame = _popoverBubble.frame;
     currentFrame.size.width = width;
@@ -206,14 +206,14 @@
     _bubbleText.frame = currentFrame;
 }
 
--(void)setMaxGap:(NSInteger)maxGap
+- (void)setMaxGap:(NSInteger)maxGap
 {
     _leftPosition = 0;
     _rightPosition = _frameWidth * maxGap / _durationSeconds;
     _maxGap = maxGap;
 }
 
--(void)setMinGap:(NSInteger)minGap
+- (void)setMinGap:(NSInteger)minGap
 {
     _leftPosition = 0;
     _rightPosition = _frameWidth * minGap / _durationSeconds;
@@ -360,7 +360,7 @@
 
 #pragma mark - Video
 
--(void)getMovieFrames
+- (void)getMovieFrames
 {
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.videoAsset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
@@ -386,10 +386,10 @@
      {
          if (result == AVAssetImageGeneratorSucceeded)
          {
-             UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
+             UIImage      *thumb = [[UIImage alloc] initWithCGImage:image];
              
              dispatch_async(dispatch_get_main_queue(), ^{
-                 UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                 UIImageView  *tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
                  tmp.image = thumb;
                  tmp.backgroundColor = [UIColor redColor];
                  tmp.contentMode = UIViewContentModeScaleAspectFill;
@@ -397,6 +397,7 @@
                  int total = (i+1) * tmp.frame.size.width;
                  
                  CGRect currentFrame = tmp.frame;
+                 currentFrame.origin.y = SLIDER_BORDERS_SIZE;
                  currentFrame.origin.x = i * currentFrame.size.width;
                  if (total > _backgroundView.frame.size.width)
                  {
@@ -460,18 +461,18 @@
     }
 }
 
--(void)setTimeLabel
+- (void)setTimeLabel
 {
     self.bubbleText.text = [self trimIntervalString];
 }
 
--(NSString *)trimDurationString
+- (NSString *)trimDurationString
 {
     int delta = floor(self.rightPosition - self.leftPosition);
     return [NSString stringWithFormat:@"%d", delta];
 }
 
--(NSString *)trimIntervalString
+- (NSString *)trimIntervalString
 {
     NSString *from = [self timeToStr:self.leftPosition];
     NSString *to = [self timeToStr:self.rightPosition];

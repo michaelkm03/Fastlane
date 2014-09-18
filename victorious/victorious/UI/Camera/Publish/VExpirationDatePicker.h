@@ -12,9 +12,13 @@
 
 @protocol VExpirationDatePickerDelegate <NSObject>
 @required
+
 - (void)datePicker:(VExpirationDatePicker *)datePicker didSelectExpirationDate:(NSDate *)expirationDate;
+
 @end
 
 @interface VExpirationDatePicker : VPickerTextField
+
 @property (nonatomic, weak) id<VExpirationDatePickerDelegate>   delegate;
+
 @end

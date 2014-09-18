@@ -23,7 +23,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(remoteId),
-                                  @"display_order" : VSelectorName(display_order),
                                   @"share_url"      :   VSelectorName(shareUrlPath),
                                   };
     

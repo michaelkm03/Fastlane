@@ -51,9 +51,9 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        for (VUser* user in resultObjects)
+        for (VUser *user in resultObjects)
         {
             if ([user.remoteId isEqualToNumber:self.mainUser.remoteId])
             {
@@ -93,7 +93,7 @@
                                                                        failBlock:(VFailBlock)fail
 {
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if ([resultObjects firstObject])
         {

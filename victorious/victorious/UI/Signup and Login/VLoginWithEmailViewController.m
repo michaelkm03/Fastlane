@@ -22,17 +22,17 @@
 #import "UIAlertView+VBlocks.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
-@property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
-@property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
-@property (nonatomic, weak) IBOutlet    UIButton*       forgotPasswordButton;
-@property (nonatomic, strong)           VUser*          profile;
-@property (nonatomic, strong)           NSString*       deviceToken;
-@property (nonatomic, strong)           NSString*       userToken;
+@property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
+@property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
+@property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
+@property (nonatomic, strong)           VUser          *profile;
+@property (nonatomic, strong)           NSString       *deviceToken;
+@property (nonatomic, strong)           NSString       *userToken;
 
-@property (nonatomic, strong)           UIAlertView*    resetAlert;
-@property (nonatomic, strong)           UIAlertView*    thanksAlert;
+@property (nonatomic, strong)           UIAlertView    *resetAlert;
+@property (nonatomic, strong)           UIAlertView    *thanksAlert;
 @property (nonatomic)                   BOOL            alertDismissed;
 
 @end
@@ -109,11 +109,11 @@
 
 - (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
 {
-    NSError*    theError;
+    NSError    *theError;
     
     if (![self validateEmailAddress:&emailAddress error:&theError])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -125,7 +125,7 @@
     
     if (![self validatePassword:&password error:&theError])
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -149,13 +149,13 @@
     @"9][0-9]?|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
     @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
-    NSPredicate*  emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
+    NSPredicate  *emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
     if (!(*ioValue && [emailTest evaluateWithObject:*ioValue]))
     {
         if (outError != NULL)
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginErrorCodeBadEmailAddress
                                                    userInfo:userInfoDict];
@@ -174,7 +174,7 @@
         if (outError != NULL)
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginErrorCodeBadPassword
                                                    userInfo:userInfoDict];
@@ -203,9 +203,9 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
     if (error.code != kVUserBannedError)
     {
-        NSString*       message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
+        NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
                                             : NSLocalizedString(@"LoginFailMessage", @"");
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:message
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -273,14 +273,14 @@
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
             [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
-                                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  self.deviceToken = resultObjects[0];
                  [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
              }
-                                                               failBlock:^(NSOperation* operation, NSError* error)
+                                                               failBlock:^(NSOperation *operation, NSError *error)
              {
-                 UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
+                 UIAlertView   *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
                                                                        message:NSLocalizedString(@"EmailNotFound", @"")
                                                                       delegate:nil
                                                              cancelButtonTitle:nil
@@ -333,7 +333,7 @@
 {
     if ([toVC isKindOfClass:[VResetPasswordViewController class]])
     {
-        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }
@@ -343,7 +343,7 @@
     }
     else if ([toVC isKindOfClass:[VLoginViewController class]])
     {
-        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }

@@ -15,19 +15,19 @@
 
 @interface  VAbstractVideoEditorViewController : UIViewController   <VCVideoPlayerDelegate>
 
-@property (nonatomic, weak)     IBOutlet    UIView*             previewParentView;
-@property (nonatomic, strong)   VCVideoPlayerViewController*    videoPlayerViewController;
+@property (nonatomic, weak)     IBOutlet    UIView             *previewParentView;
+@property (nonatomic, strong)   VCVideoPlayerViewController    *videoPlayerViewController;
 
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+@property (nonatomic, weak)     IBOutlet    UIImageView        *playCircle;
+@property (nonatomic, weak)     IBOutlet    UIImageView        *playButton;
 @property (nonatomic, weak)     IBOutlet    UIButton            *takeImageSnapShotButton;
 
-@property (nonatomic, strong)   NSURL*                          sourceURL;
-@property (nonatomic, strong)   NSURL*                          targetURL;
+@property (nonatomic, strong)   NSURL                          *sourceURL;
+@property (nonatomic, strong)   NSURL                          *targetURL;
 
-@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
+@property (nonatomic, weak)     IBOutlet    UIButton           *rateButton;
+@property (nonatomic, weak)     IBOutlet    UIButton           *loopButton;
+@property (nonatomic, weak)     IBOutlet    UIButton           *muteButton;
 
 @property (nonatomic)           BOOL                            shouldMuteAudio;
 @property (nonatomic)           VPlaybackSpeed                  playBackSpeed;
@@ -37,7 +37,7 @@
 
 @property (nonatomic)           BOOL                            animatingPlayButton;
 
-@property (nonatomic, strong)   VElapsedTimeFormatter*          elapsedTimeFormatter;
+@property (nonatomic, strong)   VElapsedTimeFormatter          *elapsedTimeFormatter;
 
 - (void)startAnimation;
 - (void)stopAnimation;

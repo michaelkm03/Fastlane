@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -167,7 +168,7 @@
                                 <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="YQI-ac-uh8">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="YQI-ac-uh8">
                                         <rect key="frame" x="134" y="134" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -188,30 +189,16 @@
                                 <rect key="frame" x="0.0" y="216" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SlH-dr-QmS" userLabel="Button - Camera">
-                                        <rect key="frame" x="258" y="0.0" width="42" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="42" id="5u2-Ju-cKJ"/>
-                                            <constraint firstAttribute="width" constant="42" id="yFh-Wl-fGn"/>
-                                        </constraints>
-                                        <state key="normal" image="takeSnapShot">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="takeSnapShotAction:" destination="uEv-AE-duX" eventType="touchUpInside" id="nbu-Lx-JPe"/>
-                                        </connections>
-                                    </button>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="doN-GD-FKd" userLabel="Trim Control Container">
                                         <rect key="frame" x="0.0" y="71" width="320" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="nWG-bP-lyR"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-BV-WkM">
-                                        <rect key="frame" x="0.0" y="139" width="107" height="61"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-BV-WkM">
+                                        <rect key="frame" x="0.0" y="139" width="80" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Rate" image="cameraButtonSpeedNormal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -220,8 +207,8 @@
                                             <action selector="playbackRateClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="bCO-NS-Twu"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUq-H7-oEO">
-                                        <rect key="frame" x="213" y="139" width="107" height="61"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUq-H7-oEO">
+                                        <rect key="frame" x="160" y="139" width="80" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Mute" image="cameraButtonUnmute">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -230,12 +217,19 @@
                                             <action selector="muteAudioClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="Qh9-lp-QM6"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZd-sH-zLg">
-                                        <rect key="frame" x="107" y="139" width="106" height="61"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ify-CK-hSe">
+                                        <rect key="frame" x="240" y="139" width="80" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="106" id="Q1E-WH-bBT"/>
-                                        </constraints>
+                                        <state key="normal" title="Screenshot" image="cameraButtonScreenshot">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="takeSnapShotAction:" destination="uEv-AE-duX" eventType="touchUpInside" id="RAB-K5-xLL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZd-sH-zLg">
+                                        <rect key="frame" x="80" y="139" width="80" height="61"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Loop" image="cameraButtonNoLoop">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -247,22 +241,29 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="CN3-BV-WkM" firstAttribute="leading" secondItem="oDB-tA-otO" secondAttribute="leading" id="0Mp-0g-ZML"/>
-                                    <constraint firstAttribute="trailing" secondItem="SlH-dr-QmS" secondAttribute="trailing" constant="20" id="1Mk-If-t61"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="width" secondItem="Ify-CK-hSe" secondAttribute="width" id="1zw-OM-LtY"/>
                                     <constraint firstItem="bZd-sH-zLg" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="top" constant="139" id="5eK-dP-2hs"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="width" secondItem="CN3-BV-WkM" secondAttribute="width" id="AUy-5Z-mHd"/>
                                     <constraint firstAttribute="trailing" secondItem="doN-GD-FKd" secondAttribute="trailing" id="AuC-PI-c0z"/>
                                     <constraint firstItem="bZd-sH-zLg" firstAttribute="leading" secondItem="CN3-BV-WkM" secondAttribute="trailing" id="Bqy-7N-7iI"/>
                                     <constraint firstItem="CN3-BV-WkM" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="top" constant="139" id="DSv-Ok-FKX"/>
                                     <constraint firstAttribute="bottom" secondItem="ZUq-H7-oEO" secondAttribute="bottom" id="GdK-nt-Lae"/>
                                     <constraint firstAttribute="height" constant="200" id="K9l-kO-9ks"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZUq-H7-oEO" secondAttribute="trailing" id="L4E-iE-h0D"/>
+                                    <constraint firstItem="Ify-CK-hSe" firstAttribute="leading" secondItem="ZUq-H7-oEO" secondAttribute="trailing" id="KqH-YV-9cQ"/>
                                     <constraint firstItem="doN-GD-FKd" firstAttribute="leading" secondItem="oDB-tA-otO" secondAttribute="leading" id="OJN-v2-xOZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ify-CK-hSe" secondAttribute="trailing" id="PwC-KB-9uo"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="height" secondItem="Ify-CK-hSe" secondAttribute="height" id="TkJ-CO-rcE"/>
                                     <constraint firstItem="ZUq-H7-oEO" firstAttribute="leading" secondItem="bZd-sH-zLg" secondAttribute="trailing" id="UI1-rz-rnh"/>
                                     <constraint firstAttribute="bottom" secondItem="bZd-sH-zLg" secondAttribute="bottom" id="am0-33-a6a"/>
-                                    <constraint firstItem="SlH-dr-QmS" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="top" id="bnq-V9-Gek"/>
                                     <constraint firstItem="ZUq-H7-oEO" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="top" constant="139" id="e1a-rl-fDV"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="height" secondItem="CN3-BV-WkM" secondAttribute="height" id="gfD-Pn-MX3"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ify-CK-hSe" secondAttribute="bottom" id="he6-4f-gVO"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="height" secondItem="ZUq-H7-oEO" secondAttribute="height" id="kVm-sK-qqF"/>
                                     <constraint firstAttribute="bottom" secondItem="CN3-BV-WkM" secondAttribute="bottom" id="kXg-r1-cjY"/>
+                                    <constraint firstItem="ZUq-H7-oEO" firstAttribute="leading" secondItem="oDB-tA-otO" secondAttribute="centerX" id="m2m-wR-4H2"/>
                                     <constraint firstItem="doN-GD-FKd" firstAttribute="top" secondItem="oDB-tA-otO" secondAttribute="top" constant="71" id="mYr-wg-yGn"/>
-                                    <constraint firstAttribute="centerX" secondItem="bZd-sH-zLg" secondAttribute="centerX" id="y0R-f1-RyZ"/>
+                                    <constraint firstItem="bZd-sH-zLg" firstAttribute="width" secondItem="ZUq-H7-oEO" secondAttribute="width" id="tGk-aX-BNc"/>
+                                    <constraint firstAttribute="centerX" secondItem="bZd-sH-zLg" secondAttribute="trailing" id="y0R-f1-RyZ"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -289,7 +290,7 @@
                         <outlet property="playCircle" destination="YQI-ac-uh8" id="FzX-0t-057"/>
                         <outlet property="previewParentView" destination="gBV-EL-ryr" id="iBS-qW-W16"/>
                         <outlet property="rateButton" destination="CN3-BV-WkM" id="hAH-ah-h7p"/>
-                        <outlet property="takeImageSnapShotButton" destination="SlH-dr-QmS" id="LLh-hu-V8b"/>
+                        <outlet property="takeImageSnapShotButton" destination="Ify-CK-hSe" id="kDy-EK-LJg"/>
                         <outlet property="trimControlContainer" destination="doN-GD-FKd" id="5cE-Cc-ChN"/>
                         <segue destination="vMj-SS-k4u" kind="push" identifier="toStitch" id="VD5-Sj-bti"/>
                     </connections>
@@ -472,9 +473,9 @@
         <image name="btnPrevArrowAccent" width="24" height="24"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonNoLoop" width="106" height="59"/>
+        <image name="cameraButtonScreenshot" width="79" height="59"/>
         <image name="cameraButtonSpeedNormal" width="107" height="59"/>
         <image name="cameraButtonUnmute" width="107" height="59"/>
-        <image name="takeSnapShot" width="47" height="47"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -123,7 +123,7 @@
                                     failBlock:(VFailBlock)fail
 {
     NSManagedObjectID *filterID = filter.objectID;
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -142,7 +142,7 @@
         });
     };
     
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
         if (fail)
         {
@@ -201,7 +201,7 @@
     
     // Check core data
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
     [request setPredicate:predicate];
     NSError *error = nil;
     VAbstractFilter *filter = [[context executeFetchRequest:request error:&error] firstObject];

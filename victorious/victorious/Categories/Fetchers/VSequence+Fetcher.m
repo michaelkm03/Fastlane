@@ -20,7 +20,7 @@
 
 - (BOOL)isPoll
 {
-    for (NSString* category in VPollCategories())
+    for (NSString *category in VPollCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -38,7 +38,7 @@
 
 - (BOOL)isImage
 {
-    for (NSString* category in VImageCategories())
+    for (NSString *category in VImageCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -51,7 +51,7 @@
 
 - (BOOL)isVideo
 {
-    for (NSString* category in VVideoCategories())
+    for (NSString *category in VVideoCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -64,7 +64,7 @@
 
 - (BOOL)isOwnerContent
 {
-    for (NSString* category in VOwnerCategories())
+    for (NSString *category in VOwnerCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -77,7 +77,7 @@
 
 - (BOOL)isRepost
 {
-    for (NSString* category in VRepostCategories())
+    for (NSString *category in VRepostCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -90,7 +90,7 @@
 
 - (BOOL)isRemix
 {
-    for (NSString* category in VRemixCategories())
+    for (NSString *category in VRemixCategories())
     {
         if ([self.category isEqualToString:category])
         {
@@ -103,17 +103,16 @@
 
 - (VNode *)firstNode
 {
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+    return [self.nodes.array firstObject];
 }
 
 - (NSArray *)initialImageURLs
 {
-    NSMutableArray* urls = [[NSMutableArray alloc] initWithCapacity:10];
+    NSMutableArray *urls = [[NSMutableArray alloc] initWithCapacity:10];
 
     if ([self isPoll])
     {
-        for (VAnswer* answer in [[self firstNode] firstAnswers])
+        for (VAnswer *answer in [[self firstNode] firstAnswers])
         {
             if (answer.thumbnailUrl)
             {
@@ -141,7 +140,7 @@
         return @(0);
     }
     
-    for (VVoteResult* result in [self.voteResults allObjects])
+    for (VVoteResult *result in [self.voteResults allObjects])
     {
         if ([result.remoteId isEqualToNumber:voteID])
         {

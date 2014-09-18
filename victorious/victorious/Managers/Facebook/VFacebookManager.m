@@ -197,6 +197,7 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 }
 
 #pragma mark - Sharing
+
 - (void)shareLink:(NSURL *)link
       description:(NSString *)description
              name:(NSString *)name

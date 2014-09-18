@@ -14,7 +14,7 @@ const NSTimeInterval kVideoPlayerAnimationDuration; ///< The duration to be used
 @interface VContentViewController (Videos) <VCVideoPlayerDelegate>
 
 
-@property (strong, nonatomic) VCVideoPlayerViewController* videoPlayer;
+@property (strong, nonatomic) VCVideoPlayerViewController *videoPlayer;
 
 @property (nonatomic, copy) void (^onVideoCompletionBlock)(void); ///< A block to execute as soon as playback finishes. Block will be cleared after executing once.
 

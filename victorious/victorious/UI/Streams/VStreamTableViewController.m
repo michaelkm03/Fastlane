@@ -50,16 +50,16 @@
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
 
-@property (strong, nonatomic, readwrite) VStreamTableDataSource* tableDataSource;
+@property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
-@property (strong, nonatomic) UIActivityIndicatorView* bottomRefreshIndicator;
-@property (strong, nonatomic) NSCache* preloadImageCache;
+@property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
+@property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
-@property (strong, nonatomic) VStream* defaultStream;
+@property (strong, nonatomic) VStream *defaultStream;
 
-@property (strong, nonatomic) NSString* streamName;
+@property (strong, nonatomic) NSString *streamName;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
@@ -69,36 +69,36 @@
 
 + (instancetype)homeStream
 {
-    VStream* defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
+    VStream *defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+    VStreamTableViewController *stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)communityStream
 {
-    VStream* defaultStream = [VStream streamForCategories: VUGCCategories()];
-    VStreamTableViewController* stream = [self streamWithDefaultStream:defaultStream name:@"ugc" title:NSLocalizedString(@"Community", nil)];
+    VStream *defaultStream = [VStream streamForCategories: VUGCCategories()];
+    VStreamTableViewController *stream = [self streamWithDefaultStream:defaultStream name:@"ugc" title:NSLocalizedString(@"Community", nil)];
     [stream addCreateButton];
     return  stream;
 }
 
 + (instancetype)ownerStream
 {
-    VStream* defaultStream = [VStream streamForCategories: VOwnerCategories()];
+    VStream *defaultStream = [VStream streamForCategories: VOwnerCategories()];
     return [self streamWithDefaultStream:defaultStream name:NSLocalizedString(@"Channel", nil) title:NSLocalizedString(@"Channel", nil)];
 }
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
-    VStream* defaultStream = [VStream streamForHashTag:hashtag];
+    VStream *defaultStream = [VStream streamForHashTag:hashtag];
     return [self streamWithDefaultStream:defaultStream name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
 }
 
 + (instancetype)streamWithDefaultStream:(VStream *)stream name:(NSString *)name title:(NSString *)title
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamTableViewController* streamTableView = (VStreamTableViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamTableViewController *streamTableView = (VStreamTableViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
     
     streamTableView.streamName = name;
     streamTableView.title = title;
@@ -168,7 +168,7 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
-    VAbstractFilter* filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
     if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
     {
         [self refresh:nil];
@@ -329,9 +329,10 @@
 }
 
 #pragma mark - Cells
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+    VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
 
     CGFloat cellHeight;
     
@@ -372,12 +373,12 @@
     
     if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
-        NSIndexPath* preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VSequence* preloadSequence = [dataSource sequenceAtIndexPath:preloadPath];
+        NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
+        VSequence *preloadSequence = [dataSource sequenceAtIndexPath:preloadPath];
         
-        for (NSURL* imageUrl in [preloadSequence initialImageURLs])
+        for (NSURL *imageUrl in [preloadSequence initialImageURLs])
         {
-            UIImageView* preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+            UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
             [preloadView setImageWithURL:imageUrl];
             
             [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
@@ -400,6 +401,7 @@
 }
 
 #pragma mark - Refresh
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:nil];
@@ -480,7 +482,7 @@
     {
         if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
         {
-            VNoContentView* noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
             self.tableView.backgroundView = noContentView;
             noContentView.titleLabel.text = self.noContentTitle;
             noContentView.messageLabel.text = self.noContentMessage;
@@ -535,11 +537,12 @@
 }
 
 #pragma mark - Actions
+
 - (void)setBackgroundImageWithURL:(NSURL *)url
 {
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [newBackgroundView setBlurredImageWithURL:url
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
@@ -558,7 +561,7 @@
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
 
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
@@ -569,34 +572,18 @@
     [self updateNoContentViewAnimated:YES];
 }
 
-#pragma mark - Navigation
-//- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-//                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-//                                                fromViewController:(UIViewController *)fromVC
-//                                                  toViewController:(UIViewController *)toVC
-//{
-//    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
-//    {
-//        return [[VStreamToContentAnimator alloc] init];;
-//    }
-//    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
-//    {
-//        return [[VStreamToCommentAnimator alloc] init];
-//    }
-//    return nil;
-//}
-
 #pragma mark - VAnimation
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-    VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
+    NSIndexPath *path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
+    VStreamViewCell *selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
     //In this case, we reset them
     CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
-    for (VStreamViewCell* cell in self.repositionedCells)
+    for (VStreamViewCell *cell in self.repositionedCells)
     {
         
         CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
@@ -623,7 +610,7 @@
          [UIView animateWithDuration:duration/2
                           animations:^
           {
-              for (VStreamViewCell* cell in self.repositionedCells)
+              for (VStreamViewCell *cell in self.repositionedCells)
               {
                   CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
                   if (!CGRectIntersectsRect(self.tableView.frame, cellRect))
@@ -677,13 +664,13 @@
                                             self.navigationController.navigationBar.center.y - self.tableView.frame.size.height);
          self.navigationController.navigationBar.center = newNavCenter;
          
-         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
+         NSMutableArray *repositionedCells = [[NSMutableArray alloc] init];
          
-         NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
-         VStreamViewCell* selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
+         NSIndexPath *path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
+         VStreamViewCell *selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
-         for (VStreamViewCell* cell in [self.tableView visibleCells])
+         for (VStreamViewCell *cell in [self.tableView visibleCells])
          {
              CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
              if (cell == selectedCell || !CGRectIntersectsRect(self.tableView.frame, cellRect))
@@ -713,12 +700,14 @@
 }
 
 #pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
         self.tableDataSource.count &&
         ![self.tableDataSource isFilterLoading] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
     {
         [self loadNextPageAction];
     }
