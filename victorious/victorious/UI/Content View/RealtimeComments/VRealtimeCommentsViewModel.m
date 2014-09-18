@@ -30,7 +30,7 @@
     if (self)
     {
         _realTimeComments = realtimeComments;
-        _currentTime = 0.0f;
+        _currentTime = kCMTimeZero;
     }
     return self;
 }
@@ -69,9 +69,14 @@
     return self.currentComment.text;
 }
 
-- (void)setCurrentTime:(CGFloat)currentTime
+- (void)setCurrentTime:(CMTime)currentTime
 {
     _currentTime = currentTime;
+ 
+    if (CMTimeGetSeconds(currentTime) < self.currentComment.realtime.floatValue)
+    {
+        return;
+    }
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {

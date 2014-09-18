@@ -35,7 +35,11 @@
                        currentCommentBody:(NSString *)commentBody
                                atTimeText:(NSString *)atTimeText
 {
-    
+    [self.currentUserAvatar setImageWithURL:currentAvatarURL];
+    self.currentUserNameLabel.text = username;
+    self.currentTimeAgoLabel.text = timeAgoText;
+    self.currentCommentBodyLabel.text = commentBody;
+    self.currentAtTimeLabel.text = atTimeText;
 }
 
 - (void)addAvatarWithURL:(NSURL *)avatarURL

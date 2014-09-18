@@ -174,9 +174,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
+    __weak typeof(self) welf = self;
     self.viewModel.realTimeCommentsViewModel.onCurrentRealTimeComentChange = ^void(void)
     {
-#warning Update RTC 
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = welf.viewModel.realTimeCommentsViewModel;
+        [welf.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
+                                                    currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
+                                                 currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
+                                                 currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
+                                                         atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment];
     };
 }
 
@@ -262,6 +268,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 videoCell.videoURL = self.viewModel.videoURL;
+                videoCell.delegate = self;
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -460,8 +467,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    self.viewModel.realTimeCommentsViewModel.currentTime = CMTimeGetSeconds(time);
-    self.viewModel.realTimeCommentsViewModel.totalTime = CMTimeGetSeconds(totalTime);
+    self.viewModel.realTimeCommentsViewModel.currentTime = time;
+    self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
