@@ -148,7 +148,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return The avatar URL for the given user.
  */
-- (NSURL *)commenterAvatarULRForCommentIndex:(NSInteger)commentIndex;
+- (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex;
 
 /**
  *  Returns a boolean determining if a given comment has any media (such as a photo or video) attached.
