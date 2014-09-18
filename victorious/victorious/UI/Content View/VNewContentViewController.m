@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
     commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarULRForCommentIndex:index];
+    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
     commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
     commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
     if ([self.viewModel commentHasMediaForCommentIndex:index])
