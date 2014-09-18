@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
-    [self.view addSubview:self.inputAccessoryView];
+
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
