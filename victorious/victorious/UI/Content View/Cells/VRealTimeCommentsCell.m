@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentCommentBodyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentAtTimeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *conversationClock;
 
 
 @end
@@ -25,6 +26,20 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), 92);
+}
+
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.currentUserAvatar.image = nil;
+    self.currentUserNameLabel.text = nil;
+    self.currentCommentBodyLabel.text = nil;
+    self.currentAtTimeLabel.text = nil;
+    self.currentTimeAgoLabel.text = nil;
+    self.conversationClock.hidden = YES;
 }
 
 #pragma mark - Public Methods
@@ -40,6 +55,7 @@
     self.currentTimeAgoLabel.text = timeAgoText;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
+    self.conversationClock.hidden = NO;
 }
 
 - (void)addAvatarWithURL:(NSURL *)avatarURL

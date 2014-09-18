@@ -177,12 +177,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
-    if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
-    {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionRealTimeComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
-    }
-    
     __weak typeof(self) welf = self;
     self.viewModel.realTimeCommentsViewModel.onCurrentRealTimeComentChange = ^void(void)
     {
@@ -238,7 +232,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return 1;
         case VContentViewSectionRealTimeComments:
-            return (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? 1 : 0;
+            return 1;//(self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? 1 : 0;
         case VContentViewSectionAllComments:
             return self.viewModel.commentCount;
         case VContentViewSectionCount:
