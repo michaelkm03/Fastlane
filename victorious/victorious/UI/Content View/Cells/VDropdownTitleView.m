@@ -8,10 +8,10 @@
 
 #import "VDropdownTitleView.h"
 
+#import "VThemeManager.h"
+
 @interface VDropdownTitleView ()
 
-@property (nonatomic, strong) UIView *blurView;
-@property (nonatomic, strong) CALayer *extraColorLayer;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end
@@ -20,17 +20,9 @@
 
 - (void)awakeFromNib
 {
-    self.blurView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
-    self.blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-    self.extraColorLayer = [CALayer layer];
-    self.extraColorLayer.frame = CGRectMake(0, 0, 320, 320);
-    self.extraColorLayer.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.5f].CGColor;
-    [self.blurView.layer addSublayer:self.extraColorLayer];
-    
-    [self addSubview:self.blurView];
-    
-    [self bringSubviewToFront:self.label];
+    [super awakeFromNib];
+    self.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.97f];
+    self.label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 #pragma mark - Property Accessors
