@@ -36,7 +36,7 @@
 - (void)loadView
 {
     self.view = [VFindFriendsTableView newFromNibWithOwner:self];
-    [self.tableView.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([VInviteFriendTableViewCell class]) bundle:nil] forCellReuseIdentifier:kFollowCellReuseID];
+    [self.tableView.tableView registerNib:[UINib nibWithNibName:VInviteFriendTableViewCellNibName bundle:nil] forCellReuseIdentifier:VInviteFriendTableViewCellNibName];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -277,7 +277,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kFollowCellReuseID];
+    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
     cell.profile = self.users[indexPath.row];
     return cell;
 }
