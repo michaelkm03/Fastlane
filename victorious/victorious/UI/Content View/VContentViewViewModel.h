@@ -11,10 +11,13 @@
 #import "VRealtimeCommentsViewModel.h"
 
 /**
- *  Posted whenever new comments are made available for a given sequence. This can be initial/update/pagination.
+ *  Posted whenever new comments are made available for a given sequence.
  */
 UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
+/**
+ *  Posted whenever new realtime comments are available.
+ */
 UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification;
 
 /**
