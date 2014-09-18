@@ -70,7 +70,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, assign, readonly) VContentViewType type;
 
 /**
- *  <#Description#>
+ *  A view model for the real time comments for the given sequence.
  */
 @property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 
