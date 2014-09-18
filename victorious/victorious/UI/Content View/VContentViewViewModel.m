@@ -140,7 +140,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 
 - (NSInteger)commentCount
 {
-    return self.comments.count;
+    return (NSInteger)self.comments.count;
 }
 
 #pragma mark - Public Methods
