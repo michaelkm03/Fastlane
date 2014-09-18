@@ -9,7 +9,7 @@
 #import "VBaseCollectionViewCell.h"
 
 /**
- *  A UICollectionViewCell for representing realtime comments for a given video. Maintnais a strip of avatars and a current comment.
+ *  A UICollectionViewCell for representing realtime comments for a given video. Maintains a strip of avatars and a current comment.
  */
 @interface VRealTimeCommentsCell : VBaseCollectionViewCell
 
