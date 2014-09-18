@@ -86,7 +86,7 @@ static NSString * const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString * const VConstantMediaExtensionMOV       = @"mov";
 static NSString * const VConstantMediaExtensionMP4       = @"mp4";
 
-static CGFloat const VConstantsMaximumVideoDuration = 15.0;
+static NSTimeInterval const VConstantsMaximumVideoDuration = 15.0;
 
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 

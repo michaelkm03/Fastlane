@@ -50,6 +50,8 @@
     
     UIImageView *previewImageView = [[UIImageView alloc] initWithImage:[self previewImage]];
     previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    previewImageView.clipsToBounds = YES;
+    previewImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.previewImageSuperview addSubview:previewImageView];
     [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]|"
                                                                                        options:0
