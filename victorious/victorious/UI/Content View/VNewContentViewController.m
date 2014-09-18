@@ -136,6 +136,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewDidAppear:animated];
     
+    [self.viewModel fetchComments];
     [self.contentCollectionView flashScrollIndicators];
 }
 

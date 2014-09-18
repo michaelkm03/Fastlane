@@ -100,6 +100,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSInteger commentCount;
 
 /**
+ *  Fetches the all comments and realtime comments for this viewModel's sequence.
+ */
+- (void)fetchComments;
+
+/**
  *  Returns the corrensponding comment body for the given commentIndex. Might return nil if comment has no body text.
  *
  *  @param commentIndex The index of the comment.

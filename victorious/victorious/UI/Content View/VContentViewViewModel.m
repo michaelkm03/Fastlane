@@ -70,43 +70,13 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode firstAsset];
-        
-        [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
-                                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             // Ensure we have all VComments
-             [resultObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-             {
-                 if (![obj isKindOfClass:[VComment class]])
-                 {
-                     return;
-                 }
-             }];
-             
-             self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:resultObjects];
-             
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
-                                                                 object:self];
-         }
-                                                                   failBlock:nil];
-        
-        [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                     isRefresh:NO
-                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                                 object:self];
-         }
-                                                     failBlock:nil];
     }
     return self;
 }
 
 - (id)init
 {
-    [[NSException exceptionWithName:@"Invalid initializer."
-                            reason:@"-init is not allowed. Use the designate initializer: \"-initWithSequence:\""
-                           userInfo:nil] raise];
+    NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
 }
 
@@ -174,6 +144,37 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 }
 
 #pragma mark - Public Methods
+
+- (void)fetchComments
+{
+    [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
+                                                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         // Ensure we have all VComments
+         [resultObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+          {
+              if (![obj isKindOfClass:[VComment class]])
+              {
+                  return;
+              }
+          }];
+         
+         self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:resultObjects];
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
+                                                             object:self];
+     }
+                                                               failBlock:nil];
+    
+    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+                                                 isRefresh:NO
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
+                                                             object:self];
+     }
+                                                 failBlock:nil];
+}
 
 - (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex
 {
