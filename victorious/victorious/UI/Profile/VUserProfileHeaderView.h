@@ -38,7 +38,7 @@
 @property (nonatomic, strong) UIActivityIndicatorView *followButtonActivityIndicator;
 
 @property (nonatomic, strong) VUser *user;
-@property (nonatomic, strong) id<VUserProfileHeaderDelegate> delegate;
+@property (nonatomic, weak) id<VUserProfileHeaderDelegate> delegate;
 
 + (instancetype)newViewWithFrame:(CGRect)frame;
 

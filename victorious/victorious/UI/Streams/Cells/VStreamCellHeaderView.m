@@ -53,14 +53,14 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 
 - (void)commonInit
 {
-    if (!largeNumberFormatter)
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
     {
         largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
-    }
+    });
     
-    self.commentViews = [[NSMutableArray alloc] init];
-    
-    self.isFromProfile = NO;
+    _commentViews = [[NSMutableArray alloc] init];
+    _isFromProfile = NO;
 }
 
 - (void)layoutSubviews
@@ -74,11 +74,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 {
     [self.commentButton setHidden:YES];
     [self.commentHitboxButton setHidden:YES];
-}
-
-- (void)setIsFromProfile:(BOOL)isFromProfile
-{
-    _isFromProfile = isFromProfile;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -102,7 +97,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     // Get comment count (if any)
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
-    
     
     // Format repost / remix string
     NSString *parentUserString;
