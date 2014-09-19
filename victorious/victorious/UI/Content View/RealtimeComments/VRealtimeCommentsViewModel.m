@@ -8,6 +8,10 @@
 
 #import "VRealtimeCommentsViewModel.h"
 
+// Formatters
+#import "NSDate+timeSince.h"
+#import "VRTCUserPostedAtFormatter.h"
+
 // Models
 #import "VComment.h"
 #import "VUser.h"
@@ -54,14 +58,13 @@
 
 - (NSString *)timeAgoTextForCurrentRealtimeComment
 {
-    //TODO: Implement
-    return @"";
+    return [self.currentComment.postedAt timeSince];
 }
 
 - (NSString *)atRealtimeTextForCurrentRealTimeComment
 {
-    //TODO: Implement
-    return @"";
+    return [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
+                                                                   andPostedTime:self.currentComment.realtime].string;
 }
 
 - (NSString *)realTimeCommentBodyForCurrentRealTimeComent
@@ -71,31 +74,30 @@
 
 - (void)setCurrentTime:(CMTime)currentTime
 {
-    // We're going back in time. Need to reset currentcomment
-    if (CMTimeGetSeconds(_currentTime) < CMTimeGetSeconds(currentTime))
-    {
-        self.currentComment = nil;
-    }
-    
     _currentTime = currentTime;
- 
-    if (CMTimeGetSeconds(currentTime) < self.currentComment.realtime.floatValue)
-    {
-        return;
-    }
+    
+    Float64 seconds = CMTimeGetSeconds(currentTime);
+    
+    __block VComment *newCurrentComment = [self.realTimeComments firstObject];
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {
-        if (comment.realtime.floatValue > self.currentComment.realtime.floatValue)
+        if (comment.realtime.floatValue > seconds)
         {
-            self.currentComment = comment;
+            newCurrentComment = comment;
             *stop = YES;
         }
     }];
+    
+    self.currentComment = newCurrentComment;
 }
 
 - (void)setCurrentComment:(VComment *)currentComment
 {
+    if (_currentComment == currentComment)
+    {
+        return;
+    }
     _currentComment = currentComment;
     
     if (self.onCurrentRealTimeComentChange)

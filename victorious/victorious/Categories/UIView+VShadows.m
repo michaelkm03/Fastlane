@@ -14,7 +14,7 @@
 {
     self.layer.shadowOpacity = 1.0f;
     self.layer.shadowOffset = CGSizeZero;
-    self.layer.shadowRadius = (zIndex * 1.5f);
+    self.layer.shadowRadius = (zIndex * 1.8f);
     
     UIMotionEffectGroup *shadowEffects = [[UIMotionEffectGroup alloc] init];
     

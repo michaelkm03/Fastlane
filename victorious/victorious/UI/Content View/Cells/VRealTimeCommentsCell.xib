@@ -31,7 +31,7 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="realtime-comment-arrow" translatesAutoresizingMaskIntoConstraints="NO" id="yKh-oI-9xZ" userLabel="RTC Arrow Image View">
                         <rect key="frame" x="-58" y="-72" width="18" height="7"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="745" text="Jon Snow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JM-hU-CGn" userLabel="RTC Current User Name Label">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="745" verticalCompressionResistancePriority="751" text="Jon Snow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JM-hU-CGn" userLabel="RTC Current User Name Label">
                         <rect key="frame" x="57" y="32" width="77" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
@@ -40,17 +40,17 @@
                         <rect key="frame" x="142" y="38" width="9" height="9"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="36 h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPB-km-P8f">
-                        <rect key="frame" x="165" y="32" width="34" height="21"/>
+                        <rect key="frame" x="159" y="32" width="34" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ygritte NO!!!!!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ7-vM-BF3" userLabel="RTC Current Comment Label">
-                        <rect key="frame" x="57" y="53" width="104" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" text="This is a temporarily long comment with a bunch of text in it. Bob Lob Law Attorny at law." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="234" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ7-vM-BF3" userLabel="RTC Current Comment Label">
+                        <rect key="frame" x="57" y="53" width="234" height="29"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="at 0:05" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTk-W8-8lh" userLabel="RTC Comment At Label">
-                        <rect key="frame" x="247" y="32" width="53" height="21"/>
+                        <rect key="frame" x="252" y="32" width="53" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -61,20 +61,22 @@
             <constraints>
                 <constraint firstItem="PhZ-3x-B2L" firstAttribute="top" secondItem="D7e-v9-B9Z" secondAttribute="top" id="26k-6j-U75"/>
                 <constraint firstItem="hTk-W8-8lh" firstAttribute="baseline" secondItem="5JM-hU-CGn" secondAttribute="baseline" id="6Be-PE-aNy"/>
-                <constraint firstAttribute="trailing" secondItem="hTk-W8-8lh" secondAttribute="trailing" constant="20" id="9gt-iH-8sw"/>
+                <constraint firstAttribute="trailing" secondItem="hTk-W8-8lh" secondAttribute="trailing" constant="15" id="9gt-iH-8sw"/>
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="top" secondItem="fEu-0z-toW" secondAttribute="top" id="BLB-jF-dt8"/>
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="centerY" secondItem="f0V-Wi-SVG" secondAttribute="centerY" id="FdN-vq-K4P"/>
                 <constraint firstItem="fEu-0z-toW" firstAttribute="top" secondItem="D7e-v9-B9Z" secondAttribute="top" constant="32" id="JTm-z2-rMH"/>
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="leading" secondItem="fEu-0z-toW" secondAttribute="trailing" constant="9" id="OHe-be-RZB"/>
                 <constraint firstItem="fEu-0z-toW" firstAttribute="leading" secondItem="D7e-v9-B9Z" secondAttribute="leading" constant="16" id="Swe-EB-Ls6"/>
                 <constraint firstItem="PhZ-3x-B2L" firstAttribute="leading" secondItem="D7e-v9-B9Z" secondAttribute="leading" id="TBF-0T-bMR"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZJ7-vM-BF3" secondAttribute="trailing" priority="998" constant="10" id="WJb-gQ-Jh8"/>
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="leading" secondItem="ZJ7-vM-BF3" secondAttribute="leading" id="XPD-x6-Sdc"/>
                 <constraint firstItem="ZJ7-vM-BF3" firstAttribute="top" secondItem="5JM-hU-CGn" secondAttribute="bottom" id="cFf-Qv-NAO"/>
                 <constraint firstAttribute="trailing" secondItem="PhZ-3x-B2L" secondAttribute="trailing" id="d0n-Xw-5fM"/>
                 <constraint firstItem="f0V-Wi-SVG" firstAttribute="leading" secondItem="5JM-hU-CGn" secondAttribute="trailing" constant="8" id="hAK-v1-jkY"/>
                 <constraint firstItem="hTk-W8-8lh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qPB-km-P8f" secondAttribute="trailing" constant="10" id="vOp-hq-Cms"/>
                 <constraint firstItem="5JM-hU-CGn" firstAttribute="baseline" secondItem="qPB-km-P8f" secondAttribute="baseline" id="x0g-an-8Rd"/>
-                <constraint firstItem="qPB-km-P8f" firstAttribute="leading" secondItem="f0V-Wi-SVG" secondAttribute="trailing" constant="14" id="xF5-GY-ja1"/>
+                <constraint firstItem="qPB-km-P8f" firstAttribute="leading" secondItem="f0V-Wi-SVG" secondAttribute="trailing" constant="8" id="xF5-GY-ja1"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZJ7-vM-BF3" secondAttribute="bottom" priority="752" constant="4" id="zk6-G9-fFe"/>
             </constraints>
             <connections>
                 <outlet property="conversationClock" destination="f0V-Wi-SVG" id="ulC-np-HCC"/>

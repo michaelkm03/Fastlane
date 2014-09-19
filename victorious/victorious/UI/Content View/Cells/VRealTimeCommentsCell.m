@@ -49,6 +49,8 @@
     
     self.currentUserNameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.currentAtTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.currentTimeAgoLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
 }
 
 #pragma mark - Public Methods
