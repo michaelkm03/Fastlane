@@ -364,6 +364,8 @@
 		D8E39BE719CB7C94007FD86A /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BE519CB7C94007FD86A /* VSectionHandleReusableView.xib */; };
 		D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */; };
 		D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */; };
+		D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BED19CB99A8007FD86A /* ContentView.storyboard */; };
+		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
@@ -1041,6 +1043,9 @@
 		D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardInputAccessoryView.h; sourceTree = "<group>"; };
 		D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
 		D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
+		D8E39BED19CB99A8007FD86A /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
+		D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VShadows.h"; sourceTree = "<group>"; };
+		D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VShadows.m"; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4B199403B400D2A07F /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
@@ -1365,6 +1370,7 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				D8E39BED19CB99A8007FD86A /* ContentView.storyboard */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
 				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
@@ -2136,6 +2142,8 @@
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
+				D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */,
+				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2550,6 +2558,7 @@
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				D8E39BE219CB7C80007FD86A /* VRealTimeCommentsCell.xib in Resources */,
+				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				D8E39BD719CB7C80007FD86A /* VContentCell.xib in Resources */,
 				D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */,
@@ -2859,6 +2868,7 @@
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VDropdownTitleView.m in Sources */,
+				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
 				BE6425BE19B8D55900A9371F /* NSString+RFC2822Date.m in Sources */,
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
