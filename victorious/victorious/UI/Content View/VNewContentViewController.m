@@ -8,6 +8,9 @@
 
 #import "VNewContentViewController.h"
 
+// View Categories
+#import "UIView+VShadows.h"
+
 // Images
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
@@ -43,6 +46,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
 
@@ -87,6 +92,16 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                      forState:UIControlStateNormal];
+    self.closeButton.tintColor = [UIColor whiteColor];
+    [self.closeButton v_applyShadowsWithZIndex:2];
+    
+    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                     forState:UIControlStateNormal];
+    self.moreButton.imageView.tintColor = [UIColor whiteColor];
+    [self.moreButton v_applyShadowsWithZIndex:2];
     
     self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     self.inputAccessoryView.delegate = self;
