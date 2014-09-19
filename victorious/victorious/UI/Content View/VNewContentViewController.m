@@ -51,6 +51,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
+@property (nonatomic, weak) VSectionHandleReusableView *handleView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
@@ -204,6 +205,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     {
         NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
         [self.contentCollectionView reloadSections:commentsIndexSet];
+        
+        self.handleView.numberOfComments = self.viewModel.commentCount;
     }
 }
 
@@ -351,9 +354,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:
-            return (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                   withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
-                                                                                                          forIndexPath:indexPath];
+        {
+            if (!self.handleView)
+            {
+                VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                                                       withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
+                                                                                                                                              forIndexPath:indexPath];
+                handleView.numberOfComments = self.viewModel.commentCount;
+                self.handleView = handleView;
+            }
+            return self.handleView;
+        }
         case VContentViewSectionCount:
             return nil;
     }

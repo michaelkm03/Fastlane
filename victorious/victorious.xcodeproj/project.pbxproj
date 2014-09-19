@@ -360,12 +360,12 @@
 		D8E39BE019CB7C80007FD86A /* VDropdownTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD219CB7C80007FD86A /* VDropdownTitleView.xib */; };
 		D8E39BE119CB7C80007FD86A /* VRealTimeCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */; };
 		D8E39BE219CB7C80007FD86A /* VRealTimeCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */; };
-		D8E39BE619CB7C94007FD86A /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE419CB7C94007FD86A /* VSectionHandleReusableView.m */; };
-		D8E39BE719CB7C94007FD86A /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BE519CB7C94007FD86A /* VSectionHandleReusableView.xib */; };
 		D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */; };
 		D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */; };
 		D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BED19CB99A8007FD86A /* ContentView.storyboard */; };
 		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
+		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
+		D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
@@ -1037,15 +1037,15 @@
 		D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRealTimeCommentsCell.h; sourceTree = "<group>"; };
 		D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealTimeCommentsCell.m; sourceTree = "<group>"; };
 		D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VRealTimeCommentsCell.xib; sourceTree = "<group>"; };
-		D8E39BE319CB7C94007FD86A /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
-		D8E39BE419CB7C94007FD86A /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
-		D8E39BE519CB7C94007FD86A /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
 		D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardInputAccessoryView.h; sourceTree = "<group>"; };
 		D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
 		D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
 		D8E39BED19CB99A8007FD86A /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VShadows.h"; sourceTree = "<group>"; };
 		D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VShadows.m"; sourceTree = "<group>"; };
+		D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
+		D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
+		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4B199403B400D2A07F /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
@@ -1331,9 +1331,6 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				D8E39BE319CB7C94007FD86A /* VSectionHandleReusableView.h */,
-				D8E39BE419CB7C94007FD86A /* VSectionHandleReusableView.m */,
-				D8E39BE519CB7C94007FD86A /* VSectionHandleReusableView.xib */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
@@ -2386,6 +2383,9 @@
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
+				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
+				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
 				D8E39BC219CB7C80007FD86A /* VContentCell.h */,
 				D8E39BC319CB7C80007FD86A /* VContentCell.m */,
 				D8E39BC419CB7C80007FD86A /* VContentCell.xib */,
@@ -2541,6 +2541,7 @@
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D8E39BE019CB7C80007FD86A /* VDropdownTitleView.xib in Resources */,
+				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
@@ -2576,7 +2577,6 @@
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				0314D4C319B46B5E00FA363C /* VUserProfileHeaderView.xib in Resources */,
 				0314D50719B46B5E00FA363C /* VWebContentViewController.xib in Resources */,
-				D8E39BE719CB7C94007FD86A /* VSectionHandleReusableView.xib in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				0314D4E719B46B5E00FA363C /* VInviteFriendTableViewCell.xib in Resources */,
 			);
@@ -2772,13 +2772,13 @@
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				0314D45E19B46B5E00FA363C /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
+				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
-				D8E39BE619CB7C94007FD86A /* VSectionHandleReusableView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
