@@ -11,6 +11,8 @@
 // Theme
 #import "VThemeManager.h"
 
+static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
+
 @interface VRealTimeCommentsCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;
@@ -46,7 +48,6 @@
     self.currentTimeAgoLabel.text = nil;
     self.conversationClock.hidden = YES;
     
-    
     self.currentUserNameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.currentAtTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
@@ -74,14 +75,14 @@
 {
     UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
                                                                             0,
-                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame),
-                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame))];
+                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame) - (2 * kRealTimeCommentAvatarInset),
+                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame) - (2 * kRealTimeCommentAvatarInset))];
     [avatarView setImageWithURL:avatarURL
                placeholderImage:[[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     avatarView.tintColor = [UIColor lightGrayColor];
     avatarView.center = CGPointMake(0 + (CGRectGetWidth(self.realtimeCommentStrip.bounds) * percentLocation),
                                     CGRectGetMidY(self.realtimeCommentStrip.bounds));
-    avatarView.layer.cornerRadius = CGRectGetHeight(self.realtimeCommentStrip.bounds) * 0.5f;
+    avatarView.layer.cornerRadius = CGRectGetHeight(avatarView.bounds) * 0.5f;
     avatarView.layer.masksToBounds = YES;
     [self.realtimeCommentStrip addSubview:avatarView];
 }

@@ -159,7 +159,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
               }
           }];
          
-         self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:resultObjects];
+         self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:[self.sequence.comments array]];
          
          [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
                                                              object:self];

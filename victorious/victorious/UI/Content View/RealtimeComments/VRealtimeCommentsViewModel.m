@@ -30,6 +30,13 @@
 
 - (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments
 {
+    [realtimeComments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (![obj isKindOfClass:[VComment class]])
+        {
+            NSAssert(false, @"Not a realtimecomment");
+        }
+    }];
+    
     self = [super init];
     if (self)
     {
