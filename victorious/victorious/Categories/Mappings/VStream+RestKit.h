@@ -10,4 +10,6 @@
 
 @interface VStream (RestKit)
 
++ (NSArray *)descriptors;
+
 @end

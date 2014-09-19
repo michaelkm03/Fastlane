@@ -197,7 +197,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
 }
 
-- (BOOL)remixRepostCheck:(NSString*)sequenceCategory
+- (BOOL)remixRepostCheck:(NSString *)sequenceCategory
 {
     if ([sequenceCategory rangeOfString:@"remix"].location == NSNotFound && [sequenceCategory rangeOfString:@"repost"].location == NSNotFound)
     {
