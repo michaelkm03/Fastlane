@@ -31,6 +31,7 @@
             </constraints>
             <connections>
                 <outlet property="commentCountLabel" destination="C6X-zQ-QMe" id="jC3-CI-SxJ"/>
+                <outlet property="handleIcon" destination="FrK-0D-wQa" id="YlM-ES-z4U"/>
             </connections>
         </collectionReusableView>
     </objects>

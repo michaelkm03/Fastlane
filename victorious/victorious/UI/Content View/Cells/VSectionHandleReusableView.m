@@ -13,7 +13,7 @@
 @interface VSectionHandleReusableView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
-
+@property (weak, nonatomic) IBOutlet UIImageView *handleIcon;
 
 @end
 
@@ -32,6 +32,10 @@
 {
     self.commentCountLabel.text = nil;
     self.commentCountLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    
+    
+    self.handleIcon.image = [self.handleIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.handleIcon.tintColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
 }
 
 #pragma mark - Property Accessors

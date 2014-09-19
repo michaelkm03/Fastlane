@@ -84,7 +84,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 
 - (NSURLRequest *)imageURLRequest
 {
-    NSURL* imageUrl;
+    NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
         VAsset *currentAsset = [_currentNode.assets firstObject];

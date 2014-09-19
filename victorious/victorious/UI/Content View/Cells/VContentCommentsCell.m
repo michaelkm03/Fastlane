@@ -11,6 +11,9 @@
 // Subviews
 #import "VCommentTextAndMediaView.h"
 
+// Theme
+#import "VThemeManager.h"
+
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 @interface VContentCommentsCell ()
@@ -62,6 +65,11 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
 
     [self prepareContentAndMediaView];
+    
+    self.commentersUsernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.commentersUsernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 - (void)prepareContentAndMediaView
