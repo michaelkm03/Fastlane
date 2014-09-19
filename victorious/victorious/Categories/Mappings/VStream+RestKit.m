@@ -21,7 +21,7 @@
                                   @"id"             :   VSelectorName(remoteId),
                                   @"stream_content_type"     :   VSelectorName(streamContentType),
                                   @"name"           :   VSelectorName(name),
-                                  @"preview_image"  :   VSelectorName(previewImage),
+                                  @"preview_image"  :   VSelectorName(previewImagesObject),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

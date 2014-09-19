@@ -26,7 +26,7 @@
                                   @"id"             :   VSelectorName(remoteId),
                                   @"created_by"     :   VSelectorName(createdBy),
                                   @"name"           :   VSelectorName(name),
-                                  @"preview_image"  :   VSelectorName(previewImage),
+                                  @"preview_image"  :   VSelectorName(previewImagesObject),
                                   @"released_at"    :   VSelectorName(releasedAt),
                                   @"description"    :   VSelectorName(sequenceDescription),
                                   @"status"         :   VSelectorName(status),

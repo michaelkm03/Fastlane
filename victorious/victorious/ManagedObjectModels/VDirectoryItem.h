@@ -2,7 +2,7 @@
 //  VDirectoryItem.h
 //  victorious
 //
-//  Created by Will Long on 9/9/14.
+//  Created by Will Long on 9/19/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -13,8 +13,8 @@
 
 @interface VDirectoryItem : NSManagedObject
 
-@property (nonatomic, retain) NSString * previewImage;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) id previewImagesObject;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSSet *directories;
 @end

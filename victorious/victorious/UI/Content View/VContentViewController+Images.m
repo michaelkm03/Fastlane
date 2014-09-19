@@ -10,6 +10,8 @@
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
 
+#import "VDirectoryItem+Fetcher.h"
+
 @implementation VContentViewController (Images)
 
 - (void)loadImage
@@ -21,7 +23,7 @@
     }
     else
     {
-        imageUrl = [NSURL URLWithString:self.sequence.previewImage];
+        imageUrl = [NSURL URLWithString:self.sequence.previewImagePath];
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];

@@ -25,7 +25,6 @@
 #import "VStream+Fetcher.h"
 #import "VConstants.h"
 
-
 NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
@@ -54,15 +53,15 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
     VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
     homeStream.name = @"Home";
-    homeStream.previewImage = @"http://victorious.com/img/logo.png";
+    homeStream.previewImagesObject = @"http://victorious.com/img/logo.png";
     [homeStream addDirectoriesObject:aDirectory];
     
     communityStream.name = @"Community";
-    communityStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
+    communityStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
     [communityStream addDirectoriesObject:aDirectory];
     
     ownerStream.name = @"Owner";
-    ownerStream.previewImage = @"https://www.google.com/images/srpr/logo11w.png";
+    ownerStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
     [ownerStream addDirectoriesObject:aDirectory];
     
     for (VSequence *sequence in homeStream.sequences)

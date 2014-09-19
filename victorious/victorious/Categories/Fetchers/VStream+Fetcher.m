@@ -93,6 +93,8 @@
         object = [NSEntityDescription insertNewObjectForEntityForName:@"Stream"
                                                inManagedObjectContext:context];
         object.apiPath = apiPath;
+        object.name = @"";
+        object.previewImagesObject = @"";
         [object.managedObjectContext saveToPersistentStore:nil];
         
         [streamCache setObject:object forKey:apiPath];
