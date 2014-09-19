@@ -244,6 +244,11 @@
     }];
 }
 
+- (void)makeAFriendAction:(id)sender
+{
+    NSLog(@"\n\n-----\nFriend action goes here\n-----\n\n");
+}
+
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,6 +258,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self makeAFriendAction:nil];
     [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     return nil;
 }
