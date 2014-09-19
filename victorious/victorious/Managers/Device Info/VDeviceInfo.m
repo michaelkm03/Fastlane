@@ -66,8 +66,10 @@
             @"iPad3,6":   @"iPad 4 (CDMA)",
             @"iPad4,1":   @"iPad Air (WiFi)",
             @"iPad4,2":   @"iPad Air (WiFi + Cellular)",
+            @"iPad4,3":   @"iPad Air",
             @"iPad4,4":   @"iPad Mini Retina (WiFi)",
             @"iPad4,5":   @"iPad Mini Retina (WiFi + Cellular)",
+            @"iPad4,6":   @"iPad Mini Retina",
             @"i386":      @"Simulator",
             @"x86_64":    @"Simulator",
         };
