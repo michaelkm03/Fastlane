@@ -12,7 +12,7 @@
 
 + (NSString *)entityName
 {
-    return @"Stream";
+    return @"VStream";
 }
 
 + (RKEntityMapping *)entityMapping

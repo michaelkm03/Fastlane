@@ -60,15 +60,6 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversation" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="Directory" representedClassName="VDirectory" parentEntity="DirectoryItem" syncable="YES">
-        <relationship name="directoryItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DirectoryItem" inverseName="directories" inverseEntity="DirectoryItem" syncable="YES"/>
-    </entity>
-    <entity name="DirectoryItem" representedClassName="VDirectoryItem" isAbstract="YES" syncable="YES">
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="previewImagesObject" attributeType="Transformable" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="directories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Directory" inverseName="directoryItems" inverseEntity="Directory" syncable="YES"/>
-    </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
         <attribute name="nodeId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
@@ -131,7 +122,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="rules" inverseEntity="Interaction" syncable="YES"/>
     </entity>
-    <entity name="Sequence" representedClassName="VSequence" parentEntity="DirectoryItem" syncable="YES">
+    <entity name="Sequence" representedClassName="VSequence" parentEntity="VStreamItem" syncable="YES">
         <attribute name="category" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -151,14 +142,8 @@
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
-        <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="sequences" inverseEntity="Stream" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
-    </entity>
-    <entity name="Stream" representedClassName="VStream" parentEntity="DirectoryItem" syncable="YES">
-        <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="streamContentType" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="streams" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -201,6 +186,17 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="VStream" representedClassName="VStream" parentEntity="VStreamItem" syncable="YES">
+        <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="streamContentType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VStreamItem" inverseName="streams" inverseEntity="VStreamItem" syncable="YES"/>
+    </entity>
+    <entity name="VStreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="previewImagesObject" attributeType="Transformable" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VStream" inverseName="streamItems" inverseEntity="VStream" syncable="YES"/>
+    </entity>
     <elements>
         <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
@@ -208,8 +204,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
         <element name="Comment" positionX="1080" positionY="5" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="Directory" positionX="853" positionY="-643" width="128" height="58"/>
-        <element name="DirectoryItem" positionX="853" positionY="-540" width="128" height="103"/>
+        <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
@@ -218,8 +213,8 @@
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="373"/>
-        <element name="Stream" positionX="835" positionY="-414" width="128" height="88"/>
+        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="358"/>
+        <element name="VStream" positionX="855" positionY="-412" width="128" height="88"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="403"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>

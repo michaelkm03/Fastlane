@@ -125,7 +125,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowOwnerChannel:
             {
 #warning test code to go to directory collection view
-                navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForDirectory:nil]];
+                navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:nil]];
 //                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
                 [self.sideMenuViewController hideMenuViewController];
             }

@@ -422,7 +422,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         return;
     }
     
-    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         if (self.tableDataSource.count)
         {
@@ -431,7 +431,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     
     [self.currentStream removeObserver:self
-                            forKeyPath:NSStringFromSelector(@selector(sequences))];
+                            forKeyPath:NSStringFromSelector(@selector(streamItems))];
 }
 
 @end

@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDirectoryDataSource, VAbstractFilter, VDirectory, VDirectoryItem;
+@class VDirectoryDataSource, VAbstractFilter, VStream, VStreamItem;
 
 @protocol VStreamDirectoryDataDelegate <NSObject>
 
 @required
-- (UITableViewCell *)dataSource:(VDirectoryDataSource *)dataSource cellForItem:(VDirectoryItem *)item atIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)dataSource:(VDirectoryDataSource *)dataSource cellForItem:(VStreamItem *)item atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -21,12 +21,12 @@
 
 @property (nonatomic, weak) id<VStreamDirectoryDataDelegate> delegate;
 @property (nonatomic, strong) VAbstractFilter *filter;
-@property (nonatomic, strong) VDirectory *directory;
+@property (nonatomic, strong) VStream *stream;
 
-- (instancetype)initWithDirectory:(VDirectory *)directory;
+- (instancetype)initWithStream:(VStream *)stream;
 
-- (VDirectoryItem *)itemAtIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForItem:(VDirectoryItem *)directoryItem;
+- (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem;
 - (NSUInteger)count;
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
 - (void)loadNextPageWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;

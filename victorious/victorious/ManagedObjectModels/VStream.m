@@ -7,13 +7,13 @@
 //
 
 #import "VStream.h"
-#import "VSequence.h"
+#import "VStreamItem.h"
 
 
 @implementation VStream
 
 @dynamic apiPath;
 @dynamic streamContentType;
-@dynamic sequences;
+@dynamic streamItems;
 
 @end

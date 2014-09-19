@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "VDirectoryItem.h"
+#import "VStreamItem.h"
 
-@class VComment, VNode, VPollResult, VStream, VUser, VVoteResult;
+@class VComment, VNode, VPollResult, VUser, VVoteResult;
 
-@interface VSequence : VDirectoryItem
+@interface VSequence : VStreamItem
 
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSNumber * commentCount;
@@ -33,7 +33,6 @@
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
 @property (nonatomic, retain) NSSet *reposters;
-@property (nonatomic, retain) NSSet *streams;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
 @end
@@ -74,11 +73,6 @@
 - (void)removeRepostersObject:(VUser *)value;
 - (void)addReposters:(NSSet *)values;
 - (void)removeReposters:(NSSet *)values;
-
-- (void)addStreamsObject:(VStream *)value;
-- (void)removeStreamsObject:(VStream *)value;
-- (void)addStreams:(NSSet *)values;
-- (void)removeStreams:(NSSet *)values;
 
 - (void)addVoteResultsObject:(VVoteResult *)value;
 - (void)removeVoteResultsObject:(VVoteResult *)value;

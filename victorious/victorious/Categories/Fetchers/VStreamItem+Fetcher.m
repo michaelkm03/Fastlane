@@ -1,14 +1,14 @@
 //
-//  VDirectoryItem+Fetcher.m
+//  VStreamItem+Fetcher.m
 //  victorious
 //
 //  Created by Will Long on 9/19/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDirectoryItem+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
-@implementation VDirectoryItem (Fetcher)
+@implementation VStreamItem (Fetcher)
 
 - (NSString *)previewImagePath
 {

@@ -472,7 +472,7 @@
     
     void (^noContentUpdates)(void);
     
-    if (self.tableDataSource.stream.sequences.count <= 0)
+    if (self.tableDataSource.stream.streamItems.count <= 0)
     {
         if (![self.tableView.backgroundView isKindOfClass:[VNoContentView class]])
         {

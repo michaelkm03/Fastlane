@@ -8,7 +8,7 @@
 
 #import "VDirectoryItemCell.h"
 
-#import "VDirectoryItem+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
 #import "UIImageView+AFNetworking.h"
 
@@ -33,15 +33,15 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
 
-- (void)setDirectoryItem:(VDirectoryItem *)directoryItem
+- (void)setStreamItem:(VStreamItem *)streamItem
 {
-    _directoryItem = directoryItem;
+    _streamItem = streamItem;
     
-    self.nameLabel.text = directoryItem.name;
+    self.nameLabel.text = streamItem.name;
     
     __weak UIImageView* weakPreviewImageView = self.previewImageView;
     //TODO: this should eventually do something nifty with multiple images.
-    NSString *previewImagePath = directoryItem.previewImagePath;
+    NSString *previewImagePath = streamItem.previewImagePath;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:previewImagePath]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self.previewImageView setImageWithURLRequest:request

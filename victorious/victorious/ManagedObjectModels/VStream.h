@@ -8,27 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "VDirectoryItem.h"
+#import "VStreamItem.h"
 
-@class VSequence;
+@class VStreamItem;
 
-@interface VStream : VDirectoryItem
+@interface VStream : VStreamItem
 
 @property (nonatomic, retain) NSString * apiPath;
 @property (nonatomic, retain) NSString * streamContentType;
-@property (nonatomic, retain) NSOrderedSet *sequences;
+@property (nonatomic, retain) NSOrderedSet *streamItems;
 @end
 
 @interface VStream (CoreDataGeneratedAccessors)
 
-- (void)insertObject:(VSequence *)value inSequencesAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromSequencesAtIndex:(NSUInteger)idx;
-- (void)insertSequences:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeSequencesAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInSequencesAtIndex:(NSUInteger)idx withObject:(VSequence *)value;
-- (void)replaceSequencesAtIndexes:(NSIndexSet *)indexes withSequences:(NSArray *)values;
-- (void)addSequencesObject:(VSequence *)value;
-- (void)removeSequencesObject:(VSequence *)value;
-- (void)addSequences:(NSOrderedSet *)values;
-- (void)removeSequences:(NSOrderedSet *)values;
+- (void)insertObject:(VStreamItem *)value inStreamItemsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromStreamItemsAtIndex:(NSUInteger)idx;
+- (void)insertStreamItems:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeStreamItemsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInStreamItemsAtIndex:(NSUInteger)idx withObject:(VStreamItem *)value;
+- (void)replaceStreamItemsAtIndexes:(NSIndexSet *)indexes withStreamItems:(NSArray *)values;
+- (void)addStreamItemsObject:(VStreamItem *)value;
+- (void)removeStreamItemsObject:(VStreamItem *)value;
+- (void)addStreamItems:(NSOrderedSet *)values;
+- (void)removeStreamItems:(NSOrderedSet *)values;
 @end

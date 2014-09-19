@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDirectory, VDirectoryDataSource;
+@class VStream, VDirectoryDataSource;
 
 @interface VDirectoryViewController : UIViewController
 
-@property (nonatomic, readonly) VDirectory* directory;
+@property (nonatomic, readonly) VStream *stream;
 @property (strong, nonatomic, readonly) VDirectoryDataSource* directoryDataSource;
 @property (weak, nonatomic, readonly) UICollectionView *collectionView;
 
-+ (instancetype)streamDirectoryForDirectory:(VDirectory *)directory;
++ (instancetype)streamDirectoryForStream:(VStream *)stream;
 
 @end

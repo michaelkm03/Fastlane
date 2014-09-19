@@ -521,17 +521,17 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             if (refresh)
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet* filteredSequences = [stream.sequences filteredOrderedSetUsingPredicate:tempFilter];
-                stream.sequences = filteredSequences;
+                NSOrderedSet* filteredSequences = [stream.streamItems filteredOrderedSetUsingPredicate:tempFilter];
+                stream.streamItems = filteredSequences;
             }
             
-            NSMutableOrderedSet *sequences = [stream.sequences mutableCopy];
+            NSMutableOrderedSet *sequences = [stream.streamItems mutableCopy];
             for (VSequence* sequence in resultObjects)
             {
                 VSequence* sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
                 [sequences addObject:sequenceInContext];
             }
-            stream.sequences = sequences;
+            stream.streamItems = sequences;
         
             if (success)
             {

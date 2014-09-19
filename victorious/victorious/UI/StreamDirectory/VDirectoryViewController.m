@@ -17,7 +17,7 @@
 #import "UIViewController+VSideMenuViewController.h"
 
 //Data Models
-#import "VDirectory.h"
+#import "VStream.h"
 #import "VSequence.h"
 
 #warning test imports
@@ -31,7 +31,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readwrite) VDirectoryDataSource *directoryDataSource;
-@property (nonatomic, strong) VDirectory *directory;
+@property (nonatomic, strong) VStream *stream;
 
 @property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
@@ -41,35 +41,35 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 @implementation VDirectoryViewController
 
-+ (instancetype)streamDirectoryForDirectory:(VDirectory *)directory
++ (instancetype)streamDirectoryForStream:(VStream *)stream
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VDirectoryViewController *streamDirectory = (VDirectoryViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
     
 #warning test code
-    VDirectory *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+    VStream *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class]) inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     aDirectory.name = @"test";
     VStream *homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
     VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
     VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
     homeStream.name = @"Home";
     homeStream.previewImagesObject = @"http://victorious.com/img/logo.png";
-    [homeStream addDirectoriesObject:aDirectory];
+    [homeStream addStreamsObject:aDirectory];
     
     communityStream.name = @"Community";
     communityStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-    [communityStream addDirectoriesObject:aDirectory];
+    [communityStream addStreamsObject:aDirectory];
     
     ownerStream.name = @"Owner";
     ownerStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-    [ownerStream addDirectoriesObject:aDirectory];
+    [ownerStream addStreamsObject:aDirectory];
     
-    for (VSequence *sequence in homeStream.sequences)
+    for (VSequence *sequence in homeStream.streamItems)
     {
-        [sequence addDirectoriesObject:aDirectory];
+        [sequence addStreamsObject:aDirectory];
     }
     
-    streamDirectory.directory = aDirectory;
+    streamDirectory.stream = aDirectory;
     
     return streamDirectory;
 }
@@ -100,7 +100,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     
     [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
     
-    self.directoryDataSource = [[VDirectoryDataSource alloc] initWithDirectory:self.directory];
+    self.directoryDataSource = [[VDirectoryDataSource alloc] initWithStream:self.stream];
     self.collectionView.dataSource = self.directoryDataSource;
     
     //Register cells
@@ -125,12 +125,12 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     return UIStatusBarStyleLightContent;
 }
 
-- (void)setDirectory:(VDirectory *)directory
+- (void)setStream:(VStream *)stream
 {
-    _directory = directory;
+    _stream = stream;
     if ([self isViewLoaded])
     {
-        self.directoryDataSource.directory = directory;
+        self.directoryDataSource.stream = stream;
         self.collectionView.dataSource = self.directoryDataSource;
     }
 }
@@ -201,7 +201,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VDirectoryItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
+    VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[VStream class]])
     {
         VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
@@ -212,11 +212,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
         VContentViewController *contentViewController = [[VContentViewController alloc] init];
         contentViewController.sequence = (VSequence *)item;
         [self.navigationController pushViewController:contentViewController animated:YES];
-    }
-    else if ([item isKindOfClass:[VDirectory class]])
-    {
-        VDirectoryViewController *directoryVC = [VDirectoryViewController streamDirectoryForDirectory:(VDirectory*)item];
-        [self.navigationController pushViewController:directoryVC animated:YES];
     }
 }
 

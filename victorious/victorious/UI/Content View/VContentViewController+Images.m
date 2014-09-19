@@ -10,7 +10,7 @@
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
 
-#import "VDirectoryItem+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 @implementation VContentViewController (Images)
 

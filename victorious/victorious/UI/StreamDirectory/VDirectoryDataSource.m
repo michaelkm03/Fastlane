@@ -16,34 +16,33 @@
 #import "VPaginationManager.h"
 
 //Data Models
-#import "VDirectory.h"
 #import "VStream.h"
 
 @implementation VDirectoryDataSource
 
-- (instancetype)initWithDirectory:(VDirectory *)directory
+- (instancetype)initWithStream:(VStream *)stream
 {
     self = [self init];
     if (self)
     {
-        self.directory = directory;
+        self.stream = stream;
     }
     return self;
 }
 
-- (VDirectoryItem *)itemAtIndexPath:(NSIndexPath *)indexPath
+- (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.directory.directoryItems objectAtIndex:indexPath.row];
+    return [self.stream.streamItems objectAtIndex:indexPath.row];
 }
 
-- (NSIndexPath *)indexPathForItem:(VDirectoryItem *)directoryItem
+- (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
-    return [NSIndexPath indexPathForRow:[self.directory.directoryItems indexOfObject:directoryItem] inSection:0];
+    return [NSIndexPath indexPathForRow:[self.stream.streamItems indexOfObject:streamItem] inSection:0];
 }
 
 - (NSUInteger)count
 {
-    return self.directory.directoryItems.count;
+    return self.stream.streamItems.count;
 }
 
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock
@@ -70,13 +69,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VDirectoryItem *item = [self.directory.directoryItems objectAtIndex:indexPath.row];
+    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;
 //    if ([item isKindOfClass:[VStream class]])
 //    {
          cell = [collectionView dequeueReusableCellWithReuseIdentifier:kVStreamDirectoryItemCellName forIndexPath:indexPath];
 //    }
-    cell.directoryItem = item;
+    cell.streamItem = item;
     return cell;
 }
 

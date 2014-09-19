@@ -8,7 +8,7 @@
 
 #import "VStream.h"
 
-@class VUser;
+@class VUser, VSequence;
 
 @interface VStream (Fetcher)
 

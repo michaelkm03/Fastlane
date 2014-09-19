@@ -55,7 +55,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     
     if (_stream)
     {
-        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) context:&KVOContext];
+        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
     }
     
     _stream = stream;
@@ -63,24 +63,24 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     
     if (stream)
     {
-        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
 }
 
 - (VSequence *)sequenceAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.stream.sequences[indexPath.row];
+    return self.stream.streamItems[indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForSequence:(VSequence *)sequence
 {
-    NSUInteger index = [self.stream.sequences indexOfObject:sequence];
+    NSUInteger index = [self.stream.streamItems indexOfObject:sequence];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
 }
 
 - (NSUInteger)count
 {
-    return self.stream.sequences.count;
+    return self.stream.streamItems.count;
 }
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
@@ -177,7 +177,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         if (!self.insertingContent)
         {

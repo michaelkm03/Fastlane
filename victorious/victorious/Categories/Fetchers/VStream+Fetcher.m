@@ -73,7 +73,7 @@
         return object;
     }
     
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Stream"];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([VStream class])];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", @"apiPath", apiPath];
     [request setPredicate:idFilter];
     NSError *error = nil;
@@ -90,7 +90,7 @@
     else
     {
         //Create a new one if it doesn't exist
-        object = [NSEntityDescription insertNewObjectForEntityForName:@"Stream"
+        object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class])
                                                inManagedObjectContext:context];
         object.apiPath = apiPath;
         object.name = @"";
