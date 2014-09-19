@@ -3,15 +3,15 @@
     // Xcode target to check (String)
     "target": "victorious",
     // Xcode build configuration to check (String)
-    "buildConfig": "Release",
+    "buildConfig": "Debug",
     // Rules to apply (Array of strings)
-    "rules": ["MacroLiteral","NewInitializer","ReservedIdentifierNaming","UnusedMethod","XIBUnknownClassReference"],
+    "rules": ["APIAvailability","NewInitializer","ReservedIdentifierNaming","UnusedMethod","XIBUnknownClassReference"],
     // Rules to apply only (Array of strings)
     //"onlyRules": [],
     // Rule tags to apply (Array of strings)
-    //"ruleTags": ["Recommended"],
+    "ruleTags": ["BestPractice","Recommended"],
     // Rules to exclude (Array of strings)
-    //"excludedRules": [],
+    "excludedRules": ["IBOutletsInPublicInterface","ImplicitBundleId","NonTypedefBlockDeclaration","ReservedPrefix","ThrowingObjCException","UncommentedLocalizedString","UnprefixedClass"],
     // Prefixes of files to exclude (Array of strings)
     //"fileExclusionPrefixes": [],
     // Xcode groups to exclude (Array of strings)
@@ -157,7 +157,7 @@
         // Options for rule: Dot syntax usage
         "DotSyntax": {
             // Enforce dot syntax only for properties (Boolean)
-            //"onlyForProperties": false,
+            //"onlyForProperties": true,
             // Square bracket syntax method whitelist (Array of strings)
             "allowedMethods": ["alloc","autorelease","becomeFirstResponder","new","release","retain","runModal","setNeedsDisplay:"],
             // Allow factory methods like <objcmethod>+[NSArray
@@ -241,6 +241,14 @@
             // strings)
             "ignoredFileRegexes": null
         },
+        // Options for rule: Implicitly atomic property
+        "ImplicitAtomicProperty": {
+            // Apply only to UIKit/AppKit subclasses (Boolean)
+            //"applyOnlyToUIClasses": true,
+            // Regexes for ignored file paths (Array of regular expression
+            // strings)
+            "ignoredFileRegexes": null
+        },
         // Options for rule: Incorrect placement of build setting value
         "BuildSettingPlacement": {
             // Regexes for ignored file paths (Array of regular expression
@@ -262,6 +270,15 @@
         // Options for rule: Invocation of superclass implementation of
         // +[NSObject initialize]
         "InitializeSuperInvocation": {
+            // Regexes for ignored file paths (Array of regular expression
+            // strings)
+            "ignoredFileRegexes": null
+        },
+        // Options for rule: Literal string for key path
+        "LiteralStringKeyPath": {
+            // Ignore -valueForKey: and -setValue:forKey: for collections
+            // (Boolean)
+            //"ignoreCollectionsValueForKey": true,
             // Regexes for ignored file paths (Array of regular expression
             // strings)
             "ignoredFileRegexes": null
@@ -393,6 +410,12 @@
         },
         // Options for rule: Possibly unused resource
         "UnusedResource": {
+            // Regexes for ignored file paths (Array of regular expression
+            // strings)
+            "ignoredFileRegexes": null
+        },
+        // Options for rule: Potential assertion side effects
+        "AssertionSideEffects": {
             // Regexes for ignored file paths (Array of regular expression
             // strings)
             "ignoredFileRegexes": null
@@ -678,7 +701,7 @@
         // target
         "APIAvailability": {
             // Avoid false positives (Boolean)
-            //"avoidFalsePositives": false,
+            "avoidFalsePositives": true,
             // Regexes for ignored file paths (Array of regular expression
             // strings)
             "ignoredFileRegexes": null
