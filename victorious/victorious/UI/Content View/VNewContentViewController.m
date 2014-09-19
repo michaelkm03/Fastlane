@@ -220,7 +220,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                     currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
                                                  currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
                                                  currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
-                                                         atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment];
+                                                         atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
+                                         commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
     };
 }
 

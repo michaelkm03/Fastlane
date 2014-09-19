@@ -22,6 +22,9 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 @property (weak, nonatomic) IBOutlet UILabel *currentCommentBodyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentAtTimeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *conversationClock;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingAlignmentRTCArrowToStipConstraint;
 
 @end
 
@@ -52,6 +55,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.currentAtTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.currentTimeAgoLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.arrowImageView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 #pragma mark - Public Methods
@@ -61,6 +65,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                        currentTimeAgoText:(NSString *)timeAgoText
                        currentCommentBody:(NSString *)commentBody
                                atTimeText:(NSString *)atTimeText
+               commentPercentThroughMedia:(CGFloat)percentThrough
 {
     [self.currentUserAvatar setImageWithURL:currentAvatarURL];
     self.currentUserNameLabel.text = username;
@@ -68,6 +73,18 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
     self.conversationClock.hidden = NO;
+    
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:0.7f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+    {
+        self.leadingAlignmentRTCArrowToStipConstraint.constant = CGRectGetWidth(self.realtimeCommentStrip.bounds)*percentThrough - (0.5 * CGRectGetWidth(self.arrowImageView.bounds));
+        [self layoutIfNeeded];
+    }
+                     completion:nil];
 }
 
 - (void)addAvatarWithURL:(NSURL *)avatarURL

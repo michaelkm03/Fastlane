@@ -21,12 +21,14 @@
  *  @param timeAgoText      Text to display in the ___ time ago label.
  *  @param commentBody      The comment body text.
  *  @param atTimeText       The text to display for the realtime comment time location.
+ *  @param percentThrough   The percent throught the media that this real time comment is located.
  */
 - (void)configureWithCurrentUserAvatarURL:(NSURL *)currentAvatarURL
                           currentUsername:(NSString *)username
                        currentTimeAgoText:(NSString *)timeAgoText
                        currentCommentBody:(NSString *)commentBody
-                               atTimeText:(NSString *)atTimeText;
+                               atTimeText:(NSString *)atTimeText
+               commentPercentThroughMedia:(CGFloat)percentThrough;
 
 /**
  *  Use this method to add an additional avatar to the strip of avatars for the realtime comments.

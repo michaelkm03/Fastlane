@@ -132,4 +132,9 @@
     return percentThrought;
 }
 
+- (CGFloat)percentThroughMediaForCurrentRealTimeComment
+{
+    return self.currentComment.realtime.floatValue / CMTimeGetSeconds(self.totalTime);
+}
+
 @end

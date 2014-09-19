@@ -82,4 +82,7 @@
  */
 @property (nonatomic, readonly) NSString *realTimeCommentBodyForCurrentRealTimeComent;
 
+
+- (CGFloat)percentThroughMediaForCurrentRealTimeComment;
+
 @end
