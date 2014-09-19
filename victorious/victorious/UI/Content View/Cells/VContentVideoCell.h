@@ -8,6 +8,8 @@
 
 #import "VBaseCollectionViewCell.h"
 
+#import "VCVideoPlayerViewController.h"
+
 @class VContentVideoCell;
 
 @import AVFoundation;
@@ -21,6 +23,8 @@
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)time;
 
+- (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell;
+
 @end
 
 /**
@@ -29,6 +33,8 @@
 @interface VContentVideoCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSURL *videoURL;
+
+@property (nonatomic, strong, readonly) VCVideoPlayerViewController *videoPlayerViewController;
 
 @property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
 

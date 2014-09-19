@@ -50,6 +50,8 @@
  */
 - (NSURL *)avatarURLForRealTimeCommentAtIndex:(NSInteger)index;
 
+- (CGFloat)percentThroughMediaForRealTimeCommentAtIndex:(NSInteger)index;
+
 /**
  *  This block is called every time the current comment changes.
  */

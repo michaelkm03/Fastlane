@@ -72,7 +72,18 @@
 - (void)addAvatarWithURL:(NSURL *)avatarURL
      withPercentLocation:(CGFloat)percentLocation
 {
-    
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                            0,
+                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame),
+                                                                            CGRectGetHeight(self.realtimeCommentStrip.frame))];
+    [avatarView setImageWithURL:avatarURL
+               placeholderImage:[[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    avatarView.tintColor = [UIColor lightGrayColor];
+    avatarView.center = CGPointMake(0 + (CGRectGetWidth(self.realtimeCommentStrip.bounds) * percentLocation),
+                                    CGRectGetMidY(self.realtimeCommentStrip.bounds));
+    avatarView.layer.cornerRadius = CGRectGetHeight(self.realtimeCommentStrip.bounds) * 0.5f;
+    avatarView.layer.masksToBounds = YES;
+    [self.realtimeCommentStrip addSubview:avatarView];
 }
 
 @end

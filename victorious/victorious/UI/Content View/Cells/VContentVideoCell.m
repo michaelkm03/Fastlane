@@ -12,7 +12,7 @@
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate>
 
-@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 
 @end
 
@@ -51,6 +51,11 @@
     [self.delegate videoCell:self
                didPlayToTime:time
                    totalTime:[videoPlayer playerItemDuration]];
+}
+
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.delegate videoCellReadyToPlay:self];
 }
 
 @end

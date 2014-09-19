@@ -114,4 +114,15 @@
     return [NSURL URLWithString:commentAtIndex.user.pictureUrl];
 }
 
+- (CGFloat)percentThroughMediaForRealTimeCommentAtIndex:(NSInteger)index
+{
+    if (!CMTIME_IS_VALID(self.totalTime))
+    {
+        return 0.0f;
+    }
+    VComment *commentAtIndex = [self.realTimeComments objectAtIndex:index];
+    CGFloat percentThrought = commentAtIndex.realtime.floatValue / CMTimeGetSeconds(self.totalTime);
+    return percentThrought;
+}
+
 @end

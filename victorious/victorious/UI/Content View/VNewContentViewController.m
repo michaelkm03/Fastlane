@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
+@property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
@@ -303,6 +304,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                                          forIndexPath:indexPath];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
+                self.videoCell = videoCell;
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -503,6 +505,17 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
     self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
+}
+
+- (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
+{
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
+    {
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+        realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+    }
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
