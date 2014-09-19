@@ -228,7 +228,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     paragraphStyle.minimumLineHeight = 20.0f;
     paragraphStyle.maximumLineHeight = 20.0f;
     
-    return @{ NSFontAttributeName: [UIFont systemFontOfSize:17.0f],
+    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font],
               NSForegroundColorAttributeName: [UIColor colorWithRed:0.137f green:0.137f blue:0.137f alpha:1.0f],
               NSParagraphStyleAttributeName: paragraphStyle,
            };
