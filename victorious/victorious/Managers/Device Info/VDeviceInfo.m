@@ -43,6 +43,8 @@
             @"iPhone5,4": @"iPhone 5C",
             @"iPhone6,1": @"iPhone 5S",
             @"iPhone6,2": @"iPhone 5S",
+            @"iPhone7,1": @"iPhone 6 Plus",
+            @"iPhone7,2": @"iPhone 6",
             @"iPod1,1":   @"iPod Touch 1G",
             @"iPod2,1":   @"iPod Touch 2G",
             @"iPod3,1":   @"iPod Touch 3G",
