@@ -8,6 +8,9 @@
 
 #import "VRealTimeCommentsCell.h"
 
+// Theme
+#import "VThemeManager.h"
+
 @interface VRealTimeCommentsCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;
@@ -17,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentCommentBodyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentAtTimeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *conversationClock;
-
 
 @end
 
@@ -34,12 +36,19 @@
 {
     [super awakeFromNib];
     
+    self.currentUserAvatar.layer.cornerRadius = CGRectGetWidth(self.currentUserAvatar.bounds) * 0.5f;
+    self.currentUserAvatar.layer.masksToBounds = YES;
+    
     self.currentUserAvatar.image = nil;
     self.currentUserNameLabel.text = nil;
     self.currentCommentBodyLabel.text = nil;
     self.currentAtTimeLabel.text = nil;
     self.currentTimeAgoLabel.text = nil;
     self.conversationClock.hidden = YES;
+    
+    
+    self.currentUserNameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 #pragma mark - Public Methods
