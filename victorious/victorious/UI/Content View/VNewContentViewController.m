@@ -140,6 +140,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
                                                object:self.viewModel];
@@ -187,12 +191,30 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 #pragma mark - Notification Handlers
 
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         self.contentCollectionView.contentInset = newInsets;
+         self.contentCollectionView.scrollIndicatorInsets = newInsets;
+     }
+                     completion:nil];
+}
+
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
     CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-    self.contentCollectionView.contentInset = newInsets;
-    self.contentCollectionView.scrollIndicatorInsets = newInsets;
     
     VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
     
