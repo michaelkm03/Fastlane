@@ -107,6 +107,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     
     self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     self.inputAccessoryView.delegate = self;
+    self.inputAccessoryView.returnKeyType = UIReturnKeyDone;
     self.inputAccessoryView.frame = CGRectMake(0,
                                                CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
                                                CGRectGetWidth(self.view.bounds),

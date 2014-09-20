@@ -73,6 +73,13 @@
                             forState:UIControlStateNormal];
 }
 
+- (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
+{
+    _returnKeyType = returnKeyType;
+    
+    self.editingTextView.returnKeyType = returnKeyType;
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedSend:(id)sender
@@ -108,6 +115,29 @@
         [self.delegate keyboardInputAccessoryView:self
                                         wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.intrinsicContentSize.height))];
     }
+}
+
+- (BOOL)textView:(UITextView *)textView
+shouldChangeTextInRange:(NSRange)range
+ replacementText:(NSString *)text
+{
+    if (self.returnKeyType == UIReturnKeyDefault)
+    {
+        return YES;
+    }
+    
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
+    {
+        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
+        {
+            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
+        }
+        
+        [self.editingTextView resignFirstResponder];
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Convenience

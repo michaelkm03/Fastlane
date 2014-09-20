@@ -35,6 +35,15 @@
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
                          wantsSize:(CGSize)size;
 
+@optional
+
+/**
+ *  Notifies the delegate of a return key press ONLY if that return key is not UIReturnKeyDefault
+ *
+ *  @param inputAccessoryView The corresponding input accessory view.
+ */
+- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
+
 @end
 
 /**
@@ -68,5 +77,10 @@
  *  The maximum allowed size for the inputAcessoryView.
  */
 @property (nonatomic, assign) CGSize maximumAllowedSize;
+
+/**
+ *  Assigning to this will determine the behavior of the return key. UIReturnKeyDefault will allow the user to insert newline characters into the text view while any other return key type will resign first responder status on the text field.
+ */
+@property (nonatomic, assign) UIReturnKeyType returnKeyType;
 
 @end
