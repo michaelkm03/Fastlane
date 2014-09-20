@@ -212,7 +212,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
-    __weak typeof(self) welf = self;
     self.viewModel.realTimeCommentsViewModel.delegate = self;
 }
 
@@ -470,7 +469,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         }
     }
     else if (
-             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
+             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height *0.5f)))
              &&
              (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
              &&
