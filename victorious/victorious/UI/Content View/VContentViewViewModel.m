@@ -197,6 +197,11 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 - (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    if (commentForIndex.realtime.floatValue < 0)
+    {
+        return @"";
+    }
+    
     return [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
                                                                    andPostedTime:commentForIndex.realtime] string];
 }
