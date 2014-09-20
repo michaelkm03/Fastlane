@@ -32,6 +32,10 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
+// Logged in
+#import "VObjectManager+Login.h"
+#import "VLoginViewController.h"
+
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
@@ -569,6 +573,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
 //TODO: Implement adding a comment
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    __weak typeof(self) welf = self;
+    [self.viewModel addCommentWithText:inputAccessoryView.composedText
+                              mediaURL:nil
+                            completion:^(BOOL succeeded) {
+                                NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+                                [welf.contentCollectionView reloadSections:commentsIndexSet];
+                            }];
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView

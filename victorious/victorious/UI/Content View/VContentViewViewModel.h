@@ -62,6 +62,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithSequence:(VSequence *)sequence;
 
+- (void)addCommentWithText:(NSString *)text
+                  mediaURL:(NSURL *)mediaURL
+                completion:(void (^)(BOOL succeeded))completion;
+
 /**
  *  The corresponding sequence for this view model.
  */

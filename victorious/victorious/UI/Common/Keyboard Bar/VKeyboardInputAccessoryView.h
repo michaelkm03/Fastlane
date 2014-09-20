@@ -64,6 +64,11 @@
 @property (nonatomic, weak) id <VKeyboardInputAccessoryViewDelegate> delegate;
 
 /**
+ *  The text the user composed.
+ */
+@property (nonatomic, readonly) NSString *composedText;
+
+/**
  *  The placeholder text to display when the user has not entered any text in the text view.
  */
 @property (nonatomic, strong) NSString *placeholderText;

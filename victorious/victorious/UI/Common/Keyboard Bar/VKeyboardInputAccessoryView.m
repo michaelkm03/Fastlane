@@ -58,6 +58,11 @@
 
 #pragma mark - Property Accessors
 
+- (NSString *)composedText
+{
+    return self.editingTextView.text ?: @"";
+}
+
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;

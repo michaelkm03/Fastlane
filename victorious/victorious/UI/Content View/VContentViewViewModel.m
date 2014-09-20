@@ -18,6 +18,7 @@
 #import "VAsset+Fetcher.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VComment+Fetcher.h"
 
 // Formatters
@@ -144,6 +145,31 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 }
 
 #pragma mark - Public Methods
+
+- (void)addCommentWithText:(NSString *)text
+                  mediaURL:(NSURL *)mediaURL
+                completion:(void (^)(BOOL succeeded))completion
+{
+    [[VObjectManager sharedManager] addRealtimeCommentWithText:text
+                                                      mediaURL:mediaURL
+                                                       toAsset:self.currentAsset
+                                                        atTime:@(!isnan(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))?: 0.0f)
+                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         if (completion)
+         {
+             completion(YES);
+         }
+     }
+                                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if (completion)
+         {
+             completion(NO);
+         }
+     }];
+
+}
 
 - (void)fetchComments
 {
