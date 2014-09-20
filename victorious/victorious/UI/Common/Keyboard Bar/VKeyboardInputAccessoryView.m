@@ -13,6 +13,8 @@
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
+
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, weak) IBOutlet UITextView *editingTextView;
@@ -44,10 +46,11 @@
     [super layoutSubviews];
     self.editingTextView.delegate = self;
     
-    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
-                            forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                           forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor lightGrayColor]
+                          forState:UIControlStateDisabled];
+    
     self.editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
@@ -74,8 +77,12 @@
 {
     _selectedThumbnail = selectedThumbnail;
 
-    [self.attachmentsButton setImage:selectedThumbnail
-                            forState:UIControlStateSelected];
+    self.attachmentThumbnail.layer.cornerRadius = 2.0f;
+    self.attachmentThumbnail.layer.masksToBounds = YES;
+    self.attachmentThumbnail.image = selectedThumbnail;
+    
+    [self.attachmentsButton setImage:nil
+                            forState:UIControlStateNormal];
 }
 
 - (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
@@ -90,9 +97,16 @@
 - (void)clearTextAndResign
 {
     self.editingTextView.text = nil;
+    self.sendButton.enabled = NO;
+    self.attachmentThumbnail.image = nil;
+    self.attachmentsButton.alpha = 1.0f;
+    
     [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
                             forState:UIControlStateNormal];
+    self.attachmentsButton.selected = NO;
+
     [self.editingTextView resignFirstResponder];
+    [self textViewDidChange:self.editingTextView];
 }
 
 #pragma mark - IBActions
@@ -159,7 +173,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (NSDictionary *)textEntryAttributes
 {
-    return @{};
+    return @{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
 }
 
 @end
