@@ -513,6 +513,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                       failBlock:(VFailBlock)fail
 {
     VAbstractFilter* filter = (VAbstractFilter *)[self filterForStream:stream];
+
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
@@ -520,19 +521,17 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             //If this is the first page, break the relationship to all the old objects.
             if (refresh)
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet* filteredSequences = [stream.streamItems filteredOrderedSetUsingPredicate:tempFilter];
-                stream.streamItems = filteredSequences;
+                stream.streamItems = [[NSOrderedSet alloc] init];
             }
             
-            NSMutableOrderedSet *sequences = [stream.streamItems mutableCopy];
-            for (VSequence* sequence in resultObjects)
+            NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+            for (VStreamItem* streamItem in resultObjects)
             {
-                VSequence* sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
-                [sequences addObject:sequenceInContext];
+                VStreamItem* streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+                [streamItems addObject:streamItemInContext];
             }
-            stream.streamItems = sequences;
-        
+            stream.streamItems = streamItems;
+            
             if (success)
             {
                 success(operation, fullResponse, resultObjects);
@@ -541,13 +540,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         
         //Don't complete the fetch until we have the users
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VSequence* sequence in resultObjects)
+        for (VStreamItem *item in resultObjects)
         {
-            if (!sequence.user)
+            VSequence *sequence = (VSequence *)item;
+            if ([item isKindOfClass:[VSequence class]] && !sequence.user)
             {
                 [nonExistantUsers addObject:sequence.createdBy];
             }
-            if (sequence.parentUserId && !sequence.parentUser)
+            if ([item isKindOfClass:[VSequence class]] &&  sequence.parentUserId && !sequence.parentUser)
             {
                 [nonExistantUsers addObject:sequence.parentUserId];
             }
@@ -556,21 +556,21 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-            {
-                paginationBlock();
-            }
+             {
+                 paginationBlock();
+             }
                                              failBlock:^(NSOperation* operation, NSError* error)
-            {
-                VLog(@"Failed with error: %@", error);
-                paginationBlock();
-            }];
+             {
+                 VLog(@"Failed with error: %@", error);
+                 paginationBlock();
+             }];
         }
         else
         {
             paginationBlock();
         }
     };
-
+    
     if (refresh)
     {
         return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];

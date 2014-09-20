@@ -14,6 +14,7 @@
 
 @dynamic apiPath;
 @dynamic streamContentType;
+@dynamic filterName;
 @dynamic streamItems;
 
 @end

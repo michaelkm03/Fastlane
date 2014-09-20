@@ -36,6 +36,8 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 @property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+
 @end
 
 
@@ -46,30 +48,30 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VDirectoryViewController *streamDirectory = (VDirectoryViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
     
-#warning test code
-    VStream *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class]) inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-    aDirectory.name = @"test";
-    VStream *homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
-    VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
-    homeStream.name = @"Home";
-    homeStream.previewImagesObject = @"http://victorious.com/img/logo.png";
-    [homeStream addStreamsObject:aDirectory];
+//#warning test code
+//    VStream *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class]) inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+//    aDirectory.name = @"test";
+//    VStream *homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+//    VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
+//    VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
+//    homeStream.name = @"Home";
+//    homeStream.previewImagesObject = @"http://victorious.com/img/logo.png";
+//    [homeStream addStreamsObject:aDirectory];
+//    
+//    communityStream.name = @"Community";
+//    communityStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
+//    [communityStream addStreamsObject:aDirectory];
+//    
+//    ownerStream.name = @"Owner";
+//    ownerStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
+//    [ownerStream addStreamsObject:aDirectory];
+//    
+//    for (VSequence *sequence in homeStream.streamItems)
+//    {
+//        [sequence addStreamsObject:aDirectory];
+//    }
     
-    communityStream.name = @"Community";
-    communityStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-    [communityStream addStreamsObject:aDirectory];
-    
-    ownerStream.name = @"Owner";
-    ownerStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-    [ownerStream addStreamsObject:aDirectory];
-    
-    for (VSequence *sequence in homeStream.streamItems)
-    {
-        [sequence addStreamsObject:aDirectory];
-    }
-    
-    streamDirectory.stream = aDirectory;
+    streamDirectory.stream = stream;
     
     return streamDirectory;
 }
@@ -102,6 +104,12 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     
     self.directoryDataSource = [[VDirectoryDataSource alloc] initWithStream:self.stream];
     self.collectionView.dataSource = self.directoryDataSource;
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh:)
+             forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    self.collectionView.alwaysBounceVertical = YES;
     
     //Register cells
     UINib *nib = [UINib nibWithNibName:kVStreamDirectoryItemCellName bundle:nil];
@@ -176,6 +184,48 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 {
     
 }
+
+#pragma mark - Refresh
+- (IBAction)refresh:(UIRefreshControl *)sender
+{
+    [self refreshWithCompletion:nil];
+}
+
+- (void)refreshWithCompletion:(void(^)(void))completionBlock
+{
+    [self.directoryDataSource refreshWithSuccess:^(void)
+     {
+         [self.refreshControl endRefreshing];
+         if (completionBlock)
+         {
+             completionBlock();
+         }
+     }
+                                     failure:^(NSError *error)
+     {
+         [self.refreshControl endRefreshing];
+//         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+//         hud.mode = MBProgressHUDModeText;
+//         hud.labelText = NSLocalizedString(@"RefreshError", @"");
+//         hud.userInteractionEnabled = NO;
+//         [hud hide:YES afterDelay:3.0];
+     }];
+    
+    [self.refreshControl beginRefreshing];
+    self.refreshControl.hidden = NO;
+}
+
+- (void)loadNextPageAction
+{
+    [self.directoryDataSource loadNextPageWithSuccess:^(void)
+     {
+     }
+                                          failure:^(NSError *error)
+     {
+     }];
+}
+
+
 
 #pragma mark - CollectionViewDelegate
 

@@ -11,6 +11,7 @@
 #import "VStreamItem+Fetcher.h"
 
 #import "UIImageView+AFNetworking.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
 
@@ -45,7 +46,8 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:previewImagePath]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:nil
+                                 placeholderImage:[UIImage resizeableImageWithColor:
+                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
          __strong UIImageView* strongPreviewImageView = weakPreviewImageView;

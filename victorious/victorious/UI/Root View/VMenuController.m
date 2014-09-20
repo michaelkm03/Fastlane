@@ -29,6 +29,7 @@
 
 #warning test code
 #import "VDirectoryViewController.h"
+#import "VStream+Fetcher.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -125,7 +126,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowOwnerChannel:
             {
 #warning test code to go to directory collection view
-                navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:nil]];
+                navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
 //                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
                 [self.sideMenuViewController hideMenuViewController];
             }

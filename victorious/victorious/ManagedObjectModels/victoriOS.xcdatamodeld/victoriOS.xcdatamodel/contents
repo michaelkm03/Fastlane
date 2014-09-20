@@ -188,13 +188,14 @@
     </entity>
     <entity name="VStream" representedClassName="VStream" parentEntity="VStreamItem" syncable="YES">
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VStreamItem" inverseName="streams" inverseEntity="VStreamItem" syncable="YES"/>
     </entity>
     <entity name="VStreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="previewImagesObject" attributeType="Transformable" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VStream" inverseName="streamItems" inverseEntity="VStream" syncable="YES"/>
     </entity>
     <elements>
@@ -204,7 +205,6 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
         <element name="Comment" positionX="1080" positionY="5" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
@@ -214,10 +214,11 @@
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1060" positionY="-531" width="128" height="358"/>
-        <element name="VStream" positionX="855" positionY="-412" width="128" height="88"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="403"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
+        <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>
+        <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
     </elements>
 </model>

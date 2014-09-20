@@ -8,6 +8,8 @@
 
 #import "VStream+RestKit.h"
 
+#import "VSequence+RestKit.h"
+
 @implementation VStream (RestKit)
 
 + (NSString *)entityName
@@ -21,7 +23,7 @@
                                   @"id"             :   VSelectorName(remoteId),
                                   @"stream_content_type"     :   VSelectorName(streamContentType),
                                   @"name"           :   VSelectorName(name),
-                                  @"preview_image"  :   VSelectorName(previewImagesObject),
+                                  @"preview_images"  :   VSelectorName(previewImagesObject),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -31,8 +33,22 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+        
+    RKDynamicMapping *contentMapping = [RKDynamicMapping new];
+    RKObjectMapping *sequenceMapping = [VSequence entityMapping];
     
-    mapping.forceCollectionMapping = YES;
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithKeyPath:@"stream_content_type"
+                                                     expectedValue:@"stream"
+                                                     objectMapping:mapping]];
+    
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithKeyPath:@"stream_content_type"
+                                                     expectedValue:@"sequence"
+                                                     objectMapping:sequenceMapping]];
+    
+    RKRelationshipMapping* contentRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
+                                                                                           toKeyPath:VSelectorName(streamItems)
+                                                                                         withMapping:contentMapping];
+    [mapping addPropertyMapping:contentRelationshipMapping];
     
     return mapping;
 }
@@ -41,11 +57,12 @@
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VStream entityMapping]
                                                            method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId"
+                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
 }
+
 @end
 /*
 {

@@ -57,6 +57,12 @@
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
++ (VStream *)streamForChannelsDirectory
+{
+    NSString* apiPath = @"/api/sequence/detail_list_by_stream/directory";
+    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
 + (VStream *)streamForPath:(NSString *)apiPath
            managedObjectContext:(NSManagedObjectContext *)context
 {

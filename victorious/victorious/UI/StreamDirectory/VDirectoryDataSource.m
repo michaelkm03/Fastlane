@@ -18,6 +18,12 @@
 //Data Models
 #import "VStream.h"
 
+@interface VDirectoryDataSource()
+
+@property (nonatomic) BOOL isLoading;
+
+@end
+
 @implementation VDirectoryDataSource
 
 - (instancetype)initWithStream:(VStream *)stream
@@ -45,14 +51,48 @@
     return self.stream.streamItems.count;
 }
 
-- (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock
+- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
-//    [[VObjectManager sharedManager] refres]
+    self.isLoading = YES;
+    [[VObjectManager sharedManager] refreshStream:self.stream
+                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         if (successBlock)
+         {
+             successBlock();
+         }
+         self.isLoading = NO;
+     }
+                                        failBlock:^(NSOperation* operation, NSError* error)
+     {
+         if (failureBlock)
+         {
+             failureBlock(error);
+         }
+         self.isLoading = NO;
+     }];
 }
 
-- (void)loadNextPageWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock
+- (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
-    
+    self.isLoading = YES;
+    [[VObjectManager sharedManager] loadNextPageOfStream:self.stream
+                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         if (successBlock)
+         {
+             successBlock();
+         }
+         self.isLoading = NO;
+     }
+                                               failBlock:^(NSOperation* operation, NSError* error)
+     {
+         if (failureBlock)
+         {
+             failureBlock(error);
+         }
+         self.isLoading = NO;
+     }];
 }
 
 - (BOOL)isFilterLoading

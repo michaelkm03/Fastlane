@@ -18,5 +18,6 @@
 + (VStream *)hotSteamForSteamName:(NSString *)streamName; ///<Returns the hot stream for streamName.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForHashTag:(NSString *)hashTag; ///<Returns the stream for a hastag.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user; ///<Returns the following stream for streamName.  Note: stream object will be the mainQueueManagedObjectContext.
++ (VStream *)streamForChannelsDirectory;///<Returns the Channels stream.  Note: stream object will be the mainQueueManagedObjectContext.
 
 @end
