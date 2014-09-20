@@ -42,7 +42,8 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
                                                                    text:commentBody
-                                                              withMedia:hasMedia];
+                                                              withMedia:hasMedia
+                                                                    andFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
 }
@@ -70,7 +71,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.commentersUsernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.commentAndMediaView.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 - (void)prepareContentAndMediaView
@@ -141,4 +142,5 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     _realTimeCommentText = [realTimeCommentText copy];
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
 }
+
 @end

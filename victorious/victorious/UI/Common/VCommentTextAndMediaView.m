@@ -21,7 +21,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, weak, readwrite) UILabel      *textLabel;
+@property (nonatomic, weak) UILabel      *textLabel;
 @property (nonatomic)            BOOL                addedConstraints;
 @property (nonatomic, weak)      UIButton           *mediaButton;
 @property (nonatomic, readwrite) UIImageView        *mediaThumbnailView;
@@ -192,7 +192,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 - (void)setText:(NSString *)text
 {
     _text = [text copy];
-    self.textLabel.attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes:[[self class] attributesForText]];
+    self.textLabel.attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes: self.textFont ? [[self class] attributesForTextWithFont:self.textFont] :[[self class] attributesForText]];
     [self invalidateIntrinsicContentSize];
 }
 
@@ -221,20 +221,40 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 #pragma mark -
 
++ (NSDictionary *)attributesForTextWithFont:(UIFont *)font
+{
+    NSMutableDictionary *mutableAttributes = [[self attributesForText] mutableCopy];
+    mutableAttributes[NSFontAttributeName] = font;
+    return [NSDictionary dictionaryWithDictionary:mutableAttributes];
+}
+
 + (NSDictionary *)attributesForText
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
     paragraphStyle.minimumLineHeight = 20.0f;
     paragraphStyle.maximumLineHeight = 20.0f;
-    
+
     return @{ NSFontAttributeName: [UIFont systemFontOfSize:17.0f],
               NSForegroundColorAttributeName: [UIColor colorWithRed:0.137f green:0.137f blue:0.137f alpha:1.0f],
               NSParagraphStyleAttributeName: paragraphStyle,
            };
 }
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width
+                               text:(NSString *)text
+                          withMedia:(BOOL)hasMedia
+{
+    return [self estimatedHeightWithWidth:width
+                                     text:text
+                                withMedia:hasMedia
+                                  andFont:nil];
+}
+
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width
+                               text:(NSString *)text
+                          withMedia:(BOOL)hasMedia
+                            andFont:(UIFont *)font
 {
     if (!text)
     {
@@ -243,7 +263,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     
     CGRect boundingRect = [text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                              options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:[self attributesForText]
+                                          attributes:font ? [self attributesForTextWithFont:font] : [self attributesForText]
                                              context:[[NSStringDrawingContext alloc] init]];
     CGFloat mediaSize = hasMedia ? width + kSpacingBetweenTextAndMedia : 0.0f;
     return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;

@@ -18,17 +18,22 @@
 @property (nonatomic, copy)           NSString     *text;
 @property (nonatomic, weak, readonly) UIImageView  *mediaThumbnailView;
 @property (nonatomic, weak, readonly) UIImageView  *playIcon; ///< Default is hidden. Show for video content
-@property (nonatomic, weak, readonly) UILabel      *textLabel;
 @property (nonatomic)                 CGFloat       preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
 @property (nonatomic)                 BOOL          hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
 @property (nonatomic, copy)           void        (^onMediaTapped)(); ///< Called when the user taps the media icon
 
+@property (nonatomic) UIFont *textFont;
+
 /**
  Returns the ideal height for instances of this view
- given specific width, text, and whether or not
+ given specific width, text, font, and whether or not
  we need room for a media thumbnail.
  */
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia andFont:(UIFont *)font;
+
+/**
+Same as above but without a custom font.
+ */+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
 
 /**
  Returns a block that, when invoked, presents the standard media player, 
