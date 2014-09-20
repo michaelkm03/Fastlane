@@ -48,6 +48,7 @@
                             forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                           forState:UIControlStateNormal];
+    self.editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (CGSize)intrinsicContentSize
