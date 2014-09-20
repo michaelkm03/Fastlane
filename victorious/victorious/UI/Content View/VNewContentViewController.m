@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 
@@ -213,16 +213,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
     __weak typeof(self) welf = self;
-    self.viewModel.realTimeCommentsViewModel.onCurrentRealTimeComentChange = ^void(void)
-    {
-        VRealtimeCommentsViewModel *realtimeCommentsViewModel = welf.viewModel.realTimeCommentsViewModel;
-        [welf.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
-                                                    currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
-                                                 currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
-                                                 currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
-                                                         atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
-                                         commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
-    };
+    self.viewModel.realTimeCommentsViewModel.delegate = self;
 }
 
 #pragma mark - IBActions
@@ -528,6 +519,20 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
                                withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
     }
+}
+
+#pragma mark - VRealtimeCommentsViewModelDelegate
+
+- (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel
+{
+    VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+    [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
+                                                currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
+                                             currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
+                                             currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
+                                                     atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
+                                     commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
+
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate

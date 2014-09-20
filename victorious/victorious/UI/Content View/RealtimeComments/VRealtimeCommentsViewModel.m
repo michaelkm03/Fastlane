@@ -107,10 +107,7 @@
     }
     _currentComment = currentComment;
     
-    if (self.onCurrentRealTimeComentChange)
-    {
-        self.onCurrentRealTimeComentChange();
-    }
+    [self.delegate currentCommentDidChangeOnRealtimeCommentsViewModel:self];
 }
 
 #pragma mark - Public Methods
