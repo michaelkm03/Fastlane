@@ -27,7 +27,6 @@
 
 #import "VUserProfileViewController.h"
 
-#warning test code
 #import "VDirectoryViewController.h"
 #import "VStream+Fetcher.h"
 
@@ -125,9 +124,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             case VMenuRowOwnerChannel:
             {
-#warning test code to go to directory collection view
-                navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
-//                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                if (YES)//TODO: this should be a real flag for channels.
+                {
+                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
+                }
+                else
+                {
+                    navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                }
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;

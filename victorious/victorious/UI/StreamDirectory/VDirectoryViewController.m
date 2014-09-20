@@ -20,11 +20,6 @@
 #import "VStream.h"
 #import "VSequence.h"
 
-#warning test imports
-#import "VObjectManager.h"
-#import "VStream+Fetcher.h"
-#import "VConstants.h"
-
 NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
@@ -47,29 +42,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VDirectoryViewController *streamDirectory = (VDirectoryViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
-    
-//#warning test code
-//    VStream *aDirectory = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class]) inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-//    aDirectory.name = @"test";
-//    VStream *homeStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-//    VStream *communityStream = [VStream streamForCategories: VUGCCategories()];
-//    VStream *ownerStream = [VStream streamForCategories: VOwnerCategories()];
-//    homeStream.name = @"Home";
-//    homeStream.previewImagesObject = @"http://victorious.com/img/logo.png";
-//    [homeStream addStreamsObject:aDirectory];
-//    
-//    communityStream.name = @"Community";
-//    communityStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-//    [communityStream addStreamsObject:aDirectory];
-//    
-//    ownerStream.name = @"Owner";
-//    ownerStream.previewImagesObject = @"https://www.google.com/images/srpr/logo11w.png";
-//    [ownerStream addStreamsObject:aDirectory];
-//    
-//    for (VSequence *sequence in homeStream.streamItems)
-//    {
-//        [sequence addStreamsObject:aDirectory];
-//    }
     
     streamDirectory.stream = stream;
     
@@ -186,6 +158,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 }
 
 #pragma mark - Refresh
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:nil];
@@ -224,8 +197,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
      {
      }];
 }
-
-
 
 #pragma mark - CollectionViewDelegate
 
