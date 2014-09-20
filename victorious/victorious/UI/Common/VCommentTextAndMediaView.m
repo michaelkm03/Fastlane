@@ -21,7 +21,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, weak)      UILabel            *textLabel;
+@property (nonatomic, weak, readwrite) UILabel      *textLabel;
 @property (nonatomic)            BOOL                addedConstraints;
 @property (nonatomic, weak)      UIButton           *mediaButton;
 @property (nonatomic, readwrite) UIImageView        *mediaThumbnailView;
