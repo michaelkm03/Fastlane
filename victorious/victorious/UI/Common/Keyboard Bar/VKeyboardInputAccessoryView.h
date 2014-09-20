@@ -88,4 +88,6 @@
  */
 @property (nonatomic, assign) UIReturnKeyType returnKeyType;
 
+- (void)clearTextAndResign;
+
 @end

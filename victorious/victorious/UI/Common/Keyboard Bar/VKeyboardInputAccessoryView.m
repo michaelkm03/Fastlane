@@ -73,9 +73,9 @@
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
 {
     _selectedThumbnail = selectedThumbnail;
-    
+
     [self.attachmentsButton setImage:selectedThumbnail
-                            forState:UIControlStateNormal];
+                            forState:UIControlStateSelected];
 }
 
 - (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
@@ -83,6 +83,16 @@
     _returnKeyType = returnKeyType;
     
     self.editingTextView.returnKeyType = returnKeyType;
+}
+
+#pragma mark - Public Methods
+
+- (void)clearTextAndResign
+{
+    self.editingTextView.text = nil;
+    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
+                            forState:UIControlStateNormal];
+    [self.editingTextView resignFirstResponder];
 }
 
 #pragma mark - IBActions

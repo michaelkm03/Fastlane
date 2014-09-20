@@ -150,25 +150,48 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
                   mediaURL:(NSURL *)mediaURL
                 completion:(void (^)(BOOL succeeded))completion
 {
-    [[VObjectManager sharedManager] addRealtimeCommentWithText:text
-                                                      mediaURL:mediaURL
-                                                       toAsset:self.currentAsset
-                                                        atTime:@(!isnan(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))?: 0.0f)
-                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         if (completion)
+    if (isnan(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime)))
+    {
+        [[VObjectManager sharedManager] addCommentWithText:text
+                                                  mediaURL:mediaURL
+                                                toSequence:self.sequence
+                                                 andParent:nil
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             completion(YES);
+             if (completion)
+             {
+                 completion(YES);
+             }
          }
-     }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (completion)
+                                                 failBlock:^(NSOperation *operation, NSError *error)
          {
-             completion(NO);
+             if (completion)
+             {
+                 completion(NO);
+             }
+         }];
+    }
+    else
+    {
+        [[VObjectManager sharedManager] addRealtimeCommentWithText:text
+                                                          mediaURL:mediaURL
+                                                           toAsset:self.currentAsset
+                                                            atTime:@(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))
+                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             if (completion)
+             {
+                 completion(YES);
+             }
          }
-     }];
-
+                                                         failBlock:^(NSOperation *operation, NSError *error)
+         {
+             if (completion)
+             {
+                 completion(NO);
+             }
+         }];
+    }
 }
 
 - (void)fetchComments

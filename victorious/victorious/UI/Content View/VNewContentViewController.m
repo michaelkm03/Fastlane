@@ -32,6 +32,9 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
+// Camera
+#import "VCameraViewController.h"
+
 // Logged in
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
@@ -47,6 +50,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
+@property (nonatomic, strong) NSURL *mediaURL;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -572,7 +576,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-//TODO: Implement adding a comment
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
@@ -580,16 +583,36 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
-                              mediaURL:nil
+                              mediaURL:self.mediaURL
                             completion:^(BOOL succeeded) {
                                 NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
                                 [welf.contentCollectionView reloadSections:commentsIndexSet];
                             }];
+    
+    [inputAccessoryView clearTextAndResign];
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-//TODO: Implement the ability to select an item from the camera roll/etc.
+
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (finished)
+        {
+            self.mediaURL = capturedMediaURL;
+            [self.inputAccessoryView setSelectedThumbnail:previewImage];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end
