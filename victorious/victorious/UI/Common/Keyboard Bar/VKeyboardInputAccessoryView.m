@@ -8,6 +8,9 @@
 
 #import "VKeyboardInputAccessoryView.h"
 
+// Theme
+#import "VThemeManager.h"
+
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
@@ -40,6 +43,11 @@
 {
     [super layoutSubviews];
     self.editingTextView.delegate = self;
+    
+    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
+                            forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                          forState:UIControlStateNormal];
 }
 
 - (CGSize)intrinsicContentSize
@@ -52,7 +60,6 @@
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    
     self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                            attributes:[self textEntryAttributes]];
 }
