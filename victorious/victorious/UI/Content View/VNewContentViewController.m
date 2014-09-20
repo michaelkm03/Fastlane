@@ -189,7 +189,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewWillDisappear:animated];
     
-    [self.inputAccessoryView removeFromSuperview];
+#warning This needs to be called under iOS7
+//    [self.inputAccessoryView removeFromSuperview];
 }
 
 - (BOOL)prefersStatusBarHidden
