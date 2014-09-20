@@ -281,7 +281,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return 1;
         case VContentViewSectionRealTimeComments:
-            return 1;//(self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? 1 : 0;
+            return (self.viewModel.type == VContentViewTypeVideo) ? 1 : 0;
         case VContentViewSectionAllComments:
             return self.viewModel.commentCount;
         case VContentViewSectionCount:
