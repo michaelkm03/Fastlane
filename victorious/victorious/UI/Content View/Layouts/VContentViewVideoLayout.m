@@ -141,7 +141,21 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     return attributes;
 }
 
-#pragma mark - Convenience
+#pragma mark - Public Methods
+
+- (NSArray *)desiredDecelerationLocations
+{
+    return
+    @[
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, 0)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForRealTimeComentsView.height * 0.5f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(self.sizeForRealTimeComentsView.height * 0.5f)
+       }
+     ];
+}
+
+#pragma mark - Internal Methods
 
 - (VContentViewState)currentState
 {

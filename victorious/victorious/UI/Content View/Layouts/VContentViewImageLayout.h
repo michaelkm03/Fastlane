@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VContentViewBaseLayout.h"
 
-@interface VContentViewImageLayout : UICollectionViewFlowLayout
+@interface VContentViewImageLayout : VContentViewBaseLayout
 
 /**
  *  The size of the header.
