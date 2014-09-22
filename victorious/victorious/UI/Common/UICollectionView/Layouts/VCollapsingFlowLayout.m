@@ -93,6 +93,7 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
                                                         self.collectionView.contentOffset.y,
                                                         self.sizeForContentView.width,
                                                         self.sizeForContentView.height);
+                    layoutAttributes.zIndex = kVContentViewFloatingZIndex;
                 }
                 else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
                 {
@@ -122,18 +123,15 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
         }
     }];
     
-    if (self.collectionView.contentOffset.y > self.catchPoint)
-    {
-        
-        UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                                                          withIndexPath:[self contentViewIndexPath]];
-        dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
-                                                          self.collectionView.contentOffset.y,
-                                                          CGRectGetWidth(self.collectionView.frame),
-                                                          self.dropDownHeaderMiniumHeight);
-        dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
-        [attributes addObject:dropDownHeaderLayoutAttributes];
-    }
+
+    UICollectionViewLayoutAttributes *dropDownHeaderLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                                                      withIndexPath:[self contentViewIndexPath]];
+    dropDownHeaderLayoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.frame),
+                                                      self.collectionView.contentOffset.y,
+                                                      CGRectGetWidth(self.collectionView.frame),
+                                                      self.dropDownHeaderMiniumHeight);
+    dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
+    [attributes addObject:dropDownHeaderLayoutAttributes];
     
     if (!hasLayoutAttributesForContentView)
     {
