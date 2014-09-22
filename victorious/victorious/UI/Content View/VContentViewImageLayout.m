@@ -21,8 +21,8 @@
 
 @end
 
-static const CGFloat kVContentViewFloatingZIndex = 1000.0f;
-static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
+static const CGFloat kVContentViewFloatingZIndex = -1.0f;
+static const CGFloat kVDropDownHeaderFloatingZIndex = -2.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
