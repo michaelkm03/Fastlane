@@ -17,6 +17,7 @@
 
 // Layout
 #import "VCollapsingFlowLayout.h"
+#import "VContentViewImageLayout.h"^
 
 // Cells
 #import "VContentCell.h"
@@ -102,6 +103,22 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypeInvalid:
+        case VContentViewTypeImage:
+        {
+            VContentViewImageLayout *imageLayout = [[VContentViewImageLayout alloc] init];
+            self.contentCollectionView.collectionViewLayout = imageLayout;
+        }
+            break;
+        case VContentViewTypePoll:
+            //
+        case VContentViewTypeVideo:
+            // do nothing assign in storyboard. Should fix this
+            break;
+    }
     
     [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                       forState:UIControlStateNormal];
@@ -452,83 +469,83 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    void (^delayedContentOffsetBlock)(void);
-    
-    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
-    {
-        if (velocity.y > 0.0f)
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-            };
-        }
-        else
-        {
-            *targetContentOffset = CGPointMake(0, 0);
-        }
-    }
-    else if ( (targetContentOffset->y >= (layout.sizeForRealTimeComentsView.height * 0.5f)) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height)))
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, layout.sizeForRealTimeComentsView.height)
-                                    animated:YES];
-            };
-        }
-    }
-    else if ((targetContentOffset->y >= layout.sizeForRealTimeComentsView.height) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height + (layout.sizeForContentView.height * 0.5f))))
-    {
-        if (velocity.y < 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0.0f, layout.sizeForRealTimeComentsView.height)
-                                    animated:YES];
-            };
-        }
-    }
-    else if (
-             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height *0.5f)))
-             &&
-             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
-             &&
-             (targetContentOffset->y < (layout.sizeForContentView.height))
-            )
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
-            };
-        }
-    }
-    
-    if (delayedContentOffsetBlock)
-    {
-        // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            delayedContentOffsetBlock();
-        });
-    }
+//    void (^delayedContentOffsetBlock)(void);
+//    
+//    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+//    
+//    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
+//    {
+//        if (velocity.y > 0.0f)
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+//            };
+//        }
+//        else
+//        {
+//            *targetContentOffset = CGPointMake(0, 0);
+//        }
+//    }
+//    else if ( (targetContentOffset->y >= (layout.sizeForRealTimeComentsView.height * 0.5f)) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height)))
+//    {
+//        if (velocity.y > 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, layout.sizeForRealTimeComentsView.height)
+//                                    animated:YES];
+//            };
+//        }
+//    }
+//    else if ((targetContentOffset->y >= layout.sizeForRealTimeComentsView.height) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height + (layout.sizeForContentView.height * 0.5f))))
+//    {
+//        if (velocity.y < 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0.0f, layout.sizeForRealTimeComentsView.height)
+//                                    animated:YES];
+//            };
+//        }
+//    }
+//    else if (
+//             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height *0.5f)))
+//             &&
+//             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
+//             &&
+//             (targetContentOffset->y < (layout.sizeForContentView.height))
+//            )
+//    {
+//        if (velocity.y > 0.0f)
+//        {
+//            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
+//        }
+//        else
+//        {
+//            delayedContentOffsetBlock = ^void(void)
+//            {
+//                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
+//            };
+//        }
+//    }
+//    
+//    if (delayedContentOffsetBlock)
+//    {
+//        // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+//        {
+//            delayedContentOffsetBlock();
+//        });
+//    }
 }
 
 #pragma mark - VContentVideoCellDelgetate
