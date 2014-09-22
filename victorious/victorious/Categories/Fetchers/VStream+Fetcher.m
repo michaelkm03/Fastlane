@@ -12,7 +12,15 @@
 #import "VObjectManager.h"
 #import "VUser.h"
 
+NSString * const kVSequenceContentType = @"sequence";
+NSString * const kVStreamContentType = @"stream";
+
 @implementation VStream (Fetcher)
+
+- (BOOL)onlyContainsSequences
+{
+    return [self.streamContentType isEqualToString:kVSequenceContentType];
+}
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {

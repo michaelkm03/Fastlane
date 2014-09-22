@@ -12,6 +12,8 @@
 
 @interface VStream (Fetcher)
 
+- (BOOL)onlyContainsSequences;///<Returns True if the stream only contains sequences.  Else false.
+
 + (VStream *)remixStreamForSequence:(VSequence *)sequence; ///<Returns the remix stream for a sequence.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForUser:(VUser *)user; ///<Returns the stream for a user.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForCategories:(NSArray *)categories; ///<Returns the stream for given catgories.  Note: stream object will be the mainQueueManagedObjectContext.

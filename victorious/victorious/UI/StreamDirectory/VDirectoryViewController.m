@@ -11,13 +11,14 @@
 #import "VDirectoryDataSource.h"
 #import "VDirectoryItemCell.h"
 
+#import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 #import "VNavigationHeaderView.h"
 #import "UIViewController+VSideMenuViewController.h"
 
 //Data Models
-#import "VStream.h"
+#import "VStream+Fetcher.h"
 #import "VSequence.h"
 
 NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
@@ -52,8 +53,18 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 {
     [super viewDidLoad];
     
-    self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:nil];
+    if (self.navigationController.viewControllers.count == 1)
+    {
+        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:nil];
+    }
+    else
+    {
+        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:nil];
+    }
+    
     self.navHeaderView.delegate = self;
+    self.navHeaderView.showAddButton = NO;
+    
     [self.view addSubview:self.navHeaderView];
     
     self.headerYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
@@ -224,10 +235,14 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[VStream class]])
+    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
-//        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
-//        [self.navigationController pushViewController:streamTable animated:YES];
+        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
+        VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
+        [self.navigationController pushViewController:streamContainer animated:YES];
+    }
+    else if ([item isKindOfClass:[VStream class]])
+    {
         VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream*)item];
         [self.navigationController pushViewController:sos animated:YES];
     }

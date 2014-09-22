@@ -26,6 +26,22 @@
                         <action selector="pressedMenu:" destination="Ay5-2H-sPn" eventType="touchUpInside" id="aKL-7Y-DzE"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sMx-qo-hHL">
+                    <rect key="frame" x="14" y="16" width="44" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="PBz-n8-x2T"/>
+                        <constraint firstAttribute="width" constant="44" id="USG-QY-Vrz"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal" image="cameraButtonBack">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="pressedBack:" destination="Ay5-2H-sPn" eventType="touchUpInside" id="vrO-x2-GLc"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkm-2G-q8x">
                     <rect key="frame" x="262" y="16" width="44" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -79,6 +95,7 @@
                 <constraint firstAttribute="trailing" secondItem="cdH-vC-Oj7" secondAttribute="trailing" constant="20" id="XrW-lx-Wl6"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>
                 <constraint firstAttribute="width" constant="320" id="YxW-7v-Jrt"/>
+                <constraint firstItem="sMx-qo-hHL" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="a3L-cG-gAe"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="10" id="k7Y-No-Dfd"/>
                 <constraint firstAttribute="trailing" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="55" id="mKT-Pc-3KL"/>
@@ -88,9 +105,11 @@
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="s5H-5F-TWq"/>
                 <constraint firstItem="cdH-vC-Oj7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="uf6-me-aeQ"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zLI-kf-7se"/>
+                <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zjG-CK-3JC"/>
             </constraints>
             <connections>
                 <outlet property="addButton" destination="tkm-2G-q8x" id="0r6-R8-SWC"/>
+                <outlet property="backButton" destination="sMx-qo-hHL" id="FpG-G8-Y6k"/>
                 <outlet property="headerImageView" destination="ba7-Bo-OPS" id="hE7-58-zrY"/>
                 <outlet property="headerLabel" destination="ESN-J9-ft1" id="agR-0G-lDG"/>
                 <outlet property="heightConstraint" destination="25X-sg-v7U" id="iwP-YJ-jus"/>
@@ -101,6 +120,7 @@
     </objects>
     <resources>
         <image name="Menu" width="27" height="27"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="createContentButton" width="27" height="27"/>
     </resources>
 </document>
