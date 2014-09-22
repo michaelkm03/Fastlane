@@ -8,6 +8,6 @@
 
 #import "VFindFriendsTableViewController.h"
 
-@interface VFindFacebookFriendsTableViewController : VFindFriendsTableViewController
+@interface VFindFacebookFriendsTableViewController : VFindFriendsTableViewController <VFindFriendsDelegate>
 
 @end

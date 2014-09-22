@@ -27,6 +27,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)awakeFromNib
 {
+    self.isFollowing = NO;
+    
     self.followIcon   = [UIImage imageNamed:@"buttonFollow"];
     self.unfollowIcon = [UIImage imageNamed:@"buttonFollowed"];
     self.followIconImageView.image = self.followIcon;
@@ -48,10 +50,29 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
+    
+    NSSet *following = profile.following;
+    if (following)
+    {
+        [self setSelected:YES];
+    }
+}
+
+- (void)setIsFollowing:(BOOL)isFollowing
+{
+    _isFollowing = isFollowing;
+    
+    self.unfollowIcon = [UIImage imageNamed:@"buttonFollowed"];
+    self.followIconImageView.image = self.unfollowIcon;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
+    if (self.isFollowing)
+    {
+        return;
+    }
+    
     if (self.selected == selected)
     {
         return;

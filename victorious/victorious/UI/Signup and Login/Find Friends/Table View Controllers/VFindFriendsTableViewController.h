@@ -18,7 +18,26 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
     VFindFriendsTableViewStateError      ///< User has authorized connection, but we weren't able to load friends
 };
 
+
+typedef NS_ENUM(NSInteger, VFindFriendsTableType)
+{
+    VFindFriendsTableTypeFacebook,      ///< Table used to display Facebook friends
+    VFindFriendsTableTypeTwitter,       ///< Table used to display Twitter friends
+    VFindFriendsTableTypeAddressBook    ///< Table used to display friends from the Address Book
+};
+
 @class VFindFriendsTableView;
+
+
+/**
+ Protocol to handle response from sending a friend request to the backend api
+ */
+@protocol VFindFriendsDelegate <NSObject>
+
+@required
+- (void)didReceiveFriendRequestResponse:(NSArray *)responseObject;
+
+@end
 
 /**
  Base class for table view controllers 
@@ -28,6 +47,7 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
 
 @property (nonatomic, readonly) VFindFriendsTableView      *tableView; ///< Returns the same object as the "view" property
 @property (nonatomic, readonly) VFindFriendsTableViewState  state;
+@property (nonatomic) VFindFriendsTableType findFriendsTableType;
 @property (nonatomic)           BOOL                        shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed
 
 /**
@@ -54,5 +74,10 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
  each user selected in the table view.
  */
 - (NSArray *)selectedUsers;
+
+/**
+ Delegate object for finding friends
+ */
+@property (nonatomic, weak) id<VFindFriendsDelegate> findFriendsDelegate;
 
 @end

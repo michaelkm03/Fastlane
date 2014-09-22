@@ -12,11 +12,15 @@
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
 #import "VObjectManager+Users.h"
+#import "VUser.h"
+#import "VThemeManager.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;
-@property (nonatomic, strong)    NSArray                    *users;
+@property (nonatomic, strong) NSArray *users;
+@property (nonatomic, strong) NSMutableArray *theFollowing;
+@property (nonatomic, strong) NSMutableArray *notFollowing;
 
 @end
 
@@ -149,6 +153,11 @@
     NSAssert(NO, @"class %@ needs to implement loadFriendsFromSocialNetworkWithCompletion:", NSStringFromClass([self class]));
 }
 
+- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    NSAssert(NO, @"class %@ needs to implement loadSingleFollower:withSuccess:withFailure:", NSStringFromClass([self class]));
+}
+
 - (void)_loadFriendsFromSocialNetwork
 {
     self.state = VFindFriendsTableViewStateLoading;
@@ -162,8 +171,22 @@
         {
             self.users = users;
             self.state = VFindFriendsTableViewStateLoaded;
+            [self filterUsers:users];
         }
     }];
+}
+
+- (void)filterUsers:(NSArray *)users
+{
+    VUser *me = [[VObjectManager sharedManager] mainUser];
+    
+    NSSet *following = me.following;
+    
+    for (VUser *user in users)
+    {
+        [following containsObject:user];
+        
+    }
 }
 
 - (NSArray *)selectedUsers
@@ -218,11 +241,9 @@
 
 - (void)loadBatchOfFollowers:(NSArray *)followers withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
 {
-    
     [[VObjectManager sharedManager] followUsers:followers
                                withSuccessBlock:successBlock
                                       failBlock:failureBlock];
-
 }
 
 
@@ -246,7 +267,95 @@
 
 - (void)makeAFriendAction:(id)sender
 {
-    NSLog(@"\n\n-----\nFriend action goes here\n-----\n\n");
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        NSLog(@"\n\n-----\nSuccess Block:\n%@\n-----\n\n", resultObjects);
+        
+        if ([self.findFriendsDelegate respondsToSelector:@selector(didReceiveFriendRequestResponse:)])
+        {
+            [self.findFriendsDelegate didReceiveFriendRequestResponse:resultObjects];
+        }
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    NSIndexPath *indexPath = [self.tableView.tableView indexPathForSelectedRow];
+    NSInteger row = indexPath.row;
+    VUser *user = self.users[row];
+    
+    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+}
+
+#pragma mark - UITableView Section Header
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSInteger ans = 40.f;
+    
+    if (self.theFollowing.count == 0 && self.users.count == 0)
+    {
+        ans = 0.f;
+    }
+    
+    return ans;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    //[view setBackgroundColor:[UIColor colorWithRed:230.f green:233.f blue:237.f alpha:1.0f]];
+    [view setBackgroundColor:[UIColor colorWithRed:0.874 green:0.887 blue:0.912 alpha:1.000]];
+    
+    UILabel *headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 20)];
+    NSString *text;
+
+    
+    if (section == 0)
+    {
+        text = NSLocalizedString(@"FollowingSectionHeader", @"");
+    }
+    else
+    {
+        switch (self.findFriendsTableType)
+        {
+            case VFindFriendsTableTypeFacebook:
+                text = NSLocalizedString(@"FacebookFollowingSectionHeader", @"");
+                break;
+                
+            case VFindFriendsTableTypeAddressBook:
+                text = NSLocalizedString(@"AddressBookFollowingSectionHeader", @"");
+                break;
+                
+            case VFindFriendsTableTypeTwitter:
+                text = NSLocalizedString(@"TwitterFollowingSectionHeader", @"");
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"") attributes:[self attributesForText]];
+    [headerTitle setAttributedText:newAttributedText];
+    [view addSubview:headerTitle];
+    
+    return view;
+}
+
+- (NSDictionary *)attributesForText
+{
+    return @{
+             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font],
+             NSForegroundColorAttributeName: [UIColor colorWithWhite:0.499 alpha:1.000],
+             };
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -273,18 +382,45 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    NSInteger ans = 2;
+    
+    if (self.theFollowing.count == 0 && self.users.count == 0)
+    {
+        ans = 1;
+    }
+    
+    return ans;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.users.count;
+    NSInteger ans = 0;
+    
+    if (section == 0)
+    {
+        ans = self.users.count;
+    }
+    else if (section == 1)
+    {
+        ans = self.notFollowing.count;
+    }
+    return ans;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger section = indexPath.section;
+    
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
-    cell.profile = self.users[indexPath.row];
+    if (section == 0)
+    {
+        cell.profile = self.users[indexPath.row];
+        cell.isFollowing = YES;
+    }
+    else if (section == 1)
+    {
+        cell.profile = self.notFollowing[indexPath.row];
+    }
     return cell;
 }
 

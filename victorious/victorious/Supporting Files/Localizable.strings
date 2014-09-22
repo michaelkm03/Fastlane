@@ -153,6 +153,11 @@
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
+"FollowingSectionHeader"            =   "Already Following";
+"FacebookFollowingSectionHeader"    =   "Follow Your Facebook Friends";
+"TwitterFollowingSectionHeader"     =   "Follow Your Twitter Friends";
+"AddressBookFollowingSectionHeader" =   "Follow Your Contacts";
+
 "ConversationLoadError" =   "Unable to load conversation";
 "ConversationDelError"  =   "Unable to delete conversation";
 "ConversationSendError" =   "Your message could not be sent";

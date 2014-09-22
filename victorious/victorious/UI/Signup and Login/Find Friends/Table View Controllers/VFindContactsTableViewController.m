@@ -34,6 +34,9 @@
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindContacts", @"")];
     [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"ContactsSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
+    
+    self.findFriendsDelegate = self;
+    self.findFriendsTableType = VFindFriendsTableTypeAddressBook;
 }
 
 - (void)setAddressBook:(ABAddressBookRef)addressBook
@@ -188,6 +191,26 @@
     {
         completionBlock(@[], nil);
     }
+}
+
+- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    // Return if we don't have a way to handle the return
+    if (!successBlock)
+    {
+        return;
+    }
+    
+    [[VObjectManager sharedManager] followUser:user
+                                  successBlock:successBlock
+                                     failBlock:failureBlock];
+}
+
+#pragma mark - VFindFriendsDelegate Method
+
+- (void)didReceiveFriendRequestResponse:(NSArray *)responseObject
+{
+    NSLog(@"\n\n-----\nContacts Find Friends Delegate is Being Called\n-----\n\n");
 }
 
 @end
