@@ -630,7 +630,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if (self.didPlayToEnd)
                 {
                     self.didPlayToEnd = NO;
-                    if (newRate > 0)
+                    if ([newRate floatValue] > 0)
                     {
                         if (CMTIME_IS_VALID(self.startTime))
                         {

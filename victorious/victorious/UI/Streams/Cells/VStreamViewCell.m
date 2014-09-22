@@ -148,12 +148,12 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[self attributesForCellText]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
-        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.maximumLineHeight = 25;
         paragraphStyle.minimumLineHeight = 25;
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         
-        NSShadow *shadow = [NSShadow new];
+        NSShadow *shadow = [[NSShadow alloc] init];
         [shadow setShadowBlurRadius:5.0f];
         [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.75f]];
         [shadow setShadowOffset:CGSizeMake(2, -1)];

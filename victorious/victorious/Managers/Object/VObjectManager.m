@@ -69,9 +69,8 @@
     manager.managedObjectStore = managedObjectStore;
     
     // Initialize the Core Data stack
-    NSError *error = nil;
     [managedObjectStore createPersistentStoreCoordinator];
-    [managedObjectStore addInMemoryPersistentStore:&error];
+    [managedObjectStore addInMemoryPersistentStore:nil];
     [managedObjectStore createManagedObjectContexts];
     
     // Configure a managed object cache to ensure we do not create duplicate objects
