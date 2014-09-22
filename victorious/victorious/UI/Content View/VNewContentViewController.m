@@ -17,7 +17,7 @@
 
 // Layout
 #import "VCollapsingFlowLayout.h"
-#import "VContentViewImageLayout.h"^
+#import "VContentViewImageLayout.h"
 
 // Cells
 #import "VContentCell.h"
@@ -193,6 +193,13 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
                                            placeholderImage:placeholderImage
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    
+    self.inputAccessoryView.alpha = 0.0f;
+    [UIView animateWithDuration:0.2f
+                     animations:^
+     {
+         self.inputAccessoryView.alpha = 1.0f;
+     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -205,9 +212,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [self.view.superview endEditing:YES];
     
-#warning This needs to be called under iOS7
-//    [self.inputAccessoryView removeFromSuperview];
+    [UIView animateWithDuration:0.2f
+                     animations:^
+     {
+         self.inputAccessoryView.alpha = 0.0f;
+     }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.inputAccessoryView removeFromSuperview];
 }
 
 - (BOOL)prefersStatusBarHidden
