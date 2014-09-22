@@ -27,9 +27,7 @@ static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
 
-
 @implementation VContentViewImageLayout
-
 
 - (id)init
 {
@@ -57,6 +55,8 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     self.catchPoint = 0.0f;
     self.contentViewXTargetTranslation = 0.0f;
     self.contentViewYTargetTranslation = 0.0f;
+    self.minimumInteritemSpacing = 0.0f;
+    self.minimumLineSpacing = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
 }
 
@@ -166,7 +166,5 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     
     return layoutAttributes;
 }
-
-
 
 @end
