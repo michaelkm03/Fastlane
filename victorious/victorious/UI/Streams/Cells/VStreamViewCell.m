@@ -84,6 +84,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (NSDictionary *)attributesForCellText
 {
+    //TODO: Remvoe this hardcoded font size
     return @{
              NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
