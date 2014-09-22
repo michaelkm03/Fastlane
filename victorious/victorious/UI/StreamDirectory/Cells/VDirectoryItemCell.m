@@ -22,6 +22,8 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
 @property (nonatomic, strong) IBOutlet UIImageView* previewImageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 
+@property (nonatomic) NSInteger defaultNameHeight;
+
 @end
 
 @implementation VDirectoryItemCell
@@ -29,6 +31,8 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+
+    self.defaultNameHeight = self.nameLabel.frame.size.height;
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
@@ -39,6 +43,7 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
+    [self.nameLabel sizeToFit];
     
     __weak UIImageView* weakPreviewImageView = self.previewImageView;
     //TODO: this should eventually do something nifty with multiple images.
@@ -66,6 +71,13 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
      }
                                           failure:nil
      ];
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.nameLabel.bounds = CGRectMake(0, 0, CGRectGetWidth(self.nameLabel.bounds), self.defaultNameHeight);
 }
 
 @end
