@@ -20,6 +20,7 @@
 @interface VDirectoryDataSource : NSObject <UICollectionViewDataSource>
 
 @property (nonatomic, weak) id<VStreamDirectoryDataDelegate> delegate;
+@property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
 @property (nonatomic, strong) VAbstractFilter *filter;
 @property (nonatomic, strong) VStream *stream;
 

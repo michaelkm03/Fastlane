@@ -75,6 +75,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
     
     self.directoryDataSource = [[VDirectoryDataSource alloc] initWithStream:self.stream];
+    self.directoryDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.directoryDataSource;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -225,8 +226,10 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[VStream class]])
     {
-        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
-        [self.navigationController pushViewController:streamTable animated:YES];
+//        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
+//        [self.navigationController pushViewController:streamTable animated:YES];
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream*)item];
+        [self.navigationController pushViewController:sos animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])
     {

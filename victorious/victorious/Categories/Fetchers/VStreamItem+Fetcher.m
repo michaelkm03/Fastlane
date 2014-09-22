@@ -19,7 +19,7 @@
     }
     else if ([self.previewImagesObject isKindOfClass:[NSArray class]])
     {
-        previewImage = [self.previewImagesObject firstItem];
+        previewImage = [self.previewImagesObject firstObject];
     }
     else if (self.previewImagesObject)//if its not nil its undefined
     {

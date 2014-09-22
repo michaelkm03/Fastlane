@@ -18,6 +18,8 @@
 //Data Models
 #import "VStream.h"
 
+static char KVOContext;
+
 @interface VDirectoryDataSource()
 
 @property (nonatomic) BOOL isLoading;
@@ -34,6 +36,27 @@
         self.stream = stream;
     }
     return self;
+}
+
+- (void)setStream:(VStream *)stream
+{
+    if (stream == _stream)
+    {
+        return;
+    }
+    
+    if (_stream)
+    {
+        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
+    }
+    
+    _stream = stream;
+    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
+    
+    if (stream)
+    {
+        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+    }
 }
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
@@ -127,6 +150,18 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
+    {
+        [self.collectionView reloadData];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:VStreamTableDataSourceDidChangeNotification
+//                                                            object:self];
+    }
 }
 
 @end
