@@ -110,7 +110,26 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     return attributes;
 }
 
-#pragma mark - Convenience
+#pragma mark - Public Methods
+
+- (NSArray *)desiredDecelerationLocations
+{
+    return
+    @[
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, 0)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(0.0f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(self.sizeForContentView.height * 0.25f)
+          },
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, self.sizeForContentView.height - self.dropDownHeaderMiniumHeight)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForContentView.height * 0.75f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(0.0f)
+          }
+      ];
+}
+
+#pragma mark - Internal Methods
 
 - (void)calculateSizesAndTranslationsIfNeededWithInitialAttributes:(NSArray *)initialLayoutAttributes
 {

@@ -149,8 +149,18 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     @[
       @{
           VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, 0)],
-          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForRealTimeComentsView.height * 0.5f),
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(0.0f),
           VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(self.sizeForRealTimeComentsView.height * 0.5f)
+       },
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, self.sizeForRealTimeComentsView.height)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForRealTimeComentsView.height * 0.5f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(self.sizeForContentView.height * 0.25f)
+       },
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, self.sizeForRealTimeComentsView.height + self.sizeForContentView.height - self.dropDownHeaderMiniumHeight)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForContentView.height * 0.75f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(0.0f)
        }
      ];
 }
@@ -177,7 +187,6 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
         self.sizeForContentView = layoutAttributesForContentView.size;
     }
     
-#warning This needs to be better aware of the presence or not of RTC
     if (CGSizeEqualToSize(self.sizeForRealTimeComentsView, CGSizeZero) && (initialLayoutAttributes.count > 1))
     {
         UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
