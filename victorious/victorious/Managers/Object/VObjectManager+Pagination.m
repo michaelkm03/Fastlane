@@ -610,12 +610,23 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)filterForStream:(VStream *)stream
 {
-    if (!stream.apiPath.length)
+    NSString *apiPath;
+    if (stream.apiPath.length)
+    {
+        apiPath = stream.apiPath;
+    }
+    else if (stream.name.length)
+    {
+        apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.name];
+#warning this may or may not work, depends on what the api call ends up expecting for the default state.  Assuming its like the list_by_categories call this will work.
+        apiPath = [apiPath stringByAppendingPathComponent:stream.filterName ?: @"0"];
+    }
+    else
     {
         return nil;
     }
     
-    return [self.paginationManager filterForPath:stream.apiPath
+    return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }

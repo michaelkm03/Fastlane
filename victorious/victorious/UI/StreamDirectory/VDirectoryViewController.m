@@ -98,6 +98,8 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     //Register cells
     UINib *nib = [UINib nibWithNibName:kVStreamDirectoryItemCellName bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:kVStreamDirectoryItemCellName];
+    
+    [self refresh:self.refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
