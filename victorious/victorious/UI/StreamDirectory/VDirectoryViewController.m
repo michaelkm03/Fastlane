@@ -212,6 +212,13 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 #pragma mark - CollectionViewDelegate
 
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [VDirectoryItemCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];

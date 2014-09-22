@@ -28,6 +28,13 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
 
 @implementation VDirectoryItemCell
 
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    CGFloat width = CGRectGetWidth(bounds) * .453; //from spec, 290 width on 640
+    CGFloat height = width * 1.372;//from spec, 398 height for 290 width
+    return CGSizeMake(width, height);
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];

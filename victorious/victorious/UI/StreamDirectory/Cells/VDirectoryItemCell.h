@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VBaseCollectionViewCell.h"
+
 @class VStreamItem;
 
 extern NSString * const kVStreamDirectoryItemCellName;
 
-@interface VDirectoryItemCell : UICollectionViewCell
+@interface VDirectoryItemCell : VBaseCollectionViewCell
 
 @property (nonatomic, strong) VStreamItem* streamItem;
 
