@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VCollapsingFlowLayout : UICollectionViewFlowLayout
+@interface VContentViewVideoLayout : UICollectionViewFlowLayout
 
 /**
  *  The size of the header.

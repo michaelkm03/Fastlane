@@ -341,13 +341,13 @@
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
+		D82C08F719D0C09F00273E0D /* VContentViewVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
-		D8E39BC019CB7C66007FD86A /* VCollapsingFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBF19CB7C66007FD86A /* VCollapsingFlowLayout.m */; };
 		D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC319CB7C80007FD86A /* VContentCell.m */; };
 		D8E39BD719CB7C80007FD86A /* VContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BC419CB7C80007FD86A /* VContentCell.xib */; };
 		D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC619CB7C80007FD86A /* VContentCommentsCell.m */; };
@@ -1005,6 +1005,8 @@
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
+		D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewVideoLayout.h; sourceTree = "<group>"; };
+		D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewVideoLayout.m; sourceTree = "<group>"; };
 		D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSharedCollectionReusableViewMethods.h; sourceTree = "<group>"; };
 		D836883F19C370C400070F22 /* VBaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseCollectionViewCell.h; sourceTree = "<group>"; };
 		D836884019C370C400070F22 /* VBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCollectionViewCell.m; sourceTree = "<group>"; };
@@ -1018,8 +1020,6 @@
 		D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNewContentViewController.m; sourceTree = "<group>"; };
 		D8E39BBA19CB7C58007FD86A /* VRealtimeCommentsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRealtimeCommentsViewModel.h; sourceTree = "<group>"; };
 		D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealtimeCommentsViewModel.m; sourceTree = "<group>"; };
-		D8E39BBE19CB7C66007FD86A /* VCollapsingFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollapsingFlowLayout.h; sourceTree = "<group>"; };
-		D8E39BBF19CB7C66007FD86A /* VCollapsingFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollapsingFlowLayout.m; sourceTree = "<group>"; };
 		D8E39BC219CB7C80007FD86A /* VContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCell.h; sourceTree = "<group>"; };
 		D8E39BC319CB7C80007FD86A /* VContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentCell.m; sourceTree = "<group>"; };
 		D8E39BC419CB7C80007FD86A /* VContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentCell.xib; sourceTree = "<group>"; };
@@ -1370,6 +1370,7 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				D82C08F419D0C04200273E0D /* Layouts */,
 				D8E39BED19CB99A8007FD86A /* ContentView.storyboard */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
@@ -1393,8 +1394,6 @@
 				0314D38019B46B5E00FA363C /* VContentViewController.m */,
 				0314D38119B46B5E00FA363C /* VEmotiveBallisticsBarViewController.h */,
 				0314D38219B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m */,
-				D84562BF19CFBBB0000E9BC5 /* VContentViewImageLayout.h */,
-				D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2352,10 +2351,20 @@
 			path = OCMock;
 			sourceTree = "<group>";
 		};
+		D82C08F419D0C04200273E0D /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */,
+				D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */,
+				D84562BF19CFBBB0000E9BC5 /* VContentViewImageLayout.h */,
+				D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
 		D836883C19C36FF200070F22 /* UICollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				D8E39BBD19CB7C66007FD86A /* Layouts */,
 				D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */,
 				D836883F19C370C400070F22 /* VBaseCollectionViewCell.h */,
 				D836884019C370C400070F22 /* VBaseCollectionViewCell.m */,
@@ -2374,15 +2383,6 @@
 				03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */,
 			);
 			path = "Simple Models";
-			sourceTree = "<group>";
-		};
-		D8E39BBD19CB7C66007FD86A /* Layouts */ = {
-			isa = PBXGroup;
-			children = (
-				D8E39BBE19CB7C66007FD86A /* VCollapsingFlowLayout.h */,
-				D8E39BBF19CB7C66007FD86A /* VCollapsingFlowLayout.m */,
-			);
-			path = Layouts;
 			sourceTree = "<group>";
 		};
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
@@ -2767,7 +2767,6 @@
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
-				D8E39BC019CB7C66007FD86A /* VCollapsingFlowLayout.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				0314D49D19B46B5E00FA363C /* VContentViewController.m in Sources */,
 				0314D47119B46B5E00FA363C /* VCDataEncoder.m in Sources */,
@@ -2954,6 +2953,7 @@
 				0314D4CB19B46B5E00FA363C /* VRemixStitchViewController.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
+				D82C08F719D0C09F00273E0D /* VContentViewVideoLayout.m in Sources */,
 				BEA78C2219C00328006A1ABC /* VDirectoryItem.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				0314D46319B46B5E00FA363C /* VVideoPreviewViewController.m in Sources */,
