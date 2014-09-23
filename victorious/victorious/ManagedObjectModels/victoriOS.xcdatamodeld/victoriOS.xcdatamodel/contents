@@ -88,6 +88,7 @@
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
+        <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" indexed="YES" syncable="YES"/>
@@ -211,6 +212,8 @@
         <element name="DirectoryItem" positionX="853" positionY="-531" width="128" height="103"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
+        <element name="Node" positionX="817" positionY="-180" width="128" height="148"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
