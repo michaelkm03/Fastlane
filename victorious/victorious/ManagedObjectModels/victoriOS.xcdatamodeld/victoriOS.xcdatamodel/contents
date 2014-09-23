@@ -196,7 +196,7 @@
     <entity name="VStreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="remoteId" optional="YES" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" indexed="YES" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VStream" inverseName="streamItems" inverseEntity="VStream" syncable="YES"/>
     </entity>
     <elements>
@@ -208,8 +208,6 @@
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="148"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>

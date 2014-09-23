@@ -79,7 +79,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 {
     return [self POST:@"/api/sequence/flag"
                object:nil
-           parameters:@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null]}
+           parameters:@{@"sequence_id" : sequence.remoteId ?: [NSNull null]}
          successBlock:success
             failBlock:fail];
 }
@@ -129,7 +129,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
+    NSDictionary *parameters = @{@"sequence_id":sequence.remoteId ?: [NSNull null],
                                  @"votetypes": voteTypes ?: [NSNull null],
                                  @"votecounts": voteCounts ?: [NSNull null]
                                  };
@@ -159,7 +159,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                         insertNewObjectForEntityForName:[VPollResult entityName]
                                         inManagedObjectContext:self.mainUser.managedObjectContext];
         newPollResult.answerId = answer.remoteId;
-        newPollResult.sequenceId = poll.remoteId;
+        newPollResult.sequenceId = @(poll.remoteId.integerValue);
         [self.mainUser addPollResultsObject:newPollResult];
         
         [self.mainUser.managedObjectContext saveToPersistentStore:nil];
@@ -231,7 +231,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         NSManagedObjectContext *context;
         for (VPollResult *result in resultObjects)
         {
-            result.sequenceId = sequence.remoteId;
+            result.sequenceId = @(sequence.remoteId.integerValue);
             result.sequence = (VSequence *)[result.managedObjectContext objectWithID:[sequence objectID]];
             context = result.managedObjectContext;
         }
@@ -244,7 +244,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         }
     };
     
-    return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId.stringValue]
+    return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId]
               object:nil
           parameters:nil
         successBlock:fullSuccess
@@ -256,7 +256,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId.stringValue, self.mainUser.remoteId.stringValue]
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId, self.mainUser.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

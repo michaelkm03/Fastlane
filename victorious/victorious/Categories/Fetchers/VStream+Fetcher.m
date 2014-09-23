@@ -24,7 +24,7 @@ NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
+    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 

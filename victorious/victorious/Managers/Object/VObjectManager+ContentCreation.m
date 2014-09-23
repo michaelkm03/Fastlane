@@ -273,7 +273,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 {
     NSString *extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     NSString *type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
-    NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
+    NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
@@ -333,7 +333,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.remoteId = remoteID;
     tempComment.text = text;
     tempComment.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
-    tempComment.sequenceId = sequence.remoteId;
+    tempComment.sequenceId = @(sequence.remoteId.integerValue);
     tempComment.mediaType = kTemporaryContentStatus;
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;

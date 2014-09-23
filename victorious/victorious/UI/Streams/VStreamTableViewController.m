@@ -288,7 +288,7 @@
     }
     
     //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
+    [[VObjectManager sharedManager] fetchSequence:@(cell.sequence.remoteId.integerValue)
                                      successBlock:nil
                                         failBlock:nil];
     

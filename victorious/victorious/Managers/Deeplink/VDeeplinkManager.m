@@ -254,7 +254,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
 - (NSURL *)contentDeeplinkForSequence:(VSequence *)sequence
 {
     //TODO: Fetch the actual deeplink prefix from the info.plist
-    return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId.stringValue]];
+    return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId]];
 }
 
 @end

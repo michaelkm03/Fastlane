@@ -820,7 +820,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return;
     }
     
-    NSString *label = [self.sequence.remoteId.stringValue stringByAppendingPathComponent:self.sequence.name];
+    NSString *label = [self.sequence.remoteId stringByAppendingPathComponent:self.sequence.name];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
     
     if ([self.currentAsset isVideo])
