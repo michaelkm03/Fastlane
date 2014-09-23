@@ -79,6 +79,11 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     [self.commentAndMediaView resetView];
     self.commentAndMediaView.hasMedia = NO;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
+    
+    self.commentAndMediaView.onMediaTapped = ^(void)
+    {
+        [self tappedOnMedia];
+    };
 }
 
 #pragma mark - UICollectionReusableView
@@ -88,6 +93,16 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     [super prepareForReuse];
     
     [self prepareContentAndMediaView];
+}
+
+#pragma mark - Target/Action
+
+- (void)tappedOnMedia
+{
+    if (self.onMediaTapped)
+    {
+        self.onMediaTapped();
+    }
 }
 
 #pragma mark - Property Accessor
@@ -141,6 +156,16 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     _realTimeCommentText = [realTimeCommentText copy];
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
+}
+
+- (UIImage *)previewImage
+{
+    return self.commentAndMediaView.mediaThumbnailView.image;
+}
+
+- (UIView *)previewView
+{
+    return self.commentAndMediaView.mediaThumbnailView;
 }
 
 @end

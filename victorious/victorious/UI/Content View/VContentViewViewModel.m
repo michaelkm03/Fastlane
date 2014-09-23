@@ -279,6 +279,12 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
     return commentForIndex.previewImageURL;
 }
 
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return [NSURL URLWithString:commentForIndex.mediaUrl];
+}
+
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex
 {
     if (![self commentHasMediaForCommentIndex:commentIndex])

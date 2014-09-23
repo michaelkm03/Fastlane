@@ -175,6 +175,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
 
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
+
 /**
  *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
  *

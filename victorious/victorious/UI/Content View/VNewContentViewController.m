@@ -34,8 +34,13 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
-// Camera
+// ViewControllers
 #import "VCameraViewController.h"
+#import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
+
+// Transitioning
+#import "VLightboxTransitioningDelegate.h"
 
 // Logged in
 #import "VObjectManager+Login.h"
@@ -328,6 +333,35 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
         commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
     }
+    
+    __weak typeof(self) welf = self;
+    __weak typeof(commentCell) wCommentCell = commentCell;
+    commentCell.onMediaTapped = ^(void)
+    {
+        VLightboxViewController *lightbox;
+        if (wCommentCell.mediaIsVideo)
+        {
+            lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
+                                                                         videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
+            
+            ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+            ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
+        }
+        else
+        {
+            lightbox = [[VImageLightboxViewController alloc] initWithImage:wCommentCell.previewImage];
+        }
+        
+        lightbox.onCloseButtonTapped = ^(void)
+        {
+            [welf dismissViewControllerAnimated:YES completion:nil];
+        };
+        
+        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
+                                                                          referenceView:wCommentCell.previewView];
+        
+        [welf presentViewController:lightbox animated:YES completion:nil];
+    };
 }
 
 #pragma mark - UICollectionViewDataSource
