@@ -10,34 +10,20 @@
 
 @implementation VStreamItem (Fetcher)
 
-- (NSString *)previewImagePath
-{
-    NSString* previewImage;
-    if ([self.previewImagesObject isKindOfClass:[NSString class]])
-    {
-        previewImage = self.previewImagesObject;
-    }
-    else if ([self.previewImagesObject isKindOfClass:[NSArray class]])
-    {
-        previewImage = [self.previewImagesObject firstObject];
-    }
-    else if (self.previewImagesObject)//if its not nil its undefined
-    {
-        NSAssert(false, @"undefined type for sequence.previewImage");
-    }
-    
-    return previewImage;
-}
-
 - (NSArray *)previewImagePaths
 {
     if ([self.previewImagesObject isKindOfClass:[NSArray class]] || !self.previewImagesObject)
     {
         return self.previewImagesObject;
     }
-    else
+    else if ([self.previewImagesObject isKindOfClass:[NSString class]])
     {
         return @[self.previewImagesObject];
+    }
+    else
+    {
+        NSAssert(false, @"undefined type for sequence.previewImage");
+        return nil;
     }
 }
 

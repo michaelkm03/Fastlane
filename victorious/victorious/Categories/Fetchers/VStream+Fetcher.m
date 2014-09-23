@@ -12,8 +12,8 @@
 #import "VObjectManager.h"
 #import "VUser.h"
 
-NSString * const kVSequenceContentType = @"sequence";
-NSString * const kVStreamContentType = @"stream";
+static NSString * const kVSequenceContentType = @"sequence";
+static NSString * const kVStreamContentType = @"stream";
 
 @implementation VStream (Fetcher)
 

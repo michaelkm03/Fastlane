@@ -54,7 +54,7 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
     
     __weak UIImageView* weakPreviewImageView = self.previewImageView;
     //TODO: this should eventually do something nifty with multiple images.
-    NSString *previewImagePath = streamItem.previewImagePath;
+    NSString *previewImagePath = [streamItem.previewImagePaths firstObject];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:previewImagePath]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self.previewImageView setImageWithURLRequest:request
