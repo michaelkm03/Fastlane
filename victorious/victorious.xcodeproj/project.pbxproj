@@ -1345,8 +1345,8 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
+				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
 				0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */,
@@ -1356,12 +1356,12 @@
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				0314D35619B46B5E00FA363C /* VNoContentView.xib */,
+				D80C615919D0F692006AE41A /* VProgressBarView.h */,
+				D80C615A19D0F692006AE41A /* VProgressBarView.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
-				D80C615919D0F692006AE41A /* VProgressBarView.h */,
-				D80C615A19D0F692006AE41A /* VProgressBarView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1383,15 +1383,11 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				D82C08F419D0C04200273E0D /* Layouts */,
-				D8E39BED19CB99A8007FD86A /* ContentView.storyboard */,
-				D8E39BC119CB7C80007FD86A /* Cells */,
-				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
-				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
-				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
-				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				0314D35C19B46B5E00FA363C /* Animators */,
+				D8E39BC119CB7C80007FD86A /* Cells */,
 				0314D36519B46B5E00FA363C /* Content Info */,
+				D8E39BED19CB99A8007FD86A /* ContentView.storyboard */,
+				D82C08F419D0C04200273E0D /* Layouts */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
 				0314D37619B46B5E00FA363C /* VActionBarViewController.h */,
@@ -1405,8 +1401,12 @@
 				0314D37E19B46B5E00FA363C /* VContentViewController+Videos.m */,
 				0314D37F19B46B5E00FA363C /* VContentViewController.h */,
 				0314D38019B46B5E00FA363C /* VContentViewController.m */,
+				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
+				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
 				0314D38119B46B5E00FA363C /* VEmotiveBallisticsBarViewController.h */,
 				0314D38219B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m */,
+				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
+				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2367,12 +2367,12 @@
 		D82C08F419D0C04200273E0D /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */,
-				D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */,
-				D84562BF19CFBBB0000E9BC5 /* VContentViewImageLayout.h */,
-				D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */,
 				D82C08F819D0C11200273E0D /* VContentViewBaseLayout.h */,
 				D82C08F919D0C11200273E0D /* VContentViewBaseLayout.m */,
+				D84562BF19CFBBB0000E9BC5 /* VContentViewImageLayout.h */,
+				D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */,
+				D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */,
+				D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -2403,9 +2403,6 @@
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
-				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
-				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
 				D8E39BC219CB7C80007FD86A /* VContentCell.h */,
 				D8E39BC319CB7C80007FD86A /* VContentCell.m */,
 				D8E39BC419CB7C80007FD86A /* VContentCell.xib */,
@@ -2423,12 +2420,15 @@
 				D8E39BD019CB7C80007FD86A /* VDropdownTitleView.h */,
 				D8E39BD119CB7C80007FD86A /* VDropdownTitleView.m */,
 				D8E39BD219CB7C80007FD86A /* VDropdownTitleView.xib */,
-				D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */,
-				D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */,
-				D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */,
 				D80C615C19D0F982006AE41A /* VEmptyProgressView.h */,
 				D80C615D19D0F982006AE41A /* VEmptyProgressView.m */,
 				D80C616119D0F9A6006AE41A /* VEmptyProgressView.xib */,
+				D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */,
+				D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */,
+				D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */,
+				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
+				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
+				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
