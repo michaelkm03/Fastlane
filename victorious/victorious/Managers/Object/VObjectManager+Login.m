@@ -13,6 +13,7 @@
 #import "VObjectManager+Pagination.h"
 
 #import "VUser+RestKit.h"
+#import "VUnreadConversation.h"
 
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
@@ -300,7 +301,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
     
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
-    [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
+    [self updateUnreadMessageCountWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VUnreadConversation *unreadConversations = [resultObjects firstObject];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
+    }
+                                         failBlock:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }

@@ -66,6 +66,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Inbox"];
+    
+    [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -26,8 +26,6 @@
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 
-#import "VUnreadConversation.h"
-
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
 @property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;
@@ -102,14 +100,8 @@
         }
         self.shouldScrollToBottom = YES;
     }
-    
-    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation
-                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         //Update the unread count in case its changed.  Call it after the conversation is marked to avoid a race condition
-         [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
-     }
-                                                 failBlock:nil];
+
+    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
