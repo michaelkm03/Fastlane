@@ -23,7 +23,7 @@
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
 
-#pragma mark - NSObjectn
+#pragma mark - NSObject
 
 - (void)awakeFromNib
 {
