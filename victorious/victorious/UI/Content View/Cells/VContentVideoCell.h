@@ -23,6 +23,12 @@
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)time;
 
+/**
+ *  Informs the delegate of completion of the video.
+ */
+- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
+               withTotalTime:(CMTime)totalTime;
+
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell;
 
 @end

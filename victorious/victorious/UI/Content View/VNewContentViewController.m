@@ -578,6 +578,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
+- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
+               withTotalTime:(CMTime)totalTime
+{
+    self.viewModel.realTimeCommentsViewModel.currentTime = totalTime;
+    self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
+    
+    self.emptyRealTimeCommentsCell.progress = 1.0f;
+    self.realTimeComentsCell.progress = 1.0f;
+}
+
 #pragma mark - VRealtimeCommentsViewModelDelegate
 
 - (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel

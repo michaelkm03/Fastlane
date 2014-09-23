@@ -68,6 +68,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 {
     _progress = progress;
     
+    self.progressBar.progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.progressBar setProgress:progress
                          animated:YES];
 }
