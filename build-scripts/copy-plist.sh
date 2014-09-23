@@ -46,8 +46,6 @@ copyPListValue(){
 
 copyPListValue 'CFBundleDisplayName'
 copyPListValue 'CFBundleIdentifier'
-copyPListValue 'CFBundleURLTypes:0:CFBundleURLSchemes:0'
-copyPListValue 'CFBundleURLTypes:1:CFBundleURLSchemes:0'
 copyPListValue 'FacebookAppID'
 copyPListValue 'FacebookDisplayName'
 copyPListValue 'TWITTER_CONSUMER_KEY'
@@ -59,3 +57,22 @@ copyPListValue 'VictoriousAppID'
 copyPListValue 'StagingAppID'
 copyPListValue 'QAAppID'
 copyPListValue 'GAID'
+
+########### Copy URL schemes
+
+/usr/libexec/PlistBuddy -c "Delete CFBundleURLTypes" "$DESTINATION"
+
+SCHEME1=$(/usr/libexec/PlistBuddy -c "Print CFBundleURLTypes:0:CFBundleURLSchemes:0" "$SOURCE")
+if [ "$SCHEME1" != "" ]; then
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes: dict" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes Array" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes: string $SCHEME1" "$DESTINATION"
+
+    SCHEME2=$(/usr/libexec/PlistBuddy -c "Print CFBundleURLTypes:1:CFBundleURLSchemes:0" "$SOURCE")
+    if [ "$SCHEME2" != "" ]; then
+        /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes: dict" "$DESTINATION"
+        /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:1:CFBundleURLSchemes Array" "$DESTINATION"
+        /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:1:CFBundleURLSchemes: string $SCHEME2" "$DESTINATION"
+    fi
+fi
