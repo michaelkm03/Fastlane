@@ -17,6 +17,7 @@
 @interface VFollowingTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *following;
+@property (nonatomic) BOOL isMe;
 
 @end
 
@@ -132,10 +133,25 @@
 {
     if (!isFollowing)
     {
+        NSString *msg, *title;
+        
+        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        
+        if (self.isMe)
+        {
+            title = NSLocalizedString(@"NotFollowingTitle", @"");
+            msg = NSLocalizedString(@"NotFollowingMessage", @"");
+        }
+        else
+        {
+            title = NSLocalizedString(@"ProfileNotFollowingTitle", @"");
+            msg = NSLocalizedString(@"ProfileNotFollowingMessage", @"");
+        }
+        
         VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = notFollowingView;
-        notFollowingView.titleLabel.text = NSLocalizedString(@"NotFollowingTitle", @"");
-        notFollowingView.messageLabel.text = NSLocalizedString(@"NotFollowingMessage", @"");
+        notFollowingView.titleLabel.text = title;
+        notFollowingView.messageLabel.text = msg;
         notFollowingView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

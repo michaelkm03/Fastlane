@@ -76,6 +76,12 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+"ProfileNoFollowersTitle"      =   "WOMP WOMP! NO ONE IS FOLLOWING THIS USER";
+"ProfileNoFollowersMessage"    =   "Show some love and be the first to follow them.";
+
+"ProfileNotFollowingTitle"     =   "RUH-ROH! THIS USER ISN'T FOLLOWING ANYONE YET";
+"ProfileNotFollowingMessage"   =   "[need some copy for this message]";
+
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
