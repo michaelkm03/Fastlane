@@ -30,6 +30,7 @@ static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
+static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 
 @implementation VContentViewVideoLayout
 
@@ -99,6 +100,7 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
                                                         self.collectionView.contentOffset.y + self.sizeForContentView.height,
                                                         self.sizeForRealTimeComentsView.width,
                                                         self.sizeForRealTimeComentsView.height);
+                    layoutAttributes.zIndex = kVContentViewRealTimeCommentsZIndex;
                 }
                 break;
             case VContentViewStateGreaterThanOrEqualToCatchPoint:
@@ -114,6 +116,7 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
                                                         self.collectionView.contentOffset.y + self.sizeForContentView.height,
                                                         self.sizeForRealTimeComentsView.width,
                                                         self.sizeForRealTimeComentsView.height);
+                    layoutAttributes.zIndex = kVContentViewRealTimeCommentsZIndex;
                 }
                 break;
             }

@@ -213,7 +213,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                            placeholderImage:placeholderImage
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
 
-    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), @"0:00"];
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.viewModel.realTimeCommentsViewModel.currentTime]];
+    }
+    else
+    {
+        self.inputAccessoryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
+    }
     self.inputAccessoryView.alpha = 0.0f;
     [UIView animateWithDuration:0.2f
                      animations:^
@@ -307,7 +314,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     self.viewModel.realTimeCommentsViewModel.delegate = self;
     
-    //TODO: This should not reload everything but the collectionview is giving me problems with reloadSection:
     [self.contentCollectionView reloadData];
 }
 
