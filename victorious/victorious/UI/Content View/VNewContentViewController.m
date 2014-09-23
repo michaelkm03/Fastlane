@@ -695,6 +695,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
                               mediaURL:self.mediaURL
                             completion:^(BOOL succeeded) {
+                                [welf.viewModel fetchComments];
+                                
                                 NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
                                 [welf.contentCollectionView reloadSections:commentsIndexSet];
                             }];
