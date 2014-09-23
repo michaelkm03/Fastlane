@@ -10,9 +10,6 @@
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
-@interface VAbstractVideoEditorViewController ()
-@end
-
 @implementation VAbstractVideoEditorViewController
 
 - (void)viewDidLoad
@@ -49,14 +46,14 @@
     self.takeImageSnapShotButton.alpha = 1.0;
     
     // Transparent Nav Bar
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init]
                                                   forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.videoPlayerViewController.player play];
@@ -107,7 +104,7 @@
 
 - (IBAction)muteAudioClicked:(id)sender
 {
-    UIButton*   button = (UIButton *)sender;
+    UIButton   *button = (UIButton *)sender;
     button.selected = !button.selected;
     self.shouldMuteAudio = button.selected;
     self.videoPlayerViewController.player.muted = self.shouldMuteAudio;
@@ -160,7 +157,7 @@
     }
 }
 
--(void)setPlaybackLooping:(VLoopType)playbackLooping
+- (void)setPlaybackLooping:(VLoopType)playbackLooping
 {
     _playbackLooping = playbackLooping;
 

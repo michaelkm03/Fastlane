@@ -161,7 +161,7 @@ static const NSUInteger kRetryAttempts = 5;
     
     if (!_appInitLoading && !_appInitLoaded)
     {
-        [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             _appInitLoading = NO;
             _appInitLoaded = YES;
@@ -180,7 +180,7 @@ static const NSUInteger kRetryAttempts = 5;
                 [self.navigationController pushViewController:streamContainer animated:YES];
             }];
         }
-                                                      failBlock:^(NSOperation* operation, NSError* error)
+                                                      failBlock:^(NSOperation *operation, NSError *error)
         {
             self.failCount++;
             

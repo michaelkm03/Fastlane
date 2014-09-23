@@ -12,9 +12,9 @@
 
 @interface VPublishShareView()
 
-@property (nonatomic, strong) IBOutlet UIButton* shareButton;
-@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* iconImageView;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @end
@@ -115,8 +115,8 @@
 {
     _selectedColor = selectedColor;
     
-    UIImage* image = [self.shareButton backgroundImageForState:UIControlStateSelected];
-    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:selectedColor];
+    UIImage *image = [self.shareButton backgroundImageForState:UIControlStateSelected];
+    UIImage *imageWithColor = [image v_imageByMaskingImageWithColor:selectedColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateSelected | UIControlStateHighlighted];
     
@@ -127,8 +127,8 @@
 {
     _defaultColor = defaultColor;
     
-    UIImage* image = [self.shareButton backgroundImageForState:UIControlStateNormal];
-    UIImage* imageWithColor = [image v_imageByMaskingImageWithColor:defaultColor];
+    UIImage *image = [self.shareButton backgroundImageForState:UIControlStateNormal];
+    UIImage *imageWithColor = [image v_imageByMaskingImageWithColor:defaultColor];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateNormal];
     [self.shareButton setBackgroundImage:imageWithColor forState:UIControlStateHighlighted];
     
@@ -157,7 +157,7 @@
 
 - (void)updateColors
 {
-    UIColor* currentColor = self.shareButton.selected ? self.selectedColor : self.defaultColor;
+    UIColor *currentColor = self.shareButton.selected ? self.selectedColor : self.defaultColor;
     self.titleLabel.textColor = currentColor;
     self.iconImageView.tintColor = currentColor;
 }

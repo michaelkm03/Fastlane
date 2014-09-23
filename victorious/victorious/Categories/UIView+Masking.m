@@ -17,7 +17,7 @@
 
 - (void)maskWithImage:(UIImage *)mask size:(CGSize)maskSize
 {
-    CALayer* maskLayer = [CALayer layer];
+    CALayer *maskLayer = [CALayer layer];
     maskLayer.frame = CGRectMake(0, 0, maskSize.width, maskSize.height);
     maskLayer.contents = (__bridge id)[mask CGImage];
     

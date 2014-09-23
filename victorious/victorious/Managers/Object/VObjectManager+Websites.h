@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 
-typedef void (^VWebsiteCompletion) (NSOperation* completion, NSString* htmlString, NSError* error);
+typedef void (^VWebsiteCompletion) (NSOperation *completion, NSString *htmlString, NSError *error);
 
 @interface VObjectManager (Websites)
 

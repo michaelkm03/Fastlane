@@ -7,4 +7,5 @@
 //
 
 @interface VBadgeLabel : UILabel
+
 @end

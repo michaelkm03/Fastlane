@@ -2,7 +2,7 @@
 //  VMessage.m
 //  victorious
 //
-//  Created by Will Long on 9/5/14.
+//  Created by Will Long on 9/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @dynamic senderUserId;
 @dynamic text;
 @dynamic thumbnailPath;
+@dynamic isRead;
 @dynamic conversation;
 @dynamic notification;
 @dynamic sender;

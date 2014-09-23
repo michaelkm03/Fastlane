@@ -100,6 +100,8 @@
         }
         self.shouldScrollToBottom = YES;
     }
+
+    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -112,7 +114,6 @@
 {
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
-    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)loadNextPageAction
@@ -173,7 +174,7 @@
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:message.sender];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:message.sender];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -12,7 +12,7 @@
 
 - (NSString *)previewImagePath
 {
-    NSString* previewImage;
+    NSString *previewImage;
     if ([self.previewImagesObject isKindOfClass:[NSString class]])
     {
         previewImage = self.previewImagesObject;

@@ -13,22 +13,22 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    UIColor* bubbleGradientTop = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* bubbleGradientBottom = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* bubbleHighlightColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* bubbleStrokeColor = [UIColor colorWithRed: 0.173 green: 0.173 blue: 0.173 alpha: 1];
+    UIColor *bubbleGradientTop = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor *bubbleGradientBottom = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor *bubbleHighlightColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor *bubbleStrokeColor = [UIColor colorWithRed: 0.173 green: 0.173 blue: 0.173 alpha: 1];
     
     //// Gradient Declarations
-    NSArray* bubbleGradientColors = @[(id)bubbleGradientTop.CGColor,
+    NSArray *bubbleGradientColors = @[(id)bubbleGradientTop.CGColor,
                                      (id)bubbleGradientBottom.CGColor];
     CGFloat bubbleGradientLocations[] = {0, 1};
     CGGradientRef bubbleGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)bubbleGradientColors, bubbleGradientLocations);
     
     //// Shadow Declarations
-    UIColor* outerShadow = [UIColor blackColor];
+    UIColor *outerShadow = [UIColor blackColor];
     CGSize outerShadowOffset = CGSizeMake(0.1, 6.1);
     CGFloat outerShadowBlurRadius = 13;
-    UIColor* highlightShadow = bubbleHighlightColor;
+    UIColor *highlightShadow = bubbleHighlightColor;
     CGSize highlightShadowOffset = CGSizeMake(0.1, 2.1);
     CGFloat highlightShadowBlurRadius = 0;
     
@@ -39,7 +39,7 @@
     CGRect arrowFrame = CGRectMake(CGRectGetMinX(bubbleFrame) + floor((CGRectGetWidth(bubbleFrame) - 59) * 0.50462 + 0.5), CGRectGetMinY(bubbleFrame) + CGRectGetHeight(bubbleFrame) - 46, 59, 46);
     
     //// Bubble Drawing
-    UIBezierPath* bubblePath = [UIBezierPath bezierPath];
+    UIBezierPath *bubblePath = [UIBezierPath bezierPath];
     [bubblePath moveToPoint: CGPointMake(CGRectGetMaxX(bubbleFrame) - 12, CGRectGetMinY(bubbleFrame) + 28.5)];
     [bubblePath addLineToPoint: CGPointMake(CGRectGetMaxX(bubbleFrame) - 12, CGRectGetMaxY(bubbleFrame) - 27.5)];
     [bubblePath addCurveToPoint: CGPointMake(CGRectGetMaxX(bubbleFrame) - 25, CGRectGetMaxY(bubbleFrame) - 14.5) controlPoint1: CGPointMake(CGRectGetMaxX(bubbleFrame) - 12, CGRectGetMaxY(bubbleFrame) - 20.32) controlPoint2: CGPointMake(CGRectGetMaxX(bubbleFrame) - 17.82, CGRectGetMaxY(bubbleFrame) - 14.5)];
@@ -69,7 +69,7 @@
     bubbleBorderRect = CGRectOffset(bubbleBorderRect, -highlightShadowOffset.width, -highlightShadowOffset.height);
     bubbleBorderRect = CGRectInset(CGRectUnion(bubbleBorderRect, [bubblePath bounds]), -1, -1);
     
-    UIBezierPath* bubbleNegativePath = [UIBezierPath bezierPathWithRect: bubbleBorderRect];
+    UIBezierPath *bubbleNegativePath = [UIBezierPath bezierPathWithRect: bubbleBorderRect];
     [bubbleNegativePath appendPath: bubblePath];
     bubbleNegativePath.usesEvenOddFillRule = YES;
     

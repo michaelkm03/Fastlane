@@ -6,17 +6,21 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VConstants.h"
-#import "VConversation.h"
-#import "VMessage.h"
-#import "VMessageCell.h"
 #import "VMessageTableDataSource.h"
+
+#import "VConstants.h"
+#import "VMessageCell.h"
+
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
+
 #import "VUser.h"
 #import "VUser+RestKit.h"
+#import "VConversation.h"
+#import "VConversation+UnreadMessageCount.h"
+#import "VMessage.h"
 
 static NSString * const kGenericErrorDomain = @"VMessageTableDataSourceError";
 
@@ -109,6 +113,8 @@ static       char    kKVOContext;
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
+            [self.conversation markMessagesAsRead];
+            
             if (completion)
             {
                 completion(nil);
@@ -170,6 +176,8 @@ static       char    kKVOContext;
                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
+            [self.conversation markMessagesAsRead];
+            
             if (completion)
             {
                 completion(nil);
@@ -423,7 +431,7 @@ static       char    kKVOContext;
                                                mediaURLPath:[mediaURL absoluteString]];
     [context saveToPersistentStore:nil];
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.isLoading = NO;
         message.remoteId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
@@ -467,7 +475,7 @@ static       char    kKVOContext;
     [self.objectManager sendMessage:message
                              toUser:self.otherUser
                        successBlock:success
-                          failBlock:^(NSOperation* operation, NSError* error)
+                          failBlock:^(NSOperation *operation, NSError *error)
     {
         self.isLoading = NO;
         VLog(@"Failed in creating message with error: %@", error);

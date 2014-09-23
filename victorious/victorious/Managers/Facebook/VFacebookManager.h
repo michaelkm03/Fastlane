@@ -65,4 +65,5 @@
       description:(NSString *)description
              name:(NSString *)name
        previewUrl:(NSURL *)previewUrl;
+
 @end

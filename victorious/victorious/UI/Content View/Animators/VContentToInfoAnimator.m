@@ -24,22 +24,22 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    UIViewController* toVC = (VContentInfoViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIViewController* fromVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC = (VContentInfoViewController *)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = (VContentViewController *)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    UIView* fromSnapshot = [fromVC.view resizableSnapshotViewFromRect:fromVC.view.bounds
+    UIView *fromSnapshot = [fromVC.view resizableSnapshotViewFromRect:fromVC.view.bounds
                                                    afterScreenUpdates:NO
                                                         withCapInsets:UIEdgeInsetsZero];
     
     if (self.movingImage)
     {
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
         [imageView setImage:[self.movingImage scaleToSize:imageView.frame.size]];
         [self.toChildContainerView addSubview:imageView];
     }
 
     [[context containerView] addSubview:toVC.view];
-    [toVC.view layoutSubviews];
+    [toVC.view layoutIfNeeded];
     
     [[context containerView] addSubview:fromSnapshot];
     

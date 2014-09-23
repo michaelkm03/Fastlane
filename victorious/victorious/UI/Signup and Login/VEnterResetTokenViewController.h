@@ -10,8 +10,8 @@
 
 @interface VEnterResetTokenViewController : UIViewController
 
-@property (nonatomic, strong)           NSString*       deviceToken;
-@property (nonatomic, strong)           NSString*       userToken;
+@property (nonatomic, strong)           NSString       *deviceToken;
+@property (nonatomic, strong)           NSString       *userToken;
 
 + (instancetype)enterResetTokenViewController;
 

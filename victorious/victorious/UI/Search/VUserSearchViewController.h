@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-+(instancetype)sharedInstance;
+
++ (instancetype)sharedInstance;
 
 @end

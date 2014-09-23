@@ -64,7 +64,7 @@
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController * __weak weakNav = navigationController;
+    UINavigationController *__weak weakNav = navigationController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)

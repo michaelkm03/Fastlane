@@ -13,13 +13,13 @@
 
 - (NSArray *)firstAnswers
 {
-    VInteraction* firstInteraction =  [self.interactions.array firstObject];
+    VInteraction *firstInteraction =  [self.interactions.array firstObject];
     return firstInteraction.answers.array;
 }
 
 - (BOOL)isPoll
 {
-    NSArray* firstAnswers = [self firstAnswers];
+    NSArray *firstAnswers = [self firstAnswers];
     if (![firstAnswers count])
     {
         return NO;

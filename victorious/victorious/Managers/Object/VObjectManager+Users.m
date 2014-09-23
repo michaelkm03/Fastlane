@@ -19,8 +19,10 @@
 @import Accounts;
 
 @interface VObjectManager (UserProperties)
+
 @property (nonatomic, strong) VSuccessBlock fullSuccess;
 @property (nonatomic, strong) VFailBlock fullFail;
+
 @end
 
 @implementation VObjectManager (Users)
@@ -51,7 +53,7 @@
         return nil;
     }
     
-    NSString* path = userId ? [@"/api/userinfo/fetch/" stringByAppendingString: userId.stringValue] : @"/api/userinfo/fetch";
+    NSString *path = userId ? [@"/api/userinfo/fetch/" stringByAppendingString: userId.stringValue] : @"/api/userinfo/fetch";
     
     return [self GET:path
               object:nil
@@ -64,11 +66,11 @@
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
-    NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
+    NSMutableArray *loadedUsers = [[NSMutableArray alloc] init];
+    NSMutableArray *unloadedUserIDs = [[NSMutableArray alloc] init];
     
     //this removes duplicates
-    for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
+    for (NSNumber *userID in [[NSSet setWithArray:userIds] allObjects])
     {
         __block VUser *user = nil;
         NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
@@ -98,9 +100,9 @@
         return nil;
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        for (VUser* user in resultObjects)
+        for (VUser *user in resultObjects)
         {
             [loadedUsers addObject:user];
         }
@@ -155,8 +157,8 @@
         return;
     }
     
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
     NSArray *accounts = [account accountsWithAccountType:accountType];
     ACAccount *twitterAccount = [accounts lastObject];
@@ -186,9 +188,9 @@
          NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
          NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
          
-         NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
-         NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
-         NSString* twitterId = [parsedData objectForKey:@"user_id"];
+         NSString *oauthToken = [parsedData objectForKey:@"oauth_token"];
+         NSString *tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+         NSString *twitterId = [parsedData objectForKey:@"user_id"];
          
          NSDictionary *parameters = @{@"access_token":   oauthToken ?: @"",
                                       @"access_secret":  tokenSecret ?: @"",
@@ -211,7 +213,7 @@
 {
     NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -232,7 +234,7 @@
 {
     NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -251,11 +253,11 @@
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
+            NSArray *results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
             
             if (success)
             {
@@ -276,9 +278,9 @@
                                successBlock:(VSuccessBlock)success
                                   failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSArray*    results = @[fullResponse[kVPayloadKey][@"relationship_exists"]];
+        NSArray    *results = @[fullResponse[kVPayloadKey][@"relationship_exists"]];
         
         if (success)
         {
@@ -298,7 +300,7 @@
 - (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
                                                                     failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -319,7 +321,7 @@
 {
     NSDictionary *parameters = @{ @"emails": emails };
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -338,7 +340,7 @@
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -362,7 +364,7 @@
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    NSString*       path;
+    NSString       *path;
 
     switch (selector)
     {
@@ -382,7 +384,7 @@
             break;
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -403,7 +405,7 @@
 {
     NSDictionary *parameters = @{ @"target_user_ids": [users valueForKey:@"remoteId"] };
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
         {
@@ -426,7 +428,7 @@
                    inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
+    NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
     [request setPredicate:idFilter];
     
     __block NSArray *results;

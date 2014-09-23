@@ -9,4 +9,5 @@
 #import "VWebContentViewController.h"
 
 @interface VPrivacyPoliciesViewController : VWebContentViewController
+
 @end

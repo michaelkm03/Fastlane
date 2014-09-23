@@ -40,16 +40,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                                 duration:(CGFloat)duration
                                          completionBlock:(VRemixCompletionBlock)completionBlock
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (completionBlock)
         {
-            NSURL* remixURL = [NSURL URLWithString:fullResponse[kVPayloadKey][@"mp4_url"]];
+            NSURL *remixURL = [NSURL URLWithString:fullResponse[kVPayloadKey][@"mp4_url"]];
             completionBlock(YES, remixURL, nil);
         }
     };
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"Failed with error: %@", error);
         if (completionBlock)
@@ -58,7 +58,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
     };
     
-    NSString* path = [[[@"/api/remix/fetch" stringByAppendingPathComponent:sequenceID.stringValue]
+    NSString *path = [[[@"/api/remix/fetch" stringByAppendingPathComponent:sequenceID.stringValue]
                        stringByAppendingPathComponent:@(startTime).stringValue]
                       stringByAppendingPathComponent:@(duration).stringValue];
     
@@ -83,7 +83,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     }
     
     //Required Fields
-    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
+    NSDictionary *parameters = @{@"name":name ?: [NSNull null],
                                  @"description":description ?: [NSNull null],
                                  @"question":question ?: [NSNull null],
                                  @"answer1_label" : answer1Text ?: [NSNull null],
@@ -92,12 +92,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSDictionary *allURLs = @{@"answer1_media":media1Url,
                               @"answer2_media":media2Url};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[kVPayloadKey];
+        NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSNumber* sequenceID = payload[@"sequence_id"];
+        NSNumber *sequenceID = payload[@"sequence_id"];
         
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
         
@@ -130,7 +130,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         return nil;
     }
     
-    NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
+    NSMutableDictionary *parameters = [@{@"name":name ?: [NSNull null],
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
     {
@@ -152,20 +152,20 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
-        NSString* loopParam = [self stringForLoopType:loopType];
+        NSString *loopParam = [self stringForLoopType:loopType];
         speed = speed ?: 1;
         
         parameters[@"speed"] = @(speed);
         parameters[@"playback"] = loopParam;
     }
     
-    NSDictionary* allUrls = @{@"media_data": mediaUrl};
+    NSDictionary *allUrls = @{@"media_data": mediaUrl};
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSDictionary* payload = fullResponse[kVPayloadKey];
+        NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSNumber* sequenceID = payload[@"sequence_id"];
+        NSNumber *sequenceID = payload[@"sequence_id"];
         
         //Try to fetch the sequence
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
@@ -188,7 +188,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     parameters[@"parent_node_id"] = node.remoteId ?: [NSNull null];
     if (name)
     {
@@ -271,9 +271,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    NSString* extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
-    NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
+    NSString *extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSString *type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
+    NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
@@ -282,15 +282,15 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
     }
-    if (time >= 0 && asset.remoteId)
+    if (time.doubleValue >= 0 && asset.remoteId)
     {
         [parameters setObject:asset.remoteId forKey:@"asset_id"];
         [parameters setObject:time forKey:@"realtime"];
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VComment* newComment;
+        VComment *newComment;
         
         if ([[resultObjects firstObject] isKindOfClass:[VComment class]])
         {
@@ -298,8 +298,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         else
         {
-            NSDictionary* payload = fullResponse[kVPayloadKey];
-            NSNumber* commentID = @([payload[@"id"] integerValue]);
+            NSDictionary *payload = fullResponse[kVPayloadKey];
+            NSNumber *commentID = @([payload[@"id"] integerValue]);
             newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
             newComment.realtime = time;
             [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
@@ -328,7 +328,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                          text:(NSString *)text
                  mediaURLPath:(NSString *)mediaURLPath
 {
-    VComment* tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
+    VComment *tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
     
     tempComment.remoteId = remoteID;
     tempComment.text = text;
@@ -342,10 +342,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [sequence addCommentsObject:tempComment];
     sequence.commentCount = @(sequence.commentCount.integerValue + 1);
     
-    VUser* userInContext = (VUser *)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
+    VUser *userInContext = (VUser *)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
     [userInContext addCommentsObject:tempComment];
     
-    NSMutableOrderedSet* comments = [[NSMutableOrderedSet alloc] initWithObject:[sequence.managedObjectContext objectWithID:tempComment.objectID]];
+    NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithObject:[sequence.managedObjectContext objectWithID:tempComment.objectID]];
     [comments addObjectsFromArray:sequence.comments.array];
     sequence.comments = comments;
     [tempComment.managedObjectContext saveToPersistentStore:nil];
@@ -361,7 +361,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                               failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+    NSDictionary *parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
                                   @"text" : message.text ?: [NSNull null]
                                   } mutableCopy];
     NSDictionary *allURLs;
@@ -369,17 +369,17 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         NSURL *mediaURL = [NSURL URLWithString:message.mediaPath];
         allURLs = @{@"media_data": mediaURL};
-        NSString* type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
+        NSString *type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
         [parameters setValue:type forKey:@"media_type"];
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
             [message.managedObjectContext performBlock:^(void)
             {
-                NSNumber* returnedId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
+                NSNumber *returnedId = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
                 if (![message.remoteId isEqualToNumber:returnedId])
                 {
                     message.remoteId = returnedId;
@@ -404,7 +404,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                  mediaURLPath:(NSString *)mediaURLPath
 {
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
-    VMessage* tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
+    VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
     
     tempMessage.text = text;
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
@@ -432,7 +432,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    NSError* error;
+    NSError *error;
     CMTime time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale);
     CGImageRef imageRef = [assetGenerator copyCGImageAtTime:time actualTime:NULL error:&error];
     if (error)

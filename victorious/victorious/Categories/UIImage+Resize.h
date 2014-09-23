@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Resize)
+
 - (UIImage *)croppedImage:(CGRect)bounds;
 - (UIImage *)thumbnailImage:(NSInteger)thumbnailSize
        interpolationQuality:(CGInterpolationQuality)quality;
@@ -19,4 +20,5 @@
                     interpolationQuality:(CGInterpolationQuality)quality;
 
 - (UIImage *)fixOrientation;
+
 @end

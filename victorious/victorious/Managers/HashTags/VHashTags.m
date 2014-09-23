@@ -10,7 +10,7 @@
 
 @implementation VHashTags
 
-+(NSArray *)detectHashTags:(NSString *)fieldText
++ (NSArray *)detectHashTags:(NSString *)fieldText
 {
     if (!fieldText)
     {
@@ -18,10 +18,9 @@
     }
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSError *error = nil;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"#(\\w+)"
                                                                            options:0
-                                                                             error:&error];
+                                                                             error:nil];
     NSArray *tags = [regex matchesInString:fieldText
                                    options:0
                                      range:NSMakeRange(0, fieldText.length)];

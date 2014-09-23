@@ -34,22 +34,22 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
-@property (nonatomic, weak) IBOutlet UITextField*           usernameTextField;
-@property (nonatomic, weak) IBOutlet UITextField*           locationTextField;
-@property (nonatomic, weak) IBOutlet UITextView*            taglineTextView;
-@property (nonatomic, weak) IBOutlet UILabel*               tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UITextField           *usernameTextField;
+@property (nonatomic, weak) IBOutlet UITextField           *locationTextField;
+@property (nonatomic, weak) IBOutlet UITextView            *taglineTextView;
+@property (nonatomic, weak) IBOutlet UILabel               *tagLinePlaceholderLabel;
 
-@property (nonatomic, weak) IBOutlet UIImageView*           profileImageView;
+@property (nonatomic, weak) IBOutlet UIImageView           *profileImageView;
 
-@property (nonatomic, strong) CLLocationManager*            locationManager;
-@property (nonatomic, strong) CLGeocoder*                   geoCoder;
+@property (nonatomic, strong) CLLocationManager            *locationManager;
+@property (nonatomic, strong) CLGeocoder                   *geoCoder;
 
-@property (nonatomic, weak) IBOutlet    UISwitch*           agreeSwitch;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* agreementText;
-@property (nonatomic, weak) IBOutlet    UIButton*           doneButton;
+@property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel *agreementText;
+@property (nonatomic, weak) IBOutlet    UIButton           *doneButton;
 
-@property (nonatomic, strong)   UIBarButtonItem*            countDownLabel;
-@property (nonatomic, strong)   UIBarButtonItem*            usernameCountDownLabel;
+@property (nonatomic, strong)   UIBarButtonItem            *countDownLabel;
+@property (nonatomic, strong)   UIBarButtonItem            *usernameCountDownLabel;
 
 @end
 
@@ -233,7 +233,7 @@
     return NO;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     BOOL ans = YES;
     if (textField == self.usernameTextField)
@@ -249,7 +249,7 @@
     return ans;
 }
 
--(void)characterCountdown:(id)sender
+- (void)characterCountdown:(id)sender
 {
     self.usernameCountDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength - self.usernameTextField.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
@@ -335,7 +335,7 @@
 
 #pragma mark - CCLocationManagerDelegate
 
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     [self.locationManager  stopMonitoringSignificantLocationChanges];
 
@@ -344,8 +344,8 @@
     self.geoCoder = [[CLGeocoder alloc] init];
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
     {
-        CLPlacemark*            mapLocation = [placemarks firstObject];
-        NSMutableDictionary*    locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        CLPlacemark            *mapLocation = [placemarks firstObject];
+        NSMutableDictionary    *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
 
         if (mapLocation.locality)
         {
@@ -427,7 +427,7 @@
 - (void)didFailWithError:(NSError *)error
 {
     
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -534,7 +534,7 @@
     
     
     // Show Error Message
-    UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
                                                        message:errorMsg
                                                       delegate:nil
                                              cancelButtonTitle:nil
@@ -553,7 +553,7 @@
 {
     if ([segue.identifier isEqualToString:@"toInviteFriends"])
     {
-//        VInviteFriendsViewController*   inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
+//        VInviteFriendsViewController   *inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
 //        inviteViewController.profile = self.profile;
     }
 }

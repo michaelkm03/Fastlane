@@ -10,7 +10,7 @@
 
 @interface  UIViewController (VSideMenuViewController)
 
-@property (strong, readonly, nonatomic) VSideMenuViewController*    sideMenuViewController;
+@property (strong, readonly, nonatomic) VSideMenuViewController    *sideMenuViewController;
 
 - (void)displayController:(UIViewController *)controller frame:(CGRect)frame;
 - (void)hideController:(UIViewController *)controller;

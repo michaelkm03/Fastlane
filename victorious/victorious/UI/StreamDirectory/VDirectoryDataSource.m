@@ -78,7 +78,7 @@ static char KVOContext;
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] refreshStream:self.stream
-                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          if (successBlock)
          {
@@ -86,7 +86,7 @@ static char KVOContext;
          }
          self.isLoading = NO;
      }
-                                        failBlock:^(NSOperation* operation, NSError* error)
+                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          if (failureBlock)
          {
@@ -100,7 +100,7 @@ static char KVOContext;
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] loadNextPageOfStream:self.stream
-                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          if (successBlock)
          {
@@ -108,7 +108,7 @@ static char KVOContext;
          }
          self.isLoading = NO;
      }
-                                               failBlock:^(NSOperation* operation, NSError* error)
+                                               failBlock:^(NSOperation *operation, NSError *error)
      {
          if (failureBlock)
          {

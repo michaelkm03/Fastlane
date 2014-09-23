@@ -32,7 +32,6 @@
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageEffects.h"
 #import "NSURL+MediaType.h"
-#import "NSString+RFC2822Date.h"
 
 // Controllers
 #import "VCompositeSnapshotController.h"
@@ -42,9 +41,9 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 
-static const CGFloat kPublishKeyboardOffset = 106.0f;
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
+static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of space by which we push the canvas "up" for the 3.5" devices
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
 
@@ -100,8 +99,8 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 
 @end
 
-static NSString* kQuoteFont = @"PTSans-Narrow";
-static NSString* kMemeFont = @"Impact";
+static NSString *kQuoteFont = @"PTSans-Narrow";
+static NSString *kMemeFont = @"Impact";
 
 static const CGFloat kShareMargin = 34.0f;
 
@@ -136,7 +135,7 @@ static const CGFloat kShareMargin = 34.0f;
         self.bottomVerticalSpaceShareButtonsToContainer.constant = 6.0f;
         self.shareViewHeightConstraint.constant = 80.0f;
         self.captionViewHeightConstraint.constant = 40.0f;
-        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - 20.0f;
+        self.topOfCanvasToContainerConstraint.constant = self.topOfCanvasToContainerConstraint.constant - kCanvasOffsetForSmallPhones;
         [self.view layoutIfNeeded];
     }
     
@@ -425,14 +424,14 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)configureInputAccessoryViews
 {
     // Input Accessory Views
-    VContentInputAccessoryView* captionInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    VContentInputAccessoryView *captionInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
     captionInputAccessory.maxCharacterLength = 70;
     captionInputAccessory.textInputView = self.captionTextView;
     captionInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     captionInputAccessory.delegate = self;
     self.captionTextView.inputAccessoryView = captionInputAccessory;
     
-    VContentInputAccessoryView* memeInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    VContentInputAccessoryView *memeInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
     memeInputAccessory.maxCharacterLength = 70;
     memeInputAccessory.textInputView = self.memeTextView;
     memeInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
@@ -441,7 +440,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.memeTextView.inputAccessoryView = memeInputAccessory;
     self.memeInputAccessoryView = memeInputAccessory;
     
-    VContentInputAccessoryView* quoteInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    VContentInputAccessoryView *quoteInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
     quoteInputAccessory.maxCharacterLength = 70;
     quoteInputAccessory.textInputView = self.quoteTextView;
     quoteInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
@@ -452,9 +451,9 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)configureCaptionButtons
 {
-    UIImage* selectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.9 green:.91 blue:.92 alpha:1]];
-    UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
-    for (UIButton* button in self.captionButtons)
+    UIImage *selectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.9 green:.91 blue:.92 alpha:1]];
+    UIImage *unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
+    for (UIButton *button in self.captionButtons)
     {
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
         [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
@@ -490,7 +489,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.shareToTwitterController = [[VTwitterPublishShareController alloc] init];
     self.saveToCameraController = [[VCameraRollPublishShareController alloc] init];
     
-    NSArray* shareControllers = @[self.shareToFacebookController, self.shareToTwitterController, self.saveToCameraController];
+    NSArray *shareControllers = @[self.shareToFacebookController, self.shareToTwitterController, self.saveToCameraController];
     for (NSUInteger i = 0; i < shareControllers.count; i++)
     {
         VPublishShareController *shareController = shareControllers[i];
@@ -508,9 +507,9 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)configureCloseButton
 {
-    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage    *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     cancelButtonImage = [cancelButtonImage scaleToSize:CGSizeMake(17, 17)];
-    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    UIBarButtonItem    *cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
@@ -549,7 +548,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)changeCaptionType:(UIButton *)sender
 {
-    for (UIButton* button in self.captionButtons)
+    for (UIButton *button in self.captionButtons)
     {
         button.selected = (button == (UIButton *)sender);
     }
@@ -636,7 +635,7 @@ static const CGFloat kShareMargin = 34.0f;
 {
     if (![self isTextLengthValid])
     {
-        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
                                                            message:NSLocalizedString(@"PublishDescriptionMinCharacters", @"")
                                                           delegate:nil
                                                  cancelButtonTitle:nil
@@ -647,7 +646,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     [self clearAutoCorrectDots];
     
-    UIImage* snapshot;
+    UIImage *snapshot;
     switch (self.captionType)
     {
         case VCaptionTypeNormal:
@@ -718,9 +717,9 @@ static const CGFloat kShareMargin = 34.0f;
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
-                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                           successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
+         UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                               message:NSLocalizedString(@"PublishSucceededDetail", @"")
                                                              delegate:nil
                                                     cancelButtonTitle:nil
@@ -754,10 +753,10 @@ static const CGFloat kShareMargin = 34.0f;
              NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
              [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
                                                          accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
               {
               }
-                                                           failBlock:^(NSOperation* operation, NSError* error)
+                                                           failBlock:^(NSOperation *operation, NSError *error)
               {
                   VLog(@"Failed with error: %@", error);
               }];
@@ -783,13 +782,13 @@ static const CGFloat kShareMargin = 34.0f;
                                                                            value:nil];
          }
      }
-                                              failBlock:^(NSOperation* operation, NSError* error)
+                                              failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          
          if (kVStillTranscodingError == error.code)
          {
-             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
                                                                  delegate:nil
                                                         cancelButtonTitle:nil
@@ -798,7 +797,7 @@ static const CGFloat kShareMargin = 34.0f;
          }
          else if (error.code == kVMediaAlreadyCreatedError)
          {
-             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
+             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
                                                                   message:NSLocalizedString(@"DuplicateVideoBody", @"")
                                                                  delegate:nil
                                                         cancelButtonTitle:nil
@@ -807,7 +806,7 @@ static const CGFloat kShareMargin = 34.0f;
          }
          else
          {
-             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
                                                                   message:NSLocalizedString(@"UploadErrorBody", @"")
                                                                  delegate:nil
                                                         cancelButtonTitle:nil
@@ -829,7 +828,7 @@ static const CGFloat kShareMargin = 34.0f;
         }
         else if ([self.mediaURL v_hasImageExtension])
         {
-            UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
+            UIImage    *photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
             UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
         }
     }
@@ -897,37 +896,34 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (CGRectGetHeight(self.view.bounds) > 480.0f)
-    {
-        return;
-    }
-    
+    CGRect keyboardFrame;
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
     
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0f
-                        options:(animationCurve << 16)
-                     animations:^
-     {
-         self.topOfCanvasToContainerConstraint.constant = -44 - kPublishKeyboardOffset - ((CGRectGetHeight(self.view.bounds) <= 480.0f) ? 0.0f : 20.0f);
-         [self.view layoutIfNeeded];
-     }
-                     completion:nil];
+    // an amount by which we push the canvas up to dodge the keyboard
+    CGFloat keyboardDodgeOffset = MAX(0, CGRectGetHeight(self.canvasView.bounds) - kCanvasOffsetForSmallPhones - CGRectGetHeight(self.view.bounds) + CGRectGetHeight(keyboardFrame));
     
+    if (keyboardDodgeOffset)
+    {
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0f
+                            options:(animationCurve << 16)
+                         animations:^
+        {
+            self.topOfCanvasToContainerConstraint.constant = -44 - keyboardDodgeOffset;
+            [self.view layoutIfNeeded];
+        }
+                        completion:nil];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    if (CGRectGetHeight(self.view.bounds) > 480.0f)
-    {
-        return;
-    }
-    
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
@@ -938,7 +934,7 @@ static const CGFloat kShareMargin = 34.0f;
     [UIView animateWithDuration:animationDuration delay:0
                         options:(animationCurve << 16) animations:^
      {
-         self.topOfCanvasToContainerConstraint.constant = -64 - ((self.view.frame.size.height <= 480.0f) ? 0.0f : 20.0f);
+         self.topOfCanvasToContainerConstraint.constant = -44 - ((CGRectGetHeight(self.view.frame) > 480.0f) ? 0.0f : kCanvasOffsetForSmallPhones);
          [self.view layoutIfNeeded];
      }
                      completion:nil];

@@ -30,6 +30,6 @@
  *
  *  @return An arry of NSRanges wrapped in NSValues.
  */
-+(NSArray *)detectHashTags:(NSString *)fieldText;
++ (NSArray *)detectHashTags:(NSString *)fieldText;
 
 @end

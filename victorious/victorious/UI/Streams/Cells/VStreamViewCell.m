@@ -31,7 +31,6 @@
 
 #import "VEphemeralTimerView.h"
 
-
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
@@ -85,8 +84,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (NSDictionary *)attributesForCellText
 {
+    //TODO: Remvoe this hardcoded font size
     return @{
-             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+             NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
              };
 }
@@ -131,7 +131,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
 
     
-    VAsset* firstAsset = [[_sequence firstNode].assets.array firstObject];
+    VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
     {
         self.playButtonImage.hidden = NO;
@@ -153,10 +153,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         
         NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:5.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.75f]];
-        [shadow setShadowOffset:CGSizeMake(2, -1)];
-        
+        [shadow setShadowBlurRadius:4.0f];
+        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+        [shadow setShadowOffset:CGSizeMake(0, 0)];
+
         if ([self.hashTagRanges count] > 0)
         {
             [VHashTags formatHashTagsInString:newAttributedCellText
@@ -214,7 +214,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     //If this cell is from the profile we should disable going to the profile
     BOOL fromProfile = NO;
-    for (UIViewController* vc in self.parentTableViewController.navigationController.viewControllers)
+    for (UIViewController *vc in self.parentTableViewController.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VUserProfileViewController class]])
         {
@@ -226,7 +226,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         return;
     }
     
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

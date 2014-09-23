@@ -11,9 +11,11 @@
 #import "VThemeManager.h"
 
 @interface VResultView ()
+
 @property (nonatomic) CGFloat progress;
-@property (strong, nonatomic) UIImageView* resultArrow;
-@property (strong, nonatomic) UILabel* resultLabel;
+@property (strong, nonatomic) UIImageView *resultArrow;
+@property (strong, nonatomic) UILabel *resultLabel;
+
 @end
 
 @implementation VResultView
@@ -55,7 +57,7 @@
 {
     if (!_resultArrow)
     {
-        UIImage* arrowImage;
+        UIImage *arrowImage;
         if (self.isVertical)
         {
             arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
@@ -129,7 +131,7 @@
     }
 }
 
--(void)setProgress:(CGFloat)progress
+- (void)setProgress:(CGFloat)progress
 {
     //Sanity check that it is within 0 and 1
     progress = MIN(progress, 1);
@@ -156,7 +158,7 @@
                                              minProgress + currentProgress, self.frame.size.height);
     }
     
-    static NSNumberFormatter* percentFormatter;
+    static NSNumberFormatter *percentFormatter;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^
     {

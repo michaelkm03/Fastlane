@@ -42,7 +42,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 + (instancetype)streamDirectoryForStream:(VStream *)stream
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VDirectoryViewController *streamDirectory = (VDirectoryViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
+    VDirectoryViewController *streamDirectory = (VDirectoryViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
     
     streamDirectory.stream = stream;
     
@@ -252,7 +252,7 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream*)item];
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
         [self.navigationController pushViewController:sos animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])

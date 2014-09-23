@@ -19,8 +19,8 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
 
 @interface VDirectoryItemCell()
 
-@property (nonatomic, strong) IBOutlet UIImageView* previewImageView;
-@property (nonatomic, strong) IBOutlet UILabel* nameLabel;
+@property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 
 @property (nonatomic) NSInteger defaultNameHeight;
 
@@ -52,7 +52,7 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
     
-    __weak UIImageView* weakPreviewImageView = self.previewImageView;
+    __weak UIImageView *weakPreviewImageView = self.previewImageView;
     //TODO: this should eventually do something nifty with multiple images.
     NSString *previewImagePath = streamItem.previewImagePath;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:previewImagePath]];
@@ -62,7 +62,7 @@ NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
                                                    [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
-         __strong UIImageView* strongPreviewImageView = weakPreviewImageView;
+         __strong UIImageView *strongPreviewImageView = weakPreviewImageView;
          if (!request)
          {
              strongPreviewImageView.image = image;

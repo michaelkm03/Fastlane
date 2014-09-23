@@ -16,6 +16,6 @@ extern NSString * const kVStreamDirectoryItemCellName;
 
 @interface VDirectoryItemCell : VBaseCollectionViewCell
 
-@property (nonatomic, strong) VStreamItem* streamItem;
+@property (nonatomic, strong) VStreamItem *streamItem;
 
 @end
