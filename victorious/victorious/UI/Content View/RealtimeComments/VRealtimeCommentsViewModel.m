@@ -34,6 +34,28 @@
     return self;
 }
 
+- (void)setRealTimeComments:(NSArray *)realTimeComments
+{
+    NSMutableArray *realRealTimeComments = [[NSMutableArray alloc] init];
+    
+    [realTimeComments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if (![obj isKindOfClass:[VComment class]])
+        {
+            return;
+        }
+        VComment *comment = (VComment *)obj;
+        if (!comment.realtime)
+        {
+            return;
+        }
+        
+        [realRealTimeComments addObject:comment];
+    }];
+    
+    _realTimeComments = realRealTimeComments;
+}
+
 - (NSInteger)numberOfRealTimeComments
 {
     return self.realTimeComments.count;
