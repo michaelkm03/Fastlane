@@ -28,7 +28,7 @@
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] firstObject];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
     
@@ -38,7 +38,7 @@
 
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] firstObject];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
     
