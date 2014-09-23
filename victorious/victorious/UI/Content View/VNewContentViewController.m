@@ -46,6 +46,9 @@
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 
+// Formatters
+#import "VElapsedTimeFormatter.h"
+
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
@@ -72,6 +75,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
+@property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
+
 @end
 
 @implementation VNewContentViewController
@@ -84,6 +89,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
+    contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;
 }
@@ -611,7 +617,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     [self.emptyRealTimeCommentsCell setProgress: progressedTime];
     [self.realTimeComentsCell setProgress:progressedTime];
     
-    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%.2f", NSLocalizedString(@"LeaveACommentAt", @""), CMTimeGetSeconds(time)];
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -634,7 +640,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.emptyRealTimeCommentsCell.progress = 1.0f;
     self.realTimeComentsCell.progress = 1.0f;
     
-    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%.2f", NSLocalizedString(@"LeaveACommentAt", @""), CMTimeGetSeconds(totalTime)];
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
 }
 
 #pragma mark - VRealtimeCommentsViewModelDelegate
