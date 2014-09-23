@@ -31,7 +31,6 @@
 
 #import "VEphemeralTimerView.h"
 
-
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
@@ -85,8 +84,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (NSDictionary *)attributesForCellText
 {
+    //TODO: Remvoe this hardcoded font size
     return @{
-             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+             NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
              };
 }
@@ -154,10 +154,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         
         NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:5.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.75f]];
-        [shadow setShadowOffset:CGSizeMake(2, -1)];
-        
+        [shadow setShadowBlurRadius:4.0f];
+        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+        [shadow setShadowOffset:CGSizeMake(0, 0)];
+
         if ([self.hashTagRanges count] > 0)
         {
             [VHashTags formatHashTagsInString:newAttributedCellText

@@ -32,7 +32,6 @@
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageEffects.h"
 #import "NSURL+MediaType.h"
-#import "NSString+RFC2822Date.h"
 
 // Controllers
 #import "VCompositeSnapshotController.h"

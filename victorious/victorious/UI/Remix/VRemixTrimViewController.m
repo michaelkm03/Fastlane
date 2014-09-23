@@ -221,7 +221,6 @@
     // Get the Time of the Current Frame
     CMTime currentTime = CMTimeMakeWithSeconds(CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]), [self.videoPlayerViewController.player currentTime].timescale);
     CMTime actualTime, actualRepeat;
-    NSError *error = nil;
     
     // Create A File Target
     NSURL *target = [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSnapShot"] stringByAppendingPathExtension:@"jpg"] isDirectory:NO];
@@ -236,7 +235,7 @@
     [imgGen setRequestedTimeToleranceAfter:kCMTimeZero];
 
     // Using The AVAssetImageGenerator, Capture the Video Frame and Store it In A UIImage
-    CGImageRef imgRef = [imgGen copyCGImageAtTime:currentTime actualTime:&actualTime error:&error];
+    CGImageRef imgRef = [imgGen copyCGImageAtTime:currentTime actualTime:&actualTime error:nil];
     UIImage *thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
     CGImageRelease(imgRef);
     
@@ -244,7 +243,7 @@
     double actualSecs = CMTimeGetSeconds(actualTime);
     if (currentSecs != actualSecs)
     {
-        imgRef = [imgGen copyCGImageAtTime:actualTime actualTime:&actualRepeat error:&error];
+        imgRef = [imgGen copyCGImageAtTime:actualTime actualTime:&actualRepeat error:nil];
         thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
         CGImageRelease(imgRef);
 

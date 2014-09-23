@@ -46,9 +46,9 @@
     self.takeImageSnapShotButton.alpha = 1.0;
     
     // Transparent Nav Bar
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init]
                                                   forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
