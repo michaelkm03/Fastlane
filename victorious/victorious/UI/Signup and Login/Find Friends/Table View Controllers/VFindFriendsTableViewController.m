@@ -88,7 +88,7 @@
             self.tableView.connectedView.hidden = NO;
             self.tableView.errorView.hidden = YES;
             
-            if (self.users.count)
+            if (self.theFollowing.count || self.notFollowing.count)
             {
                 self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [self.tableView.tableView reloadData];
@@ -101,14 +101,7 @@
             }
             else
             {
-                VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
-                self.tableView.tableView.backgroundView = noFollowersView;
-                noFollowersView.titleLabel.text = NSLocalizedString(@"NoFriends", @"");
-                noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
-                noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
-                self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-                self.tableView.clearButton.hidden = YES;
-                self.tableView.selectAllButton.hidden = YES;
+                [self showNoContentView:YES];
             }
             
             break;
@@ -171,22 +164,70 @@
         {
             self.users = users;
             self.state = VFindFriendsTableViewStateLoaded;
-            [self filterUsers:users];
+            [self segregateUsers:users];
         }
     }];
 }
 
-- (void)filterUsers:(NSArray *)users
+- (void)segregateUsers:(NSArray *)users
 {
+    self.theFollowing = [[NSMutableArray alloc] init];
+    self.notFollowing = [[NSMutableArray alloc] init];
     VUser *me = [[VObjectManager sharedManager] mainUser];
     
     NSSet *following = me.following;
     
     for (VUser *user in users)
     {
-        [following containsObject:user];
-        
+        if ([following containsObject:user])
+        {
+            [self.theFollowing addObject:user];
+        }
+        else
+        {
+            [self.notFollowing addObject:user];
+        }
     }
+    
+    self.tableView.selectAllButton.hidden = NO;
+    
+    // Disable the Add All button if we don't have anyone to potentially add
+    if (self.notFollowing.count == 0)
+    {
+        [self.tableView.selectAllButton setEnabled:NO];
+        [self.tableView.selectAllButton.layer setBorderColor:[[UIColor colorWithWhite:0.781 alpha:1.000] CGColor]];
+        [self.tableView.selectAllButton.titleLabel setTextColor:[UIColor colorWithWhite:0.781 alpha:1.000]];
+    }
+    
+    // Disable the No Content View if we have data
+    if (self.notFollowing.count > 0 || self.theFollowing.count > 0)
+    {
+        [self showNoContentView:NO];
+    }
+    
+    // Reload tableview
+    [self.tableView.tableView reloadData];
+}
+
+- (void)showNoContentView:(BOOL)toShow
+{
+    if (toShow)
+    {
+        VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
+        self.tableView.tableView.backgroundView = noFollowersView;
+        noFollowersView.titleLabel.text = NSLocalizedString(@"NoFriends", @"");
+        noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
+        noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.clearButton.hidden = YES;
+        self.tableView.selectAllButton.hidden = YES;
+    }
+    else
+    {
+        self.tableView.tableView.backgroundView = nil;
+        self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    }
+
 }
 
 - (NSArray *)selectedUsers
@@ -194,7 +235,7 @@
     NSArray *indexPaths = [self.tableView.tableView indexPathsForSelectedRows];
     return [indexPaths v_map:^id (id o)
     {
-        return self.users[[o row]];
+        return self.notFollowing[[o row]];
     }];
 }
 
@@ -226,14 +267,14 @@
 
 - (void)selectAllRows
 {
-    for (NSUInteger n = 0; n < self.users.count; n++)
+    for (NSUInteger n = 0; n < self.notFollowing.count; n++)
     {
-        [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+        [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:1] animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSLog(@"\n\n-----\nSuccess Block:\n%@\n-----\n\n", resultObjects);
+        NSLog(@"\n\n-----\nAdding New Followers Success Block\n-----\n\n");
     };
     
     [self loadBatchOfFollowers:self.selectedUsers withSuccess:successBlock withFailure:nil];
@@ -289,7 +330,7 @@
     
     NSIndexPath *indexPath = [self.tableView.tableView indexPathForSelectedRow];
     NSInteger row = indexPath.row;
-    VUser *user = self.users[row];
+    VUser *user = self.notFollowing[row];
     
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
 }
@@ -300,29 +341,28 @@
 {
     NSInteger ans = 40.f;
     
-    if (self.theFollowing.count == 0 && self.users.count == 0)
+    if ((section == 0 && self.notFollowing.count == 0) || (section == 1 && self.theFollowing.count == 0))
     {
         ans = 0.f;
     }
-    
+
     return ans;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
-    //[view setBackgroundColor:[UIColor colorWithRed:230.f green:233.f blue:237.f alpha:1.0f]];
     [view setBackgroundColor:[UIColor colorWithRed:0.874 green:0.887 blue:0.912 alpha:1.000]];
     
-    UILabel *headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 20)];
+    UILabel *headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, tableView.frame.size.width, 20)];
     NSString *text;
 
     
-    if (section == 0)
+    if (section == 1)
     {
         text = NSLocalizedString(@"FollowingSectionHeader", @"");
     }
-    else
+    else if (section == 0)
     {
         switch (self.findFriendsTableType)
         {
@@ -343,7 +383,7 @@
         }
     }
     
-    NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"") attributes:[self attributesForText]];
+    NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:([text uppercaseString] ?: @"") attributes:[self attributesForText]];
     [headerTitle setAttributedText:newAttributedText];
     [view addSubview:headerTitle];
     
@@ -353,7 +393,7 @@
 - (NSDictionary *)attributesForText
 {
     return @{
-             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font],
+             NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font],
              NSForegroundColorAttributeName: [UIColor colorWithWhite:0.499 alpha:1.000],
              };
 }
@@ -384,7 +424,7 @@
 {
     NSInteger ans = 2;
     
-    if (self.theFollowing.count == 0 && self.users.count == 0)
+    if (self.theFollowing.count == 0 && self.notFollowing.count == 0)
     {
         ans = 1;
     }
@@ -398,11 +438,11 @@
     
     if (section == 0)
     {
-        ans = self.users.count;
+        ans = self.notFollowing.count;
     }
     else if (section == 1)
     {
-        ans = self.notFollowing.count;
+        ans = self.theFollowing.count;
     }
     return ans;
 }
@@ -414,12 +454,12 @@
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
     if (section == 0)
     {
-        cell.profile = self.users[indexPath.row];
-        cell.isFollowing = YES;
+        cell.profile = self.notFollowing[indexPath.row];
     }
     else if (section == 1)
     {
-        cell.profile = self.notFollowing[indexPath.row];
+        cell.profile = self.theFollowing[indexPath.row];
+        cell.isFollowing = YES;
     }
     return cell;
 }

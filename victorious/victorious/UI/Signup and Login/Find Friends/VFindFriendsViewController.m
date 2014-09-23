@@ -64,7 +64,6 @@
     self.tabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.containerView addSubview:self.tabBarViewController.view];
     [self.tabBarViewController didMoveToParentViewController:self];
-    
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
 }

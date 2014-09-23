@@ -56,22 +56,13 @@ static const CGFloat kButtonMargin           =  0.5f;
     UIView *buttonsSuperview = [[UIView alloc] init];
     buttonsSuperview.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:buttonsSuperview];
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonsSuperview]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(buttonsSuperview)]];
     self.buttonsSuperview = buttonsSuperview;
     
-    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"arrowDownIndicator"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    selectionIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    [selectionIndicator setTintColor:[UIColor redColor]];
-    //[selectionIndicator setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
-    [self.buttonsSuperview addSubview:selectionIndicator];
-    [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[selectionIndicator]|"
-                                                                                  options:0
-                                                                                  metrics:nil
-                                                                                    views:NSDictionaryOfVariableBindings(selectionIndicator)]];
-    self.selectionIndicator = selectionIndicator;
     
     UIView *childContainer = [[UIView alloc] init];
     childContainer.translatesAutoresizingMaskIntoConstraints = NO;
@@ -84,9 +75,20 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(childContainer)]];
+    
     self.childContainer = childContainer;
     
     [self addButtons];
+
+    UIImageView *selectionIndicator = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"arrowDownIndicator"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    selectionIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [selectionIndicator setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
+    [self.view addSubview:selectionIndicator];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:selectionIndicator attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.buttonsSuperview attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f]];
+
+    self.selectionIndicator = selectionIndicator;
+
 }
 
 - (void)updateViewConstraints
@@ -220,7 +222,7 @@ static const CGFloat kButtonMargin           =  0.5f;
     
     if (self.selectionXconstraint)
     {
-        [self.buttonsSuperview removeConstraint:self.selectionXconstraint];
+        [self.view removeConstraint:self.selectionXconstraint];
     }
     
     NSLayoutConstraint *selectionXconstraint = [NSLayoutConstraint constraintWithItem:self.selectionIndicator
@@ -230,7 +232,7 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                                             attribute:NSLayoutAttributeCenterX
                                                                            multiplier:1.0f
                                                                              constant:0];
-    [self.buttonsSuperview addConstraint:selectionXconstraint];
+    [self.view addConstraint:selectionXconstraint];
     self.selectionXconstraint = selectionXconstraint;
     
     VSlideDirection slide = VSlideDirectionNone;
@@ -280,7 +282,7 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                   CGRectGetWidth(self.childContainer.bounds),
                                                   CGRectGetHeight(self.childContainer.bounds));
         oldViewController.view.alpha = 0;
-        [self.buttonsSuperview layoutIfNeeded];
+        [self.view layoutIfNeeded];
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {

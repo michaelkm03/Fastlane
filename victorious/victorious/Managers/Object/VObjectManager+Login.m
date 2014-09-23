@@ -303,7 +303,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
     
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
-    [self updateUnreadMessageCountWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [self updateUnreadMessageCountWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUnreadConversation *unreadConversations = [resultObjects firstObject];
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadConversations.count.integerValue];
