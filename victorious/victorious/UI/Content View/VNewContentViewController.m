@@ -72,6 +72,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
 @property (nonatomic, weak) VEmptyProgressView *emptyRealTimeCommentsCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak) VDropdownTitleView *dropdownHeaderView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
@@ -474,6 +475,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                                withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
                                                                                       forIndexPath:indexPath];
             titleView.titleText = self.viewModel.name;
+            self.dropdownHeaderView = titleView;
             return titleView;
         }
             
@@ -562,6 +564,21 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark UIScrollView
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSDictionary *lastDesiredContentOffset = [[((VContentViewBaseLayout *)self.contentCollectionView.collectionViewLayout) desiredDecelerationLocations] lastObject];
+    CGFloat fullContentOffset = [lastDesiredContentOffset[VContentViewBaseLayoutDecelerationLocationDesiredContentOffset] CGPointValue].y;
+    
+    CGFloat headerProgress = self.contentCollectionView.contentOffset.y / fullContentOffset;
+    self.dropdownHeaderView.label.alpha = headerProgress;
+    self.dropdownHeaderView.label.transform = CGAffineTransformMakeTranslation(0, -20 * (1-headerProgress));
+    if (self.contentCollectionView.contentOffset.y > fullContentOffset)
+    {
+        self.dropdownHeaderView.label.alpha = 1.0f;
+        self.dropdownHeaderView.label.transform = CGAffineTransformIdentity;
+    }
+}
+
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -590,6 +607,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             {
                 *targetContentOffset = desiredContentOffset;
             }
+            
             *stop = YES;
         }
     }];

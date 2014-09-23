@@ -12,7 +12,7 @@
 
 @interface VDropdownTitleView ()
 
-@property (weak, nonatomic) IBOutlet UILabel *label;
+@property (weak, nonatomic, readwrite) IBOutlet UILabel *label;
 
 @end
 
@@ -21,8 +21,8 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.97f];
-    self.label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor] colorWithAlphaComponent:0.96f];
+    self.label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
 }
 
 #pragma mark - Property Accessors

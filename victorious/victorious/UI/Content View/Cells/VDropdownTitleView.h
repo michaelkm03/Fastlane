@@ -15,4 +15,6 @@
 
 @property (nonatomic, strong) NSString *titleText;
 
+@property (weak, nonatomic, readonly) IBOutlet UILabel *label;
+
 @end
