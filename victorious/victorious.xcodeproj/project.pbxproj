@@ -339,6 +339,9 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
+		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
+		D80C615E19D0F982006AE41A /* VEmptyProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615D19D0F982006AE41A /* VEmptyProgressView.m */; };
+		D80C616219D0F9A6006AE41A /* VEmptyProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80C616119D0F9A6006AE41A /* VEmptyProgressView.xib */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D82C08F719D0C09F00273E0D /* VContentViewVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */; };
@@ -1004,6 +1007,11 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		D80C615919D0F692006AE41A /* VProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProgressBarView.h; sourceTree = "<group>"; };
+		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
+		D80C615C19D0F982006AE41A /* VEmptyProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEmptyProgressView.h; sourceTree = "<group>"; };
+		D80C615D19D0F982006AE41A /* VEmptyProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEmptyProgressView.m; sourceTree = "<group>"; };
+		D80C616119D0F9A6006AE41A /* VEmptyProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEmptyProgressView.xib; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewVideoLayout.h; sourceTree = "<group>"; };
@@ -1352,6 +1360,8 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
+				D80C615919D0F692006AE41A /* VProgressBarView.h */,
+				D80C615A19D0F692006AE41A /* VProgressBarView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2416,6 +2426,9 @@
 				D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */,
 				D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */,
 				D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */,
+				D80C615C19D0F982006AE41A /* VEmptyProgressView.h */,
+				D80C615D19D0F982006AE41A /* VEmptyProgressView.m */,
+				D80C616119D0F9A6006AE41A /* VEmptyProgressView.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2538,6 +2551,7 @@
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				0314D46219B46B5E00FA363C /* VMediaPreviewViewController.xib in Resources */,
 				0314D4FC19B46B5E00FA363C /* VStreamViewCell.xib in Resources */,
+				D80C616219D0F9A6006AE41A /* VEmptyProgressView.xib in Resources */,
 				0314D48B19B46B5E00FA363C /* VNoContentView.xib in Resources */,
 				0314D4FA19B46B5E00FA363C /* VStreamVideoCell.xib in Resources */,
 				0314D4DD19B46B5E00FA363C /* FindFriendsTableView.xib in Resources */,
@@ -2727,6 +2741,7 @@
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
+				D80C615E19D0F982006AE41A /* VEmptyProgressView.m in Sources */,
 				0314D4C819B46B5E00FA363C /* VRemixSelectViewController.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
@@ -2971,6 +2986,7 @@
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */,
+				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
@@ -3093,7 +3109,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3106,6 +3123,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -3247,6 +3265,7 @@
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3264,6 +3283,7 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3272,7 +3292,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3285,6 +3306,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3398,7 +3420,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3411,6 +3434,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;

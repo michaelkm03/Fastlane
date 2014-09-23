@@ -24,6 +24,7 @@
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
 #import "VRealTimeCommentsCell.h"
+#import "VEmptyProgressView.h"
 #import "VContentCommentsCell.h"
 
 // Supplementary Views
@@ -60,6 +61,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
+@property (nonatomic, weak) VEmptyProgressView *emptyRealTimeCommentsCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
@@ -149,6 +151,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
                  forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VEmptyProgressView nibForCell]
+                 forCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
@@ -375,9 +379,18 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         }
         case VContentViewSectionRealTimeComments:
         {
-            self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
-                                                      forIndexPath:indexPath];
-            return self.realTimeComentsCell;
+            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
+            {
+                self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+                return self.realTimeComentsCell;
+            }
+            else
+            {
+                self.emptyRealTimeCommentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+                return self.emptyRealTimeCommentsCell;
+            }
         }
         case VContentViewSectionAllComments:
         {
@@ -442,7 +455,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
-            return [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            return (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds] : [VEmptyProgressView desiredSizeWithCollectionViewBounds:collectionView.bounds];
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
@@ -535,6 +548,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
     self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
+    
+    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
+    [self.emptyRealTimeCommentsCell setProgress: progressedTime];
+    [self.realTimeComentsCell setProgress:progressedTime];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell

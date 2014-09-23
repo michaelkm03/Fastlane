@@ -8,6 +8,9 @@
 
 #import "VRealTimeCommentsCell.h"
 
+// Subviews
+#import "VProgressBarView.h"
+
 // Theme
 #import "VThemeManager.h"
 
@@ -23,6 +26,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 @property (weak, nonatomic) IBOutlet UILabel *currentAtTimeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *conversationClock;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
+@property (weak, nonatomic) IBOutlet VProgressBarView *progressBar;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingAlignmentRTCArrowToStipConstraint;
 
@@ -56,6 +60,16 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentAtTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.currentTimeAgoLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.arrowImageView.translatesAutoresizingMaskIntoConstraints = NO;
+}
+
+#pragma mark - Property Acceossors
+
+- (void)setProgress:(CGFloat)progress
+{
+    _progress = progress;
+    
+    [self.progressBar setProgress:progress
+                         animated:YES];
 }
 
 #pragma mark - Public Methods
