@@ -360,7 +360,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
                                                                           referenceView:wCommentCell.previewView];
         
-        [welf presentViewController:lightbox animated:YES completion:nil];
+        [welf presentViewController:lightbox
+                           animated:YES
+                         completion:nil];
     };
 }
 
