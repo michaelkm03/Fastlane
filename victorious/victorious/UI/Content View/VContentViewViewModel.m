@@ -59,6 +59,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
         else if ([sequence isVideo])
         {
             _type = VContentViewTypeVideo;
+            _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
         }
         else if ([sequence isImage])
         {
@@ -71,6 +72,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
+        
     }
     return self;
 }
@@ -150,7 +152,8 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
                   mediaURL:(NSURL *)mediaURL
                 completion:(void (^)(BOOL succeeded))completion
 {
-    if (isnan(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime)))
+    Float64 currentTime = CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime);
+    if (isnan(currentTime))
     {
         [[VObjectManager sharedManager] addCommentWithText:text
                                                   mediaURL:mediaURL
@@ -208,7 +211,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
               }
           }];
          
-         self.realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] initWithRealtimeComments:[self.sequence.comments array]];
+         self.realTimeCommentsViewModel.realTimeComments = [self.sequence.comments array];
          
          [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
                                                              object:self];

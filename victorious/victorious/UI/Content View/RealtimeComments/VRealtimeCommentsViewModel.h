@@ -26,13 +26,9 @@
 @interface VRealtimeCommentsViewModel : NSObject
 
 /**
- *  Designated initializer.
- *
- *  @param realtimeComments An array of VComment objects.
- *
- *  @return An initializaed VRealtimeCommentsViewModel.
+ *  An array of VComment objects that have a realtime timestamp property. Not enforced.
  */
-- (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments;
+@property (nonatomic, strong) NSArray *realTimeComments;
 
 @property (nonatomic, weak) id <VRealtimeCommentsViewModelDelegate> delegate;
 

@@ -18,35 +18,21 @@
 
 @interface VRealtimeCommentsViewModel ()
 
-@property (nonatomic, strong, readwrite) NSArray *realTimeComments;
-
 @property (nonatomic, strong) VComment *currentComment;
 
 @end
 
 @implementation VRealtimeCommentsViewModel
 
-#pragma mark - Initializer
-
-- (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments
+- (id)init
 {
-    [realtimeComments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (![obj isKindOfClass:[VComment class]])
-        {
-            NSAssert(false, @"Not a realtimecomment");
-        }
-    }];
-    
     self = [super init];
     if (self)
     {
-        _realTimeComments = realtimeComments;
         _currentTime = kCMTimeZero;
     }
     return self;
 }
-
-#pragma mark - Property Accessors
 
 - (NSInteger)numberOfRealTimeComments
 {
