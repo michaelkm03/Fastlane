@@ -67,16 +67,25 @@
 {
     _progress = progress;
     
-    [UIView animateWithDuration:0.2f
-                          delay:0.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
+    void (^updates)(void) = ^void(void)
     {
         self.completedProgressView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.bounds) * progress, CGRectGetHeight(self.bounds));
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:updates
+                         completion:nil];
     }
-                     completion:nil];
+    else
+    {
+        updates();
+    }
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  Displayes a prgoress bar.
+ *  Displays a progress bar.
  */
 @interface VProgressBarView : UIView
 
