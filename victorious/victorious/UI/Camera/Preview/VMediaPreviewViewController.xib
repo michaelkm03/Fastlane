@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -37,12 +37,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sHw-GU-TQA" userLabel="Back Button">
-                            <rect key="frame" x="0.0" y="0.0" width="52" height="42"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="42" id="EPE-tS-G3h"/>
-                                <constraint firstAttribute="width" constant="52" id="qS6-bv-Iqt"/>
-                            </constraints>
-                            <state key="normal" image="cameraButtonBack">
+                            <rect key="frame" x="15" y="0.0" width="40" height="40"/>
+                            <state key="normal" image="btnPrevArrowWhiteDs">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -50,12 +46,8 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S9I-g9-gJN" userLabel="Next Button">
-                            <rect key="frame" x="266" y="0.0" width="54" height="42"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="42" id="4Yn-bw-QeA"/>
-                                <constraint firstAttribute="width" constant="54" id="uA4-fn-EHZ"/>
-                            </constraints>
-                            <state key="normal" image="cameraButtonNext">
+                            <rect key="frame" x="265" y="0.0" width="40" height="40"/>
+                            <state key="normal" image="btnNextArrowWhiteDs">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -65,11 +57,11 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="S9I-g9-gJN" secondAttribute="trailing" id="0FA-ZH-Eph"/>
+                        <constraint firstAttribute="trailing" secondItem="S9I-g9-gJN" secondAttribute="trailing" constant="15" id="0FA-ZH-Eph"/>
                         <constraint firstItem="S9I-g9-gJN" firstAttribute="top" secondItem="vpx-Qx-C0m" secondAttribute="top" id="1cP-yq-aMO"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="EvB-54-v18"/>
                         <constraint firstAttribute="height" priority="800" constant="64" id="Jtm-B1-C1o"/>
-                        <constraint firstItem="sHw-GU-TQA" firstAttribute="leading" secondItem="vpx-Qx-C0m" secondAttribute="leading" id="eQq-LN-O78"/>
+                        <constraint firstItem="sHw-GU-TQA" firstAttribute="leading" secondItem="vpx-Qx-C0m" secondAttribute="leading" constant="15" id="eQq-LN-O78"/>
                         <constraint firstItem="sHw-GU-TQA" firstAttribute="top" secondItem="vpx-Qx-C0m" secondAttribute="top" id="kif-y0-7zP"/>
                     </constraints>
                 </view>
@@ -164,8 +156,8 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="cameraButtonNext" width="24" height="24"/>
+        <image name="btnNextArrowWhiteDs" width="40" height="40"/>
+        <image name="btnPrevArrowWhiteDs" width="40" height="40"/>
         <image name="cameraPreviewDone" width="32" height="31"/>
     </resources>
 </document>
