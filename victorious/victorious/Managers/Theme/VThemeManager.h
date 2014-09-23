@@ -9,44 +9,44 @@
 #import <Foundation/Foundation.h>
 
 #pragma mark - New Theme Constants
-extern  NSString*   const   kVChannelName;
+extern NSString * const kVChannelName;
 
 // Images
 
-extern  NSString*   const   kVMenuBackgroundImage;
-extern  NSString*   const   kVMenuBackgroundImage5;
-extern  NSString*   const   VThemeManagerHomeHeaderImageKey;
+extern NSString * const kVMenuBackgroundImage;
+extern NSString * const kVMenuBackgroundImage5;
+extern NSString * const VThemeManagerHomeHeaderImageKey;
 
 //Fonts
-extern  NSString*   const   kVHeaderFont;
+extern NSString * const kVHeaderFont;
 
-extern  NSString*   const   kVHeading1Font;
-extern  NSString*   const   kVHeading2Font;
-extern  NSString*   const   kVHeading3Font;
-extern  NSString*   const   kVHeading4Font;
+extern NSString * const kVHeading1Font;
+extern NSString * const kVHeading2Font;
+extern NSString * const kVHeading3Font;
+extern NSString * const kVHeading4Font;
 
-extern  NSString*   const   kVParagraphFont;
+extern NSString * const kVParagraphFont;
 
-extern  NSString*   const   kVLabel1Font;
-extern  NSString*   const   kVLabel2Font;
-extern  NSString*   const   kVLabel3Font;
-extern  NSString*   const   kVLabel4Font;
+extern NSString * const kVLabel1Font;
+extern NSString * const kVLabel2Font;
+extern NSString * const kVLabel3Font;
+extern NSString * const kVLabel4Font;
 
-extern  NSString*   const   kVButton1Font;
-extern  NSString*   const   kVButton2Font;
+extern NSString * const kVButton1Font;
+extern NSString * const kVButton2Font;
 
 //Colors
-extern  NSString*   const   kVBackgroundColor;
-extern  NSString*   const   kVSecondaryBackgroundColor;
+extern NSString * const kVBackgroundColor;
+extern NSString * const kVSecondaryBackgroundColor;
 
-extern  NSString*   const   kVMainTextColor;
-extern  NSString*   const   kVContentTextColor;
+extern NSString * const kVMainTextColor;
+extern NSString * const kVContentTextColor;
 
-extern  NSString*   const   kVAccentColor;
-extern  NSString*   const   kVSecondaryAccentColor;
+extern NSString * const kVAccentColor;
+extern NSString * const kVSecondaryAccentColor;
 
-extern  NSString*   const   kVLinkColor;
-extern  NSString*   const   kVSecondaryLinkColor;
+extern NSString * const kVLinkColor;
+extern NSString * const kVSecondaryLinkColor;
 
 @interface VThemeManager : NSObject
 

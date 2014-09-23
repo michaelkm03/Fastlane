@@ -14,29 +14,29 @@
 
 @interface VContentViewController : UIViewController <VAnimation>
 
-@property (strong, nonatomic) VSequence* sequence;
-@property (strong, nonatomic) VActionBarViewController* actionBarVC;
+@property (strong, nonatomic) VSequence *sequence;
+@property (strong, nonatomic) VActionBarViewController *actionBarVC;
 
-@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
-@property (weak, nonatomic) IBOutlet UIView* orContainerView;
-@property (weak, nonatomic) IBOutlet UIView* mediaSuperview;
-@property (weak, nonatomic) IBOutlet UIView* mediaView;
-@property (weak, nonatomic) IBOutlet UIView* topActionsView;
-@property (weak, nonatomic) IBOutlet UIView* contentTitleView;
-@property (weak, nonatomic) IBOutlet UIView* realtimeCommentsContainer;
-@property (weak, nonatomic) IBOutlet UIView* keyboardBarContainer;
+@property (weak, nonatomic) IBOutlet UIView *pollPreviewView;
+@property (weak, nonatomic) IBOutlet UIView *orContainerView;
+@property (weak, nonatomic) IBOutlet UIView *mediaSuperview;
+@property (weak, nonatomic) IBOutlet UIView *mediaView;
+@property (weak, nonatomic) IBOutlet UIView *topActionsView;
+@property (weak, nonatomic) IBOutlet UIView *contentTitleView;
+@property (weak, nonatomic) IBOutlet UIView *realtimeCommentsContainer;
+@property (weak, nonatomic) IBOutlet UIView *keyboardBarContainer;
 
-@property (weak, nonatomic) IBOutlet UIImageView* orImageView;
-@property (weak, nonatomic) IBOutlet UIImageView* previewImage;
+@property (weak, nonatomic) IBOutlet UIImageView *orImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* leftSmallPreviewImageWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* rightSmallPreviewImageWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftSmallPreviewImageWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightSmallPreviewImageWidthConstraint;
 
-@property (weak, nonatomic) IBOutlet UIView* firstPollPlayIcon;
-@property (weak, nonatomic) IBOutlet UIView* secondPollPlayIcon;
+@property (weak, nonatomic) IBOutlet UIView *firstPollPlayIcon;
+@property (weak, nonatomic) IBOutlet UIView *secondPollPlayIcon;
 
-@property (weak, nonatomic) IBOutlet UIButton* firstPollButton;
-@property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
+@property (weak, nonatomic) IBOutlet UIButton *firstPollButton;
+@property (weak, nonatomic) IBOutlet UIButton *secondPollButton;
 
 @property (strong, nonatomic) UIImage *leftPollThumbnail;
 @property (strong, nonatomic) UIImage *rightPollThumbnail;

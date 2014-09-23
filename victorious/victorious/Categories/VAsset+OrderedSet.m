@@ -12,7 +12,7 @@
 
 - (void)addCommentsObject:(VComment *)value
 {
-    NSMutableOrderedSet* comments = self.comments.mutableCopy;
+    NSMutableOrderedSet *comments = self.comments.mutableCopy;
     [comments addObject:value];
     self.comments = comments;
 }

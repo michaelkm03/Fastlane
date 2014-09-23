@@ -22,6 +22,6 @@ extern NSString * const VDirectoryItemCellNameStream;
 /**
  *  The VStreamItem used to populate fields on the cell.
  */
-@property (nonatomic, strong) VStreamItem* streamItem;
+@property (nonatomic, strong) VStreamItem *streamItem;
 
 @end

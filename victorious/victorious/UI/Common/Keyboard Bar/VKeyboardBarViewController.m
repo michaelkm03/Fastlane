@@ -19,7 +19,7 @@ static const NSInteger kCharacterLimit = 255;
 @property (nonatomic, weak, readwrite) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) NSURL* mediaURL;
+@property (nonatomic, strong) NSURL *mediaURL;
 
 @end
 

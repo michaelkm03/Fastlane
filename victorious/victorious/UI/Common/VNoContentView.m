@@ -13,7 +13,7 @@
 
 + (instancetype)noContentViewWithFrame:(CGRect)frame
 {
-    VNoContentView* noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:self options:nil] objectAtIndex:0];
+    VNoContentView *noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:self options:nil] objectAtIndex:0];
     
     noContentView.frame = frame;
     noContentView.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];

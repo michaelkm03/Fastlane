@@ -11,7 +11,7 @@
 @interface VResultView : UIView
 
 @property (nonatomic) BOOL isVertical;
-@property (strong, nonatomic) UIColor* color;
+@property (strong, nonatomic) UIColor *color;
 
 - (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical;
 - (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress;

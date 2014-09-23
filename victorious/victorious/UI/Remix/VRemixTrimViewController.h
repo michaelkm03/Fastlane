@@ -9,4 +9,5 @@
 #import "VAbstractVideoEditorViewController.h"
 
 @interface VRemixTrimViewController : VAbstractVideoEditorViewController
+
 @end

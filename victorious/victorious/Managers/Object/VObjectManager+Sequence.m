@@ -15,7 +15,7 @@
 
 #import "VPollResult.h"
 
-NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
+NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)
 
@@ -44,9 +44,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         }
         return nil;
     }
-    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
+    NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
     
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
         //keep trying until we are done transcoding
         if (error.code == kVStillTranscodingError && attemptCount < 15)
@@ -91,7 +91,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    NSDictionary* parameters = @{@"sequence_id": @(sequenceId),
+    NSDictionary *parameters = @{@"sequence_id": @(sequenceId),
                                  @"access_token":accessToken
                                  };
     
@@ -108,7 +108,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    NSDictionary* parameters = @{@"sequence_id": @(sequenceId),
+    NSDictionary *parameters = @{@"sequence_id": @(sequenceId),
                                  @"access_token":accessToken,
                                  @"access_secret":secret
                                  };
@@ -129,7 +129,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    NSDictionary* parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
+    NSDictionary *parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
                                  @"votetypes": voteTypes ?: [NSNull null],
                                  @"votecounts": voteCounts ?: [NSNull null]
                                  };
@@ -153,7 +153,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         return nil;
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VPollResult *newPollResult = [NSEntityDescription
                                         insertNewObjectForEntityForName:[VPollResult entityName]
@@ -190,13 +190,13 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         return nil;
     }
 
-    NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        for (VPollResult* pollResult in resultObjects)
+        for (VPollResult *pollResult in resultObjects)
         {
-            VPollResult* poll = (VPollResult *)[user.managedObjectContext objectWithID:[pollResult objectID]];
+            VPollResult *poll = (VPollResult *)[user.managedObjectContext objectWithID:[pollResult objectID]];
             [user addPollResultsObject: poll];
         }
         
@@ -226,10 +226,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         return nil;
     }
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSManagedObjectContext* context;
-        for (VPollResult* result in resultObjects)
+        NSManagedObjectContext *context;
+        for (VPollResult *result in resultObjects)
         {
             result.sequenceId = sequence.remoteId;
             result.sequence = (VSequence *)[result.managedObjectContext objectWithID:[sequence objectID]];
@@ -259,7 +259,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId.stringValue, self.mainUser.remoteId.stringValue]
               object:nil
           parameters:nil
-        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
             {
                 VSequenceUserInteractions *userInteractions = [VSequenceUserInteractions sequenceUserInteractionsWithPayload:fullResponse[@"payload"]];
                 if (completion)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -1699,83 +1699,6 @@
             </objects>
             <point key="canvasLocation" x="-974" y="-1303"/>
         </scene>
-        <!--Cast View Controller-->
-        <scene sceneID="Aeo-Ah-zsA">
-            <objects>
-                <viewController storyboardIdentifier="castview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Itp-iP-TVj" customClass="CastViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yCV-sq-AsO"/>
-                        <viewControllerLayoutGuide type="bottom" id="0K7-wr-ygr"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="d23-Ir-yQl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1oz-zW-PNn">
-                                <rect key="frame" x="0.0" y="0.0" width="319" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="vp9-JU-xzT">
-                                <rect key="frame" x="91" y="496" width="138" height="0.0"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Mlr-fA-vLf">
-                                <rect key="frame" x="63" y="494" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r22-OM-f8N">
-                                <rect key="frame" x="20" y="488" width="279" height="0.0"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpA-Sg-vJD">
-                                <rect key="frame" x="55" y="95" width="24" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="cameraButtonClose">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="doneAction:" destination="Itp-iP-TVj" eventType="touchUpInside" id="WsS-T1-7ae"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="centerX" secondItem="d23-Ir-yQl" secondAttribute="centerX" id="08V-uQ-pl8"/>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="leading" secondItem="Mlr-fA-vLf" secondAttribute="trailing" constant="8" symbolic="YES" id="0qY-Rg-JAW"/>
-                            <constraint firstItem="1oz-zW-PNn" firstAttribute="top" secondItem="d23-Ir-yQl" secondAttribute="top" id="Dww-ss-XTa"/>
-                            <constraint firstItem="r22-OM-f8N" firstAttribute="top" secondItem="yCV-sq-AsO" secondAttribute="bottom" constant="468" id="F3i-Z2-t7Z"/>
-                            <constraint firstItem="Mlr-fA-vLf" firstAttribute="top" secondItem="r22-OM-f8N" secondAttribute="bottom" constant="6" id="GBg-YT-GMN"/>
-                            <constraint firstItem="1oz-zW-PNn" firstAttribute="leading" secondItem="d23-Ir-yQl" secondAttribute="leading" id="Gqt-3Q-Hdl"/>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="top" secondItem="r22-OM-f8N" secondAttribute="bottom" constant="8" symbolic="YES" id="LXI-fm-enb"/>
-                            <constraint firstItem="0K7-wr-ygr" firstAttribute="top" secondItem="Mlr-fA-vLf" secondAttribute="bottom" constant="10" id="MxJ-me-tjE"/>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="centerX" secondItem="1oz-zW-PNn" secondAttribute="centerX" id="Ocg-GO-I7y"/>
-                            <constraint firstItem="Mlr-fA-vLf" firstAttribute="leading" secondItem="d23-Ir-yQl" secondAttribute="leading" constant="63" id="lI5-Ly-a5D"/>
-                            <constraint firstAttribute="bottom" secondItem="1oz-zW-PNn" secondAttribute="bottom" id="lLp-Yw-U5T"/>
-                            <constraint firstItem="r22-OM-f8N" firstAttribute="leading" secondItem="d23-Ir-yQl" secondAttribute="leading" constant="20" symbolic="YES" id="pxa-mx-tpz"/>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="centerY" secondItem="Mlr-fA-vLf" secondAttribute="centerY" constant="-8" id="tVT-z8-H39"/>
-                            <constraint firstItem="vp9-JU-xzT" firstAttribute="centerX" secondItem="r22-OM-f8N" secondAttribute="centerX" id="zn8-dn-UJm"/>
-                        </constraints>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="4vH-yV-VlV"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="castActivityIndicator" destination="Mlr-fA-vLf" id="77a-Su-ae1"/>
-                        <outlet property="castingToLabel" destination="vp9-JU-xzT" id="AiV-mk-7e3"/>
-                        <outlet property="mediaTitleLabel" destination="r22-OM-f8N" id="TbH-IS-r7J"/>
-                        <outlet property="thumbnailImage" destination="1oz-zW-PNn" id="yse-Sj-ruN"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zrz-Ni-YEa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2314" y="-212"/>
-        </scene>
         <!--Emotive Ballistics Bar View Controller-->
         <scene sceneID="U5e-sD-f9l">
             <objects>
@@ -2890,7 +2813,6 @@
         <image name="SearchIconSmall" width="20" height="20"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="cameraButtonClose" width="24" height="24"/>
         <image name="contentViewCollapse" width="40" height="40"/>
         <image name="conversationClock" width="9" height="9"/>
         <image name="createContentButton" width="27" height="27"/>

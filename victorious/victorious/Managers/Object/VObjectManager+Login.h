@@ -67,4 +67,5 @@ extern NSString *kLoggedInChangedNotification;
                                                     deviceToken:(NSString *)deviceToken
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
+
 @end

@@ -25,10 +25,10 @@
 
 @interface VPollAnswerBarViewController ()
 
-@property (weak, nonatomic) IBOutlet UIView* selectedContainmentView;
-@property (weak, nonatomic) IBOutlet UIView* selectedAnswerView;
-@property (weak, nonatomic) IBOutlet UIImageView* selectedHexImage;
-@property (weak, nonatomic) IBOutlet UIImageView* selectedCheckImage;
+@property (weak, nonatomic) IBOutlet UIView *selectedContainmentView;
+@property (weak, nonatomic) IBOutlet UIView *selectedAnswerView;
+@property (weak, nonatomic) IBOutlet UIImageView *selectedHexImage;
+@property (weak, nonatomic) IBOutlet UIImageView *selectedCheckImage;
 
 @end
 
@@ -36,14 +36,19 @@
 
 + (instancetype)sharedInstance
 {
-    static  VPollAnswerBarViewController*   sharedInstance;
+    static  VPollAnswerBarViewController   *sharedInstance;
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         sharedInstance = (VPollAnswerBarViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kPollAnswerBarStoryboardID];
     });
     
     return sharedInstance;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -57,7 +62,7 @@
                                                object:nil];
     
     self.selectedAnswerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    UIImage* newImage = [self.selectedHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *newImage = [self.selectedHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.selectedHexImage setImage:newImage];
     self.selectedHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
@@ -76,10 +81,10 @@
     [super viewDidAppear:animated];
     
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
      }
-                                                 failBlock:^(NSOperation* operation, NSError* error)
+                                                 failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
      }];
@@ -113,7 +118,7 @@
     self.leftButton.userInteractionEnabled = YES;
     self.rightButton.userInteractionEnabled = YES;
     
-    for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
+    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
     {
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
@@ -188,7 +193,7 @@
 
 #pragma mark - Button actions
 
--(IBAction)pressedAnswerButton:(id)sender
+- (IBAction)pressedAnswerButton:(id)sender
 {
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -199,7 +204,7 @@
     self.leftButton.userInteractionEnabled = NO;
     self.rightButton.userInteractionEnabled = NO;
     
-    VAnswer* chosenAnswer;
+    VAnswer *chosenAnswer;
     
     NSInteger tag = ((UIButton *)sender).tag;
     if ((NSUInteger)tag >= [self.answers count])
@@ -217,16 +222,16 @@
 
 - (void)answerPollWithAnswer:(VAnswer *)answer
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         
         [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              [self.delegate answeredPollWithAnswerId:answer.remoteId];
              [self answerAnimationForAnswerID:answer.remoteId];
          }
-                                                     failBlock:^(NSOperation* operation, NSError* error)
+                                                     failBlock:^(NSOperation *operation, NSError *error)
          {
              VLog(@"Failed with error: %@", error);
          }];
@@ -235,7 +240,7 @@
     [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
                                   successBlock:success
-                                     failBlock:^(NSOperation* operation, NSError* error)
+                                     failBlock:^(NSOperation *operation, NSError *error)
       {
           //Error 1005 is "Poll result was already recorded.
           //If we get anything else... lie and say we already answered

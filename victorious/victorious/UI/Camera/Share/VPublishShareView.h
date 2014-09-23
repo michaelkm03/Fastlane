@@ -17,10 +17,10 @@ typedef NS_ENUM(NSInteger, VShareViewSelectedState)
 
 @interface VPublishShareView : UIView
 
-@property (nonatomic, strong) UIColor*  defaultColor;
-@property (nonatomic, strong) UIColor*  selectedColor;
-@property (nonatomic, copy)   NSString* title;
-@property (nonatomic, strong) UIImage*  image;
+@property (nonatomic, strong) UIColor  *defaultColor;
+@property (nonatomic, strong) UIColor  *selectedColor;
+@property (nonatomic, copy)   NSString *title;
+@property (nonatomic, strong) UIImage  *image;
 @property (nonatomic, strong) void (^selectionBlock)(); ///< Called when the view is tapped
 
 @property (nonatomic) VShareViewSelectedState selectedState;

@@ -10,12 +10,17 @@
 
 @protocol VPickerTextFieldDelegate <NSObject>
 @required
+
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
+
 @optional
+
 - (void)pickerTextFieldDidClear:(VPickerTextField *)pickerTextField;
+
 @end
 
 @interface VPickerTextField : UITextField
+
 @property (nonatomic, weak) id<VPickerTextFieldDelegate> pickerDelegate;
 @property (nonatomic, strong) NSArray *pickerData;
 

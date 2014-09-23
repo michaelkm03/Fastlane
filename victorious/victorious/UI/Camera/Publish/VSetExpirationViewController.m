@@ -14,27 +14,27 @@
 #import "VThemeManager.h"
 
 @interface VSetExpirationViewController ()  <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    VExpirationPickerTextField*     expirationPicker;
-@property (nonatomic, weak) IBOutlet    VExpirationDatePicker*          expirationDatePicker;
+@property (nonatomic, weak) IBOutlet    VExpirationPickerTextField     *expirationPicker;
+@property (nonatomic, weak) IBOutlet    VExpirationDatePicker          *expirationDatePicker;
 
-@property (nonatomic, weak) IBOutlet    UIButton*                       afterButton;
-@property (nonatomic, weak) IBOutlet    UIButton*                       onButton;
-@property (nonatomic, weak) IBOutlet    UILabel*                        videoWillExpireLabel;
-@property (nonatomic, weak) IBOutlet    UIImageView*                    previewImageView;
+@property (nonatomic, weak) IBOutlet    UIButton                       *afterButton;
+@property (nonatomic, weak) IBOutlet    UIButton                       *onButton;
+@property (nonatomic, weak) IBOutlet    UILabel                        *videoWillExpireLabel;
+@property (nonatomic, weak) IBOutlet    UIImageView                    *previewImageView;
 
-@property (nonatomic, weak) IBOutlet    UIView*                         setExpirationView;
-@property (nonatomic, weak) IBOutlet    UILabel*                        setExpirationTextField;
-@property (nonatomic, weak) IBOutlet    UILabel*                        expirationLine1Label;
-@property (nonatomic, weak) IBOutlet    UILabel*                        expirationLine2Label;
+@property (nonatomic, weak) IBOutlet    UIView                         *setExpirationView;
+@property (nonatomic, weak) IBOutlet    UILabel                        *setExpirationTextField;
+@property (nonatomic, weak) IBOutlet    UILabel                        *expirationLine1Label;
+@property (nonatomic, weak) IBOutlet    UILabel                        *expirationLine2Label;
 
-@property (nonatomic, weak) IBOutlet    UIButton*                       doneButton;
+@property (nonatomic, weak) IBOutlet    UIButton                       *doneButton;
 
 @property (nonatomic)                   BOOL                            useAfterMode;
-@property (nonatomic, strong)           NSDate*                         expirationDate;
+@property (nonatomic, strong)           NSDate                         *expirationDate;
 
-@property (nonatomic, strong)           NSArray*                        toolbarWithReset;
-@property (nonatomic, strong)           NSArray*                        toolbarWithoutReset;
-@property (nonatomic, weak) IBOutlet    UIToolbar*                      toolbar;
+@property (nonatomic, strong)           NSArray                        *toolbarWithReset;
+@property (nonatomic, strong)           NSArray                        *toolbarWithoutReset;
+@property (nonatomic, weak) IBOutlet    UIToolbar                      *toolbar;
 
 @end
 
@@ -47,9 +47,9 @@
     self.expirationPicker.pickerDelegate = self;
     self.expirationDatePicker.delegate = self;
     
-    UIBarButtonItem*    cancelButton    =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
-    UIBarButtonItem*    flex            =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem*    resetButton     =   [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ResetButton", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)];
+    UIBarButtonItem    *cancelButton    =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+    UIBarButtonItem    *flex            =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem    *resetButton     =   [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ResetButton", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)];
     
     self.toolbarWithReset = @[cancelButton, flex, resetButton];
     self.toolbarWithoutReset = @[cancelButton, flex];
@@ -123,7 +123,7 @@
 {
     if (self.expirationDate)
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CancelExpiration", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CancelExpiration", @"")
                                                                message:NSLocalizedString(@"CancelExirationConfirm", @"")
                                                               delegate:self
                                                      cancelButtonTitle:nil

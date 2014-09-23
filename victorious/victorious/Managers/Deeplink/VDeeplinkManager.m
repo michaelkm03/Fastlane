@@ -26,13 +26,13 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VEnterResetTokenViewController.h"
 
-static NSString* const kVContentDeeplinkScheme = @"//content/";
+static NSString * const kVContentDeeplinkScheme = @"//content/";
 
 @implementation VDeeplinkManager
 
 + (instancetype)sharedManager
 {
-    static  VDeeplinkManager*  sharedManager;
+    static  VDeeplinkManager  *sharedManager;
     static  dispatch_once_t onceToken;
     
     dispatch_once(&onceToken,
@@ -45,19 +45,18 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleOpenURL:(NSURL *)aURL
 {
-    NSString*   linkString = [aURL resourceSpecifier];
-    NSError*    error = NULL;
+    NSString *linkString = [aURL resourceSpecifier];
     
     if (!linkString)
     {
         return;
     }
     
-    for (NSString* pattern in [[self deepLinkPatterns] allKeys])
+    for (NSString *pattern in [[self deepLinkPatterns] allKeys])
     {
-        NSRegularExpression*    regex = [NSRegularExpression regularExpressionWithPattern:pattern
+        NSRegularExpression    *regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                                   options:NSRegularExpressionCaseInsensitive
-                                                                                    error:&error];
+                                                                                    error:nil];
         
         NSTextCheckingResult *result = [regex firstMatchInString:linkString
                                                          options:NSMatchingAnchored
@@ -65,11 +64,11 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
         
         if (result)
         {
-            NSMutableArray* captures = [NSMutableArray array];
+            NSMutableArray *captures = [NSMutableArray array];
             for (NSUInteger i = 1; i < result.numberOfRanges; i++)
             {
                 NSRange range = [result rangeAtIndex:i];
-                NSString*   capture = [linkString substringWithRange:range];
+                NSString   *capture = [linkString substringWithRange:range];
                 [captures addObject:capture];
             }
             
@@ -109,7 +108,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleContentURL:(NSArray *)captures
 {
-    NSNumber* sequenceId = @(((NSString *)[captures firstObject]).intValue);
+    NSNumber *sequenceId = @(((NSString *)[captures firstObject]).intValue);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
@@ -117,20 +116,20 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     }
     
     [[VObjectManager sharedManager] fetchSequence:sequenceId
-                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VContentViewController* contentView = [[VContentViewController alloc] init];
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         VContentViewController *contentView = [[VContentViewController alloc] init];
+         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
-         VSequence* sequence = (VSequence *)[resultObjects firstObject];
+         VSequence *sequence = (VSequence *)[resultObjects firstObject];
          contentView.sequence = sequence;
          
-         VRootViewController* root = [VRootViewController rootViewController];
+         VRootViewController *root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer]];
          [homeContainer.navigationController pushViewController:contentView animated:YES];
      }
-                                        failBlock:^(NSOperation* operation, NSError* error)
+                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
@@ -139,7 +138,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleProfileURL:(NSArray *)captures
 {
-    NSNumber* userID = @(((NSString *)[captures firstObject]).intValue);
+    NSNumber *userID = @(((NSString *)[captures firstObject]).intValue);
     if (!userID)
     {
         [self showMissingContentAlert];
@@ -147,9 +146,9 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     }
     
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
-                             withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                             withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VUserProfileViewController* profileVC;
+         VUserProfileViewController *profileVC;
          if ([VObjectManager sharedManager].mainUser && [userID isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
          {
              profileVC = [VUserProfileViewController userProfileWithSelf];
@@ -159,14 +158,14 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
              profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
          }
          
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
-         VRootViewController* root = [VRootViewController rootViewController];
+         VRootViewController *root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer]];
          [homeContainer.navigationController pushViewController:profileVC animated:YES];
      }
-                                    failBlock:^(NSOperation* operation, NSError* error)
+                                    failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
@@ -175,7 +174,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleConversationURL:(NSArray *)captures
 {
-    NSNumber* conversationId = @(((NSString *)[captures firstObject]).intValue);
+    NSNumber *conversationId = @(((NSString *)[captures firstObject]).intValue);
     if (!conversationId)
     {
         [self showMissingContentAlert];
@@ -183,17 +182,17 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     }
     
     [[VObjectManager sharedManager] conversationByID:conversationId
-                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VConversation* conversation = (VConversation *)[resultObjects firstObject];
-         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
-         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
+         VConversation *conversation = (VConversation *)[resultObjects firstObject];
+         VInboxContainerViewController *inbox = [VInboxContainerViewController inboxContainer];
+         VMessageContainerViewController *messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
-         VRootViewController* root = [VRootViewController rootViewController];
+         VRootViewController *root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[inbox]];
          [inbox.navigationController pushViewController:messageVC animated:YES];
      }
-                                           failBlock:^(NSOperation* operation, NSError* error)
+                                           failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
@@ -202,7 +201,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleCommentURL:(NSArray *)captures
 {
-    NSNumber* sequenceId = @(((NSString *)[captures firstObject]).intValue);
+    NSNumber *sequenceId = @(((NSString *)[captures firstObject]).intValue);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
@@ -210,22 +209,22 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     }
     
     [[VObjectManager sharedManager] fetchSequence:sequenceId
-                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
-         VContentViewController* contentView = [[VContentViewController alloc] init];
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
+         VContentViewController *contentView = [[VContentViewController alloc] init];
+         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
-         VSequence* sequence = (VSequence *)[resultObjects firstObject];
+         VSequence *sequence = (VSequence *)[resultObjects firstObject];
          contentView.sequence = sequence;
          commentsContainer.sequence = sequence;
          
-         VRootViewController* root = [VRootViewController rootViewController];
+         VRootViewController *root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer, contentView]];
          [contentView.navigationController pushViewController:commentsContainer animated:YES];
      }
-                                        failBlock:^(NSOperation* operation, NSError* error)
+                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
@@ -234,16 +233,16 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleResetPasswordURL:(NSArray *)captures
 {
-    NSString* userToken = ((NSString *)[captures firstObject]);
-    NSString* deviceToken = (NSString *)[captures lastObject];
+    NSString *userToken = ((NSString *)[captures firstObject]);
+    NSString *deviceToken = (NSString *)[captures lastObject];
     if (!userToken || !deviceToken)
     {
         [self showMissingContentAlert];
         return;
     }
     
-    VRootViewController* root = [VRootViewController rootViewController];
-    VEnterResetTokenViewController* enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
+    VRootViewController *root = [VRootViewController rootViewController];
+    VEnterResetTokenViewController *enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
     enterTokenVC.deviceToken = deviceToken;
     enterTokenVC.userToken = userToken;
     

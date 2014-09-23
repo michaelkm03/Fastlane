@@ -9,5 +9,7 @@
 @class VUser;
 
 @interface VFollowingTableViewController : UITableViewController
-@property (nonatomic, strong)   VUser*      profile;
+
+@property (nonatomic, strong)   VUser      *profile;
+
 @end

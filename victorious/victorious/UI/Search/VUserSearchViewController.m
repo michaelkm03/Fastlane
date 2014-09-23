@@ -58,14 +58,14 @@
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
--(IBAction)closeButtonAction:(id)sender;
--(void)runUserSearch:(id)sender;
+- (IBAction)closeButtonAction:(id)sender;
+- (void)runUserSearch:(id)sender;
 
 @end
 
 @implementation VUserSearchViewController
 
-+(instancetype)sharedInstance
++ (instancetype)sharedInstance
 {
 
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
@@ -106,7 +106,7 @@
     [self.searchField becomeFirstResponder];
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
@@ -140,7 +140,7 @@
     return YES;
 }
 
--(void)characterCheck:(id)sender
+- (void)characterCheck:(id)sender
 {
     
     self.charCount++;
@@ -152,7 +152,7 @@
     }
 }
 
--(void)typingTimerCheck:(id)sender
+- (void)typingTimerCheck:(id)sender
 {
     if (self.typeDelay)
     {
@@ -165,12 +165,12 @@
     self.typeDelay = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(runUserSearch:) userInfo:nil repeats:NO];
 }
 
--(IBAction)closeButtonAction:(id)sender
+- (IBAction)closeButtonAction:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)composeMessageToUser:(VUser *)profile
+- (void)composeMessageToUser:(VUser *)profile
 {
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -182,12 +182,12 @@
     [self.navigationController pushViewController:composeController animated:YES];
 }
 
--(void)runUserSearch:(id)sender
+- (void)runUserSearch:(id)sender
 {
     
-    VSuccessBlock searchSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.foundUsers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setHaveSearchResults:self.foundUsers.count];
         self.tableView.hidden = NO;
@@ -198,7 +198,7 @@
         });
     };
     
-    VFailBlock searchFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
         [self setHaveSearchResults:NO];
         self.tableView.hidden = YES;
@@ -278,17 +278,17 @@
     return YES;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     BOOL ans = YES;
     return ans;
 }
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     return YES;
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     return YES;
 }

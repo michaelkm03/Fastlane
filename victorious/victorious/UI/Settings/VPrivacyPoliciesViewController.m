@@ -9,6 +9,7 @@
 #import "VPrivacyPoliciesViewController.h"
 
 @interface VPrivacyPoliciesViewController ()    <UIWebViewDelegate>
+
 @end
 
 @implementation VPrivacyPoliciesViewController

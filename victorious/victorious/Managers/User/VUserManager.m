@@ -29,7 +29,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 + (VUserManager *)sharedInstance
 {
-    static  VUserManager*       sharedInstance;
+    static  VUserManager       *sharedInstance;
     static  dispatch_once_t     onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
@@ -88,7 +88,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     void (^successBlock)() = ^(void)
     {
         __block BOOL created = YES;
-        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
@@ -105,14 +105,14 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                 errorBlock(nil);
             }
         };
-        VFailBlock failed = ^(NSOperation* operation, NSError* error)
+        VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
             if (error.code == kVAccountAlreadyExistsError)
             {
                 created = NO;
                 [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                             SuccessBlock:success
-                                                               failBlock:^(NSOperation* operation, NSError* error)
+                                                               failBlock:^(NSOperation *operation, NSError *error)
                 {
                     if (errorBlock)
                     {
@@ -159,8 +159,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 - (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
 
     ACAccount *twitterAccount;
     if (identifier)
@@ -198,12 +198,12 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
 
-        NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
-        NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
-        NSString* twitterId = [parsedData objectForKey:@"user_id"];
+        NSString *oauthToken = [parsedData objectForKey:@"oauth_token"];
+        NSString *tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+        NSString *twitterId = [parsedData objectForKey:@"user_id"];
          
         __block BOOL created = YES;
-        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             VUser *user = [resultObjects firstObject];
             if (![user isKindOfClass:[VUser class]])
@@ -223,9 +223,9 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                 }
             }
         };
-        VFailBlock failed = ^(NSOperation* operation, NSError* error)
+        VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            VFailBlock blockFail = ^(NSOperation* operation, NSError* error)
+            VFailBlock blockFail = ^(NSOperation *operation, NSError *error)
             {
                 if (errorBlock)
                 {
@@ -269,7 +269,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         return;
     }
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = [resultObjects firstObject];
         if (![user isKindOfClass:[VUser class]])
@@ -291,7 +291,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             }
         }
     };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         if (errorBlock)
         {
@@ -314,7 +314,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         return;
     }
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = [resultObjects firstObject];
         if (![user isKindOfClass:[VUser class]])
@@ -336,7 +336,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             }
         }
     };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         if (errorBlock)
         {

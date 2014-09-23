@@ -37,7 +37,7 @@
     self = [super initWithMediaURL:mediaURL];
     if (self)
     {
-        _originalImage = _filteredImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should* be a local file URL.
+        _originalImage = _filteredImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should *be a local file URL.
     }
     return self;
 }
@@ -50,6 +50,8 @@
     
     UIImageView *previewImageView = [[UIImageView alloc] initWithImage:[self previewImage]];
     previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    previewImageView.clipsToBounds = YES;
+    previewImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.previewImageSuperview addSubview:previewImageView];
     [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]|"
                                                                                        options:0

@@ -2,7 +2,7 @@
 //  VMessage.h
 //  victorious
 //
-//  Created by Will Long on 9/5/14.
+//  Created by Will Long on 9/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSNumber * senderUserId;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailPath;
+@property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VNotification *notification;
 @property (nonatomic, retain) VUser *sender;

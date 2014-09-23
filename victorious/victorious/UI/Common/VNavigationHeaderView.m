@@ -68,7 +68,7 @@
     self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    UIImage* image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
     
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];

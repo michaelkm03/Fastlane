@@ -13,7 +13,7 @@
 @interface VDirectoryViewController : UIViewController
 
 @property (nonatomic, readonly) VStream *stream;
-@property (strong, nonatomic, readonly) VDirectoryDataSource* directoryDataSource;
+@property (strong, nonatomic, readonly) VDirectoryDataSource *directoryDataSource;
 @property (weak, nonatomic, readonly) UICollectionView *collectionView;
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream;

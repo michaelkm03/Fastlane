@@ -45,7 +45,7 @@
                                                      expectedValue:@"sequence"
                                                      objectMapping:sequenceMapping]];
     
-    RKRelationshipMapping* contentRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
+    RKRelationshipMapping *contentRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
                                                                                            toKeyPath:VSelectorName(streamItems)
                                                                                          withMapping:contentMapping];
     [mapping addPropertyMapping:contentRelationshipMapping];

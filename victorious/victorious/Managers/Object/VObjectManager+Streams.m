@@ -29,7 +29,7 @@
                                                          entityName:[VAbstractFilter entityName]
                                                managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
@@ -40,9 +40,9 @@
             }
             
             NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-            for (VStreamItem* streamItem in resultObjects)
+            for (VStreamItem *streamItem in resultObjects)
             {
-                VStreamItem* streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
                 [streamItems addObject:streamItemInContext];
             }
             stream.streamItems = streamItems;
@@ -54,7 +54,7 @@
         };
         
         //Don't complete the fetch until we have the users
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
         for (VStreamItem *item in resultObjects)
         {
             VSequence *sequence = (VSequence *)item;
@@ -70,11 +70,11 @@
         if ([nonExistantUsers count])
         {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  paginationBlock();
              }
-                                             failBlock:^(NSOperation* operation, NSError* error)
+                                             failBlock:^(NSOperation *operation, NSError *error)
              {
                  VLog(@"Failed with error: %@", error);
                  paginationBlock();
@@ -95,6 +95,5 @@
         return [self.paginationManager loadNextPageOfFilter:paginationFilter successBlock:fullSuccessBlock failBlock:fail];
     }
 }
-
 
 @end
