@@ -24,8 +24,8 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
-                                                                       failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)updateUnreadMessageCountWithSuccessBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *) deleteConversation:(VConversation *)conversation
                                             successBlock:(VSuccessBlock)success

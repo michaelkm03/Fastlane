@@ -100,6 +100,8 @@
         }
         self.shouldScrollToBottom = YES;
     }
+
+    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -112,7 +114,6 @@
 {
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
-    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
 }
 
 - (void)loadNextPageAction
