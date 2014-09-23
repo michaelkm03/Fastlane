@@ -26,7 +26,7 @@
 @interface VRealtimeCommentsViewModel : NSObject
 
 /**
- *  An array of VComment objects that have a realtime timestamp property. Not enforced.
+ *  An array of VComment objects that have a realtime timestamp property. Prunes objects that are not VCommetns or have a nil realtime property.
  */
 @property (nonatomic, strong) NSArray *realTimeComments;
 

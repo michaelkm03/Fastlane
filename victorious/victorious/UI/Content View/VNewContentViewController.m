@@ -640,7 +640,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
-    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
     {
         VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
         realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;

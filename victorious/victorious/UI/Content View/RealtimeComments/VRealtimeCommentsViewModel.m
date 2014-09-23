@@ -139,7 +139,7 @@
 
 - (CGFloat)percentThroughMediaForCurrentRealTimeComment
 {
-    return !isnan(self.currentComment.realtime.floatValue / CMTimeGetSeconds(self.totalTime)) ?: 0.0f;
+    return !isnan(self.currentComment.realtime.floatValue / CMTimeGetSeconds(self.totalTime)) ? (self.currentComment.realtime.floatValue / CMTimeGetSeconds(self.totalTime)) : 0.0f;
 }
 
 @end
