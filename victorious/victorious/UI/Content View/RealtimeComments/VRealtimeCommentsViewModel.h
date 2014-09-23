@@ -12,6 +12,7 @@
 
 @protocol VRealtimeCommentsViewModelDelegate <NSObject>
 
+- (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel;
 - (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel;
 
 @end

@@ -16,11 +16,6 @@
 UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
 /**
- *  Posted whenever new realtime comments are available.
- */
-UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification;
-
-/**
  *  An enumeration of the various content types supported by VContentViewModel.
  */
 typedef NS_ENUM(NSInteger, VContentViewType)

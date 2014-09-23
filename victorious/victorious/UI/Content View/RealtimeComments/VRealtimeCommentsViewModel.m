@@ -54,6 +54,8 @@
     }];
     
     _realTimeComments = realRealTimeComments;
+    
+    [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
 }
 
 - (NSInteger)numberOfRealTimeComments

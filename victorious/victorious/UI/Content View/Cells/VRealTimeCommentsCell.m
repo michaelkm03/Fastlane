@@ -119,4 +119,9 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     [self.realtimeCommentStrip addSubview:avatarView];
 }
 
+- (void)clearAvatarStrip
+{
+    [self.realtimeCommentStrip.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
 @end

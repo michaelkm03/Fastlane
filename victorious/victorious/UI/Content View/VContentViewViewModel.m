@@ -29,7 +29,6 @@
 #import "NSURL+MediaType.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
-NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"VContentViewViewModelDidUpdateRealTimeCommentsNotification";
 
 @interface VContentViewViewModel ()
 
@@ -202,19 +201,7 @@ NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification = @"
     [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
                                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         // Ensure we have all VComments
-         [resultObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-          {
-              if (![obj isKindOfClass:[VComment class]])
-              {
-                  return;
-              }
-          }];
-         
-         self.realTimeCommentsViewModel.realTimeComments = [self.sequence.comments array];
-         
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateRealTimeCommentsNotification
-                                                             object:self];
+         self.realTimeCommentsViewModel.realTimeComments = self.comments;
      }
                                                                failBlock:nil];
     

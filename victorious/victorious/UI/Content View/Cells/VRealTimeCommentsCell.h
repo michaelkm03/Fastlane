@@ -44,4 +44,9 @@
 - (void)addAvatarWithURL:(NSURL *)avatarURL
      withPercentLocation:(CGFloat)percentLocation;
 
+/**
+ *  Clears the avatars in the strip.
+ */
+- (void)clearAvatarStrip;
+
 @end

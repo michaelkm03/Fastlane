@@ -189,10 +189,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
                                                object:self.viewModel];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(realtimeCommentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateRealTimeCommentsNotification
-                                               object:self.viewModel];
+    self.viewModel.realTimeCommentsViewModel.delegate = self;
     
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
     [self becomeFirstResponder];
@@ -308,13 +305,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         
         self.handleView.numberOfComments = self.viewModel.commentCount;
     }
-}
-
-- (void)realtimeCommentsDidUpdate:(NSNotification *)notification
-{
-    self.viewModel.realTimeCommentsViewModel.delegate = self;
-    
-    [self.contentCollectionView reloadData];
 }
 
 #pragma mark - IBActions
@@ -442,6 +432,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         {
             if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
             {
+                if (self.realTimeComentsCell)
+                {
+                    return self.realTimeComentsCell;
+                }
+                
                 self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
                 return self.realTimeComentsCell;
@@ -646,6 +641,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
+    self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+    
+    [self.realTimeComentsCell clearAvatarStrip];
+    
     for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
     {
         VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
@@ -681,6 +680,22 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 }
 
+- (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
+{
+    [self.contentCollectionView reloadData];
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    
+    [self.realTimeComentsCell clearAvatarStrip];
+    
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
+    {
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+        realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+    }
+}
+
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
@@ -700,12 +715,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
                               mediaURL:self.mediaURL
-                            completion:^(BOOL succeeded) {
-                                [welf.viewModel fetchComments];
-                                
-                                NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-                                [welf.contentCollectionView reloadSections:commentsIndexSet];
-                            }];
+                            completion:^(BOOL succeeded)
+     {
+         [welf.viewModel fetchComments];
+         [welf.contentCollectionView reloadData];
+         [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+     }];
     
     [inputAccessoryView clearTextAndResign];
     self.mediaURL = nil;
