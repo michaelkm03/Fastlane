@@ -205,7 +205,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
                                            placeholderImage:placeholderImage
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    
+
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), @"0:00"];
     self.inputAccessoryView.alpha = 0.0f;
     [UIView animateWithDuration:0.2f
                      animations:^
@@ -609,6 +610,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
     [self.emptyRealTimeCommentsCell setProgress: progressedTime];
     [self.realTimeComentsCell setProgress:progressedTime];
+    
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%.2f", NSLocalizedString(@"LeaveACommentAt", @""), CMTimeGetSeconds(time)];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -630,6 +633,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     self.emptyRealTimeCommentsCell.progress = 1.0f;
     self.realTimeComentsCell.progress = 1.0f;
+    
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%.2f", NSLocalizedString(@"LeaveACommentAt", @""), CMTimeGetSeconds(totalTime)];
 }
 
 #pragma mark - VRealtimeCommentsViewModelDelegate
