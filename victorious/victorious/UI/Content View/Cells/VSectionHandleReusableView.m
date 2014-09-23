@@ -44,7 +44,7 @@
 {
     _numberOfComments = numberOfComments;
     
-    NSString *commentText = [NSString stringWithFormat:@"%@ %@%@", @(numberOfComments),NSLocalizedString(@"Comment", @""), (numberOfComments > 1) ? @"s" : @""];
+    NSString *commentText = [NSString stringWithFormat:@"%@ %@", @(numberOfComments), (numberOfComments > 1) ? NSLocalizedString(@"Comments", @"") : NSLocalizedString(@"Comment", @"")];
     
     self.commentCountLabel.text = commentText;
 }
