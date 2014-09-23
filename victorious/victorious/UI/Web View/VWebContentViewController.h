@@ -8,8 +8,6 @@
 
 @interface VWebContentViewController : UIViewController <UIWebViewDelegate>
 
-+ (instancetype)webContentViewController;
-
 @property (nonatomic, strong) NSURL *urlToView;
 
 @property (nonatomic, weak, readonly) IBOutlet UIWebView *webView;

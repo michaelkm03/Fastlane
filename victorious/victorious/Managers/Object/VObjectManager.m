@@ -69,9 +69,8 @@
     manager.managedObjectStore = managedObjectStore;
     
     // Initialize the Core Data stack
-    NSError *error = nil;
     [managedObjectStore createPersistentStoreCoordinator];
-    [managedObjectStore addInMemoryPersistentStore:&error];
+    [managedObjectStore addInMemoryPersistentStore:nil];
     [managedObjectStore createManagedObjectContexts];
     
     // Configure a managed object cache to ensure we do not create duplicate objects
@@ -295,8 +294,6 @@
         return nil;
     }
     
-    [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
-    
     NSMutableURLRequest *request =
     [self.HTTPClient multipartFormRequestWithMethod:@"POST"
                                                path:path
@@ -319,6 +316,8 @@
               }
           }];
      }];
+    
+    [self updateHTTPHeadersInRequest:request];
     
     //Wrap the vsuccess block in a afsuccess block
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
@@ -401,26 +400,20 @@
 
 #pragma mark - Subclass
 
-- (id)appropriateObjectRequestOperationWithObject:(id)object
-                                           method:(RKRequestMethod)method
-                                             path:(NSString *)path
-                                       parameters:(NSDictionary *)parameters
+- (NSMutableURLRequest *)requestWithObject:(id)object
+                                    method:(RKRequestMethod)method
+                                      path:(NSString *)path
+                                parameters:(NSDictionary *)parameters
 {
-    [self updateHTTPHeadersForPath:path method:method];
-    
-    return [super appropriateObjectRequestOperationWithObject:object
-                                                       method:method
-                                                         path:path
-                                                   parameters:parameters];
+    NSMutableURLRequest *urlRequest = [super requestWithObject:object method:method path:path parameters:parameters];
+    [self updateHTTPHeadersInRequest:urlRequest];
+    return urlRequest;
 }
 
-- (void)updateHTTPHeadersForPath:(NSString *)path method:(RKRequestMethod)method
+- (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request
 {
-    
-    AFHTTPClient *client = [self HTTPClient];
-    
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString *userAgent = (client.defaultHeaders)[kVUserAgentHeader];
+    NSString *userAgent = request.allHTTPHeaderFields[kVUserAgentHeader];
     
     __block NSString *token;
     __block NSNumber *userID;
@@ -435,15 +428,15 @@
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
                              currentDate,
-                             path,
+                             request.URL.path,
                              userAgent,
                              token,
-                             RKStringFromRequestMethod(method)] SHA1HexDigest];
+                             request.HTTPMethod] SHA1HexDigest];
     
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
-    [client setDefaultHeader:@"Authorization" value:sha1String];
-    [client setDefaultHeader:@"Date" value:currentDate];
+    [request addValue:sha1String forHTTPHeaderField:@"Authorization"];
+    [request addValue:currentDate forHTTPHeaderField:@"Date"];
 }
 
 - (NSString *)rFC2822DateTimeString

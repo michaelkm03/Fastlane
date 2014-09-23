@@ -50,7 +50,6 @@
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
-@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;

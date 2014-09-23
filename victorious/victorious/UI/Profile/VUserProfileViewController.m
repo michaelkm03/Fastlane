@@ -99,7 +99,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     else
     {
-        self.navigationItem.title = self.profile.name ? self.profile.name : @"Profile";
+        self.navigationItem.title = self.profile.name ?: @"Profile";
     }
     
     [super viewDidLoad];

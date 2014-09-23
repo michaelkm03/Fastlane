@@ -282,7 +282,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
     }
-    if (time >= 0 && asset.remoteId)
+    if (time.doubleValue >= 0 && asset.remoteId)
     {
         [parameters setObject:asset.remoteId forKey:@"asset_id"];
         [parameters setObject:time forKey:@"realtime"];
