@@ -300,6 +300,7 @@
 "RepostContentView"     =   " REPOST";
 "RepostedContentView"   =   " REPOSTED";
 "comments"              =   "comments";
+"Comment"               =   "Comment";
 
 "repostedFromFormat"      =   "Repost from %@";
 "remixedFromFormat"       =   "Remix from %@";
