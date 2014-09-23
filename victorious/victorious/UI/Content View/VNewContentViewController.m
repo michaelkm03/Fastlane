@@ -285,6 +285,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)realtimeCommentsDidUpdate:(NSNotification *)notification
 {
     self.viewModel.realTimeCommentsViewModel.delegate = self;
+    
+    //TODO: This should not reload everything but the collectionview is giving me problems with reloadSection:
+    [self.contentCollectionView reloadData];
 }
 
 #pragma mark - IBActions
@@ -455,7 +458,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
-            return (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds] : [VEmptyProgressView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
+            {
+                CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setSizeForRealTimeComentsView:realTimeCommentsSize];
+                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setCatchPoint:realTimeCommentsSize.height];
+                return realTimeCommentsSize;
+            }
+            else
+            {
+                return [VEmptyProgressView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            }
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)

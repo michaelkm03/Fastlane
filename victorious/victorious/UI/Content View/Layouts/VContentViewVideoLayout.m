@@ -16,14 +16,12 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 @interface VContentViewVideoLayout ()
 
-@property (nonatomic, assign) CGFloat catchPoint;
 @property (nonatomic, assign) CGFloat contentViewXTargetTranslation;
 @property (nonatomic, assign) CGFloat contentViewYTargetTranslation;
 
 // Publicly Readonly
 @property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
 @property (nonatomic, assign, readwrite) CGSize sizeForContentView;
-@property (nonatomic, assign, readwrite) CGSize sizeForRealTimeComentsView;
 
 @end
 
