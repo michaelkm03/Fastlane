@@ -8,12 +8,33 @@
 
 #import <UIKit/UIKit.h>
 
+@class  VNavigationHeaderView;
+
 @protocol VNavigationHeaderDelegate <NSObject>
 
 @optional
-- (void)backButtonPressed;
-- (void)menuButtonPressed;
-- (void)addButtonPressed;
+
+/**
+ *  Callback when the back button is pressed
+ *
+ *  @param navHeaderView The NavigationHeaderview that pressed back
+ */
+- (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView;
+
+/**
+ *  Callback when the menu button is pressed
+ *
+ *  @param navHeaderView The NavigationHeaderview that pressed menu
+ */
+- (void)menuPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView;
+
+/**
+ *  Callback when the add button is pressed
+ *
+ *  @param navHeaderView The NavigationHeaderview that pressed add
+ */
+- (void)addPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView;
+
 /**
  *  Callback that handles the changed index
  *
@@ -27,6 +48,9 @@
 
 @interface VNavigationHeaderView : UIView
 
+/**
+ *  Sets the hidden property of the add button
+ */
 @property (nonatomic) BOOL showAddButton;
 
 @property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;
@@ -34,7 +58,14 @@
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles;
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;
 
+/**
+ *  Call to show the customized header logo image.
+ */
 - (void)showHeaderLogo;
+
+/**
+ *  Updates the UI of the header view.  Call after the VC's viewDidLoad.
+ */
 - (void)updateUI;
 
 @end

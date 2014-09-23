@@ -650,9 +650,7 @@ typedef UIView View;
     }
 }
 
-
 #pragma mark - App NSNotifications
-
 // TODO: support suspend/resume video recording
 
 - (void)_applicationWillEnterForeground:(NSNotification *)notification
@@ -669,9 +667,7 @@ typedef UIView View;
 }
 
 #pragma mark - AV NSNotifications
-
 // capture session
-
 // TODO: add in a better error recovery
 
 - (void)_sessionRuntimeErrored:(NSNotification *)notification

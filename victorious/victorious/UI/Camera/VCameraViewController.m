@@ -263,7 +263,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }];
 }
 
-
 #pragma mark - Activate / Deactivate Record Button
 
 - (void)activateDeactivateRecordButton:(BOOL)activate
@@ -279,7 +278,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.recordButton.userInteractionEnabled = NO;
     }
 }
-
 
 #pragma mark - Actions
 

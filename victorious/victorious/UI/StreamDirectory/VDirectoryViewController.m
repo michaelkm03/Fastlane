@@ -156,19 +156,20 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 }
 
 
-- (void)backButtonPressed
+- (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (navHeaderView == self.navHeaderView)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
-- (void)menuButtonPressed
+- (void)menuPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
 {
-    [self.sideMenuViewController presentMenuViewController];
-}
-
-- (void)addButtonPressed
-{
-    
+    if (navHeaderView == self.navHeaderView)
+    {
+        [self.sideMenuViewController presentMenuViewController];
+    }
 }
 
 #pragma mark - Refresh

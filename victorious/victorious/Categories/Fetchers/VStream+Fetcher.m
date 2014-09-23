@@ -58,6 +58,8 @@ static NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+
     user = user ?: [VObjectManager sharedManager].mainUser;
     
     NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
@@ -67,6 +69,8 @@ static NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)streamForChannelsDirectory
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+
     NSString* apiPath = @"/api/sequence/detail_list_by_stream/directory";
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }

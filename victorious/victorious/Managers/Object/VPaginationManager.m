@@ -42,7 +42,10 @@
     NSAssert(filter, @"No filter provided to refreshFilter.");
     if (!filter)
     {
-        return nil; //Prevent crashes on production.  We can recieve a nil filter from the stream API if the response is incomplete.
+        if (fail)
+        {
+            fail(nil, nil);
+        }
     }
     
     __block BOOL isLoading = NO;
