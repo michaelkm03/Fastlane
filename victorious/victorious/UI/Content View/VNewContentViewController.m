@@ -137,8 +137,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
-
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -188,6 +186,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     [super viewWillAppear:animated];
     
     [self.viewModel fetchComments];
+    
+    
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
@@ -418,9 +419,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                 VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                                                                                        withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
                                                                                                                                               forIndexPath:indexPath];
-                handleView.numberOfComments = self.viewModel.commentCount;
                 self.handleView = handleView;
             }
+            self.handleView.numberOfComments = self.viewModel.commentCount;
+            
             return self.handleView;
         }
         case VContentViewSectionCount:
@@ -585,6 +587,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                             }];
     
     [inputAccessoryView clearTextAndResign];
+    self.mediaURL = nil;
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView

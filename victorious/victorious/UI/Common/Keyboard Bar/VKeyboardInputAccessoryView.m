@@ -99,6 +99,7 @@
     self.editingTextView.text = nil;
     self.sendButton.enabled = NO;
     self.attachmentThumbnail.image = nil;
+    self.selectedThumbnail = nil;
     self.attachmentsButton.alpha = 1.0f;
     
     [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]

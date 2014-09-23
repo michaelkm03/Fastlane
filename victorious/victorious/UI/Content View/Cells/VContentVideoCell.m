@@ -23,7 +23,7 @@
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
 
-#pragma mark - NSObject
+#pragma mark - NSObjectn
 
 - (void)awakeFromNib
 {
@@ -31,6 +31,8 @@
                                                                                    bundle:nil];
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
