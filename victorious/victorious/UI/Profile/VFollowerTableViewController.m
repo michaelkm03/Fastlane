@@ -17,6 +17,7 @@
 @interface VFollowerTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *followers;
+@property (nonatomic) BOOL isMe;
 
 @end
 
@@ -134,10 +135,25 @@
 {
     if (!hasFollowers)
     {
+        NSString *msg, *title;
+        
+        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        
+        if (self.isMe)
+        {
+            title = NSLocalizedString(@"NoFollowersTitle", @"");
+            msg = NSLocalizedString(@"NoFollowersMessage", @"");
+        }
+        else
+        {
+            title = NSLocalizedString(@"ProfileNoFollowersTitle", @"");
+            msg = NSLocalizedString(@"ProfileNoFollowersMessage", @"");
+        }
+        
         VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noFollowersView;
-        noFollowersView.titleLabel.text = NSLocalizedString(@"NoFollowersTitle", @"");
-        noFollowersView.messageLabel.text = NSLocalizedString(@"NoFollowersMessage", @"");
+        noFollowersView.titleLabel.text = title;
+        noFollowersView.messageLabel.text = msg;
         noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
