@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, assign) BOOL hasAutoPlayed;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -77,6 +78,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     
     contentViewController.viewModel = viewModel;
+    contentViewController.hasAutoPlayed = NO;
     
     return contentViewController;
 }
@@ -211,6 +213,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewDidAppear:animated];
     
+    if (!self.hasAutoPlayed)
+    {
+        [self.videoCell play];
+        self.hasAutoPlayed = YES;
+    }
+
     [self.contentCollectionView flashScrollIndicators];
 }
 

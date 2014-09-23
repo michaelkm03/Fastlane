@@ -45,6 +45,13 @@
     [self.videoPlayerViewController setItemURL:videoURL];
 }
 
+#pragma mark - Public Methods
+
+- (void)play
+{
+    [self.videoPlayerViewController.player play];
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer

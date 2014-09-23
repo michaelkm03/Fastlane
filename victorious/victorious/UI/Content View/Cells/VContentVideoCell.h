@@ -44,4 +44,9 @@
 
 @property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
 
+/**
+ *  Instruct the video cell's video player to play.
+ */
+- (void)play;
+
 @end
