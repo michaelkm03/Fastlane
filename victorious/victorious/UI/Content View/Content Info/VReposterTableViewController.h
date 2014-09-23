@@ -12,6 +12,6 @@
 
 @interface VReposterTableViewController : UITableViewController
 
-@property (nonatomic, strong) VSequence* sequence;
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

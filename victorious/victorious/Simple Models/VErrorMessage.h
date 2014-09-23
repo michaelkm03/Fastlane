@@ -14,7 +14,7 @@
 @property (nonatomic, assign) NSInteger user_id;
 @property (nonatomic, assign) NSInteger page_number;
 @property (nonatomic, assign) NSInteger total_pages;
-@property (nonatomic, strong) NSArray* errorMessages;
+@property (nonatomic, strong) NSArray *errorMessages;
 
 + (RKObjectMapping *)objectMapping;
 

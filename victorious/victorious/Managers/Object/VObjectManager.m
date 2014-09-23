@@ -58,7 +58,7 @@
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[kVUserAgentHeader];
     
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSNumber* appID = [VObjectManager currentEnvironment].appID;
+    NSNumber *appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [[manager HTTPClient] setDefaultHeader:kVUserAgentHeader value:userAgent];
     
@@ -69,9 +69,8 @@
     manager.managedObjectStore = managedObjectStore;
     
     // Initialize the Core Data stack
-    NSError *error = nil;
     [managedObjectStore createPersistentStoreCoordinator];
-    [managedObjectStore addInMemoryPersistentStore:&error];
+    [managedObjectStore addInMemoryPersistentStore:nil];
     [managedObjectStore createManagedObjectContexts];
     
     // Configure a managed object cache to ensure we do not create duplicate objects
@@ -138,7 +137,7 @@
                                       successBlock:(VSuccessBlock)successBlock
                                          failBlock:(VFailBlock)failBlock
 {
-    NSURL* url = [NSURL URLWithString:path];
+    NSURL *url = [NSURL URLWithString:path];
     if ([path isEmpty] || !url)
     {
         //Something has gone horribly wrong, so fail.
@@ -152,10 +151,10 @@
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
 
-     void (^rkSuccessBlock) (RKObjectRequestOperation*, RKMappingResult*) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+     void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
-        NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
-        VErrorMessage* error;
+        NSMutableArray *mappedObjects = [mappingResult.array mutableCopy];
+        VErrorMessage *error;
         for (id object in mappedObjects)
         {
             if ([object isKindOfClass:[VErrorMessage class]])
@@ -184,7 +183,7 @@
         }
         else if (error.errorCode)
         {
-            NSError* nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+            NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
@@ -195,9 +194,9 @@
         }
     };
     
-    VFailBlock rkFailBlock = ^(NSOperation* operation, NSError* error)
+    VFailBlock rkFailBlock = ^(NSOperation *operation, NSError *error)
     {
-        RKErrorMessage* rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
+        RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
         {
             self.mainUser = nil;
@@ -228,7 +227,7 @@
     else if(errorCode == kVUserBannedError)
     {
         self.mainUser = nil;
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                                message:NSLocalizedString(@"UserBannedMessage", @"")
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -295,8 +294,6 @@
         return nil;
     }
     
-    [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
-    
     NSMutableURLRequest *request =
     [self.HTTPClient multipartFormRequestWithMethod:@"POST"
                                                path:path
@@ -305,10 +302,10 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+              NSString *extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
               if (extension)
               {
-                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
+                  NSString *mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
                     ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj
@@ -319,6 +316,8 @@
               }
           }];
      }];
+    
+    [self updateHTTPHeadersInRequest:request];
     
     //Wrap the vsuccess block in a afsuccess block
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
@@ -360,7 +359,7 @@
         return nil;
     }
     
-    NSString* errorMessage = responseObject[@"message"];
+    NSString *errorMessage = responseObject[@"message"];
     if ([errorMessage isKindOfClass:[NSArray class]])
     {
         errorMessage = [(NSArray *)errorMessage componentsJoinedByString:@", "];
@@ -375,14 +374,14 @@
                       entityName:(NSString *)entityName
             managedObjectContext:(NSManagedObjectContext *)context
 {
-    NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
+    NSManagedObject *object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
     {
         return object;
     }
     
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
+    NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
     [request setPredicate:idFilter];
     NSError *error = nil;
     object = [[context executeFetchRequest:request error:&error] firstObject];
@@ -400,29 +399,24 @@
 }
 
 #pragma mark - Subclass
-- (id)appropriateObjectRequestOperationWithObject:(id)object
-                                           method:(RKRequestMethod)method
-                                             path:(NSString *)path
-                                       parameters:(NSDictionary *)parameters
+
+- (NSMutableURLRequest *)requestWithObject:(id)object
+                                    method:(RKRequestMethod)method
+                                      path:(NSString *)path
+                                parameters:(NSDictionary *)parameters
 {
-    [self updateHTTPHeadersForPath:path method:method];
-    
-    return [super appropriateObjectRequestOperationWithObject:object
-                                                       method:method
-                                                         path:path
-                                                   parameters:parameters];
+    NSMutableURLRequest *urlRequest = [super requestWithObject:object method:method path:path parameters:parameters];
+    [self updateHTTPHeadersInRequest:urlRequest];
+    return urlRequest;
 }
 
-- (void)updateHTTPHeadersForPath:(NSString *)path method:(RKRequestMethod)method
+- (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request
 {
-    
-    AFHTTPClient* client = [self HTTPClient];
-    
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString* userAgent = (client.defaultHeaders)[kVUserAgentHeader];
+    NSString *userAgent = request.allHTTPHeaderFields[kVUserAgentHeader];
     
-    __block NSString* token;
-    __block NSNumber* userID;
+    __block NSString *token;
+    __block NSNumber *userID;
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
     [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
@@ -434,15 +428,15 @@
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
                              currentDate,
-                             path,
+                             request.URL.path,
                              userAgent,
                              token,
-                             RKStringFromRequestMethod(method)] SHA1HexDigest];
+                             request.HTTPMethod] SHA1HexDigest];
     
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
-    [client setDefaultHeader:@"Authorization" value:sha1String];
-    [client setDefaultHeader:@"Date" value:currentDate];
+    [request addValue:sha1String forHTTPHeaderField:@"Authorization"];
+    [request addValue:currentDate forHTTPHeaderField:@"Date"];
 }
 
 - (NSString *)rFC2822DateTimeString

@@ -20,7 +20,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"label" : VSelectorName(label),
-                                  @"display_order" : VSelectorName(display_order),
                                   @"answer_id" : VSelectorName(remoteId),
                                   @"is_correct" : VSelectorName(isCorrect),
                                   @"label_media_url" : VSelectorName(mediaUrl),

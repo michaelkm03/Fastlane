@@ -15,7 +15,9 @@
 #import "VThemeManager.h"
 
 @interface VProfileEditViewController ()
-@property (nonatomic, weak) IBOutlet UILabel* nameLabel;
+
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+
 @end
 
 @implementation VProfileEditViewController
@@ -48,7 +50,7 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
--(BOOL)prefersStatusBarHidden
+- (BOOL)prefersStatusBarHidden
 {
     return NO;
 }
@@ -60,7 +62,7 @@
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Save Profile" label:nil value:nil];
 
-    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"ProfileSave", @"");
 
@@ -70,12 +72,12 @@
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
                                                       tagline:self.taglineTextView.text
-                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [progressHUD hide:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
-                                                    failBlock:^(NSOperation* operation, NSError* error)
+                                                    failBlock:^(NSOperation *operation, NSError *error)
     {
         [progressHUD hide:YES];
         sender.enabled = YES;

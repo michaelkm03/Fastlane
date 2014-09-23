@@ -45,7 +45,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 + (instancetype)inboxViewController
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     return (VInboxViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
 }
 
@@ -77,6 +77,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 }
 
 #pragma mark - Segmented Control
+
 - (void)toggleFilterControl:(NSInteger)idx
 {
     VModeSelect = idx;
@@ -95,7 +96,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
-    RKObjectManager* manager = [RKObjectManager sharedManager];
+    RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = nil;
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
@@ -128,6 +129,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 }
 
 #pragma mark - UITabvleViewDataSource
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
@@ -150,12 +152,12 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell*    theCell;
+    UITableViewCell    *theCell;
 
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-        VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
+        VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VConversationCell *)theCell setConversation:info];
         ((VConversationCell *)theCell).parentTableViewController = self;
     }
@@ -199,17 +201,17 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [[VObjectManager sharedManager] deleteConversation:conversation
-                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [VMessageContainerViewController removeCachedViewControllerForUser:conversation.user];
-            NSManagedObjectContext* context =   conversation.managedObjectContext;
+            NSManagedObjectContext *context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
         }
-                                                 failBlock:^(NSOperation* operation, NSError* error)
+                                                 failBlock:^(NSOperation *operation, NSError *error)
         {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -223,7 +225,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
         VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
@@ -246,7 +248,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.tableView reloadData];
         NSLog(@"%@", error.localizedDescription);
@@ -254,7 +256,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         [self setHasMessages:0];
     };
     
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
@@ -281,10 +283,12 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:[[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
+    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    
     if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
         [[self.fetchedResultsController sections][0] numberOfObjects] &&
         ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
     {
         [self loadNextPageAction];
     }

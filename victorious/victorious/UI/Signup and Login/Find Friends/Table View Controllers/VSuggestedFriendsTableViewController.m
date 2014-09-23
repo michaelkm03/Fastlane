@@ -32,14 +32,14 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
-    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (completionBlock)
         {
             completionBlock(resultObjects, nil);
         }
     }
-                                                                   failBlock:^(NSOperation* operation, NSError* error)
+                                                                   failBlock:^(NSOperation *operation, NSError *error)
     {
         if (completionBlock)
         {

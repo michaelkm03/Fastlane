@@ -30,7 +30,8 @@
                                   @"name" : VSelectorName(name),
                                   @"access_level" : VSelectorName(accessLevel),
                                   @"token" : VSelectorName(token),
-                                  @"token_updated_at" : VSelectorName(tokenUpdatedAt)
+                                  @"token_updated_at" : VSelectorName(tokenUpdatedAt),
+                                  @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

@@ -81,6 +81,11 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     self.seeMoreString = [seeMoreString copy];
 }
 
+- (void)dealloc
+{
+    _layoutManager.delegate = nil;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -137,7 +142,6 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 {
     _locationForLastLineOfText = lastLineOfTextLocation;
 }
-
 
 #pragma mark - See More button positioning
 

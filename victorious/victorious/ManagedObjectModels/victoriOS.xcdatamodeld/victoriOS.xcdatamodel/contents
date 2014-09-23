@@ -8,7 +8,6 @@
     </entity>
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="isCorrect" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,7 +23,6 @@
     </entity>
     <entity name="Asset" representedClassName="VAsset" syncable="YES">
         <attribute name="data" attributeType="String" syncable="YES"/>
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -36,14 +34,13 @@
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="display_order" attributeType="Integer 32" minValueString="-1" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parentId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -73,14 +70,13 @@
         <relationship name="directories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Directory" inverseName="directoryItems" inverseEntity="Directory" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="nodeId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Integer 32" minValueString="-1" syncable="YES"/>
         <attribute name="timeout" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
+        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
         <relationship name="interactionAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="InteractionAction" inverseName="relationship" inverseEntity="InteractionAction" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="interactions" inverseEntity="Node" syncable="YES"/>
         <relationship name="rules" toMany="YES" deletionRule="Cascade" destinationEntity="Rule" inverseName="interaction" inverseEntity="Rule" syncable="YES"/>
@@ -104,11 +100,10 @@
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <attribute name="shareUrlPath" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
-        <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
+        <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
+        <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
         <relationship name="nodeAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -141,7 +136,6 @@
         <attribute name="category" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="display_order" optional="YES" attributeType="Integer 16" minValueString="-1" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -153,7 +147,7 @@
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
-        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
+        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
@@ -173,6 +167,7 @@
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accessLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
@@ -208,10 +203,10 @@
     </entity>
     <elements>
         <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
+        <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="178"/>
-        <element name="Comment" positionX="1080" positionY="5" width="128" height="328"/>
+        <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
+        <element name="Comment" positionX="1080" positionY="5" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Directory" positionX="853" positionY="-643" width="128" height="58"/>
         <element name="DirectoryItem" positionX="853" positionY="-531" width="128" height="103"/>
@@ -219,14 +214,16 @@
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="148"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
+        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="388"/>
+        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="373"/>
         <element name="Stream" positionX="828" positionY="-409" width="128" height="73"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="388"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="403"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
     </elements>

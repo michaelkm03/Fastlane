@@ -52,5 +52,4 @@
     return @[yConstraint, xConstraint, widthConstraint, heightConstraint, maxHeightConstraint];
 }
 
-
 @end

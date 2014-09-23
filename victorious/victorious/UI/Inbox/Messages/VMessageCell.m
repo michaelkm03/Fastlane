@@ -40,7 +40,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     [super awakeFromNib];
     self.chatBubble.image = [[[UIImage imageNamed:kChatBubble] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
-    UIColor* transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
+    UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
     self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.profileImageView.tintColor = transparentAccent;
     [self resetView];

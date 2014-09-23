@@ -19,7 +19,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),
-                                  @"display_order" : VSelectorName(display_order),
                                   @"type" : VSelectorName(type),
                                   @"data" : VSelectorName(data),
                                   @"speed" : VSelectorName(speed),
@@ -31,7 +30,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(display_order), VSelectorName(nodeId) ];
+    mapping.identificationAttributes = @[ VSelectorName(nodeId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
@@ -47,8 +46,6 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    [mapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:@"@metadata.mapping.collectionIndex"
-                                                                      toKeyPath:VSelectorName(display_order)]];
     [mapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:VSelectorName(data)]];
     
     return mapping;

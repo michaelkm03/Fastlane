@@ -11,14 +11,14 @@
 
 @interface VEphemeralTimerView()
 
-@property (strong, nonatomic) CAShapeLayer* timerLayer;
+@property (strong, nonatomic) CAShapeLayer *timerLayer;
 
-@property (strong, nonatomic) UIBezierPath* drawPath;
-@property (strong, nonatomic) UIBezierPath* erasePath;
+@property (strong, nonatomic) UIBezierPath *drawPath;
+@property (strong, nonatomic) UIBezierPath *erasePath;
 
-@property (strong, nonatomic) IBOutlet UILabel* dayLabel;
-@property (strong, nonatomic) IBOutlet UILabel* countdownLabel;
-@property (strong, nonatomic) IBOutlet UILabel* timeRemainingLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dayLabel;
+@property (strong, nonatomic) IBOutlet UILabel *countdownLabel;
+@property (strong, nonatomic) IBOutlet UILabel *timeRemainingLabel;
 
 @end
 
@@ -104,15 +104,15 @@
         self.dayLabel.text = [@(hours).stringValue stringByAppendingString:NSLocalizedString(@" Hours", nil)];
     }
     
-    NSString* hourString = hours > 9 ? @(hours).stringValue
+    NSString *hourString = hours > 9 ? @(hours).stringValue
                                     : hours <= 0 ? @"00"
                                     : [@"0" stringByAppendingString:@(hours).stringValue];
     
-    NSString* minuteString = minutes > 9 ? @(minutes).stringValue
+    NSString *minuteString = minutes > 9 ? @(minutes).stringValue
                                     : minutes <= 0 ? @"00"
                                     : [@"0" stringByAppendingString:@(minutes).stringValue];
     
-    NSString* secondString = secondsTilExpiration > 9 ? @(secondsTilExpiration).stringValue
+    NSString *secondString = secondsTilExpiration > 9 ? @(secondsTilExpiration).stringValue
                                     : secondsTilExpiration <= 0 ? @"00"
                                     : [@"0" stringByAppendingString:@(secondsTilExpiration).stringValue];
     
@@ -179,7 +179,7 @@
 
 - (CAAnimation *)newDrawAnimation
 {
-    CABasicAnimation* drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     
     CGFloat secondFragment = fmodf(CACurrentMediaTime(), 1.0f);
     
@@ -201,7 +201,7 @@
 
 - (CAAnimation *)newEraseAnimation
 {
-    CABasicAnimation* eraseAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    CABasicAnimation *eraseAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
 
     CGFloat secondFragment = fmodf(CACurrentMediaTime(), 1.0f);
 

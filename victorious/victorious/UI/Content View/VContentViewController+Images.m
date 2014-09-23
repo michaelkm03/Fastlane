@@ -14,7 +14,7 @@
 
 - (void)loadImage
 {
-    NSURL* imageUrl;
+    NSURL *imageUrl;
     if ([self.currentAsset.type isEqualToString:VConstantsMediaTypeImage])
     {
         imageUrl = [NSURL URLWithString:self.currentAsset.data];
