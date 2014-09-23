@@ -35,7 +35,8 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
+    if (self)
+    {
         [self commonInit];
     }
     return self;
