@@ -96,8 +96,8 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     self.collectionView.alwaysBounceVertical = YES;
     
     //Register cells
-    UINib *nib = [UINib nibWithNibName:kVStreamDirectoryItemCellName bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:kVStreamDirectoryItemCellName];
+    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
     
     [self refresh:self.refreshControl];
 }

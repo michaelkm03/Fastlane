@@ -10,12 +10,18 @@
 
 #import "VBaseCollectionViewCell.h"
 
+/**
+ *  A cell for the VDirectoryCollectionViewController.
+ */
 @class VStreamItem;
 
-extern NSString * const kVStreamDirectoryItemCellName;
+extern NSString * const VDirectoryItemCellNameStream;
 
 @interface VDirectoryItemCell : VBaseCollectionViewCell
 
+/**
+ *  The VStreamItem used to populate fields on the cell.
+ */
 @property (nonatomic, strong) VStreamItem* streamItem;
 
 @end

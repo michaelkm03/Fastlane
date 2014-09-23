@@ -28,6 +28,11 @@ static char KVOContext;
 
 @implementation VDirectoryDataSource
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)initWithStream:(VStream *)stream
 {
     self = [self init];
@@ -136,7 +141,7 @@ static char KVOContext;
     VDirectoryItemCell *cell;
 //    if ([item isKindOfClass:[VStream class]])
 //    {
-         cell = [collectionView dequeueReusableCellWithReuseIdentifier:kVStreamDirectoryItemCellName forIndexPath:indexPath];
+         cell = [collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
 //    }
     cell.streamItem = item;
     return cell;
@@ -159,8 +164,6 @@ static char KVOContext;
     if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         [self.collectionView reloadData];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:VStreamTableDataSourceDidChangeNotification
-//                                                            object:self];
     }
 }
 

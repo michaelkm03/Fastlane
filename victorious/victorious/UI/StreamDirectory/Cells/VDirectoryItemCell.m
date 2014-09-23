@@ -15,7 +15,7 @@
 
 #import "VThemeManager.h"
 
-NSString * const kVStreamDirectoryItemCellName = @"VStreamDirectoryItemCell";
+NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
 @interface VDirectoryItemCell()
 
