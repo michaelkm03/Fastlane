@@ -99,7 +99,7 @@
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {
-        if (comment.realtime.floatValue > seconds)
+        if (comment.realtime.doubleValue > seconds)
         {
             newCurrentComment = comment;
             *stop = YES;
@@ -135,7 +135,7 @@
         return 0.0f;
     }
     VComment *commentAtIndex = [self.realTimeComments objectAtIndex:index];
-    CGFloat percentThrought = commentAtIndex.realtime.floatValue / CMTimeGetSeconds(self.totalTime);
+    CGFloat percentThrought = commentAtIndex.realtime.doubleValue / CMTimeGetSeconds(self.totalTime);
     return percentThrought;
 }
 
