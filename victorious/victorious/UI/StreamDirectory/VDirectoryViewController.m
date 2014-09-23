@@ -16,6 +16,7 @@
 #import "VContentViewController.h"
 #import "VNavigationHeaderView.h"
 #import "UIViewController+VSideMenuViewController.h"
+#import "MBProgressHUD.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -192,11 +193,11 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
                                      failure:^(NSError *error)
      {
          [self.refreshControl endRefreshing];
-//         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
-//         hud.mode = MBProgressHUDModeText;
-//         hud.labelText = NSLocalizedString(@"RefreshError", @"");
-//         hud.userInteractionEnabled = NO;
-//         [hud hide:YES afterDelay:3.0];
+         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+         hud.mode = MBProgressHUDModeText;
+         hud.labelText = NSLocalizedString(@"RefreshError", @"");
+         hud.userInteractionEnabled = NO;
+         [hud hide:YES afterDelay:3.0];
      }];
     
     [self.refreshControl beginRefreshing];
