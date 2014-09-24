@@ -106,7 +106,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.view.clipsToBounds = YES;
 
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     [self.view.layer addSublayer:self.playerLayer];
     
     VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
