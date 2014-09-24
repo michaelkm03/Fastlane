@@ -19,8 +19,8 @@
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;
 @property (nonatomic, strong) NSArray *users;
-@property (nonatomic, strong) NSMutableArray *theFollowing;
-@property (nonatomic, strong) NSMutableArray *notFollowing;
+@property (nonatomic, strong) NSMutableArray *usersFollowing;
+@property (nonatomic, strong) NSMutableArray *usersNotFollowing;
 
 @end
 
@@ -88,7 +88,7 @@
             self.tableView.connectedView.hidden = NO;
             self.tableView.errorView.hidden = YES;
             
-            if (self.theFollowing.count || self.notFollowing.count)
+            if (self.usersFollowing.count || self.usersNotFollowing.count)
             {
                 self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [self.tableView.tableView reloadData];
@@ -171,8 +171,8 @@
 
 - (void)segregateUsers:(NSArray *)users
 {
-    self.theFollowing = [[NSMutableArray alloc] init];
-    self.notFollowing = [[NSMutableArray alloc] init];
+    self.usersFollowing = [[NSMutableArray alloc] init];
+    self.usersNotFollowing = [[NSMutableArray alloc] init];
     VUser *me = [[VObjectManager sharedManager] mainUser];
     
     NSSet *following = me.following;
@@ -181,18 +181,18 @@
     {
         if ([following containsObject:user])
         {
-            [self.theFollowing addObject:user];
+            [self.usersFollowing addObject:user];
         }
         else
         {
-            [self.notFollowing addObject:user];
+            [self.usersNotFollowing addObject:user];
         }
     }
     
     self.tableView.selectAllButton.hidden = NO;
     
     // Disable the Add All button if we don't have anyone to potentially add
-    if (self.notFollowing.count == 0)
+    if (self.usersNotFollowing.count == 0)
     {
         [self.tableView.selectAllButton setEnabled:NO];
         [self.tableView.selectAllButton.layer setBorderColor:[[UIColor colorWithWhite:0.781 alpha:1.000] CGColor]];
@@ -200,7 +200,7 @@
     }
     
     // Disable the No Content View if we have data
-    if (self.notFollowing.count > 0 || self.theFollowing.count > 0)
+    if (self.usersNotFollowing.count > 0 || self.usersFollowing.count > 0)
     {
         [self showNoContentView:NO];
     }
@@ -235,7 +235,7 @@
     NSArray *indexPaths = [self.tableView.tableView indexPathsForSelectedRows];
     return [indexPaths v_map:^id (id o)
     {
-        return self.notFollowing[[o row]];
+        return self.usersNotFollowing[[o row]];
     }];
 }
 
@@ -267,7 +267,7 @@
 
 - (void)selectAllRows
 {
-    for (NSUInteger n = 0; n < self.notFollowing.count; n++)
+    for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
     {
         [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:1] animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
@@ -330,7 +330,7 @@
     
     NSIndexPath *indexPath = [self.tableView.tableView indexPathForSelectedRow];
     NSInteger row = indexPath.row;
-    VUser *user = self.notFollowing[row];
+    VUser *user = self.usersNotFollowing[row];
     
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
 }
@@ -339,14 +339,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSInteger ans = 40.f;
+    NSInteger sectionHeight = 40.f;
     
-    if ((section == 0 && self.notFollowing.count == 0) || (section == 1 && self.theFollowing.count == 0))
+    if ((section == 0 && self.usersNotFollowing.count == 0) || (section == 1 && self.usersFollowing.count == 0))
     {
-        ans = 0.f;
+        sectionHeight = 0.f;
     }
 
-    return ans;
+    return sectionHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -422,29 +422,29 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger ans = 2;
+    NSInteger tableSections = 2;
     
-    if (self.theFollowing.count == 0 && self.notFollowing.count == 0)
+    if (self.usersFollowing.count == 0 && self.usersNotFollowing.count == 0)
     {
-        ans = 1;
+        tableSections = 1;
     }
     
-    return ans;
+    return tableSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger ans = 0;
+    NSInteger sectionRows = 0;
     
     if (section == 0)
     {
-        ans = self.notFollowing.count;
+        sectionRows = self.usersNotFollowing.count;
     }
     else if (section == 1)
     {
-        ans = self.theFollowing.count;
+        sectionRows = self.usersFollowing.count;
     }
-    return ans;
+    return sectionRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -454,11 +454,11 @@
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
     if (section == 0)
     {
-        cell.profile = self.notFollowing[indexPath.row];
+        cell.profile = self.usersNotFollowing[indexPath.row];
     }
     else if (section == 1)
     {
-        cell.profile = self.theFollowing[indexPath.row];
+        cell.profile = self.usersFollowing[indexPath.row];
         cell.isFollowing = YES;
     }
     return cell;

@@ -64,9 +64,6 @@
                                                  secret:nil
                                        withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        
-        [self addFollowRelationship:fullResponse withResultObject:resultObjects];
-        
         if (completionBlock)
         {
             completionBlock(resultObjects, nil);
@@ -79,22 +76,6 @@
             completionBlock(nil, error);
         }
     }];
-}
-
-- (void)addFollowRelationship:(id)rawResponse withResultObject:(NSArray *)resultObjects
-{
-    /*
-    NSInteger cnt = (NSInteger)resultObjects.count;
-    for (NSInteger i=0; i < cnt ; i++)
-    {
-        resultObjects[i];
-        BOOL following = [rawResponse[kVPayloadKey][i][@"following"] boolValue];
-        if (following)
-        {
-            [self.mainUser addFollowingObject:resultObjects[i]];
-        }
-    }
-     */
 }
 
 - (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
