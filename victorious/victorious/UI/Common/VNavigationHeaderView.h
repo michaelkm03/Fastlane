@@ -46,6 +46,9 @@
 
 @end
 
+/**
+ *  Provides a themed Victorious header view that has options for: filters, adding content, side menu, back nav action, and the custom header logo.
+ */
 @interface VNavigationHeaderView : UIView
 
 /**
