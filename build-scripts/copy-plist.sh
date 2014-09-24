@@ -37,7 +37,7 @@ copyPListValue(){
     if [ "$P_FLAG" == "-p" ]; then
         local VAL=$(/usr/libexec/PlistBuddy -c "Print $1" "$SOURCE" | sed -e "s/\${ProductPrefix}/$PRODUCT_PREFIX/g")
     else
-        local VAL=$(/usr/libexec/PlistBuddy -c "Print $1" "$SOURCE")
+        local VAL=$(/usr/libexec/PlistBuddy -c "Print $1" "$SOURCE" 2> /dev/null)
     fi
     if [ "$VAL" != "" ]; then
         /usr/libexec/PlistBuddy -c "Set $1 $VAL" "$DESTINATION"
@@ -46,8 +46,6 @@ copyPListValue(){
 
 copyPListValue 'CFBundleDisplayName'
 copyPListValue 'CFBundleIdentifier'
-copyPListValue 'CFBundleURLTypes:0:CFBundleURLSchemes:0'
-copyPListValue 'CFBundleURLTypes:1:CFBundleURLSchemes:0'
 copyPListValue 'FacebookAppID'
 copyPListValue 'FacebookDisplayName'
 copyPListValue 'TWITTER_CONSUMER_KEY'
@@ -59,3 +57,26 @@ copyPListValue 'VictoriousAppID'
 copyPListValue 'StagingAppID'
 copyPListValue 'QAAppID'
 copyPListValue 'GAID'
+
+########### Copy URL schemes
+
+/usr/libexec/PlistBuddy -c "Delete CFBundleURLTypes" "$DESTINATION"
+
+N=0
+while [ 1 ]
+do
+    SCHEME=$(/usr/libexec/PlistBuddy -c "Print CFBundleURLTypes:$N:CFBundleURLSchemes:0" "$SOURCE" 2> /dev/null)
+
+    if [ "$SCHEME" == "" ]; then
+        break
+    fi
+
+    if [ $N == 0 ]; then
+        /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
+    fi
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes: dict" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $SCHEME" "$DESTINATION"
+
+    let N=$N+1
+done
