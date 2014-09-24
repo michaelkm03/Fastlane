@@ -58,6 +58,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     self.sizeForContentView = CGSizeZero;
     self.sizeForRealTimeComentsView = CGSizeZero;
     self.catchPoint = 0.0f;
+    self.sectionInset = UIEdgeInsetsZero;
     self.contentViewXTargetTranslation = 0.0f;
     self.contentViewYTargetTranslation = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
@@ -232,7 +233,6 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
-    NSLog(@"adding content view layout attributes past catch point");
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
     
     layoutAttributes.zIndex = kVContentViewFloatingZIndex;
