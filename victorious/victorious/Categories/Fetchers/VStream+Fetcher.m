@@ -12,8 +12,8 @@
 #import "VObjectManager.h"
 #import "VUser.h"
 
-NSString * const kVSequenceContentType = @"sequence";
-NSString * const kVStreamContentType = @"stream";
+static NSString * const kVSequenceContentType = @"sequence";
+static NSString * const kVStreamContentType = @"stream";
 
 @implementation VStream (Fetcher)
 
@@ -58,6 +58,8 @@ NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+
     user = user ?: [VObjectManager sharedManager].mainUser;
     
     NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
@@ -67,7 +69,10 @@ NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)streamForChannelsDirectory
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+    
     NSString *apiPath = @"/api/sequence/detail_list_by_stream/directory";
+    
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
