@@ -108,14 +108,14 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleContentURL:(NSArray *)captures
 {
-    NSNumber *sequenceId = @(((NSString *)[captures firstObject]).intValue);
+    NSString *sequenceId = ((NSString *)[captures firstObject]);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
         return;
     }
     
-    [[VObjectManager sharedManager] fetchSequence:sequenceId
+    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          VContentViewController *contentView = [[VContentViewController alloc] init];
@@ -201,15 +201,15 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleCommentURL:(NSArray *)captures
 {
-    NSNumber *sequenceId = @(((NSString *)[captures firstObject]).intValue);
+    NSString *sequenceId = ((NSString *)[captures firstObject]);
     if (!sequenceId)
     {
         [self showMissingContentAlert];
         return;
     }
     
-    [[VObjectManager sharedManager] fetchSequence:sequenceId
-                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
+                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
          VContentViewController *contentView = [[VContentViewController alloc] init];
@@ -224,7 +224,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          [root transitionToNavStack:@[homeContainer, contentView]];
          [contentView.navigationController pushViewController:commentsContainer animated:YES];
      }
-                                        failBlock:^(NSOperation *operation, NSError *error)
+                                            failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];

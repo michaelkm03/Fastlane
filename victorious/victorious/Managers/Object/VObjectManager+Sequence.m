@@ -21,9 +21,9 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber *)sequenceId
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
 {
     return [self fetchSequenceByID:sequenceId
                       successBlock:success
@@ -31,7 +31,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                        loadAttempt:0];
 }
 
-- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceID
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
@@ -44,7 +44,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         }
         return nil;
     }
-    NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
+    NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID];
     
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {

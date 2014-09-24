@@ -97,9 +97,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSNumber *sequenceID = payload[@"sequence_id"];
+        NSString *sequenceID = payload[@"sequence_id"];
         
-        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+        [self fetchSequenceByID:sequenceID successBlock:nil failBlock:nil];
         
         if (success)
         {
@@ -165,10 +165,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSNumber *sequenceID = payload[@"sequence_id"];
+        NSString *sequenceID = payload[@"sequence_id"];
         
         //Try to fetch the sequence
-        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+        [self fetchSequenceByID:sequenceID successBlock:nil failBlock:nil];
 
         if (success)
         {

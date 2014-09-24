@@ -288,9 +288,9 @@
     }
     
     //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequence:@(cell.sequence.remoteId.integerValue)
-                                     successBlock:nil
-                                        failBlock:nil];
+    [[VObjectManager sharedManager] fetchSequenceByID:cell.sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
     
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
