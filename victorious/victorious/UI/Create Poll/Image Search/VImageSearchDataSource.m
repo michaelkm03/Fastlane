@@ -23,7 +23,7 @@
 {
     self.searchTerm = searchTerm;
     [[VObjectManager sharedManager] imageSearchWithKeyword:searchTerm
-                                                pageNumber:0
+                                                pageNumber:1
                                               itemsPerPage:35
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *responseObjects)
     {
@@ -47,7 +47,7 @@
 - (void)loadNextPageWithCompletion:(void (^)(void))completion error:(void (^)(NSError *))errorBlock
 {
     [[VObjectManager sharedManager] imageSearchWithKeyword:self.searchTerm
-                                                pageNumber:self.pagesLoaded
+                                                pageNumber:(self.pagesLoaded + 1)
                                               itemsPerPage:35
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *responseObjects)
      {
