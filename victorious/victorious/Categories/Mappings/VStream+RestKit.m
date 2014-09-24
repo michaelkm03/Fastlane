@@ -55,11 +55,18 @@
 
 + (NSArray *)descriptors
 {
-    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VStream entityMapping]
+    return @[
+             [RKResponseDescriptor responseDescriptorWithMapping:[VStream entityMapping]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[VStream entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
 }
 

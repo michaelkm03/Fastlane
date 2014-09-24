@@ -67,8 +67,23 @@ NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)streamForChannelsDirectory
 {
-    NSString *apiPath = @"/api/sequence/detail_list_by_stream/directory";
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForRemoteId:@"directory" filterName:nil
+              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
++ (VStream *)streamForRemoteId:(NSString *)remoteId
+                    filterName:(NSString *)filterName
+          managedObjectContext:(NSManagedObjectContext *)context
+{
+    NSString *streamIdKey = remoteId ?: @"0";
+    NSString *filterIdKey = filterName ?: @"0";
+    NSString *apiPath = [[@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey] stringByAppendingPathComponent:filterIdKey];
+    
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    stream.remoteId = remoteId;
+    stream.filterName = filterName;
+    [stream.managedObjectContext saveToPersistentStore:nil];
+    return stream;
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
