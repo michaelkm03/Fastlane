@@ -246,6 +246,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewWillDisappear:animated];
 
+    self.contentCollectionView.delegate = nil;
+    
     [self.view.superview endEditing:YES];
     
     [UIView animateWithDuration:0.2f
@@ -267,7 +269,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 }
 
 #pragma mark - Private Mehods
-
 
 - (void)updateAvatarsOnRealtimeCommentCell
 {
@@ -339,7 +340,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                          completion:nil];
     };
 }
-
 
 #pragma mark Notification Handlers
 
