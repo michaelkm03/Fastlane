@@ -419,6 +419,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             }
             case VContentViewTypeVideo:
             {
+                if (self.videoCell)
+                {
+                    return self.videoCell;
+                }
+                
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 videoCell.videoURL = self.viewModel.videoURL;
@@ -653,8 +658,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
-    CGRect desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320));
-    self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo.size];
+    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
+    if (desiredSizeForVideo.height > desiredSizeForVideo.width)
+    {
+        desiredSizeForVideo = CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetWidth(self.contentCollectionView.bounds));
+    }
+    self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
     [self.contentCollectionView reloadData];
@@ -696,12 +705,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                                      atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
                                      commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
 
-    [UIView animateWithDuration:0.5f
-                     animations:^{
-                             [self.contentCollectionView.collectionViewLayout invalidateLayout];
-                     }];
-
-    [self.contentCollectionView setContentOffset:CGPointZero animated:YES];
+//    [UIView animateWithDuration:0.5f
+//                     animations:^{
+//                             [self.contentCollectionView.collectionViewLayout invalidateLayout];
+//                     }];
+//
+//    [self.contentCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
 - (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
