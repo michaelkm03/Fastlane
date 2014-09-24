@@ -66,8 +66,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Inbox"];
-    
-    [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -265,6 +263,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
     if (VModeSelect == kMessageModeSelect)
     {
+        [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
         [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
     }
     else if (VModeSelect == kNotificationModeSelect)
