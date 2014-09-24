@@ -42,7 +42,7 @@
  *
  *  @return Return YES if the index is valid, return NO if the index cannot currently be selected (e.g. User needs to log in first)
  */
-- (BOOL)segmentControlChangeToIndex:(NSInteger)index;
+- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView segmentControlChangeToIndex:(NSInteger)index;
 
 @end
 
