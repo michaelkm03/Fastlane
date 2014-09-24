@@ -708,9 +708,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.contentCollectionView reloadData];
     [UIView animateWithDuration:0.5f
-                     animations:^{
-                         [self.contentCollectionView.collectionViewLayout invalidateLayout];
-                     }];
+                     animations:^
+     {
+         [self.contentCollectionView.collectionViewLayout invalidateLayout];
+     }];
 
     [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
 }
