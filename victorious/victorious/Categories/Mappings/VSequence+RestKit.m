@@ -89,18 +89,6 @@
                                                       pathPattern:@"/api/sequence/hot_detail_list_by_stream/:stream/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET

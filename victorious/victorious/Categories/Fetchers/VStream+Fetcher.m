@@ -82,8 +82,11 @@ NSString *VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    return [self streamForRemoteId:@"marquee" filterName:nil
+    VStream *marquee = [self streamForRemoteId:@"marquee" filterName:nil
               managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    marquee.streamContentType = kVSequenceContentType;
+    [marquee.managedObjectContext saveToPersistentStore:nil];
+    return marquee;
 }
 
 + (VStream *)streamForRemoteId:(NSString *)remoteId

@@ -245,8 +245,13 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:self.stream name:self.stream.name title:self.stream.name];
+    VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
+    [self.navigationController pushViewController:streamContainer animated:YES];
+    return ;
+    
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+    if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
     {
         VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
         VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
