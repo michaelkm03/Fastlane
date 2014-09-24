@@ -30,7 +30,7 @@ static char KVOContext;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
 }
 
 - (instancetype)initWithStream:(VStream *)stream
