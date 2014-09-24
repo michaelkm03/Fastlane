@@ -8,7 +8,12 @@
 
 #import "VKeyboardInputAccessoryView.h"
 
+// Theme
+#import "VThemeManager.h"
+
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
@@ -40,6 +45,13 @@
 {
     [super layoutSubviews];
     self.editingTextView.delegate = self;
+    
+    [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                          forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor lightGrayColor]
+                          forState:UIControlStateDisabled];
+    
+    self.editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (CGSize)intrinsicContentSize
@@ -49,10 +61,14 @@
 
 #pragma mark - Property Accessors
 
+- (NSString *)composedText
+{
+    return self.editingTextView.text ?: @"";
+}
+
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    
     self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                            attributes:[self textEntryAttributes]];
 }
@@ -60,9 +76,38 @@
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
 {
     _selectedThumbnail = selectedThumbnail;
+
+    self.attachmentThumbnail.layer.cornerRadius = 2.0f;
+    self.attachmentThumbnail.layer.masksToBounds = YES;
+    self.attachmentThumbnail.image = selectedThumbnail;
     
-    [self.attachmentsButton setImage:selectedThumbnail
+    [self.attachmentsButton setImage:nil
                             forState:UIControlStateNormal];
+}
+
+- (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
+{
+    _returnKeyType = returnKeyType;
+    
+    self.editingTextView.returnKeyType = returnKeyType;
+}
+
+#pragma mark - Public Methods
+
+- (void)clearTextAndResign
+{
+    self.editingTextView.text = nil;
+    self.sendButton.enabled = NO;
+    self.attachmentThumbnail.image = nil;
+    self.selectedThumbnail = nil;
+    self.attachmentsButton.alpha = 1.0f;
+    
+    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
+                            forState:UIControlStateNormal];
+    self.attachmentsButton.selected = NO;
+
+    [self.editingTextView resignFirstResponder];
+    [self textViewDidChange:self.editingTextView];
 }
 
 #pragma mark - IBActions
@@ -102,11 +147,34 @@
     }
 }
 
+- (BOOL)textView:(UITextView *)textView
+shouldChangeTextInRange:(NSRange)range
+ replacementText:(NSString *)text
+{
+    if (self.returnKeyType == UIReturnKeyDefault)
+    {
+        return YES;
+    }
+    
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
+    {
+        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
+        {
+            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
+        }
+        
+        [self.editingTextView resignFirstResponder];
+        return NO;
+    }
+    
+    return YES;
+}
+
 #pragma mark - Convenience
 
 - (NSDictionary *)textEntryAttributes
 {
-    return @{};
+    return @{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
 }
 
 @end

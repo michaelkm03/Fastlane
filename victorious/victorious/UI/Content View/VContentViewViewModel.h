@@ -16,11 +16,6 @@
 UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
 /**
- *  Posted whenever new realtime comments are available.
- */
-UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateRealTimeCommentsNotification;
-
-/**
  *  An enumeration of the various content types supported by VContentViewModel.
  */
 typedef NS_ENUM(NSInteger, VContentViewType)
@@ -61,6 +56,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return An initialized VContentViewModel.
  */
 - (instancetype)initWithSequence:(VSequence *)sequence;
+
+- (void)addCommentWithText:(NSString *)text
+                  mediaURL:(NSURL *)mediaURL
+                completion:(void (^)(BOOL succeeded))completion;
 
 /**
  *  The corresponding sequence for this view model.
@@ -170,6 +169,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return The preview image URL.
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
+
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
 
 /**
  *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.

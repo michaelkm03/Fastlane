@@ -10,4 +10,6 @@
 
 @interface VSectionHandleReusableView : VBaseSupplementaryView
 
+@property (nonatomic, assign) NSInteger numberOfComments;
+
 @end

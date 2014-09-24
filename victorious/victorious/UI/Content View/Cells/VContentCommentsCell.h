@@ -21,6 +21,10 @@
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
+@property (nonatomic, copy) void (^onMediaTapped)();
+
+@property (nonatomic, readonly) UIImage *previewImage;
+@property (nonatomic, readonly) UIView *previewView;
 
 /**
  *  Sizing method for delegates.

@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class VRealtimeCommentsViewModel;
+
+@protocol VRealtimeCommentsViewModelDelegate <NSObject>
+
+- (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel;
+- (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel;
+
+@end
+
 @import AVFoundation;
 
 /**
@@ -18,13 +27,11 @@
 @interface VRealtimeCommentsViewModel : NSObject
 
 /**
- *  Designated initializer.
- *
- *  @param realtimeComments An array of VComment objects.
- *
- *  @return An initializaed VRealtimeCommentsViewModel.
+ *  An array of VComment objects that have a realtime timestamp property. Prunes objects that are not of type VComment or have a nil realtime property.
  */
-- (instancetype)initWithRealtimeComments:(NSArray *)realtimeComments;
+@property (nonatomic, strong) NSArray *realTimeComments;
+
+@property (nonatomic, weak) id <VRealtimeCommentsViewModelDelegate> delegate;
 
 /**
  *  The total time of the video this realTimeCommentViewModel corresponds with.
@@ -51,9 +58,13 @@
 - (NSURL *)avatarURLForRealTimeCommentAtIndex:(NSInteger)index;
 
 /**
- *  This block is called every time the current comment changes.
+ *  The location of the real time comment relative to the media.
+ *
+ *  @param index The index of the realtime comment.
+ *
+ *  @return A percent location for the realtime comment.
  */
-@property (nonatomic, copy) void (^onCurrentRealTimeComentChange)(void);
+- (CGFloat)percentThroughMediaForRealTimeCommentAtIndex:(NSInteger)index;
 
 /**
  *  The current comment's username.
@@ -79,5 +90,8 @@
  *  The comment body for the current comment.
  */
 @property (nonatomic, readonly) NSString *realTimeCommentBodyForCurrentRealTimeComent;
+
+
+- (CGFloat)percentThroughMediaForCurrentRealTimeComment;
 
 @end

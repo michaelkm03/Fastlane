@@ -1,20 +1,14 @@
 //
-//  VCollapsingFlowLayout.m
+//  VContentViewImageLayout.m
 //  victorious
 //
-//  Created by Michael Sena on 9/8/14.
+//  Created by Michael Sena on 9/21/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCollapsingFlowLayout.h"
+#import "VContentViewImageLayout.h"
 
-typedef NS_ENUM(NSInteger, VContentViewState)
-{
-    VContentViewStateBelowCatchPoint,
-    VContentViewStateGreaterThanOrEqualToCatchPoint
-};
-
-@interface VCollapsingFlowLayout ()
+@interface VContentViewImageLayout ()
 
 @property (nonatomic, assign) CGFloat catchPoint;
 @property (nonatomic, assign) CGFloat contentViewXTargetTranslation;
@@ -27,13 +21,13 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 @end
 
-static const CGFloat kVContentViewFloatingZIndex = 1000.0f;
-static const CGFloat kVDropDownHeaderFloatingZIndex = 999.0f;
+static const CGFloat kVContentViewFloatingZIndex = 2.0f;
+static const CGFloat kVDropDownHeaderFloatingZIndex = 1.0f;
 static const CGFloat kVContentViewFloatingScalingFactor = 0.21f;
 static const CGFloat kVContentViewMinimumHeaderHeight = 110.0f;
 static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
 
-@implementation VCollapsingFlowLayout
+@implementation VContentViewImageLayout
 
 - (id)init
 {
@@ -58,10 +52,11 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
 - (void)sharedInit
 {
     self.sizeForContentView = CGSizeZero;
-    self.sizeForRealTimeComentsView = CGSizeZero;
     self.catchPoint = 0.0f;
     self.contentViewXTargetTranslation = 0.0f;
     self.contentViewYTargetTranslation = 0.0f;
+    self.minimumInteritemSpacing = 0.0f;
+    self.minimumLineSpacing = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
 }
 
@@ -81,46 +76,18 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     __block BOOL hasLayoutAttributesForContentView = NO;
     
     [attributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
-    {
-
-        switch ([self currentState])
-        {
-            case VContentViewStateBelowCatchPoint:
-                if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
-                {
-                    hasLayoutAttributesForContentView = YES;
-                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                        self.collectionView.contentOffset.y,
-                                                        self.sizeForContentView.width,
-                                                        self.sizeForContentView.height);
-                }
-                else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
-                {
-                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                        self.collectionView.contentOffset.y + self.sizeForContentView.height,
-                                                        self.sizeForRealTimeComentsView.width,
-                                                        self.sizeForRealTimeComentsView.height);
-                }
-                break;
-            case VContentViewStateGreaterThanOrEqualToCatchPoint:
-            {
-                if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
-                {
-                    hasLayoutAttributesForContentView = YES;
-                    [self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
-                }
-                else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
-                {
-                    layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                        self.collectionView.contentOffset.y + self.sizeForContentView.height,
-                                                        self.sizeForRealTimeComentsView.width,
-                                                        self.sizeForRealTimeComentsView.height);
-                }
-                break;
-            }
-                
-        }
-    }];
+     {
+         if (self.collectionView.contentOffset.y <= self.catchPoint)
+         {
+             return;
+         }
+         
+         if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
+         {
+             hasLayoutAttributesForContentView = YES;
+             [self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
+         }
+     }];
     
     if (self.collectionView.contentOffset.y > self.catchPoint)
     {
@@ -143,19 +110,26 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     return attributes;
 }
 
-#pragma mark - Convenience
+#pragma mark - Public Methods
 
-- (VContentViewState)currentState
+- (NSArray *)desiredDecelerationLocations
 {
-    if (self.collectionView.contentOffset.y < self.catchPoint)
-    {
-        return VContentViewStateBelowCatchPoint;
-    }
-    else
-    {
-        return VContentViewStateGreaterThanOrEqualToCatchPoint;
-    }
+    return
+    @[
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, 0)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(0.0f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(self.sizeForContentView.height * 0.25f)
+          },
+      @{
+          VContentViewBaseLayoutDecelerationLocationDesiredContentOffset:[NSValue valueWithCGPoint:CGPointMake(0, self.sizeForContentView.height - self.dropDownHeaderMiniumHeight)],
+          VContentViewBaseLayoutDecelerationLocationThresholdBelow:@(self.sizeForContentView.height * 0.75f),
+          VContentViewBaseLayoutDecelerationLocationThresholdAbove:@(0.0f)
+          }
+      ];
 }
+
+#pragma mark - Internal Methods
 
 - (void)calculateSizesAndTranslationsIfNeededWithInitialAttributes:(NSArray *)initialLayoutAttributes
 {
@@ -163,14 +137,6 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     {
         UICollectionViewLayoutAttributes *layoutAttributesForContentView = [initialLayoutAttributes firstObject];
         self.sizeForContentView = layoutAttributesForContentView.size;
-    }
-    
-#warning This needs to be better aware of the presence or not of RTC
-    if (CGSizeEqualToSize(self.sizeForRealTimeComentsView, CGSizeZero) && (initialLayoutAttributes.count > 1))
-    {
-        UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
-        self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
-        self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
     }
     
     // Calculate translation from top right
@@ -190,11 +156,6 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     return [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-- (NSIndexPath *)realTimeCommentsIndexPath
-{
-    return [NSIndexPath indexPathForRow:0 inSection:1];
-}
-
 - (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
@@ -204,22 +165,22 @@ static const CGFloat kVContentViewFlatingTrailingSpace = 16.0f;
     layoutAttributes.size = self.sizeForContentView;
     CGFloat deltaCatchPointToTop = self.collectionView.contentOffset.y - self.catchPoint;
     CGFloat percentCompleted = (deltaCatchPointToTop / (self.sizeForContentView.height - self.dropDownHeaderMiniumHeight));
-
+    
     layoutAttributes.frame = CGRectMake(0,
                                         self.collectionView.contentOffset.y,
                                         self.sizeForContentView.width,
                                         self.sizeForContentView.height);
-
+    
     CGAffineTransform scaleTransform = CGAffineTransformMakeScale(fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor),
                                                                   fmaxf((1-percentCompleted), kVContentViewFloatingScalingFactor));
-
+    
     CGFloat xTranslation = fminf(self.contentViewXTargetTranslation, self.contentViewXTargetTranslation * percentCompleted);
     CGFloat yTranslation = fmaxf(self.contentViewYTargetTranslation, self.contentViewYTargetTranslation * percentCompleted);
-
+    
     CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(xTranslation,
                                                                               yTranslation);
     CGAffineTransform combinedTransform = CGAffineTransformConcat(scaleTransform, translationTransform);
-
+    
     layoutAttributes.transform = combinedTransform;
     
     return layoutAttributes;

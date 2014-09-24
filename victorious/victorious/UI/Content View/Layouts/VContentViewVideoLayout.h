@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VContentViewBaseLayout.h"
 
-@interface VCollapsingFlowLayout : UICollectionViewFlowLayout
+@interface VContentViewVideoLayout : VContentViewBaseLayout
 
 /**
  *  The size of the header.
@@ -23,6 +23,11 @@
 /**
  *  The size of RealTimeComments. Note: Does not update with real time comments shrinking.
  */
-@property (nonatomic, assign, readonly) CGSize sizeForRealTimeComentsView;
+@property (nonatomic, assign) CGSize sizeForRealTimeComentsView;
+
+/**
+ *  The catch point at which to start shrinking the cell at indexpath 0,0.
+ */
+@property (nonatomic, assign) CGFloat catchPoint;
 
 @end

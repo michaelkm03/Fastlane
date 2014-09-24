@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -10,6 +10,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tcE-MJ-goG" userLabel="Seperator">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="V5L-2t-T9e"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="olt-8p-I1t">
+                    <rect key="frame" x="10" y="5" width="35" height="35"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="9JR-gr-bzi"/>
+                        <constraint firstAttribute="height" constant="35" id="NgF-Xq-erH"/>
+                    </constraints>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xNE-2e-L1E" userLabel="Attachments Button">
                     <rect key="frame" x="0.0" y="0.0" width="55" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -17,14 +33,13 @@
                         <constraint firstAttribute="height" constant="45" id="dDt-TX-MmB"/>
                         <constraint firstAttribute="width" constant="55" id="svz-Vr-ycF"/>
                     </constraints>
-                    <state key="normal" title="📷">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" image="MessageCamera"/>
                     <connections>
                         <action selector="pressedAttachments:" destination="4R1-Iz-B2b" eventType="touchUpInside" id="LMf-oR-T8T"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sf4-eg-OpA" userLabel="Send Button">
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sf4-eg-OpA" userLabel="Send Button">
                     <rect key="frame" x="265" y="0.0" width="55" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -57,18 +72,24 @@
             <constraints>
                 <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="trailing" id="2ev-Cm-vM4"/>
                 <constraint firstAttribute="bottom" secondItem="xNE-2e-L1E" secondAttribute="bottom" id="9AR-c3-ZRh"/>
+                <constraint firstItem="tcE-MJ-goG" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" id="DOc-V1-3tg"/>
+                <constraint firstAttribute="trailing" secondItem="tcE-MJ-goG" secondAttribute="trailing" id="IHQ-ky-fav"/>
+                <constraint firstItem="tcE-MJ-goG" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" id="K4L-MT-bxE"/>
                 <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YZC-40-a60" secondAttribute="trailing" constant="10" id="PGu-2i-SKd"/>
                 <constraint firstItem="rf1-jW-e0u" firstAttribute="leading" secondItem="xNE-2e-L1E" secondAttribute="trailing" id="U1R-dt-vxw"/>
                 <constraint firstItem="YZC-40-a60" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="leading" constant="5" id="c4y-6C-Cp8"/>
                 <constraint firstAttribute="bottom" secondItem="rf1-jW-e0u" secondAttribute="bottom" constant="5" id="dUC-yX-OIj"/>
+                <constraint firstAttribute="bottom" secondItem="olt-8p-I1t" secondAttribute="bottom" constant="5" id="dh9-Pw-m6y"/>
                 <constraint firstItem="rf1-jW-e0u" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" constant="5" id="eRB-c0-lGG"/>
                 <constraint firstAttribute="centerY" secondItem="YZC-40-a60" secondAttribute="centerY" id="gwJ-Js-j0p"/>
+                <constraint firstItem="olt-8p-I1t" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" constant="10" id="hMG-Qj-LFl"/>
                 <constraint firstItem="xNE-2e-L1E" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" id="mFM-q7-3ml"/>
                 <constraint firstAttribute="bottom" secondItem="Sf4-eg-OpA" secondAttribute="bottom" id="np7-Bq-PYE"/>
                 <constraint firstAttribute="trailing" secondItem="Sf4-eg-OpA" secondAttribute="trailing" id="r66-Fc-kSw"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="attachmentThumbnail" destination="olt-8p-I1t" id="fIP-qi-F2a"/>
                 <outlet property="attachmentsButton" destination="xNE-2e-L1E" id="dDB-tw-RFl"/>
                 <outlet property="editingTextView" destination="rf1-jW-e0u" id="iXk-mI-XeQ"/>
                 <outlet property="placeholderLabel" destination="YZC-40-a60" id="g1x-a4-AmU"/>
@@ -78,4 +99,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="MessageCamera" width="22" height="23"/>
+    </resources>
 </document>

@@ -1,4 +1,4 @@
- //
+//
 //  VNewContentViewController.m
 //  victorious
 //
@@ -8,14 +8,23 @@
 
 #import "VNewContentViewController.h"
 
+// View Categories
+#import "UIView+VShadows.h"
+
+// Images
+#import "UIImage+ImageCreation.h"
+#import "UIImageView+Blurring.h"
+
 // Layout
-#import "VCollapsingFlowLayout.h"
+#import "VContentViewVideoLayout.h"
+#import "VContentViewImageLayout.h"
 
 // Cells
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
 #import "VRealTimeCommentsCell.h"
+#import "VEmptyProgressView.h"
 #import "VContentCommentsCell.h"
 
 // Supplementary Views
@@ -25,6 +34,21 @@
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
 
+// ViewControllers
+#import "VCameraViewController.h"
+#import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
+
+// Transitioning
+#import "VLightboxTransitioningDelegate.h"
+
+// Logged in
+#import "VObjectManager+Login.h"
+#import "VLoginViewController.h"
+
+// Formatters
+#import "VElapsedTimeFormatter.h"
+
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
@@ -33,16 +57,26 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
+@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, assign) BOOL hasAutoPlayed;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
+@property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
+@property (nonatomic, weak) VEmptyProgressView *emptyRealTimeCommentsCell;
+@property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak) VDropdownTitleView *dropdownHeaderView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
+
+@property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 
 @end
 
@@ -55,6 +89,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     
     contentViewController.viewModel = viewModel;
+    contentViewController.hasAutoPlayed = NO;
+    contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;
 }
@@ -84,14 +120,39 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewDidLoad];
     
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypeInvalid:
+        case VContentViewTypeImage:
+        {
+            VContentViewImageLayout *imageLayout = [[VContentViewImageLayout alloc] init];
+            self.contentCollectionView.collectionViewLayout = imageLayout;
+        }
+            break;
+        case VContentViewTypePoll:
+            //
+        case VContentViewTypeVideo:
+            // do nothing assign in storyboard. Should fix this
+            break;
+    }
+    
+    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                      forState:UIControlStateNormal];
+    self.closeButton.tintColor = [UIColor whiteColor];
+    [self.closeButton v_applyShadowsWithZIndex:2];
+    
+    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                     forState:UIControlStateNormal];
+    self.moreButton.imageView.tintColor = [UIColor whiteColor];
+    [self.moreButton v_applyShadowsWithZIndex:2];
+    
     self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     self.inputAccessoryView.delegate = self;
+    self.inputAccessoryView.returnKeyType = UIReturnKeyDone;
     self.inputAccessoryView.frame = CGRectMake(0,
                                                CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
-
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -104,6 +165,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
                  forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VEmptyProgressView nibForCell]
+                 forCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
@@ -118,32 +181,80 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
                                                object:self.viewModel];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(realtimeCommentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateRealTimeCommentsNotification
-                                               object:self.viewModel];
+    self.viewModel.realTimeCommentsViewModel.delegate = self;
     
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
     [self becomeFirstResponder];
     [self resignFirstResponder];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.viewModel fetchComments];
+    
+    
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
+    
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                           placeholderImage:placeholderImage
+                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.viewModel.realTimeCommentsViewModel.currentTime]];
+    }
+    else
+    {
+        self.inputAccessoryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
+    }
+    self.inputAccessoryView.alpha = 0.0f;
+    [UIView animateWithDuration:0.2f
+                     animations:^
+     {
+         self.inputAccessoryView.alpha = 1.0f;
+     }];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.viewModel fetchComments];
+    if (!self.hasAutoPlayed)
+    {
+        [self.videoCell play];
+        self.hasAutoPlayed = YES;
+    }
+
     [self.contentCollectionView flashScrollIndicators];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [self.view.superview endEditing:YES];
     
+    [UIView animateWithDuration:0.2f
+                     animations:^
+     {
+         self.inputAccessoryView.alpha = 0.0f;
+     }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     [self.inputAccessoryView removeFromSuperview];
 }
 
@@ -154,14 +265,32 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 #pragma mark - Notification Handlers
 
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         self.contentCollectionView.contentInset = newInsets;
+         self.contentCollectionView.scrollIndicatorInsets = newInsets;
+     }
+                     completion:nil];
+}
+
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
     CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-    self.contentCollectionView.contentInset = newInsets;
-    self.contentCollectionView.scrollIndicatorInsets = newInsets;
     
-    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
     
     self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
                                                             CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
@@ -173,21 +302,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     {
         NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
         [self.contentCollectionView reloadSections:commentsIndexSet];
+        
+        self.handleView.numberOfComments = self.viewModel.commentCount;
     }
-}
-
-- (void)realtimeCommentsDidUpdate:(NSNotification *)notification
-{
-    __weak typeof(self) welf = self;
-    self.viewModel.realTimeCommentsViewModel.onCurrentRealTimeComentChange = ^void(void)
-    {
-        VRealtimeCommentsViewModel *realtimeCommentsViewModel = welf.viewModel.realTimeCommentsViewModel;
-        [welf.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
-                                                    currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
-                                                 currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
-                                                 currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
-                                                         atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment];
-    };
 }
 
 #pragma mark - IBActions
@@ -220,6 +337,37 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
         commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
     }
+    
+    __weak typeof(self) welf = self;
+    __weak typeof(commentCell) wCommentCell = commentCell;
+    commentCell.onMediaTapped = ^(void)
+    {
+        VLightboxViewController *lightbox;
+        if (wCommentCell.mediaIsVideo)
+        {
+            lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
+                                                                         videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
+            
+            ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+            ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
+        }
+        else
+        {
+            lightbox = [[VImageLightboxViewController alloc] initWithImage:wCommentCell.previewImage];
+        }
+        
+        lightbox.onCloseButtonTapped = ^(void)
+        {
+            [welf dismissViewControllerAnimated:YES completion:nil];
+        };
+        
+        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
+                                                                          referenceView:wCommentCell.previewView];
+        
+        [welf presentViewController:lightbox
+                           animated:YES
+                         completion:nil];
+    };
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -233,7 +381,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return 1;
         case VContentViewSectionRealTimeComments:
-            return 1;//(self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0) ? 1 : 0;
+            return (self.viewModel.type == VContentViewTypeVideo) ? 1 : 0;
         case VContentViewSectionAllComments:
             return self.viewModel.commentCount;
         case VContentViewSectionCount:
@@ -273,6 +421,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                                          forIndexPath:indexPath];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
+                self.videoCell = videoCell;
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -281,9 +430,23 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         }
         case VContentViewSectionRealTimeComments:
         {
-            self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
-                                                      forIndexPath:indexPath];
-            return self.realTimeComentsCell;
+            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
+            {
+                if (self.realTimeComentsCell)
+                {
+                    return self.realTimeComentsCell;
+                }
+                
+                self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+                return self.realTimeComentsCell;
+            }
+            else
+            {
+                self.emptyRealTimeCommentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+                return self.emptyRealTimeCommentsCell;
+            }
         }
         case VContentViewSectionAllComments:
         {
@@ -313,15 +476,25 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                                withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
                                                                                       forIndexPath:indexPath];
             titleView.titleText = self.viewModel.name;
+            self.dropdownHeaderView = titleView;
             return titleView;
         }
             
         case VContentViewSectionRealTimeComments:
             return nil;
         case VContentViewSectionAllComments:
-            return (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                   withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
-                                                                                                          forIndexPath:indexPath];
+        {
+            if (!self.handleView)
+            {
+                VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                                                       withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
+                                                                                                                                              forIndexPath:indexPath];
+                self.handleView = handleView;
+            }
+            self.handleView.numberOfComments = self.viewModel.commentCount;
+            
+            return self.handleView;
+        }
         case VContentViewSectionCount:
             return nil;
     }
@@ -339,7 +512,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         case VContentViewSectionContent:
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionRealTimeComments:
-            return [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
+            {
+                CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setSizeForRealTimeComentsView:realTimeCommentsSize];
+                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setCatchPoint:realTimeCommentsSize.height];
+                return realTimeCommentsSize;
+            }
+            else
+            {
+                return [VEmptyProgressView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            }
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
@@ -382,78 +565,53 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark UIScrollView
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSDictionary *lastDesiredContentOffset = [[((VContentViewBaseLayout *)self.contentCollectionView.collectionViewLayout) desiredDecelerationLocations] lastObject];
+    CGFloat fullContentOffset = [lastDesiredContentOffset[VContentViewBaseLayoutDecelerationLocationDesiredContentOffset] CGPointValue].y;
+    
+    CGFloat headerProgress = self.contentCollectionView.contentOffset.y / fullContentOffset;
+    self.dropdownHeaderView.label.alpha = headerProgress;
+    self.dropdownHeaderView.label.transform = CGAffineTransformMakeTranslation(0, -20 * (1-headerProgress));
+    if (self.contentCollectionView.contentOffset.y > fullContentOffset)
+    {
+        self.dropdownHeaderView.label.alpha = 1.0f;
+        self.dropdownHeaderView.label.transform = CGAffineTransformIdentity;
+    }
+}
+
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    void (^delayedContentOffsetBlock)(void);
+    __block void (^delayedContentOffsetBlock)(void);
     
-    VCollapsingFlowLayout *layout = (VCollapsingFlowLayout *)self.contentCollectionView.collectionViewLayout;
+    NSArray *desiredContentOffsets = [((VContentViewBaseLayout *)self.contentCollectionView.collectionViewLayout) desiredDecelerationLocations];
     
-    if (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight*0.5f))
+    [desiredContentOffsets enumerateObjectsUsingBlock:^(NSDictionary *desiredOffsetLocation, NSUInteger idx, BOOL *stop)
     {
-        if (velocity.y > 0.0f)
+        CGPoint desiredContentOffset = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationDesiredContentOffset] CGPointValue];
+        CGFloat desiredContentOffsetThresholdAbove = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationThresholdAbove] floatValue];
+        CGFloat desiredContentOffsetTresholdBelow = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationThresholdBelow] floatValue];
+        if ((targetContentOffset->y <= (desiredContentOffset.y + desiredContentOffsetThresholdAbove)) && (targetContentOffset->y >= (desiredContentOffset.y - desiredContentOffsetTresholdBelow)))
         {
-            delayedContentOffsetBlock = ^void(void)
+            if (((desiredContentOffset.y < targetContentOffset->y) && (velocity.y > 0.0f)) ||
+                ((desiredContentOffset.y > targetContentOffset->y) && (velocity.y < 0.0f)))
             {
-                [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-            };
-        }
-        else
-        {
-            *targetContentOffset = CGPointMake(0, 0);
-        }
-    }
-    else if ( (targetContentOffset->y >= (layout.sizeForRealTimeComentsView.height * 0.5f)) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height)))
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
+                delayedContentOffsetBlock = ^void(void)
+                {
+                    [scrollView setContentOffset:desiredContentOffset
+                                        animated:YES];
+                };
+            }
+            else
             {
-                [scrollView setContentOffset:CGPointMake(0, layout.sizeForRealTimeComentsView.height)
-                                    animated:YES];
-            };
+                *targetContentOffset = desiredContentOffset;
+            }
+            
+            *stop = YES;
         }
-    }
-    else if ((targetContentOffset->y >= layout.sizeForRealTimeComentsView.height) && (targetContentOffset->y < (layout.sizeForRealTimeComentsView.height + (layout.sizeForContentView.height * 0.5f))))
-    {
-        if (velocity.y < 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForRealTimeComentsView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0.0f, layout.sizeForRealTimeComentsView.height)
-                                    animated:YES];
-            };
-        }
-    }
-    else if (
-             (targetContentOffset->y >= (layout.dropDownHeaderMiniumHeight + (layout.sizeForContentView.height * 0.5f)))
-             &&
-             (targetContentOffset->y < (layout.dropDownHeaderMiniumHeight + layout.sizeForContentView.height))
-             &&
-             (targetContentOffset->y < (layout.sizeForContentView.height))
-            )
-    {
-        if (velocity.y > 0.0f)
-        {
-            *targetContentOffset = CGPointMake(0, layout.sizeForContentView.height);
-        }
-        else
-        {
-            delayedContentOffsetBlock = ^void(void)
-            {
-                [scrollView setContentOffset:CGPointMake(0, layout.sizeForContentView.height) animated:YES];
-            };
-        }
-    }
+    }];
     
     if (delayedContentOffsetBlock)
     {
@@ -473,6 +631,69 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
     self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
+    
+    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
+    [self.emptyRealTimeCommentsCell setProgress: progressedTime];
+    [self.realTimeComentsCell setProgress:progressedTime];
+    
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+}
+
+- (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
+{
+    self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+    
+    [self.realTimeComentsCell clearAvatarStrip];
+    
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
+    {
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+        realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+    }
+}
+
+- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
+               withTotalTime:(CMTime)totalTime
+{
+    self.viewModel.realTimeCommentsViewModel.currentTime = totalTime;
+    self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
+    
+    self.emptyRealTimeCommentsCell.progress = 1.0f;
+    self.realTimeComentsCell.progress = 1.0f;
+    
+    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+}
+
+#pragma mark - VRealtimeCommentsViewModelDelegate
+
+- (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel
+{
+    VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+    [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
+                                                currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
+                                             currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
+                                             currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
+                                                     atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
+                                     commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
+
+}
+
+- (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
+{
+    [self.contentCollectionView reloadData];
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    
+    [self.realTimeComentsCell clearAvatarStrip];
+    
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
+    {
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+        realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+    }
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -486,12 +707,46 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-//TODO: Implement adding a comment
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    __weak typeof(self) welf = self;
+    [self.viewModel addCommentWithText:inputAccessoryView.composedText
+                              mediaURL:self.mediaURL
+                            completion:^(BOOL succeeded)
+     {
+         [welf.viewModel fetchComments];
+         [welf.contentCollectionView reloadData];
+         [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+     }];
+    
+    [inputAccessoryView clearTextAndResign];
+    self.mediaURL = nil;
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-//TODO: Implement the ability to select an item from the camera roll/etc.
+
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (finished)
+        {
+            self.mediaURL = capturedMediaURL;
+            [self.inputAccessoryView setSelectedThumbnail:previewImage];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end

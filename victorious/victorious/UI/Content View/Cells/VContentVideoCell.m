@@ -12,7 +12,7 @@
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate>
 
-@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 
 @end
 
@@ -31,6 +31,8 @@
                                                                                    bundle:nil];
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
@@ -43,6 +45,13 @@
     [self.videoPlayerViewController setItemURL:videoURL];
 }
 
+#pragma mark - Public Methods
+
+- (void)play
+{
+    [self.videoPlayerViewController.player play];
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
@@ -51,6 +60,17 @@
     [self.delegate videoCell:self
                didPlayToTime:time
                    totalTime:[videoPlayer playerItemDuration]];
+}
+
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.delegate videoCellReadyToPlay:self];
+}
+
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.delegate videoCellPlayedToEnd:self
+                          withTotalTime:self.videoPlayerViewController.playerItemDuration];
 }
 
 @end

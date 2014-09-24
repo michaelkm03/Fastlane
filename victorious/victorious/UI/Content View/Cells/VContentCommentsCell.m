@@ -11,6 +11,9 @@
 // Subviews
 #import "VCommentTextAndMediaView.h"
 
+// Theme
+#import "VThemeManager.h"
+
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 @interface VContentCommentsCell ()
@@ -39,7 +42,8 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
                                                                    text:commentBody
-                                                              withMedia:hasMedia];
+                                                              withMedia:hasMedia
+                                                                    andFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
 }
@@ -54,12 +58,20 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     self.seperatorImageView.tintColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
     
     self.commentersAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.commentersAvatarImageView.bounds) * 0.5f;
+    self.commentersAvatarImageView.layer.cornerRadius = CGRectGetHeight(self.commentersAvatarImageView.bounds) * 0.5f;
+    self.commentersAvatarImageView.layer.masksToBounds = YES;
     self.commentersAvatarImageView.image = [self.commentersAvatarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.commentersAvatarImageView.tintColor = [UIColor lightGrayColor];
     
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
 
     [self prepareContentAndMediaView];
+    
+    self.commentersUsernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.commentersUsernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 - (void)prepareContentAndMediaView
@@ -67,6 +79,11 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     [self.commentAndMediaView resetView];
     self.commentAndMediaView.hasMedia = NO;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
+    
+    self.commentAndMediaView.onMediaTapped = ^(void)
+    {
+        [self tappedOnMedia];
+    };
 }
 
 #pragma mark - UICollectionReusableView
@@ -76,6 +93,16 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     [super prepareForReuse];
     
     [self prepareContentAndMediaView];
+}
+
+#pragma mark - Target/Action
+
+- (void)tappedOnMedia
+{
+    if (self.onMediaTapped)
+    {
+        self.onMediaTapped();
+    }
 }
 
 #pragma mark - Property Accessor
@@ -130,4 +157,15 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     _realTimeCommentText = [realTimeCommentText copy];
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
 }
+
+- (UIImage *)previewImage
+{
+    return self.commentAndMediaView.mediaThumbnailView.image;
+}
+
+- (UIView *)previewView
+{
+    return self.commentAndMediaView.mediaThumbnailView;
+}
+
 @end
