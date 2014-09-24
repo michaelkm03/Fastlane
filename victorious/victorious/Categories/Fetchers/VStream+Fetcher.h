@@ -10,6 +10,9 @@
 
 @class VUser, VSequence;
 
+extern NSString *VStreamFilterTypeRecent;
+extern NSString *VStreamFilterTypePopular;
+
 @interface VStream (Fetcher)
 
 - (BOOL)onlyContainsSequences;///<Returns True if the stream only contains sequences.  Else false.
@@ -21,5 +24,6 @@
 + (VStream *)streamForHashTag:(NSString *)hashTag; ///<Returns the stream for a hastag.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user; ///<Returns the following stream for streamName.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForChannelsDirectory;///<Returns the Channels stream.  Note: stream object will be the mainQueueManagedObjectContext.
++ (VStream *)streamForMarquee;///<Returns the Marquee stream.  Note: stream object will be the mainQueueManagedObjectContext.
 
 @end

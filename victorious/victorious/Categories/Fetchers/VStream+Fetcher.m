@@ -15,6 +15,9 @@
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentType = @"stream";
 
+NSString *VStreamFilterTypeRecent = @"recent";
+NSString *VStreamFilterTypePopular = @"popular";
+
 @implementation VStream (Fetcher)
 
 - (BOOL)onlyContainsSequences
@@ -70,8 +73,16 @@ static NSString * const kVStreamContentType = @"stream";
 + (VStream *)streamForChannelsDirectory
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-
+    
     return [self streamForRemoteId:@"directory" filterName:nil
+              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
++ (VStream *)streamForMarquee
+{
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+    
+    return [self streamForRemoteId:@"marquee" filterName:nil
               managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
@@ -80,7 +91,16 @@ static NSString * const kVStreamContentType = @"stream";
           managedObjectContext:(NSManagedObjectContext *)context
 {
     NSString *streamIdKey = remoteId ?: @"0";
-    NSString *filterIdKey = filterName ?: @"0";
+    NSString *filterIdKey;
+    if (filterName.length)
+    {
+        filterIdKey = filterName;
+    }
+    else
+    {
+        filterIdKey = VStreamFilterTypeRecent;
+    }
+    
     NSString *apiPath = [[@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey] stringByAppendingPathComponent:filterIdKey];
     
     VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
