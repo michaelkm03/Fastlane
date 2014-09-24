@@ -665,7 +665,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    [self.contentCollectionView reloadData];
     
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
     

@@ -194,12 +194,10 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 {
     if (self.collectionView.contentOffset.y < self.catchPoint)
     {
-        NSLog(@"below catch point");
         return VContentViewStateBelowCatchPoint;
     }
     else
     {
-        NSLog(@"above catch point");
         return VContentViewStateGreaterThanOrEqualToCatchPoint;
     }
 }
