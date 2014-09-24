@@ -617,7 +617,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     else if (stream.name.length)
     {
         apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.name];
-#warning this may or may not work, depends on what the api call ends up expecting for the default state.  Assuming its like the list_by_categories call this will work.
         apiPath = [apiPath stringByAppendingPathComponent:stream.filterName ?: @"0"];
     }
     else

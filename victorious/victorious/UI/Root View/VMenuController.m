@@ -11,24 +11,23 @@
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VBadgeLabel.h"
+
 #import "VThemeManager.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Login.h"
+#import "VSettingManager.h"
+
+#import "VStream+Fetcher.h"
 #import "VUser+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 
 #import "VLoginViewController.h"
 #import "VStreamContainerViewController.h"
-
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
-
 #import "VInboxContainerViewController.h"
-
 #import "VUserProfileViewController.h"
-
 #import "VDirectoryViewController.h"
-#import "VStream+Fetcher.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -126,7 +125,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             case VMenuRowOwnerChannel:
             {
-                if (YES)//TODO: this should be a real flag for channels.
+                if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
                 {
                     navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
                 }
