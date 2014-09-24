@@ -140,6 +140,20 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     return attributes;
 }
 
+#pragma mark - Property Accessors
+
+- (void)setSizeForContentView:(CGSize)sizeForContentView
+{
+    _sizeForContentView = sizeForContentView;
+    [self updateInternalState];
+}
+
+- (void)setSizeForRealTimeComentsView:(CGSize)sizeForRealTimeComentsView
+{
+    _sizeForRealTimeComentsView = sizeForRealTimeComentsView;
+    [self updateInternalState];
+}
+
 #pragma mark - Public Methods
 
 - (NSArray *)desiredDecelerationLocations
@@ -165,6 +179,16 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 }
 
 #pragma mark - Internal Methods
+
+- (void)updateInternalState
+{
+    self.catchPoint = self.sizeForRealTimeComentsView.height;
+    
+    // Calculate translation from top right
+    CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
+    self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
+    self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.5f);
+}
 
 - (VContentViewState)currentState
 {
@@ -192,19 +216,10 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     {
         UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
         self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
-        self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
+
     }
     
-    // Calculate translation from top right
-    if (self.contentViewXTargetTranslation == 0.0f)
-    {
-        CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
-        self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
-    }
-    if (self.contentViewYTargetTranslation == 0.0f)
-    {
-        self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.5f);
-    }
+    [self updateInternalState];
 }
 
 - (NSIndexPath *)contentViewIndexPath

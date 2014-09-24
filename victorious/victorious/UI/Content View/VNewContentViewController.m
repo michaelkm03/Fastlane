@@ -531,8 +531,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             {
                 CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 VContentViewVideoLayout *videoLayout = ((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout);
-                [videoLayout setSizeForRealTimeComentsView:realTimeCommentsSize];
-                [videoLayout setCatchPoint:realTimeCommentsSize.height];
+                videoLayout.sizeForRealTimeComentsView = realTimeCommentsSize;
                 
                 return realTimeCommentsSize;
             }
@@ -721,7 +720,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                          [self.contentCollectionView.collectionViewLayout invalidateLayout];
                      }];
 
-    [self.contentCollectionView setContentOffset:CGPointZero animated:YES];
+    [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
 
 
 //
