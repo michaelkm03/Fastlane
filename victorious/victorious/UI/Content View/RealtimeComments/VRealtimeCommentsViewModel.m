@@ -115,24 +115,22 @@
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {
-        if (comment.realtime.doubleValue > seconds)
+        if (comment.realtime.doubleValue < seconds)
         {
             newCurrentComment = comment;
+        }
+        else
+        {
             *stop = YES;
         }
     }];
-    
+
     self.currentComment = newCurrentComment;
 }
 
 - (void)setCurrentComment:(VComment *)currentComment
 {
-    if (_currentComment == currentComment)
-    {
-        return;
-    }
     _currentComment = currentComment;
-    
     [self.delegate currentCommentDidChangeOnRealtimeCommentsViewModel:self];
 }
 
