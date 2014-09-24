@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
+@property (nonatomic, strong) NSValue *videoSizeValue;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -91,6 +92,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
+    contentViewController.videoSizeValue = nil;
     
     return contentViewController;
 }
@@ -510,7 +512,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     switch (vSection)
     {
         case VContentViewSectionContent:
+        {
+            if (self.videoSizeValue)
+            {
+                VContentViewVideoLayout *videoLayout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
+                videoLayout.sizeForContentView = [self.videoSizeValue CGSizeValue];
+                return [self.videoSizeValue CGSizeValue];
+            }
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        }
         case VContentViewSectionRealTimeComments:
             if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
             {
@@ -643,6 +653,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
+    CGRect desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320));
+    self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo.size];
+    
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    [self.contentCollectionView reloadData];
+    
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
     
     [self.realTimeComentsCell clearAvatarStrip];
