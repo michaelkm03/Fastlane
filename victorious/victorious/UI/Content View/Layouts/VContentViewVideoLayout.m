@@ -187,7 +187,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     // Calculate translation from top right
     CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
     self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
-    self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.5f);
+    self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.65f);
 }
 
 - (VContentViewState)currentState
