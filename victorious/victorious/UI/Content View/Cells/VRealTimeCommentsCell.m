@@ -54,6 +54,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentAtTimeLabel.text = nil;
     self.currentTimeAgoLabel.text = nil;
     self.conversationClock.hidden = YES;
+    self.arrowImageView.alpha = 0.0f;
     
     self.currentUserNameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
@@ -88,18 +89,22 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
     self.conversationClock.hidden = NO;
+    self.leadingAlignmentRTCArrowToStipConstraint.constant = CGRectGetWidth(self.realtimeCommentStrip.bounds)*percentThrough - (0.5 * CGRectGetWidth(self.arrowImageView.bounds));
+    self.arrowImageView.alpha = 1.0f;
     
-    [UIView animateWithDuration:0.5f
-                          delay:0.0f
-         usingSpringWithDamping:0.7f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-    {
-        self.leadingAlignmentRTCArrowToStipConstraint.constant = CGRectGetWidth(self.realtimeCommentStrip.bounds)*percentThrough - (0.5 * CGRectGetWidth(self.arrowImageView.bounds));
-        [self layoutIfNeeded];
-    }
-                     completion:nil];
+    
+//    [self layoutIfNeeded];
+//    [UIView animateWithDuration:0.5f
+//                          delay:0.0f
+//         usingSpringWithDamping:0.7f
+//          initialSpringVelocity:0.0f
+//                        options:UIViewAnimationOptionBeginFromCurrentState
+//                     animations:^
+//    {
+//
+//        [self layoutIfNeeded];
+//    }
+//                     completion:nil];
 }
 
 - (void)addAvatarWithURL:(NSURL *)avatarURL

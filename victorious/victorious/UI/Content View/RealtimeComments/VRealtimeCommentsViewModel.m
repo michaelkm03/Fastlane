@@ -55,12 +55,15 @@
     
     _realTimeComments = realRealTimeComments;
     
+    self.currentComment = [realTimeComments firstObject];
+    [self.delegate currentCommentDidChangeOnRealtimeCommentsViewModel:self];
+    
     [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
 }
 
 - (NSInteger)numberOfRealTimeComments
 {
-    return self.realTimeComments.count;
+    return self.realTimeComments ? self.realTimeComments.count : 0;
 }
 
 - (NSString *)usernameForCurrentRealtimeComment
