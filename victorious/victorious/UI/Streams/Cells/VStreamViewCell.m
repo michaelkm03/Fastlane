@@ -100,7 +100,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImagePath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self.previewImageView setImageWithURLRequest:request
                                  placeholderImage:[UIImage resizeableImageWithColor:

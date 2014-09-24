@@ -28,25 +28,25 @@
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
     
-    [header initSegmentedControlWithTitles:titles];
+    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
     
-    [header initSegmentedControlWithTitles:titles];
+    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
-- (void)initSegmentedControlWithTitles:(NSArray *)titles
+- (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
     if (!titles.count)
     {
@@ -133,25 +133,25 @@
 
 - (IBAction)pressedBack:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(backButtonPressed)])
+    if ([self.delegate respondsToSelector:@selector(backPressedOnNavHeader:)])
     {
-        [self.delegate backButtonPressed];
+        [self.delegate backPressedOnNavHeader:self];
     }
 }
 
 - (IBAction)pressedMenu:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(menuButtonPressed)])
+    if ([self.delegate respondsToSelector:@selector(menuPressedOnNavHeader:)])
     {
-        [self.delegate menuButtonPressed];
+        [self.delegate menuPressedOnNavHeader:self];
     }
 }
 
 - (IBAction)pressedAdd:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(addButtonPressed)])
+    if ([self.delegate respondsToSelector:@selector(addPressedOnNavHeader:)])
     {
-        [self.delegate addButtonPressed];
+        [self.delegate addPressedOnNavHeader:self];
     }
 }
 

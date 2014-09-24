@@ -23,7 +23,7 @@
     }
     else
     {
-        imageUrl = [NSURL URLWithString:self.sequence.previewImagePath];
+        imageUrl = [NSURL URLWithString:[self.sequence.previewImagePaths firstObject]];
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];

@@ -16,6 +16,7 @@
 #import "VContentViewController.h"
 #import "VNavigationHeaderView.h"
 #import "UIViewController+VSideMenuViewController.h"
+#import "MBProgressHUD.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -96,8 +97,8 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     self.collectionView.alwaysBounceVertical = YES;
     
     //Register cells
-    UINib *nib = [UINib nibWithNibName:kVStreamDirectoryItemCellName bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:kVStreamDirectoryItemCellName];
+    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
     
     [self refresh:self.refreshControl];
 }
@@ -156,19 +157,20 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 }
 
 
-- (void)backButtonPressed
+- (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (navHeaderView == self.navHeaderView)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
-- (void)menuButtonPressed
+- (void)menuPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
 {
-    [self.sideMenuViewController presentMenuViewController];
-}
-
-- (void)addButtonPressed
-{
-    
+    if (navHeaderView == self.navHeaderView)
+    {
+        [self.sideMenuViewController presentMenuViewController];
+    }
 }
 
 #pragma mark - Refresh
@@ -191,11 +193,11 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
                                      failure:^(NSError *error)
      {
          [self.refreshControl endRefreshing];
-//         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
-//         hud.mode = MBProgressHUDModeText;
-//         hud.labelText = NSLocalizedString(@"RefreshError", @"");
-//         hud.userInteractionEnabled = NO;
-//         [hud hide:YES afterDelay:3.0];
+         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+         hud.mode = MBProgressHUDModeText;
+         hud.labelText = NSLocalizedString(@"RefreshError", @"");
+         hud.userInteractionEnabled = NO;
+         [hud hide:YES afterDelay:3.0];
      }];
     
     [self.refreshControl beginRefreshing];
