@@ -159,7 +159,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                         insertNewObjectForEntityForName:[VPollResult entityName]
                                         inManagedObjectContext:self.mainUser.managedObjectContext];
         newPollResult.answerId = answer.remoteId;
-        newPollResult.sequenceId = @(poll.remoteId.integerValue);
+        newPollResult.sequenceId = poll.remoteId;
         [self.mainUser addPollResultsObject:newPollResult];
         
         [self.mainUser.managedObjectContext saveToPersistentStore:nil];
@@ -231,7 +231,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         NSManagedObjectContext *context;
         for (VPollResult *result in resultObjects)
         {
-            result.sequenceId = @(sequence.remoteId.integerValue);
+            result.sequenceId = sequence.remoteId;
             result.sequence = (VSequence *)[result.managedObjectContext objectWithID:[sequence objectID]];
             context = result.managedObjectContext;
         }
