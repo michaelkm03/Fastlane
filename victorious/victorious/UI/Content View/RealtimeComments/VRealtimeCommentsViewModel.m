@@ -53,10 +53,23 @@
         [realRealTimeComments addObject:comment];
     }];
     
-    _realTimeComments = realRealTimeComments;
+    NSArray *sortedRealTimeComents = [realTimeComments  sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+    {
+        if (comment1.realtime.doubleValue > comment2.realtime.doubleValue)
+        {
+            return  NSOrderedDescending;
+        }
+        else if (comment2.realtime.doubleValue > comment2.realtime.doubleValue)
+        {
+            return NSOrderedAscending;
+        }
+        else
+        {
+            return NSOrderedSame;
+        }
+    }];
     
-    self.currentComment = [realTimeComments firstObject];
-    [self.delegate currentCommentDidChangeOnRealtimeCommentsViewModel:self];
+    _realTimeComments = sortedRealTimeComents;
     
     [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
 }

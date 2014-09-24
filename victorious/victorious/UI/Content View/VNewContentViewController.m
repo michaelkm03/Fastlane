@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
+@property (nonatomic, assign) BOOL avatarsNeedUpdated;
 @property (nonatomic, strong) NSValue *videoSizeValue;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
@@ -673,9 +674,26 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
     self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    
+    [UIView animateWithDuration:0.25f
+                     animations:^
+     {
+         [self.contentCollectionView.collectionViewLayout invalidateLayout];
+     }];
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+    
+    if (self.avatarsNeedUpdated)
+    {
+        [self.realTimeComentsCell clearAvatarStrip];
+        
+        for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
+        {
+            VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+            realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+            [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                                   withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+        }
+        self.avatarsNeedUpdated = NO;
+    }
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
@@ -713,16 +731,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      }];
 
     [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
-
-    [self.realTimeComentsCell clearAvatarStrip];
-    
-    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments-1; realtimeCommentIndex++)
-    {
-        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-        realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
-                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
-    }
+    self.avatarsNeedUpdated = YES;
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate

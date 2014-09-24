@@ -84,12 +84,13 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
     [self.currentUserAvatar setImageWithURL:currentAvatarURL
-                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
     self.currentTimeAgoLabel.text = timeAgoText;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
     self.conversationClock.hidden = NO;
+    self.arrowImageView.alpha = 1.0f;
     
     [UIView animateWithDuration:0.2f
                           delay:0.0f
@@ -118,6 +119,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                     CGRectGetMidY(self.realtimeCommentStrip.bounds));
     avatarView.layer.cornerRadius = CGRectGetHeight(avatarView.bounds) * 0.5f;
     avatarView.layer.masksToBounds = YES;
+
     [self.realtimeCommentStrip addSubview:avatarView];
 }
 
