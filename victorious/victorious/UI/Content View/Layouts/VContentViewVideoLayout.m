@@ -132,7 +132,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
     [attributes addObject:dropDownHeaderLayoutAttributes];
     
-    if (!hasLayoutAttributesForContentView)
+    if (!hasLayoutAttributesForContentView && ([self currentState] == VContentViewStateGreaterThanOrEqualToCatchPoint))
     {
         [attributes addObject:[self layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:nil]];
     }
