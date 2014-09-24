@@ -266,59 +266,26 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     return YES;
 }
 
-#pragma mark - Notification Handlers
+#pragma mark - Private Mehods
 
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSTimeInterval animationDuration;
-    UIViewAnimationCurve animationCurve;
-    NSDictionary *userInfo = [notification userInfo];
-    
-    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-    
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
-     {
-         self.contentCollectionView.contentInset = newInsets;
-         self.contentCollectionView.scrollIndicatorInsets = newInsets;
-     }
-                     completion:nil];
-}
 
-- (void)keyboardDidChangeFrame:(NSNotification *)notification
+- (void)updateAvatarsOnRealtimeCommentCell
 {
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
-                                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.commentCount > 0)
+    if (self.avatarsNeedUpdated)
     {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
+        [self.realTimeComentsCell clearAvatarStrip];
         
-        self.handleView.numberOfComments = self.viewModel.commentCount;
+        for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
+        {
+            VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+            realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+            [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                                   withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
+        }
+        self.avatarsNeedUpdated = NO;
     }
+    
 }
-
-#pragma mark - IBActions
-
-- (IBAction)pressedClose:(id)sender
-{
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
-}
-
-#pragma mark - Convenience
 
 - (NSIndexPath *)indexPathForContentView
 {
@@ -371,6 +338,59 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                            animated:YES
                          completion:nil];
     };
+}
+
+
+#pragma mark Notification Handlers
+
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         self.contentCollectionView.contentInset = newInsets;
+         self.contentCollectionView.scrollIndicatorInsets = newInsets;
+     }
+                     completion:nil];
+}
+
+- (void)keyboardDidChangeFrame:(NSNotification *)notification
+{
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
+                                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
+}
+
+- (void)commentsDidUpdate:(NSNotification *)notification
+{
+    if (self.viewModel.commentCount > 0)
+    {
+        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+        [self.contentCollectionView reloadSections:commentsIndexSet];
+        
+        self.handleView.numberOfComments = self.viewModel.commentCount;
+    }
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedClose:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -680,20 +700,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }];
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-    
-    if (self.avatarsNeedUpdated)
-    {
-        [self.realTimeComentsCell clearAvatarStrip];
-        
-        for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
-        {
-            VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-            realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-            [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
-                                   withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
-        }
-        self.avatarsNeedUpdated = NO;
-    }
+    [self updateAvatarsOnRealtimeCommentCell];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
@@ -719,6 +726,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                              currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
                                                      atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
                                      commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
+    
+    [self updateAvatarsOnRealtimeCommentCell];
 }
 
 - (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
