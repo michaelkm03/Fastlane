@@ -39,7 +39,7 @@
     }
 
     [[context containerView] addSubview:toVC.view];
-    [toVC.view layoutSubviews];
+    [toVC.view layoutIfNeeded];
     
     [[context containerView] addSubview:fromSnapshot];
     

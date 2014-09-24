@@ -45,8 +45,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
 
 - (void)handleOpenURL:(NSURL *)aURL
 {
-    NSString   *linkString = [aURL resourceSpecifier];
-    NSError    *error = NULL;
+    NSString *linkString = [aURL resourceSpecifier];
     
     if (!linkString)
     {
@@ -57,7 +56,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     {
         NSRegularExpression    *regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                                   options:NSRegularExpressionCaseInsensitive
-                                                                                    error:&error];
+                                                                                    error:nil];
         
         NSTextCheckingResult *result = [regex firstMatchInString:linkString
                                                          options:NSMatchingAnchored

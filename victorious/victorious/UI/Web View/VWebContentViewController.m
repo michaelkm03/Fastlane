@@ -18,14 +18,6 @@
 
 @implementation VWebContentViewController
 
-#pragma mark - Factory Methods
-
-+ (instancetype)webContentViewController
-{
-    VWebContentViewController *webviewVC = [[self alloc] initWithNibName:@"webContentView" bundle:nil];
-    return webviewVC;
-}
-
 #pragma mark - UIViewController
 
 - (void)viewDidLoad

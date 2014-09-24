@@ -78,6 +78,12 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+"ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
+"ProfileNoFollowersMessage"    =   "Build your community by following other users. You’ll be alerted when they post new content.";
+
+"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN’T FOLLOWING ANYONE YET";
+"ProfileNotFollowingMessage"   =   "Create a community by following other users and encouraging them to follow you.";
+
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
@@ -102,8 +108,13 @@
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
 
-"CameraRollDeniedTitle"    =   "Could Not Access Your Photos";
-"CameraRollDenied"         =   "Please grant access to your photos in Settings -> Privacy.";
+"CameraRollDeniedTitle" =   "Could Not Access Your Photos";
+"CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
+"CameraFailed"          =   "Unable to start camera";
+"CameraSwitchFailed"    =   "Unable to switch camera mode";
+"StillCaptureFailed"    =   "Unable to take picture";
+"VideoCaptureFailed"    =   "Unable to record video";
+"VideoSaveFailed"       =   "Unable to save video";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
@@ -253,7 +264,9 @@
 "Access Your Contacts"  =   "Access Your Contacts";
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
-"AccessMicrophoneRestricted" =  "Unable access microphone due to restrictions on your device.";
+"AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
+"AccessCameraDenied"    =   "To record video from your device, please grant access by going to Settings -> Privacy";
+"AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
 
 "AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
 "AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
