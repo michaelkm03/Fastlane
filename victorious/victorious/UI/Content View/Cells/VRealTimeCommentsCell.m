@@ -89,22 +89,18 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
     self.conversationClock.hidden = NO;
-    self.leadingAlignmentRTCArrowToStipConstraint.constant = CGRectGetWidth(self.realtimeCommentStrip.bounds)*percentThrough - (0.5 * CGRectGetWidth(self.arrowImageView.bounds));
-    self.arrowImageView.alpha = 1.0f;
     
-    
-//    [self layoutIfNeeded];
-//    [UIView animateWithDuration:0.5f
-//                          delay:0.0f
-//         usingSpringWithDamping:0.7f
-//          initialSpringVelocity:0.0f
-//                        options:UIViewAnimationOptionBeginFromCurrentState
-//                     animations:^
-//    {
-//
-//        [self layoutIfNeeded];
-//    }
-//                     completion:nil];
+    [UIView animateWithDuration:0.2f
+                          delay:0.0f
+         usingSpringWithDamping:0.7f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+    {
+        self.leadingAlignmentRTCArrowToStipConstraint.constant = CGRectGetWidth(self.realtimeCommentStrip.bounds)*percentThrough - (0.5 * CGRectGetWidth(self.arrowImageView.bounds));
+        [self layoutIfNeeded];
+    }
+                     completion:nil];
 }
 
 - (void)addAvatarWithURL:(NSURL *)avatarURL
