@@ -83,7 +83,8 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                atTimeText:(NSString *)atTimeText
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
-    [self.currentUserAvatar setImageWithURL:currentAvatarURL];
+    [self.currentUserAvatar setImageWithURL:currentAvatarURL
+                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
     self.currentTimeAgoLabel.text = timeAgoText;
     self.currentCommentBodyLabel.text = commentBody;
