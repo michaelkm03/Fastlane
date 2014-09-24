@@ -515,8 +515,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
             {
                 CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setSizeForRealTimeComentsView:realTimeCommentsSize];
-                [((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout) setCatchPoint:realTimeCommentsSize.height];
+                VContentViewVideoLayout *videoLayout = ((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout);
+                [videoLayout setSizeForRealTimeComentsView:realTimeCommentsSize];
+                [videoLayout setCatchPoint:realTimeCommentsSize.height];
+                
                 return realTimeCommentsSize;
             }
             else

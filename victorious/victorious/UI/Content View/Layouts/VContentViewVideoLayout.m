@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 // Publicly Readonly
 @property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
-@property (nonatomic, assign, readwrite) CGSize sizeForContentView;
 
 @end
 
@@ -108,7 +107,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
                 if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
                 {
                     hasLayoutAttributesForContentView = YES;
-                    [self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
+                    [self layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
                 }
                 else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
                 {
@@ -120,7 +119,6 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
                 }
                 break;
             }
-                
         }
     }];
     
@@ -136,7 +134,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     
     if (!hasLayoutAttributesForContentView)
     {
-        [attributes addObject:[self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:nil]];
+        [attributes addObject:[self layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:nil]];
     }
     
     return attributes;
@@ -172,10 +170,12 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 {
     if (self.collectionView.contentOffset.y < self.catchPoint)
     {
+        NSLog(@"below catch point");
         return VContentViewStateBelowCatchPoint;
     }
     else
     {
+        NSLog(@"above catch point");
         return VContentViewStateGreaterThanOrEqualToCatchPoint;
     }
 }
@@ -217,8 +217,9 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     return [NSIndexPath indexPathForRow:0 inSection:1];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
+- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
+    NSLog(@"adding content view layout attributes past catch point");
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
     
     layoutAttributes.zIndex = kVContentViewFloatingZIndex;
