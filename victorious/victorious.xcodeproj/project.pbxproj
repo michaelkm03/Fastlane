@@ -308,7 +308,6 @@
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */; };
-		BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C733F187E36CF00A3340D /* VInteraction.m */; };
 		BE5C736A187E36E800A3340D /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7369187E36E800A3340D /* VRule.m */; };
 		BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7378187E36E800A3340D /* VNodeAction.m */; };
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
@@ -333,6 +332,10 @@
 		BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E9018EB762A009E488E /* VVoteResult.m */; };
 		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
+		BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */; };
+		BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */; };
+		BE9C262819D48CE500E43AFE /* VMarqueeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9C262619D48CE500E43AFE /* VMarqueeViewController.m */; };
+		BE9C262919D48CE500E43AFE /* VMarqueeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE9C262719D48CE500E43AFE /* VMarqueeViewController.xib */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */; };
@@ -916,8 +919,6 @@
 		BE46F02919D0C4B700CD7EF6 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+UnreadMessageCount.h"; sourceTree = "<group>"; };
 		BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VConversation+UnreadMessageCount.m"; sourceTree = "<group>"; };
-		BE5C733E187E36CF00A3340D /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
-		BE5C733F187E36CF00A3340D /* VInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteraction.m; sourceTree = "<group>"; };
 		BE5C7368187E36E800A3340D /* VRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRule.h; sourceTree = "<group>"; };
 		BE5C7369187E36E800A3340D /* VRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRule.m; sourceTree = "<group>"; };
 		BE5C7377187E36E800A3340D /* VNodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNodeAction.h; sourceTree = "<group>"; };
@@ -964,6 +965,12 @@
 		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
 		BE89D98B1921531400D97E7F /* VAbstractFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractFilter.h; sourceTree = "<group>"; };
 		BE89D98C1921531400D97E7F /* VAbstractFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractFilter.m; sourceTree = "<group>"; };
+		BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTableViewCell.h; sourceTree = "<group>"; };
+		BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeTableViewCell.m; sourceTree = "<group>"; };
+		BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
+		BE9C262519D48CE500E43AFE /* VMarqueeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeViewController.h; sourceTree = "<group>"; };
+		BE9C262619D48CE500E43AFE /* VMarqueeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeViewController.m; sourceTree = "<group>"; };
+		BE9C262719D48CE500E43AFE /* VMarqueeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeViewController.xib; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -1132,14 +1139,15 @@
 				0314D35B19B46B5E00FA363C /* Content View */,
 				0314D38319B46B5E00FA363C /* Create Poll */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
-				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
 				0314D3BB19B46B5E00FA363C /* Main.storyboard */,
+				BE9C261F19D48A3B00E43AFE /* Marquee */,
 				0314D3BC19B46B5E00FA363C /* Profile */,
 				0314D3D019B46B5E00FA363C /* Remix */,
 				0314D3E219B46B5E00FA363C /* Root View */,
 				0314D3EF19B46B5E00FA363C /* Search */,
+				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
 				BE799BB619C93C210023CE88 /* StreamDirectory */,
@@ -2297,6 +2305,19 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		BE9C261F19D48A3B00E43AFE /* Marquee */ = {
+			isa = PBXGroup;
+			children = (
+				BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */,
+				BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */,
+				BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */,
+				BE9C262519D48CE500E43AFE /* VMarqueeViewController.h */,
+				BE9C262619D48CE500E43AFE /* VMarqueeViewController.m */,
+				BE9C262719D48CE500E43AFE /* VMarqueeViewController.xib */,
+			);
+			path = Marquee;
+			sourceTree = "<group>";
+		};
 		BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2461,6 +2482,7 @@
 				0314D4A619B46B5E00FA363C /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				BE799BC019C93C210023CE88 /* VStreamDirectoryItemCell.xib in Resources */,
+				BE9C262919D48CE500E43AFE /* VMarqueeViewController.xib in Resources */,
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				0314D46219B46B5E00FA363C /* VMediaPreviewViewController.xib in Resources */,
 				0314D4FC19B46B5E00FA363C /* VStreamViewCell.xib in Resources */,
@@ -2480,13 +2502,13 @@
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
+				BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */,
 				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
 				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
 				03C185C719B42FD600E27D05 /* Localizable.strings in Resources */,
-				0314D47519B46B5E00FA363C /* VCVideoPlayerToolbarView.xib in Resources */,
 				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
@@ -2693,7 +2715,6 @@
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				0314D49D19B46B5E00FA363C /* VContentViewController.m in Sources */,
-				0314D47119B46B5E00FA363C /* VCDataEncoder.m in Sources */,
 				BE799BC119C93C210023CE88 /* VDirectoryDataSource.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				0314D49019B46B5E00FA363C /* VContentToInfoAnimator.m in Sources */,
@@ -2793,11 +2814,11 @@
 				0314D49419B46B5E00FA363C /* VContentViewController+Polls.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
-				0314D47419B46B5E00FA363C /* VCVideoPlayerToolbarView.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
+				BE9C262819D48CE500E43AFE /* VMarqueeViewController.m in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
@@ -2827,6 +2848,7 @@
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
+				BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				0314D45919B46B5E00FA363C /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
