@@ -28,6 +28,7 @@
 @property (nonatomic)         BOOL                      finishedMidpoint;
 @property (nonatomic)         BOOL                      finishedThirdQuartile;
 @property (nonatomic)         BOOL                      hasCaculatedItemTime;
+@property (nonatomic)         BOOL                      wasPlayingBeforeDissappeared;
 
 @property (nonatomic, readwrite) CMTime                 currentTime;
 
@@ -68,6 +69,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)commonInit
 {
+    self.wasPlayingBeforeDissappeared = NO;
+    self.shouldContinuePlayingAfterDismissal = YES;
     self.shouldShowToolbar = YES;
     self.shouldFireAnalytics = YES;
     self.shouldLoop = NO;
@@ -153,7 +156,20 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.wasPlayingBeforeDissappeared && self.shouldContinuePlayingAfterDismissal)
+    {
+        self.wasPlayingBeforeDissappeared = NO;
+        [self.player play];
+    }
 }
 
 #pragma mark - Properties
