@@ -695,7 +695,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     }
     
-    [UIView animateWithDuration:0.25f
+    [UIView animateWithDuration:0.0f
                      animations:^
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
@@ -729,10 +729,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
 {
-    [self.contentCollectionView reloadData];
-    [UIView animateWithDuration:0.5f
+    [UIView animateWithDuration:0.0f
                      animations:^
      {
+         [self.contentCollectionView reloadData];
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }];
 
@@ -762,8 +762,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                             completion:^(BOOL succeeded)
      {
          [welf.viewModel fetchComments];
-         [welf.contentCollectionView reloadData];
-         [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+         [UIView animateWithDuration:0.0f
+                          animations:^
+          {
+              [welf.contentCollectionView reloadData];
+              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+          }];
+         
+         
      }];
     
     [inputAccessoryView clearTextAndResign];

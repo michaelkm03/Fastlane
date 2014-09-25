@@ -54,6 +54,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     self.currentUserAvatar.layer.masksToBounds = YES;
     
     self.currentUserAvatar.image = nil;
+    self.currentUserAvatar.hidden = YES;
     self.currentUserNameLabel.text = nil;
     self.currentCommentBodyLabel.text = nil;
     self.currentAtTimeLabel.text = nil;
@@ -88,7 +89,6 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                atTimeText:(NSString *)atTimeText
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
-
     [self.currentUserAvatar setImageWithURL:currentAvatarURL
                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
