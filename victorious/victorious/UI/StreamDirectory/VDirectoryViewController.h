@@ -10,12 +10,22 @@
 
 @class VStream, VStreamCollectionViewDataSource;
 
+/**
+ *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
+ */
 @interface VDirectoryViewController : UIViewController
 
-@property (nonatomic, readonly) VStream *stream;
-@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *directoryDataSource;
-@property (weak, nonatomic, readonly) UICollectionView *collectionView;
+@property (nonatomic, readonly) VStream *stream;///<The stream to display
+@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *directoryDataSource;///<The VDirectoryDataSource for the object.
+@property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 
+/**
+ *  Instantiates a VDirectoryViewController from the main storyboard.
+ *
+ *  @param stream The stream to display
+ *
+ *  @return A VDirectoryViewController
+ */
 + (instancetype)streamDirectoryForStream:(VStream *)stream;
 
 @end
