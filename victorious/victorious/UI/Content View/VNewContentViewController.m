@@ -691,7 +691,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     // should we update content size?
     CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
-    if (!isnan(desiredSizeForVideo.width) || !isnan(desiredSizeForVideo.height))
+    if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
     {
         if (desiredSizeForVideo.height > desiredSizeForVideo.width)
         {
