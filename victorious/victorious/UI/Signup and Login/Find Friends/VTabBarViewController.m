@@ -56,7 +56,6 @@ static const CGFloat kButtonMargin           =  0.5f;
     UIView *buttonsSuperview = [[UIView alloc] init];
     buttonsSuperview.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:buttonsSuperview];
-    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonsSuperview]|"
                                                                       options:0
                                                                       metrics:nil
@@ -85,7 +84,13 @@ static const CGFloat kButtonMargin           =  0.5f;
     [selectionIndicator setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
     [self.view addSubview:selectionIndicator];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:selectionIndicator attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.buttonsSuperview attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:selectionIndicator
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.buttonsSuperview
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
 
     self.selectionIndicator = selectionIndicator;
 
