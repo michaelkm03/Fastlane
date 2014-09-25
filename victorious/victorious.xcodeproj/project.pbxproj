@@ -274,6 +274,9 @@
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		6A3C7ABA603A4FEEA4B31670 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
+		BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */; };
+		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
 		BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */; };
 		BE11F26519CCADD200DEC776 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */; };
 		BE11F26819CCCEF100DEC776 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F26719CCCEF100DEC776 /* VSequence.m */; };
@@ -861,6 +864,11 @@
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeStreamItemCell.h; sourceTree = "<group>"; };
+		BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeStreamItemCell.m; sourceTree = "<group>"; };
+		BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
+		BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+VLoadingAnimations.h"; sourceTree = "<group>"; };
+		BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+VLoadingAnimations.m"; sourceTree = "<group>"; };
 		BE11F23919CB44B900DEC776 /* VStream+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStream+RestKit.h"; sourceTree = "<group>"; };
 		BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStream+RestKit.m"; sourceTree = "<group>"; };
 		BE11F26319CCADD200DEC776 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
@@ -2086,6 +2094,8 @@
 				0314D06A19B4670A00FA363C /* UIImage+Masking.m */,
 				0314D06B19B4670A00FA363C /* UIImage+Resize.h */,
 				0314D06C19B4670A00FA363C /* UIImage+Resize.m */,
+				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
+				BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */,
 				03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */,
 				03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */,
 				0314D06D19B4670A00FA363C /* UIImageView+Blurring.h */,
@@ -2314,6 +2324,9 @@
 				BE9C262519D48CE500E43AFE /* VMarqueeViewController.h */,
 				BE9C262619D48CE500E43AFE /* VMarqueeViewController.m */,
 				BE9C262719D48CE500E43AFE /* VMarqueeViewController.xib */,
+				BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */,
+				BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */,
+				BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */,
 			);
 			path = Marquee;
 			sourceTree = "<group>";
@@ -2520,6 +2533,7 @@
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
+				BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */,
 				0314D4A819B46B5E00FA363C /* VConversationCell.xib in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
@@ -2792,6 +2806,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
+				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
@@ -2906,6 +2921,7 @@
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,
+				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
 				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,

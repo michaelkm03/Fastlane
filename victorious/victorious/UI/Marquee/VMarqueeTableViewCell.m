@@ -35,9 +35,6 @@
                           bundle:nil];
 }
 //
-//+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-//{
-//
-//}
+//+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
 
 @end

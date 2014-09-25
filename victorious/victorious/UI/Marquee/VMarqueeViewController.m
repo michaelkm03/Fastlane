@@ -8,7 +8,9 @@
 
 #import "VMarqueeViewController.h"
 
-@interface VMarqueeViewController ()
+@interface VMarqueeViewController () <UICollectionViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -17,7 +19,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;

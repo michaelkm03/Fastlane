@@ -31,6 +31,8 @@
 
 #import "VEphemeralTimerView.h"
 
+#import "UIImageView+VLoadingAnimations.h"
+
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
@@ -100,28 +102,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:[UIImage resizeableImageWithColor:
-                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (!request)
-         {
-             self.previewImageView.image = image;
-             return;
-         }
-         
-         self.previewImageView.alpha = 0;
-         self.previewImageView.image = image;
-         [UIView animateWithDuration:.3f
-                          animations:^
-          {
-              self.previewImageView.alpha = 1;
-          }];
-     }
-                                          failure:nil];
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
+                           placeholderImage:[UIImage resizeableImageWithColor:
+                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
     // Hide Comment Button if Viewing from the User Profile
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
