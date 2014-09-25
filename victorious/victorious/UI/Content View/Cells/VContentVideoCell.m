@@ -70,7 +70,7 @@
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.delegate videoCellPlayedToEnd:self
-                          withTotalTime:self.videoPlayerViewController.playerItemDuration];
+                          withTotalTime:[videoPlayer playerItemDuration]];
 }
 
 @end

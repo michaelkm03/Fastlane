@@ -680,6 +680,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+    self.avatarsNeedUpdated = YES;
     [self updateAvatarsOnRealtimeCommentCell];
     
     // should we update content size?
@@ -723,7 +724,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                              currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
                                                      atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
                                      commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
-    
     [self updateAvatarsOnRealtimeCommentCell];
 }
 
