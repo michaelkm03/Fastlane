@@ -323,7 +323,7 @@
 		BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BB319C8DF5B0023CE88 /* VSequence+OrderedSet.m */; };
 		BE799BBF19C93C210023CE88 /* VDirectoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BB919C93C210023CE88 /* VDirectoryItemCell.m */; };
 		BE799BC019C93C210023CE88 /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE799BBA19C93C210023CE88 /* VStreamDirectoryItemCell.xib */; };
-		BE799BC119C93C210023CE88 /* VDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BBC19C93C210023CE88 /* VDirectoryDataSource.m */; };
+		BE799BC119C93C210023CE88 /* VStreamCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BBC19C93C210023CE88 /* VStreamCollectionViewDataSource.m */; };
 		BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BBE19C93C210023CE88 /* VDirectoryViewController.m */; };
 		BE799BC619C93C440023CE88 /* VNavigationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799BC419C93C440023CE88 /* VNavigationHeaderView.m */; };
 		BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE799BC519C93C440023CE88 /* VNavigationHeaderView.xib */; };
@@ -950,8 +950,8 @@
 		BE799BB819C93C210023CE88 /* VDirectoryItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryItemCell.h; sourceTree = "<group>"; };
 		BE799BB919C93C210023CE88 /* VDirectoryItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryItemCell.m; sourceTree = "<group>"; };
 		BE799BBA19C93C210023CE88 /* VStreamDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
-		BE799BBB19C93C210023CE88 /* VDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryDataSource.h; sourceTree = "<group>"; };
-		BE799BBC19C93C210023CE88 /* VDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryDataSource.m; sourceTree = "<group>"; };
+		BE799BBB19C93C210023CE88 /* VStreamCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewDataSource.h; sourceTree = "<group>"; };
+		BE799BBC19C93C210023CE88 /* VStreamCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewDataSource.m; sourceTree = "<group>"; };
 		BE799BBD19C93C210023CE88 /* VDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryViewController.h; sourceTree = "<group>"; };
 		BE799BBE19C93C210023CE88 /* VDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryViewController.m; sourceTree = "<group>"; };
 		BE799BC319C93C440023CE88 /* VNavigationHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationHeaderView.h; sourceTree = "<group>"; };
@@ -2297,8 +2297,8 @@
 			isa = PBXGroup;
 			children = (
 				BE799BB719C93C210023CE88 /* Cells */,
-				BE799BBB19C93C210023CE88 /* VDirectoryDataSource.h */,
-				BE799BBC19C93C210023CE88 /* VDirectoryDataSource.m */,
+				BE799BBB19C93C210023CE88 /* VStreamCollectionViewDataSource.h */,
+				BE799BBC19C93C210023CE88 /* VStreamCollectionViewDataSource.m */,
 				BE799BBD19C93C210023CE88 /* VDirectoryViewController.h */,
 				BE799BBE19C93C210023CE88 /* VDirectoryViewController.m */,
 			);
@@ -2728,7 +2728,7 @@
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				0314D49D19B46B5E00FA363C /* VContentViewController.m in Sources */,
-				BE799BC119C93C210023CE88 /* VDirectoryDataSource.m in Sources */,
+				BE799BC119C93C210023CE88 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				0314D49019B46B5E00FA363C /* VContentToInfoAnimator.m in Sources */,
 				0314D48D19B46B5E00FA363C /* VTableContainerViewController.m in Sources */,

@@ -1,12 +1,12 @@
 //
-//  VStreamDirectoryDataSource.m
+//  VStreamCollectionViewDataSource.m
 //  victorious
 //
 //  Created by Will Long on 9/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDirectoryDataSource.h"
+#import "VStreamCollectionViewDataSource.h"
 
 //UI
 #import "VDirectoryItemCell.h"
@@ -20,13 +20,13 @@
 
 static char KVOContext;
 
-@interface VDirectoryDataSource()
+@interface VStreamCollectionViewDataSource()
 
 @property (nonatomic) BOOL isLoading;
 
 @end
 
-@implementation VDirectoryDataSource
+@implementation VStreamCollectionViewDataSource
 
 - (void)dealloc
 {
@@ -140,13 +140,7 @@ static char KVOContext;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
-    VDirectoryItemCell *cell;
-//    if ([item isKindOfClass:[VStream class]])
-//    {
-         cell = [collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
-//    }
-    cell.streamItem = item;
-    return cell;
+    return [self.delegate dataSource:self cellForStreamItem:item atIndexPath:indexPath];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
