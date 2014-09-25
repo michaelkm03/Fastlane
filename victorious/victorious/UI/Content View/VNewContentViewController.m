@@ -199,6 +199,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [super viewWillAppear:animated];
     
+    self.contentCollectionView.delegate = self;
+    
     [self.viewModel fetchComments];
     
     
@@ -717,6 +719,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel
 {
+    
     VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
     [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
                                                 currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
@@ -768,8 +771,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
               [welf.contentCollectionView reloadData];
               [welf.contentCollectionView.collectionViewLayout invalidateLayout];
           }];
-         
-         
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -793,7 +794,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             self.mediaURL = capturedMediaURL;
             [self.inputAccessoryView setSelectedThumbnail:previewImage];
         }
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            [UIView animateWithDuration:0.0f
+                             animations:^
+             {
+                 [self.contentCollectionView reloadData];
+                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
+             }];
+        }];
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
