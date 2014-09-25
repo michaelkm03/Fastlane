@@ -27,6 +27,7 @@
 @property (nonatomic)         BOOL                      finishedFirstQuartile;
 @property (nonatomic)         BOOL                      finishedMidpoint;
 @property (nonatomic)         BOOL                      finishedThirdQuartile;
+@property (nonatomic)         BOOL                      hasCaculatedItemTime;
 
 @property (nonatomic, readwrite) CMTime                 currentTime;
 
@@ -363,7 +364,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     AVPlayerItem *playerItem = self.player.currentItem;
     if (playerItem.status == AVPlayerItemStatusReadyToPlay)
     {
-        return playerItem.duration;
+        if (CMTIME_IS_VALID(playerItem.asset.duration))
+        {
+            return playerItem.asset.duration;
+        }
+        return kCMTimeZero;
     }
     else
     {
@@ -459,13 +464,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
+        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration))];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
     }
     if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
+        self.hasCaculatedItemTime = NO;
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(duration))         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
@@ -676,6 +684,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 case AVPlayerItemStatusReadyToPlay:
                 {
+                    if (!self.hasCaculatedItemTime)
+                    {
+                        break;
+                    }
                     self.toolbarView.progressIndicator.duration = self.player.currentItem.duration;
                     if (!self.delegateNotifiedOfReadinessToPlay)
                     {
@@ -721,6 +733,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             // commented out because the loadedTimeRanges value is unreliable
             // self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
         }
+    }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(duration))])
+    {
+        self.hasCaculatedItemTime = YES;
     }
 }
 
