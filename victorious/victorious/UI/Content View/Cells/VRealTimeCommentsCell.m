@@ -19,7 +19,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 @interface VRealTimeCommentsCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;
-@property (weak, nonatomic) IBOutlet UIImageView *currentUserAvatar;
+@property (weak, nonatomic) IBOutlet UIImageView *currentUserAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentCommentBodyLabel;
@@ -50,11 +50,11 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 {
     [super awakeFromNib];
     
-    self.currentUserAvatar.layer.cornerRadius = CGRectGetWidth(self.currentUserAvatar.bounds) * 0.5f;
-    self.currentUserAvatar.layer.masksToBounds = YES;
+    self.currentUserAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.currentUserAvatarImageView.bounds) * 0.5f;
+    self.currentUserAvatarImageView.layer.masksToBounds = YES;
     
-    self.currentUserAvatar.image = nil;
-    self.currentUserAvatar.hidden = YES;
+    self.currentUserAvatarImageView.image = nil;
+    self.currentUserAvatarImageView.hidden = YES;
     self.currentUserNameLabel.text = nil;
     self.currentCommentBodyLabel.text = nil;
     self.currentAtTimeLabel.text = nil;
@@ -89,7 +89,8 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                atTimeText:(NSString *)atTimeText
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
-    [self.currentUserAvatar setImageWithURL:currentAvatarURL
+    self.currentUserAvatarImageView.hidden = NO;
+    [self.currentUserAvatarImageView setImageWithURL:currentAvatarURL
                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
     self.currentTimeAgoLabel.text = timeAgoText;
