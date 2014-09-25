@@ -141,10 +141,7 @@ static char KVOContext;
 {
     VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;
-//    if ([item isKindOfClass:[VStream class]])
-//    {
-         cell = [collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
-//    }
+    cell = [collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
     cell.streamItem = item;
     return cell;
 }

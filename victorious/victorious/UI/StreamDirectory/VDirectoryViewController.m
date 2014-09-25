@@ -22,7 +22,7 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
-NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
+static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
 
