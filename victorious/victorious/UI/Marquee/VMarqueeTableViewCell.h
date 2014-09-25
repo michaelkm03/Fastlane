@@ -10,6 +10,10 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 
+@class VStreamItem;
+
 @interface VMarqueeTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods>
+
+@property (nonatomic, readonly) VStreamItem *currentItem;
 
 @end

@@ -8,11 +8,23 @@
 
 #import "VMarqueeTableViewCell.h"
 
+#import "VMarqueeViewController.h"
+
+#import "VStreamItem.h"
+
+@interface VMarqueeTableViewCell()
+
+@property (nonatomic, strong) VMarqueeViewController *marquee;
+
+@end
+
 @implementation VMarqueeTableViewCell
 
 - (void)awakeFromNib
 {
     // Initialization code
+    self.marquee = [[VMarqueeViewController alloc] init];
+    [self addSubview:self.marquee.view];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -20,6 +32,11 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (VStreamItem *)currentItem
+{
+    return self.marquee.currentStreamItem;
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods
@@ -34,7 +51,10 @@
     return [UINib nibWithNibName:NSStringFromClass([self class])
                           bundle:nil];
 }
-//
-//+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return [VMarqueeViewController desiredSizeWithCollectionViewBounds:bounds];
+}
 
 @end

@@ -16,7 +16,7 @@
 @interface VDirectoryViewController : UIViewController
 
 @property (nonatomic, readonly) VStream *stream;///<The stream to display
-@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *directoryDataSource;///<The VDirectoryDataSource for the object.
+@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *directoryDataSource;///<The VStreamCollectionViewDataSource for the object.
 @property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 
 /**

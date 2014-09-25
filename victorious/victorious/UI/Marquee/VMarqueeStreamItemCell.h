@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VSharedCollectionReusableViewMethods.h"
+
 @class VStreamItem;
 
-@interface VMarqueeStreamItemCell : UICollectionViewCell
+@interface VMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, strong) VStreamItem *streamItem;
 

@@ -64,7 +64,7 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
     [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
                            placeholderImage:placeholderImage];
     
-    [self.previewImageView fadeInImageAtURL:self.secondAssetUrl
+    [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
                            placeholderImage:placeholderImage];
 }
 

@@ -40,7 +40,7 @@
  *
  *  @param stream The stream used to populate the data source
  *
- *  @return A VDirectoryDataSource
+ *  @return A VStreamCollectionViewDataSource
  */
 - (instancetype)initWithStream:(VStream *)stream;
 

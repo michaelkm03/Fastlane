@@ -16,6 +16,8 @@
 	<string>/api/tos</string>
 	<key>channelsEnabled</key>
 	<true/>
+	<key>marqueeEnabled</key>
+	<true/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
 </dict>

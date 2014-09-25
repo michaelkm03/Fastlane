@@ -9,7 +9,10 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
+#import "VSettingManager.h"
 #import "VStreamTableDataSource.h"
+
+#import "VMarqueeTableViewCell.h"
 
 #import "VStream.h"
 
@@ -136,18 +139,25 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (self.shouldDisplayMarquee)
+    {
+        return 2;
+    }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.shouldDisplayMarquee && section == 0)
+    {
+        return 1;
+    }
     return [self count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence *sequence = [self sequenceAtIndexPath:indexPath];
-    return [self.delegate dataSource:self cellForSequence:sequence atIndexPath:indexPath];
+    return [self.delegate dataSource:self cellForIndexPath:indexPath];
 }
 
 #pragma mark - NSNotification handlers

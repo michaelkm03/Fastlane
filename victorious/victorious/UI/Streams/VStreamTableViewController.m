@@ -30,6 +30,7 @@
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
+#import "VMarqueeTableViewCell.h"
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
@@ -46,6 +47,7 @@
 #import "VAnalyticsRecorder.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
 
@@ -60,6 +62,7 @@
 @property (strong, nonatomic) NSString *streamName;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL shouldDisplayMarquee;
 
 @end
 
@@ -70,6 +73,7 @@
     VStream *defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
     VStreamTableViewController *stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
+    stream.shouldDisplayMarquee = YES;
     return  stream;
 }
 
@@ -121,6 +125,8 @@
     self.tableDataSource.delegate = self;
     self.tableDataSource.stream = self.currentStream;
     self.tableDataSource.tableView = self.tableView;
+    self.tableDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
+    
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
@@ -325,6 +331,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        return [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds].height;
+    }
+    
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
 
     CGFloat cellHeight;
@@ -341,9 +352,16 @@
     return cellHeight;
 }
 
-- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        return [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
+                                                          forIndexPath:indexPath];
+    }
+    
     VStreamViewCell *cell;
+    VSequence *sequence = [dataSource sequenceAtIndexPath:indexPath];
     
     if ([sequence isPoll])
     {
@@ -391,6 +409,8 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:VStreamPollCellNibName bundle:nil]
          forCellReuseIdentifier:VStreamPollCellNibName];
+    
+    [self.tableView registerNib:[VMarqueeTableViewCell nibForCell] forCellReuseIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]];
 }
 
 #pragma mark - Refresh

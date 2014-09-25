@@ -21,6 +21,8 @@ NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEna
 NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
 
 NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
+NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
+
 
 //URLs
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
