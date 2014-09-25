@@ -36,7 +36,12 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 92);
+    return CGSizeMake(CGRectGetWidth(bounds), 92.0f);
+}
+
++ (CGSize)desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), 5.0f);
 }
 
 #pragma mark - NSObject
@@ -83,6 +88,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                atTimeText:(NSString *)atTimeText
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
+
     [self.currentUserAvatar setImageWithURL:currentAvatarURL
                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
@@ -125,7 +131,15 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 
 - (void)clearAvatarStrip
 {
-    [self.realtimeCommentStrip.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSMutableArray *subviewsOfSripExcludingProgressBar = [[NSMutableArray alloc] init];
+    [self.realtimeCommentStrip.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (obj == self.progressBar)
+        {
+            return;
+        }
+        [subviewsOfSripExcludingProgressBar addObject:obj];
+    }];
+    [subviewsOfSripExcludingProgressBar makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 
 @end

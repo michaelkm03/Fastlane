@@ -24,7 +24,6 @@
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
 #import "VRealTimeCommentsCell.h"
-#import "VEmptyProgressView.h"
 #import "VContentCommentsCell.h"
 
 // Supplementary Views
@@ -72,7 +71,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
-@property (nonatomic, weak) VEmptyProgressView *emptyRealTimeCommentsCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VDropdownTitleView *dropdownHeaderView;
 
@@ -168,8 +166,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
                  forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VEmptyProgressView nibForCell]
-                 forCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
@@ -457,23 +453,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         }
         case VContentViewSectionRealTimeComments:
         {
-            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
+            if (self.realTimeComentsCell)
             {
-                if (self.realTimeComentsCell)
-                {
-                    return self.realTimeComentsCell;
-                }
-                
-                self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
                 return self.realTimeComentsCell;
             }
-            else
-            {
-                self.emptyRealTimeCommentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEmptyProgressView suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
-                return self.emptyRealTimeCommentsCell;
-            }
+            
+            self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
+                                                                                 forIndexPath:indexPath];
+            return self.realTimeComentsCell;
         }
         case VContentViewSectionAllComments:
         {
@@ -547,6 +534,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionRealTimeComments:
+        {
             if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
             {
                 CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
@@ -557,8 +545,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             }
             else
             {
-                return [VEmptyProgressView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+                CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:self.contentCollectionView.bounds];
+                VContentViewVideoLayout *videoLayout = ((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout);
+                videoLayout.sizeForRealTimeComentsView = realTimeCommentsSize;
+                
+                return realTimeCommentsSize;
             }
+            
+        }
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
@@ -669,7 +663,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
     
     CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
-    [self.emptyRealTimeCommentsCell setProgress: progressedTime];
     [self.realTimeComentsCell setProgress:progressedTime];
     
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
@@ -714,7 +707,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.viewModel.realTimeCommentsViewModel.currentTime = totalTime;
     self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
     
-    self.emptyRealTimeCommentsCell.progress = 1.0f;
     self.realTimeComentsCell.progress = 1.0f;
     
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
