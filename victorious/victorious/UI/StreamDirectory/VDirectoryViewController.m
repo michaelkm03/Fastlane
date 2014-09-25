@@ -261,7 +261,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
     {
-        NSString* streamName = [@"stream" stringByAppendingString: item.remoteId];
+        NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
         VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
                                                                                                  name:streamName
                                                                                                 title:item.name];

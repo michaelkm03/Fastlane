@@ -42,10 +42,13 @@
  *
  *  @return Return YES if the index is valid, return NO if the index cannot currently be selected (e.g. User needs to log in first)
  */
-- (BOOL)segmentControlChangeToIndex:(NSInteger)index;
+- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView segmentControlChangeToIndex:(NSInteger)index;
 
 @end
 
+/**
+ *  Provides a themed Victorious header view that has options for: filters, adding content, side menu, back nav action, and the custom header logo.
+ */
 @interface VNavigationHeaderView : UIView
 
 /**

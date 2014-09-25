@@ -13,6 +13,7 @@ extern NSString * const kVCaptureVideoQuality;
 extern NSString * const kVExportVideoQuality;
 extern NSString * const kVRealtimeCommentsEnabled;
 extern NSString * const kVMemeAndQuoteEnabled;
+extern NSString * const VSettingsChannelsEnabled;;
 //URLs
 extern NSString * const kVTermsOfServiceURL;
 extern NSString * const kVPrivacyUrl;

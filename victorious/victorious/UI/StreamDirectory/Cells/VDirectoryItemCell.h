@@ -10,13 +10,13 @@
 
 #import "VBaseCollectionViewCell.h"
 
-/**
- *  A cell for the VDirectoryCollectionViewController.
- */
 @class VStreamItem;
 
 extern NSString * const VDirectoryItemCellNameStream;
 
+/**
+ *  A cell for the VDirectoryCollectionViewController.
+ */
 @interface VDirectoryItemCell : VBaseCollectionViewCell
 
 /**

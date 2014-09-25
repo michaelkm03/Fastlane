@@ -122,9 +122,9 @@
 - (IBAction)changedFilterControls:(id)sender
 {
     BOOL shouldChange = YES;
-    if ([self.delegate respondsToSelector:@selector(segmentControlChangeToIndex:)])
+    if ([self.delegate respondsToSelector:@selector(navHeaderView:segmentControlChangeToIndex:)])
     {
-        shouldChange = [self.delegate segmentControlChangeToIndex:self.segmentedControl.selectedSegmentIndex];
+        shouldChange = [self.delegate navHeaderView:self segmentControlChangeToIndex:self.segmentedControl.selectedSegmentIndex];
     }
     if (!shouldChange)
     {
