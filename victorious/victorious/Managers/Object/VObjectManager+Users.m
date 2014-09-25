@@ -337,8 +337,23 @@
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
-                                        withSuccessBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    return [self findUsersBySearchString:search_string context:nil withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
+                                                      withSuccessBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
+    return [self findUsersBySearchString:search_string context:@"message" withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                     context:(NSString *)context
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -348,8 +363,13 @@
         }
     };
     
+
+    NSMutableDictionary *params = [@{ @"search": search_string } mutableCopy];
     
-    NSDictionary *params = @{ @"search": search_string };
+    if (context.length)
+    {
+        params[@"context"] = context;
+    }
     
     return [self POST:@"/api/userinfo/search"
                object:nil

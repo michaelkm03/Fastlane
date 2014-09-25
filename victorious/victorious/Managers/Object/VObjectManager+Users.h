@@ -72,4 +72,8 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                             withSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
+                                                      withSuccessBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail;
+
 @end
