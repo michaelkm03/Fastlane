@@ -10,6 +10,7 @@
 
 #import "VSequence.h"
 #import "VObjectManager.h"
+#import "VThemeManager.h"
 #import "VUser.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
@@ -74,19 +75,19 @@ NSString *VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    return [self streamForRemoteId:@"directory" filterName:nil
-              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *directory =  [self streamForRemoteId:@"directory" filterName:nil
+                             managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    directory.name = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+    [directory.managedObjectContext saveToPersistentStore:nil];
+    return directory;
 }
 
 + (VStream *)streamForMarquee
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    VStream *marquee = [self streamForRemoteId:@"marquee" filterName:nil
+    return [self streamForRemoteId:@"marquee" filterName:nil
               managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    marquee.streamContentType = kVSequenceContentType;
-    [marquee.managedObjectContext saveToPersistentStore:nil];
-    return marquee;
 }
 
 + (VStream *)streamForRemoteId:(NSString *)remoteId

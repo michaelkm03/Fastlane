@@ -128,6 +128,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             {
                 if (YES)//TODO: this should be a real flag for channels.
                 {
+#warning test code
                     navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForMarquee]]];//streamForChannelsDirectory]]];
                 }
                 else
