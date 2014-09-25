@@ -285,7 +285,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         }
         self.avatarsNeedUpdated = NO;
     }
-    
 }
 
 - (NSIndexPath *)indexPathForContentView
@@ -687,20 +686,26 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
+    self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
+    [self updateAvatarsOnRealtimeCommentCell];
+    
+    // should we update content size?
     CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
-    if (desiredSizeForVideo.height > desiredSizeForVideo.width)
+    if (!isnan(desiredSizeForVideo.width) || !isnan(desiredSizeForVideo.height))
     {
-        desiredSizeForVideo = CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetWidth(self.contentCollectionView.bounds));
+        if (desiredSizeForVideo.height > desiredSizeForVideo.width)
+        {
+            desiredSizeForVideo = CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetWidth(self.contentCollectionView.bounds));
+        }
+        desiredSizeForVideo.width = CGRectGetWidth(self.contentCollectionView.bounds);
+        self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     }
-    self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     
     [UIView animateWithDuration:0.25f
                      animations:^
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }];
-    self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-    [self updateAvatarsOnRealtimeCommentCell];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
