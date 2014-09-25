@@ -22,7 +22,7 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 @property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 
-@property (nonatomic) NSInteger defaultNameHeight;
+@property (nonatomic) CGRect originalNameLabelFrame;
 
 @end
 
@@ -39,7 +39,7 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 {
     [super awakeFromNib];
 
-    self.defaultNameHeight = self.nameLabel.frame.size.height;
+    self.originalNameLabelFrame = self.nameLabel.frame;
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
@@ -61,7 +61,7 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 {
     [super prepareForReuse];
     
-    self.nameLabel.bounds = CGRectMake(0, 0, CGRectGetWidth(self.nameLabel.bounds), self.defaultNameHeight);
+    self.nameLabel.frame = self.originalNameLabelFrame;
 }
 
 @end

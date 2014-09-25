@@ -2,7 +2,7 @@
 //  VStream.h
 //  victorious
 //
-//  Created by Will Long on 9/19/14.
+//  Created by Will Long on 9/23/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,8 +15,8 @@
 @interface VStream : VStreamItem
 
 @property (nonatomic, retain) NSString * apiPath;
-@property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSString * filterName;
+@property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
 @end
 

@@ -120,7 +120,7 @@
     
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
     {
-        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
+        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
             [self.delegate answeredPollWithAnswerId:result.answerId];
             

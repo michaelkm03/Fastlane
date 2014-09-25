@@ -55,17 +55,6 @@
     return container;
 }
 
-+ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
-{
-    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamContainerViewController *container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
-    container.tableViewController = streamTable;
-    container.automaticallyAdjustsScrollViewInsets = NO;
-    streamTable.delegate = container;
-    
-    return container;
-}
-
 - (VStreamTableViewController *)streamTable
 {
     return (VStreamTableViewController *)self.tableViewController;

@@ -30,7 +30,7 @@ static char KVOContext;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeKVOObservers];
 }
 
 - (instancetype)initWithStream:(VStream *)stream
@@ -50,10 +50,7 @@ static char KVOContext;
         return;
     }
     
-    if (_stream)
-    {
-        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
-    }
+    [self removeKVOObservers];
     
     _stream = stream;
     self.filter = [[VObjectManager sharedManager] filterForStream:stream];
@@ -62,6 +59,11 @@ static char KVOContext;
     {
         [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
+}
+
+- (void)removeKVOObservers
+{
+    [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
 }
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath

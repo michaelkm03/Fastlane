@@ -61,7 +61,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -596,7 +596,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
@@ -614,9 +614,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         apiPath = stream.apiPath;
     }
-    else if (stream.name.length)
+    else if (stream.remoteId.length)
     {
-        apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.name];
+        apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.remoteId ?: @"0"];
         apiPath = [apiPath stringByAppendingPathComponent:stream.filterName ?: @"0"];
     }
     else

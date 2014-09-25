@@ -56,15 +56,20 @@
  */
 @property (nonatomic) BOOL showAddButton;
 
+/**
+ *  Shows the header logo image when set to yes.
+ */
+@property (nonatomic) BOOL showHeaderLogoImage;
+
+/**
+ *  Text to show on the header.  Will not display after you call showHeaderLogo.
+ */
+@property (nonatomic, strong) NSString *headerText;
+
 @property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles;
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;
-
-/**
- *  Call to show the customized header logo image.
- */
-- (void)showHeaderLogo;
 
 /**
  *  Updates the UI of the header view.  Call after the VC's viewDidLoad.
