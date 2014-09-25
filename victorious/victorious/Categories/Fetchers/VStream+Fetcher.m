@@ -16,8 +16,8 @@
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentType = @"stream";
 
-NSString *VStreamFilterTypeRecent = @"recent";
-NSString *VStreamFilterTypePopular = @"popular";
+NSString * const VStreamFilterTypeRecent = @"recent";
+NSString * const VStreamFilterTypePopular = @"popular";
 
 @implementation VStream (Fetcher)
 

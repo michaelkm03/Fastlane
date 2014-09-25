@@ -10,8 +10,8 @@
 
 @class VUser, VSequence;
 
-extern NSString *VStreamFilterTypeRecent;
-extern NSString *VStreamFilterTypePopular;
+extern NSString * const VStreamFilterTypeRecent;
+extern NSString * const VStreamFilterTypePopular;
 
 @interface VStream (Fetcher)
 
