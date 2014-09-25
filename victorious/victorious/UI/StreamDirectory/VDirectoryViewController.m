@@ -24,6 +24,8 @@
 
 NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
+static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
+
 @interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -64,7 +66,6 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     }
     
     self.navHeaderView.delegate = self;
-    self.navHeaderView.showAddButton = NO;
     
     [self.view addSubview:self.navHeaderView];
     
@@ -99,6 +100,9 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
     //Register cells
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
+
+    CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
+    self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
     
     [self refresh:self.refreshControl];
 }
@@ -107,6 +111,9 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 {
     [super viewWillAppear:animated];
     
+    self.navHeaderView.showAddButton = NO;
+    self.navHeaderView.showHeaderLogoImage = YES;
+    self.navHeaderView.headerText = self.stream.name;//Set the title in case there is no logo
     [self.navHeaderView updateUI];
 }
 
@@ -245,10 +252,19 @@ NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+#warning test code
+    VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:self.stream name:self.stream.remoteId title:self.stream.remoteId];
+    VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
+    [self.navigationController pushViewController:streamContainer animated:YES];
+    return ;
+    
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+    if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
     {
-        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item name:item.name title:item.name];
+        NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
+        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
+                                                                                                 name:streamName
+                                                                                                title:item.name];
         VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
         [self.navigationController pushViewController:streamContainer animated:YES];
     }

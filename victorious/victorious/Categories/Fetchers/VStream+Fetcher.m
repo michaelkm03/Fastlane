@@ -10,10 +10,14 @@
 
 #import "VSequence.h"
 #import "VObjectManager.h"
+#import "VThemeManager.h"
 #import "VUser.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentType = @"stream";
+
+NSString * const VStreamFilterTypeRecent = @"recent";
+NSString * const VStreamFilterTypePopular = @"popular";
 
 @implementation VStream (Fetcher)
 
@@ -24,7 +28,7 @@ static NSString * const kVStreamContentType = @"stream";
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
+    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
@@ -71,9 +75,43 @@ static NSString * const kVStreamContentType = @"stream";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    NSString *apiPath = @"/api/sequence/detail_list_by_stream/directory";
+    VStream *directory =  [self streamForRemoteId:@"directory" filterName:nil
+                             managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    directory.name = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+    [directory.managedObjectContext saveToPersistentStore:nil];
+    return directory;
+}
+
++ (VStream *)streamForMarquee
+{
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForRemoteId:@"marquee" filterName:nil
+              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
++ (VStream *)streamForRemoteId:(NSString *)remoteId
+                    filterName:(NSString *)filterName
+          managedObjectContext:(NSManagedObjectContext *)context
+{
+    NSString *streamIdKey = remoteId ?: @"0";
+    NSString *filterIdKey;
+    if (filterName.length)
+    {
+        filterIdKey = filterName;
+    }
+    else
+    {
+        filterIdKey = VStreamFilterTypeRecent;
+    }
+    
+    NSString *apiPath = [[@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey] stringByAppendingPathComponent:filterIdKey];
+    
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    stream.remoteId = remoteId;
+    stream.filterName = filterName;
+    [stream.managedObjectContext saveToPersistentStore:nil];
+    return stream;
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath

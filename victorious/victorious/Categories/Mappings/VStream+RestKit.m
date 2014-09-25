@@ -33,33 +33,38 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-        
-    RKDynamicMapping *contentMapping = [RKDynamicMapping new];
-    RKObjectMapping *sequenceMapping = [VSequence entityMapping];
-    
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithKeyPath:@"stream_content_type"
-                                                     expectedValue:@"stream"
-                                                     objectMapping:mapping]];
-    
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithKeyPath:@"stream_content_type"
-                                                     expectedValue:@"sequence"
-                                                     objectMapping:sequenceMapping]];
-    
-    RKRelationshipMapping *contentRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
-                                                                                           toKeyPath:VSelectorName(streamItems)
-                                                                                         withMapping:contentMapping];
-    [mapping addPropertyMapping:contentRelationshipMapping];
     
     return mapping;
 }
 
++ (RKDynamicMapping *)listByStreamMapping
+{
+    RKDynamicMapping *contentMapping = [RKDynamicMapping new];
+    RKObjectMapping *sequenceMapping = [VSequence entityMapping];
+    
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath != nil"]
+                                                              objectMapping:[self entityMapping]]];
+    
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath == nil"]
+                                                              objectMapping:sequenceMapping]];
+    
+    return contentMapping;
+}
+
 + (NSArray *)descriptors
 {
-    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VStream entityMapping]
+    return @[
+             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
 }
 

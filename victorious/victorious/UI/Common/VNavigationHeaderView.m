@@ -62,8 +62,26 @@
     }
 }
 
+- (void)setHeaderText:(NSString *)headerText
+{
+    _headerText = headerText;
+    self.headerLabel.text = self.headerText;
+}
+
 - (void)updateUI
 {
+    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
+    if (self.showHeaderLogoImage && headerImage)
+    {
+        self.headerImageView.image = headerImage;
+        self.headerLabel.hidden = YES;
+    }
+    else
+    {
+        self.headerImageView.hidden = YES;
+        self.headerLabel.text = self.headerText;
+    }
+    
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
@@ -73,6 +91,7 @@
     
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.headerLabel.text = self.headerText;
     
     self.segmentedControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.segmentedControl.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
@@ -98,20 +117,6 @@
     [self.segmentedControl setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
                                                   NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
                                        forState:UIControlStateSelected];
-}
-
-- (void)showHeaderLogo
-{
-    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
-    if (headerImage)
-    {
-        self.headerImageView.image = headerImage;
-        self.headerLabel.hidden = YES;
-    }
-    else
-    {
-        self.headerImageView.hidden = YES;
-    }
 }
 
 - (IBAction)changedFilterControls:(id)sender
