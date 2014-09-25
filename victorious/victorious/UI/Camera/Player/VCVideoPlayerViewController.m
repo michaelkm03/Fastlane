@@ -750,7 +750,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             // self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
         }
     }
-    else if (object == self.player.currentItem && (self.delegateNotifiedOfReadinessToPlay == NO) && (self.player.status == AVPlayerStatusReadyToPlay) && [keyPath isEqualToString:NSStringFromSelector(@selector(duration))])
+    else if (object == self.player.currentItem && (!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) && [keyPath isEqualToString:NSStringFromSelector(@selector(duration))])
     {
         self.hasCaculatedItemTime = YES;
         [self.delegate videoPlayerReadyToPlay:self];
