@@ -207,9 +207,9 @@
 
 - (IBAction)commentButtonAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:)])
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromSender:)])
     {
-        [self.delegate willCommentOnSequence:self];
+        [self.delegate willCommentOnSequence:self fromSender:self];
     }
 
 }

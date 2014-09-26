@@ -14,7 +14,7 @@
 @protocol VStreamViewCellDelegate <NSObject>
 @required
 
-- (void)willCommentOnSequence:(id)sequenceObject;
+- (void)willCommentOnSequence:(id)sequenceObject fromSender:(id)sender;
 
 @end
 
