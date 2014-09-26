@@ -749,9 +749,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(duration))])
     {
-        if (CMTIME_IS_VALID(self.player.currentItem.duration))
+        if (CMTIME_IS_VALID([self playerItemDuration]) && (CMTimeGetSeconds([self playerItemDuration]) > 0))
         {
-            NSLog(@"calculated item time to: %f", CMTimeGetSeconds(self.player.currentItem.duration));
             self.hasCaculatedItemTime = YES;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }

@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate, VRealtimeCommentsCellStripDataSource>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -267,20 +267,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 #pragma mark - Private Mehods
 
-- (void)updateAvatarsOnRealtimeCommentCell
-{
-    [self.realTimeComentsCell clearAvatarStrip];
-    NSLog(@"Updating avatars");
-    NSLog(@"number of RTC: %i", self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments);
-    
-    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
-    {
-        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
-                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
-    }
-}
-
 - (NSIndexPath *)indexPathForContentView
 {
     return [NSIndexPath indexPathForRow:0
@@ -458,6 +444,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             
             self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
+            self.realTimeComentsCell.dataSource = self;
             return self.realTimeComentsCell;
         }
         case VContentViewSectionAllComments:
@@ -696,6 +683,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }];
+    
+    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
@@ -703,6 +692,23 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.realTimeComentsCell.progress = 1.0f;
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+}
+
+#pragma mark - VRealtimeCommentsCellStripDataSource
+
+- (NSInteger)numberOfAvatarsInStripForStripCell:(VRealTimeCommentsCell *)realtimeCommentsCell
+{
+    return self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments;
+}
+
+- (NSURL *)urlForAvatarImageAtIndex:(NSInteger)avatarIndex forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell
+{
+    return [self.viewModel.realTimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:avatarIndex];
+}
+
+- (CGFloat)percentThroughVideoForAvatarAtIndex:(NSInteger)avatarIndex forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell
+{
+    return [self.viewModel.realTimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:avatarIndex];
 }
 
 #pragma mark - VRealtimeCommentsViewModelDelegate
@@ -728,11 +734,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      }];
 
     [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
+    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 - (void)realtimeCommentsReadyToLoadRTC:(VRealtimeCommentsViewModel *)viewModel
 {
-    [self updateAvatarsOnRealtimeCommentCell];
+    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate

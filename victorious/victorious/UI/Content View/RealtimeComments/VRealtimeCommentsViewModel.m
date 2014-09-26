@@ -71,7 +71,6 @@
         }
     }];
     
-    NSLog(@"setttings RTCs with count %@", @(sortedRealTimeComents.count));
     _realTimeComments = sortedRealTimeComents;
     
     [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
@@ -149,7 +148,6 @@
         return;
     }
     _totalTime = totalTime;
-    NSLog(@"%f", CMTimeGetSeconds(totalTime));
     [self notifyRTCIfReadyToLoad];
 }
 
@@ -175,7 +173,6 @@
     }
     VComment *commentAtIndex = [self.realTimeComments objectAtIndex:index];
     CGFloat percentThrought = commentAtIndex.realtime.doubleValue / CMTimeGetSeconds(self.totalTime);
-    NSLog(@"Pertcent through %f for index %i", percentThrought, index);
     return percentThrought;
 }
 

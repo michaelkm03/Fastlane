@@ -80,6 +80,13 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                          animated:YES];
 }
 
+- (void)setDataSource:(id<VRealtimeCommentsCellStripDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    
+    [self reloadAvatarStrip];
+}
+
 #pragma mark - Public Methods
 
 - (void)configureWithCurrentUserAvatarURL:(NSURL *)currentAvatarURL
@@ -128,6 +135,18 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
     avatarView.layer.masksToBounds = YES;
 
     [self.realtimeCommentStrip addSubview:avatarView];
+}
+
+- (void)reloadAvatarStrip
+{
+    [self clearAvatarStrip];
+    
+    NSInteger numberOfAvatars = [self.dataSource numberOfAvatarsInStripForStripCell:self];
+    for (NSInteger avatarIndex = 0; avatarIndex < numberOfAvatars; avatarIndex++)
+    {
+        [self addAvatarWithURL:[self.dataSource urlForAvatarImageAtIndex:avatarIndex forAvatarCell:self]
+           withPercentLocation:[self.dataSource percentThroughVideoForAvatarAtIndex:avatarIndex forAvatarCell:self]];
+    }
 }
 
 - (void)clearAvatarStrip
