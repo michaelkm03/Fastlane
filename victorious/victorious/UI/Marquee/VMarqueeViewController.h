@@ -26,6 +26,10 @@
 @property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
 @property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 
+@property (nonatomic, readonly) NSTimer *autoScrollTimer;///<The timer in control of auto scroll
+
+- (void)scheduleAutoScrollTimer;///Invalidates the current autoScrollTimer and schedules a new timer.
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
 
 @end

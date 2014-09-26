@@ -20,4 +20,6 @@
 @property (nonatomic, readonly) VStreamItem *currentItem;
 @property (nonatomic, weak) id<VMarqueeDelegate> delegate;
 
+- (void)restartAutoScroll;
+
 @end

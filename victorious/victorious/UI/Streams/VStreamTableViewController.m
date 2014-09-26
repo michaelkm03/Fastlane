@@ -371,6 +371,7 @@
         cell.parentTableViewController = self;
         CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        [cell restartAutoScroll];
         return cell;
     }
     

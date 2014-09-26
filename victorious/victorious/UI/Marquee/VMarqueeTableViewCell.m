@@ -42,6 +42,17 @@
     return self.marquee.currentStreamItem;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.marquee.autoScrollTimer invalidate];
+}
+
+- (void)restartAutoScroll
+{
+    [self.marquee scheduleAutoScrollTimer];
+}
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (NSString *)suggestedReuseIdentifier
