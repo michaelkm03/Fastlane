@@ -64,12 +64,6 @@
                                       failure:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - CollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

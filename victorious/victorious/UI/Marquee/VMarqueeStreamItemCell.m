@@ -26,7 +26,7 @@
 
 @end
 
-static CGFloat const kVCellHeightRatio = .7861; //from spec, 283 height for 360 width
+static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 360 width
 
 @implementation VMarqueeStreamItemCell
 
@@ -36,12 +36,13 @@ static CGFloat const kVCellHeightRatio = .7861; //from spec, 283 height for 360 
     
     self.originalNameLabelFrame = self.nameLabel.frame;
 
-    self.profileImageView.layer.masksToBounds = YES;
+//    self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetWidth(self.bounds) * 0.5f;
     self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageView.layer.borderWidth = 4;
     
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem

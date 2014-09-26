@@ -333,7 +333,8 @@
 {
     if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
-        return [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds].height;
+        CGFloat height = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds].height;
+        return height;
     }
     
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
