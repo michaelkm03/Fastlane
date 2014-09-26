@@ -297,6 +297,17 @@
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     VStreamViewCell *cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     
+    //TODO: we'll need to clean this up once they decide on the animation
+    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
+    {
+        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
+        {
+            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
+            [self.navigationController pushViewController:self.contentViewController animated:YES];
+        }
+        return;
+    }
+    
     if ([cell isKindOfClass:[VStreamPollCell class]])
     {
         VStreamPollCell *pollCell = (VStreamPollCell *)cell;
