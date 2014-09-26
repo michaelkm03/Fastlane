@@ -25,6 +25,10 @@
 
 @end
 
+static NSString * const kVAPIParamMessage = @"message";
+static NSString * const kVAPIParamContext = @"context";
+static NSString * const kVAPIParamSearch = @"search";
+
 @implementation VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
@@ -347,7 +351,7 @@
                                                       withSuccessBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail
 {
-    return [self findUsersBySearchString:search_string context:@"message" withSuccessBlock:success failBlock:fail];
+    return [self findUsersBySearchString:search_string context:kVAPIParamMessage withSuccessBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
@@ -364,11 +368,11 @@
     };
     
 
-    NSMutableDictionary *params = [@{ @"search": search_string } mutableCopy];
+    NSMutableDictionary *params = [@{ kVAPIParamSearch : search_string } mutableCopy];
     
     if (context.length)
     {
-        params[@"context"] = context;
+        params[kVAPIParamContext] = context;
     }
     
     return [self POST:@"/api/userinfo/search"
