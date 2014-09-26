@@ -360,6 +360,8 @@
         VMarqueeTableViewCell * cell= [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
         cell.parentTableViewController = self;
+        CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
         return cell;
     }
     

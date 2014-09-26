@@ -110,6 +110,8 @@
     VMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier] forIndexPath:indexPath];
+    CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+    cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
     cell.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     

@@ -27,6 +27,7 @@
     // Initialization code
     self.marquee = [[VMarqueeViewController alloc] init];
     self.marquee.delegate = self;
+    self.marquee.view.bounds = self.bounds;
     [self addSubview:self.marquee.view];
 }
 

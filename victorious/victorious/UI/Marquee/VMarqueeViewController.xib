@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="RdS-yJ-D61">
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="RdS-yJ-D61">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -32,6 +32,12 @@
                 </collectionView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="RdS-yJ-D61" secondAttribute="bottom" id="85e-eb-PBe"/>
+                <constraint firstItem="RdS-yJ-D61" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="GeJ-tK-NFW"/>
+                <constraint firstItem="RdS-yJ-D61" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wo7-In-b3P"/>
+                <constraint firstAttribute="trailing" secondItem="RdS-yJ-D61" secondAttribute="trailing" id="mmm-43-NuH"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
