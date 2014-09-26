@@ -80,7 +80,7 @@
 
 - (void)notifyRTCIfReadyToLoad
 {
-    if (CMTIME_IS_VALID(self.totalTime) && (self.realTimeComments.count > 0))
+    if (CMTIME_IS_VALID(self.totalTime) && (self.realTimeComments.count > 0) && (CMTimeGetSeconds(self.totalTime) > 0.0f))
     {
         [self.delegate realtimeCommentsReadyToLoadRTC:self];
     }

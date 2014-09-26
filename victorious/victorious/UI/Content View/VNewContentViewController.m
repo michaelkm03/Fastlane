@@ -683,8 +683,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }];
-    
-    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
@@ -734,7 +732,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      }];
 
     [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
-    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 - (void)realtimeCommentsReadyToLoadRTC:(VRealtimeCommentsViewModel *)viewModel
