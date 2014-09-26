@@ -39,7 +39,7 @@
 - (instancetype)initWithOutputFileURL:(NSURL *)outputFileURL;
 
 /**
- Returns a content-type header (not including the header itself, i.e. "Content-type: ")
+ Returns a content-type header (not including the header itself, i.e. "Content-Type: ")
  that describes the content that will be written to the output file.
  */
 - (NSString *)contentTypeHeader;
