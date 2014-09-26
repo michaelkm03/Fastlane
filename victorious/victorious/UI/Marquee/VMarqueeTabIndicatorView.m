@@ -115,6 +115,7 @@
     
     NSMutableArray *imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfTabs];
     CGFloat imageWidth = self.tabImage.size.width;
+    CGFloat totalWidth = 0;
     for (NSUInteger i = 0; i < self.numberOfTabs; i++)
     {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:self.tabImage];
@@ -125,8 +126,15 @@
         
         [self.scrollView addSubview:imageView];
         imageViews[i] = imageView;
+        totalWidth += imageWidth + self.spacingBetweenTabs;
     }
     self.tabImageViews = imageViews;
+    
+    if (totalWidth < CGRectGetWidth(self.bounds))
+    {
+        CGFloat xOffset = (CGRectGetWidth(self.bounds) - totalWidth) / 2;
+        self.scrollView.contentOffset = CGPointMake(-xOffset, self.scrollView.contentOffset.y);
+    }
 }
 
 @end

@@ -75,7 +75,7 @@
     VStream *defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
     VStreamTableViewController *stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
-    stream.shouldDisplayMarquee = YES;
+    stream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
     return  stream;
 }
 
