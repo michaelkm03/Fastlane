@@ -14,13 +14,15 @@
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
+#import "UIButton+VImageLoading.h"
+
 #import "VThemeManager.h"
 
 @interface VMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton *profileImageButton;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
 
@@ -35,11 +37,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super awakeFromNib];
     
     self.originalNameLabelFrame = self.nameLabel.frame;
+    
+    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+    self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
+    self.profileImageButton.layer.borderWidth = 4;
+    self.profileImageButton.clipsToBounds = YES;
+    self.profileImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 
-//    self.profileImageView.layer.masksToBounds = YES;
-    self.profileImageView.layer.cornerRadius = CGRectGetWidth(self.bounds) * 0.5f;
-    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
-    self.profileImageView.layer.borderWidth = 4;
     
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
@@ -57,13 +61,15 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ([streamItem isKindOfClass:[VSequence class]])
     {
-        [self.profileImageView fadeInImageAtURL:[NSURL URLWithString:((VSequence *)streamItem).user.profileImagePathSmall]
-                               placeholderImage:self.profileImageView.image];
-        self.profileImageView.hidden = NO;
+        NSString *profileImagePath = ((VSequence *)streamItem).user.profileImagePathSmall ?: ((VSequence *)streamItem).user.pictureUrl;
+        [self.profileImageButton setImageWithURL:[NSURL URLWithString:profileImagePath]
+                                placeholderImage:[UIImage imageNamed:@"profile_full"]
+                                        forState:UIControlStateNormal];
+        self.profileImageButton.hidden = NO;
     }
     else
     {
-        self.profileImageView.hidden = YES;
+        self.profileImageButton.hidden = YES;
     }
 }
 
@@ -73,8 +79,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     self.streamItem = nil;
     self.nameLabel.frame = self.originalNameLabelFrame;
-    
-    self.profileImageView.image = [UIImage imageNamed:@"profile_full"];
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

@@ -357,8 +357,10 @@
 {
     if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
-        return [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
-                                                          forIndexPath:indexPath];
+        VMarqueeTableViewCell * cell= [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
+                                                                                 forIndexPath:indexPath];
+        cell.parentTableViewController = self;
+        return cell;
     }
     
     VStreamViewCell *cell;

@@ -30,7 +30,8 @@
                                    {
                                        __strong UIButton *strongSelf = weakSelf;
                                        [strongSelf setImage:image forState:state];
-                                   } failure:nil];
+                                   }
+                                   failure:nil];
 }
 
 @end

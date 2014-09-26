@@ -14,12 +14,13 @@
 
 @required
 
-- (void)marquee:(VMarqueeViewController *)marquee didSelectItem:(VStreamItem *)item;
+- (UINavigationController *)navigationControllerForMarquee:(VMarqueeViewController *)marquee;
 
 @end
 
 @interface VMarqueeViewController : UIViewController
 
+@property (nonatomic, weak) id<VMarqueeDelegate> delegate;
 @property (nonatomic, readonly) VStreamItem *currentStreamItem;///<The stream item currently being displayed
 @property (nonatomic, readonly) VStream *stream;///<The Marquee Stream
 @property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.

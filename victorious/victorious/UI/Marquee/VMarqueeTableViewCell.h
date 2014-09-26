@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 
 #import "VSharedCollectionReusableViewMethods.h"
+#import "VTableViewCell.h"
+
+@protocol VMarqueeDelegate;
 
 @class VStreamItem;
 
-@interface VMarqueeTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods>
+@interface VMarqueeTableViewCell : VTableViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, readonly) VStreamItem *currentItem;
+@property (nonatomic, weak) id<VMarqueeDelegate> delegate;
 
 @end

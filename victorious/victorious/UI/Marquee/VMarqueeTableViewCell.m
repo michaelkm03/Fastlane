@@ -9,10 +9,12 @@
 #import "VMarqueeTableViewCell.h"
 
 #import "VMarqueeViewController.h"
+#import "VUserProfileViewController.h"
 
 #import "VStreamItem.h"
+#import "VUser.h"
 
-@interface VMarqueeTableViewCell()
+@interface VMarqueeTableViewCell() <VMarqueeDelegate>
 
 @property (nonatomic, strong) VMarqueeViewController *marquee;
 
@@ -24,6 +26,7 @@
 {
     // Initialization code
     self.marquee = [[VMarqueeViewController alloc] init];
+    self.marquee.delegate = self;
     [self addSubview:self.marquee.view];
 }
 

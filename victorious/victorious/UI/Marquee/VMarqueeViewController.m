@@ -74,9 +74,23 @@
 }
 
 //Let the container handle the selection.
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NO;
+    UINavigationController *navController = [self.delegate navigationControllerForMarquee:self];
+    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
+    UIViewController *viewControllerToPush;
+    if ([item isKindOfClass:[VStream class]])
+    {
+        
+    }
+    else if ([item isKindOfClass:[VSequence class]])
+    {
+
+    }
+    if (viewControllerToPush)
+    {
+        [navController pushViewController:viewControllerToPush animated:YES];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
