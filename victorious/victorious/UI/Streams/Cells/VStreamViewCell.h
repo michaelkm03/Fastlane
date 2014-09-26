@@ -7,9 +7,16 @@
 //
 
 #import "VTableViewCell.h"
-#import "VStreamTableViewController.h"
 
 @class VSequence, VStreamCellHeaderView;
+
+
+@protocol VStreamViewCellDelegate <NSObject>
+@required
+
+- (void)willCommentOnSequence:(id)sequenceObject;
+
+@end
 
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
@@ -28,7 +35,7 @@ static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
-@property (nonatomic, weak) id<VStreamCommentDelegate> commentDelegate;
+@property (nonatomic, weak) id<VStreamViewCellDelegate> delegate;
 
 - (void) hideOverlays;
 - (void) showOverlays;

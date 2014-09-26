@@ -32,8 +32,6 @@
 
 #import "VEphemeralTimerView.h"
 
-//NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
-
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
@@ -126,11 +124,9 @@
      }
                                           failure:nil];
     
-    // Hide Comment Button if Viewing from the User Profile
+    // Check if being viewed from the User Profile
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
     {
-        //[self.commentHitboxButton setHidden:YES];
-        //[self.streamCellHeaderView hideCommentsButton];
         [self.streamCellHeaderView setIsFromProfile:YES];
     }
 
@@ -211,9 +207,9 @@
 
 - (IBAction)commentButtonAction:(id)sender
 {
-    if ([self.commentDelegate respondsToSelector:@selector(willCommentOnSequence:)])
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:)])
     {
-        [self.commentDelegate willCommentOnSequence:self];
+        [self.delegate willCommentOnSequence:self];
     }
 
 }

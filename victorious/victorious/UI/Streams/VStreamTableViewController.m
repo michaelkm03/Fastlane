@@ -47,7 +47,7 @@
 
 #import "VThemeManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VStreamCommentDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -132,9 +132,6 @@
                                                object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
-
-    // To respond to taps on the comment button
-    self.commentDelegate = self;
 }
 
 - (NSCache *)preloadImageCache
@@ -365,7 +362,7 @@
                                                           forIndexPath:indexPath];
     }
     
-    cell.commentDelegate = self;
+    cell.delegate = self;
     cell.parentTableViewController = self;
     [cell setSequence:sequence];
     
@@ -548,7 +545,7 @@
     self.tableView.backgroundView = newBackgroundView;
 }
 
-#pragma mark - VStreamCommentDelegate
+#pragma mark - VStreamViewCellDelegate
 
 - (void)willCommentOnSequence:(id)sequenceObject
 {

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VStreamTableViewController.h"
 
 @class VSequence;
 
@@ -24,7 +23,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
 
-@property (nonatomic, weak) id<VStreamCommentDelegate> commentDelegate;
 
 @property (nonatomic, strong) UIViewController *parentViewController;
 @property (nonatomic) BOOL isFromProfile;
