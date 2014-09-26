@@ -426,9 +426,10 @@
     }];
     
     // Build string to be hashed.
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:YES];
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
                              currentDate,
-                             request.URL.path,
+                             urlComponents.percentEncodedPath,
                              userAgent,
                              token,
                              request.HTTPMethod] SHA1HexDigest];
