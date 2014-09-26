@@ -8,6 +8,10 @@
 
 #import "VActionSheetViewController.h"
 
+// Cells
+#import "VActionItemTableViewCell.h"
+#import "VDescriptionTableViewCell.h"
+
 // Categories
 #import "UIView+MotionEffects.h"
 #import "UIView+VShadows.h"
@@ -32,7 +36,12 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 
+//@property (nonatomic, weak) CALayer *gradientContainer;
+@property (weak, nonatomic) IBOutlet UIView *gradientContainer;
+
 @end
+
+static const CGFloat kBlurrGradientHeight = 10.0f;
 
 @implementation VActionSheetViewController
 
@@ -63,6 +72,25 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
     [self.AvatarImageView v_addMotionEffectsWithMagnitude:10.0f];
     self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
     self.AvatarImageView.layer.masksToBounds = YES;
+
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20);
+    
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.tableView.frame;
+    gradient.colors = @[(id)[UIColor clearColor].CGColor,
+                        (id)[UIColor blackColor].CGColor,
+                        (id)[UIColor blackColor].CGColor,
+                        (id)[UIColor clearColor].CGColor
+                        ];
+    gradient.locations = @[
+                           @0.0f,
+                           @(kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds)),
+                           @(1 - (kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds))),
+                           @1.0f,
+                           ];
+    [self.gradientContainer.layer insertSublayer:gradient atIndex:0];
+    self.gradientContainer.layer.mask = gradient;
     
     [self reloadData];
 }
@@ -71,14 +99,18 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 
 - (IBAction)pressedCancel:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    if (self.cancelHandler)
+    {
+        self.cancelHandler();
+    }
 }
 
 - (IBAction)pressedTapAwayButton:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                     completion:nil];
+    if (self.cancelHandler)
+    {
+        self.cancelHandler();
+    }
 }
 
 #pragma mark - Public Methods
@@ -137,7 +169,48 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 - (UITableViewCell *)tableView:(UITableView *)tableView 
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [tableView dequeueReusableCellWithIdentifier:@"default"];
+    switch (indexPath.section)
+    {
+        case VActionSheetTableViewSecionDescription:
+        {
+            VDescriptionTableViewCell *descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"VDescriptionTableViewCell"];
+            return descriptionCell;
+        }
+        case VActionSheetTableViewSecionActions:
+        {
+            VActionItemTableViewCell *actionitemCell = [tableView dequeueReusableCellWithIdentifier:@"VActionItemTableViewCell"];
+            VActionItem *itemForCell = [self.actionItems objectAtIndex:indexPath.row];
+            actionitemCell.title = itemForCell.title;
+            actionitemCell.detailTitle = itemForCell.detailText;
+            actionitemCell.actionIcon = itemForCell.icon;
+            
+            return actionitemCell;
+        }
+    }
+    return nil;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section)
+    {
+        case VActionSheetTableViewSecionDescription:
+            return NO;
+        case VActionSheetTableViewSecionActions:
+            return YES;
+    }
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+    if (actionItem.selectionHandler)
+    {
+        actionItem.selectionHandler();
+    }
 }
 
 @end

@@ -16,4 +16,6 @@
 
 - (void)addActionItems:(NSArray *)actionItems;
 
+@property (nonatomic, copy) void (^cancelHandler)(void);
+
 @end

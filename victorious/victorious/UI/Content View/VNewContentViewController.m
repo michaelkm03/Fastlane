@@ -326,10 +326,31 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:@"Alice Irvine" avatarURL:self.viewModel.avatarForAuthor detailText:@"5.6K Followers"];
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:@"The madness begins! Apple fans start lining up #apple #busy"];
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:@"666"];
+    remixItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
     VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:@"1337"];
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:@"1776"];
+    repostItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"Share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:@"1776"];
+    shareItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
     
     [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem]];
+    
+    actionSheetViewController.cancelHandler = ^void(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
     
     [self presentViewController:actionSheetViewController
                        animated:YES

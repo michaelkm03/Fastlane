@@ -347,6 +347,8 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
+		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
 		D8CA63B819D51D70002046E5 /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */; };
 		D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */; };
@@ -1024,6 +1026,10 @@
 		D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewImageLayout.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
+		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
+		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetViewController.h; sourceTree = "<group>"; };
 		D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetViewController.m; sourceTree = "<group>"; };
 		D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActionSheet.storyboard; sourceTree = "<group>"; };
@@ -2425,6 +2431,10 @@
 				D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */,
 				D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */,
 				D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */,
+				D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */,
+				D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */,
+				D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */,
+				D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */,
 			);
 			path = "Action Sheet";
 			sourceTree = "<group>";
@@ -2880,6 +2890,7 @@
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
+				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
 				0314D0BD19B469C100FA363C /* VSettingManager.m in Sources */,
 				0314D49B19B46B5E00FA363C /* VContentViewController+Images.m in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
@@ -2946,6 +2957,7 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
 				0314D49719B46B5E00FA363C /* VRealtimeCommentViewController.m in Sources */,
+				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
