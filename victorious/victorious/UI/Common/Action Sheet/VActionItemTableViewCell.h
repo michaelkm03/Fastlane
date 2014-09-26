@@ -14,4 +14,6 @@
 @property (nonatomic, copy) NSString *detailTitle;
 @property (nonatomic, strong) UIImage *actionIcon;
 
+@property (nonatomic, copy) void (^accessorySelectionHandler)(void);
+
 @end

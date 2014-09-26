@@ -331,8 +331,18 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     };
+    remixItem.detailSelectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
     VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:@"1337"];
     repostItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    repostItem.detailSelectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
@@ -343,7 +353,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     };
-    
+    shareItem.detailSelectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
     [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem]];
     
     actionSheetViewController.cancelHandler = ^void(void)

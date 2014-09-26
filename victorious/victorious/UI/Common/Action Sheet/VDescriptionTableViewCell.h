@@ -10,4 +10,9 @@
 
 @interface VDescriptionTableViewCell : UITableViewCell
 
++ (CGFloat)desiredHeightWithTableViewWidth:(CGFloat)width
+                                      text:(NSString *)text;
+
+@property (nonatomic, copy) NSString *descriptionText;
+
 @end

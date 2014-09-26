@@ -8,6 +8,7 @@
 
 #import "VActionItemTableViewCell.h"
 
+// Theme
 #import "VThemeManager.h"
 
 @interface VActionItemTableViewCell ()
@@ -20,6 +21,8 @@
 
 @implementation VActionItemTableViewCell
 
+#pragma mark - NSObject
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -29,6 +32,8 @@
     [self.detailButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                             forState:UIControlStateNormal];
 }
+
+#pragma mark - Property Accessor
 
 - (void)setTitle:(NSString *)title
 {
@@ -47,6 +52,16 @@
 {
     _actionIcon = actionIcon;
     self.actionIconImageView.image = actionIcon;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedAccessoryButton:(id)sender
+{
+    if (self.accessorySelectionHandler)
+    {
+        self.accessorySelectionHandler();
+    }
 }
 
 @end

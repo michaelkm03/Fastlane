@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
+@property (nonatomic, strong) VActionItem *descriptionItem;
 
 @property (weak, nonatomic) IBOutlet UIView *blurringContainer;
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
@@ -140,6 +141,7 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
                                       placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
                  break;
              case VActionItemTypeDescriptionWithHashTags:
+                 self.descriptionItem = actionItem;
                  break;
          }
      }];
@@ -174,6 +176,7 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
         case VActionSheetTableViewSecionDescription:
         {
             VDescriptionTableViewCell *descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"VDescriptionTableViewCell"];
+            descriptionCell.descriptionText = self.descriptionItem.detailText;
             return descriptionCell;
         }
         case VActionSheetTableViewSecionActions:
@@ -183,6 +186,13 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
             actionitemCell.title = itemForCell.title;
             actionitemCell.detailTitle = itemForCell.detailText;
             actionitemCell.actionIcon = itemForCell.icon;
+            actionitemCell.accessorySelectionHandler = ^(void)
+            {
+                if (itemForCell.detailSelectionHandler)
+                {
+                    itemForCell.detailSelectionHandler();
+                }
+            };
             
             return actionitemCell;
         }
@@ -191,6 +201,24 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section)
+    {
+        case VActionSheetTableViewSecionDescription:
+        {
+            CGFloat height = [VDescriptionTableViewCell desiredHeightWithTableViewWidth:CGRectGetWidth(tableView.bounds)
+                                                                         text:self.descriptionItem.detailText];
+            return height;
+        }
+        case VActionSheetTableViewSecionActions:
+        {
+            return 44.0f;
+        }
+    }
+    return 44.0f;
+}
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {

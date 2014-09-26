@@ -56,6 +56,7 @@
     
     actionItem.type = VActionItemTypeDescriptionWithHashTags;
     actionItem.title = [text copy];
+    actionItem.detailText = [text copy];
 
     return actionItem;
 }
