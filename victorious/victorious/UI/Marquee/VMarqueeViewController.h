@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class VStream, VStreamItem, VStreamCollectionViewDataSource, VMarqueeViewController;
+@class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeViewController;
 
 @protocol VMarqueeDelegate <NSObject>
 
 @required
 
-- (UINavigationController *)navigationControllerForMarquee:(VMarqueeViewController *)marquee;
+- (void)marquee:(VMarqueeViewController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path;
+- (void)marquee:(VMarqueeViewController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
 
 @end
 

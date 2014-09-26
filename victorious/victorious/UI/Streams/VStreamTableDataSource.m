@@ -77,8 +77,9 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (NSIndexPath *)indexPathForSequence:(VSequence *)sequence
 {
+    NSInteger section = self.shouldDisplayMarquee ? 1 : 0;
     NSUInteger index = [self.stream.streamItems indexOfObject:sequence];
-    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
+    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count

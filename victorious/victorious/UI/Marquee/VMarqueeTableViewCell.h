@@ -11,14 +11,19 @@
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VTableViewCell.h"
 
-@protocol VMarqueeDelegate;
+@class VStreamItem, VUser, VMarqueeTableViewCell;
 
-@class VStreamItem;
+@protocol VMarqueeTableCellDelegate
+
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedItem:(VStreamItem *)item;
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedUser:(VUser *)user;
+
+@end
 
 @interface VMarqueeTableViewCell : VTableViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, readonly) VStreamItem *currentItem;
-@property (nonatomic, weak) id<VMarqueeDelegate> delegate;
+@property (nonatomic, weak) id<VMarqueeTableCellDelegate> delegate;
 
 - (void)restartAutoScroll;
 

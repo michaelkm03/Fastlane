@@ -14,7 +14,7 @@
 #import "VStreamItem.h"
 #import "VUser.h"
 
-@interface VMarqueeTableViewCell()
+@interface VMarqueeTableViewCell() <VMarqueeDelegate>
 
 @property (nonatomic, strong) VMarqueeViewController *marquee;
 
@@ -27,6 +27,7 @@
     // Initialization code
     self.marquee = [[VMarqueeViewController alloc] init];
     self.marquee.view.bounds = self.bounds;
+    self.marquee.delegate = self;
     [self addSubview:self.marquee.view];
 }
 
@@ -51,6 +52,18 @@
 - (void)restartAutoScroll
 {
     [self.marquee scheduleAutoScrollTimer];
+}
+
+#pragma mark - VMarqueeDelegate
+
+- (void)marquee:(VMarqueeViewController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+{
+    [self.delegate marqueTableCell:self selectedItem:streamItem];
+}
+
+- (void)marquee:(VMarqueeViewController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+{
+    [self.delegate marqueTableCell:self selectedUser:user];
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

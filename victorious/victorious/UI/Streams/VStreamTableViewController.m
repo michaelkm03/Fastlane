@@ -16,6 +16,8 @@
 
 #import "VCommentsContainerViewController.h"
 #import "VContentViewController.h"
+#import "VUserProfileViewController.h"
+#import "VDirectoryViewController.h"
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
@@ -49,7 +51,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeTableCellDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -336,6 +338,33 @@
     }
 }
 
+#pragma mark - VMarqueeTableCellDelegate
+
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedItem:(VStreamItem *)item
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[self.tableView indexPathForCell:cell]];
+}
+
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedUser:(VUser *)user
+{
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController *vc in self.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
+            fromProfile = YES;
+        }
+    }
+    if (fromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
 #pragma mark - Cells
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -369,6 +398,7 @@
         VMarqueeTableViewCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
         cell.parentTableViewController = self;
+        cell.delegate = self;
         CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
         [cell restartAutoScroll];
@@ -607,7 +637,10 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.lastSelectedIndexPath];
+    if (operation == UINavigationControllerOperationPush
+        && ([toVC isKindOfClass:[VContentViewController class]])
+        && [cell isKindOfClass:[VStreamViewCell class]])
     {
         return [[VStreamToContentAnimator alloc] init];;
     }

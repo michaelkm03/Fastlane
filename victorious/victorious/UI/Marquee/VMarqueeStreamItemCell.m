@@ -93,6 +93,14 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.nameLabel.frame = self.originalNameLabelFrame;
 }
 
+- (IBAction)userSelected:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(cell:selectedUser:)])
+    {
+        [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
+    }
+}
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (NSString *)suggestedReuseIdentifier

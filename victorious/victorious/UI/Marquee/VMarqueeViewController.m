@@ -37,6 +37,10 @@
 
 static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 
+@interface VMarqueeViewController() <VMarqueeCellDelegate>
+
+@end
+
 @implementation VMarqueeViewController
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -131,21 +135,9 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UINavigationController *navController = [self.delegate navigationControllerForMarquee:self];
-//    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-//    UIViewController *viewControllerToPush;
-//    if ([item isKindOfClass:[VStream class]])
-//    {
-//        
-//    }
-//    else if ([item isKindOfClass:[VSequence class]])
-//    {
-//
-//    }
-//    if (viewControllerToPush)
-//    {
-//        [navController pushViewController:viewControllerToPush animated:YES];
-//    }
+    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
+    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath];
+    [self.autoScrollTimer invalidate];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -181,6 +173,14 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     [self scheduleAutoScrollTimer];
 }
 
+#pragma mark - VMarqueeCellDelegate
+
+- (void)cell:(VMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
+{
+    [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
+    [self.autoScrollTimer invalidate];
+}
+
 #pragma mark - VStreamCollectionDataDelegate
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
@@ -192,6 +192,7 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
+    cell.delegate = self;
     cell.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     return cell;
