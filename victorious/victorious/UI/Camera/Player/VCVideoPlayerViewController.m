@@ -381,9 +381,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     AVPlayerItem *playerItem = self.player.currentItem;
     if (playerItem.status == AVPlayerItemStatusReadyToPlay)
     {
-        if (CMTIME_IS_VALID(playerItem.asset.duration))
+        if (CMTIME_IS_VALID(playerItem.duration))
         {
-            return playerItem.asset.duration;
+            return playerItem.duration;
         }
         return kCMTimeZero;
     }
@@ -751,6 +751,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if (CMTIME_IS_VALID(self.player.currentItem.duration))
         {
+            NSLog(@"calculated item time to: %f", CMTimeGetSeconds(self.player.currentItem.duration));
             self.hasCaculatedItemTime = YES;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }

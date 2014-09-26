@@ -61,7 +61,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
-@property (nonatomic, assign) BOOL avatarsNeedUpdated;
 @property (nonatomic, strong) NSValue *videoSizeValue;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
@@ -270,18 +269,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)updateAvatarsOnRealtimeCommentCell
 {
-    if (self.avatarsNeedUpdated)
+    [self.realTimeComentsCell clearAvatarStrip];
+    NSLog(@"Updating avatars");
+    NSLog(@"number of RTC: %i", self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments);
+    
+    for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
     {
-        [self.realTimeComentsCell clearAvatarStrip];
-        
-        for (NSInteger realtimeCommentIndex = 0; realtimeCommentIndex < self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments; realtimeCommentIndex++)
-        {
-            VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-            realtimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-            [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
-                                   withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
-        }
-        self.avatarsNeedUpdated = NO;
+        VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
+        [self.realTimeComentsCell addAvatarWithURL:[realtimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:realtimeCommentIndex]
+                               withPercentLocation:[realtimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:realtimeCommentIndex]];
     }
 }
 
@@ -662,14 +658,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
-    self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
     
     CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
     [self.realTimeComentsCell setProgress:progressedTime];
     
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     
-    
+
+    // configure current comment
     VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
     [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
                                                 currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
@@ -682,8 +678,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-    self.avatarsNeedUpdated = YES;
-    [self updateAvatarsOnRealtimeCommentCell];
     
     // should we update content size?
     CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
@@ -707,11 +701,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-    self.viewModel.realTimeCommentsViewModel.currentTime = totalTime;
-    self.viewModel.realTimeCommentsViewModel.totalTime = totalTime;
-    
     self.realTimeComentsCell.progress = 1.0f;
-    
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
 }
 
@@ -719,7 +709,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel
 {
-    
     VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
     [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
                                                 currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
@@ -727,7 +716,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                              currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
                                                      atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
                                      commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
-    [self updateAvatarsOnRealtimeCommentCell];
 }
 
 - (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
@@ -740,7 +728,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      }];
 
     [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
-    self.avatarsNeedUpdated = YES;
+}
+
+- (void)realtimeCommentsReadyToLoadRTC:(VRealtimeCommentsViewModel *)viewModel
+{
+    [self updateAvatarsOnRealtimeCommentCell];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -779,7 +771,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];

@@ -30,12 +30,14 @@
     if (self)
     {
         _currentTime = kCMTimeZero;
+        _totalTime = kCMTimeInvalid;
     }
     return self;
 }
 
 - (void)setRealTimeComments:(NSArray *)realTimeComments
 {
+
     NSMutableArray *realRealTimeComments = [[NSMutableArray alloc] init];
     
     [realTimeComments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
@@ -69,9 +71,20 @@
         }
     }];
     
+    NSLog(@"setttings RTCs with count %@", @(sortedRealTimeComents.count));
     _realTimeComments = sortedRealTimeComents;
     
     [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
+    
+    [self notifyRTCIfReadyToLoad];
+}
+
+- (void)notifyRTCIfReadyToLoad
+{
+    if (CMTIME_IS_VALID(self.totalTime) && (self.realTimeComments.count > 0))
+    {
+        [self.delegate realtimeCommentsReadyToLoadRTC:self];
+    }
 }
 
 - (NSInteger)numberOfRealTimeComments
@@ -86,6 +99,7 @@
 
 - (NSURL *)avatarURLForCurrentRealtimeComent
 {
+//    NSLog(@"current avatar url: %@", [NSURL URLWithString:self.currentComment.user.pictureUrl]);
     return [NSURL URLWithString:self.currentComment.user.pictureUrl];
 }
 
@@ -128,6 +142,17 @@
     self.currentComment = newCurrentComment;
 }
 
+- (void)setTotalTime:(CMTime)totalTime
+{
+    if (isnan(CMTimeGetSeconds(totalTime)))
+    {
+        return;
+    }
+    _totalTime = totalTime;
+    NSLog(@"%f", CMTimeGetSeconds(totalTime));
+    [self notifyRTCIfReadyToLoad];
+}
+
 - (void)setCurrentComment:(VComment *)currentComment
 {
     _currentComment = currentComment;
@@ -150,6 +175,7 @@
     }
     VComment *commentAtIndex = [self.realTimeComments objectAtIndex:index];
     CGFloat percentThrought = commentAtIndex.realtime.doubleValue / CMTimeGetSeconds(self.totalTime);
+    NSLog(@"Pertcent through %f for index %i", percentThrought, index);
     return percentThrought;
 }
 
