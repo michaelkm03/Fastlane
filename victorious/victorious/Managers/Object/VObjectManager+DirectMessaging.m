@@ -99,6 +99,8 @@
         if ([resultObjects firstObject])
         {
             self.mainUser.unreadConversation = (VUnreadConversation *)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
+            
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:self.mainUser.unreadConversation.count.integerValue];
         }
     
         if (success)
