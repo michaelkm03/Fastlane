@@ -255,6 +255,15 @@
 - (void)setCurrentStream:(VStream *)currentStream
 {
     _currentStream = currentStream;
+    if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
+    {
+        self.tableDataSource.shouldDisplayMarquee =  self.shouldDisplayMarquee;
+    }
+    else
+    {
+        self.tableDataSource.shouldDisplayMarquee = NO;
+    }
+    
     if ([self isViewLoaded])
     {
         self.tableDataSource.stream = currentStream;
