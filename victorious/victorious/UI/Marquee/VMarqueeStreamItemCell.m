@@ -9,7 +9,7 @@
 #import "VMarqueeStreamItemCell.h"
 
 #import "VStreamItem+Fetcher.h"
-#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 #import "VUser.h"
 
 #import "UIImageView+VLoadingAnimations.h"
@@ -21,7 +21,10 @@
 @interface VMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
+
 @property (nonatomic, weak) IBOutlet UIButton *profileImageButton;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
@@ -54,6 +57,15 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     _streamItem = streamItem;
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
+    
+    if ([streamItem isKindOfClass:[VSequence class]] && [(VSequence*)streamItem isPoll])
+    {
+        self.pollOrImageView.hidden = NO;
+    }
+    else
+    {
+        self.pollOrImageView.hidden = YES;
+    }
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
