@@ -10,7 +10,7 @@
 
 @class VSequence;
 
-@interface VHashTagStreamViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
+@interface VHashTagStreamViewController : VStreamTableViewController
 
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) NSString *hashTag;
