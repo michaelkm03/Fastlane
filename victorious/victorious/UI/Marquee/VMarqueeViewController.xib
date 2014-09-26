@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VMarqueeViewController">
             <connections>
                 <outlet property="collectionView" destination="RdS-yJ-D61" id="R4H-nz-lcj"/>
+                <outlet property="tabContainerView" destination="Vk0-6f-JUS" id="WgX-fc-Al7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,6 +31,11 @@
                         <outlet property="delegate" destination="-1" id="Hnx-TQ-tU3"/>
                     </connections>
                 </collectionView>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vk0-6f-JUS">
+                    <rect key="frame" x="10" y="255" width="300" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>

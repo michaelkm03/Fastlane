@@ -305,6 +305,7 @@
 		BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DD41868C211004E5202 /* VUser+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
+		BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */; };
@@ -915,6 +916,8 @@
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
 		BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
+		BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTabIndicatorView.h; sourceTree = "<group>"; };
+		BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeTabIndicatorView.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE46F02819D0C4B700CD7EF6 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
@@ -2327,6 +2330,8 @@
 				BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */,
 				BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */,
 				BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */,
+				BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */,
+				BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */,
 			);
 			path = Marquee;
 			sourceTree = "<group>";
@@ -2930,6 +2935,7 @@
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
+				BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
 				BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,

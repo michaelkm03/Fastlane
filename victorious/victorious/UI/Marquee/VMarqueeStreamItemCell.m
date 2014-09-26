@@ -58,7 +58,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
     
-    if ([streamItem isKindOfClass:[VSequence class]] && [(VSequence*)streamItem isPoll])
+    if ([streamItem isKindOfClass:[VSequence class]] && [(VSequence *)streamItem isPoll])
     {
         self.pollOrImageView.hidden = NO;
     }

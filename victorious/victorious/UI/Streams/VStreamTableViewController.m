@@ -366,7 +366,7 @@
 {
     if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
-        VMarqueeTableViewCell * cell= [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
+        VMarqueeTableViewCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
         cell.parentTableViewController = self;
         CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
