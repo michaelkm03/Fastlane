@@ -547,7 +547,7 @@
 
 #pragma mark - VStreamViewCellDelegate
 
-- (void)willCommentOnSequence:(id)sequenceObject
+- (void)willCommentOnSequence:(id)sequenceObject fromSender:(id)sender
 {
     VStreamViewCell *cell = (VStreamViewCell *)sequenceObject;
     
@@ -686,6 +686,9 @@
          VStreamViewCell *selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
+         UIView *headerView = self.tableView.tableHeaderView;
+         headerView.center = CGPointMake(headerView.center.x, headerView.center.y - [UIScreen mainScreen].bounds.size.height);
+         
          for (VStreamViewCell *cell in [self.tableView visibleCells])
          {
              CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
