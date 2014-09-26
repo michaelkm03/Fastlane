@@ -112,6 +112,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
                 }
                 else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
                 {
+                    layoutAttributes.hidden = YES;
                     layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                         self.collectionView.contentOffset.y + self.sizeForContentView.height,
                                                         self.sizeForRealTimeComentsView.width,
