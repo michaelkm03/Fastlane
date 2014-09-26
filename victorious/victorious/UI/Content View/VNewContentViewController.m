@@ -38,9 +38,11 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VActionSheetViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
+#import "VActionSheetPresentationAnimator.h"
 
 // Logged in
 #import "VObjectManager+Login.h"
@@ -57,7 +59,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate, UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -313,6 +315,36 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
+}
+
+- (IBAction)pressedMore:(id)sender
+{
+    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+//    actionSheetViewController.modalPresentationStyle = UIModalPresentationCustom;
+//    actionSheetViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    actionSheetViewController.transitioningDelegate = self;
+    actionSheetViewController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:actionSheetViewController
+                       animated:YES
+                     completion:nil];
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate Methods
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source
+{
+    VActionSheetPresentationAnimator *animator = [VActionSheetPresentationAnimator new];
+    //Configure the animator
+    animator.presenting = YES;
+    return animator;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    VActionSheetPresentationAnimator *animator = [VActionSheetPresentationAnimator new];
+    return animator;
 }
 
 #pragma mark - Convenience
