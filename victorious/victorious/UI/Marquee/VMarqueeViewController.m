@@ -50,9 +50,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
-    self.collectionView.contentInset = UIEdgeInsetsZero;
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:_stream];
     self.streamDataSource.delegate = self;
@@ -105,7 +103,7 @@
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier] forIndexPath:indexPath];
     cell.streamItem = item;
-    cell.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    cell.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     return cell;
 }
