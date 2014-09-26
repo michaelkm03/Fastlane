@@ -80,7 +80,7 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     [self.streamDataSource refreshWithSuccess:^(void)
     {
         self.tabView.currentlySelectedTab = 0;
-        self.tabView.numberOfTabs = self.streamDataSource.count;
+        self.tabView.numberOfTabs = 3;//self.streamDataSource.count;
         [self scheduleAutoScrollTimer];
         
         [self.collectionView reloadData];

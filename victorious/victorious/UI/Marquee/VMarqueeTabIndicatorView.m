@@ -135,6 +135,10 @@
         CGFloat xOffset = (CGRectGetWidth(self.bounds) - totalWidth) / 2;
         self.scrollView.contentOffset = CGPointMake(-xOffset, self.scrollView.contentOffset.y);
     }
+    else
+    {
+        self.scrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
+    }
 }
 
 @end
