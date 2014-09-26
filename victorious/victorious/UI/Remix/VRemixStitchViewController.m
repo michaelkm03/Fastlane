@@ -180,6 +180,7 @@
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
+    [super videoPlayer:videoPlayer didPlayToTime:time];
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
     {
