@@ -15,9 +15,10 @@
 
 @property (nonatomic, readonly) VStreamTableViewController *streamTable;
 @property (nonatomic, assign) BOOL shouldShowHeaderLogo;
+@property (nonatomic, strong) NSString *hashTag;
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable;
 + (instancetype)modalContainerForStreamTable:(VStreamTableViewController *)streamTable;
-+ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag;
++ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable;
 
 @end

@@ -47,7 +47,7 @@
 
 #import "VThemeManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VStreamCommentDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -127,15 +127,14 @@
     [self registerCells];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willCommentSequence:)
-                                                 name:kStreamsWillCommentNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamTableDataSourceDidChangeNotification
                                                object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
+
+    // To respond to taps on the comment button
+    self.commentDelegate = self;
 }
 
 - (NSCache *)preloadImageCache
@@ -198,6 +197,11 @@
 }
 
 #pragma mark - Properties
+
+- (void)setHashTag:(NSString *)hashTag
+{
+    _hashTag = hashTag;
+}
 
 - (NSString *)viewName
 {
@@ -361,6 +365,7 @@
                                                           forIndexPath:indexPath];
     }
     
+    cell.commentDelegate = self;
     cell.parentTableViewController = self;
     [cell setSequence:sequence];
     
@@ -543,21 +548,24 @@
     self.tableView.backgroundView = newBackgroundView;
 }
 
-#pragma mark - Notifications
+#pragma mark - VStreamCommentDelegate
 
-- (void)willCommentSequence:(NSNotification *)notification
+- (void)willCommentOnSequence:(id)sequenceObject
 {
-    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    VStreamViewCell *cell = (VStreamViewCell *)sequenceObject;
     
     self.lastSelectedIndexPath = [self.tableView indexPathForCell:cell];
-
+    
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
-
+    
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
+
 }
+
+#pragma mark - Notifications
 
 - (void)dataSourceDidChange:(NSNotification *)notification
 {

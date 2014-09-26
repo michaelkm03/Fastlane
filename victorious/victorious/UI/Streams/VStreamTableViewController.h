@@ -9,7 +9,7 @@
 #import "VCreatePollViewController.h"
 #import "VAnimation.h"
 
-@class VStreamTableDataSource, VStream, VSequence;
+@class VStreamTableDataSource, VStream, VSequence, VStreamViewCell;
 
 typedef NS_ENUM(NSInteger, VStreamFilter)
 {
@@ -25,17 +25,26 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @end
 
+@protocol VStreamCommentDelegate <NSObject>
+@required
+
+- (void)willCommentOnSequence:(id)sequenceObject;
+
+@end
+
 @interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
 
 @property (nonatomic)         VStreamFilter    filterType;
 @property (nonatomic, strong) VStream *currentStream;
 @property (nonatomic, readonly) VStream *defaultStream;
 
-@property (strong, nonatomic, readonly) VStreamTableDataSource *tableDataSource;
-@property (strong, nonatomic) VSequence *selectedSequence;
-@property (strong, nonatomic) NSArray *repositionedCells;;
-@property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
+@property (nonatomic, strong, readonly) VStreamTableDataSource *tableDataSource;
+@property (nonatomic, strong) VSequence *selectedSequence;
+@property (nonatomic, strong) NSArray *repositionedCells;;
+@property (nonatomic, weak) id<VStreamTableDelegate, UITableViewDelegate> delegate;
+@property (nonatomic, weak) id<VStreamCommentDelegate> commentDelegate;
 @property (nonatomic, readonly) NSString *viewName; ///< The view name that will be sent to the analytics server, can be overridden by subclasses
+@property (nonatomic, strong) NSString *hashTag;
 
 /**
  *  No content image/title/message to be used when there is no content to display for a given filter. Does not update. Desired properties must be set before ViewWilAppear could be called.

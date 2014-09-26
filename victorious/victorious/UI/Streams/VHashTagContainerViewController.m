@@ -44,15 +44,6 @@
     
 }
 
-- (void)setHashTag:(NSString *)hashTag
-{
-    _hashTag = hashTag;
-    self.streamViewController = [[VHashTagStreamViewController alloc] initWithHashTag:hashTag];
-    self.streamViewController.sequence = self.sequence;
-
-    [self.streamViewController setHashTag:hashTag];
-    self.tableViewController = self.streamViewController;
-}
 
 - (void)setSequence:(VSequence *)sequence
 {

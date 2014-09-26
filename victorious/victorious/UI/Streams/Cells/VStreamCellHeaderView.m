@@ -74,7 +74,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 - (void)hideCommentsButton
 {
     [self.commentButton setHidden:YES];
-    [self.commentHitboxButton setHidden:YES];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -131,12 +130,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 }
 
 #pragma mark - Button Actions
-
-- (IBAction)commentButtonAction:(id)sender
-{
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
-}
 
 - (IBAction)profileButtonAction:(id)sender
 {
