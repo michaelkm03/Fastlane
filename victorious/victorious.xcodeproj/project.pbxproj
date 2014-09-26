@@ -346,10 +346,12 @@
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
+		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
 		D8CA63B819D51D70002046E5 /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */; };
 		D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */; };
 		D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */; };
+		D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
@@ -1020,6 +1022,8 @@
 		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
 		D84562BF19CFBBB0000E9BC5 /* VContentViewImageLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewImageLayout.h; sourceTree = "<group>"; };
 		D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewImageLayout.m; sourceTree = "<group>"; };
+		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
+		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetViewController.h; sourceTree = "<group>"; };
 		D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetViewController.m; sourceTree = "<group>"; };
 		D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActionSheet.storyboard; sourceTree = "<group>"; };
@@ -1027,6 +1031,8 @@
 		D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetPresentationAnimator.m; sourceTree = "<group>"; };
 		D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTransitioningDelegate.h; sourceTree = "<group>"; };
 		D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetTransitioningDelegate.m; sourceTree = "<group>"; };
+		D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MotionEffects.h"; sourceTree = "<group>"; };
+		D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MotionEffects.m"; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -2163,6 +2169,8 @@
 				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
+				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
+				D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2415,6 +2423,8 @@
 				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
 				D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */,
 				D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */,
+				D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */,
+				D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */,
 			);
 			path = "Action Sheet";
 			sourceTree = "<group>";
@@ -2982,6 +2992,7 @@
 				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,
 				0314D49C19B46B5E00FA363C /* VContentViewController+Videos.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
+				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
@@ -3008,6 +3019,7 @@
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */,
+				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,

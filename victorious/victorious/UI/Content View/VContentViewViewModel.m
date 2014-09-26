@@ -245,6 +245,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                                                    andPostedTime:commentForIndex.realtime] string];
 }
 
+- (NSURL *)avatarForAuthor
+{
+    return [NSURL URLWithString:self.sequence.user.pictureUrl];
+}
+
 - (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];

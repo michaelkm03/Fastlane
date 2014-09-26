@@ -86,6 +86,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) NSString *name;
 
+@property (nonatomic, readonly) NSURL *avatarForAuthor;
+
 /**
  *  For content type video this will be a convenient url for the videoplayer.
  */

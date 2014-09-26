@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VActionItem.h"
+
 @interface VActionSheetViewController : UIViewController
 
 + (VActionSheetViewController *)actionSheetViewController;
+
+- (void)addActionItems:(NSArray *)actionItems;
 
 @end
