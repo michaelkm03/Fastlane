@@ -39,6 +39,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VActionSheetViewController.h"
+#import "VActionSheetTransitioningDelegate.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -320,31 +321,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (IBAction)pressedMore:(id)sender
 {
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
-//    actionSheetViewController.modalPresentationStyle = UIModalPresentationCustom;
-//    actionSheetViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    actionSheetViewController.transitioningDelegate = self;
-    actionSheetViewController.modalPresentationStyle = UIModalPresentationCustom;
+    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     [self presentViewController:actionSheetViewController
                        animated:YES
                      completion:nil];
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate Methods
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-                                                                  presentingController:(UIViewController *)presenting
-                                                                      sourceController:(UIViewController *)source
-{
-    VActionSheetPresentationAnimator *animator = [VActionSheetPresentationAnimator new];
-    //Configure the animator
-    animator.presenting = YES;
-    return animator;
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    VActionSheetPresentationAnimator *animator = [VActionSheetPresentationAnimator new];
-    return animator;
 }
 
 #pragma mark - Convenience

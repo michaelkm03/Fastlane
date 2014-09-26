@@ -29,17 +29,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIToolbar *blurredView = [[UIToolbar alloc] initWithFrame:self.blurringContainer.bounds];
+
+    UIToolbar *blurredView = [[UIToolbar alloc] initWithFrame:CGRectMake(0,
+                                                                         0,
+                                                                         CGRectGetWidth(self.blurringContainer.bounds),
+                                                                         CGRectGetHeight(self.blurringContainer.bounds) * 2.0f)];
     blurredView.translucent = YES;
     blurredView.barStyle = UIBarStyleDefault;
+    blurredView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.blurringContainer insertSubview:blurredView
                                   atIndex:0];
 }
 
 - (IBAction)pressedCancel:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
+
+- (IBAction)pressedTapAwayButton:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                     completion:nil];
 }
 
 @end

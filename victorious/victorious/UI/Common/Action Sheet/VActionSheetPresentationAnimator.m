@@ -8,8 +8,17 @@
 
 #import "VActionSheetPresentationAnimator.h"
 
+@interface VActionSheetPresentationAnimator ()
+
+@property (nonatomic, strong) UIView *dimmingView;
+
+@end
+
 @implementation VActionSheetPresentationAnimator
 
+static const NSTimeInterval kPresentationDuration = 0.55f;
+static const CGFloat kDimmingViewAlpha = 0.5f;
+static const CGFloat kSpringDampingConstant = 0.8f;
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 
@@ -17,7 +26,7 @@
 // synchronize with the main animation.
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 1.5f;
+    return kPresentationDuration;
 }
 // This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -29,8 +38,12 @@
     {
         fromViewController.view.userInteractionEnabled = NO;
         
+        self.dimmingView = [[UIView alloc] initWithFrame:[transitionContext containerView].bounds];
+        self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:kDimmingViewAlpha];
+        self.dimmingView.alpha = 0.0f;
         
         [[transitionContext containerView] addSubview:fromViewController.view];
+        [[transitionContext containerView] addSubview:self.dimmingView];
         [[transitionContext containerView] addSubview:toViewController.view];
         
         toViewController.view.frame = CGRectMake(0,
@@ -39,15 +52,19 @@
                                                  CGRectGetHeight(fromViewController.view.frame));
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
-                               delay:0.0f
-              usingSpringWithDamping:0.7f
-               initialSpringVelocity:0.0f
-                             options:kNilOptions
-                          animations:^{
-                              toViewController.view.frame = fromViewController.view.bounds;
-                          } completion:^(BOOL finished) {
-                              [transitionContext completeTransition:YES];
-                          }];
+                              delay:0.0f
+             usingSpringWithDamping:kSpringDampingConstant
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+         {
+             toViewController.view.frame = fromViewController.view.bounds;
+             self.dimmingView.alpha = 1.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [transitionContext completeTransition:YES];
+         }];
     }
     else
     {
@@ -58,17 +75,22 @@
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
-             usingSpringWithDamping:0.7f
+             usingSpringWithDamping:kSpringDampingConstant
               initialSpringVelocity:0.0f
                             options:kNilOptions
-                         animations:^{
-#warning fixme
-                             fromViewController.view.frame = CGRectMake(0, 568, 320, 568);
-                         } completion:^(BOOL finished) {
-                             [transitionContext completeTransition:YES];
-                         }];
+                         animations:^
+         {
+             fromViewController.view.frame = CGRectMake(CGRectGetMinX([transitionContext containerView].bounds),
+                                                        CGRectGetHeight([transitionContext containerView].bounds),
+                                                        CGRectGetWidth([transitionContext containerView].bounds),
+                                                        CGRectGetHeight([transitionContext containerView].bounds));
+             self.dimmingView.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [transitionContext completeTransition:YES];
+         }];
     }
 }
-
 
 @end
