@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -18,20 +18,6 @@
                         <constraint firstAttribute="height" constant="32" id="HqN-8c-Cdc"/>
                     </constraints>
                     <state key="normal" title=" 32" image="StreamComments"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hsV-0S-IWn" userLabel="Comment Hitbox Button">
-                    <rect key="frame" x="245" y="0.0" width="75" height="75"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="75" id="cy7-d9-kfb"/>
-                        <constraint firstAttribute="width" constant="75" id="ykD-cG-tPS"/>
-                    </constraints>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="commentButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="Y5X-8M-Zb7"/>
-                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mw8-p7-7U7" userLabel="userInfoView">
                     <rect key="frame" x="57" y="17" width="197" height="32"/>
@@ -108,12 +94,9 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="hsV-0S-IWn" secondAttribute="bottom" id="4Hy-S1-Ocw"/>
                 <constraint firstAttribute="bottom" secondItem="YtL-IO-nl6" secondAttribute="bottom" id="4iQ-4w-jmv"/>
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" constant="20" id="6TK-Ei-zAQ"/>
                 <constraint firstItem="mw8-p7-7U7" firstAttribute="leading" secondItem="aCm-Z1-zjM" secondAttribute="trailing" constant="5" id="GrY-yQ-Msx"/>
-                <constraint firstItem="YtL-IO-nl6" firstAttribute="bottom" secondItem="hsV-0S-IWn" secondAttribute="bottom" id="Q3a-lb-GXU"/>
-                <constraint firstAttribute="trailing" secondItem="hsV-0S-IWn" secondAttribute="trailing" id="Q85-6p-Qwl"/>
                 <constraint firstItem="RMI-JK-HqJ" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" constant="17" id="RFQ-OX-YmD"/>
                 <constraint firstItem="YtL-IO-nl6" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" id="RIJ-8s-DbZ"/>
                 <constraint firstItem="YtL-IO-nl6" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" id="T2c-RO-vkG"/>
@@ -121,13 +104,11 @@
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" constant="17" id="XcU-Fk-6KE"/>
                 <constraint firstAttribute="trailing" secondItem="YtL-IO-nl6" secondAttribute="trailing" constant="245" id="bL5-jW-kB1"/>
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="centerY" secondItem="RMI-JK-HqJ" secondAttribute="centerY" id="kie-64-SMV"/>
-                <constraint firstItem="hsV-0S-IWn" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" id="sZq-Gk-M6h"/>
                 <constraint firstItem="mw8-p7-7U7" firstAttribute="centerY" secondItem="aCm-Z1-zjM" secondAttribute="centerY" id="wCo-GA-cN5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="commentButton" destination="RMI-JK-HqJ" id="TWt-DM-q2s"/>
-                <outlet property="commentHitboxButton" destination="hsV-0S-IWn" id="s15-mL-ueN"/>
                 <outlet property="dateImageView" destination="HpP-8Z-s28" id="DMO-kS-VWA"/>
                 <outlet property="dateLabel" destination="wwf-Gv-s7D" id="Sl4-Cj-0en"/>
                 <outlet property="parentLabel" destination="9sY-hS-LCv" id="sZw-22-uXF"/>

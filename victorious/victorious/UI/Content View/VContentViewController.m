@@ -1442,6 +1442,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     container.shouldShowHeaderLogo = NO;
+    container.hashTag = tag;
     [self.navigationController pushViewController:container animated:YES];
 }
 
