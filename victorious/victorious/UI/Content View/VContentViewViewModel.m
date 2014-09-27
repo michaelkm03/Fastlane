@@ -67,7 +67,8 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         }
         else
         {
-            _type = VContentViewTypeInvalid;
+            // Fall back to image.
+            _type = VContentViewTypeImage;
         }
 
         _currentNode = [sequence firstNode];
