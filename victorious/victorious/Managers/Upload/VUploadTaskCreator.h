@@ -50,7 +50,9 @@
  been provided can be safely deleted after this method
  returns--the information in those files has been copied
  into the upload task.
+ 
+ @return a new VUploadTaskInformation object, or nil if an error occurred.
  */
-- (VUploadTaskInformation *)uploadTask;
+- (VUploadTaskInformation *)createUploadTaskWithError:(NSError *__autoreleasing *)error;
 
 @end

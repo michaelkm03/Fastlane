@@ -24,18 +24,34 @@
     return self;
 }
 
-- (VUploadTaskInformation *)uploadTask
+- (VUploadTaskInformation *)createUploadTaskWithError:(NSError *__autoreleasing *)error
 {
-    NSURL *temporaryFileURL = [self.uploadManager urlForNewUploadBodyFile];
-    VMultipartFormDataWriter *multipartWriter = [[VMultipartFormDataWriter alloc] initWithOutputFileURL:temporaryFileURL];
+    NSURL *bodyFileURL = [self.uploadManager urlForNewUploadBodyFile];
+    NSURL *bodyFileDirectoryURL = [bodyFileURL URLByDeletingLastPathComponent];
     
+    NSError *directoryError = nil;
+    if (![[NSFileManager defaultManager] createDirectoryAtURL:bodyFileDirectoryURL withIntermediateDirectories:YES attributes:nil error:&directoryError])
+    {
+        if (error)
+        {
+            *error = directoryError;
+        }
+        return nil;
+    }
+    
+    VMultipartFormDataWriter *multipartWriter = [[VMultipartFormDataWriter alloc] initWithOutputFileURL:bodyFileURL];
+    
+    __block BOOL success = YES;
     [self.formFields enumerateKeysAndObjectsUsingBlock:^(NSString *fieldName, id value, BOOL *stop)
     {
         NSAssert([fieldName isKindOfClass:[NSString class]], @"The formFields dictionary has an incorrect key type");
 
         if ([value isKindOfClass:[NSString class]])
         {
-            [multipartWriter appendPlaintext:value withFieldName:fieldName];
+            if (![multipartWriter appendPlaintext:value withFieldName:fieldName error:error])
+            {
+                success = NO;
+            }
         }
         else if ([value isKindOfClass:[NSURL class]])
         {
@@ -48,13 +64,20 @@
                 CFRelease(type);
             }
             
-            [multipartWriter appendFileWithName:[fieldName stringByAppendingPathExtension:pathExtension]
-                                    contentType:mimeType
-                                        fileURL:value
-                                      fieldName:fieldName];
+            success = [multipartWriter appendFileWithName:[fieldName stringByAppendingPathExtension:pathExtension]
+                                              contentType:mimeType
+                                                  fileURL:value
+                                                fieldName:fieldName
+                                                    error:error];
+            if (!success)
+            {
+                [multipartWriter closeOutputFileWithoutFinishing];
+                *stop = YES;
+            }
         }
         else if (value == [NSNull null])
         {
+            // noop
             return;
         }
         else
@@ -62,14 +85,25 @@
             NSAssert(false, @"The formFields dictionary has an incorrect value type");
         }
     }];
-    [multipartWriter finishWriting];
+    
+    if (success)
+    {
+        if (![multipartWriter finishWritingWithError:error])
+        {
+            return nil;
+        }
+    }
+    else
+    {
+        return nil;
+    }
     
     NSMutableURLRequest *request = [self.request mutableCopy] ?: [[NSMutableURLRequest alloc] init];
     [request setValue:[multipartWriter contentTypeHeader] forHTTPHeaderField:@"Content-Type"];
     
     VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] init];
     uploadTask.request = request;
-    uploadTask.bodyFileURL = temporaryFileURL;
+    uploadTask.bodyFileURL = bodyFileURL;
     return uploadTask;
 }
 
