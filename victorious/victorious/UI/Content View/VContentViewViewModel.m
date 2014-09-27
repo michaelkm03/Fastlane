@@ -34,7 +34,6 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong) NSArray *comments;
-@property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;

@@ -87,6 +87,7 @@
     _detailTitle = [detailTitle copy];
     [self.detailButton setTitle:_detailTitle
                        forState:UIControlStateNormal];
+    self.detailButton.enabled = !(!detailTitle || (detailTitle.length == 0));
 }
 
 - (void)setActionIcon:(UIImage *)actionIcon

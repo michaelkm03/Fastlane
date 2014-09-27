@@ -13,6 +13,7 @@
 
 // View Categories
 #import "UIView+VShadows.h"
+#import "UIActionSheet+VBlocks.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -58,6 +59,10 @@
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 
+// Sharing
+//TODO: would like to move this out of the VC
+#import "VObjectManager+ContentCreation.h"
+
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
@@ -69,7 +74,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate, UIViewControllerAnimatedTransitioning>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -329,6 +334,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (IBAction)pressedMore:(id)sender
 {
+    [self becomeFirstResponder];
+    [self resignFirstResponder];
+    
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
@@ -351,10 +359,33 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     repostItem.selectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
-                                 completion:nil];
+                                 completion:^
+        {
+            if (![VObjectManager sharedManager].mainUser)
+            {
+                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+                return;
+            }
+            
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                               onCancelButton:nil
+                                                       destructiveButtonTitle:nil
+                                                          onDestructiveButton:nil
+                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Repost", nil),  ^(void)
+                                          {
+                                              [[VObjectManager sharedManager] repostNode:self.viewModel.currentNode
+                                                                                withName:nil
+                                                                            successBlock:nil
+                                                                               failBlock:nil];
+                                          }, nil];
+            
+            [actionSheet showInView:self.view];
+        }];
     };
     repostItem.detailSelectionHandler = ^(void)
     {
+        
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     };
@@ -379,6 +410,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                          action:nil
                                                                           label:nil
                                                                           value:nil];
+            [self reloadInputViews];
         };
         
         [self dismissViewControllerAnimated:YES
