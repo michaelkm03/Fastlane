@@ -216,9 +216,13 @@
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
+		0372587719D7562F00836B3F /* VUploadTaskCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587619D7562F00836B3F /* VUploadTaskCreatorTests.m */; };
 		037CB73319CF86C60084BBED /* VMultipartFormDataWriterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB73219CF86C60084BBED /* VMultipartFormDataWriterTests.m */; };
 		037CB73519CFE02C0084BBED /* sampleMultipartUpload.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleMultipartUpload.jpg */; };
 		037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */; };
+		037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74119CFE8B20084BBED /* VUploadManager.m */; };
+		037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -751,10 +755,17 @@
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
+		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
+		0372587619D7562F00836B3F /* VUploadTaskCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreatorTests.m; sourceTree = "<group>"; };
 		037CB73219CF86C60084BBED /* VMultipartFormDataWriterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriterTests.m; sourceTree = "<group>"; };
 		037CB73419CFE02C0084BBED /* sampleMultipartUpload.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleMultipartUpload.jpg; sourceTree = "<group>"; };
 		037CB73A19CFE8550084BBED /* VMultipartFormDataWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipartFormDataWriter.h; sourceTree = "<group>"; };
 		037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriter.m; sourceTree = "<group>"; };
+		037CB74019CFE8B20084BBED /* VUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadManager.h; sourceTree = "<group>"; };
+		037CB74119CFE8B20084BBED /* VUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadManager.m; sourceTree = "<group>"; };
+		037CB74319CFE8D20084BBED /* VUploadTaskInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskInformation.h; sourceTree = "<group>"; };
+		037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskInformation.m; sourceTree = "<group>"; };
 		03811D2F193533D0005687FF /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		03811D30193533D0005687FF /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
@@ -1716,6 +1727,12 @@
 			children = (
 				037CB73A19CFE8550084BBED /* VMultipartFormDataWriter.h */,
 				037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */,
+				037CB74019CFE8B20084BBED /* VUploadManager.h */,
+				037CB74119CFE8B20084BBED /* VUploadManager.m */,
+				0372587319D61B0800836B3F /* VUploadTaskCreator.h */,
+				0372587419D61B0800836B3F /* VUploadTaskCreator.m */,
+				037CB74319CFE8D20084BBED /* VUploadTaskInformation.h */,
+				037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -2034,6 +2051,7 @@
 				03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */,
 				037CB73219CF86C60084BBED /* VMultipartFormDataWriterTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
+				0372587619D7562F00836B3F /* VUploadTaskCreatorTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2699,6 +2717,7 @@
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
+				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				0314D50519B46B5E00FA363C /* VStreamTableViewController.m in Sources */,
@@ -2766,6 +2785,7 @@
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
+				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
@@ -2868,6 +2888,7 @@
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				BE799B9B19C8AA470023CE88 /* VComment.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
+				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
@@ -2886,6 +2907,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0372587719D7562F00836B3F /* VUploadTaskCreatorTests.m in Sources */,
 				037CB73319CF86C60084BBED /* VMultipartFormDataWriterTests.m in Sources */,
 				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
@@ -3005,6 +3027,10 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3189,6 +3215,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3209,6 +3239,10 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3314,6 +3348,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

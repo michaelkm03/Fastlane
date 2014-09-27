@@ -225,4 +225,13 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     return success;
 }
 
+- (void)closeOutputFileWithoutFinishing
+{
+    dispatch_sync(self.outputQueue, ^(void)
+    {
+        [self.outputStream close];
+        self.outputStream = nil;
+    });
+}
+
 @end

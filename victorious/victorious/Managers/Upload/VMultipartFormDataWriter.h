@@ -91,4 +91,12 @@
  */
 - (BOOL)finishWritingWithError:(NSError *__autoreleasing *)error;
 
+/**
+ If any of the append methods returns an unrecoverable error,
+ calling -finishWritingWithError: is likely to produce more
+ errors. Instead, call this method to close the file 
+ immediately without attempting to write the final boundary.
+ */
+- (void)closeOutputFileWithoutFinishing;
+
 @end

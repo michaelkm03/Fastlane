@@ -43,7 +43,8 @@
 - (void)testUploadBodyFileExists
 {
     self.uploadTaskCreator.formFields = @{ @"hello": @"world" };
-    __unused VUploadTaskInformation *uploadTask = [self.uploadTaskCreator createUploadTaskWithError:nil];
+    VUploadTaskInformation *uploadTask = [self.uploadTaskCreator createUploadTaskWithError:nil];
+    XCTAssertNotNil(uploadTask);
     
     BOOL isDirectory = NO;
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:[self.uploadBodyFileURL path] isDirectory:&isDirectory];
