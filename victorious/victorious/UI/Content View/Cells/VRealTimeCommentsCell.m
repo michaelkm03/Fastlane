@@ -19,7 +19,7 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 @interface VRealTimeCommentsCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;
-@property (weak, nonatomic) IBOutlet UIImageView *currentUserAvatar;
+@property (weak, nonatomic) IBOutlet UIImageView *currentUserAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentCommentBodyLabel;
@@ -36,7 +36,12 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 92);
+    return CGSizeMake(CGRectGetWidth(bounds), 92.0f);
+}
+
++ (CGSize)desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), 5.0f);
 }
 
 #pragma mark - NSObject
@@ -45,15 +50,17 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
 {
     [super awakeFromNib];
     
-    self.currentUserAvatar.layer.cornerRadius = CGRectGetWidth(self.currentUserAvatar.bounds) * 0.5f;
-    self.currentUserAvatar.layer.masksToBounds = YES;
+    self.currentUserAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.currentUserAvatarImageView.bounds) * 0.5f;
+    self.currentUserAvatarImageView.layer.masksToBounds = YES;
     
-    self.currentUserAvatar.image = nil;
+    self.currentUserAvatarImageView.image = nil;
+    self.currentUserAvatarImageView.hidden = YES;
     self.currentUserNameLabel.text = nil;
     self.currentCommentBodyLabel.text = nil;
     self.currentAtTimeLabel.text = nil;
     self.currentTimeAgoLabel.text = nil;
     self.conversationClock.hidden = YES;
+    self.arrowImageView.alpha = 0.0f;
     
     self.currentUserNameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.currentCommentBodyLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
@@ -73,6 +80,13 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                          animated:YES];
 }
 
+- (void)setDataSource:(id<VRealtimeCommentsCellStripDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    
+    [self reloadAvatarStrip];
+}
+
 #pragma mark - Public Methods
 
 - (void)configureWithCurrentUserAvatarURL:(NSURL *)currentAvatarURL
@@ -82,14 +96,17 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                atTimeText:(NSString *)atTimeText
                commentPercentThroughMedia:(CGFloat)percentThrough
 {
-    [self.currentUserAvatar setImageWithURL:currentAvatarURL];
+    self.currentUserAvatarImageView.hidden = NO;
+    [self.currentUserAvatarImageView setImageWithURL:currentAvatarURL
+                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.currentUserNameLabel.text = username;
     self.currentTimeAgoLabel.text = timeAgoText;
     self.currentCommentBodyLabel.text = commentBody;
     self.currentAtTimeLabel.text = atTimeText;
     self.conversationClock.hidden = NO;
+    self.arrowImageView.alpha = 1.0f;
     
-    [UIView animateWithDuration:0.5f
+    [UIView animateWithDuration:0.2f
                           delay:0.0f
          usingSpringWithDamping:0.7f
           initialSpringVelocity:0.0f
@@ -116,12 +133,33 @@ static const CGFloat kRealTimeCommentAvatarInset = 2.5f;
                                     CGRectGetMidY(self.realtimeCommentStrip.bounds));
     avatarView.layer.cornerRadius = CGRectGetHeight(avatarView.bounds) * 0.5f;
     avatarView.layer.masksToBounds = YES;
+
     [self.realtimeCommentStrip addSubview:avatarView];
+}
+
+- (void)reloadAvatarStrip
+{
+    [self clearAvatarStrip];
+    
+    NSInteger numberOfAvatars = [self.dataSource numberOfAvatarsInStripForStripCell:self];
+    for (NSInteger avatarIndex = 0; avatarIndex < numberOfAvatars; avatarIndex++)
+    {
+        [self addAvatarWithURL:[self.dataSource urlForAvatarImageAtIndex:avatarIndex forAvatarCell:self]
+           withPercentLocation:[self.dataSource percentThroughVideoForAvatarAtIndex:avatarIndex forAvatarCell:self]];
+    }
 }
 
 - (void)clearAvatarStrip
 {
-    [self.realtimeCommentStrip.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSMutableArray *subviewsOfSripExcludingProgressBar = [[NSMutableArray alloc] init];
+    [self.realtimeCommentStrip.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (obj == self.progressBar)
+        {
+            return;
+        }
+        [subviewsOfSripExcludingProgressBar addObject:obj];
+    }];
+    [subviewsOfSripExcludingProgressBar makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 
 @end

@@ -8,10 +8,29 @@
 
 #import "VBaseCollectionViewCell.h"
 
+@class VRealTimeCommentsCell;
+
+@protocol VRealtimeCommentsCellStripDataSource <NSObject>
+
+- (NSInteger)numberOfAvatarsInStripForStripCell:(VRealTimeCommentsCell *)realtimeCommentsCell;
+- (CGFloat)percentThroughVideoForAvatarAtIndex:(NSInteger)avatarIndex
+                                 forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell;
+- (NSURL *)urlForAvatarImageAtIndex:(NSInteger)avatarIndex
+                      forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell;
+
+@end
+
 /**
  *  A UICollectionViewCell for representing realtime comments for a given video. Maintains a strip of avatars and a current comment.
  */
 @interface VRealTimeCommentsCell : VBaseCollectionViewCell
+
+/**
+ *  The desired size with no real time comments.
+ */
++ (CGSize)desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:(CGRect)bounds;
+
+@property (nonatomic, weak) id <VRealtimeCommentsCellStripDataSource> dataSource;
 
 /**
  *  Assign to this float a value between 0.0f and 1.0f to update the progress bar.
@@ -36,17 +55,8 @@
                commentPercentThroughMedia:(CGFloat)percentThrough;
 
 /**
- *  Use this method to add an additional avatar to the strip of avatars for the realtime comments.
- *
- *  @param avatarURL       The URL for the avatar.
- *  @param percentLocation The percentage location that the avatar should be placed at.
+ *  Requries data source for strip data.
  */
-- (void)addAvatarWithURL:(NSURL *)avatarURL
-     withPercentLocation:(CGFloat)percentLocation;
-
-/**
- *  Clears the avatars in the strip.
- */
-- (void)clearAvatarStrip;
+- (void)reloadAvatarStrip;
 
 @end

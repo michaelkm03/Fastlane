@@ -14,6 +14,7 @@
 
 - (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel;
 - (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel;
+- (void)realtimeCommentsReadyToLoadRTC:(VRealtimeCommentsViewModel *)viewModel;
 
 @end
 

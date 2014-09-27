@@ -101,7 +101,7 @@
                 <outlet property="currentAtTimeLabel" destination="hTk-W8-8lh" id="vdj-m0-pql"/>
                 <outlet property="currentCommentBodyLabel" destination="ZJ7-vM-BF3" id="Puy-Lm-ZvA"/>
                 <outlet property="currentTimeAgoLabel" destination="qPB-km-P8f" id="qF0-Uf-fYs"/>
-                <outlet property="currentUserAvatar" destination="fEu-0z-toW" id="YfC-fa-k4U"/>
+                <outlet property="currentUserAvatarImageView" destination="fEu-0z-toW" id="JYa-2W-J7R"/>
                 <outlet property="currentUserNameLabel" destination="5JM-hU-CGn" id="1ch-PI-b0A"/>
                 <outlet property="leadingAlignmentRTCArrowToStipConstraint" destination="F9x-EV-YKB" id="H7c-ck-5hW"/>
                 <outlet property="progressBar" destination="3nQ-DE-tkc" id="CfK-ex-6r3"/>

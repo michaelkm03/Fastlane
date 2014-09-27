@@ -41,8 +41,8 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
                 andHasMedia:(BOOL)hasMedia
 {
     CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
-                                                                   text:commentBody
-                                                              withMedia:hasMedia
+                                                                       text:commentBody
+                                                                  withMedia:hasMedia
                                                                     andFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
