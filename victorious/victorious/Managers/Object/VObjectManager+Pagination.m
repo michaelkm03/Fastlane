@@ -33,8 +33,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
-    [self refreshStream:[VStream streamForMarquee] successBlock:nil failBlock:nil];
-    
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (success)
