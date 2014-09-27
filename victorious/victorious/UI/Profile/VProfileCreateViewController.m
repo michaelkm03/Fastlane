@@ -24,6 +24,7 @@
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "UIImageView+AFNetworking.h"
 
 #import "VTOSViewController.h"
 
@@ -77,7 +78,9 @@
     self.profileImageView.clipsToBounds = YES;
     self.profileImageView.userInteractionEnabled = YES;
     [self.profileImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)]];
-
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.profile.profileImagePathSmall ?: self.profile.pictureUrl]
+                          placeholderImage:self.profileImageView.image];
+    
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.loginType != kVLoginTypeEmail)
