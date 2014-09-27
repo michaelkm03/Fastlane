@@ -79,6 +79,8 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
     [self.AvatarImageView v_addMotionEffectsWithMagnitude:10.0f];
     self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
     self.AvatarImageView.layer.masksToBounds = YES;
+    self.AvatarImageView.layer.borderWidth = 1.0f;
+    self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20);
     

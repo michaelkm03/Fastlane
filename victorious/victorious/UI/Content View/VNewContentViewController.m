@@ -509,6 +509,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
         {
+            [[VThemeManager sharedThemeManager] applyStyling];
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
                                                                          action:nil
                                                                           label:nil
