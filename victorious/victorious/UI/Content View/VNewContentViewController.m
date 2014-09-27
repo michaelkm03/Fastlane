@@ -8,6 +8,9 @@
 
 #import "VNewContentViewController.h"
 
+// Theme
+#import "VThemeManager.h"
+
 // View Categories
 #import "UIView+VShadows.h"
 
@@ -40,6 +43,12 @@
 #import "VImageLightboxViewController.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
+
+// Analytics
+#import "VAnalyticsRecorder.h"
+
+// Activities
+#import "VFacebookActivity.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -326,8 +335,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
                                                            avatarURL:self.viewModel.avatarForAuthor
                                                           detailText:self.viewModel.authorCaption];
-    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:@"The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy"];
-    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:@"666"];
+    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name];
+    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
@@ -338,7 +347,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     };
-    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:@"1337"];
+    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:self.viewModel.repostCountText];
     repostItem.selectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
@@ -349,17 +358,40 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     };
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"Share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:@"1776"];
-    shareItem.selectionHandler = ^(void)
+    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"Share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
+    void (^shareHandler)(void) = ^void(void)
     {
+        //Remove the styling for the mail view.
+        [[VThemeManager sharedThemeManager] removeStyling];
+        
+        VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
+        UIActivityViewController *activityViewController =
+        [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
+                                                                  self.viewModel.shareText,
+                                                                  self.viewModel.shareURL]
+                                          applicationActivities:@[fbActivity]];
+        NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+        [activityViewController setValue:emailSubject forKey:@"subject"];
+        activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
+        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+        };
+        
         [self dismissViewControllerAnimated:YES
-                                 completion:nil];
+                                 completion:^
+         {
+             [self presentViewController:activityViewController
+                                animated:YES
+                              completion:nil];
+         }];
     };
-    shareItem.detailSelectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
+    shareItem.selectionHandler = shareHandler;
+    shareItem.detailSelectionHandler = shareHandler;
+    
     [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem]];
     
     actionSheetViewController.cancelHandler = ^void(void)

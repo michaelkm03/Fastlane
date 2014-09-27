@@ -86,9 +86,19 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) NSString *name;
 
+@property (nonatomic, readonly) BOOL isCurrentUserOwner;
+
+@property (nonatomic, readonly) NSString *remixCountText;
+@property (nonatomic, readonly) NSString *repostCountText;
+@property (nonatomic, readonly) NSString *shareCountText;
+
 @property (nonatomic, readonly) NSString *authorName;
 @property (nonatomic, readonly) NSString *authorCaption;
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
+
+@property (nonatomic, readonly) NSString *shareText;
+@property (nonatomic, readonly) NSString *analyticsContentTypeText;
+@property (nonatomic, readonly) NSURL *shareURL;
 
 /**
  *  For content type video this will be a convenient url for the videoplayer.

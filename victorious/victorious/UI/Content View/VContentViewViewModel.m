@@ -20,6 +20,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VComment+Fetcher.h"
+#import "VUser+Fetcher.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -250,6 +251,85 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return self.sequence.user.name;
 }
 
+- (BOOL)isCurrentUserOwner
+{
+    return [self.sequence.user isOwner];
+}
+
+- (NSString *)shareText
+{
+    NSString *shareText;
+    
+    if ([self isCurrentUserOwner])
+    {
+        switch (self.type)
+        {
+            case VContentViewTypePoll:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
+                break;
+            case VContentViewTypeImage:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
+                break;
+            case VContentViewTypeVideo:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                break;
+            case VContentViewTypeInvalid:
+                break;
+        }
+    }
+    else
+    {
+        switch (self.type)
+        {
+            case VContentViewTypePoll:
+                shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
+                break;
+            case VContentViewTypeImage:
+                shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
+                break;
+            case VContentViewTypeVideo:
+                shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+                break;
+            case VContentViewTypeInvalid:
+                break;
+        }
+    }
+    
+    return shareText;
+}
+
+- (NSString *)analyticsContentTypeText
+{
+    NSString *analyticsContentTypeText = @"";
+    if ([self isCurrentUserOwner])
+    {
+        switch (self.type)
+        {
+            case VContentViewTypePoll:
+                analyticsContentTypeText = @"poll";
+                break;
+            case VContentViewTypeImage:
+                analyticsContentTypeText = @"image";
+                break;
+            case VContentViewTypeVideo:
+                analyticsContentTypeText = @"video";
+                break;
+            case VContentViewTypeInvalid:
+                break;
+        }
+    }
+    else
+    {
+    }
+    
+    return analyticsContentTypeText;
+}
+
+- (NSURL *)shareURL
+{
+    return [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null];
+}
+
 - (NSString *)authorCaption
 {
 #warning Implement me properly
@@ -259,6 +339,22 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 - (NSURL *)avatarForAuthor
 {
     return [NSURL URLWithString:self.sequence.user.pictureUrl];
+}
+
+- (NSString *)remixCountText
+{
+    return [NSString stringWithFormat:@"%@", self.sequence.remixCount];
+}
+
+- (NSString *)repostCountText
+{
+    return [NSString stringWithFormat:@"%@", self.sequence.repostCount];
+}
+
+- (NSString *)shareCountText
+{
+#warning Implement me or address with product
+    return nil;
 }
 
 - (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex
