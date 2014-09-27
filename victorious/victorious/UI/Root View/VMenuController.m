@@ -29,9 +29,6 @@
 #import "VUserProfileViewController.h"
 #import "VDirectoryViewController.h"
 
-#warning test import
-#import "VMarqueeViewController.h"
-
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
     VMenuRowHome                =   0,

@@ -24,8 +24,6 @@
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
-@property (nonatomic, strong) VMarqueeTabIndicatorView *tabView;
-
 @property (nonatomic, strong) VStream *stream;
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;

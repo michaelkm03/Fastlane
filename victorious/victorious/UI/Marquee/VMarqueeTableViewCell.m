@@ -51,6 +51,7 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     self.marquee = [[VMarqueeController alloc] init];
     self.marquee.delegate = self;
     self.marquee.collectionView = self.collectionView;
+    self.marquee.tabView = self.tabView;
     [self.marquee.streamDataSource refreshWithSuccess:^(void)
      {
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
@@ -104,15 +105,15 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 
 #pragma mark - VMarqueeDelegate
 
-//- (void)marquee:(VMarqueeViewController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
-//{
-//    [self.delegate marqueTableCell:self selectedItem:streamItem];
-//}
-//
-//- (void)marquee:(VMarqueeViewController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
-//{
-//    [self.delegate marqueTableCell:self selectedUser:user];
-//}
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+{
+    [self.delegate marqueTableCell:self selectedItem:streamItem];
+}
+
+- (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+{
+    [self.delegate marqueTableCell:self selectedUser:user];
+}
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
