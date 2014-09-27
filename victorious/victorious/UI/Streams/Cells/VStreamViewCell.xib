@@ -77,23 +77,43 @@
                             <constraint firstItem="WLo-v6-MW0" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" constant="20" id="n95-0X-R7c"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="geG-k8-kCm" userLabel="Comment Hitbox Button">
+                        <rect key="frame" x="244" y="0.0" width="75" height="75"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="8VW-k6-mOK"/>
+                            <constraint firstAttribute="height" constant="75" id="q98-rb-P5j"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="commentButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="8L4-59-9AU"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="RVh-hy-y2K" firstAttribute="trailing" secondItem="adD-xo-Uv6" secondAttribute="trailing" id="1Bm-oZ-ojx"/>
                     <constraint firstAttribute="trailing" secondItem="H2p-kS-Ucs" secondAttribute="trailing" id="2MC-w6-TZs"/>
                     <constraint firstItem="H2p-kS-Ucs" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" id="5Xk-P9-eRA"/>
+                    <constraint firstItem="geG-k8-kCm" firstAttribute="leading" secondItem="tlv-KZ-xzf" secondAttribute="leading" constant="244" id="9Kn-GT-dZQ"/>
                     <constraint firstItem="adD-xo-Uv6" firstAttribute="top" secondItem="RVh-hy-y2K" secondAttribute="top" id="9dh-hG-fKS"/>
                     <constraint firstItem="H2p-kS-Ucs" firstAttribute="leading" secondItem="tlv-KZ-xzf" secondAttribute="leading" id="Hdc-q5-OTK"/>
                     <constraint firstAttribute="bottom" secondItem="H2p-kS-Ucs" secondAttribute="bottom" id="Jhv-eE-URf"/>
                     <constraint firstItem="RVh-hy-y2K" firstAttribute="trailing" secondItem="H2p-kS-Ucs" secondAttribute="trailing" id="QcS-Yq-J9B"/>
+                    <constraint firstItem="geG-k8-kCm" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" id="Vd6-BT-3NE"/>
                     <constraint firstItem="adD-xo-Uv6" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" id="Wxd-eh-fl9"/>
                     <constraint firstAttribute="bottom" secondItem="RVh-hy-y2K" secondAttribute="bottom" constant="-1" id="ayS-XG-6Ln"/>
+                    <constraint firstAttribute="trailing" secondItem="geG-k8-kCm" secondAttribute="trailing" constant="1" id="dOz-7Y-wH0"/>
+                    <constraint firstAttribute="bottom" secondItem="geG-k8-kCm" secondAttribute="bottom" constant="244" id="l2V-Se-rGn"/>
                     <constraint firstItem="RVh-hy-y2K" firstAttribute="bottom" secondItem="adD-xo-Uv6" secondAttribute="bottom" id="q04-YN-hLb"/>
                     <constraint firstItem="adD-xo-Uv6" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" id="qgY-4D-P8m"/>
                     <constraint firstItem="adD-xo-Uv6" firstAttribute="leading" secondItem="RVh-hy-y2K" secondAttribute="leading" id="tno-1g-Lcc"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="commentHitboxButton" destination="geG-k8-kCm" id="ide-Qz-sjS"/>
                 <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="BI6-9o-s8I"/>
                 <outlet property="lowerGradientView" destination="fTn-ss-uGL" id="h00-bz-zpQ"/>
                 <outlet property="mainView" destination="tlv-KZ-xzf" id="Wkj-5Q-90X"/>
