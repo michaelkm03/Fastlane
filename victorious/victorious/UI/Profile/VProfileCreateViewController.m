@@ -496,7 +496,7 @@
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL) &&
+                         (self.registrationModel.profileImageURL || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)

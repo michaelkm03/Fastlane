@@ -46,6 +46,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
         }
         
+        NSDictionary *experiments = payload[@"experiments"];
+        if ([experiments isKindOfClass:[NSDictionary class]])
+        {
+            [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
+        }
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
