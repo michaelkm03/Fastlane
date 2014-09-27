@@ -52,6 +52,7 @@
 //TODO: abstract this out of VC
 #import "VStream.h"
 #import "VStream+Fetcher.h"
+#import "VObjectManager+Sequence.h"
 
 // Analytics
 #import "VAnalyticsRecorder.h"
@@ -373,7 +374,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
          }];
     };
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name];
-    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
+    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"") actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
     {
         if (![VObjectManager sharedManager].mainUser)
@@ -473,7 +474,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
              
          }];
     };
-    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:self.viewModel.repostCountText];
+    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Repost", @"") actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:self.viewModel.repostCountText];
     repostItem.selectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
@@ -511,7 +512,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             [self.navigationController pushViewController:vc animated:YES];
         }];
     };
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"Share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
+    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"") actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
     void (^shareHandler)(void) = ^void(void)
     {
         //Remove the styling for the mail view.
@@ -547,7 +548,36 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     shareItem.selectionHandler = shareHandler;
     shareItem.detailSelectionHandler = shareHandler;
     
-    [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem]];
+    VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
+                                                         actionIcon:[UIImage imageNamed:@"reportIcon"]
+                                                         detailText:nil];
+    flagItem.selectionHandler = ^(void)
+    {
+        [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
+                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+             
+         }
+                                           failBlock:^(NSOperation *operation, NSError *error)
+         {
+             VLog(@"Failed to flag sequence %@", self.viewModel.sequence);
+             
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+         }];
+    };
+    
+    [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem, flagItem]];
     
     actionSheetViewController.cancelHandler = ^void(void)
     {
