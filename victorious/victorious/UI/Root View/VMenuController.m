@@ -85,6 +85,15 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
+    {
+        self.nameLabel.text = NSLocalizedString(@"Channels", nil);
+    }
+    else
+    {
+        self.nameLabel.text = NSLocalizedString(@"Channel", nil);
+    }
+    
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
 
