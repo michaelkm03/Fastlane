@@ -8,15 +8,29 @@
 
 #import "VMarqueeTableViewCell.h"
 
-#import "VMarqueeViewController.h"
 #import "VUserProfileViewController.h"
+
+#import "VMarqueeTabIndicatorView.h"
+#import "VMarqueeStreamItemCell.h"
+
+#import "VStreamCollectionViewDataSource.h"
+#import "VMarqueeController.h"
 
 #import "VStreamItem.h"
 #import "VUser.h"
 
+#import "VThemeManager.h"
+
+static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
+
 @interface VMarqueeTableViewCell() <VMarqueeDelegate>
 
-@property (nonatomic, strong) VMarqueeViewController *marquee;
+@property (nonatomic, strong) VMarqueeController *marquee;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
+@property (nonatomic, weak) IBOutlet UIView *tabContainerView;
+
+@property (nonatomic, strong) VMarqueeTabIndicatorView *tabView;
 
 @end
 
@@ -24,18 +38,26 @@
 
 - (void)awakeFromNib
 {
-    // Initialization code
-    self.marquee = [[VMarqueeViewController alloc] init];
-    self.marquee.view.bounds = self.bounds;
+    [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
+    
+    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.frame];
+    self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
+    self.tabView.spacingBetweenTabs = CGRectGetWidth(self.bounds) * kVTabSpacingRatio;
+    self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
+    
+    [self addSubview:self.tabView];
+    
+    self.marquee = [[VMarqueeController alloc] init];
     self.marquee.delegate = self;
-    [self addSubview:self.marquee.view];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    self.marquee.collectionView = self.collectionView;
+    [self.marquee.streamDataSource refreshWithSuccess:^(void)
+     {
+         self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+         [self.marquee enableTimer];
+         [self.collectionView reloadData];
+     }
+                                      failure:nil];
 }
 
 - (VStreamItem *)currentItem
@@ -51,20 +73,46 @@
 
 - (void)restartAutoScroll
 {
-    [self.marquee scheduleAutoScrollTimer];
+    [self.marquee enableTimer];
+}
+
+#pragma mark - UIResponder
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self.marquee disableTimer];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    [self.marquee disableTimer];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.marquee enableTimer];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    [self.marquee enableTimer];
 }
 
 #pragma mark - VMarqueeDelegate
 
-- (void)marquee:(VMarqueeViewController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
-{
-    [self.delegate marqueTableCell:self selectedItem:streamItem];
-}
-
-- (void)marquee:(VMarqueeViewController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
-{
-    [self.delegate marqueTableCell:self selectedUser:user];
-}
+//- (void)marquee:(VMarqueeViewController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+//{
+//    [self.delegate marqueTableCell:self selectedItem:streamItem];
+//}
+//
+//- (void)marquee:(VMarqueeViewController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+//{
+//    [self.delegate marqueTableCell:self selectedUser:user];
+//}
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
@@ -81,7 +129,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return [VMarqueeViewController desiredSizeWithCollectionViewBounds:bounds];
+    return [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
 @end
