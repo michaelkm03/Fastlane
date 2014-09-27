@@ -32,6 +32,7 @@
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
@@ -70,7 +71,7 @@
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.delegate videoCellPlayedToEnd:self
-                          withTotalTime:self.videoPlayerViewController.playerItemDuration];
+                          withTotalTime:[videoPlayer playerItemDuration]];
 }
 
 @end

@@ -199,6 +199,9 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (void)fetchComments
 {
+    // give it what we have for now.
+    self.realTimeCommentsViewModel.realTimeComments = self.comments;
+    
     [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:_currentAsset.remoteId.integerValue
                                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {

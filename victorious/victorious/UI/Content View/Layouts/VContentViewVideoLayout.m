@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, VContentViewState)
 
 // Publicly Readonly
 @property (nonatomic, assign, readwrite) CGFloat dropDownHeaderMiniumHeight;
-@property (nonatomic, assign, readwrite) CGSize sizeForContentView;
 
 @end
 
@@ -59,6 +58,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     self.sizeForContentView = CGSizeZero;
     self.sizeForRealTimeComentsView = CGSizeZero;
     self.catchPoint = 0.0f;
+    self.sectionInset = UIEdgeInsetsZero;
     self.contentViewXTargetTranslation = 0.0f;
     self.contentViewYTargetTranslation = 0.0f;
     self.dropDownHeaderMiniumHeight = kVContentViewMinimumHeaderHeight;
@@ -108,10 +108,11 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
                 if ([layoutAttributes.indexPath compare:[self contentViewIndexPath]] == NSOrderedSame)
                 {
                     hasLayoutAttributesForContentView = YES;
-                    [self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
+                    [self layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:layoutAttributes];
                 }
                 else if ([layoutAttributes.indexPath compare:[self realTimeCommentsIndexPath]] == NSOrderedSame)
                 {
+                    layoutAttributes.hidden = YES;
                     layoutAttributes.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                         self.collectionView.contentOffset.y + self.sizeForContentView.height,
                                                         self.sizeForRealTimeComentsView.width,
@@ -120,7 +121,6 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
                 }
                 break;
             }
-                
         }
     }];
     
@@ -134,12 +134,26 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     dropDownHeaderLayoutAttributes.zIndex = kVDropDownHeaderFloatingZIndex;
     [attributes addObject:dropDownHeaderLayoutAttributes];
     
-    if (!hasLayoutAttributesForContentView)
+    if (!hasLayoutAttributesForContentView && ([self currentState] == VContentViewStateGreaterThanOrEqualToCatchPoint))
     {
-        [attributes addObject:[self layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:nil]];
+        [attributes addObject:[self layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:nil]];
     }
     
     return attributes;
+}
+
+#pragma mark - Property Accessors
+
+- (void)setSizeForContentView:(CGSize)sizeForContentView
+{
+    _sizeForContentView = sizeForContentView;
+    [self updateInternalState];
+}
+
+- (void)setSizeForRealTimeComentsView:(CGSize)sizeForRealTimeComentsView
+{
+    _sizeForRealTimeComentsView = sizeForRealTimeComentsView;
+    [self updateInternalState];
 }
 
 #pragma mark - Public Methods
@@ -168,6 +182,16 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
 
 #pragma mark - Internal Methods
 
+- (void)updateInternalState
+{
+    self.catchPoint = self.sizeForRealTimeComentsView.height;
+    
+    // Calculate translation from top right
+    CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
+    self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
+    self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.65f);
+}
+
 - (VContentViewState)currentState
 {
     if (self.collectionView.contentOffset.y < self.catchPoint)
@@ -192,19 +216,10 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     {
         UICollectionViewLayoutAttributes *layoutAttributesForRealTimeComments = [initialLayoutAttributes objectAtIndex:1];
         self.sizeForRealTimeComentsView = layoutAttributesForRealTimeComments.size;
-        self.catchPoint = CGRectGetHeight(layoutAttributesForRealTimeComments.frame);
+
     }
     
-    // Calculate translation from top right
-    if (self.contentViewXTargetTranslation == 0.0f)
-    {
-        CGFloat minimizedWidth = self.sizeForContentView.width * kVContentViewFloatingScalingFactor;
-        self.contentViewXTargetTranslation = (self.sizeForContentView.width * 0.5f) - (minimizedWidth * 0.5f) - kVContentViewFlatingTrailingSpace;
-    }
-    if (self.contentViewYTargetTranslation == 0.0f)
-    {
-        self.contentViewYTargetTranslation = (-self.sizeForContentView.height * 0.5f) + (self.dropDownHeaderMiniumHeight * 0.5f);
-    }
+    [self updateInternalState];
 }
 
 - (NSIndexPath *)contentViewIndexPath
@@ -217,7 +232,7 @@ static const CGFloat kVContentViewRealTimeCommentsZIndex = -1.0f;
     return [NSIndexPath indexPathForRow:0 inSection:1];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastSecondCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
+- (UICollectionViewLayoutAttributes *)layoutAttributesForContentViewPastCatchPointUpdateInitialLayoutAttributes:(UICollectionViewLayoutAttributes *)initialLayoutAttributes
 {
     UICollectionViewLayoutAttributes *layoutAttributes = initialLayoutAttributes ?: [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[self contentViewIndexPath]];
     

@@ -30,12 +30,14 @@
     if (self)
     {
         _currentTime = kCMTimeZero;
+        _totalTime = kCMTimeInvalid;
     }
     return self;
 }
 
 - (void)setRealTimeComments:(NSArray *)realTimeComments
 {
+
     NSMutableArray *realRealTimeComments = [[NSMutableArray alloc] init];
     
     [realTimeComments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
@@ -53,14 +55,40 @@
         [realRealTimeComments addObject:comment];
     }];
     
-    _realTimeComments = realRealTimeComments;
+    NSArray *sortedRealTimeComents = [realTimeComments  sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+    {
+        if (comment1.realtime.doubleValue > comment2.realtime.doubleValue)
+        {
+            return  NSOrderedDescending;
+        }
+        else if (comment2.realtime.doubleValue > comment2.realtime.doubleValue)
+        {
+            return NSOrderedAscending;
+        }
+        else
+        {
+            return NSOrderedSame;
+        }
+    }];
+    
+    _realTimeComments = sortedRealTimeComents;
     
     [self.delegate realtimeCommentsViewModelDidLoadNewComments:self];
+    
+    [self notifyRTCIfReadyToLoad];
+}
+
+- (void)notifyRTCIfReadyToLoad
+{
+    if (CMTIME_IS_VALID(self.totalTime) && (self.realTimeComments.count > 0) && (CMTimeGetSeconds(self.totalTime) > 0.0f))
+    {
+        [self.delegate realtimeCommentsReadyToLoadRTC:self];
+    }
 }
 
 - (NSInteger)numberOfRealTimeComments
 {
-    return self.realTimeComments.count;
+    return self.realTimeComments ? self.realTimeComments.count : 0;
 }
 
 - (NSString *)usernameForCurrentRealtimeComment
@@ -70,6 +98,7 @@
 
 - (NSURL *)avatarURLForCurrentRealtimeComent
 {
+//    NSLog(@"current avatar url: %@", [NSURL URLWithString:self.currentComment.user.pictureUrl]);
     return [NSURL URLWithString:self.currentComment.user.pictureUrl];
 }
 
@@ -99,24 +128,32 @@
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {
-        if (comment.realtime.doubleValue > seconds)
+        if (comment.realtime.doubleValue < seconds)
         {
             newCurrentComment = comment;
+        }
+        else
+        {
             *stop = YES;
         }
     }];
-    
+
     self.currentComment = newCurrentComment;
+}
+
+- (void)setTotalTime:(CMTime)totalTime
+{
+    if (isnan(CMTimeGetSeconds(totalTime)))
+    {
+        return;
+    }
+    _totalTime = totalTime;
+    [self notifyRTCIfReadyToLoad];
 }
 
 - (void)setCurrentComment:(VComment *)currentComment
 {
-    if (_currentComment == currentComment)
-    {
-        return;
-    }
     _currentComment = currentComment;
-    
     [self.delegate currentCommentDidChangeOnRealtimeCommentsViewModel:self];
 }
 
