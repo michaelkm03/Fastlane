@@ -51,71 +51,98 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     [self.outputStream open];
 }
 
-- (void)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName
+- (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
 {
-    dispatch_async(self.outputQueue, ^(void)
+    __block BOOL success = YES;
+    dispatch_sync(self.outputQueue, ^(void)
     {
-        [self appendDelimiter];
-        [self appendHeadersWithFieldName:fieldName filename:nil contentType:@"text/plain; charset=\"UTF-8\""];
-        [self appendData:[s dataUsingEncoding:NSUTF8StringEncoding]];
+        if (![self appendDelimiterWithError:error])
+        {
+            success = NO;
+            return;
+        }
+        if (![self appendHeadersWithFieldName:fieldName filename:nil contentType:@"text/plain; charset=\"UTF-8\"" error:error])
+        {
+            success = NO;
+            return;
+        }
+        if (![self appendData:[s dataUsingEncoding:NSUTF8StringEncoding] error:error])
+        {
+            success = NO;
+            return;
+        }
     });
+    return success;
 }
 
-- (void)appendFileWithName:(NSString *)filename
+- (BOOL)appendFileWithName:(NSString *)filename
                contentType:(NSString *)contentType
                     stream:(NSInputStream *)inputStream
                  fieldName:(NSString *)fieldName
+                     error:(NSError *__autoreleasing *)error
 {
-    [self appendFileWithName:filename contentType:contentType stream:inputStream fieldName:fieldName closeWhenDone:NO];
-}
-
-- (void)appendFileWithName:(NSString *)filename
-               contentType:(NSString *)contentType
-                    stream:(NSInputStream *)inputStream
-                 fieldName:(NSString *)fieldName
-             closeWhenDone:(BOOL)shouldClose
-{
-    dispatch_async(self.outputQueue, ^(void)
+    __block BOOL success = YES;
+    dispatch_sync(self.outputQueue, ^(void)
     {
-        [self appendDelimiter];
-        [self appendHeadersWithFieldName:fieldName filename:filename contentType:contentType];
+        if (![self appendDelimiterWithError:error])
+        {
+            success = NO;
+            return;
+        }
+        if (![self appendHeadersWithFieldName:fieldName filename:filename contentType:contentType error:error])
+        {
+            success = NO;
+            return;
+        }
         
         const NSUInteger bufferLen = 2048;
         uint8_t buffer[bufferLen];
         while (inputStream.hasBytesAvailable)
         {
-            NSUInteger size = [inputStream read:buffer maxLength:bufferLen];
+            NSInteger size = [inputStream read:buffer maxLength:bufferLen];
             if (size > 0)
             {
-                [self.outputStream write:buffer maxLength:size];
+                if ([self.outputStream write:buffer maxLength:size] == -1)
+                {
+                    if (error)
+                    {
+                        *error = self.outputStream.streamError;
+                    }
+                    success = NO;
+                    break;
+                }
             }
-            else
+            else if (size < 0)
             {
+                if (error)
+                {
+                    *error = inputStream.streamError;
+                }
+                success = NO;
                 break;
             }
         }
-        
-        if (shouldClose)
-        {
-            [inputStream close];
-        }
     });
+    return success;
 }
 
-- (void)appendFileWithName:(NSString *)filename
+- (BOOL)appendFileWithName:(NSString *)filename
                contentType:(NSString *)contentType
                    fileURL:(NSURL *)fileURL
                  fieldName:(NSString *)fieldName
+                     error:(NSError *__autoreleasing *)error
 {
     NSInputStream *inputStream = [NSInputStream inputStreamWithURL:fileURL];
     [inputStream open];
-    [self appendFileWithName:filename contentType:contentType stream:inputStream fieldName:fieldName closeWhenDone:YES];
+    BOOL success = [self appendFileWithName:filename contentType:contentType stream:inputStream fieldName:fieldName error:error];
+    [inputStream close];
+    return success;
 }
 
-- (void)appendDelimiter
+- (BOOL)appendDelimiterWithError:(NSError *__autoreleasing *)error
 {
     NSString *delimiter = [NSString stringWithFormat:@"\r\n--%@\r\n", self.boundary];
-    [self appendASCIIString:delimiter];
+    return [self appendASCIIString:delimiter error:error];
 }
 
 - (NSString *)contentDispositionHeaderWithFieldName:(NSString *)fieldName filename:(NSString *)filename
@@ -136,27 +163,33 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     return header;
 }
 
-- (void)appendHeadersWithFieldName:(NSString *)fieldName filename:(NSString *)filename contentType:(NSString *)contentType
+- (BOOL)appendHeadersWithFieldName:(NSString *)fieldName filename:(NSString *)filename contentType:(NSString *)contentType error:(NSError *__autoreleasing *)error
 {
     NSString *contentDispositionHeader = [self contentDispositionHeaderWithFieldName:fieldName filename:filename];
-    [self appendASCIIString:contentDispositionHeader];
+    if (![self appendASCIIString:contentDispositionHeader error:error])
+    {
+        return NO;
+    }
     
     if (contentType.length)
     {
         NSString *contentTypeHeader = [NSString stringWithFormat:@"Content-Type: %@\r\n", contentType];
-        [self appendASCIIString:contentTypeHeader];
+        if (![self appendASCIIString:contentTypeHeader error:error])
+        {
+            return NO;
+        }
     }
     
-    [self appendASCIIString:@"\r\n"];
+    return [self appendASCIIString:@"\r\n" error:error];
 }
 
-- (void)appendASCIIString:(NSString *)string
+- (BOOL)appendASCIIString:(NSString *)string error:(NSError *__autoreleasing *)error
 {
     NSData *data = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    [self appendData:data];
+    return [self appendData:data error:error];
 }
 
-- (void)appendData:(NSData *)data
+- (BOOL)appendData:(NSData *)data error:(NSError *__autoreleasing *)error
 {
     if (!self.outputStream)
     {
@@ -168,18 +201,28 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
     {
         NSUInteger size = MIN(data.length - i, bufferLen);
         [data getBytes:buffer range:NSMakeRange(i, size)];
-        [self.outputStream write:buffer maxLength:size];
+        if ([self.outputStream write:buffer maxLength:size] == -1)
+        {
+            if (error)
+            {
+                *error = self.outputStream.streamError;
+            }
+            return NO;
+        }
     }
+    return YES;
 }
 
-- (void)finishWriting
+- (BOOL)finishWritingWithError:(NSError *__autoreleasing *)error
 {
+    __block BOOL success = YES;
     dispatch_sync(self.outputQueue, ^(void)
     {
-        [self appendASCIIString:[NSString stringWithFormat:@"\r\n--%@--", self.boundary]];
+        success = [self appendASCIIString:[NSString stringWithFormat:@"\r\n--%@--", self.boundary] error:error];
         [self.outputStream close];
         self.outputStream = nil;
     });
+    return success;
 }
 
 @end

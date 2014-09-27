@@ -49,8 +49,9 @@
  
  @param s The contents of the new field to write
  @param fieldName the name of the field to put in the content-disposition header
+ @param error If something goes wrong, this object will have more information
  */
-- (void)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName;
+- (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error;
 
 /**
  Writes the contents of the given input stream as a new field.
@@ -60,11 +61,13 @@
  @param contentType The MIME type to put in the Content-Type header
  @param stream an input stream from which to read the field's contents
  @param fieldName the name of the field to put in the content-disposition header
+ @param error If something goes wrong, this object will have more information
  */
-- (void)appendFileWithName:(NSString *)filename
+- (BOOL)appendFileWithName:(NSString *)filename
                contentType:(NSString *)contentType
                     stream:(NSInputStream *)inputStream
-                 fieldName:(NSString *)fieldName;
+                 fieldName:(NSString *)fieldName
+                     error:(NSError *__autoreleasing *)error;
 
 /**
  Writes the contents of the given file URL as a new field.
@@ -73,17 +76,19 @@
  @param contentType The MIME type to put in the Content-Type header
  @param fileURL The fileURL from which to read the field's contents
  @param fieldName the name of the field to put in the content-disposition header
+ @param error If something goes wrong, this object will have more information
  */
-- (void)appendFileWithName:(NSString *)filename
+- (BOOL)appendFileWithName:(NSString *)filename
                contentType:(NSString *)contentType
                    fileURL:(NSURL *)fileURL
-                 fieldName:(NSString *)fieldName;
+                 fieldName:(NSString *)fieldName
+                     error:(NSError *__autoreleasing *)error;
 
 /**
  Finishes writing to the output file and closes it. If more "append" methods
  are called after calling this method, the file will be opened anew, cleared,
  previously appended data will be overwritten.
  */
-- (void)finishWriting;
+- (BOOL)finishWritingWithError:(NSError *__autoreleasing *)error;
 
 @end

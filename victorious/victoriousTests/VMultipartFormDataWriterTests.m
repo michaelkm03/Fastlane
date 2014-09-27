@@ -85,8 +85,8 @@
                                @"\r\n--boundary--";
     
     self.writer.boundary = @"boundary";
-    [self.writer appendPlaintext:plaintext withFieldName:fieldName];
-    [self.writer finishWriting];
+    XCTAssertTrue([self.writer appendPlaintext:plaintext withFieldName:fieldName error:nil]);
+    XCTAssertTrue([self.writer finishWritingWithError:nil]);
     
     NSString *actualOutput = [NSString stringWithContentsOfURL:self.outputFileURL encoding:NSASCIIStringEncoding error:nil];
     XCTAssertEqualObjects(expectedOutput, actualOutput);
@@ -110,11 +110,12 @@
     
     [inputStream open];
     self.writer.boundary = @"boundary";
-    [self.writer appendFileWithName:filename
-                        contentType:contentType
-                             stream:inputStream
-                          fieldName:fieldName];
-    [self.writer finishWriting];
+    XCTAssertTrue([self.writer appendFileWithName:filename
+                                      contentType:contentType
+                                           stream:inputStream
+                                        fieldName:fieldName
+                                            error:nil]);
+    XCTAssertTrue([self.writer finishWritingWithError:nil]);
     [inputStream close];
     
     NSString *actualOutput = [NSString stringWithContentsOfURL:self.outputFileURL encoding:NSASCIIStringEncoding error:nil];
@@ -140,11 +141,12 @@
     [expectedOutput appendData:[post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES]];
     
     self.writer.boundary = @"boundary";
-    [self.writer appendFileWithName:filename
-                        contentType:contentType
-                            fileURL:sampleFile
-                          fieldName:fieldName];
-    [self.writer finishWriting];
+    XCTAssertTrue([self.writer appendFileWithName:filename
+                                      contentType:contentType
+                                          fileURL:sampleFile
+                                        fieldName:fieldName
+                                            error:nil]);
+    XCTAssertTrue([self.writer finishWritingWithError:nil]);
     
     NSData *actualOutput = [NSData dataWithContentsOfURL:self.outputFileURL];
     XCTAssertEqualObjects(expectedOutput, actualOutput);
