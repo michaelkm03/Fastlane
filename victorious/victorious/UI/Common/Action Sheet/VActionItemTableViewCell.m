@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceSeparatorToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceSeparatorToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstaint;
+
 @end
 
 @implementation VActionItemTableViewCell

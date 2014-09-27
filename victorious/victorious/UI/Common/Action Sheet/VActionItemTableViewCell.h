@@ -14,8 +14,10 @@
 @property (nonatomic, copy) NSString *detailTitle;
 @property (nonatomic, strong) UIImage *actionIcon;
 
+/**
+ *  Accessory selection. A button exists under detail title and when selected this handler is called.
+ */
 @property (nonatomic, copy) void (^accessorySelectionHandler)(void);
-
 @property (nonatomic, assign) UIEdgeInsets separatorInsets;
 
 @end

@@ -16,7 +16,6 @@
 @property (nonatomic, strong, readwrite) UIImage *icon;
 @property (nonatomic, strong, readwrite) NSURL *avatarURL;
 
-
 @end
 
 @implementation VActionItem

@@ -19,6 +19,7 @@
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Users.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 
@@ -26,6 +27,7 @@
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "NSString+VParseHelp.h"
+#import "VLargeNumberFormatter.h"
 
 // Media
 #import "NSURL+MediaType.h"
@@ -38,6 +40,8 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
+
+@property (nonatomic, strong) NSString *followersText;
 
 @end
 
@@ -74,6 +78,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
+        [self fetchUserinfo];
     }
     return self;
 }
@@ -82,6 +87,18 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 {
     NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
+}
+
+- (void)fetchUserinfo
+{
+    __weak typeof(self) welf = self;
+    [[VObjectManager sharedManager] countOfFollowsForUser:self.user
+                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         NSInteger followerCount = [resultObjects[0] integerValue];
+         welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+     }
+                                                failBlock:nil];
 }
 
 #pragma mark - Property Accessors
@@ -351,8 +368,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSString *)authorCaption
 {
-#warning Implement me properly
-    return [NSString stringWithFormat:@"%@", @(self.sequence.user.followers.count)];
+    if (self.followersText)
+    {
+        return self.followersText;
+    }
+    return nil;
 }
 
 - (NSURL *)avatarForAuthor

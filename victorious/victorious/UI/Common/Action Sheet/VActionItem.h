@@ -16,12 +16,12 @@ typedef NS_ENUM(NSInteger, VActionItemType)
 };
 
 /**
- A VactionItem represents a single item in a VActionsheetViewController. Note: does not support changing properties so everything must be available at instantiation.
+ A VActionItem represents a single item in a VActionsheetViewController. Note: does not support changing properties so everything must be available at instantiation.
  */
 @interface VActionItem : NSObject
 
 /**
- *  A convenience initializer for action items of the default type. Will place title title, detail text and action item in the corresponding readonly properties.
+ *  A convenience initializer for action items of the default type. Will place title, detail text, and action item in the corresponding readonly properties.
  *
  *  @param title      Copied
  *  @param actionIcon Not copied.
