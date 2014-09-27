@@ -496,7 +496,7 @@
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL) &&
+                         (self.registrationModel.profileImageURL || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -522,7 +522,7 @@
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL)
+    if (!self.registrationModel.profileImageURL && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }

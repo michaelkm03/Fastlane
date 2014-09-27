@@ -20,6 +20,9 @@ NSString * const   kVExportVideoQuality                =   @"remix";
 NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
 NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
 
+//Experiments
+NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
+
 //URLs
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
 NSString * const   kVAppStoreURL                       =   @"url.appstore";
