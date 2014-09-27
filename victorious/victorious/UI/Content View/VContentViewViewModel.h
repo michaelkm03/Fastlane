@@ -67,6 +67,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) NSInteger nodeID;
 
+@property (nonatomic, readonly) VUser *user;
+
 /**
  *  The corresponding sequence for this view model.
  */

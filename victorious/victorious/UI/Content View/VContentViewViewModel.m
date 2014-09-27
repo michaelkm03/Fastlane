@@ -103,6 +103,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return request;
 }
 
+- (VUser *)user
+{
+    return self.sequence.user;
+}
+
 - (NSString *)name
 {
     return self.sequence.name;

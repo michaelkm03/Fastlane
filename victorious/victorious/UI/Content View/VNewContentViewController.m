@@ -45,6 +45,7 @@
 #import "VActionSheetTransitioningDelegate.h"
 #import "VCameraPublishViewController.h"
 #import "VRemixSelectViewController.h"
+#import "VUserProfileViewController.h"
 
 // Analytics
 #import "VAnalyticsRecorder.h"
@@ -173,6 +174,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -193,18 +199,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:UIKeyboardDidChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
     
     self.viewModel.realTimeCommentsViewModel.delegate = self;
     
@@ -216,6 +210,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidChangeFrame:)
+                                                 name:UIKeyboardDidChangeFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+
+
+    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
     
     self.contentCollectionView.delegate = self;
     
@@ -261,7 +269,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.contentCollectionView.delegate = nil;
     
     [self.view.superview endEditing:YES];
@@ -347,6 +357,15 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
                                                            avatarURL:self.viewModel.avatarForAuthor
                                                           detailText:self.viewModel.authorCaption];
+    userItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
+             [self.navigationController pushViewController:profileViewController animated:YES];
+         }];
+    };
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name];
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)

@@ -216,19 +216,34 @@
                                     <constraint firstAttribute="width" constant="83" id="5OP-k2-4go"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGE-Gh-2VM" userLabel="Avatar Button">
+                                <rect key="frame" x="119" y="87" width="83" height="83"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedAvatarButton:" destination="zy4-f0-yQu" eventType="touchUpInside" id="ech-Wh-Vnt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="eob-Pq-0le" firstAttribute="bottom" secondItem="nGE-Gh-2VM" secondAttribute="bottom" id="1ge-kA-CSE"/>
+                            <constraint firstItem="eob-Pq-0le" firstAttribute="trailing" secondItem="nGE-Gh-2VM" secondAttribute="trailing" id="2mm-lT-50h"/>
                             <constraint firstAttribute="centerX" secondItem="eob-Pq-0le" secondAttribute="centerX" constant="-0.5" id="5ZB-mY-uCn"/>
                             <constraint firstAttribute="trailing" secondItem="fKP-Uj-Ir7" secondAttribute="trailing" id="d9L-mw-92u"/>
                             <constraint firstItem="fKP-Uj-Ir7" firstAttribute="leading" secondItem="z7r-bL-ALi" secondAttribute="leading" id="et3-2q-X5s"/>
                             <constraint firstItem="lwk-F9-KVR" firstAttribute="top" secondItem="fKP-Uj-Ir7" secondAttribute="bottom" id="ljM-BB-h6E"/>
+                            <constraint firstItem="eob-Pq-0le" firstAttribute="top" secondItem="nGE-Gh-2VM" secondAttribute="top" id="nr6-UP-pky"/>
                             <constraint firstItem="fKP-Uj-Ir7" firstAttribute="top" secondItem="eob-Pq-0le" secondAttribute="top" constant="50" id="reo-L7-AMi"/>
+                            <constraint firstItem="eob-Pq-0le" firstAttribute="leading" secondItem="nGE-Gh-2VM" secondAttribute="leading" id="tcc-fJ-sgD"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="AvatarImageView" destination="eob-Pq-0le" id="9iz-XL-AVh"/>
                         <outlet property="actionItemsTableView" destination="dX5-Jj-M61" id="SIw-e4-qbp"/>
+                        <outlet property="avatarButton" destination="nGE-Gh-2VM" id="tPl-0O-l0I"/>
                         <outlet property="blurringContainer" destination="fKP-Uj-Ir7" id="40q-wk-3ZO"/>
                         <outlet property="blurringContainerHeightConstraint" destination="kfC-ap-Bue" id="ucZ-iK-SZh"/>
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
@@ -241,7 +256,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="by8-un-abY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="22" y="159"/>
+            <point key="canvasLocation" x="80" y="163"/>
         </scene>
     </scenes>
     <resources>

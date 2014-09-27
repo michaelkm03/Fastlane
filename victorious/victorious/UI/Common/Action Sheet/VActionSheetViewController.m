@@ -30,12 +30,14 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
+@property (nonatomic, strong) VActionItem *userItem;
 @property (nonatomic, strong) VActionItem *descriptionItem;
 
 @property (weak, nonatomic) IBOutlet UIView *blurringContainer;
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIImageView *AvatarImageView;
+@property (weak, nonatomic) IBOutlet UIButton *avatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -138,6 +140,14 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
     }
 }
 
+- (IBAction)pressedAvatarButton:(id)sender
+{
+    if (self.userItem.selectionHandler)
+    {
+        self.userItem.selectionHandler();
+    }
+}
+
 #pragma mark - Public Methods
 
 - (void)addActionItems:(NSArray *)actionItems
@@ -165,6 +175,7 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
                                       placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
                  self.usernameLabel.text = actionItem.title;
                  self.userCaptionLabel.text = actionItem.detailText;
+                 self.userItem = actionItem;
                  break;
              case VActionItemTypeDescriptionWithHashTags:
                  self.descriptionItem = actionItem;
