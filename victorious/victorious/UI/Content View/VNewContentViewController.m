@@ -44,6 +44,8 @@
 #import "VImageLightboxViewController.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
+#import "VCameraPublishViewController.h"
+#import "VRemixSelectViewController.h"
 
 // Analytics
 #import "VAnalyticsRecorder.h"
@@ -347,8 +349,88 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
     {
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
+        if (![VObjectManager sharedManager].mainUser)
+        {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [self presentViewController:[VLoginViewController loginViewController]
+                                    animated:YES
+                                  completion:NULL];
+             }];
+
+            return;
+        }
+        
+        NSString *label = [self.viewModel.sequence.remoteId.stringValue stringByAppendingPathComponent:self.viewModel.sequence.name];
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+        
+        if (self.viewModel.type == VContentViewTypeVideo)
+        {
+            UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.viewModel.sourceURLForCurrentAssetData
+                                                                                    sequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                                        nodeID:self.viewModel.nodeID];
+            [self presentViewController:remixVC
+                               animated:YES
+                             completion:
+             ^{
+                 [self.videoCell.videoPlayerViewController.player pause];
+             }];
+        }
+        else
+        {
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.previewImage = self.blurredBackgroundImageView.downloadedImage;
+            publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+            publishViewController.completion = ^(BOOL complete)
+            {
+                [self dismissViewControllerAnimated:YES
+                                         completion:nil];
+            };
+            UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+            
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                               onCancelButton:nil
+                                                       destructiveButtonTitle:nil
+                                                          onDestructiveButton:nil
+                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                          {
+                                              publishViewController.captionType = VCaptionTypeMeme;
+                                              
+                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
+                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                              {
+                                                  publishViewController.mediaURL = tempFile;
+                                                  [self presentViewController:remixNav
+                                                                     animated:YES
+                                                                   completion:nil];
+                                              }
+                                          },
+                                          NSLocalizedString(@"Quote", nil),  ^(void)
+                                          {
+                                              publishViewController.captionType = VCaptionTypeQuote;
+                                              
+                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
+                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                              {
+                                                  publishViewController.mediaURL = tempFile;
+                                                  [self presentViewController:remixNav
+                                                                     animated:YES
+                                                                   completion:nil];
+                                              }
+                                          }, nil];
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [actionSheet showInView:self.view];
+             }];
+
+        }
     };
     remixItem.detailSelectionHandler = ^(void)
     {

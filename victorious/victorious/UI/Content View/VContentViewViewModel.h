@@ -10,6 +10,7 @@
 
 #import "VRealtimeCommentsViewModel.h"
 
+
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
@@ -60,6 +61,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
                 completion:(void (^)(BOOL succeeded))completion;
+
+
+@property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
+
+@property (nonatomic, readonly) NSInteger nodeID;
 
 /**
  *  The corresponding sequence for this view model.

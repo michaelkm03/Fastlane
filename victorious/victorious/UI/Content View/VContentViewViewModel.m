@@ -25,6 +25,7 @@
 // Formatters
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
+#import "NSString+VParseHelp.h"
 
 // Media
 #import "NSURL+MediaType.h"
@@ -324,9 +325,19 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return analyticsContentTypeText;
 }
 
+- (NSURL *)sourceURLForCurrentAssetData
+{
+    return [self.currentAsset.data mp4UrlFromM3U8];
+}
+
 - (NSURL *)shareURL
 {
     return [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null];
+}
+
+- (NSInteger)nodeID
+{
+    return [self.currentNode.remoteId integerValue];
 }
 
 - (NSString *)authorCaption

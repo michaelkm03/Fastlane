@@ -9,7 +9,16 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 
+#import <objc/runtime.h>
+
+static const char kAssociatedObjectKey;
+
 @implementation UIImageView (Blurring)
+
+- (UIImage *)downloadedImage
+{
+    return objc_getAssociatedObject(self, &kAssociatedObjectKey);
+}
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
@@ -22,6 +31,7 @@
                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                          {
                              __strong UIImageView *strongSelf = weakSelf;
+                             objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                              strongSelf.image = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
                          }
                          failure:nil];
