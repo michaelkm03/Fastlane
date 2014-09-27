@@ -10,10 +10,18 @@
 
 #import "VActionItem.h"
 
+/**
+ *  The ActionSheetViewController presents a list of VActionItems in a tableView.  ActionsheetViewController has a blurred background and expects to be presented with an instance of VActionSheetViewController as it's transitioning delegate.
+ */
 @interface VActionSheetViewController : UIViewController
 
 + (VActionSheetViewController *)actionSheetViewController;
 
+/**
+ *  Add these action items to the action sheet viewcontroller. Must be of class VActionItem.
+ *
+ *  @param actionItems An NSArray of VActionItems.
+ */
 - (void)addActionItems:(NSArray *)actionItems;
 
 @property (nonatomic, copy) void (^cancelHandler)(void);
