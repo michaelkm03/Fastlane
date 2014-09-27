@@ -547,17 +547,17 @@
 
 #pragma mark - VStreamViewCellDelegate
 
-- (void)willCommentOnSequence:(id)sequenceObject fromSender:(id)sender
+- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamViewCell:(VStreamViewCell *)streamViewCell
 {
-    VStreamViewCell *cell = (VStreamViewCell *)sequenceObject;
+    VStreamViewCell *cell = streamViewCell;
     
     self.lastSelectedIndexPath = [self.tableView indexPathForCell:cell];
     
-    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
     
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = cell.sequence;
+    commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
 
 }

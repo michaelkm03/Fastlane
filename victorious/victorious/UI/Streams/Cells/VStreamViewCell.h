@@ -8,13 +8,13 @@
 
 #import "VTableViewCell.h"
 
-@class VSequence, VStreamCellHeaderView;
+@class VSequence, VStreamCellHeaderView, VStreamViewCell;
 
 
 @protocol VStreamViewCellDelegate <NSObject>
 @required
 
-- (void)willCommentOnSequence:(id)sequenceObject fromSender:(id)sender;
+- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamViewCell:(VStreamViewCell *)streamViewCell;
 
 @end
 

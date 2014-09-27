@@ -207,9 +207,9 @@
 
 - (IBAction)commentButtonAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromSender:)])
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamViewCell:)])
     {
-        [self.delegate willCommentOnSequence:self fromSender:self];
+        [self.delegate willCommentOnSequence:self.sequence inStreamViewCell:self];
     }
 
 }
