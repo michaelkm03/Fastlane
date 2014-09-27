@@ -522,7 +522,7 @@
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL)
+    if (!self.registrationModel.profileImageURL && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
