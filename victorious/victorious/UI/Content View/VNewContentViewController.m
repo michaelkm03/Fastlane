@@ -46,6 +46,12 @@
 #import "VCameraPublishViewController.h"
 #import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
+#import "VStreamContainerViewController.h"
+#import "VReposterTableViewController.h"
+
+//TODO: abstract this out of VC
+#import "VStream.h"
+#import "VStream+Fetcher.h"
 
 // Analytics
 #import "VAnalyticsRecorder.h"
@@ -456,7 +462,16 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     remixItem.detailSelectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
-                                 completion:nil];
+                                 completion:^
+         {
+             VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
+             VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
+             streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
+             streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
+             streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
+             [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+             
+         }];
     };
     VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:@"Repost" actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:self.viewModel.repostCountText];
     repostItem.selectionHandler = ^(void)
@@ -488,9 +503,13 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     };
     repostItem.detailSelectionHandler = ^(void)
     {
-        
         [self dismissViewControllerAnimated:YES
-                                 completion:nil];
+                                 completion:^
+        {
+            VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
+            vc.sequence = self.viewModel.sequence;
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
     };
     VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:@"Share" actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
     void (^shareHandler)(void) = ^void(void)
