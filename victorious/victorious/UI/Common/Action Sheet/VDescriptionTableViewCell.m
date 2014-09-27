@@ -51,6 +51,8 @@ static const UIEdgeInsets kTextInsets        = { 11.0f, 30.0f, 12.0f, 30.0f};
     self.descriptionLabel.text = _descriptionText;
 }
 
+#pragma mark - Internal Methods
+
 + (NSDictionary *)attributesForText
 {
     return @{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};

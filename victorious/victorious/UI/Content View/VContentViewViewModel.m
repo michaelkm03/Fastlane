@@ -245,6 +245,17 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                                                    andPostedTime:commentForIndex.realtime] string];
 }
 
+- (NSString *)authorName
+{
+    return self.sequence.user.name;
+}
+
+- (NSString *)authorCaption
+{
+#warning Implement me properly
+    return [NSString stringWithFormat:@"%@", @(self.sequence.user.followers.count)];
+}
+
 - (NSURL *)avatarForAuthor
 {
     return [NSURL URLWithString:self.sequence.user.pictureUrl];

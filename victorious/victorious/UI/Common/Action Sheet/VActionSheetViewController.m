@@ -8,6 +8,9 @@
 
 #import "VActionSheetViewController.h"
 
+// Theme
+#import "VThemeManager.h"
+
 // Cells
 #import "VActionItemTableViewCell.h"
 #import "VDescriptionTableViewCell.h"
@@ -33,12 +36,13 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIImageView *AvatarImageView;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *gradientContainer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
-
-//@property (nonatomic, weak) CALayer *gradientContainer;
-@property (weak, nonatomic) IBOutlet UIView *gradientContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSeparatorHeightConstraint;
 
 @end
 
@@ -76,24 +80,44 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20);
     
-    
+    // gradient
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.tableView.frame;
-    gradient.colors = @[(id)[UIColor clearColor].CGColor,
-                        (id)[UIColor blackColor].CGColor,
-                        (id)[UIColor blackColor].CGColor,
+    gradient.colors = @[(id)[UIColor blackColor].CGColor,
                         (id)[UIColor clearColor].CGColor
                         ];
     gradient.locations = @[
-                           @0.0f,
-                           @(kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds)),
                            @(1 - (kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds))),
                            @1.0f,
                            ];
     [self.gradientContainer.layer insertSublayer:gradient atIndex:0];
     self.gradientContainer.layer.mask = gradient;
     
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    self.userCaptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    
+    if ([UIScreen mainScreen].scale == 1.0f)
+    {
+        self.topSeparatorHeightConstraint.constant = 1.0f;
+    }
+    else if ([UIScreen mainScreen].scale == 2.0f)
+    {
+        self.topSeparatorHeightConstraint.constant = 0.5f;
+    }
+    else if ([UIScreen mainScreen].scale == 3.0f)
+    {
+        self.topSeparatorHeightConstraint.constant = 0.33f;
+    }
+
     [self reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.tableView flashScrollIndicators];
 }
 
 #pragma mark - IBActions
@@ -139,6 +163,8 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
              case VActionItemTypeUser:
                  [self.AvatarImageView setImageWithURL:actionItem.avatarURL
                                       placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+                 self.usernameLabel.text = actionItem.title;
+                 self.userCaptionLabel.text = actionItem.detailText;
                  break;
              case VActionItemTypeDescriptionWithHashTags:
                  self.descriptionItem = actionItem;
@@ -186,6 +212,7 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
             actionitemCell.title = itemForCell.title;
             actionitemCell.detailTitle = itemForCell.detailText;
             actionitemCell.actionIcon = itemForCell.icon;
+            actionitemCell.separatorInsets = self.tableView.separatorInset;
             actionitemCell.accessorySelectionHandler = ^(void)
             {
                 if (itemForCell.detailSelectionHandler)

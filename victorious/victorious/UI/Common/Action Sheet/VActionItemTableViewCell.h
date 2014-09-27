@@ -16,4 +16,6 @@
 
 @property (nonatomic, copy) void (^accessorySelectionHandler)(void);
 
+@property (nonatomic, assign) UIEdgeInsets separatorInsets;
+
 @end

@@ -323,8 +323,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
-    VActionItem *userItem = [VActionItem userActionItemUserWithTitle:@"Alice Irvine" avatarURL:self.viewModel.avatarForAuthor detailText:@"5.6K Followers"];
-    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:@"The madness begins! Apple fans start lining up #apple #busy"];
+    VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
+                                                           avatarURL:self.viewModel.avatarForAuthor
+                                                          detailText:self.viewModel.authorCaption];
+    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:@"The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy The madness begins! Apple fans start lining up #apple #busy"];
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:@"Remix" actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:@"666"];
     remixItem.selectionHandler = ^(void)
     {

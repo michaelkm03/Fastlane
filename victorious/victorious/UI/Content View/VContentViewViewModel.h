@@ -86,6 +86,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) NSString *name;
 
+@property (nonatomic, readonly) NSString *authorName;
+@property (nonatomic, readonly) NSString *authorCaption;
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
 
 /**
