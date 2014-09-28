@@ -22,13 +22,11 @@ static const CGFloat kSpringDampingConstant = 0.8f;
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 
-// This is used for percent driven interactive transitions, as well as for container controllers that have companion animations that might need to
-// synchronize with the main animation.
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     return kPresentationDuration;
 }
-// This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
+
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
