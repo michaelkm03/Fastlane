@@ -101,20 +101,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
     self.userCaptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    
-    if ([UIScreen mainScreen].scale == 1.0f)
-    {
-        self.topSeparatorHeightConstraint.constant = 1.0f;
-    }
-    else if ([UIScreen mainScreen].scale == 2.0f)
-    {
-        self.topSeparatorHeightConstraint.constant = 0.5f;
-    }
-    else if ([UIScreen mainScreen].scale == 3.0f)
-    {
-        self.topSeparatorHeightConstraint.constant = 0.33f;
-    }
 
+    self.topSeparatorHeightConstraint.constant = 1 / [UIScreen mainScreen].scale;
     [self reloadData];
 }
 
