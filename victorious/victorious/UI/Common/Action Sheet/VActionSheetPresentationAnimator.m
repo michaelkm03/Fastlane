@@ -8,6 +8,8 @@
 
 #import "VActionSheetPresentationAnimator.h"
 
+#import "VActionSheetViewController.h"
+
 @interface VActionSheetPresentationAnimator ()
 
 @property (nonatomic, strong) UIView *dimmingView;
@@ -16,15 +18,24 @@
 
 @implementation VActionSheetPresentationAnimator
 
-static const NSTimeInterval kPresentationDuration = 0.55f;
+static const NSTimeInterval kPresentationDuration = 0.35f;
+static const NSTimeInterval kDismissalDuration = 0.45f;
 static const CGFloat kDimmingViewAlpha = 0.5f;
-static const CGFloat kSpringDampingConstant = 0.8f;
+static const CGFloat kSpringDampingConstant = 0.88f;
+static const CGFloat kAvatarAnimationTranfromYTranlation = 100.0f;
+static const CGFloat kAnticipationYTranslation = 8.0f;
+static const CGFloat kAnticipationAnimationDurationPercentage = 1.0f/3.0f;
+static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipationAnimationDurationPercentage;
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return kPresentationDuration;
+    if (self.isPresenting)
+    {
+        return kPresentationDuration;
+    }
+    return kDismissalDuration;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -44,10 +55,21 @@ static const CGFloat kSpringDampingConstant = 0.8f;
         [[transitionContext containerView] addSubview:self.dimmingView];
         [[transitionContext containerView] addSubview:toViewController.view];
         
-        toViewController.view.frame = CGRectMake(0,
+        toViewController.view.frame = CGRectMake(CGRectGetMinX(fromViewController.view.frame),
                                                  CGRectGetHeight(fromViewController.view.frame),
                                                  CGRectGetWidth(fromViewController.view.frame),
                                                  CGRectGetHeight(fromViewController.view.frame));
+        
+        if ([toViewController isKindOfClass:[VActionSheetViewController class]])
+        {
+            VActionSheetViewController *actionSheetViewController = (VActionSheetViewController *)toViewController;
+            actionSheetViewController.view.frame = CGRectMake(CGRectGetMinX(fromViewController.view.frame),
+                                                              CGRectGetHeight(fromViewController.view.frame) + actionSheetViewController.totalHeight,
+                                                              CGRectGetWidth(fromViewController.view.frame),
+                                                              CGRectGetHeight(fromViewController.view.frame));
+            
+            actionSheetViewController.avatarView.transform = CGAffineTransformMakeTranslation(0, kAvatarAnimationTranfromYTranlation );
+        }
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
@@ -58,6 +80,12 @@ static const CGFloat kSpringDampingConstant = 0.8f;
          {
              toViewController.view.frame = fromViewController.view.bounds;
              self.dimmingView.alpha = 1.0f;
+             
+             if ([toViewController isKindOfClass:[VActionSheetViewController class]])
+             {
+                 VActionSheetViewController *actionSheetViewController = (VActionSheetViewController *)toViewController;
+                 actionSheetViewController.avatarView.transform = CGAffineTransformIdentity;
+             }
          }
                          completion:^(BOOL finished)
          {
@@ -67,26 +95,56 @@ static const CGFloat kSpringDampingConstant = 0.8f;
     else
     {
         toViewController.view.userInteractionEnabled = YES;
+        fromViewController.view.userInteractionEnabled = NO;
+        
+        self.dimmingView = [[UIView alloc] initWithFrame:[transitionContext containerView].bounds];
+        self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:kDimmingViewAlpha];
+        self.dimmingView.alpha = 1.0f;
+        self.dimmingView.userInteractionEnabled = NO;
+
+        [transitionContext containerView].userInteractionEnabled = NO;
         
         [[transitionContext containerView] addSubview:toViewController.view];
+        [[transitionContext containerView] addSubview:self.dimmingView];
         [[transitionContext containerView] addSubview:fromViewController.view];
         
-        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] * kAnticipationAnimationDurationPercentage
                               delay:0.0f
              usingSpringWithDamping:kSpringDampingConstant
               initialSpringVelocity:0.0f
-                            options:kNilOptions
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^
-         {
-             fromViewController.view.frame = CGRectMake(CGRectGetMinX([transitionContext containerView].bounds),
-                                                        CGRectGetHeight([transitionContext containerView].bounds),
-                                                        CGRectGetWidth([transitionContext containerView].bounds),
-                                                        CGRectGetHeight([transitionContext containerView].bounds));
-             self.dimmingView.alpha = 0.0f;
-         }
+        {
+            fromViewController.view.frame = CGRectMake(CGRectGetMinX(fromViewController.view.frame),
+                                                       CGRectGetMinY(fromViewController.view.frame) - kAnticipationYTranslation,
+                                                       CGRectGetWidth(fromViewController.view.frame),
+                                                       CGRectGetHeight(fromViewController.view.frame));
+        }
                          completion:^(BOOL finished)
          {
-             [transitionContext completeTransition:YES];
+             [UIView animateWithDuration:[self transitionDuration:transitionContext] * kDismissalAnimationDurationPercentage
+                                   delay:0.0f
+                  usingSpringWithDamping:kSpringDampingConstant
+                   initialSpringVelocity:0.0f
+                                 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
+                              animations:^
+              {
+                  self.dimmingView.alpha = 0.0f;
+                  
+                  if ([fromViewController isKindOfClass:[VActionSheetViewController class]])
+                  {
+                      VActionSheetViewController *actionSheetViewController = (VActionSheetViewController *)fromViewController;
+                      actionSheetViewController.avatarView.transform = CGAffineTransformMakeTranslation(0, -kAvatarAnimationTranfromYTranlation);
+                      actionSheetViewController.view.frame = CGRectMake(CGRectGetMinX(fromViewController.view.frame),
+                                                                        CGRectGetHeight(fromViewController.view.frame) + actionSheetViewController.totalHeight,
+                                                                        CGRectGetWidth(fromViewController.view.frame),
+                                                                        CGRectGetHeight(fromViewController.view.frame));
+                  }
+              }
+                              completion:^(BOOL finished)
+              {
+                  [transitionContext completeTransition:YES];
+              }];
          }];
     }
 }

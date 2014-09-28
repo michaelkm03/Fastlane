@@ -113,6 +113,18 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.tableView flashScrollIndicators];
 }
 
+#pragma mark - Property Accessors
+
+- (UIView *)avatarView
+{
+    return self.AvatarImageView;
+}
+
+- (CGFloat)totalHeight
+{
+    return CGRectGetHeight(self.blurringContainer.bounds) + (CGRectGetHeight(self.AvatarImageView.bounds) * 0.5f);
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedCancel:(id)sender
