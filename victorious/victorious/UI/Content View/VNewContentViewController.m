@@ -373,7 +373,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
              [self.navigationController pushViewController:profileViewController animated:YES];
          }];
     };
-    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name];
+    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
+                                                      hashTagSelectionHandler:^(NSString *hashTag)
+                                    {
+                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
+                                        container.shouldShowHeaderLogo = NO;
+                                        
+                                        [self dismissViewControllerAnimated:YES
+                                                                 completion:^
+                                         {
+                                             
+                                         }];
+                                        [self.navigationController pushViewController:container
+                                                                             animated:YES];
+                                    }];
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"") actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
     {

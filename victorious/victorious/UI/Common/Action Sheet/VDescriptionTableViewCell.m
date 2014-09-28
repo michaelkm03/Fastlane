@@ -8,16 +8,20 @@
 
 #import "VDescriptionTableViewCell.h"
 
+// Hashtags
+#import "VHashTags.h"
+
 // Theme
 #import "VThemeManager.h"
 
-@interface VDescriptionTableViewCell ()
+@interface VDescriptionTableViewCell () <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 
 @end
 
-static const UIEdgeInsets kTextInsets        = { 11.0f, 30.0f, 12.0f, 30.0f};
+static const UIEdgeInsets kTextInsets        = { 12.0f, 30.0f, 13.0f, 30.0f};
 
 @implementation VDescriptionTableViewCell
 
@@ -40,7 +44,9 @@ static const UIEdgeInsets kTextInsets        = { 11.0f, 30.0f, 12.0f, 30.0f};
 {
     [super awakeFromNib];
     
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.descriptionTextView.textContainerInset = UIEdgeInsetsZero;
+    self.descriptionTextView.delegate = self;
+    self.descriptionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 #pragma mark - Property Accessors
@@ -49,13 +55,41 @@ static const UIEdgeInsets kTextInsets        = { 11.0f, 30.0f, 12.0f, 30.0f};
 {
     _descriptionText = [descriptionText copy];
     self.descriptionLabel.text = _descriptionText;
+    
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:_descriptionText
+                                                                                                attributes:[[self class] attributesForText]];
+    NSArray *hashTagLocations = [VHashTags detectHashTags:mutableAttributedString.string];
+    [VHashTags formatHashTagsInString:mutableAttributedString
+                        withTagRanges:hashTagLocations
+                           attributes:@{
+                                        NSLinkAttributeName:[NSURL URLWithString:@"www.google.com"]
+                                        }];
+    
+    self.descriptionTextView.attributedText = mutableAttributedString;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    if (self.hashTagSelectionBlock)
+    {
+        NSString *selectedHashTag = [textView.text substringWithRange:characterRange];
+        selectedHashTag = [selectedHashTag stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
+        self.hashTagSelectionBlock(selectedHashTag);
+    }
+    return NO;
 }
 
 #pragma mark - Internal Methods
 
 + (NSDictionary *)attributesForText
 {
-    return @{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    return @{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont],
+             NSParagraphStyleAttributeName:paragraphStyle};
 }
 
 @end

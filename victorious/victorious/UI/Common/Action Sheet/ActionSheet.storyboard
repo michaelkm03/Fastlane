@@ -47,24 +47,37 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="aii-ch-Yj8" userLabel="Description Label">
+                                                                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="aii-ch-Yj8" userLabel="Description Label">
                                                                     <rect key="frame" x="30" y="11" width="260" height="21"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="751" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="d3F-e5-MDb">
+                                                                    <rect key="frame" x="30" y="11" width="260" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                                </textView>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="aii-ch-Yj8" firstAttribute="leading" secondItem="qz3-cU-K2f" secondAttribute="leading" constant="30" id="1XE-pk-9e6"/>
+                                                                <constraint firstItem="d3F-e5-MDb" firstAttribute="top" secondItem="qz3-cU-K2f" secondAttribute="top" constant="11" id="LiP-HG-DLk"/>
                                                                 <constraint firstItem="aii-ch-Yj8" firstAttribute="top" secondItem="qz3-cU-K2f" secondAttribute="top" constant="11" id="U7L-Uu-VKT"/>
                                                                 <constraint firstAttribute="trailing" secondItem="aii-ch-Yj8" secondAttribute="trailing" constant="30" id="cRH-lb-9eD"/>
+                                                                <constraint firstAttribute="bottom" secondItem="d3F-e5-MDb" secondAttribute="bottom" constant="11" id="eY4-ch-JNo"/>
+                                                                <constraint firstAttribute="trailing" secondItem="d3F-e5-MDb" secondAttribute="trailing" constant="30" id="giI-xI-1Ow"/>
+                                                                <constraint firstItem="d3F-e5-MDb" firstAttribute="leading" secondItem="qz3-cU-K2f" secondAttribute="leading" constant="30" id="hoD-8M-CtS"/>
                                                                 <constraint firstAttribute="bottom" secondItem="aii-ch-Yj8" secondAttribute="bottom" constant="11" id="pE9-gA-auG"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
                                                             <outlet property="descriptionLabel" destination="aii-ch-Yj8" id="icr-y6-6uf"/>
+                                                            <outlet property="descriptionTextView" destination="d3F-e5-MDb" id="CZj-xk-Tku"/>
                                                         </connections>
                                                     </tableViewCell>
                                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VActionItemTableViewCell" id="ARF-MW-YZe" userLabel="Default Action Item Cell" customClass="VActionItemTableViewCell">
@@ -256,7 +269,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="by8-un-abY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="80" y="163"/>
+            <point key="canvasLocation" x="-30" y="197"/>
         </scene>
     </scenes>
     <resources>

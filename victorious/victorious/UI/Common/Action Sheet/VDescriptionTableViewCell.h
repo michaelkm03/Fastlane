@@ -15,4 +15,6 @@
 
 @property (nonatomic, copy) NSString *descriptionText;
 
+@property (nonatomic, copy) void (^hashTagSelectionBlock)(NSString *hashTag);
+
 @end

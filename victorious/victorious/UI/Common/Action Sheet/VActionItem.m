@@ -50,12 +50,14 @@
 
 
 + (instancetype)descriptionActionItemWithText:(NSString *)text
+                      hashTagSelectionHandler:(void (^)(NSString *hashTag))hashTagSelectionHandler
 {
     VActionItem *actionItem = [[VActionItem alloc] init];
     
     actionItem.type = VActionItemTypeDescriptionWithHashTags;
     actionItem.title = [text copy];
     actionItem.detailText = [text copy];
+    actionItem.hashTagSelectionHandler = hashTagSelectionHandler;
 
     return actionItem;
 }

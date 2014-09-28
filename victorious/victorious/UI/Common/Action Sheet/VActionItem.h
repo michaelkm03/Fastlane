@@ -37,7 +37,8 @@ typedef NS_ENUM(NSInteger, VActionItemType)
                                   avatarURL:(NSURL *)avatarURL
                                  detailText:(NSString *)detailText;
 
-+ (instancetype)descriptionActionItemWithText:(NSString *)text;
++ (instancetype)descriptionActionItemWithText:(NSString *)text
+                      hashTagSelectionHandler:(void (^)(NSString *hashTag))hashTagSelectionHandler;
 
 @property (nonatomic, readonly) VActionItemType type;
 @property (nonatomic, readonly) NSString *title;
@@ -54,5 +55,7 @@ typedef NS_ENUM(NSInteger, VActionItemType)
  *  Called when the item's accessory is selected. For default this will correspond to the detail text being selected.
  */
 @property (nonatomic, copy) void (^detailSelectionHandler)(void);
+
+@property (nonatomic, copy) void (^hashTagSelectionHandler)(NSString *hashTag);
 
 @end

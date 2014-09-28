@@ -216,6 +216,13 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
         {
             VDescriptionTableViewCell *descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"VDescriptionTableViewCell"];
             descriptionCell.descriptionText = self.descriptionItem.detailText;
+            descriptionCell.hashTagSelectionBlock = ^void(NSString *hashTag)
+            {
+                if (self.descriptionItem.hashTagSelectionHandler)
+                {
+                    self.descriptionItem.hashTagSelectionHandler(hashTag);
+                }
+            };
             return descriptionCell;
         }
         case VActionSheetTableViewSecionActions:
