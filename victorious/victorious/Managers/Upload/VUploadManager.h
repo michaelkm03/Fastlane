@@ -10,6 +10,8 @@
 
 @class VObjectManager, VUploadTaskInformation;
 
+typedef void (^VUploadManagerTaskCompleteBlock)(NSError *error);
+
 /**
  Manages background upload tasks
  */
@@ -34,8 +36,13 @@
  Adds a new upload task to the queue. It will be started
  automatically as soon as items submitted previously are
  completed.
+ 
+ @param complete Called when the upload is complete. If the 
+                 upload fails, the NSError paramer will 
+                 contain details about what went wrong. If
+                 error is nil, the upload was successful.
  */
-- (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask;
+- (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete;
 
 /**
  A unique URL where the body for a future upload can be stored.

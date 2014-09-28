@@ -19,6 +19,7 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
 
 @property (nonatomic, strong) NSURLSession *urlSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
+@property (nonatomic, strong) NSMapTable *completionBlocks;
 
 @end
 
@@ -34,6 +35,7 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     {
         _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
+        _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
     }
     return self;
 }
@@ -54,7 +56,7 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     });
 }
 
-- (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask
+- (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
     [self startURLSession];
     dispatch_async(self.sessionQueue, ^(void)
@@ -62,6 +64,11 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
         NSMutableURLRequest *request = [uploadTask.request mutableCopy];
         [self.objectManager updateHTTPHeadersInRequest:request];
         NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+        
+        if (complete)
+        {
+            [self.completionBlocks setObject:complete forKey:uploadSessionTask];
+        }
         [uploadSessionTask resume];
     });
 }
@@ -147,10 +154,15 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
-    if (error)
+    dispatch_async(self.sessionQueue, ^(void)
     {
-        VLog(@"error uploading: %@", [error localizedDescription]);
-    }
+        VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
+        if (completionBlock)
+        {
+            completionBlock(error);
+            [self.completionBlocks removeObjectForKey:task];
+        }
+    });
 }
 
 @end
