@@ -8,6 +8,9 @@
 
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "UIImage+Resize.h"
+
+@import AVFoundation;
 
 #import <objc/runtime.h>
 
@@ -34,7 +37,12 @@ static const char kAssociatedObjectKey;
                              objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                              {
-                                 UIImage *blurredImage = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+                                 UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
+                                                        interpolationQuality:kCGInterpolationLow];
+                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                                                                                 tintColor:tintColor
+                                                                     saturationDeltaFactor:1.8 
+                                                                                 maskImage:nil];
                                  dispatch_async(dispatch_get_main_queue(), ^
                                  {
                                      weakSelf.image = blurredImage;
