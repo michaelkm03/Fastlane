@@ -10,6 +10,7 @@
 
 #import "VRealtimeCommentsViewModel.h"
 
+
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
@@ -61,6 +62,13 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
                   mediaURL:(NSURL *)mediaURL
                 completion:(void (^)(BOOL succeeded))completion;
 
+
+@property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
+
+@property (nonatomic, readonly) NSInteger nodeID;
+
+@property (nonatomic, readonly) VUser *user;
+
 /**
  *  The corresponding sequence for this view model.
  */
@@ -85,6 +93,22 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
+
+@property (nonatomic, strong, readonly) VNode *currentNode;
+
+@property (nonatomic, readonly) BOOL isCurrentUserOwner;
+
+@property (nonatomic, readonly) NSString *remixCountText;
+@property (nonatomic, readonly) NSString *repostCountText;
+@property (nonatomic, readonly) NSString *shareCountText;
+
+@property (nonatomic, readonly) NSString *authorName;
+@property (nonatomic, readonly) NSString *authorCaption;
+@property (nonatomic, readonly) NSURL *avatarForAuthor;
+
+@property (nonatomic, readonly) NSString *shareText;
+@property (nonatomic, readonly) NSString *analyticsContentTypeText;
+@property (nonatomic, readonly) NSURL *shareURL;
 
 /**
  *  For content type video this will be a convenient url for the videoplayer.

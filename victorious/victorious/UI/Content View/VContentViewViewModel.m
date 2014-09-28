@@ -19,11 +19,15 @@
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Users.h"
 #import "VComment+Fetcher.h"
+#import "VUser+Fetcher.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
+#import "NSString+VParseHelp.h"
+#import "VLargeNumberFormatter.h"
 
 // Media
 #import "NSURL+MediaType.h"
@@ -33,10 +37,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong) NSArray *comments;
-@property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
+
+@property (nonatomic, strong) NSString *followersText;
 
 @end
 
@@ -66,12 +71,14 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         }
         else
         {
-            _type = VContentViewTypeInvalid;
+            // Fall back to image.
+            _type = VContentViewTypeImage;
         }
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
+        [self fetchUserinfo];
     }
     return self;
 }
@@ -80,6 +87,18 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 {
     NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
+}
+
+- (void)fetchUserinfo
+{
+    __weak typeof(self) welf = self;
+    [[VObjectManager sharedManager] countOfFollowsForUser:self.user
+                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         NSInteger followerCount = [resultObjects[0] integerValue];
+         welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+     }
+                                                failBlock:nil];
 }
 
 #pragma mark - Property Accessors
@@ -100,6 +119,11 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     return request;
+}
+
+- (VUser *)user
+{
+    return self.sequence.user;
 }
 
 - (NSString *)name
@@ -246,6 +270,108 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     
     return [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
                                                                    andPostedTime:commentForIndex.realtime] string];
+}
+
+- (NSString *)authorName
+{
+    return self.sequence.user.name;
+}
+
+- (BOOL)isCurrentUserOwner
+{
+    return [self.sequence.user isOwner];
+}
+
+- (NSString *)shareText
+{
+    NSString *shareText;
+    
+    if ([self isCurrentUserOwner])
+    {
+        switch (self.type)
+        {
+            case VContentViewTypePoll:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
+                break;
+            case VContentViewTypeImage:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
+                break;
+            case VContentViewTypeVideo:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                break;
+            case VContentViewTypeInvalid:
+                break;
+        }
+    }
+    else
+    {
+        switch (self.type)
+        {
+            case VContentViewTypePoll:
+                shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
+                break;
+            case VContentViewTypeImage:
+                shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
+                break;
+            case VContentViewTypeVideo:
+                shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+                break;
+            case VContentViewTypeInvalid:
+                break;
+        }
+    }
+    
+    return shareText;
+}
+
+- (NSString *)analyticsContentTypeText
+{
+    return self.sequence.category;
+}
+
+- (NSURL *)sourceURLForCurrentAssetData
+{
+    return [self.currentAsset.data mp4UrlFromM3U8];
+}
+
+- (NSURL *)shareURL
+{
+    return [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null];
+}
+
+- (NSInteger)nodeID
+{
+    return [self.currentNode.remoteId integerValue];
+}
+
+- (NSString *)authorCaption
+{
+    if (self.followersText)
+    {
+        return self.followersText;
+    }
+    return nil;
+}
+
+- (NSURL *)avatarForAuthor
+{
+    return [NSURL URLWithString:self.sequence.user.pictureUrl];
+}
+
+- (NSString *)remixCountText
+{
+    return [NSString stringWithFormat:@"%@", self.sequence.remixCount];
+}
+
+- (NSString *)repostCountText
+{
+    return [NSString stringWithFormat:@"%@", self.sequence.repostCount];
+}
+
+- (NSString *)shareCountText
+{
+#warning Implement me or address with product
+    return nil;
 }
 
 - (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex

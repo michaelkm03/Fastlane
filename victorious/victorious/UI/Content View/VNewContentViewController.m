@@ -8,8 +8,12 @@
 
 #import "VNewContentViewController.h"
 
+// Theme
+#import "VThemeManager.h"
+
 // View Categories
 #import "UIView+VShadows.h"
+#import "UIActionSheet+VBlocks.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -37,13 +41,36 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VActionSheetViewController.h"
+#import "VActionSheetTransitioningDelegate.h"
+#import "VCameraPublishViewController.h"
+#import "VRemixSelectViewController.h"
+#import "VUserProfileViewController.h"
+#import "VStreamContainerViewController.h"
+#import "VReposterTableViewController.h"
+
+//TODO: abstract this out of VC
+#import "VStream.h"
+#import "VStream+Fetcher.h"
+#import "VObjectManager+Sequence.h"
+
+// Analytics
+#import "VAnalyticsRecorder.h"
+
+// Activities
+#import "VFacebookActivity.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
+#import "VActionSheetPresentationAnimator.h"
 
 // Logged in
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
+
+// Sharing
+//TODO: would like to move this out of the VC
+#import "VObjectManager+ContentCreation.h"
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
@@ -154,6 +181,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                CGRectGetWidth(self.view.bounds),
                                                self.inputAccessoryView.intrinsicContentSize.height);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -174,18 +206,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:UIKeyboardDidChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
     
     self.viewModel.realTimeCommentsViewModel.delegate = self;
     
@@ -197,6 +217,20 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidChangeFrame:)
+                                                 name:UIKeyboardDidChangeFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+
+
+    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
     
     self.contentCollectionView.delegate = self;
     
@@ -242,7 +276,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.contentCollectionView.delegate = nil;
     
     [self.view.superview endEditing:YES];
@@ -263,6 +299,309 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+#pragma mark - Notification Handlers
+
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         self.contentCollectionView.contentInset = newInsets;
+         self.contentCollectionView.scrollIndicatorInsets = newInsets;
+     }
+                     completion:nil];
+}
+
+- (void)keyboardDidChangeFrame:(NSNotification *)notification
+{
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
+                                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
+}
+
+- (void)commentsDidUpdate:(NSNotification *)notification
+{
+    if (self.viewModel.commentCount > 0)
+    {
+        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+        [self.contentCollectionView reloadSections:commentsIndexSet];
+        
+        self.handleView.numberOfComments = self.viewModel.commentCount;
+    }
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedClose:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
+
+- (IBAction)pressedMore:(id)sender
+{
+    [self becomeFirstResponder];
+    [self resignFirstResponder];
+    
+    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
+    
+    VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
+                                                           avatarURL:self.viewModel.avatarForAuthor
+                                                          detailText:self.viewModel.authorCaption];
+    userItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
+             [self.navigationController pushViewController:profileViewController animated:YES];
+         }];
+    };
+    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
+                                                      hashTagSelectionHandler:^(NSString *hashTag)
+                                    {
+                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
+                                        container.shouldShowHeaderLogo = NO;
+                                        
+                                        [self dismissViewControllerAnimated:YES
+                                                                 completion:^
+                                         {
+                                             [self.navigationController pushViewController:container
+                                                                                  animated:YES];
+                                         }];
+                                    }];
+    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"") actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
+    remixItem.selectionHandler = ^(void)
+    {
+        if (![VObjectManager sharedManager].mainUser)
+        {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [self presentViewController:[VLoginViewController loginViewController]
+                                    animated:YES
+                                  completion:NULL];
+             }];
+
+            return;
+        }
+        
+        NSString *label = [self.viewModel.sequence.remoteId.stringValue stringByAppendingPathComponent:self.viewModel.sequence.name];
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+        
+        if (self.viewModel.type == VContentViewTypeVideo)
+        {
+            UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.viewModel.sourceURLForCurrentAssetData
+                                                                                    sequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                                        nodeID:self.viewModel.nodeID];
+            [self presentViewController:remixVC
+                               animated:YES
+                             completion:
+             ^{
+                 [self.videoCell.videoPlayerViewController.player pause];
+             }];
+        }
+        else
+        {
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.previewImage = self.blurredBackgroundImageView.downloadedImage;
+            publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+            publishViewController.completion = ^(BOOL complete)
+            {
+                [self dismissViewControllerAnimated:YES
+                                         completion:nil];
+            };
+            UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+            
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                               onCancelButton:nil
+                                                       destructiveButtonTitle:nil
+                                                          onDestructiveButton:nil
+                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                          {
+                                              publishViewController.captionType = VCaptionTypeMeme;
+                                              
+                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
+                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                              {
+                                                  publishViewController.mediaURL = tempFile;
+                                                  [self presentViewController:remixNav
+                                                                     animated:YES
+                                                                   completion:nil];
+                                              }
+                                          },
+                                          NSLocalizedString(@"Quote", nil),  ^(void)
+                                          {
+                                              publishViewController.captionType = VCaptionTypeQuote;
+                                              
+                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
+                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
+                                              {
+                                                  publishViewController.mediaURL = tempFile;
+                                                  [self presentViewController:remixNav
+                                                                     animated:YES
+                                                                   completion:nil];
+                                              }
+                                          }, nil];
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [actionSheet showInView:self.view];
+             }];
+
+        }
+    };
+    remixItem.detailSelectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
+             VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
+             streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
+             streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
+             streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
+             [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+             
+         }];
+    };
+    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Repost", @"") actionIcon:[UIImage imageNamed:@"repostIcon"] detailText:self.viewModel.repostCountText];
+    repostItem.selectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+        {
+            if (![VObjectManager sharedManager].mainUser)
+            {
+                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+                return;
+            }
+            
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                               onCancelButton:nil
+                                                       destructiveButtonTitle:nil
+                                                          onDestructiveButton:nil
+                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Repost", nil),  ^(void)
+                                          {
+                                              [[VObjectManager sharedManager] repostNode:self.viewModel.currentNode
+                                                                                withName:nil
+                                                                            successBlock:nil
+                                                                               failBlock:nil];
+                                          }, nil];
+            
+            [actionSheet showInView:self.view];
+        }];
+    };
+    repostItem.detailSelectionHandler = ^(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+        {
+            VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
+            vc.sequence = self.viewModel.sequence;
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+    };
+    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"") actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
+
+    void (^shareHandler)(void) = ^void(void)
+    {
+        //Remove the styling for the mail view.
+        [[VThemeManager sharedThemeManager] removeStyling];
+        
+        VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
+                                                                                                                     self.viewModel.shareText,
+                                                                                                                     self.viewModel.shareURL]
+                                                                                             applicationActivities:@[fbActivity]];
+        
+        NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+        [activityViewController setValue:emailSubject forKey:@"subject"];
+        activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
+        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+        {
+            [[VThemeManager sharedThemeManager] applyStyling];
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+            [self reloadInputViews];
+        };
+        [self resignFirstResponder];
+        
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             [self presentViewController:activityViewController
+                                animated:YES
+                              completion:nil];
+         }];
+    };
+    shareItem.selectionHandler = shareHandler;
+    shareItem.detailSelectionHandler = shareHandler;
+    
+    VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
+                                                         actionIcon:[UIImage imageNamed:@"reportIcon"]
+                                                         detailText:nil];
+    flagItem.selectionHandler = ^(void)
+    {
+        [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
+                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+             
+         }
+                                           failBlock:^(NSOperation *operation, NSError *error)
+         {
+             VLog(@"Failed to flag sequence %@", self.viewModel.sequence);
+             
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+         }];
+    };
+    
+    [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem, flagItem]];
+    
+    actionSheetViewController.cancelHandler = ^void(void)
+    {
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    
+    [self presentViewController:actionSheetViewController
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -318,58 +657,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                            animated:YES
                          completion:nil];
     };
-}
-
-#pragma mark Notification Handlers
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSTimeInterval animationDuration;
-    UIViewAnimationCurve animationCurve;
-    NSDictionary *userInfo = [notification userInfo];
-    
-    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-    
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
-     {
-         self.contentCollectionView.contentInset = newInsets;
-         self.contentCollectionView.scrollIndicatorInsets = newInsets;
-     }
-                     completion:nil];
-}
-
-- (void)keyboardDidChangeFrame:(NSNotification *)notification
-{
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
-                                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.commentCount > 0)
-    {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
-        
-        self.handleView.numberOfComments = self.viewModel.commentCount;
-    }
-}
-
-#pragma mark - IBActions
-
-- (IBAction)pressedClose:(id)sender
-{
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource

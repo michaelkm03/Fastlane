@@ -8,8 +8,20 @@
 
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "UIImage+Resize.h"
+
+@import AVFoundation;
+
+#import <objc/runtime.h>
+
+static const char kAssociatedObjectKey;
 
 @implementation UIImageView (Blurring)
+
+- (UIImage *)downloadedImage
+{
+    return objc_getAssociatedObject(self, &kAssociatedObjectKey);
+}
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
@@ -22,7 +34,20 @@
                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                          {
                              __strong UIImageView *strongSelf = weakSelf;
-                             strongSelf.image = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+                             objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                             {
+                                 UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
+                                                        interpolationQuality:kCGInterpolationLow];
+                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                                                                                 tintColor:tintColor
+                                                                     saturationDeltaFactor:1.8 
+                                                                                 maskImage:nil];
+                                 dispatch_async(dispatch_get_main_queue(), ^
+                                 {
+                                     weakSelf.image = blurredImage;
+                                 });
+                             });
                          }
                          failure:nil];
 }
