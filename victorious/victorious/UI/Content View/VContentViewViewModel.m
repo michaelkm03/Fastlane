@@ -326,29 +326,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSString *)analyticsContentTypeText
 {
-    NSString *analyticsContentTypeText = @"";
-    if ([self isCurrentUserOwner])
-    {
-        switch (self.type)
-        {
-            case VContentViewTypePoll:
-                analyticsContentTypeText = @"poll";
-                break;
-            case VContentViewTypeImage:
-                analyticsContentTypeText = @"image";
-                break;
-            case VContentViewTypeVideo:
-                analyticsContentTypeText = @"video";
-                break;
-            case VContentViewTypeInvalid:
-                break;
-        }
-    }
-    else
-    {
-    }
-    
-    return analyticsContentTypeText;
+    return self.sequence.category;
 }
 
 - (NSURL *)sourceURLForCurrentAssetData
