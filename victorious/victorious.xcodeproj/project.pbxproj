@@ -3359,6 +3359,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				ProductPrefix = "marquee-";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;
