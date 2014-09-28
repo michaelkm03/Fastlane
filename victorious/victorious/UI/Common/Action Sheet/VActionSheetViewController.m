@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @end
 
 static const CGFloat kBlurrGradientHeight = 10.0f;
+static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 @implementation VActionSheetViewController
 
@@ -82,7 +83,7 @@ static const CGFloat kBlurrGradientHeight = 10.0f;
     self.AvatarImageView.layer.borderWidth = 1.0f;
     self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20);
+    self.tableView.separatorInset = kSeparatorInsets;
     
     // gradient
     CAGradientLayer *gradient = [CAGradientLayer layer];
