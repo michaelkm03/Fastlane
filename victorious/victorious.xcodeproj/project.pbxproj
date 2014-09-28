@@ -3439,7 +3439,7 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
-				ProductPrefix = "qa-";
+				ProductPrefix = "as-";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				WARNING_CFLAGS = (
