@@ -12,7 +12,10 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 
 @interface VInviteFriendTableViewCell : UITableViewCell
 
-@property (nonatomic, strong)   VUser *profile;
-@property (nonatomic) BOOL isFollowing;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, copy) void (^followAction)(void);
+@property (nonatomic) BOOL haveRelationship;
+
+@property (nonatomic, weak) IBOutlet UIImageView *followIconImageView;
 
 @end

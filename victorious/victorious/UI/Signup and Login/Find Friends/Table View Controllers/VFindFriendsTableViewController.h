@@ -30,16 +30,6 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableType)
 
 
 /**
- Protocol to handle response from sending a friend request to the backend api
- */
-@protocol VFindFriendsDelegate <NSObject>
-
-@required
-- (void)didReceiveFriendRequestResponse:(NSArray *)responseObject;
-
-@end
-
-/**
  Base class for table view controllers 
  in the find friends feature
  */
@@ -74,10 +64,5 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableType)
  each user selected in the table view.
  */
 - (NSArray *)selectedUsers;
-
-/**
- Delegate object for finding friends
- */
-@property (nonatomic, weak) id<VFindFriendsDelegate> findFriendsDelegate;
 
 @end

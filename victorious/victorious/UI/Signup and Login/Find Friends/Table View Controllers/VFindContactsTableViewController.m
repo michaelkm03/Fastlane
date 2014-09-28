@@ -35,7 +35,6 @@
     [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"ContactsSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
     
-    self.findFriendsDelegate = self;
     self.findFriendsTableType = VFindFriendsTableTypeAddressBook;
 }
 
@@ -204,6 +203,13 @@
     [[VObjectManager sharedManager] followUser:user
                                   successBlock:successBlock
                                      failBlock:failureBlock];
+}
+
+- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock];
 }
 
 #pragma mark - VFindFriendsDelegate Method

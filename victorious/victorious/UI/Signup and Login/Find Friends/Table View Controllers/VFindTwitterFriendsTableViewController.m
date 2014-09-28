@@ -22,7 +22,6 @@
     [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"TwitterSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Twitter", @"") forState:UIControlStateNormal];
     
-    self.findFriendsDelegate = self;
     self.findFriendsTableType = VFindFriendsTableTypeTwitter;
 }
 
@@ -167,6 +166,13 @@
     [[VObjectManager sharedManager] followUser:user
                                   successBlock:successBlock
                                      failBlock:failureBlock];
+}
+
+- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock];
 }
 
 #pragma mark - VFindFriendsDelegate Method

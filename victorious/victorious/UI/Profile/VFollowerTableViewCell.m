@@ -16,7 +16,6 @@
 @property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIButton           *followButton;
 
 @end
 
@@ -40,42 +39,58 @@
     
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
 
-    self.followButton.hidden = YES;
-#if 0 // Disable until this can be debugged
-    if (self.showButton)
+    // If this is the currently logged in user, then hide the follow button
+    VUser *me = [[VObjectManager sharedManager] mainUser];
+    if (_profile == me)
     {
-        [[VObjectManager sharedManager] isUser:self.owner
-                                     following:self.profile
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             if (![resultObjects[0] boolValue])
-             {
-                 self.followButton.hidden = NO;
-             }
-         }
-                                     failBlock:nil];
+        self.followButton.hidden = YES;
     }
-#endif
+}
+
+- (void)setHaveRelationship:(BOOL)haveRelationship
+{
+    _haveRelationship = haveRelationship;
+    
+    UIImage *image = [UIImage imageNamed:@"buttonFollow"];
+    
+    if (_haveRelationship)
+    {
+        image = [UIImage imageNamed:@"buttonFollowed"];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.followButton setImage:image forState:UIControlStateNormal];
+    });
 }
 
 - (IBAction)follow:(id)sender
 {
-    [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
+    UIImage *followImage = [UIImage imageNamed:@"buttonFollow"];
+    UIImage *followedImage = [UIImage imageNamed:@"buttonFollowed"];
+    
+    // Check for existance of follow block
+    if (self.followButtonAction)
+    {
+        self.followButtonAction();
+    }
+    
+    void (^animations)() = ^(void)
+    {
+        if (_haveRelationship)
+        {
+            [self.followButton setImage:followImage forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.followButton  setImage:followedImage forState:UIControlStateNormal];
+        }
+    };
     
     [UIView transitionWithView:self.followButton
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:^{
-                        [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
-                    } completion:^(BOOL finished) {
-                        [UIView animateWithDuration:1.0 animations:^{
-                            self.followButton.alpha = 0.0;
-                        }
-                                         completion:^(BOOL finished)
-                         {
-                             self.followButton.hidden = YES;
-                         }];
-                    }];
+                          duration:0.3
+                           options:(_haveRelationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
+                        animations:animations
+                        completion:nil];
 }
 
 @end
