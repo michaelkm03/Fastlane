@@ -37,18 +37,7 @@
     [self.detailButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                             forState:UIControlStateNormal];
     
-    if ([UIScreen mainScreen].scale == 1.0f)
-    {
-        self.separatorHeightConstaint.constant = 1.0f;
-    }
-    else if ([UIScreen mainScreen].scale == 2.0f)
-    {
-        self.separatorHeightConstaint.constant = 0.5f;
-    }
-    else if ([UIScreen mainScreen].scale == 3.0f)
-    {
-        self.separatorHeightConstaint.constant = 0.33f;
-    }
+    self.separatorHeightConstaint.constant = 1 / [UIScreen mainScreen].scale;
 }
 
 #pragma mark - UITableViewCell
