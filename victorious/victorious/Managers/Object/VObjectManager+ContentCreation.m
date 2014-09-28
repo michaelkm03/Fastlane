@@ -11,6 +11,8 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Pagination.h"
+#import "VUploadManager.h"
+#import "VUploadTaskCreator.h"
 
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
@@ -67,51 +69,42 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Sequence Methods
 
-- (AFHTTPRequestOperation *)createPollWithName:(NSString *)name
-                                   description:(NSString *)description
-                                      question:(NSString *)question
-                                   answer1Text:(NSString *)answer1Text
-                                   answer2Text:(NSString *)answer2Text
-                                     media1Url:(NSURL *)media1Url
-                                     media2Url:(NSURL *)media2Url
-                                  successBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail
+- (void)createPollWithName:(NSString *)name
+               description:(NSString *)description
+                  question:(NSString *)question
+               answer1Text:(NSString *)answer1Text
+               answer2Text:(NSString *)answer2Text
+                 media1Url:(NSURL *)media1Url
+                 media2Url:(NSURL *)media2Url
+                completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
+    NSParameterAssert(media1Url != nil && media2Url != nil);
     if (!media1Url || !media2Url)
     {
-        return nil;
+        if (completionBlock)
+        {
+            completionBlock([NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+        }
+        return;
     }
     
-    //Required Fields
-    NSDictionary *parameters = @{@"name":name ?: [NSNull null],
-                                 @"description":description ?: [NSNull null],
-                                 @"question":question ?: [NSNull null],
+    NSDictionary *parameters = @{@"name": name ?: [NSNull null],
+                                 @"description": description ?: [NSNull null],
+                                 @"question": question ?: [NSNull null],
                                  @"answer1_label" : answer1Text ?: [NSNull null],
-                                 @"answer2_label" : answer2Text ?: [NSNull null]};
+                                 @"answer2_label" : answer2Text ?: [NSNull null],
+                                 @"answer1_media": media1Url,
+                                 @"answer2_media": media2Url,
+                                };
     
-    NSDictionary *allURLs = @{@"answer1_media":media1Url,
-                              @"answer2_media":media2Url};
+    NSURL *endpoint = [NSURL URLWithString:@"/api/poll/create" relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        
-        NSDictionary *payload = fullResponse[kVPayloadKey];
-        
-        NSNumber *sequenceID = payload[@"sequence_id"];
-        
-        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
-        
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self uploadURLs:allURLs
-                     toPath:@"/api/poll/create"
-                 parameters:parameters
-               successBlock:fullSuccess
-                  failBlock:fail];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
+    uploadTaskCreator.request = request;
+    uploadTaskCreator.formFields = parameters;
+    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
 }
 
 - (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
@@ -125,6 +118,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
+    NSParameterAssert(mediaUrl != nil);
     if (!mediaUrl)
     {
         return nil;
@@ -253,15 +247,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                           failBlock:fail];
 }
 
-/**
- Creates a new comment
- @param text Text of the comment.  May be nil is media URL is not nil.
- @param mediaURL URL of media to be posted.  May be nil is text is not nil.
- @param sequence Sequence that comment was posted on
- @param asset Asset that comment was posted on
- @param parent Parent comment that is being replied to
- @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
- */
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
                                       mediaURL:(NSURL *)mediaURL
                                     toSequence:(VSequence *)sequence

@@ -8,6 +8,7 @@
 
 #import "VObjectManager.h"
 #import "VConstants.h"
+#import "VUploadManager.h"
 
 @class VSequence, VComment, VConversation, VAsset, VMessage, VNode;
 
@@ -41,28 +42,36 @@ extern NSString * const VObjectManagerContentIndexKey;
                                                          duration:(CGFloat)duration
                                                   completionBlock:(VRemixCompletionBlock)completionBlock;
 
-- (AFHTTPRequestOperation *)createPollWithName:(NSString *)name
+- (void)createPollWithName:(NSString *)name
+               description:(NSString *)description
+                  question:(NSString *)question
+               answer1Text:(NSString *)answer1Text
+               answer2Text:(NSString *)answer2Text
+                 media1Url:(NSURL *)media1Url
+                 media2Url:(NSURL *)media2Url
+                completion:(VUploadManagerTaskCompleteBlock)completionBlock;
+
+- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
                                     description:(NSString *)description
-                                       question:(NSString *)question
-                                    answer1Text:(NSString *)answer1Text
-                                    answer2Text:(NSString *)answer2Text
-                                      media1Url:(NSURL *)media1Url
-                                      media2Url:(NSURL *)media2Url
+                                    captionType:(VCaptionType)type
+                                      expiresAt:(NSString *)expiresAt
+                                   parentNodeId:(NSNumber *)parentNodeId
+                                          speed:(CGFloat)speed
+                                       loopType:(VLoopType)loopType
+                                       mediaURL:(NSURL *)mediaUrl
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
-                                     description:(NSString *)description
-                                     captionType:(VCaptionType)type
-                                       expiresAt:(NSString *)expiresAt
-                                    parentNodeId:(NSNumber *)parentNodeId
-                                           speed:(CGFloat)speed
-                                        loopType:(VLoopType)loopType
-                                        mediaURL:(NSURL *)mediaUrl
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail;
-
-
+/**
+ Creates a new comment and posts it to the server
+ 
+ @param text Text of the comment.  May be nil is media URL is not nil.
+ @param mediaURL URL of media to be posted.  May be nil if text is not nil.
+ @param sequence Sequence that comment was posted on
+ @param asset Asset that comment was posted on
+ @param parent Parent comment that is being replied to
+ @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
+ */
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
                                       mediaURL:(NSURL *)mediaURL
                                     toSequence:(VSequence *)sequence

@@ -364,6 +364,8 @@ static char KVOContext;
                                     media2URL:self.secondMediaURL];
     }
     [self.navigationController popViewControllerAnimated:YES];
+    [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
 }
 
 - (IBAction)closeButtonAction:(id)sender
