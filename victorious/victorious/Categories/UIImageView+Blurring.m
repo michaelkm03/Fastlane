@@ -32,7 +32,14 @@ static const char kAssociatedObjectKey;
                          {
                              __strong UIImageView *strongSelf = weakSelf;
                              objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                             strongSelf.image = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                             {
+                                 UIImage *blurredImage = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+                                 dispatch_async(dispatch_get_main_queue(), ^
+                                 {
+                                     weakSelf.image = blurredImage;
+                                 });
+                             });
                          }
                          failure:nil];
 }

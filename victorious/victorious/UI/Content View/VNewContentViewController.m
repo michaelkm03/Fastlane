@@ -382,10 +382,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                         [self dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
-                                             
+                                             [self.navigationController pushViewController:container
+                                                                                  animated:YES];
                                          }];
-                                        [self.navigationController pushViewController:container
-                                                                             animated:YES];
                                     }];
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"") actionIcon:[UIImage imageNamed:@"remixIcon"] detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
@@ -526,17 +525,18 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         }];
     };
     VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"") actionIcon:[UIImage imageNamed:@"shareIcon"] detailText:self.viewModel.shareCountText];
+
     void (^shareHandler)(void) = ^void(void)
     {
         //Remove the styling for the mail view.
         [[VThemeManager sharedThemeManager] removeStyling];
         
         VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-        UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
-                                                                  self.viewModel.shareText,
-                                                                  self.viewModel.shareURL]
-                                          applicationActivities:@[fbActivity]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
+                                                                                                                     self.viewModel.shareText,
+                                                                                                                     self.viewModel.shareURL]
+                                                                                             applicationActivities:@[fbActivity]];
+        
         NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
         [activityViewController setValue:emailSubject forKey:@"subject"];
         activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
@@ -549,6 +549,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                           value:nil];
             [self reloadInputViews];
         };
+        [self resignFirstResponder];
         
         [self dismissViewControllerAnimated:YES
                                  completion:^
