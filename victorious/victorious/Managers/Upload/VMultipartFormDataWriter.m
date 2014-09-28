@@ -61,7 +61,7 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
             success = NO;
             return;
         }
-        if (![self appendHeadersWithFieldName:fieldName filename:nil contentType:@"text/plain; charset=\"UTF-8\"" error:error])
+        if (![self appendHeadersWithFieldName:fieldName filename:nil contentType:@"text/plain; charset=UTF-8" error:error])
         {
             success = NO;
             return;

@@ -79,7 +79,7 @@
     NSString *expectedOutput = @"\r\n"
                                @"--boundary\r\n"
                                @"Content-Disposition: form-data; name=\"f\"\r\n"
-                               @"Content-Type: text/plain; charset=\"UTF-8\"\r\n"
+                               @"Content-Type: text/plain; charset=UTF-8\r\n"
                                @"\r\n"
                                @"hello world"
                                @"\r\n--boundary--";
