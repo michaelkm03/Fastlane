@@ -17,6 +17,7 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @import MessageUI;
 
@@ -33,6 +34,8 @@
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
+
+@property (nonatomic, strong) NSString *appStoreLink;
 
 @end
 
@@ -66,6 +69,10 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+    
+    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    self.appStoreLink = appStoreUrl.absoluteString;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -131,9 +138,7 @@
 
 - (IBAction)pressedInvite:(id)sender
 {
-    //NSString *appStoreLink = [[VThemeManager sharedThemeManager] themedStringForKey:kVAppStoreDownloadLink];
-    
-    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]))
+    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) || [self.appStoreLink isEqualToString:@""])
     {
         return;
     }
@@ -185,13 +190,12 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appStoreLink = [[VThemeManager sharedThemeManager] themedStringForKey:kVAppStoreDownloadLink];
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
-        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, appStoreLink];
+        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, self.appStoreLink];
 
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
@@ -199,9 +203,7 @@
         [mailComposer setSubject:msgSubj];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
-        [self presentViewController:mailComposer animated:YES completion:^(void)
-        {
-        }];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
 }
 
@@ -212,13 +214,12 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appStoreLink = [[VThemeManager sharedThemeManager] themedStringForKey:kVAppStoreDownloadLink];
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
-        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, appStoreLink];
+        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, self.appStoreLink];
         
         MFMessageComposeViewController *messageComposer = [[MFMessageComposeViewController alloc] init];
         messageComposer.messageComposeDelegate = self;

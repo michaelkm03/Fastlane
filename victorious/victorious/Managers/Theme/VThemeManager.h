@@ -10,7 +10,6 @@
 
 #pragma mark - New Theme Constants
 extern NSString * const kVChannelName;
-extern NSString * const kVAppStoreDownloadLink;
 
 // Images
 

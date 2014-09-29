@@ -12,8 +12,6 @@
 
 NSString * const   kVChannelName                       =   @"channel.name";
 
-NSString * const   kVAppStoreDownloadLink              =   @"channel.link";
-
 NSString * const   kVMenuBackgroundImage               =   @"Default";
 NSString * const   kVMenuBackgroundImage5              =   @"Default-568h";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
