@@ -55,7 +55,7 @@
     return container;
 }
 
-+ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
++ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable
 {
     UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamContainerViewController *container = (VStreamContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
@@ -100,6 +100,22 @@
     
     [self configureHeaderImage];
     [self configureSegmentedControl];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.hashTag)
+    {
+        NSString *titleText = [NSString stringWithFormat:@"#%@", self.hashTag];
+        self.headerLabel.text = NSLocalizedString(titleText, nil);
+    }
+}
+
+- (void)setHashTag:(NSString *)hashTag
+{
+    _hashTag = hashTag;
 }
 
 - (void)configureHeaderImage

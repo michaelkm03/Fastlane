@@ -8,23 +8,19 @@
 #import "VRemixResizableBubble.h"
 #import "VCVideoPlayerViewController.h"
 
-
 @interface VRemixVideoRangeSlider () <VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *centerView;
 @property (nonatomic, strong) UIView *progressView;
-@property (nonatomic, strong) AVURLAsset *videoAsset;
 @property (nonatomic, strong) VRemixSliderLeft *leftThumb;
 @property (nonatomic, strong) VRemixSliderRight *rightThumb;
 @property (nonatomic, strong) VRemixResizableBubble *popoverBubble;
 @property (nonatomic) CGFloat frameWidth;
 @property (nonatomic) Float64 durationSeconds;
 
-@property (nonatomic, assign) double playerDuration;
 @property (nonatomic, strong) UISlider *progressIndicator;
-@property (nonatomic, strong) id progressObserver;
 
 @end
 
@@ -33,7 +29,7 @@
 
 @implementation VRemixVideoRangeSlider
 
-- (instancetype)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoAssetURL
+- (instancetype)initWithFrame:(CGRect)frame videoAsset:(AVAsset *)asset
 {
     self = [super initWithFrame:frame];
     if (self)
@@ -56,9 +52,8 @@
          [self.progressIndicator setMinimumTrackImage:trackImage forState:UIControlStateNormal];
          [self.progressIndicator setThumbImage:[UIImage imageNamed:@"timelineIndicator"] forState:UIControlStateNormal];
          [self.progressView addSubview:self.progressIndicator];
-         
         
-        _videoAsset = [AVURLAsset assetWithURL:videoAssetURL];
+        _videoAsset = asset;
         
         _topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, SLIDER_BORDERS_SIZE)];
         _topBorder.backgroundColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
@@ -118,77 +113,18 @@
         
         [_popoverBubble addSubview:_bubbleText];
         
-        
         [self getMovieFrames];
     }
     
     return self;
 }
 
-- (void)dealloc
+- (void)updateScrubberPositionWithTime:(CMTime)time
 {
-    [self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
-}
-
-- (void)setVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
-{
-    _videoPlayerViewController = videoPlayerViewController;
-    _videoPlayerViewController.delegate = self;
-    
-    double interval = .1f;
-    double duration = CMTimeGetSeconds([self playerItemDuration]);
-    if (isfinite(duration))
-    {
-        CGFloat width = CGRectGetWidth([self.progressIndicator bounds]);
-        interval = 0.5f * duration / width;
-    }
-    
-    __weak VRemixVideoRangeSlider *weakSelf = self;
-    self.progressObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
-                             {
-                                 [weakSelf syncScrubber];
-                             }];
-}
-
-
-- (CMTime)playerItemDuration
-{
-    AVPlayerItem *thePlayerItem = self.videoPlayerViewController.player.currentItem;
-    if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
-    {
-        return thePlayerItem.duration;
-    }
-    else
-    {
-        return kCMTimeInvalid;
-    }
-}
-
-- (void)syncScrubber
-{
-    CMTime playerDuration = [self playerItemDuration];
-    if (CMTIME_IS_INVALID(playerDuration))
-    {
-        self.progressIndicator.minimumValue = 0.0;
-        return;
-    }
-    
-    double duration = CMTimeGetSeconds(playerDuration);
-    if (isfinite(duration) && (duration > 0))
-    {
-        float minValue = [self.progressIndicator minimumValue];
-        float maxValue = [self.progressIndicator maximumValue];
-        double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
-        [self.progressIndicator setValue:(maxValue - minValue) * time / duration + minValue];
-    }
-}
-
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
-{
-    CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+    CMTime endTime = CMTimeConvertScale(self.videoAsset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
     {
-        double normalizedTime = (double)self.videoPlayerViewController.player.currentTime.value / (double)endTime.value;
+        double normalizedTime = (double)time.value / (double)endTime.value;
         self.progressIndicator.value = normalizedTime;
     }
 }

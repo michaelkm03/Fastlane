@@ -128,10 +128,6 @@
     [self registerCells];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willCommentSequence:)
-                                                 name:kStreamsWillCommentNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamTableDataSourceDidChangeNotification
                                                object:self.tableDataSource];
@@ -199,6 +195,11 @@
 }
 
 #pragma mark - Properties
+
+- (void)setHashTag:(NSString *)hashTag
+{
+    _hashTag = hashTag;
+}
 
 - (NSString *)viewName
 {
@@ -369,6 +370,7 @@
                                                           forIndexPath:indexPath];
     }
     
+    cell.delegate = self;
     cell.parentTableViewController = self;
     [cell setSequence:sequence];
     
@@ -551,21 +553,24 @@
     self.tableView.backgroundView = newBackgroundView;
 }
 
-#pragma mark - Notifications
+#pragma mark - VStreamViewCellDelegate
 
-- (void)willCommentSequence:(NSNotification *)notification
+- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamViewCell:(VStreamViewCell *)streamViewCell
 {
-    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    VStreamViewCell *cell = streamViewCell;
     
     self.lastSelectedIndexPath = [self.tableView indexPathForCell:cell];
-
-    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    
+    [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
-
+    
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = cell.sequence;
+    commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
+
 }
+
+#pragma mark - Notifications
 
 - (void)dataSourceDidChange:(NSNotification *)notification
 {
@@ -671,6 +676,9 @@
          VStreamViewCell *selectedCell = (VStreamViewCell *) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
+         UIView *headerView = self.tableView.tableHeaderView;
+         headerView.center = CGPointMake(headerView.center.x, headerView.center.y - [UIScreen mainScreen].bounds.size.height);
+         
          for (VStreamViewCell *cell in [self.tableView visibleCells])
          {
              CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];

@@ -8,12 +8,18 @@
 
 #import "VTableViewCell.h"
 
-@class VSequence, VStreamCellHeaderView;
+@class VSequence, VStreamCellHeaderView, VStreamViewCell;
+
+
+@protocol VStreamViewCellDelegate <NSObject>
+@required
+
+- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamViewCell:(VStreamViewCell *)streamViewCell;
+
+@end
 
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
-
-extern NSString *kStreamsWillCommentNotification;
 
 @interface VStreamViewCell : VTableViewCell
 
@@ -25,8 +31,11 @@ extern NSString *kStreamsWillCommentNotification;
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
+@property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
 
 @property (nonatomic, weak) VSequence                       *sequence;
+
+@property (nonatomic, weak) id<VStreamViewCellDelegate> delegate;
 
 - (void) hideOverlays;
 - (void) showOverlays;

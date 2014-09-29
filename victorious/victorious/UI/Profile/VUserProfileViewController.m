@@ -42,7 +42,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 @property   (nonatomic, strong) VUser                  *profile;
 
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
-@property   (nonatomic) BOOL                            isMe;
+@property (nonatomic) BOOL                            isMe;
 
 @end
 
@@ -370,6 +370,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     [super createButtonAction:sender];
 }
+
+#pragma mark - Animation
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {

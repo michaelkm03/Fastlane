@@ -6,9 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "VAbstractVideoEditorViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
+
+@interface VAbstractVideoEditorViewController ()
+
+@property (nonatomic) BOOL waitingForVideoPlayerToStart;
+
+@end
 
 @implementation VAbstractVideoEditorViewController
 
@@ -42,9 +49,6 @@
     [self.videoPlayerViewController didMoveToParentViewController:self];
     [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     
-    // Set the Alpha for the Snapshot Button
-    self.takeImageSnapShotButton.alpha = 1.0;
-    
     // Transparent Nav Bar
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init]
                                                   forBarMetrics:UIBarMetricsDefault];
@@ -56,6 +60,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [MBProgressHUD showHUDAddedTo:self.previewParentView animated:YES];
+    self.waitingForVideoPlayerToStart = YES;
     [self.videoPlayerViewController.player play];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 }
@@ -225,6 +231,15 @@
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self stopAnimation];
+}
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+{
+    if (self.waitingForVideoPlayerToStart && CMTIME_IS_VALID(time) && time.value > 0)
+    {
+        self.waitingForVideoPlayerToStart = NO;
+        [MBProgressHUD hideAllHUDsForView:self.previewParentView animated:YES];
+    }
 }
 
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
