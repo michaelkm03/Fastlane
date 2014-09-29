@@ -11,11 +11,11 @@
 // Models
 #import "VComment.h"
 #import "VUser.h"
+#import "VAsset.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VAsset+Fetcher.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+ContentCreation.h"
