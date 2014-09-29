@@ -18,7 +18,7 @@
 #import "VMessage.h"
 #import "VConversation+RestKit.h"
 
-#import "VStream.h"
+#import "VStream+Fetcher.h"
 
 #import "VStreamTableViewController.h"
 
@@ -39,14 +39,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [self refreshStream:[VStreamTableViewController ownerStream].currentStream
-               successBlock:nil
-                  failBlock:nil];
-        
-        [self refreshStream:[VStreamTableViewController communityStream].currentStream
-               successBlock:nil
-                  failBlock:nil];
     };
     
     return [self refreshStream:[VStreamTableViewController homeStream].currentStream

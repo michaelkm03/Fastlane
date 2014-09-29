@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @property (nonatomic, strong) VStream *currentStream;
 @property (nonatomic, readonly) VStream *defaultStream;
 
+@property (nonatomic, readonly) BOOL shouldDisplayMarquee;
+
 @property (strong, nonatomic, readonly) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) VSequence *selectedSequence;
 @property (strong, nonatomic) NSArray *repositionedCells;;

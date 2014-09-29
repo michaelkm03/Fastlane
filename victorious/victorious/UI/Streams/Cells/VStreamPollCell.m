@@ -16,6 +16,7 @@
 #import "VUser.h"
 
 #import "UIImage+ImageCreation.h"
+#import "UIImageView+VLoadingAnimations.h"
 
 #import "NSString+VParseHelp.h"
 
@@ -60,49 +61,11 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     
+    [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
+                           placeholderImage:placeholderImage];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.firstAssetUrl];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:placeholderImage
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (!request)
-         {
-             self.previewImageView.image = image;
-             return;
-         }
-         
-         self.previewImageView.alpha = 0;
-         self.previewImageView.image = image;
-         self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-         [UIView animateWithDuration:.3f animations:^
-          {
-              self.previewImageView.alpha = 1;
-          }];
-     }
-                                          failure:nil];
-    
-    request = [NSMutableURLRequest requestWithURL:self.secondAssetUrl];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageTwo setImageWithURLRequest:request
-                                 placeholderImage:placeholderImage
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (!request)
-         {
-             self.previewImageTwo.image = image;
-             return;
-         }
-         self.previewImageTwo.alpha = 0;
-         self.previewImageTwo.image = image;
-         self.previewImageTwo.contentMode = UIViewContentModeScaleAspectFill;
-         [UIView animateWithDuration:.3f animations:^
-          {
-              self.previewImageTwo.alpha = 1;
-          }];
-     }
-                                          failure:nil];
+    [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
+                           placeholderImage:placeholderImage];
 }
 
 @end

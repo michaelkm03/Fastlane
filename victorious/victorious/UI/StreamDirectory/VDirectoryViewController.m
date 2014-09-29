@@ -8,7 +8,7 @@
 
 #import "VDirectoryViewController.h"
 
-#import "VDirectoryDataSource.h"
+#import "VStreamCollectionViewDataSource.h"
 #import "VDirectoryItemCell.h"
 
 #import "VStreamContainerViewController.h"
@@ -26,10 +26,10 @@ static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic, readwrite) VDirectoryDataSource *directoryDataSource;
+@property (strong, nonatomic, readwrite) VStreamCollectionViewDataSource *directoryDataSource;
 @property (nonatomic, strong) VStream *stream;
 
 @property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
@@ -87,7 +87,8 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     
     [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
     
-    self.directoryDataSource = [[VDirectoryDataSource alloc] initWithStream:self.stream];
+    self.directoryDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.stream];
+    self.directoryDataSource.delegate = self;
     self.directoryDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.directoryDataSource;
     
@@ -279,6 +280,20 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
         contentViewController.sequence = (VSequence *)item;
         [self.navigationController pushViewController:contentViewController animated:YES];
     }
+}
+
+#pragma mark - VStreamCollectionDataDelegate
+
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+{
+    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
+    VDirectoryItemCell *cell;
+
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
+    cell.streamItem = item;
+    
+    return cell;
+
 }
 
 @end

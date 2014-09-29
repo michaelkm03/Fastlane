@@ -1,5 +1,5 @@
 //
-//  VStreamDirectoryDataSource.h
+//  VStreamCollectionViewDataSource.h
 //  victorious
 //
 //  Created by Will Long on 9/8/14.
@@ -8,10 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-@class VAbstractFilter, VStream, VStreamItem;
+@class VAbstractFilter, VStream, VStreamItem, VStreamCollectionViewDataSource;
 
-@interface VDirectoryDataSource : NSObject <UICollectionViewDataSource>
+/**
+ *  Data delegate for the VStreamCollectionViewDataSource.
+ */
+@protocol VStreamCollectionDataDelegate <NSObject>
 
+@required
+/**
+ *  Fetches a UICollectionViewCell for a VStreamItem
+ *
+ *  @param dataSource the dataSource requesting a cell
+ *  @param streamItem The VStreamItem object that needs to be displayed
+ *
+ *  @return an appropriate UICollectionViewCell for the given streamItem
+ */
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
+@interface VStreamCollectionViewDataSource : NSObject <UICollectionViewDataSource>
+
+@property (nonatomic, weak) id<VStreamCollectionDataDelegate> delegate;
 @property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
 @property (nonatomic, strong) VAbstractFilter *filter;///< The filter object used to keep track of pagination
 @property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
@@ -21,7 +40,7 @@
  *
  *  @param stream The stream used to populate the data source
  *
- *  @return A VDirectoryDataSource
+ *  @return A VStreamCollectionViewDataSource
  */
 - (instancetype)initWithStream:(VStream *)stream;
 

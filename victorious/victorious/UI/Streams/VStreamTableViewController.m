@@ -16,6 +16,8 @@
 
 #import "VCommentsContainerViewController.h"
 #import "VContentViewController.h"
+#import "VUserProfileViewController.h"
+#import "VDirectoryViewController.h"
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
@@ -30,6 +32,7 @@
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
+#import "VMarqueeTableViewCell.h"
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
@@ -46,8 +49,9 @@
 #import "VAnalyticsRecorder.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeTableCellDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -60,6 +64,7 @@
 @property (strong, nonatomic) NSString *streamName;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL shouldDisplayMarquee;
 
 @end
 
@@ -70,6 +75,7 @@
     VStream *defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
     VStreamTableViewController *stream = [self streamWithDefaultStream:defaultStream name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
+    stream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
     return  stream;
 }
 
@@ -121,6 +127,8 @@
     self.tableDataSource.delegate = self;
     self.tableDataSource.stream = self.currentStream;
     self.tableDataSource.tableView = self.tableView;
+    self.tableDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
+    
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
@@ -249,6 +257,15 @@
 - (void)setCurrentStream:(VStream *)currentStream
 {
     _currentStream = currentStream;
+    if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
+    {
+        self.tableDataSource.shouldDisplayMarquee =  self.shouldDisplayMarquee;
+    }
+    else
+    {
+        self.tableDataSource.shouldDisplayMarquee = NO;
+    }
+    
     if ([self isViewLoaded])
     {
         self.tableDataSource.stream = currentStream;
@@ -279,6 +296,17 @@
     
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     VStreamViewCell *cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
+    //TODO: we'll need to clean this up once they decide on the animation
+    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
+    {
+        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
+        {
+            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
+            [self.navigationController pushViewController:self.contentViewController animated:YES];
+        }
+        return;
+    }
     
     if ([cell isKindOfClass:[VStreamPollCell class]])
     {
@@ -321,10 +349,43 @@
     }
 }
 
+#pragma mark - VMarqueeTableCellDelegate
+
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedItem:(VStreamItem *)item
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[self.tableView indexPathForCell:cell]];
+}
+
+- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedUser:(VUser *)user
+{
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController *vc in self.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
+            fromProfile = YES;
+        }
+    }
+    if (fromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
 #pragma mark - Cells
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        CGFloat height = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds].height;
+        return height;
+    }
+    
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
 
     CGFloat cellHeight;
@@ -341,9 +402,22 @@
     return cellHeight;
 }
 
-- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        VMarqueeTableViewCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
+                                                                                 forIndexPath:indexPath];
+        cell.parentTableViewController = self;
+        cell.delegate = self;
+        CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        [cell restartAutoScroll];
+        return cell;
+    }
+    
     VStreamViewCell *cell;
+    VSequence *sequence = [dataSource sequenceAtIndexPath:indexPath];
     
     if ([sequence isPoll])
     {
@@ -391,6 +465,8 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:VStreamPollCellNibName bundle:nil]
          forCellReuseIdentifier:VStreamPollCellNibName];
+    
+    [self.tableView registerNib:[VMarqueeTableViewCell nibForCell] forCellReuseIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]];
 }
 
 #pragma mark - Refresh
@@ -572,7 +648,10 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.lastSelectedIndexPath];
+    if (operation == UINavigationControllerOperationPush
+        && ([toVC isKindOfClass:[VContentViewController class]])
+        && [cell isKindOfClass:[VStreamViewCell class]])
     {
         return [[VStreamToContentAnimator alloc] init];;
     }

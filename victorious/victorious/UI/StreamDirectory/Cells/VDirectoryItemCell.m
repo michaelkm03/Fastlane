@@ -10,7 +10,7 @@
 
 #import "VStreamItem+Fetcher.h"
 
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
@@ -52,32 +52,9 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
     
-    __weak UIImageView *weakPreviewImageView = self.previewImageView;
-    //TODO: this should eventually do something nifty with multiple images.
-    NSString *previewImagePath = [streamItem.previewImagePaths firstObject];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:previewImagePath]];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:[UIImage resizeableImageWithColor:
-                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         __strong UIImageView *strongPreviewImageView = weakPreviewImageView;
-         if (!request)
-         {
-             strongPreviewImageView.image = image;
-             return;
-         }
-         
-         strongPreviewImageView.alpha = 0;
-         strongPreviewImageView.image = image;
-         [UIView animateWithDuration:.3f animations:^
-          {
-              strongPreviewImageView.alpha = 1;
-          }];
-     }
-                                          failure:nil
-     ];
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
+                           placeholderImage:[UIImage resizeableImageWithColor:
+                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
 }
 
 - (void)prepareForReuse
