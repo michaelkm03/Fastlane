@@ -7,7 +7,7 @@
 //
 
 #import "VAsset+Fetcher.h"
-
+#import "NSURL+MediaType.h"
 #import "VConstants.h"
 
 @implementation VAsset (Fetcher)
@@ -24,7 +24,7 @@
 
 - (BOOL)isVideo
 {
-    return [[self.data pathExtension] isEqualToString:VConstantMediaExtensionM3U8];
+    return [self.data v_hasVideoExtension];
 }
 
 @end
