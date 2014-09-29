@@ -23,9 +23,8 @@
 
 static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 
-@interface VMarqueeTableViewCell() <VMarqueeDelegate>
+@interface VMarqueeTableViewCell()
 
-@property (nonatomic, strong) VMarqueeController *marquee;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
@@ -47,18 +46,24 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
     
     [self addSubview:self.tabView];
+}
+
+- (void)setMarquee:(VMarqueeController *)marquee
+{
+    _marquee = marquee;
+    marquee.collectionView = self.collectionView;
+    marquee.tabView = self.tabView;
     
-    self.marquee = [[VMarqueeController alloc] init];
-    self.marquee.delegate = self;
-    self.marquee.collectionView = self.collectionView;
-    self.marquee.tabView = self.tabView;
-    [self.marquee.streamDataSource refreshWithSuccess:^(void)
-     {
-         self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-         [self.marquee enableTimer];
-         [self.collectionView reloadData];
-     }
-                                      failure:nil];
+    if (!self.marquee.streamDataSource.count)
+    {
+        [self.marquee refreshWithSuccess:^(void)
+         {
+             self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+             [self.marquee enableTimer];
+             [self.collectionView reloadData];
+         }
+                                 failure:nil];
+    }
 }
 
 - (VStreamItem *)currentItem
@@ -101,18 +106,6 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 {
     [super touchesCancelled:touches withEvent:event];
     [self.marquee enableTimer];
-}
-
-#pragma mark - VMarqueeDelegate
-
-- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
-{
-    [self.delegate marqueTableCell:self selectedItem:streamItem];
-}
-
-- (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
-{
-    [self.delegate marqueTableCell:self selectedUser:user];
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods
