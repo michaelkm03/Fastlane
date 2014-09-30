@@ -80,6 +80,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:kCreateProfileAborted object:nil];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -343,7 +348,7 @@
     return nil;
 }
 
-- (void) userDidAbortCreateProfile:(NSNotification*)note
+- (void) userDidAbortCreateProfile:(NSNotification *)note
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
