@@ -25,6 +25,10 @@
 
 NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
+static NSString * const kVExperimentsKey = @"experiments";
+static NSString * const kVAppearanceKey = @"appearance";
+static NSString * const kVVideoQualityKey = @"video_quality";
+
 #pragma mark - Init
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)failed
@@ -34,13 +38,13 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSDictionary *newTheme = payload[@"appearance"];
+        NSDictionary *newTheme = payload[kVAppearanceKey];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
         {
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
         }
         
-        NSDictionary *videoQuality = payload[@"video_quality"];
+        NSDictionary *videoQuality = payload[kVVideoQualityKey];
         if ([videoQuality isKindOfClass:[NSDictionary class]])
         {
             [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
@@ -51,6 +55,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         {
             NSDictionary *dict = @{@"url.appstore": app_store_url};
             [[VSettingManager sharedManager] updateSettingsWithDictionary:dict];
+		}
+		
+        NSDictionary *experiments = payload[kVExperimentsKey];
+        if ([experiments isKindOfClass:[NSDictionary class]])
+        {
+            [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
         }
         
         if (success)
