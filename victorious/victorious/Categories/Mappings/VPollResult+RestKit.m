@@ -28,26 +28,9 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    mapping.identificationAttributes = @[VSelectorName(answerId), VSelectorName(sequenceId)];
+    mapping.identificationAttributes = @[VSelectorName(answerId)];
     
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
-    
-    return mapping;
-}
-
-+ (RKEntityMapping *)entityMappingForUser
-{
-    NSDictionary *propertyMap = @{
-                                  @"sequence_id" : VSelectorName(sequenceId),
-                                  @"answer_id" : VSelectorName(answerId),
-                                  @"total_count" : VSelectorName(count)
-                                  };
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
 }
@@ -64,7 +47,7 @@
 
 + (RKResponseDescriptor *)byUserDescriptor
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMappingForUser]
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/pollresult/summary_by_user/:userid"
                                                        keyPath:@"payload"
