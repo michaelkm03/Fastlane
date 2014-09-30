@@ -173,7 +173,7 @@
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
         UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
         progressBarImage.tintColor = transparentAccent;
-        [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
+        [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                          placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
         [self.progressBackgroundView addSubview:progressBarImage];
@@ -242,7 +242,7 @@
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl]
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl]
                           placeholderImage:[[UIImage imageNamed:@"profile_full"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     

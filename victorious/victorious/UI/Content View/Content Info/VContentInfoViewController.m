@@ -119,7 +119,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     _sequence = sequence;
     
     self.nameLabel.text = sequence.user.name;
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.profileImagePathSmall ?: sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     
     [self.tableView reloadData];
 }

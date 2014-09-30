@@ -43,7 +43,7 @@
 {
     _profile = profile;
     
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
 }
