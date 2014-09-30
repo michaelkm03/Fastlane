@@ -9,6 +9,8 @@
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
 
+static NSString * const kCreateProfileAborted = @"CreateProfileAborted";
+
 @class VUser;
 
 @interface VProfileCreateViewController : UIViewController

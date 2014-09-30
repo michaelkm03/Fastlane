@@ -27,10 +27,13 @@
 
 #import "VTOSViewController.h"
 
+// A unique, randomly assigned tag value to identifiy alertViews in UIAlertViewDelegate method implementations
+static const NSUInteger kAlertViewTagProfileAborted = 9183982;
+
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
@@ -367,10 +370,8 @@
 
 #pragma mark - State
 
-- (void)didSignUpWithUser:(VUser *)mainUser
+- (void)didCreateProfile
 {
-    self.profile = mainUser;
-    
     switch (self.loginType)
     {
         case kVLoginTypeNone:
@@ -394,34 +395,12 @@
                                                                           value:nil];
             break;
     }
-
+    
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
     
     [self dismissViewControllerAnimated:YES
                              completion:nil];
-    
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
-                                                     password:self.registrationModel.password
-                                                         name:self.registrationModel.username
-                                              profileImageURL:self.registrationModel.profileImageURL
-                                                     location:self.registrationModel.locationText
-                                                      tagline:self.registrationModel.taglineText
-                                                 successBlock:nil
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed with error: %@ Retrying...", error);
-         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
-                                                          password:self.registrationModel.password
-                                                              name:self.registrationModel.username
-                                                   profileImageURL:self.registrationModel.profileImageURL
-                                                          location:self.registrationModel.locationText
-                                                           tagline:self.registrationModel.taglineText
-                                                      successBlock:nil
-                                                         failBlock:^(NSOperation *operation, NSError *error) {
-                                                             VLog(@"Failed with error: %@", error);
-                                                         }];
-     }];
 }
 
 - (void)didFailWithError:(NSError *)error
@@ -448,20 +427,17 @@
 
     if ([self shouldCreateProfile])
     {
-        if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
-        {
-            [self didSignUpWithUser:self.profile];
-            return;
-        }
-        
-        [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
-                                                 password:self.registrationModel.password
-                                                 userName:self.registrationModel.email
-                                             onCompletion:^(VUser *user, BOOL created)
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
+                                                         password:self.registrationModel.password
+                                                             name:self.registrationModel.username
+                                                  profileImageURL:self.registrationModel.profileImageURL
+                                                         location:self.registrationModel.locationText
+                                                          tagline:self.registrationModel.taglineText
+                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             [self didSignUpWithUser:user];
+             [self didCreateProfile];
          }
-                                                  onError:^(NSError *error)
+                                                         failBlock:^(NSOperation *operation, NSError *error)
          {
              [self didFailWithError:error];
          }];
@@ -489,7 +465,29 @@
 
 - (IBAction)back:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    // Show Error Message
+    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                       message:NSLocalizedString(@"ProfileAborted", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    alert.tag = kAlertViewTagProfileAborted;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( alertView.tag == kAlertViewTagProfileAborted )
+    {
+        if (buttonIndex == alertView.cancelButtonIndex)
+        {
+            // Do nothing
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCreateProfileAborted object:nil];
+        }
+    }
 }
 
 - (BOOL)shouldCreateProfile

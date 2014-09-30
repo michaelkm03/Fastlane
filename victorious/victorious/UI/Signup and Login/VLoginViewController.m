@@ -76,6 +76,8 @@
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:kCreateProfileAborted object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -339,6 +341,11 @@
     }
     
     return nil;
+}
+
+- (void) userDidAbortCreateProfile:(NSNotification*)note
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - VSelectorViewControllerDelegate

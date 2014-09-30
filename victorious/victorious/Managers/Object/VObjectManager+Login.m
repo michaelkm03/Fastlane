@@ -69,6 +69,19 @@ static NSString * const kVVideoQualityKey = @"video_quality";
            failBlock:failed];
 }
 
+#pragma mark - Login
+
+- (BOOL) isMainUserLoggedIn
+{
+    return self.mainUser != nil;
+}
+
+- (BOOL) isMainUserProfileIncomplete
+{
+    // TODO: Check for this
+    return self.isMainUserLoggedIn && NO;
+}
+
 #pragma mark - Facebook
 
 - (BOOL)isAuthorized
