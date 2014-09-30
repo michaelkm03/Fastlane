@@ -69,26 +69,24 @@ static NSString * const kVVideoQualityKey = @"video_quality";
            failBlock:failed];
 }
 
-#pragma mark - Login
+#pragma mark - Login and status
+
+- (BOOL) isMainUserProfileComplete
+{
+    return self.mainUser != nil && [self.mainUser.status isEqualToString:kUserStatusComplete];
+}
 
 - (BOOL) isMainUserLoggedIn
 {
     return self.mainUser != nil;
 }
 
-- (BOOL) isMainUserProfileIncomplete
+- (BOOL)isAuthorized
 {
-    // TODO: Check for this
-    return self.isMainUserLoggedIn && NO;
+    return self.mainUserLoggedIn && self.mainUserProfileComplete;
 }
 
 #pragma mark - Facebook
-
-- (BOOL)isAuthorized
-{
-    BOOL authorized = (nil != self.mainUser);
-    return authorized;
-}
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
@@ -334,7 +332,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 
 - (RKManagedObjectRequestOperation *)logout
 {
-    if (![self isAuthorized]) //foolish mortal you need to log in to log out...
+    if ( !self.mainUserLoggedIn ) //foolish mortal you need to log in to log out...
     {
         return nil;
     }

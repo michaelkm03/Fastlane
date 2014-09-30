@@ -37,6 +37,7 @@
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
+@property (nonatomic, retain) NSString* status;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)

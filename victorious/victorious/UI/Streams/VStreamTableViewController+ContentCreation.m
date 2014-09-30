@@ -18,6 +18,10 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VCreatePollViewController.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
+
+
 @implementation VStreamTableViewController (ContentCreation)
 
 - (void)addCreateButton
@@ -33,9 +37,9 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     

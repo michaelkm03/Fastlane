@@ -9,7 +9,7 @@
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
 
-static NSString * const kCreateProfileAborted = @"CreateProfileAborted";
+extern NSString * const kCreateProfileAborted;
 
 @class VUser;
 
@@ -17,5 +17,7 @@ static NSString * const kCreateProfileAborted = @"CreateProfileAborted";
 @property (nonatomic, assign)   VLoginType      loginType;
 @property (nonatomic, strong)   VUser          *profile;
 @property (nonatomic, strong)   VRegistrationModel *registrationModel;
+
++ (VProfileCreateViewController *) profileCreateViewController;
 
 @end

@@ -22,6 +22,7 @@
 #import "VSelectorViewController.h"
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
+#import "VObjectManager.h"
 
 @import Accounts;
 @import Social;

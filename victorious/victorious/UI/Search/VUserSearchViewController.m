@@ -37,6 +37,9 @@
 
 #import "MBProgressHUD.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
+
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -172,9 +175,9 @@
 
 - (void)composeMessageToUser:(VUser *)profile
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     

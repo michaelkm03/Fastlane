@@ -30,6 +30,8 @@
 // A unique, randomly assigned tag value to identifiy alertViews in UIAlertViewDelegate method implementations
 static const NSUInteger kAlertViewTagProfileAborted = 9183982;
 
+NSString * const kCreateProfileAborted = @"CreateProfileAborted";
+
 @import CoreLocation;
 @import AddressBookUI;
 
@@ -61,6 +63,13 @@ static const NSUInteger kAlertViewTagProfileAborted = 9183982;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
++ (VProfileCreateViewController *) profileCreateViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];
+    return viewController;
 }
 
 #pragma mark - UIViewController
@@ -406,7 +415,7 @@ static const NSUInteger kAlertViewTagProfileAborted = 9183982;
 - (void)didFailWithError:(NSError *)error
 {
     
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -427,8 +436,8 @@ static const NSUInteger kAlertViewTagProfileAborted = 9183982;
 
     if ([self shouldCreateProfile])
     {
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
-                                                         password:self.registrationModel.password
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                         password:nil
                                                              name:self.registrationModel.username
                                                   profileImageURL:self.registrationModel.profileImageURL
                                                          location:self.registrationModel.locationText
@@ -479,13 +488,19 @@ static const NSUInteger kAlertViewTagProfileAborted = 9183982;
 {
     if ( alertView.tag == kAlertViewTagProfileAborted )
     {
-        if (buttonIndex == alertView.cancelButtonIndex)
+        if (buttonIndex != alertView.cancelButtonIndex)
         {
-            // Do nothing
-        }
-        else
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCreateProfileAborted object:nil];
+            BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
+            if ( wasPushedFromViewControllerInLoginFlow )
+            {
+                // The root of this login flow (VLoginViewController) should receive this and dismiss itself
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCreateProfileAborted object:nil];
+            }
+            else
+            {
+                // We're a standalone view controller, so we'll dismiss ourselves
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }
     }
 }
