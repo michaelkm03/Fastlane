@@ -31,7 +31,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        
+
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
         NSDictionary *newTheme = payload[@"appearance"];

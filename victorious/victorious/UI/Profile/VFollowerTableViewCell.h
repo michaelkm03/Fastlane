@@ -19,4 +19,8 @@
 
 @property (nonatomic, copy) void (^followButtonAction)(void);
 
+- (void)enableFollowIcon:(id)sender;
+- (void)disableFollowIcon:(id)sender;
+- (void)flipFollowIconAction:(id)sender;
+
 @end

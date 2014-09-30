@@ -14,6 +14,7 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import "VConstants.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -101,7 +102,7 @@
                 self.tableView.selectAllButton.hidden = NO;
                 if (self.shouldAutoselectNewFriends)
                 {
-                    [self selectAllRows];
+                    [self selectAllRows:nil];
                 }
             }
             else
@@ -273,19 +274,30 @@
 
 - (IBAction)selectAllButtonTapped:(id)sender
 {
-    [self selectAllRows];
+    [self selectAllRows:sender];
 }
 
-- (void)selectAllRows
+- (void)selectAllRows:(id)sender
 {
     for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
     {
-        [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
+        VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
+        [cell disableFollowIcon:self];
     }
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSLog(@"\n\n-----\nAdding New Followers Success Block\n-----\n\n");
+        NSDictionary *successObjects = fullResponse[kVPayloadKey][@"objects"];
+        NSLog(@"\n\n-----\nAdding New Followers Success Block\n%@\n-----\n\n", successObjects);
+        
+        for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
+            VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
+            [cell enableFollowIcon:self];
+            cell.haveRelationship = YES;
+        }
     };
     
     [self loadBatchOfFollowers:self.usersNotFollowing withSuccess:successBlock withFailure:nil];
@@ -323,26 +335,34 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add user relationship to local persistent store
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSManagedObjectContext *moc = mainUser.managedObjectContext;
         
         [mainUser addFollowingObject:user];
         [moc saveToPersistentStore:nil];
+        
+        NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in indexPaths)
+        {
+            VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
+            if (cell.profile == user)
+            {
+                [cell flipFollowIconAction:nil];
+                return;
+            }
+        }
+        
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  // Follows relationship already exists
+        if (error.code == 6001)  //<-- Follows relationship already exists
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser addFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             return;
         }
         
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -350,6 +370,7 @@
         [alert show];
     };
     
+    // Add user at backend
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
 }
 
@@ -357,22 +378,13 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
         
-        [mainUser removeFollowingObject:user];
-        [moc saveToPersistentStore:nil];
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         if (error.code == 5001)  // Follows relationship does not exist
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             return;
         }
         
@@ -384,6 +396,14 @@
         [alert show];
     };
     
+    // Remove user from local persistent store
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSManagedObjectContext *moc = mainUser.managedObjectContext;
+    
+    [mainUser removeFollowingObject:user];
+    [moc saveToPersistentStore:nil];
+    
+    // Remove user at backend
     [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
     
 }
@@ -490,16 +510,13 @@
     return sectionRows;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)determineRelationshipWithUser:(VUser *)targetUser atIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile;
     BOOL haveRelationship = NO;
     
-
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
     if (section == 0)
     {
         profile = self.usersNotFollowing[indexPath.row];
@@ -510,13 +527,34 @@
         profile = self.usersFollowing[indexPath.row];
         haveRelationship = ([mainUser.followers containsObject:profile] || [mainUser.following containsObject:profile]);
     }
+    
+    return haveRelationship;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger section = indexPath.section;
+    VUser *profile;
+    BOOL haveRelationship = NO;
+
+    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
+    if (section == 0)
+    {
+        profile = self.usersNotFollowing[indexPath.row];
+    }
+    else if (section == 1)
+    {
+        profile = self.usersFollowing[indexPath.row];
+    }
+    
+    haveRelationship = [self determineRelationshipWithUser:profile atIndexPath:indexPath];
+    
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
     
     // Tell the button what to do when it's tapped
     cell.followAction = ^(void)
     {
-        NSLog(@"\n\nFollower button tapped:\n%@", profile.name);
         if (haveRelationship)
         {
             [self unfollowFriendAction:profile];

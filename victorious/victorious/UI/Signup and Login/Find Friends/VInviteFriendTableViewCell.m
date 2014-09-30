@@ -51,16 +51,15 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 {
     _haveRelationship = haveRelationship;
     
-    UIImage *image = [UIImage imageNamed:@"buttonFollow"];
-    
     if (_haveRelationship)
     {
-        image = [UIImage imageNamed:@"buttonFollowed"];
+        self.followIconImageView.hidden = YES;
+        //self.followIconImageView.image = self.unfollowIcon;
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self.followIconImageView setImage:image];
-    });
+    else
+    {
+        [self.followIconImageView setImage:self.followIcon];
+    }
 }
 
 - (void)setProfile:(VUser *)profile
@@ -70,54 +69,65 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
-    
-    UIImage *buttonImage;
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
-    BOOL followingOrFollower = ([_profile.followers containsObject:mainUser] || [_profile.following containsObject:mainUser]);
-    if (followingOrFollower)
+}
+
+#pragma mark - Button Actions
+
+- (void)enableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
     {
-        buttonImage = self.unfollowIcon;
-    }
-    else
-    {
-        buttonImage = self.followIcon;
-    }
+        self.followIconImageView.alpha = 1.0f;
+        self.followIconImageView.image = self.unfollowIcon;
+    };
     
-     dispatch_async(dispatch_get_main_queue(), ^(void)
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)flipFollowIconAction:(id)sender
+{
+    void (^animations)() = ^(void)
     {
-         self.followIconImageView.image = buttonImage;
-     });
+        self.followIconImageView.alpha = 1.0f;
+        [self.followIconImageView  setImage:self.unfollowIcon];
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)disableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followIconImageView.alpha = 0.3f;
+        self.followIconImageView.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+
 }
 
 - (void)imageTapAction:(id)sender
 {
-    UIImage *followImage = [UIImage imageNamed:@"buttonFollow"];
-    UIImage *followedImage = [UIImage imageNamed:@"buttonFollowed"];
-    
     // Check for existance of follow block
     if (self.followAction)
     {
         self.followAction();
     }
     
-    void (^animations)() = ^(void)
-    {
-        if (_haveRelationship)
-        {
-            [self.followIconImageView setImage:followImage];
-        }
-        else
-        {
-            [self.followIconImageView  setImage:followedImage];
-        }
-    };
-    
-    [UIView transitionWithView:self.followIconImageView
-                      duration:0.3
-                       options:(_haveRelationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
-                    animations:animations
-                    completion:nil];
+    [self disableFollowIcon:nil];
 }
 
 @end
