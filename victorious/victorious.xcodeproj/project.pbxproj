@@ -344,6 +344,7 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
@@ -1018,6 +1019,8 @@
 		D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewImageLayout.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
+		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
 		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
 		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
@@ -2382,6 +2385,8 @@
 				D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */,
 				D82C08F519D0C09F00273E0D /* VContentViewVideoLayout.h */,
 				D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */,
+				D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */,
+				D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -2857,6 +2862,7 @@
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
+				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,

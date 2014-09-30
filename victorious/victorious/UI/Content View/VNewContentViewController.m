@@ -20,8 +20,7 @@
 #import "UIImageView+Blurring.h"
 
 // Layout
-#import "VContentViewVideoLayout.h"
-#import "VContentViewImageLayout.h"
+#import "VShrinkingContentLayout.h"
 
 // Cells
 #import "VContentCell.h"
@@ -74,14 +73,6 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
-
-typedef NS_ENUM(NSInteger, VContentViewSection)
-{
-    VContentViewSectionContent,
-    VContentViewSectionRealTimeComments,
-    VContentViewSectionAllComments,
-    VContentViewSectionCount
-};
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate, VRealtimeCommentsCellStripDataSource>
 
@@ -146,22 +137,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    switch (self.viewModel.type)
-    {
-        case VContentViewTypeInvalid:
-        case VContentViewTypeImage:
-        {
-            VContentViewImageLayout *imageLayout = [[VContentViewImageLayout alloc] init];
-            self.contentCollectionView.collectionViewLayout = imageLayout;
-        }
-            break;
-        case VContentViewTypePoll:
-            //
-        case VContentViewTypeVideo:
-            // do nothing assign in storyboard. Should fix this
-            break;
-    }
+
+    self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     
     [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                       forState:UIControlStateNormal];
@@ -326,12 +303,6 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    VContentViewVideoLayout *layout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    self.inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.frame),
-                                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(endFrame) - layout.dropDownHeaderMiniumHeight + CGRectGetHeight(self.inputAccessoryView.frame));
 }
 
 - (void)commentsDidUpdate:(NSNotification *)notification
@@ -669,8 +640,10 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     {
         case VContentViewSectionContent:
             return 1;
-        case VContentViewSectionRealTimeComments:
-            return (self.viewModel.type == VContentViewTypeVideo) ? 1 : 0;
+        case VContentViewSectionHistogram:
+            return 1;
+        case VContentViewSectionTicker:
+            return 1;
         case VContentViewSectionAllComments:
             return self.viewModel.commentCount;
         case VContentViewSectionCount:
@@ -722,7 +695,14 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                 return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];
         }
-        case VContentViewSectionRealTimeComments:
+        case VContentViewSectionHistogram:
+        {
+            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+            imageCell.contentView.backgroundColor = [UIColor blueColor];
+            return imageCell;
+        }
+        case VContentViewSectionTicker:
         {
             if (self.realTimeComentsCell)
             {
@@ -766,7 +746,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             return titleView;
         }
             
-        case VContentViewSectionRealTimeComments:
+        case VContentViewSectionHistogram:
+            return nil;
+        case VContentViewSectionTicker:
             return nil;
         case VContentViewSectionAllComments:
         {
@@ -799,30 +781,17 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
         {
             if (self.videoSizeValue)
             {
-                VContentViewVideoLayout *videoLayout = (VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout;
-                videoLayout.sizeForContentView = [self.videoSizeValue CGSizeValue];
                 return [self.videoSizeValue CGSizeValue];
             }
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
-        case VContentViewSectionRealTimeComments:
+        case VContentViewSectionHistogram:
+            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
+                              20.0f);
+        case VContentViewSectionTicker:
         {
-            if (self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments > 0)
-            {
-                CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                VContentViewVideoLayout *videoLayout = ((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout);
-                videoLayout.sizeForRealTimeComentsView = realTimeCommentsSize;
-                
-                return realTimeCommentsSize;
-            }
-            else
-            {
-                CGSize realTimeCommentsSize = [VRealTimeCommentsCell desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:self.contentCollectionView.bounds];
-                VContentViewVideoLayout *videoLayout = ((VContentViewVideoLayout *)self.contentCollectionView.collectionViewLayout);
-                videoLayout.sizeForRealTimeComentsView = realTimeCommentsSize;
-                
-                return realTimeCommentsSize;
-            }
+            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
+                              50.0f);
             
         }
         case VContentViewSectionAllComments:
@@ -846,10 +815,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         case VContentViewSectionContent:
             return CGSizeZero;
-        case VContentViewSectionRealTimeComments:
+        case VContentViewSectionHistogram:
+            return CGSizeZero;
+        case VContentViewSectionTicker:
             return CGSizeZero;
         case VContentViewSectionAllComments:
-            return (self.viewModel.commentCount == 0) ? CGSizeZero : [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        {
+            CGSize allCommentsHandleSize = (self.viewModel.commentCount == 0) ? CGSizeZero :[VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            ((VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout).allCommentsHandleBottomInset = allCommentsHandleSize.height;
+            return allCommentsHandleSize;
+        }
         case VContentViewSectionCount:
             return CGSizeZero;
     }
@@ -862,66 +837,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
                                             animated:YES];
-    }
-}
-
-#pragma mark UIScrollView
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    NSDictionary *lastDesiredContentOffset = [[((VContentViewBaseLayout *)self.contentCollectionView.collectionViewLayout) desiredDecelerationLocations] lastObject];
-    CGFloat fullContentOffset = [lastDesiredContentOffset[VContentViewBaseLayoutDecelerationLocationDesiredContentOffset] CGPointValue].y;
-    
-    CGFloat headerProgress = self.contentCollectionView.contentOffset.y / fullContentOffset;
-    self.dropdownHeaderView.label.alpha = headerProgress;
-    self.dropdownHeaderView.label.transform = CGAffineTransformMakeTranslation(0, -20 * (1-headerProgress));
-    if (self.contentCollectionView.contentOffset.y > fullContentOffset)
-    {
-        self.dropdownHeaderView.label.alpha = 1.0f;
-        self.dropdownHeaderView.label.transform = CGAffineTransformIdentity;
-    }
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
-                     withVelocity:(CGPoint)velocity
-              targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    __block void (^delayedContentOffsetBlock)(void);
-    
-    NSArray *desiredContentOffsets = [((VContentViewBaseLayout *)self.contentCollectionView.collectionViewLayout) desiredDecelerationLocations];
-    
-    [desiredContentOffsets enumerateObjectsUsingBlock:^(NSDictionary *desiredOffsetLocation, NSUInteger idx, BOOL *stop)
-    {
-        CGPoint desiredContentOffset = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationDesiredContentOffset] CGPointValue];
-        CGFloat desiredContentOffsetThresholdAbove = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationThresholdAbove] floatValue];
-        CGFloat desiredContentOffsetTresholdBelow = [desiredOffsetLocation[VContentViewBaseLayoutDecelerationLocationThresholdBelow] floatValue];
-        if ((targetContentOffset->y <= (desiredContentOffset.y + desiredContentOffsetThresholdAbove)) && (targetContentOffset->y >= (desiredContentOffset.y - desiredContentOffsetTresholdBelow)))
-        {
-            if (((desiredContentOffset.y < targetContentOffset->y) && (velocity.y > 0.0f)) ||
-                ((desiredContentOffset.y > targetContentOffset->y) && (velocity.y < 0.0f)))
-            {
-                delayedContentOffsetBlock = ^void(void)
-                {
-                    [scrollView setContentOffset:desiredContentOffset
-                                        animated:YES];
-                };
-            }
-            else
-            {
-                *targetContentOffset = desiredContentOffset;
-            }
-            
-            *stop = YES;
-        }
-    }];
-    
-    if (delayedContentOffsetBlock)
-    {
-        // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            delayedContentOffsetBlock();
-        });
     }
 }
 
