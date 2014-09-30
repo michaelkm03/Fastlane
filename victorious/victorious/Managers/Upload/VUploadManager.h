@@ -10,6 +10,13 @@
 
 @class VObjectManager, VUploadTaskInformation;
 
+/**
+ A block to be called when an upload task is completed.
+ 
+ @param response The response from the remote server
+ @param responseData the body of the response
+ @param error if the request failed, this object will have more information
+ */
 typedef void (^VUploadManagerTaskCompleteBlock)(NSURLResponse *response, NSData *responseData, NSError *error);
 
 /**
