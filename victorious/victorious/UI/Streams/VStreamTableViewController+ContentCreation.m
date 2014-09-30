@@ -135,7 +135,7 @@
                                            answer2Text:answer2Text
                                             media1Url:media1URL
                                             media2Url:media2URL
-                                            completion:^(NSError *error)
+                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
     {
         if (error)
         {

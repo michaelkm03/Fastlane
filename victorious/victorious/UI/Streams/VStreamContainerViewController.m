@@ -302,31 +302,31 @@
                                            answer2Text:answer2Text
                                              media1Url:media1URL
                                              media2Url:media2URL
-                                            completion:^(NSError *error)
+                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
     {
-         if (error)
-         {
-             NSLog(@"%@", error);
-             
-             if (kVStillTranscodingError == error.code)
-             {
-                 UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                      message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                     delegate:nil
-                                                            cancelButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
-             }
-             else
-             {
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                                 message:error.localizedDescription
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
-             }
-         }
+        if (error)
+        {
+            NSLog(@"%@", error);
+            
+            if (kVStillTranscodingError == error.code)
+            {
+                UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                     message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                    delegate:nil
+                                                           cancelButtonTitle:nil
+                                                           otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                [alert show];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
+                                                                message:error.localizedDescription
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                [alert show];
+            }
+        }
     }];
 }
 

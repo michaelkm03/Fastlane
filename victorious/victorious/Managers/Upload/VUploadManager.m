@@ -15,11 +15,12 @@ static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirector
 static NSString * const kTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
 static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.urlSession";
 
-@interface VUploadManager () <NSURLSessionTaskDelegate>
+@interface VUploadManager () <NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *urlSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
 @property (nonatomic, strong) NSMapTable *completionBlocks;
+@property (nonatomic, strong) NSMapTable *responseData;
 
 @end
 
@@ -36,6 +37,7 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
         _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
+        _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
     }
     return self;
 }
@@ -149,7 +151,22 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     totalBytesSent:(int64_t)totalBytesSent
 totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
-    
+    // TODO
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
+{
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        NSMutableData *responseData = [self.responseData objectForKey:dataTask];
+        
+        if (!responseData)
+        {
+            responseData = [[NSMutableData alloc] init];
+            [self.responseData setObject:responseData forKey:dataTask];
+        }
+        [responseData appendData:data];
+    });
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
@@ -157,9 +174,19 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     dispatch_async(self.sessionQueue, ^(void)
     {
         VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
+        NSData *data = [self.responseData objectForKey:task];
+        
+        if (data)
+        {
+            [self.responseData removeObjectForKey:task];
+        }
+        
         if (completionBlock)
         {
-            completionBlock(error);
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                completionBlock(task.response, data, error);
+            });
             [self.completionBlocks removeObjectForKey:task];
         }
     });

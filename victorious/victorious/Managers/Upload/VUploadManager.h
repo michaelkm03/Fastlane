@@ -10,7 +10,7 @@
 
 @class VObjectManager, VUploadTaskInformation;
 
-typedef void (^VUploadManagerTaskCompleteBlock)(NSError *error);
+typedef void (^VUploadManagerTaskCompleteBlock)(NSURLResponse *response, NSData *responseData, NSError *error);
 
 /**
  Manages background upload tasks

@@ -83,7 +83,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            completionBlock([NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
         }
         return;
     }
