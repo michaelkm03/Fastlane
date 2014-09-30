@@ -102,12 +102,9 @@
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        if ([self.locationManager respondsToSelector:NSSelectorFromString(@"requestWhenInUseAuthorization")])
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
         {
-            SEL selector = NSSelectorFromString(@"requestWhenInUseAuthorization");
-            IMP imp = [self.locationManager methodForSelector:selector];
-            void (*func)(id, SEL) = (void *)imp;
-            func(self.locationManager, selector);
+            [self.locationManager requestWhenInUseAuthorization];
         }
     }
     
