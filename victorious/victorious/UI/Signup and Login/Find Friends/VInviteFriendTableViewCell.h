@@ -17,5 +17,6 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 @property (nonatomic) BOOL haveRelationship;
 
 @property (nonatomic, weak) IBOutlet UIImageView *followIconImageView;
+- (void)imageTapAction:(id)sender;
 
 @end

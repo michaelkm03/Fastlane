@@ -101,7 +101,7 @@
                 self.tableView.selectAllButton.hidden = NO;
                 if (self.shouldAutoselectNewFriends)
                 {
-                    [self selectAllRows];
+                    [self selectAllRows:nil];
                 }
             }
             else
@@ -273,10 +273,10 @@
 
 - (IBAction)selectAllButtonTapped:(id)sender
 {
-    [self selectAllRows];
+    [self selectAllRows:sender];
 }
 
-- (void)selectAllRows
+- (void)selectAllRows:(id)sender
 {
     for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
     {
@@ -323,22 +323,12 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser addFollowingObject:user];
-        [moc saveToPersistentStore:nil];
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         if (error.code == 6001)  // Follows relationship already exists
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser addFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             return;
         }
         
@@ -350,6 +340,14 @@
         [alert show];
     };
     
+    // Add user relationshipt to local persistent store
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSManagedObjectContext *moc = mainUser.managedObjectContext;
+    
+    [mainUser addFollowingObject:user];
+    [moc saveToPersistentStore:nil];
+    
+    // Add user at backend
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
 }
 
@@ -357,22 +355,13 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
         
-        [mainUser removeFollowingObject:user];
-        [moc saveToPersistentStore:nil];
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         if (error.code == 5001)  // Follows relationship does not exist
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             return;
         }
         
@@ -384,6 +373,14 @@
         [alert show];
     };
     
+    // Remove user from local persistent store
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSManagedObjectContext *moc = mainUser.managedObjectContext;
+    
+    [mainUser removeFollowingObject:user];
+    [moc saveToPersistentStore:nil];
+    
+    // Remove user at backend
     [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
     
 }

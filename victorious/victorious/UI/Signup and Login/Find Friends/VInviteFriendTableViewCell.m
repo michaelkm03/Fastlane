@@ -90,10 +90,48 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
      });
 }
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    if (self.selected == selected)
+    {
+        return;
+    }
+    
+    [super setSelected:selected animated:animated];
+    
+    // Check for existance of follow block
+    if (self.followAction)
+    {
+        self.followAction();
+    }
+    
+    void (^animations)() = ^(void)
+    {
+        if (selected)
+        {
+            self.followIconImageView.image = self.unfollowIcon;
+        }
+        else
+        {
+            self.followIconImageView.image = self.followIcon;
+        }
+    };
+    if (animated)
+    {
+        [UIView transitionWithView:self.followIconImageView
+                          duration:0.3
+                           options:(selected ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
+                        animations:animations
+                        completion:nil];
+    }
+    else
+    {
+        animations();
+    }
+}
+
 - (void)imageTapAction:(id)sender
 {
-    UIImage *followImage = [UIImage imageNamed:@"buttonFollow"];
-    UIImage *followedImage = [UIImage imageNamed:@"buttonFollowed"];
     
     // Check for existance of follow block
     if (self.followAction)
@@ -105,11 +143,11 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     {
         if (_haveRelationship)
         {
-            [self.followIconImageView setImage:followImage];
+            [self.followIconImageView setImage:self.unfollowIcon];
         }
         else
         {
-            [self.followIconImageView  setImage:followedImage];
+            [self.followIconImageView  setImage:self.followIcon];
         }
     };
     
