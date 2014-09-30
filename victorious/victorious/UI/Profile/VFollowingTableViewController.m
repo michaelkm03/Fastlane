@@ -61,82 +61,46 @@
                                      failBlock:failureBlock];
 }
 
-- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] unfollowUser:user
-                                    successBlock:successBlock
-                                       failBlock:failureBlock];
-}
-
 - (void)followFriendAction:(VUser *)user
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add user relationship to local persistent store
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSManagedObjectContext *moc = mainUser.managedObjectContext;
         
         [mainUser addFollowingObject:user];
         [moc saveToPersistentStore:nil];
+        
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in indexPaths)
+        {
+            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            if (cell.profile == user)
+            {
+                [cell flipFollowIconAction:nil];
+                return;
+            }
+        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        NSInteger errorCode = error.code;
-        if (errorCode == 6001)  // Follows relationship already exists
+        if (error.code == 6001)  //<-- Follows relationship already exists
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser addFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             return;
         }
         
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                        message:error.localizedDescription
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
         [alert show];
     };
     
+    // Add user at backend
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-}
-
-- (void)unfollowFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser removeFollowingObject:user];
-        [moc saveToPersistentStore:nil];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        NSInteger errorCode = error.code;
-        if (errorCode == 5001)  // Follows relationship does not exist
-        {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
-            return;
-        }
-        
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-    
 }
 
 #pragma mark - Table view data source
@@ -162,14 +126,7 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        if (haveRelationship)
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        [self followFriendAction:profile];
     };
     return cell;
 }

@@ -51,16 +51,15 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 {
     _haveRelationship = haveRelationship;
     
-    UIImage *image = [UIImage imageNamed:@"buttonFollow"];
-    
     if (_haveRelationship)
     {
-        image = [UIImage imageNamed:@"buttonFollowed"];
+        self.followIconImageView.hidden = YES;
+        //self.followIconImageView.image = self.unfollowIcon;
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self.followIconImageView setImage:image];
-    });
+    else
+    {
+        [self.followIconImageView setImage:self.followIcon];
+    }
 }
 
 - (void)setProfile:(VUser *)profile
@@ -70,92 +69,65 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
-    
-    UIImage *buttonImage;
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
-    BOOL followingOrFollower = ([_profile.followers containsObject:mainUser] || [_profile.following containsObject:mainUser]);
-    if (followingOrFollower)
-    {
-        buttonImage = self.unfollowIcon;
-    }
-    else
-    {
-        buttonImage = self.followIcon;
-    }
-    
-     dispatch_async(dispatch_get_main_queue(), ^(void)
-    {
-         self.followIconImageView.image = buttonImage;
-     });
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    if (self.selected == selected)
-    {
-        return;
-    }
-    
-    [super setSelected:selected animated:animated];
-    
-    // Check for existance of follow block
-    if (self.followAction)
-    {
-        self.followAction();
-    }
-    
-    void (^animations)() = ^(void)
-    {
-        if (selected)
-        {
-            self.followIconImageView.image = self.unfollowIcon;
-        }
-        else
-        {
-            self.followIconImageView.image = self.followIcon;
-        }
-    };
-    if (animated)
-    {
-        [UIView transitionWithView:self.followIconImageView
-                          duration:0.3
-                           options:(selected ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
-                        animations:animations
-                        completion:nil];
-    }
-    else
-    {
-        animations();
-    }
-}
+#pragma mark - Button Actions
 
-- (void)imageTapAction:(id)sender
+- (void)enableFollowIcon:(id)sender
 {
-    
-    // Check for existance of follow block
-    if (self.followAction)
-    {
-        self.followAction();
-    }
-    
     void (^animations)() = ^(void)
     {
-        if (_haveRelationship)
-        {
-            [self.followIconImageView setImage:self.unfollowIcon];
-        }
-        else
-        {
-            [self.followIconImageView  setImage:self.followIcon];
-        }
+        self.followIconImageView.alpha = 1.0f;
+        self.followIconImageView.image = self.unfollowIcon;
     };
     
     [UIView transitionWithView:self.followIconImageView
                       duration:0.3
-                       options:(_haveRelationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
+                       options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
                     completion:nil];
+}
+
+- (void)flipFollowIconAction:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followIconImageView.alpha = 1.0f;
+        [self.followIconImageView  setImage:self.unfollowIcon];
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)disableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followIconImageView.alpha = 0.3f;
+        self.followIconImageView.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+
+}
+
+- (void)imageTapAction:(id)sender
+{
+    // Check for existance of follow block
+    if (self.followAction)
+    {
+        self.followAction();
+    }
+    
+    [self disableFollowIcon:nil];
 }
 
 @end

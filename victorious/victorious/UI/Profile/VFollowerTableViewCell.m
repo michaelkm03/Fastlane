@@ -17,6 +17,9 @@
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
 
+@property (nonatomic, strong) UIImage *followImage;
+@property (nonatomic, strong) UIImage *unfollowImage;
+
 @end
 
 @implementation VFollowerTableViewCell
@@ -25,6 +28,9 @@
 {
     _profile = profile;
 
+    self.followImage   = [UIImage imageNamed:@"buttonFollow"];
+    self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
+    
     [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
@@ -51,46 +57,72 @@
 {
     _haveRelationship = haveRelationship;
     
-    UIImage *image = [UIImage imageNamed:@"buttonFollow"];
-    
     if (_haveRelationship)
     {
-        image = [UIImage imageNamed:@"buttonFollowed"];
+        self.followButton.hidden = YES;
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self.followButton setImage:image forState:UIControlStateNormal];
-    });
+    else
+    {
+        self.followButton.imageView.image = self.followImage;
+    }
 }
 
 - (IBAction)follow:(id)sender
 {
-    UIImage *followImage = [UIImage imageNamed:@"buttonFollow"];
-    UIImage *followedImage = [UIImage imageNamed:@"buttonFollowed"];
-    
     // Check for existance of follow block
     if (self.followButtonAction)
     {
         self.followButtonAction();
     }
     
+    [self disableFollowIcon:nil];
+}
+
+#pragma mark - Button Actions
+
+- (void)enableFollowIcon:(id)sender
+{
     void (^animations)() = ^(void)
     {
-        if (_haveRelationship)
-        {
-            [self.followButton setImage:followImage forState:UIControlStateNormal];
-        }
-        else
-        {
-            [self.followButton  setImage:followedImage forState:UIControlStateNormal];
-        }
+        self.followButton.alpha = 1.0f;
+        self.followButton.imageView.image = self.unfollowImage;
     };
     
     [UIView transitionWithView:self.followButton
-                          duration:0.3
-                           options:(_haveRelationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
-                        animations:animations
-                        completion:nil];
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)flipFollowIconAction:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.imageView.image = self.unfollowImage;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)disableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 0.3f;
+        self.followButton.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
 }
 
 @end
