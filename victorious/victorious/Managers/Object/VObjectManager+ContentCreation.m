@@ -104,35 +104,55 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
+    
+    NSError *uploadCreationError = nil;
+    VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];
+    if (!uploadTask)
+    {
+        if (completionBlock)
+        {
+            if (!uploadCreationError)
+            {
+                uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
+            }
+            completionBlock(nil, nil, uploadCreationError);
+        }
+        return;
+    }
     [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
 }
 
-- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
-                                    description:(NSString *)description
-                                    captionType:(VCaptionType)type
-                                      expiresAt:(NSString *)expiresAt
-                                   parentNodeId:(NSNumber *)parentNodeId
-                                          speed:(CGFloat)speed
-                                       loopType:(VLoopType)loopType
-                                       mediaURL:(NSURL *)mediaUrl
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
+- (void)uploadMediaWithName:(NSString *)name
+                description:(NSString *)description
+                captionType:(VCaptionType)type
+                  expiresAt:(NSString *)expiresAt
+               parentNodeId:(NSNumber *)parentNodeId
+                      speed:(CGFloat)speed
+                   loopType:(VLoopType)loopType
+                   mediaURL:(NSURL *)mediaUrl
+                 completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert(mediaUrl != nil);
     if (!mediaUrl)
     {
-        return nil;
+        if (completionBlock)
+        {
+            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+        }
+        return;
     }
     
-    NSMutableDictionary *parameters = [@{@"name":name ?: [NSNull null],
-                                         @"description":description ?: [NSNull null]} mutableCopy];
+    NSMutableDictionary *parameters = [@{@"name": name ?: [NSNull null],
+                                         @"description": description ?: [NSNull null],
+                                         @"media_data": mediaUrl,
+                                       } mutableCopy];
     if (expiresAt)
     {
         parameters[@"expires_at"] = expiresAt;
     }
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
-        parameters[@"parent_node_id"] = parentNodeId;
+        parameters[@"parent_node_id"] = [parentNodeId stringValue];
     }
 
     if (type == VCaptionTypeMeme)
@@ -153,28 +173,29 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"playback"] = loopParam;
     }
     
-    NSDictionary *allUrls = @{@"media_data": mediaUrl};
+    NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSDictionary *payload = fullResponse[kVPayloadKey];
-        
-        NSNumber *sequenceID = payload[@"sequence_id"];
-        
-        //Try to fetch the sequence
-        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
+    uploadTaskCreator.request = request;
+    uploadTaskCreator.formFields = parameters;
 
-        if (success)
+    NSError *uploadCreationError = nil;
+    VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];
+    if (!uploadTask)
+    {
+        if (completionBlock)
         {
-            success(operation, fullResponse, resultObjects);
+            if (!uploadCreationError)
+            {
+                uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
+            }
+            completionBlock(nil, nil, uploadCreationError);
         }
-    };
-    
-    return [self uploadURLs:allUrls
-                     toPath:@"/api/mediaupload/create"
-                 parameters:[parameters copy]
-               successBlock:fullSuccess
-                  failBlock:fail];
+        return;
+    }
+    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
 }
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node

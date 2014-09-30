@@ -51,16 +51,15 @@ extern NSString * const VObjectManagerContentIndexKey;
                  media2Url:(NSURL *)media2Url
                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
-- (AFHTTPRequestOperation *)uploadMediaWithName:(NSString *)name
-                                    description:(NSString *)description
-                                    captionType:(VCaptionType)type
-                                      expiresAt:(NSString *)expiresAt
-                                   parentNodeId:(NSNumber *)parentNodeId
-                                          speed:(CGFloat)speed
-                                       loopType:(VLoopType)loopType
-                                       mediaURL:(NSURL *)mediaUrl
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
+- (void)uploadMediaWithName:(NSString *)name
+                description:(NSString *)description
+                captionType:(VCaptionType)type
+                  expiresAt:(NSString *)expiresAt
+               parentNodeId:(NSNumber *)parentNodeId
+                      speed:(CGFloat)speed
+                   loopType:(VLoopType)loopType
+                   mediaURL:(NSURL *)mediaUrl
+                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**
  Creates a new comment and posts it to the server
