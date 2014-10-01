@@ -18,6 +18,7 @@
 #import "VFollowerTableViewCell.h"
 
 #import "VUser.h"
+#import "VConstants.h"
 
 //ObjectManager
 #import "VObjectManager+DirectMessaging.h"
@@ -284,7 +285,7 @@
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  //<-- Follows relationship already exists
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
             return;
         }

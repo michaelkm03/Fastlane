@@ -14,6 +14,7 @@
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
+#import "VConstants.h"
 
 @interface VFollowerTableViewController ()
 
@@ -94,7 +95,7 @@
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  //<-- Follows relationship already exists
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
             // Add user relationship to local persistent store
             VUser *mainUser = [[VObjectManager sharedManager] mainUser];

@@ -357,7 +357,7 @@
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  //<-- Follows relationship already exists
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
             return;
         }
@@ -372,40 +372,6 @@
     
     // Add user at backend
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-}
-
-- (void)unfollowFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        if (error.code == 5001)  // Follows relationship does not exist
-        {
-            return;
-        }
-        
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    // Remove user from local persistent store
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSManagedObjectContext *moc = mainUser.managedObjectContext;
-    
-    [mainUser removeFollowingObject:user];
-    [moc saveToPersistentStore:nil];
-    
-    // Remove user at backend
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-    
 }
 
 #pragma mark - UITableView Section Header
@@ -555,14 +521,7 @@
     // Tell the button what to do when it's tapped
     cell.followAction = ^(void)
     {
-        if (haveRelationship)
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        [self followFriendAction:profile];
     };
 
     return cell;
