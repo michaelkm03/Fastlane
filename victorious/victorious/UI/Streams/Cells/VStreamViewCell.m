@@ -32,9 +32,9 @@
 
 #import "VEphemeralTimerView.h"
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, NSLayoutManagerDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
+@property (nonatomic, strong) UITextView            *descriptionTextView;
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
@@ -42,9 +42,24 @@
 @property (nonatomic, strong) VEphemeralTimerView   *ephemeralTimerView;
 @property (nonatomic, strong) NSArray               *hashTagRanges;
 
+@property (nonatomic, strong) NSTextStorage         *textStorage;
+@property (nonatomic, strong) NSLayoutManager       *layoutManager;
+
 @end
 
 
+@interface NSLayoutManager(TableViewCellSupport)
+
+@end
+
+@implementation NSLayoutManager(TableViewCellSupport)
+
+- (void)layoutSubviewsOfCell:(UITableViewCell *)cell
+{
+    // This category is a hack to fix a crash when the layou
+}
+
+@end
 
 @implementation VStreamViewCell
 
@@ -57,7 +72,7 @@
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    [self setupTappableTextView];
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
@@ -68,6 +83,73 @@
     [self addSubview:self.streamCellHeaderView];
     
     [self addSubview:self.commentHitboxButton];
+}
+
+- (void)setupTappableTextView
+{
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    textContainer.widthTracksTextView = YES;
+    textContainer.heightTracksTextView = YES;
+    
+    self.layoutManager = [[NSLayoutManager alloc] init];
+    self.layoutManager.delegate = self;
+    [self.layoutManager addTextContainer:textContainer];
+    
+    self.textStorage = [[NSTextStorage alloc] init];
+    [self.textStorage addLayoutManager:self.layoutManager];
+    
+    CGRect textViewFrame = self.bounds;
+    UITextView *textView = [[UITextView alloc] initWithFrame:textViewFrame textContainer:textContainer];
+    textView.backgroundColor = [UIColor clearColor];
+    textView.textColor = [UIColor whiteColor];
+    textView.translatesAutoresizingMaskIntoConstraints = NO;
+    textView.editable = NO;
+    textView.selectable = NO;
+    textView.scrollEnabled = NO;
+    textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    [self.overlayView addSubview:textView];
+    
+    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView(34)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
+    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
+    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
+    [textView addGestureRecognizer:tap];
+    
+    self.descriptionTextView = textView;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.descriptionTextView.textContainer.size = self.bounds.size;
+    self.descriptionTextView = self.descriptionTextView;
+}
+
+- (void)textTapped:(UITapGestureRecognizer *)tap
+{
+    NSString *fieldText = self.descriptionTextView.text;
+    
+    CGPoint tapPoint = [tap locationInView:self.descriptionTextView];
+    NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.descriptionTextView.textContainer];
+    NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
+    
+    NSArray *hashTags = [VHashTags detectHashTags:fieldText];
+    if ([hashTags count] > 0)
+    {
+        [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop)
+         {
+             NSRange tagRange = [hastagRangeValue rangeValue];
+             if (NSLocationInRange(character, tagRange))
+             {
+                 if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
+                 {
+                     [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:[fieldText substringWithRange:tagRange]];
+                     *stop = YES;
+                 }
+             }
+         }];
+    }
 }
 
 - (void)contentExpired
@@ -170,10 +252,10 @@
                                       value:shadow
                                       range:NSMakeRange(0, newAttributedCellText.length)];
         
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        self.descriptionTextView.attributedText = newAttributedCellText;
     }
     
-    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.descriptionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     
     if (_sequence.expiresAt)
@@ -248,6 +330,12 @@
     self.shadeView.alpha = 1;
     self.animationImage.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
+}
+
+#pragma mark - NSLayoutManagerDelegate methods
+
+- (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag
+{
 }
 
 @end
