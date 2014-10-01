@@ -92,7 +92,7 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter )
+    if (self.loginType != kVLoginTypeEmail)
     {
         self.usernameTextField.text = self.profile.name;
     }
