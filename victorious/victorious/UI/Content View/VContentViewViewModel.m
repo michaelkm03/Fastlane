@@ -336,7 +336,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSURL *)shareURL
 {
-    return [NSURL URLWithString:self.currentNode.shareUrlPath] ?: [NSNull null];
+    return [NSURL URLWithString:self.currentNode.shareUrlPath] ?: nil;
 }
 
 - (NSInteger)nodeID
