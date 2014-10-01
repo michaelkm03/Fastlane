@@ -34,6 +34,7 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     self = [super init];
     if (self)
     {
+        _useBackgroundSession = YES;
         _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
@@ -48,7 +49,15 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     {
         if (!self.urlSession)
         {
-            NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:kURLSessionIdentifier];
+            NSURLSessionConfiguration *sessionConfig;
+            if (self.useBackgroundSession)
+            {
+                sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:kURLSessionIdentifier];
+            }
+            else
+            {
+                sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+            }
             self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
             [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
             {
@@ -117,6 +126,12 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
         backgroundSessionEventsCompleteHandler = _backgroundSessionEventsCompleteHandler;
     });
     return backgroundSessionEventsCompleteHandler;
+}
+
+- (void)setUseBackgroundSession:(BOOL)useBackgroundSession
+{
+    NSAssert(self.urlSession == nil, @"Can't change useBackgroundSession property after the session has already been created");
+    _useBackgroundSession = useBackgroundSession;
 }
 
 #pragma mark - NSURLSessionDelegate methods

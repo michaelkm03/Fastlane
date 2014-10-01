@@ -27,6 +27,12 @@ typedef void (^VUploadManagerTaskCompleteBlock)(NSURLResponse *response, NSData 
 @property (nonatomic, weak, readonly) VObjectManager *objectManager; ///< The objectManager passed to the -init call
 
 /**
+ If YES (default), uploads will happen via a background session.
+ This is really only meant to be set to NO for unit testing.
+ */
+@property (nonatomic) BOOL useBackgroundSession;
+
+/**
  A completion handler that will be called in response to the NSURLSessionDelegate 
  method URLSessionDidFinishEventsForBackgroundURLSession:
  */

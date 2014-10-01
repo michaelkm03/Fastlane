@@ -32,12 +32,18 @@
 @import MediaPlayer;
 @import CoreLocation;
 
+static BOOL isRunningTests(void) __attribute__((const));
 static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    if (isRunningTests())
+    {
+        return YES;
+    }
+    
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
@@ -137,6 +143,15 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+}
+
+#pragma mark -
+
+static BOOL isRunningTests(void)
+{
+    NSDictionary* environment = [[NSProcessInfo processInfo] environment];
+    NSString* injectBundle = environment[@"XCInjectBundle"];
+    return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
 
 @end

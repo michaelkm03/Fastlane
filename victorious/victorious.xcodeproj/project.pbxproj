@@ -226,6 +226,8 @@
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
+		038B7F9B19DBB1BC00F739DF /* VUploadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038B7F9A19DBB1BC00F739DF /* VUploadManagerTests.m */; };
+		038B7F9F19DBB71900F739DF /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 038B7F9E19DBB71900F739DF /* VAsyncTestHelper.m */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
@@ -772,6 +774,9 @@
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
+		038B7F9A19DBB1BC00F739DF /* VUploadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadManagerTests.m; sourceTree = "<group>"; };
+		038B7F9D19DBB71900F739DF /* VAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsyncTestHelper.h; sourceTree = "<group>"; };
+		038B7F9E19DBB71900F739DF /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerializationTests.m; sourceTree = "<group>"; };
@@ -1737,6 +1742,15 @@
 			path = Upload;
 			sourceTree = "<group>";
 		};
+		038B7F9C19DBB70200F739DF /* AsyncTestHelper */ = {
+			isa = PBXGroup;
+			children = (
+				038B7F9D19DBB71900F739DF /* VAsyncTestHelper.h */,
+				038B7F9E19DBB71900F739DF /* VAsyncTestHelper.m */,
+			);
+			path = AsyncTestHelper;
+			sourceTree = "<group>";
+		};
 		0395575719C142C2005E32FB /* Capture */ = {
 			isa = PBXGroup;
 			children = (
@@ -2045,12 +2059,14 @@
 			isa = PBXGroup;
 			children = (
 				BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */,
+				038B7F9C19DBB70200F739DF /* AsyncTestHelper */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
 				0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */,
 				03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */,
 				037CB73219CF86C60084BBED /* VMultipartFormDataWriterTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
+				038B7F9A19DBB1BC00F739DF /* VUploadManagerTests.m */,
 				0372587619D7562F00836B3F /* VUploadTaskCreatorTests.m */,
 			);
 			path = victoriousTests;
@@ -2910,6 +2926,8 @@
 				0372587719D7562F00836B3F /* VUploadTaskCreatorTests.m in Sources */,
 				037CB73319CF86C60084BBED /* VMultipartFormDataWriterTests.m in Sources */,
 				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
+				038B7F9F19DBB71900F739DF /* VAsyncTestHelper.m in Sources */,
+				038B7F9B19DBB1BC00F739DF /* VUploadManagerTests.m in Sources */,
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
 				039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */,
 			);
