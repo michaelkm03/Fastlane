@@ -11,7 +11,7 @@
 
 @implementation VSwizzle
 
-+(void) swizzleWithOriginalClass:(Class)originalClass originalSelector:(SEL)originalSelector
++ (void) swizzleWithOriginalClass:(Class)originalClass originalSelector:(SEL)originalSelector
 				   swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector
 {
 	Method originalMethod = class_getInstanceMethod( originalClass, originalSelector );
@@ -21,12 +21,15 @@
 										originalSelector,
 										method_getImplementation( swizzledMethod ),
 										method_getTypeEncoding( swizzledMethod ) );
-	if ( didAddMethod ) {
+	if ( didAddMethod )
+    {
 		class_replaceMethod(originalClass,
 							swizzledSelector,
 							method_getImplementation( originalMethod ),
 							method_getTypeEncoding( originalMethod ) );
-	} else {
+	}
+    else
+    {
 		method_exchangeImplementations( originalMethod, swizzledMethod );
 	}
 }

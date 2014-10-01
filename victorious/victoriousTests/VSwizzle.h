@@ -14,7 +14,7 @@
  Switches method implementations.
  Based on sample by NSHipter http://nshipster.com/method-swizzling/
  */
-+(void) swizzleWithOriginalClass:(Class)originalClass originalSelector:(SEL)originalSelector
++ (void)swizzleWithOriginalClass:(Class)originalClass originalSelector:(SEL)originalSelector
 				   swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector;
 
 @end

@@ -280,6 +280,18 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = self.mainUser;
+        
+        // TODO: This is a hack just to get the 'status' property quickly.  Mapping should be handled through RestKit properly in the future
+        NSDictionary *userDict = fullResponse[ kVPayloadKey ];
+        if ( userDict && [userDict isKindOfClass:[NSDictionary class]] )
+        {
+            NSString *statusValue = userDict[ @"status" ];
+            if ( statusValue && [statusValue isKindOfClass:[NSString class]] )
+            {
+                user.status = statusValue;
+            }
+        }
+        
         if (email)
         {
             user.email = email;
