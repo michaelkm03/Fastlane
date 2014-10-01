@@ -263,8 +263,8 @@
 "InviteYourFriends"     =   "Invite your Friends!";
 "InviteUsingEmail"      =   "Invite using Email";
 "InviteUsingSMS"        =   "Invite using SMS";
-"InviteFriendsSubject"  =   "Invite Friends";
-"InviteFriendsBody"     =   "Invite........................";
+"InviteFriendsSubject"  =   "Check out this app by";
+"InviteFriendsBody"     =   "I downloaded a new app from %@. It's a community for other fans like us to interact. Download it now at:";
 
 "FindContacts"          =   "Search and invite your friends from your contacts";
 "Access Your Contacts"  =   "Access your Contacts";
