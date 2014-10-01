@@ -99,7 +99,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 - (void)tappedOnMedia
 {
-    if (self.onMediaTapped)
+    if (self.onMediaTapped && self.commentAndMediaView.hasMedia)
     {
         self.onMediaTapped();
     }
