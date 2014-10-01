@@ -275,7 +275,10 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         case VActionSheetTableViewSecionDescription:
             return NO;
         case VActionSheetTableViewSecionActions:
-            return YES;
+        {
+            VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+            return actionItem.enabled;
+        }
     }
     return YES;
 }

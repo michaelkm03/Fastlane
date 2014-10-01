@@ -68,10 +68,6 @@
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 
-// Sharing
-//TODO: would like to move this out of the VC
-#import "VObjectManager+ContentCreation.h"
-
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
@@ -386,7 +382,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                                                                                   animated:YES];
                                          }];
                                     }];
-    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"") actionIcon:[UIImage imageNamed:@"icon_remix"] detailText:self.viewModel.remixCountText];
+    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
+                                                          actionIcon:[UIImage imageNamed:@"icon_remix"]
+                                                          detailText:self.viewModel.remixCountText];
     remixItem.selectionHandler = ^(void)
     {
         if (![VObjectManager sharedManager].mainUser)
@@ -486,7 +484,11 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
              
          }];
     };
-    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Repost", @"") actionIcon:[UIImage imageNamed:@"icon_repost"] detailText:self.viewModel.repostCountText];
+    NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
+    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
+                                                           actionIcon:[UIImage imageNamed:@"icon_repost"]
+                                                           detailText:self.viewModel.repostCountText
+                                                              enabled:self.viewModel.hasReposted ? NO : YES];
     repostItem.selectionHandler = ^(void)
     {
         [self dismissViewControllerAnimated:YES
@@ -497,21 +499,12 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
                 [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
                 return;
             }
+            if (self.viewModel.hasReposted)
+            {
+                return;
+            }
             
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                               onCancelButton:nil
-                                                       destructiveButtonTitle:nil
-                                                          onDestructiveButton:nil
-                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Repost", nil),  ^(void)
-                                          {
-                                              [[VObjectManager sharedManager] repostNode:self.viewModel.currentNode
-                                                                                withName:nil
-                                                                            successBlock:nil
-                                                                               failBlock:nil];
-                                          }, nil];
-            
-            [actionSheet showInView:self.view];
+            [self.viewModel repost];
         }];
     };
     repostItem.detailSelectionHandler = ^(void)
@@ -524,7 +517,9 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
             [self.navigationController pushViewController:vc animated:YES];
         }];
     };
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"") actionIcon:[UIImage imageNamed:@"icon_share"] detailText:self.viewModel.shareCountText];
+    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"")
+                                                          actionIcon:[UIImage imageNamed:@"icon_share"]
+                                                          detailText:self.viewModel.shareCountText];
 
     void (^shareHandler)(void) = ^void(void)
     {

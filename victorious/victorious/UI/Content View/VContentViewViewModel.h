@@ -97,6 +97,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, strong, readonly) VNode *currentNode;
 
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
+@property (nonatomic, readonly) BOOL hasReposted;
 
 @property (nonatomic, readonly) NSString *remixCountText;
 @property (nonatomic, readonly) NSString *repostCountText;
@@ -129,6 +130,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  Fetches the all comments and realtime comments for this viewModel's sequence.
  */
 - (void)fetchComments;
+
+- (void)repost;
 
 /**
  *  Returns the corrensponding comment body for the given commentIndex. Might return nil if comment has no body text.
