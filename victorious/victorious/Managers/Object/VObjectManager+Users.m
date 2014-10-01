@@ -25,6 +25,10 @@
 
 @end
 
+static NSString * const kVAPIParamMessage = @"message";
+static NSString * const kVAPIParamContext = @"context";
+static NSString * const kVAPIParamSearch = @"search";
+
 @implementation VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
@@ -319,7 +323,8 @@
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{ @"emails": emails };
+    NSString *emailString = [emails componentsJoinedByString:@","];
+    NSDictionary *parameters = @{ @"emails": emailString };
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -337,8 +342,23 @@
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
-                                        withSuccessBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    return [self findUsersBySearchString:search_string context:nil withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
+                                                      withSuccessBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
+    return [self findUsersBySearchString:search_string context:kVAPIParamMessage withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                     context:(NSString *)context
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -348,8 +368,13 @@
         }
     };
     
+
+    NSMutableDictionary *params = [@{ kVAPIParamSearch : search_string } mutableCopy];
     
-    NSDictionary *params = @{ @"search": search_string };
+    if (context.length)
+    {
+        params[kVAPIParamContext] = context;
+    }
     
     return [self POST:@"/api/userinfo/search"
                object:nil
@@ -386,6 +411,19 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Map anyone with a relationship to the main user object
+        NSInteger cnt = (NSInteger)resultObjects.count;
+        for (NSInteger i = 0; i < cnt ; i++)
+        {
+            VUser *user = resultObjects[i];
+            BOOL following = [fullResponse[kVPayloadKey][@"objects"][i][@"following"] boolValue];
+            if (following)
+            {
+                [self.mainUser addFollowingObject:user];
+            }
+        }
+        [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);

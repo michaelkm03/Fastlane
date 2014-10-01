@@ -52,6 +52,9 @@ NSString * const VStreamPollCellNibName = @"VStreamPollCell";
     }
     
     [self setupMedia];
+
+    // Add Comment Button to View
+    [self addSubview:self.commentHitboxButton];
 }
 
 - (void)setupMedia

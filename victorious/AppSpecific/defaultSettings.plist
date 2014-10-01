@@ -14,6 +14,8 @@
 	<string>itms-apps://itunes.com/apps</string>
 	<key>url.tos</key>
 	<string>/api/tos</string>
+	<key>require_profile_image</key>
+	<true/>
 	<key>channelsEnabled</key>
 	<true/>
 	<key>marqueeEnabled</key>

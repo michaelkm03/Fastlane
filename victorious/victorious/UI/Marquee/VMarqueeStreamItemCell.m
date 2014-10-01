@@ -73,8 +73,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ([streamItem isKindOfClass:[VSequence class]])
     {
-        NSString *profileImagePath = ((VSequence *)streamItem).user.profileImagePathSmall ?: ((VSequence *)streamItem).user.pictureUrl;
-        [self.profileImageButton setImageWithURL:[NSURL URLWithString:profileImagePath]
+        [self.profileImageButton setImageWithURL:[NSURL URLWithString:((VSequence *)streamItem).user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_full"]
                                         forState:UIControlStateNormal];
         self.profileImageButton.hidden = NO;
