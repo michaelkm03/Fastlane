@@ -31,7 +31,7 @@
     self.followImage   = [UIImage imageNamed:@"buttonFollow"];
     self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
     
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    [self.profileImage setImageWithURL:[NSURL URLWithString: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
