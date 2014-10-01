@@ -52,6 +52,9 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     self.marquee.delegate = self;
     self.marquee.collectionView = self.collectionView;
     self.marquee.tabView = self.tabView;
+    
+    self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+    
     [self.marquee.streamDataSource refreshWithSuccess:^(void)
      {
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
