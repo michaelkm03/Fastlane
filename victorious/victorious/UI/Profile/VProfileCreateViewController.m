@@ -102,6 +102,10 @@
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+        {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     }
     
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
