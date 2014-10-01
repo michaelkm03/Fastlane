@@ -77,12 +77,39 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.blurringContainer insertSubview:blurredView
                                   atIndex:0];
     
-    [self.AvatarImageView v_addMotionEffectsWithMagnitude:10.0f];
     self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
     self.AvatarImageView.layer.masksToBounds = YES;
     self.AvatarImageView.layer.borderWidth = 2.0f;
     self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
+
+    // Half-circle cut-out of the blurred container
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = self.blurringContainer.bounds;
+    maskLayer.fillColor = [UIColor blackColor].CGColor;
+    CGFloat halfAvatarRadius = CGRectGetHeight(self.avatarView.bounds) * 0.25f;
+
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointZero];
+    [path addLineToPoint:CGPointMake(CGRectGetMidX(self.avatarView.frame) - halfAvatarRadius, 0)];
+    [path addCurveToPoint:CGPointMake(CGRectGetMidX(self.avatarView.frame), halfAvatarRadius)
+            controlPoint1:CGPointMake(CGRectGetMidX(self.avatarView.frame)-halfAvatarRadius, 0)
+            controlPoint2:CGPointMake((CGRectGetMidX(self.avatarView.frame)-halfAvatarRadius), halfAvatarRadius)];
+    [path addCurveToPoint:CGPointMake(CGRectGetMidX(self.avatarView.frame) + halfAvatarRadius, 0)
+            controlPoint1:CGPointMake(CGRectGetMidX(self.avatarView.frame) + halfAvatarRadius, halfAvatarRadius)
+            controlPoint2:CGPointMake(CGRectGetMidX(self.avatarView.frame) + halfAvatarRadius, 0)];
+    
+    [path addLineToPoint:CGPointMake(CGRectGetMaxX(self.blurringContainer.bounds), 0)];
+    [path addLineToPoint:CGPointMake(CGRectGetMaxX(self.blurringContainer.bounds), CGRectGetMaxY(self.blurringContainer.bounds))];
+    [path addLineToPoint:CGPointMake(CGRectGetMinX(self.blurringContainer.bounds), CGRectGetMaxY(self.blurringContainer.bounds))];
+    [path closePath];
+    [[UIColor blackColor] setFill];
+    [path fill];
+    maskLayer.path = path.CGPath;
+    
+    [self.blurringContainer.layer addSublayer:maskLayer];
+    self.blurringContainer.layer.mask = maskLayer;
+    
     self.tableView.separatorInset = kSeparatorInsets;
     
     // gradient
