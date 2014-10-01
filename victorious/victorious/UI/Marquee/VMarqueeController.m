@@ -63,12 +63,6 @@
     collectionView.dataSource = self.streamDataSource;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.tabView.numberOfTabs = self.streamDataSource.count;
-    [self enableTimer];
-}
-
 - (void)selectNextTab
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;

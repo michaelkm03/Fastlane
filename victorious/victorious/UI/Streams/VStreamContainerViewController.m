@@ -91,6 +91,22 @@
     [self configureSegmentedControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.hashTag)
+    {
+        NSString *titleText = [NSString stringWithFormat:@"#%@", self.hashTag];
+        self.headerLabel.text = NSLocalizedString(titleText, nil);
+    }
+}
+
+- (void)setHashTag:(NSString *)hashTag
+{
+    _hashTag = hashTag;
+}
+
 - (void)configureHeaderImage
 {
     if (!self.shouldShowHeaderLogo)

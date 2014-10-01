@@ -17,7 +17,6 @@
 #import "VResultView.h"
 
 #import "VNode+Fetcher.h"
-#import "VAsset+Fetcher.h"
 #import "VInteractionManager.h"
 #import "VSequence+Fetcher.h"
 

@@ -23,6 +23,8 @@ NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled
 NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
 NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
 
+//Experiments
+NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 
 //URLs
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";

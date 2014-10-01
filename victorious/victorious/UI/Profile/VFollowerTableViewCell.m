@@ -16,7 +16,9 @@
 @property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIButton           *followButton;
+
+@property (nonatomic, strong) UIImage *followImage;
+@property (nonatomic, strong) UIImage *unfollowImage;
 
 @end
 
@@ -26,7 +28,10 @@
 {
     _profile = profile;
 
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.profileImagePathSmall ?: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    self.followImage   = [UIImage imageNamed:@"buttonFollow"];
+    self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
+    
+    [self.profileImage setImageWithURL:[NSURL URLWithString: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
@@ -40,42 +45,84 @@
     
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
 
-    self.followButton.hidden = YES;
-#if 0 // Disable until this can be debugged
-    if (self.showButton)
+    // If this is the currently logged in user, then hide the follow button
+    VUser *me = [[VObjectManager sharedManager] mainUser];
+    if (_profile == me)
     {
-        [[VObjectManager sharedManager] isUser:self.owner
-                                     following:self.profile
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             if (![resultObjects[0] boolValue])
-             {
-                 self.followButton.hidden = NO;
-             }
-         }
-                                     failBlock:nil];
+        self.followButton.hidden = YES;
     }
-#endif
+}
+
+- (void)setHaveRelationship:(BOOL)haveRelationship
+{
+    _haveRelationship = haveRelationship;
+    
+    if (_haveRelationship)
+    {
+        self.followButton.hidden = YES;
+    }
+    else
+    {
+        self.followButton.imageView.image = self.followImage;
+    }
 }
 
 - (IBAction)follow:(id)sender
 {
-    [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
+    // Check for existance of follow block
+    if (self.followButtonAction)
+    {
+        self.followButtonAction();
+    }
+    
+    [self disableFollowIcon:nil];
+}
+
+#pragma mark - Button Actions
+
+- (void)enableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.imageView.image = self.unfollowImage;
+    };
     
     [UIView transitionWithView:self.followButton
-                      duration:1.0
+                      duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:^{
-                        [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
-                    } completion:^(BOOL finished) {
-                        [UIView animateWithDuration:1.0 animations:^{
-                            self.followButton.alpha = 0.0;
-                        }
-                                         completion:^(BOOL finished)
-                         {
-                             self.followButton.hidden = YES;
-                         }];
-                    }];
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)flipFollowIconAction:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.imageView.image = self.unfollowImage;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)disableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 0.3f;
+        self.followButton.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
 }
 
 @end

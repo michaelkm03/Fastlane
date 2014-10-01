@@ -255,6 +255,7 @@
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
+    [super videoPlayer:videoPlayer didPlayToTime:time];
     self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[videoPlayer playerItemDuration]];
     self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];
 }

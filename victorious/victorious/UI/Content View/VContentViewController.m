@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
 #import "UIViewController+ForceOrientationChange.h"
 
 #import "VConstants.h"
+#import "VAsset.h"
 #import "VAnalyticsRecorder.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
@@ -171,12 +173,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
-    if ([self.currentAsset isVideo]
+    if ([self.currentAsset.data v_hasVideoExtension]
         && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]
         && [self.realtimeCommentVC.comments count])
+    {
         [self showRTC];
+    }
     else
+    {
         [self hideRTC];
+    }
     
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
@@ -780,7 +786,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.currentAsset = [self.currentNode.assets.array firstObject];
     }
     
-    if ([self.currentAsset isVideo])
+    if ([self.currentAsset.data v_hasVideoExtension])
     {
         [self loadImage]; // load the video thumbnail
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
@@ -823,9 +829,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     NSString *label = [self.sequence.remoteId stringByAppendingPathComponent:self.sequence.name];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
     
-    if ([self.currentAsset isVideo])
+    if ([self.currentAsset.data v_hasVideoExtension])
     {
-        
         self.sourceURL = [self.currentAsset.data mp4UrlFromM3U8];
         self.sequenceID = [self.sequence.remoteId integerValue];
         self.nodeID = [self.currentNode.remoteId integerValue];
@@ -835,7 +840,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          ^{
              [self.videoPlayer.player pause];
          }];
-        
     }
     else
     {
@@ -1447,6 +1451,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     container.shouldShowHeaderLogo = NO;
+    container.hashTag = tag;
     [self.navigationController pushViewController:container animated:YES];
 }
 

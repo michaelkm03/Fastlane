@@ -113,6 +113,12 @@
         [imageView removeFromSuperview];
     }
     
+    //Return to the first tab if the current tab is out of bounds
+    if (self.currentlySelectedTab >= self.numberOfTabs)
+    {
+        _currentlySelectedTab = 0;
+    }
+    
     NSMutableArray *imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfTabs];
     CGFloat imageWidth = self.tabImage.size.width;
     CGFloat totalWidth = 0;

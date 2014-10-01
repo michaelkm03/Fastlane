@@ -54,16 +54,15 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
     
-    if (!self.marquee.streamDataSource.count)
-    {
-        [self.marquee refreshWithSuccess:^(void)
-         {
-             self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-             [self.marquee enableTimer];
-             [self.collectionView reloadData];
-         }
-                                 failure:nil];
-    }
+    self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+    
+    [self.marquee.streamDataSource refreshWithSuccess:^(void)
+     {
+         self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+         [self.marquee enableTimer];
+         [self.collectionView reloadData];
+     }
+                                      failure:nil];
 }
 
 - (VStreamItem *)currentItem

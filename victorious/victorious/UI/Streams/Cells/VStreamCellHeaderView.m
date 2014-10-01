@@ -74,7 +74,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 - (void)hideCommentsButton
 {
     [self.commentButton setHidden:YES];
-    [self.commentHitboxButton setHidden:YES];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -89,7 +88,7 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
     
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.profileImagePathSmall ?: self.sequence.user.pictureUrl]
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
 
@@ -131,12 +130,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 }
 
 #pragma mark - Button Actions
-
-- (IBAction)commentButtonAction:(id)sender
-{
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
-}
 
 - (IBAction)profileButtonAction:(id)sender
 {

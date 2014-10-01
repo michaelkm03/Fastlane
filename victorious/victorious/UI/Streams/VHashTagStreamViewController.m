@@ -58,15 +58,6 @@
     return self;
 }
 
-- (void)setHashTag:(NSString *)hashTag
-{
-    _hashTag = hashTag;
-    
-    self.currentStream = [VStream streamForHashTag:hashTag];
-    
-    [self refreshWithCompletion:nil];
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;

@@ -8,6 +8,7 @@
 
 #import "VStreamViewCell.h"
 #import "VStreamCellHeaderView.h"
+#import "VStreamTableViewController.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
 #import "VThemeManager.h"
@@ -69,7 +70,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
  
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
-
+    
+    [self addSubview:self.commentHitboxButton];
 }
 
 - (void)contentExpired
@@ -106,10 +108,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
-    // Hide Comment Button if Viewing from the User Profile
+    // Check if being viewed from the User Profile
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
     {
-        [self.streamCellHeaderView hideCommentsButton];
         [self.streamCellHeaderView setIsFromProfile:YES];
     }
 
@@ -190,7 +191,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)commentButtonAction:(id)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamViewCell:)])
+    {
+        [self.delegate willCommentOnSequence:self.sequence inStreamViewCell:self];
+    }
+
 }
 
 - (IBAction)profileButtonAction:(id)sender

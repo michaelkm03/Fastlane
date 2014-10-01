@@ -45,6 +45,9 @@ static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.vi
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
+static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
+static NSUInteger const kVFollowsRelationshipAlreadyExistsError = 6001;
+
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
 

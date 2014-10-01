@@ -46,12 +46,12 @@
     UIImage    *backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                                    applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
 
-    NSURL  *imageURL    =   [NSURL URLWithString:self.profile.profileImagePathOriginal ?: self.profile.pictureUrl];
+    NSURL  *imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     [self.profileImageView setImageWithURL:imageURL placeholderImage:backgroundImage];
 
     //  Set background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.profileImagePathOriginal ?: self.profile.pictureUrl]
+    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                                placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
                                       tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
     

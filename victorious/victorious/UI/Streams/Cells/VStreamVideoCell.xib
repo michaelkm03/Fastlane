@@ -75,17 +75,37 @@
                             <constraint firstAttribute="bottom" secondItem="h1o-6t-QRB" secondAttribute="bottom" constant="20" id="xiX-Zz-86n"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRT-Vm-WyI" userLabel="Comment Hitbox Button">
+                        <rect key="frame" x="245" y="0.0" width="75" height="75"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="KfZ-4R-ZL1"/>
+                            <constraint firstAttribute="height" constant="75" id="lG7-bM-7Xm"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="commentButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="Elq-rs-YRd"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="MRT-Vm-WyI" firstAttribute="top" secondItem="ajZ-yg-NZB" secondAttribute="top" id="K4D-yD-1cz"/>
                     <constraint firstItem="kVw-nx-K3l" firstAttribute="leading" secondItem="ajZ-yg-NZB" secondAttribute="leading" id="PsL-qB-6Cx"/>
                     <constraint firstAttribute="trailing" secondItem="kVw-nx-K3l" secondAttribute="trailing" id="RG5-2M-dZv"/>
+                    <constraint firstItem="MRT-Vm-WyI" firstAttribute="leading" secondItem="ajZ-yg-NZB" secondAttribute="leading" constant="245" id="V2k-Iu-NB6"/>
                     <constraint firstItem="kVw-nx-K3l" firstAttribute="top" secondItem="ajZ-yg-NZB" secondAttribute="top" id="ZVT-WG-5fq"/>
+                    <constraint firstAttribute="bottom" secondItem="MRT-Vm-WyI" secondAttribute="bottom" constant="244" id="gad-5b-1Ms"/>
                     <constraint firstAttribute="bottom" secondItem="kVw-nx-K3l" secondAttribute="bottom" id="igg-QH-bnt"/>
+                    <constraint firstAttribute="trailing" secondItem="MRT-Vm-WyI" secondAttribute="trailing" id="qmK-j6-ufO"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="animationBackgroundImage" destination="tq5-a6-OxG" id="NGO-vB-CGE"/>
                 <outlet property="animationImage" destination="N2L-pH-5Tp" id="Xte-M2-l3Z"/>
+                <outlet property="commentHitboxButton" destination="MRT-Vm-WyI" id="dGL-JR-GBG"/>
                 <outlet property="descriptionLabel" destination="h1o-6t-QRB" id="7KT-DS-yWE"/>
                 <outlet property="lowerGradientView" destination="sLX-yG-LWb" id="OS7-k2-832"/>
                 <outlet property="overlayView" destination="kVw-nx-K3l" id="Bwp-3N-s8T"/>

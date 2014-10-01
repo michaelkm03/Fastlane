@@ -18,6 +18,8 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
+@import AVFoundation;
+
 @interface VRemixTrimViewController ()  <VRemixVideoRangeSliderDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView             *trimControlContainer;
@@ -42,10 +44,7 @@
     self.playBackSpeed = VPlaybackNormalSpeed;
     self.playbackLooping = VLoopRepeat;
     
-    //UIImage *nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-    
-    self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.bounds videoUrl:self.sourceURL];
+    self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.bounds videoAsset:self.videoPlayerViewController.player.currentItem.asset];
     self.trimSlider.bubbleText.font = [UIFont systemFontOfSize:12];
     [self.trimSlider setPopoverBubbleWidth:120 height:60];
     
@@ -63,10 +62,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Add Video Player to Segment Selector
-    self.trimSlider.videoPlayerViewController = self.videoPlayerViewController;
-
-    
     // To Ensure That The Navigation Bar is Always Present
     [self.navigationController setNavigationBarHidden:NO];
     
@@ -136,7 +131,6 @@
     double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
     if (time < leftPosition)
     {
-        //[self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
         [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, [self.videoPlayerViewController.player currentTime].timescale)
                                           toleranceBefore:kCMTimeZero
                                            toleranceAfter:kCMTimeZero];
@@ -144,7 +138,6 @@
     
     if (time > rightPosition)
     {
-        //[self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
         [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, [self.videoPlayerViewController.player currentTime].timescale)
                                           toleranceBefore:kCMTimeZero
                                            toleranceAfter:kCMTimeZero];
@@ -302,6 +295,14 @@
         stitchViewController.playbackLooping = self.playbackLooping;
         stitchViewController.parentID = self.parentID;
     }
+}
+
+#pragma mark - VCVideoPlayerDelegate methods
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+{
+    [super videoPlayer:videoPlayer didPlayToTime:time];
+    [self.trimSlider updateScrubberPositionWithTime:time];
 }
 
 @end
