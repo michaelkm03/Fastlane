@@ -151,7 +151,6 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        NSLog(@"\n\nFollower button tapped:\n%@", profile.name);
         [self followFriendAction:profile];
     };
     return cell;
