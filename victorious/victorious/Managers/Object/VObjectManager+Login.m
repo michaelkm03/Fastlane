@@ -50,6 +50,13 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
         }
         
+        NSString *app_store_url = payload[@"app_store_url"];
+        if (app_store_url)
+        {
+            NSDictionary *dict = @{@"url.appstore": app_store_url};
+            [[VSettingManager sharedManager] updateSettingsWithDictionary:dict];
+        }
+
         NSDictionary *experiments = payload[kVExperimentsKey];
         if ([experiments isKindOfClass:[NSDictionary class]])
         {
