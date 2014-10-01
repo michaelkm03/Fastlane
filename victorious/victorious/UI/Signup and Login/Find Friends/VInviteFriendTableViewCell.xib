@@ -73,9 +73,11 @@
             <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="followIconImageView" destination="DCb-d9-tuC" id="NSq-us-AsJ"/>
+                <outlet property="labelsSuperview" destination="r9g-eu-gf2" id="X5e-lx-RkJ"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
                 <outlet property="profileLocation" destination="G5K-7H-rF2" id="upt-tl-i6O"/>
                 <outlet property="profileName" destination="5fj-5f-CB3" id="W6i-4n-DXK"/>
+                <outlet property="userInfoWidthConstraint" destination="YoW-Fp-ANB" id="58T-in-VLC"/>
             </connections>
         </tableViewCell>
     </objects>

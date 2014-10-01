@@ -18,6 +18,7 @@
 #import "VFollowerTableViewCell.h"
 
 #import "VUser.h"
+#import "VConstants.h"
 
 //ObjectManager
 #import "VObjectManager+DirectMessaging.h"
@@ -284,7 +285,7 @@
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  //<-- Follows relationship already exists
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
             return;
         }
@@ -322,7 +323,6 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        NSLog(@"\n\nFollower button tapped:\n%@", profile.name);
         [self followFriendAction:profile];
     };
     return cell;

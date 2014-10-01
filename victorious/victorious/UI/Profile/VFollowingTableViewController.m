@@ -12,8 +12,8 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-
 #import "VNoContentView.h"
+#import "VConstants.h"
 
 @interface VFollowingTableViewController ()
 
@@ -86,7 +86,7 @@
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        if (error.code == 6001)  //<-- Follows relationship already exists
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
             return;
         }
