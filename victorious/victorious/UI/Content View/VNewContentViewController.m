@@ -31,7 +31,7 @@
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
-#import "VDropdownTitleView.h"
+#import "VContentBackgroundSupplementaryView.h"
 
 // Input Acceossry
 #import "VKeyboardInputAccessoryView.h"
@@ -89,7 +89,7 @@
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VDropdownTitleView *dropdownHeaderView;
+@property (nonatomic, weak) VContentBackgroundSupplementaryView *dropdownHeaderView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
@@ -179,9 +179,9 @@
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VDropdownTitleView nibForCell]
+    [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                        withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]];
+                        withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
 
     
     self.viewModel.realTimeCommentsViewModel.delegate = self;
@@ -738,8 +738,8 @@
     {
         case VContentViewSectionContent:
         {
-            VDropdownTitleView *titleView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                               withReuseIdentifier:[VDropdownTitleView suggestedReuseIdentifier]
+            VContentBackgroundSupplementaryView *titleView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                               withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]
                                                                                       forIndexPath:indexPath];
             titleView.titleText = self.viewModel.name;
             self.dropdownHeaderView = titleView;
