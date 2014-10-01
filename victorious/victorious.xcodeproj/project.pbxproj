@@ -333,16 +333,16 @@
 		BE80780519D778E500EECDEB /* VMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE80780419D778E500EECDEB /* VMarqueeController.m */; };
 		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
+		BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8AB6E619DB75C30048A6C0 /* VUser.m */; };
 		BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */; };
 		BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */; };
-		BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8AB6E619DB75C30048A6C0 /* VUser.m */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */; };
 		BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF512919BA15B6007AB3BA /* VConversation.m */; };
 		BEC833BB19D3646E00341EA9 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BA19D3646E00341EA9 /* VComment.m */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
-		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
+		BED89C8C19DC8046008334E6 /* VMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */; };
 		BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC518DBC93B00750EF6 /* VVoteType.m */; };
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
 		BEEDF45E19D2337A000DF6F5 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF45D19D2337A000DF6F5 /* VSequence.m */; };
@@ -970,11 +970,11 @@
 		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
 		BE89D98B1921531400D97E7F /* VAbstractFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractFilter.h; sourceTree = "<group>"; };
 		BE89D98C1921531400D97E7F /* VAbstractFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractFilter.m; sourceTree = "<group>"; };
+		BE8AB6E519DB75C30048A6C0 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
+		BE8AB6E619DB75C30048A6C0 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTableViewCell.h; sourceTree = "<group>"; };
 		BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeTableViewCell.m; sourceTree = "<group>"; };
 		BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
-		BE8AB6E519DB75C30048A6C0 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
-		BE8AB6E619DB75C30048A6C0 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -995,8 +995,7 @@
 		BEC833BA19D3646E00341EA9 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		BED4569518BD58DE00A67160 /* VAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+Fetcher.h"; sourceTree = "<group>"; };
-		BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+Fetcher.m"; sourceTree = "<group>"; };
+		BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeControllerTests.m; sourceTree = "<group>"; };
 		BEDF0FC418DBC93B00750EF6 /* VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteType.h; sourceTree = "<group>"; };
 		BEDF0FC518DBC93B00750EF6 /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
 		BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+Fetcher.h"; sourceTree = "<group>"; };
@@ -2041,6 +2040,7 @@
 				0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */,
 				03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
+				BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2952,6 +2952,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
+				BED89C8C19DC8046008334E6 /* VMarqueeControllerTests.m in Sources */,
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
 				039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */,
 			);
