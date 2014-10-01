@@ -113,7 +113,6 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     [super viewWillAppear:animated];
     
     self.navHeaderView.showAddButton = NO;
-    self.navHeaderView.showHeaderLogoImage = YES;
     self.navHeaderView.headerText = self.stream.name;//Set the title in case there is no logo
     [self.navHeaderView updateUI];
 }

@@ -77,7 +77,8 @@ NSString * const VStreamFilterTypePopular = @"popular";
     
     VStream *directory =  [self streamForRemoteId:@"directory" filterName:nil
                              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    directory.name = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+    
+    directory.name = NSLocalizedString(@"Channels", nil);
     [directory.managedObjectContext saveToPersistentStore:nil];
     return directory;
 }
