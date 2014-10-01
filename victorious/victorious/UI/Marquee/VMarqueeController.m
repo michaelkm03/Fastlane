@@ -88,6 +88,20 @@
     [self enableTimer];
 }
 
+- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
+{
+    [self.streamDataSource refreshWithSuccess:
+     ^{
+         [self.delegate marqueeRefreshedContent:self];
+         
+         if (successBlock)
+         {
+             successBlock();
+         }
+     }
+                                      failure:failureBlock];
+}
+
 #pragma mark - CollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -110,8 +124,11 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
-    [self scrolledToPage:currentPage];
+    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    if (currentPage < self.streamDataSource.count)
+    {
+        [self scrolledToPage:currentPage];
+    }
 }
 
 - (void)disableTimer

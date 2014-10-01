@@ -18,6 +18,8 @@
 #import "VContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryViewController.h"
+#import "VMarqueeController.h"
+#import "VStreamCollectionViewDataSource.h"
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
@@ -51,13 +53,15 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeTableCellDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
+
+@property (strong, nonatomic) VMarqueeController *marquee;
 
 @property (strong, nonatomic) VStream *defaultStream;
 
@@ -128,6 +132,9 @@
     self.tableDataSource.stream = self.currentStream;
     self.tableDataSource.tableView = self.tableView;
     self.tableDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
+    
+    self.marquee = [[VMarqueeController alloc] init];
+    self.marquee.delegate = self;
     
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.delegate = self;
@@ -350,14 +357,24 @@
     }
 }
 
-#pragma mark - VMarqueeTableCellDelegate
+#pragma mark - VMarqueeDelegate
 
-- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedItem:(VStreamItem *)item
+- (void)marqueeRefreshedContent:(VMarqueeController *)marquee
 {
-    [self tableView:self.tableView didSelectRowAtIndexPath:[self.tableView indexPathForCell:cell]];
+    NSInteger count = self.marquee.streamDataSource.count;
+    
+    if (self.tableDataSource.shouldDisplayMarquee != count)
+    {
+        self.tableDataSource.shouldDisplayMarquee = count;
+    }
 }
 
-- (void)marqueTableCell:(VMarqueeTableViewCell *)cell selectedUser:(VUser *)user
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
+- (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
     //If this cell is from the profile we should disable going to the profile
     BOOL fromProfile = NO;
@@ -410,7 +427,7 @@
         VMarqueeTableViewCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
         cell.parentTableViewController = self;
-        cell.delegate = self;
+        cell.marquee = self.marquee;
         CGSize desiredSize = [VMarqueeTableViewCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
         [cell restartAutoScroll];

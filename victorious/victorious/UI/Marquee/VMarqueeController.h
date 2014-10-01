@@ -16,6 +16,7 @@
 
 - (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path;
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
+- (void)marqueeRefreshedContent:(VMarqueeController *)marquee;
 
 @end
 
@@ -31,5 +32,6 @@
 
 - (void)disableTimer;
 - (void)enableTimer;
+- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
 
 @end
