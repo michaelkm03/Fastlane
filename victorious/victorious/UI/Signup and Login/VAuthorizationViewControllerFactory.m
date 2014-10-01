@@ -26,11 +26,13 @@
         viewController.registrationModel = [[VRegistrationModel alloc] init];
         return viewController;
     }
-    else
+    else if ( !objectManager.mainUserLoggedIn && !objectManager.mainUserProfileComplete )
     {
         // User must login or create account
         return [VLoginViewController loginViewController];
     }
+    
+    return nil;
 }
 
 @end

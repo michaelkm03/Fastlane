@@ -71,17 +71,17 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 
 #pragma mark - Login and status
 
-- (BOOL) isMainUserProfileComplete
+- (BOOL) mainUserProfileComplete
 {
     return self.mainUser != nil && [self.mainUser.status isEqualToString:kUserStatusComplete];
 }
 
-- (BOOL) isMainUserLoggedIn
+- (BOOL) mainUserLoggedIn
 {
     return self.mainUser != nil;
 }
 
-- (BOOL)isAuthorized
+- (BOOL) authorized
 {
     return self.mainUserLoggedIn && self.mainUserProfileComplete;
 }

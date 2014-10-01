@@ -12,9 +12,9 @@ extern NSString *kLoggedInChangedNotification;
 
 @interface VObjectManager (Login)
 
-@property (nonatomic, readonly, getter = isMainUserProfileComplete) BOOL mainUserProfileComplete;
-@property (nonatomic, readonly, getter = isMainUserLoggedIn) BOOL mainUserLoggedIn;
-@property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
+@property (nonatomic, readonly) BOOL mainUserProfileComplete;
+@property (nonatomic, readonly) BOOL mainUserLoggedIn;
+@property (nonatomic, readonly) BOOL authorized;
 
 
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
