@@ -161,7 +161,7 @@
                         <segue destination="iZ7-hd-8dA" kind="push" identifier="toEmailLogin" id="DLv-b3-ha2"/>
                         <segue destination="WjX-TR-OnL" kind="push" identifier="toSignup" id="9EH-It-qvD"/>
                         <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithTwitter" id="Dbj-pL-bxH"/>
-                        <segue destination="a0y-4a-uKe" kind="push" id="S0B-9g-2CY"/>
+                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithFacebook" id="S0B-9g-2CY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -920,6 +920,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Dbj-pL-bxH"/>
+        <segue reference="S0B-9g-2CY"/>
     </inferredMetricsTieBreakers>
 </document>
