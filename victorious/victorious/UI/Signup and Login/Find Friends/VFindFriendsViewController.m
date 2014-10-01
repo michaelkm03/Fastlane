@@ -30,11 +30,9 @@
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
-@property (nonatomic, strong) VFindFriendsTableViewController *suggestedFriendsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
-@property (nonatomic, strong) VFindFriendsTableViewController *instagramInnerViewController;
 
 @end
 
@@ -66,7 +64,6 @@
     self.tabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.containerView addSubview:self.tabBarViewController.view];
     [self.tabBarViewController didMoveToParentViewController:self];
-    
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
 }
@@ -76,13 +73,18 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
-    self.backButton.hidden = !self.inviteButton.hidden || self.navigationController.viewControllers.count <= 1;
-    self.doneButton.hidden = !self.presentingViewController;
+    self.backButton.hidden = self.inviteButton.hidden;
+    self.doneButton.hidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -106,23 +108,18 @@
 
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
-    self.suggestedFriendsInnerViewController = [[VSuggestedFriendsTableViewController alloc] init];
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
-    self.instagramInnerViewController = [[VFindInstagramFriendsViewController alloc] init];
     
-    self.suggestedFriendsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.instagramInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     
-    tabViewController.viewControllers = @[v_newTab(self.suggestedFriendsInnerViewController, [UIImage imageNamed:@"inviteSuggested"]),
-                                          v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
+    tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
-                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"]),
-                                          v_newTab(self.instagramInnerViewController, [UIImage imageNamed:@"inviteInstagram"])];
+                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"])
+                                          ];
 }
 
 #pragma mark - Button Actions
@@ -167,11 +164,9 @@
 - (IBAction)pressedDone:(id)sender
 {
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
-    [newFriends addObjectsFromArray:[self.suggestedFriendsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController         selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController         selectedUsers]];
     [newFriends addObjectsFromArray:[self.twitterInnerViewController          selectedUsers]];
-    [newFriends addObjectsFromArray:[self.instagramInnerViewController        selectedUsers]];
     [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
                                withSuccessBlock:nil
                                       failBlock:nil];

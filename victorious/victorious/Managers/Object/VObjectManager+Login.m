@@ -35,7 +35,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        
+
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
         NSDictionary *newTheme = payload[kVAppearanceKey];
