@@ -44,27 +44,26 @@
                                 <rect key="frame" x="134" y="134" width="52" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kVw-nx-K3l" userLabel="Overlay View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kVw-nx-K3l" userLabel="Overlay View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9SX-yp-jyk" customClass="VStreamCellHeaderView">
+                                <rect key="frame" x="0.0" y="7" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9SX-yp-jyk" customClass="VStreamCellHeaderView">
-                                        <rect key="frame" x="0.0" y="7" width="320" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="9SX-yp-jyk" secondAttribute="trailing" id="DFO-sh-Sg2"/>
-                                    <constraint firstItem="9SX-yp-jyk" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" id="FHd-eu-TNR"/>
-                                    <constraint firstAttribute="bottom" secondItem="9SX-yp-jyk" secondAttribute="bottom" constant="237" id="UbK-VJ-LJe"/>
-                                    <constraint firstItem="9SX-yp-jyk" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="7" id="lns-fU-e5k"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9SX-yp-jyk" secondAttribute="trailing" id="DFO-sh-Sg2"/>
+                            <constraint firstItem="9SX-yp-jyk" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" id="FHd-eu-TNR"/>
+                            <constraint firstAttribute="bottom" secondItem="9SX-yp-jyk" secondAttribute="bottom" constant="237" id="UbK-VJ-LJe"/>
+                            <constraint firstItem="9SX-yp-jyk" firstAttribute="top" secondItem="kVw-nx-K3l" secondAttribute="top" constant="7" id="lns-fU-e5k"/>
+                        </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRT-Vm-WyI" userLabel="Comment Hitbox Button">
                         <rect key="frame" x="245" y="0.0" width="75" height="75"/>
@@ -84,8 +83,12 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="MRT-Vm-WyI" firstAttribute="top" secondItem="ajZ-yg-NZB" secondAttribute="top" id="K4D-yD-1cz"/>
+                    <constraint firstItem="kVw-nx-K3l" firstAttribute="leading" secondItem="ajZ-yg-NZB" secondAttribute="leading" id="PsL-qB-6Cx"/>
+                    <constraint firstAttribute="trailing" secondItem="kVw-nx-K3l" secondAttribute="trailing" id="RG5-2M-dZv"/>
                     <constraint firstItem="MRT-Vm-WyI" firstAttribute="leading" secondItem="ajZ-yg-NZB" secondAttribute="leading" constant="245" id="V2k-Iu-NB6"/>
+                    <constraint firstItem="kVw-nx-K3l" firstAttribute="top" secondItem="ajZ-yg-NZB" secondAttribute="top" id="ZVT-WG-5fq"/>
                     <constraint firstAttribute="bottom" secondItem="MRT-Vm-WyI" secondAttribute="bottom" constant="244" id="gad-5b-1Ms"/>
+                    <constraint firstAttribute="bottom" secondItem="kVw-nx-K3l" secondAttribute="bottom" id="igg-QH-bnt"/>
                     <constraint firstAttribute="trailing" secondItem="MRT-Vm-WyI" secondAttribute="trailing" id="qmK-j6-ufO"/>
                 </constraints>
             </tableViewCellContentView>
@@ -98,7 +101,6 @@
                 <outlet property="previewImageView" destination="X95-hS-XNg" id="BIF-kx-KyG"/>
                 <outlet property="shadeView" destination="PzQ-y9-NDk" id="fZe-oh-5B0"/>
                 <outlet property="streamCellHeaderView" destination="9SX-yp-jyk" id="pW4-9R-ow7"/>
-                <outletCollection property="labels" destination="h1o-6t-QRB" id="GkF-tu-mig"/>
             </connections>
         </tableViewCell>
     </objects>

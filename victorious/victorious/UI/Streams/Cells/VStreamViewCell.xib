@@ -63,7 +63,6 @@
                         <constraints>
                             <constraint firstItem="6WR-6s-hSP" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="7" id="Awn-i1-oAQ"/>
                             <constraint firstAttribute="trailing" secondItem="6WR-6s-hSP" secondAttribute="trailing" id="Rin-Pn-fH3"/>
-                            <constraint firstAttribute="bottom" secondItem="WLo-v6-MW0" secondAttribute="bottom" constant="20" id="TTm-KY-zwy"/>
                             <constraint firstAttribute="bottom" secondItem="6WR-6s-hSP" secondAttribute="bottom" constant="237" id="Ur9-bU-q5O"/>
                             <constraint firstItem="6WR-6s-hSP" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" id="aMW-bJ-hEl"/>
                         </constraints>
@@ -111,7 +110,6 @@
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
                 <outlet property="shadeView" destination="adD-xo-Uv6" id="3wi-kO-1ke"/>
                 <outlet property="streamCellHeaderView" destination="6WR-6s-hSP" id="MqJ-fs-g12"/>
-                <outletCollection property="labels" destination="WLo-v6-MW0" id="8SQ-Z2-QBX"/>
             </connections>
         </tableViewCell>
     </objects>

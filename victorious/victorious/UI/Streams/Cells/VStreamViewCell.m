@@ -119,13 +119,6 @@
     self.descriptionTextView = textView;
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.descriptionTextView.textContainer.size = self.bounds.size;
-    self.descriptionTextView = self.descriptionTextView;
-}
-
 - (void)textTapped:(UITapGestureRecognizer *)tap
 {
     NSString *fieldText = self.descriptionTextView.text;
@@ -133,6 +126,10 @@
     CGPoint tapPoint = [tap locationInView:self.descriptionTextView];
     NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.descriptionTextView.textContainer];
     NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
+    
+   
+    //NSLog( @"character = %lu", (unsigned long) character );
+    //return;
     
     NSArray *hashTags = [VHashTags detectHashTags:fieldText];
     if ([hashTags count] > 0)
