@@ -77,6 +77,7 @@
                       swizzledSelector:@selector(mainUserLoggedIn)];
     
     id output = [VAuthorizationViewControllerFactory requiredViewController];
+    XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[VProfileCreateViewController class]] );
 }
 
@@ -110,9 +111,11 @@
     
     // Expecting a UINavigationController with VLoginViewController as root view controller
     id output = [VAuthorizationViewControllerFactory requiredViewController];
+    XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[UINavigationController class]] );
     UINavigationController *navController = (UINavigationController *)output;
     XCTAssert( navController.viewControllers.count > 0 );
+    XCTAssertNotNil( navController.viewControllers[0] );
     XCTAssert( [navController.viewControllers[0] isMemberOfClass:[VLoginViewController class]] );
 }
 
