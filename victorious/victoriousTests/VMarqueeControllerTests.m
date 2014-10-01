@@ -19,8 +19,6 @@
 
 @end
 
-//@property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
-
 @implementation VMarqueeControllerTests
 
 - (void)setUp
