@@ -205,7 +205,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="ObS-hY-o4S" secondAttribute="centerX" id="6uO-wU-uIt"/>
                                     <constraint firstAttribute="trailing" secondItem="wiR-Nr-0cm" secondAttribute="trailing" id="DNI-DN-Dy3"/>
                                     <constraint firstItem="Iq4-PT-v1o" firstAttribute="leading" secondItem="fKP-Uj-Ir7" secondAttribute="leading" id="JR9-bR-Xsz"/>
                                     <constraint firstItem="bwB-7w-LgK" firstAttribute="top" secondItem="ObS-hY-o4S" secondAttribute="bottom" constant="4" id="KAQ-2f-tOA"/>
@@ -222,15 +221,15 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileGenericUser" translatesAutoresizingMaskIntoConstraints="NO" id="eob-Pq-0le">
-                                <rect key="frame" x="119" y="87" width="83" height="83"/>
+                                <rect key="frame" x="121" y="87" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="83" id="1jj-0d-MOC"/>
-                                    <constraint firstAttribute="width" constant="83" id="5OP-k2-4go"/>
+                                    <constraint firstAttribute="height" constant="80" id="1jj-0d-MOC"/>
+                                    <constraint firstAttribute="width" constant="80" id="5OP-k2-4go"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGE-Gh-2VM" userLabel="Avatar Button">
-                                <rect key="frame" x="119" y="87" width="83" height="83"/>
+                                <rect key="frame" x="121" y="87" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
