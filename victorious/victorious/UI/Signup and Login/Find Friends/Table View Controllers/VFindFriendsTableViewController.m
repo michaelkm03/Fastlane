@@ -288,9 +288,6 @@
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSDictionary *successObjects = fullResponse[kVPayloadKey][@"objects"];
-        NSLog(@"\n\n-----\nAdding New Followers Success Block\n%@\n-----\n\n", successObjects);
-        
         for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
