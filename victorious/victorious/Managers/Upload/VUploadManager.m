@@ -15,6 +15,13 @@ static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirector
 static NSString * const kTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
 static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.urlSession";
 
+NSString * const VUploadManagerTaskProgressNotification = @"VUploadManagerTaskProgressNotification";
+NSString * const VUploadManagerTaskFinishedNotification = @"VUploadManagerTaskFinishedNotification";
+NSString * const VUploadManagerTaskFailedNotification = @"VUploadManagerTaskFailedNotification";
+NSString * const VUploadManagerBytesSentUserInfoKey = @"VUploadManagerBytesSentUserInfoKey";
+NSString * const VUploadManagerTotalBytesUserInfoKey = @"VUploadManagerTotalBytesUserInfoKey";
+NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoKey";
+
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *urlSession;
@@ -27,6 +34,11 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
 @implementation VUploadManager
 {
     void (^_backgroundSessionEventsCompleteHandler)();
+}
+
+- (id)init
+{
+    return [self initWithObjectManager:nil];
 }
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
@@ -81,6 +93,13 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
             [self.completionBlocks setObject:complete forKey:uploadSessionTask];
         }
         [uploadSessionTask resume];
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
+                                                                object:self
+                                                              userInfo:@{VUploadManagerBytesSentUserInfoKey: @(0),
+                                                                        }];
+        });
     });
 }
 
@@ -166,7 +185,17 @@ static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.
     totalBytesSent:(int64_t)totalBytesSent
 totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
-    // TODO
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
+                                                                object:self
+                                                              userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(totalBytesSent),
+                                                                          VUploadManagerTotalBytesUserInfoKey: @(totalBytesExpectedToSend),
+                                                                        }];
+        });
+    });
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data

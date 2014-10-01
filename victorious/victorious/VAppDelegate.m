@@ -149,8 +149,8 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
 static BOOL isRunningTests(void)
 {
-    NSDictionary* environment = [[NSProcessInfo processInfo] environment];
-    NSString* injectBundle = environment[@"XCInjectBundle"];
+    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+    NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
 

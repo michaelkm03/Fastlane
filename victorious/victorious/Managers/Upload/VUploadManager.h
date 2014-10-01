@@ -19,6 +19,14 @@
  */
 typedef void (^VUploadManagerTaskCompleteBlock)(NSURLResponse *response, NSData *responseData, NSError *error);
 
+extern NSString * const VUploadManagerTaskProgressNotification; ///< Sent when a new upload task begins, and periodically during the upload
+extern NSString * const VUploadManagerTaskFinishedNotification; ///< Sent when an upload task finishes successfully
+extern NSString * const VUploadManagerTaskFailedNotification; ///< Sent when an upload task fails
+
+extern NSString * const VUploadManagerBytesSentUserInfoKey; ///< The total number of bytes sent so far
+extern NSString * const VUploadManagerTotalBytesUserInfoKey; ///< The total number of bytes to be sent in this request
+extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object explaining why an upload failed
+
 /**
  Manages background upload tasks
  */
