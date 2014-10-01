@@ -198,6 +198,9 @@
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
+		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
+		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
+		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED27D19C563B700305987 /* VCameraVideoEncoder.m */; };
@@ -249,6 +252,7 @@
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
+		03F97F2A19F1EFA800E14BCC /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
@@ -316,7 +320,6 @@
 		BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */; };
-		BE49323619E338CE00C0912E /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		BE5C736A187E36E800A3340D /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7369187E36E800A3340D /* VRule.m */; };
 		BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7378187E36E800A3340D /* VNodeAction.m */; };
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
@@ -827,6 +830,9 @@
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
+		038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ADEUMInstrumentation.framework; sourceTree = "<group>"; };
+		038B7F9619DB8EB300F739DF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		038B7F9819DB8EBC00F739DF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
@@ -1314,6 +1320,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */,
+				038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */,
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */,
 				03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */,
@@ -1321,6 +1329,7 @@
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
+				038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */,
 				03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
 				9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */,
@@ -2185,6 +2194,7 @@
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
+				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
 				03C1859619B42D3000E27D05 /* FacebookSDK.framework */,
 				03C1859719B42D3000E27D05 /* GoogleAnalytics */,
@@ -2427,17 +2437,19 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BE171D791868BE64004E5202 /* Foundation.framework */,
-				BE171D7B1868BE64004E5202 /* CoreGraphics.framework */,
-				03610589194154F40069D49E /* SystemConfiguration.framework */,
-				BE171D7D1868BE64004E5202 /* UIKit.framework */,
 				BE171D7F1868BE64004E5202 /* CoreData.framework */,
-				BE171D971868BE64004E5202 /* XCTest.framework */,
+				BE171D7B1868BE64004E5202 /* CoreGraphics.framework */,
+				038B7F9619DB8EB300F739DF /* CoreTelephony.framework */,
+				BE171D791868BE64004E5202 /* Foundation.framework */,
+				B528D1A8913A051BDDC4FE37 /* libPods-test.a */,
+				C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */,
+				A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */,
 				662F0867152745B2B2F08301 /* libPods.a */,
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
-				B528D1A8913A051BDDC4FE37 /* libPods-test.a */,
-				A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */,
-				C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */,
+				038B7F9819DB8EBC00F739DF /* libz.dylib */,
+				03610589194154F40069D49E /* SystemConfiguration.framework */,
+				BE171D7D1868BE64004E5202 /* UIKit.framework */,
+				BE171D971868BE64004E5202 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3621,6 +3633,7 @@
 				A70564CE19E78250004A8387 /* VDiscoverViewControllerTests.m in Sources */,
 				A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */,
 				A7A7D62C19DE52DE00B18AB7 /* VTappableTextManagerTests.m in Sources */,
+				03F97F2A19F1EFA800E14BCC /* NSDate+timeSinceTests.m in Sources */,
 				A7A7D5C919DCDA5A00B18AB7 /* VHashTagsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
