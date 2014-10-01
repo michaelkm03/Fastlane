@@ -8,9 +8,13 @@
 
 #import "VShrinkingContentLayout.h"
 
+NSString *const VShrinkingContentLayoutContentBackgroundView = @"com.victorious.VShrinkingContentLayoutContentBackgroundView";
+NSString *const VShrinkingContentLayoutAllCommentsHandle = @"com.victorious.VShrinkingContentLayoutContentBackgroundView";
+
 static const CGFloat kContentLayoutZIndex = 9999.0f;
+static const CGFloat kContentBackgroundZIndex = kContentLayoutZIndex - 1.0f;
 static const CGFloat kAllCommentsZIndex = 6666.0f;
-static const CGFloat kMinimumContentSize = 125.0f;
+static const CGFloat kMinimumContentHeight = 125.0f;
 
 @interface VShrinkingContentLayout ()
 
@@ -115,6 +119,13 @@ static const CGFloat kMinimumContentSize = 125.0f;
     UICollectionViewLayoutAttributes *contentLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
     [attributes addObject:contentLayoutAttributes];
     
+    if (self.collectionView.contentOffset.y > [self catchPoint].y)
+    {
+        UICollectionViewLayoutAttributes *contentBackgroundAttributes = [self layoutAttributesForSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
+                                                                                                             atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
+        [attributes addObject:contentBackgroundAttributes];
+    }
+    
     UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
     [attributes addObject:histogramLayoutAttributes];
     
@@ -124,7 +135,7 @@ static const CGFloat kMinimumContentSize = 125.0f;
     NSInteger numberOfComments = [self.collectionView numberOfItemsInSection:VContentViewSectionAllComments];
     if (numberOfComments > 0)
     {
-        UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+        UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                                                                                                         atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionAllComments]];
         handleLayoutAttributes.zIndex = kAllCommentsZIndex;
         [attributes addObject:handleLayoutAttributes];
@@ -164,12 +175,12 @@ static const CGFloat kMinimumContentSize = 125.0f;
                 CGFloat deltaCatchToLock = [self lockPoint].y - [self catchPoint].y;
                 CGFloat percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - [self catchPoint].y) / deltaCatchToLock);
                 
-                CGFloat sizeDelta = self.mediaContentSize.height - kMinimumContentSize;
+                CGFloat sizeDelta = self.mediaContentSize.height - kMinimumContentHeight;
                 CGFloat transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
                 
                 CGAffineTransform scaleTransform = CGAffineTransformMakeScale(transformScaleCoefficient, transformScaleCoefficient);
                 
-                CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (kMinimumContentSize * 0.5f));
+                CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (kMinimumContentHeight * 0.5f));
                 CGFloat translationCoefficient = -translationDelta * percentToLockPoint;
                 
                 CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(0, translationCoefficient);
@@ -225,6 +236,11 @@ static const CGFloat kMinimumContentSize = 125.0f;
     switch (indexPath.section)
     {
         case VContentViewSectionContent:
+            layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                                    self.collectionView.contentOffset.y,
+                                                                    CGRectGetWidth(self.collectionView.bounds),
+                                                                    kMinimumContentHeight);
+            layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
             break;
         case VContentViewSectionHistogram:
             break;
@@ -335,7 +351,7 @@ static const CGFloat kMinimumContentSize = 125.0f;
 - (CGPoint)lockPoint
 {
     CGPoint lockPoint = [self catchPoint];
-    lockPoint.y = lockPoint.y + kMinimumContentSize + self.histogramSize.height + self.tickerSize.height;
+    lockPoint.y = lockPoint.y + kMinimumContentHeight + self.histogramSize.height + self.tickerSize.height;
     return lockPoint;
 }
 

@@ -89,7 +89,6 @@
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VContentBackgroundSupplementaryView *dropdownHeaderView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
@@ -177,10 +176,10 @@
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
-                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                 forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
-                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                 forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
 
     
@@ -738,12 +737,9 @@
     {
         case VContentViewSectionContent:
         {
-            VContentBackgroundSupplementaryView *titleView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                               withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]
-                                                                                      forIndexPath:indexPath];
-            titleView.titleText = self.viewModel.name;
-            self.dropdownHeaderView = titleView;
-            return titleView;
+            return [collectionView dequeueReusableSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
+                                                      withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]
+                                                             forIndexPath:indexPath];
         }
             
         case VContentViewSectionHistogram:
@@ -754,7 +750,7 @@
         {
             if (!self.handleView)
             {
-                VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                                                                                                                                        withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
                                                                                                                                               forIndexPath:indexPath];
                 self.handleView = handleView;
