@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAsset.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
