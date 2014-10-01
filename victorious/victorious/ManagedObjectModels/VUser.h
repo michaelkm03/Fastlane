@@ -2,7 +2,7 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 9/16/14.
+//  Created by Will Long on 9/30/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,16 +15,14 @@
 
 @property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * pictureUrl;
-@property (nonatomic, retain) NSString * profileImagePathOriginal;
-@property (nonatomic, retain) NSString * profileImagePathSmall;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
-@property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) VConversation *conversation;

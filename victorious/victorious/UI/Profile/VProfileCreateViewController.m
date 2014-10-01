@@ -24,6 +24,7 @@
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "UIImageView+AFNetworking.h"
 
 #import "VTOSViewController.h"
 
@@ -89,7 +90,9 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
     self.profileImageView.clipsToBounds = YES;
     self.profileImageView.userInteractionEnabled = YES;
     [self.profileImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)]];
-
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                          placeholderImage:self.profileImageView.image];
+    
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.loginType != kVLoginTypeEmail)
@@ -110,7 +113,9 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
         self.locationTextField.text = @"";
     }
     self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.355 alpha:1.0]}];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
+    if ([CLLocationManager locationServicesEnabled]
+        && [CLLocationManager significantLocationChangeMonitoringAvailable]
+        && !self.locationTextField.text.length)
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;

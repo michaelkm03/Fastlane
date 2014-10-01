@@ -117,7 +117,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (self.isMe)
     {
-        [self addCreateButton];
+        [self addFriendsButton];
     }
     else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
@@ -155,7 +155,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.profileImagePathOriginal ?: self.profile.pictureUrl]
+    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                            placeholderImage:defaultBackgroundImage
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     self.tableView.backgroundView = self.backgroundImageView;

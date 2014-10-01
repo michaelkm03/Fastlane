@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '7.0'
 
 inhibit_all_warnings!
@@ -7,4 +9,4 @@ pod 'IGDigest', '~> 1.1.0'
 pod 'TestFlightSDK', '~> 3.0.0'
 pod 'TTTAttributedLabel', '~>1.8.1'
 pod 'MBProgressHUD', '~> 0.8'
-link_with 'victorious', 'victoriousTests'
+link_with 'victorious'

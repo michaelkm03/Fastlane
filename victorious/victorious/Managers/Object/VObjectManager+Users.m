@@ -323,7 +323,8 @@ static NSString * const kVAPIParamSearch = @"search";
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{ @"emails": emails };
+    NSString *emailString = [emails componentsJoinedByString:@","];
+    NSDictionary *parameters = @{ @"emails": emailString };
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -410,6 +411,19 @@ static NSString * const kVAPIParamSearch = @"search";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Map anyone with a relationship to the main user object
+        NSInteger cnt = (NSInteger)resultObjects.count;
+        for (NSInteger i = 0; i < cnt ; i++)
+        {
+            VUser *user = resultObjects[i];
+            BOOL following = [fullResponse[kVPayloadKey][@"objects"][i][@"following"] boolValue];
+            if (following)
+            {
+                [self.mainUser addFollowingObject:user];
+            }
+        }
+        [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);

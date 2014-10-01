@@ -17,6 +17,7 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @import MessageUI;
 
@@ -30,11 +31,11 @@
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
-@property (nonatomic, strong) VFindFriendsTableViewController *suggestedFriendsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
-@property (nonatomic, strong) VFindFriendsTableViewController *instagramInnerViewController;
+
+@property (nonatomic, strong) NSString *appStoreLink;
 
 @end
 
@@ -66,9 +67,12 @@
     self.tabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.containerView addSubview:self.tabBarViewController.view];
     [self.tabBarViewController didMoveToParentViewController:self];
-    
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+    
+    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    self.appStoreLink = appStoreUrl.absoluteString;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,13 +80,18 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
-    self.backButton.hidden = !self.inviteButton.hidden || self.navigationController.viewControllers.count <= 1;
-    self.doneButton.hidden = !self.presentingViewController;
+    self.backButton.hidden = self.inviteButton.hidden;
+    self.doneButton.hidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -106,23 +115,18 @@
 
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
-    self.suggestedFriendsInnerViewController = [[VSuggestedFriendsTableViewController alloc] init];
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
-    self.instagramInnerViewController = [[VFindInstagramFriendsViewController alloc] init];
     
-    self.suggestedFriendsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.instagramInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     
-    tabViewController.viewControllers = @[v_newTab(self.suggestedFriendsInnerViewController, [UIImage imageNamed:@"inviteSuggested"]),
-                                          v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
+    tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
-                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"]),
-                                          v_newTab(self.instagramInnerViewController, [UIImage imageNamed:@"inviteInstagram"])];
+                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"])
+                                          ];
 }
 
 #pragma mark - Button Actions
@@ -134,7 +138,7 @@
 
 - (IBAction)pressedInvite:(id)sender
 {
-    if (![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText])
+    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) || [self.appStoreLink isEqualToString:@""])
     {
         return;
     }
@@ -167,11 +171,9 @@
 - (IBAction)pressedDone:(id)sender
 {
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
-    [newFriends addObjectsFromArray:[self.suggestedFriendsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController         selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController         selectedUsers]];
     [newFriends addObjectsFromArray:[self.twitterInnerViewController          selectedUsers]];
-    [newFriends addObjectsFromArray:[self.instagramInnerViewController        selectedUsers]];
     [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
                                withSuccessBlock:nil
                                       failBlock:nil];
@@ -188,15 +190,20 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
+        
+        NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
+        bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
+        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, self.appStoreLink];
+
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        [mailComposer setSubject:NSLocalizedString(@"InviteFriendsSubject", @"")];
-        [mailComposer setMessageBody:NSLocalizedString(@"InviteFriendsBody", @"") isHTML:NO];
+        [mailComposer setSubject:msgSubj];
+        [mailComposer setMessageBody:msgBody isHTML:NO];
         
-        [self presentViewController:mailComposer animated:YES completion:^(void)
-        {
-        }];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
 }
 
@@ -207,13 +214,20 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
+        
+        NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
+        bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
+        NSString *msgBody = [NSString stringWithFormat:@"%@ %@", bodyString, self.appStoreLink];
+        
         MFMessageComposeViewController *messageComposer = [[MFMessageComposeViewController alloc] init];
         messageComposer.messageComposeDelegate = self;
-        messageComposer.body = NSLocalizedString(@"InviteFriendsBody", @"");
+        messageComposer.body = msgBody;
         
         if ([MFMessageComposeViewController canSendSubject])
         {
-            messageComposer.subject = NSLocalizedString(@"InviteFriendsSubject", @"");
+            messageComposer.subject = msgSubj;
         }
         
         [self presentViewController:messageComposer animated:YES completion:nil];
