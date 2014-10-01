@@ -370,7 +370,6 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 - (NSString *)shareCountText
 {
-#warning Implement me or address with product
     return nil;
 }
 

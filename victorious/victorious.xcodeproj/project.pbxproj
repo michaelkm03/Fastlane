@@ -366,8 +366,8 @@
 		D8E39BDE19CB7C80007FD86A /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BCF19CB7C80007FD86A /* VContentVideoCell.xib */; };
 		D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BD119CB7C80007FD86A /* VContentBackgroundSupplementaryView.m */; };
 		D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD219CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib */; };
-		D8E39BE119CB7C80007FD86A /* VRealTimeCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */; };
-		D8E39BE219CB7C80007FD86A /* VRealTimeCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */; };
+		D8E39BE119CB7C80007FD86A /* VTickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BD419CB7C80007FD86A /* VTickerCell.m */; };
+		D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD519CB7C80007FD86A /* VTickerCell.xib */; };
 		D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */; };
 		D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */; };
 		D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BED19CB99A8007FD86A /* ContentView.storyboard */; };
@@ -1057,9 +1057,9 @@
 		D8E39BD019CB7C80007FD86A /* VContentBackgroundSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentBackgroundSupplementaryView.h; sourceTree = "<group>"; };
 		D8E39BD119CB7C80007FD86A /* VContentBackgroundSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentBackgroundSupplementaryView.m; sourceTree = "<group>"; };
 		D8E39BD219CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentBackgroundSupplementaryView.xib; sourceTree = "<group>"; };
-		D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRealTimeCommentsCell.h; sourceTree = "<group>"; };
-		D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealTimeCommentsCell.m; sourceTree = "<group>"; };
-		D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VRealTimeCommentsCell.xib; sourceTree = "<group>"; };
+		D8E39BD319CB7C80007FD86A /* VTickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTickerCell.h; sourceTree = "<group>"; };
+		D8E39BD419CB7C80007FD86A /* VTickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTickerCell.m; sourceTree = "<group>"; };
+		D8E39BD519CB7C80007FD86A /* VTickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTickerCell.xib; sourceTree = "<group>"; };
 		D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardInputAccessoryView.h; sourceTree = "<group>"; };
 		D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
 		D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
@@ -2454,9 +2454,9 @@
 				D8E39BD019CB7C80007FD86A /* VContentBackgroundSupplementaryView.h */,
 				D8E39BD119CB7C80007FD86A /* VContentBackgroundSupplementaryView.m */,
 				D8E39BD219CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib */,
-				D8E39BD319CB7C80007FD86A /* VRealTimeCommentsCell.h */,
-				D8E39BD419CB7C80007FD86A /* VRealTimeCommentsCell.m */,
-				D8E39BD519CB7C80007FD86A /* VRealTimeCommentsCell.xib */,
+				D8E39BD319CB7C80007FD86A /* VTickerCell.h */,
+				D8E39BD419CB7C80007FD86A /* VTickerCell.m */,
+				D8E39BD519CB7C80007FD86A /* VTickerCell.xib */,
 				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
 				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
 				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
@@ -2612,7 +2612,7 @@
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
-				D8E39BE219CB7C80007FD86A /* VRealTimeCommentsCell.xib in Resources */,
+				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				D8E39BD719CB7C80007FD86A /* VContentCell.xib in Resources */,
@@ -2766,7 +2766,7 @@
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				0314D49119B46B5E00FA363C /* VContentToStreamAnimator.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
-				D8E39BE119CB7C80007FD86A /* VRealTimeCommentsCell.m in Sources */,
+				D8E39BE119CB7C80007FD86A /* VTickerCell.m in Sources */,
 				0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,

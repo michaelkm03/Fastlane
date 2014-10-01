@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="D7e-v9-B9Z" customClass="VTickerCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PhZ-3x-B2L" userLabel="RTC Strip View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nQ-DE-tkc" customClass="VProgressBarView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="3rQ-J9-slK"/>
+                            <constraint firstItem="3nQ-DE-tkc" firstAttribute="top" secondItem="PhZ-3x-B2L" secondAttribute="top" id="8RN-Zf-6ux"/>
+                            <constraint firstAttribute="trailing" secondItem="3nQ-DE-tkc" secondAttribute="trailing" id="F2c-Fc-nLY"/>
+                            <constraint firstItem="3nQ-DE-tkc" firstAttribute="leading" secondItem="PhZ-3x-B2L" secondAttribute="leading" id="Hqo-2L-MbF"/>
+                            <constraint firstAttribute="bottom" secondItem="3nQ-DE-tkc" secondAttribute="bottom" id="bZq-UT-G9i"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="PhZ-3x-B2L" firstAttribute="top" secondItem="D7e-v9-B9Z" secondAttribute="top" id="26k-6j-U75"/>
+                <constraint firstItem="PhZ-3x-B2L" firstAttribute="leading" secondItem="D7e-v9-B9Z" secondAttribute="leading" id="TBF-0T-bMR"/>
+                <constraint firstAttribute="trailing" secondItem="PhZ-3x-B2L" secondAttribute="trailing" id="d0n-Xw-5fM"/>
+            </constraints>
+            <connections>
+                <outlet property="progressBar" destination="3nQ-DE-tkc" id="CfK-ex-6r3"/>
+                <outlet property="realtimeCommentStrip" destination="PhZ-3x-B2L" id="8BI-8d-3hG"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

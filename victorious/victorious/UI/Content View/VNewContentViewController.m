@@ -26,7 +26,7 @@
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
-#import "VRealTimeCommentsCell.h"
+#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 
 // Supplementary Views
@@ -74,7 +74,7 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate, VRealtimeCommentsViewModelDelegate, VRealtimeCommentsCellStripDataSource>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -87,7 +87,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
 @property (nonatomic, weak) VContentVideoCell *videoCell;
-@property (nonatomic, weak) VRealTimeCommentsCell *realTimeComentsCell;
+@property (nonatomic, weak) VTickerCell *tickerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 
 @property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
@@ -171,8 +171,8 @@
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VRealTimeCommentsCell  nibForCell]
-                 forCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VTickerCell  nibForCell]
+                 forCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
@@ -181,9 +181,6 @@
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
-
-    
-    self.viewModel.realTimeCommentsViewModel.delegate = self;
     
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
     [self becomeFirstResponder];
@@ -222,7 +219,7 @@
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
-        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.viewModel.realTimeCommentsViewModel.currentTime]];
+        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
     }
     else
     {
@@ -703,15 +700,14 @@
         }
         case VContentViewSectionTicker:
         {
-            if (self.realTimeComentsCell)
+            if (self.tickerCell)
             {
-                return self.realTimeComentsCell;
+                return self.tickerCell;
             }
             
-            self.realTimeComentsCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VRealTimeCommentsCell suggestedReuseIdentifier]
+            self.tickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
-            self.realTimeComentsCell.dataSource = self;
-            return self.realTimeComentsCell;
+            return self.tickerCell;
         }
         case VContentViewSectionAllComments:
         {
@@ -842,28 +838,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    self.viewModel.realTimeCommentsViewModel.currentTime = time;
-    
     CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
-    [self.realTimeComentsCell setProgress:progressedTime];
+    [self.tickerCell setProgress:progressedTime];
     
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    
-
-    // configure current comment
-    VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-    [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
-                                                currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
-                                             currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
-                                             currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
-                                                     atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
-                                     commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
-    self.viewModel.realTimeCommentsViewModel.totalTime = self.videoCell.videoPlayerViewController.playerItemDuration;
-    
     // should we update content size?
     CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
     if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
@@ -886,55 +868,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-    self.realTimeComentsCell.progress = 1.0f;
+    self.tickerCell.progress = 1.0f;
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
-}
-
-#pragma mark - VRealtimeCommentsCellStripDataSource
-
-- (NSInteger)numberOfAvatarsInStripForStripCell:(VRealTimeCommentsCell *)realtimeCommentsCell
-{
-    return self.viewModel.realTimeCommentsViewModel.numberOfRealTimeComments;
-}
-
-- (NSURL *)urlForAvatarImageAtIndex:(NSInteger)avatarIndex forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell
-{
-    return [self.viewModel.realTimeCommentsViewModel avatarURLForRealTimeCommentAtIndex:avatarIndex];
-}
-
-- (CGFloat)percentThroughVideoForAvatarAtIndex:(NSInteger)avatarIndex forAvatarCell:(VRealTimeCommentsCell *)realtimeCommentsCell
-{
-    return [self.viewModel.realTimeCommentsViewModel percentThroughMediaForRealTimeCommentAtIndex:avatarIndex];
-}
-
-#pragma mark - VRealtimeCommentsViewModelDelegate
-
-- (void)currentCommentDidChangeOnRealtimeCommentsViewModel:(VRealtimeCommentsViewModel *)viewModel
-{
-    VRealtimeCommentsViewModel *realtimeCommentsViewModel = self.viewModel.realTimeCommentsViewModel;
-    [self.realTimeComentsCell configureWithCurrentUserAvatarURL:realtimeCommentsViewModel.avatarURLForCurrentRealtimeComent
-                                                currentUsername:realtimeCommentsViewModel.usernameForCurrentRealtimeComment
-                                             currentTimeAgoText:realtimeCommentsViewModel.timeAgoTextForCurrentRealtimeComment
-                                             currentCommentBody:realtimeCommentsViewModel.realTimeCommentBodyForCurrentRealTimeComent
-                                                     atTimeText:realtimeCommentsViewModel.atRealtimeTextForCurrentRealTimeComment
-                                     commentPercentThroughMedia:realtimeCommentsViewModel.percentThroughMediaForCurrentRealTimeComment];
-}
-
-- (void)realtimeCommentsViewModelDidLoadNewComments:(VRealtimeCommentsViewModel *)viewModel
-{
-    [UIView animateWithDuration:0.0f
-                     animations:^
-     {
-         [self.contentCollectionView reloadData];
-         [self.contentCollectionView.collectionViewLayout invalidateLayout];
-     }];
-
-    [self.contentCollectionView setContentOffset:CGPointMake(0, self.contentCollectionView.contentOffset.y +1) animated:YES];
-}
-
-- (void)realtimeCommentsReadyToLoadRTC:(VRealtimeCommentsViewModel *)viewModel
-{
-    [self.realTimeComentsCell reloadAvatarStrip];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
