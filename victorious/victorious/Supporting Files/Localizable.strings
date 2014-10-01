@@ -44,7 +44,7 @@
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileAborted"        =   "You will be unable to log in until your profile has been completed.";
+"ProfileAborted"        =   "You will be use some features until your profile has been completed.";
 "ProfileRequired"       =   "Please provide the following:";
 "ProfileRequiredPhoto"  =   "Profile image";
 "ProfileRequiredName"   =   "Name";
