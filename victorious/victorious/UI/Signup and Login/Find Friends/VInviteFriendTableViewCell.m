@@ -9,13 +9,17 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import "VObjectManager.h"
+
+NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
 
 @interface VInviteFriendTableViewCell ()
 
 @property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIImageView        *followIconImageView;
+@property (nonatomic, weak)     IBOutlet    NSLayoutConstraint *userInfoWidthConstraint;
+@property (nonatomic, weak)     IBOutlet    UIView             *labelsSuperview;
 @property (nonatomic, strong)               UIImage            *followIcon;
 @property (nonatomic, strong)               UIImage            *unfollowIcon;
 
@@ -25,9 +29,10 @@
 
 - (void)awakeFromNib
 {
-    self.followIcon   = [UIImage imageNamed:@"buttonFollowedRed"];
-    self.unfollowIcon = [UIImage imageNamed:@"buttonFollow"];
+    self.followIcon   = [UIImage imageNamed:@"buttonFollow"];
+    self.unfollowIcon = [UIImage imageNamed:@"buttonFollowed"];
     self.followIconImageView.image = self.unfollowIcon;
+    [self.followIconImageView setUserInteractionEnabled:YES];
     
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
@@ -37,6 +42,36 @@
     
     self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.profileLocation.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    
+    // Add gesture to follow/unfollow imageview
+    UITapGestureRecognizer *actionTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapAction:)];
+    actionTap.numberOfTapsRequired = 1;
+    [self.followIconImageView addGestureRecognizer:actionTap];
+    
+    // Constraint to lock user info in place even when the view changes
+    self.userInfoWidthConstraint = [NSLayoutConstraint constraintWithItem:self.labelsSuperview
+                                                                attribute:NSLayoutAttributeTrailing
+                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                   toItem:self.profileName
+                                                                attribute:NSLayoutAttributeTrailing
+                                                               multiplier:1.0f
+                                                                 constant:10.0f];
+    [self addConstraint:self.userInfoWidthConstraint];
+}
+
+- (void)setHaveRelationship:(BOOL)haveRelationship
+{
+    _haveRelationship = haveRelationship;
+    
+    if (_haveRelationship)
+    {
+        self.followIconImageView.hidden = YES;
+        //self.followIconImageView.image = self.unfollowIcon;
+    }
+    else
+    {
+        [self.followIconImageView setImage:self.followIcon];
+    }
 }
 
 - (void)setProfile:(VUser *)profile
@@ -48,43 +83,63 @@
     self.profileLocation.text = profile.location;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+#pragma mark - Button Actions
+
+- (void)enableFollowIcon:(id)sender
 {
-    if (self.selected == selected)
-    {
-        return;
-    }
-    
-    [super setSelected:selected animated:animated];
-    
     void (^animations)() = ^(void)
     {
-        if (selected)
-        {
-            self.followIconImageView.image = self.followIcon;
-        }
-        else
-        {
-            self.followIconImageView.image = self.unfollowIcon;
-        }
+        self.followIconImageView.alpha = 1.0f;
+        self.followIconImageView.image = self.unfollowIcon;
     };
-    if (animated)
-    {
-        [UIView transitionWithView:self.followIconImageView
-                          duration:0.3
-                           options:(selected ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
-                        animations:animations
-                        completion:nil];
-    }
-    else
-    {
-        animations();
-    }
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
 }
 
-- (void)prepareForReuse
+- (void)flipFollowIconAction:(id)sender
 {
-    self.followIconImageView.image = self.unfollowIcon;
+    void (^animations)() = ^(void)
+    {
+        self.followIconImageView.alpha = 1.0f;
+        [self.followIconImageView  setImage:self.unfollowIcon];
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)disableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followIconImageView.alpha = 0.3f;
+        self.followIconImageView.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+
+}
+
+- (void)imageTapAction:(id)sender
+{
+    // Check for existance of follow block
+    if (self.followAction)
+    {
+        self.followAction();
+    }
+    
+    [self disableFollowIcon:nil];
 }
 
 @end

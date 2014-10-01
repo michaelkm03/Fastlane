@@ -339,6 +339,7 @@
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
+		DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
@@ -2660,6 +2661,7 @@
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
+				DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,

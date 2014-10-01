@@ -159,6 +159,11 @@
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
+"FollowingSectionHeader"            =   "Already Following";
+"FacebookFollowingSectionHeader"    =   "Follow Your Facebook Friends";
+"TwitterFollowingSectionHeader"     =   "Follow Your Twitter Friends";
+"AddressBookFollowingSectionHeader" =   "Follow Your Contacts";
+
 "ConversationLoadError" =   "Unable to load conversation";
 "ConversationDelError"  =   "Unable to delete conversation";
 "ConversationSendError" =   "Your message could not be sent";
@@ -259,7 +264,8 @@
 "InviteFriendsBody"     =   "Invite........................";
 
 "FindContacts"          =   "Search and invite your friends from your contacts";
-"Access Your Contacts"  =   "Access Your Contacts";
+"Access Your Contacts"  =   "Access your Contacts";
+"ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.";
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
 "AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
@@ -271,9 +277,11 @@
 
 "FindFBFriends"         =   "Add your friends from Facebook by connecting your account";
 "Connect to Facebook"   =   "Connect to Facebook";
+"FBSafety"              =   "We don't store your passwords and will never post anything without your permission.";
 
 "FindTwitterFriends"    =   "Add your friends from Twitter by connecting your account";
 "Connect to Twitter"    =   "Connect to Twitter";
+"TwitterSafety"         =   "We don't store your passwords and will never post anything without your permission.";
 
 "FindInstagramFriends"  =   "Add your friends from Instagram";
 "Connect to Instagram"  =   "Connect to Instagram";
