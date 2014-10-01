@@ -3071,6 +3071,10 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3254,6 +3258,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3274,6 +3282,10 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3380,6 +3392,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

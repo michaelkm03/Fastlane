@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <UIKit/UIKit.h>
+
 @class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView;
 
 @protocol VMarqueeDelegate <NSObject>
