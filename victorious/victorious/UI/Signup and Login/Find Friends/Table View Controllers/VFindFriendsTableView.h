@@ -24,6 +24,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *connectButton;
 
 - (void)setConnectPromptLabelText:(NSString *)text;
+- (void)setSafetyInfoLabelText:(NSString *)text;
 ///@}
 
 /**

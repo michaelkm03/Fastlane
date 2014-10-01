@@ -2855,6 +2855,7 @@
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
+				DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,

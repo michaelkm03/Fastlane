@@ -13,5 +13,14 @@
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VUser  *owner;
 @property (nonatomic)           BOOL    showButton;
+@property (nonatomic)           BOOL    haveRelationship;
+
+@property (nonatomic, weak)     IBOutlet UIButton *followButton;
+
+@property (nonatomic, copy) void (^followButtonAction)(void);
+
+- (void)enableFollowIcon:(id)sender;
+- (void)disableFollowIcon:(id)sender;
+- (void)flipFollowIconAction:(id)sender;
 
 @end
