@@ -80,7 +80,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.AvatarImageView v_addMotionEffectsWithMagnitude:10.0f];
     self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
     self.AvatarImageView.layer.masksToBounds = YES;
-    self.AvatarImageView.layer.borderWidth = 1.0f;
+    self.AvatarImageView.layer.borderWidth = 2.0f;
     self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
     self.tableView.separatorInset = kSeparatorInsets;
