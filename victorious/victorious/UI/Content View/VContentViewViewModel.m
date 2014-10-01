@@ -96,7 +96,10 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          NSInteger followerCount = [resultObjects[0] integerValue];
-         welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+         if (followerCount > 0)
+         {
+             welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+         }
      }
                                                 failBlock:nil];
 }
