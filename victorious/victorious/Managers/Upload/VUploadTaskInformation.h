@@ -18,18 +18,23 @@
  properties of this request will be ignored (see the 
  bodyFileURL property)
  */
-@property (nonatomic, copy) NSURLRequest *request;
+@property (nonatomic, readonly) NSURLRequest *request;
 
 /**
  A URL to a file that will be used as the body of 
  the POST
  */
-@property (nonatomic, strong) NSURL *bodyFileURL;
+@property (nonatomic, readonly) NSURL *bodyFileURL;
 
 /**
  A localized string that can be displayed
  to the user describing this upload.
  */
-@property (nonatomic, copy) NSString *uploadDescription;
+@property (nonatomic, readonly) NSString *uploadDescription;
+
+/**
+ Creates a new instance of VUploadTaskInformation with the specified properties.
+ */
+- (instancetype)initWithRequest:(NSURLRequest *)request bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription;
 
 @end

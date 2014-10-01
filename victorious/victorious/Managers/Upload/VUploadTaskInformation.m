@@ -11,6 +11,18 @@
 
 @implementation VUploadTaskInformation
 
+- (instancetype)initWithRequest:(NSURLRequest *)request bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription
+{
+    self = [super init];
+    if (self)
+    {
+        _request = [request copy];
+        _bodyFileURL = bodyFileURL;
+        _uploadDescription = [uploadDescription copy];
+    }
+    return self;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];

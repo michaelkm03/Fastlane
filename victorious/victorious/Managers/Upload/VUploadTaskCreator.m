@@ -101,9 +101,7 @@
     NSMutableURLRequest *request = [self.request mutableCopy] ?: [[NSMutableURLRequest alloc] init];
     [request setValue:[multipartWriter contentTypeHeader] forHTTPHeaderField:@"Content-Type"];
     
-    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] init];
-    uploadTask.request = request;
-    uploadTask.bodyFileURL = bodyFileURL;
+    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:bodyFileURL description:nil];
     return uploadTask;
 }
 

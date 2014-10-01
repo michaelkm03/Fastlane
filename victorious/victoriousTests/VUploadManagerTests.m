@@ -58,12 +58,10 @@
 - (void)testSingleUploadTask
 {
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
-    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] init];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    task.request = request;
-    task.bodyFileURL = self.bodyFileURL;
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
 
     stubRequest(@"POST", url.absoluteString).withBody(self.body).andReturn(200).withBody(self.response);
     
@@ -80,21 +78,19 @@
 - (void)testError
 {
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
-    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] init];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    task.request = request;
-    task.bodyFileURL = self.bodyFileURL;
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
     
     stubRequest(@"POST", url.absoluteString).withBody(self.body).andFailWithError([NSError errorWithDomain:@"domain" code:100 userInfo:nil]);
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
     [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
-     {
-         XCTAssertNotNil(error);
-         [async signal];
-     }];
+    {
+        XCTAssertNotNil(error);
+        [async signal];
+    }];
     [async waitForSignal:5.0];
 }
 

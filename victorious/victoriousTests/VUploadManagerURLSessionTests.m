@@ -51,9 +51,9 @@
     NSData *body = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
     [body writeToURL:self.bodyFileURL atomically:YES];
     
-    self.uploadTask = [[VUploadTaskInformation alloc] init];
-    self.uploadTask.bodyFileURL = self.bodyFileURL;
-    self.uploadTask.request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com/"]];
+    self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com/"]]
+                                                          bodyFileURL:self.bodyFileURL
+                                                          description:nil];
 }
 
 - (void)tearDown
