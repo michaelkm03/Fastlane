@@ -18,6 +18,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 @property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
+@property (nonatomic, weak)     IBOutlet    NSLayoutConstraint *userInfoWidthConstraint;
+@property (nonatomic, weak)     IBOutlet    UIView             *labelsSuperview;
 @property (nonatomic, strong)               UIImage            *followIcon;
 @property (nonatomic, strong)               UIImage            *unfollowIcon;
 
@@ -45,6 +47,16 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     UITapGestureRecognizer *actionTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapAction:)];
     actionTap.numberOfTapsRequired = 1;
     [self.followIconImageView addGestureRecognizer:actionTap];
+    
+    // Constraint to lock user info in place even when the view changes
+    self.userInfoWidthConstraint = [NSLayoutConstraint constraintWithItem:self.labelsSuperview
+                                                                attribute:NSLayoutAttributeTrailing
+                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                   toItem:self.profileName
+                                                                attribute:NSLayoutAttributeTrailing
+                                                               multiplier:1.0f
+                                                                 constant:10.0f];
+    [self addConstraint:self.userInfoWidthConstraint];
 }
 
 - (void)setHaveRelationship:(BOOL)haveRelationship
