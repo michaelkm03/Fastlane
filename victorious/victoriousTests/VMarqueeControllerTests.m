@@ -8,7 +8,10 @@
 
 #import <XCTest/XCTest.h>
 
+#import <OCMock/OCMock.h>
+
 #import "VMarqueeController.h"
+#import "VStreamCollectionViewDataSource.h"
 
 @interface VMarqueeControllerTests : XCTestCase
 
@@ -16,17 +19,7 @@
 
 @end
 
-
-//@property (nonatomic, weak) id<VMarqueeDelegate> delegate;
-//@property (nonatomic, readonly) VStreamItem *currentStreamItem;///<The stream item currently being displayed
-//@property (nonatomic, readonly) VStream *stream;///<The Marquee Stream
-//@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
-//@property (weak, nonatomic) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 //@property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
-//@property (nonatomic, readonly) NSTimer *autoScrollTimer;///<The timer in control of auto scroll
-//
-//- (void)disableTimer;
-//- (void)enableTimer;
 
 @implementation VMarqueeControllerTests
 
@@ -47,12 +40,25 @@
 {
     [self.marquee enableTimer];
     XCTAssert(self.marquee.autoScrollTimer, @"There should be a timer in the autoScrollTimer property after calling enableTimer");
-    XCTAssert(self.marquee.autoScrollTimer.isValid, @"The timer should be valid");
+    XCTAssert(self.marquee.autoScrollTimer.isValid, @"The timer should be valid after it is enabled");
 }
 
 - (void)testDisableTimer
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    [self.marquee enableTimer];
+    [self.marquee disableTimer];
+    XCTAssert(!self.marquee.autoScrollTimer.isValid, @"The timer should be invalid after it is disabled.");
+}
+
+- (void)testSetCollectionView
+{
+    id collectionView = [OCMockObject niceMockForClass:[UICollectionView class]];
+    [(UICollectionView *)[collectionView expect] setDelegate:self.marquee];
+    [(UICollectionView *)[collectionView expect] setDataSource:self.marquee.streamDataSource];
+    self.marquee.collectionView = collectionView;
+    XCTAssert([self.marquee.collectionView isEqual:collectionView], @"The collection view was not set on VMarqueeController.");
+    XCTAssert([self.marquee.streamDataSource.collectionView isEqual:collectionView], @"The collection view was not set on VStreamCollectionViewDataSource.");
+    [collectionView verify];
 }
 
 @end
