@@ -15,9 +15,11 @@ static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirector
 static NSString * const kTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
 static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.urlSession";
 
+NSString * const VUploadManagerTaskBeganNotification = @"VUploadManagerTaskBeganNotification";
 NSString * const VUploadManagerTaskProgressNotification = @"VUploadManagerTaskProgressNotification";
 NSString * const VUploadManagerTaskFinishedNotification = @"VUploadManagerTaskFinishedNotification";
 NSString * const VUploadManagerTaskFailedNotification = @"VUploadManagerTaskFailedNotification";
+NSString * const VUploadManagerUploadTaskUserInfoKey = @"VUploadManagerUploadTaskUserInfoKey";
 NSString * const VUploadManagerBytesSentUserInfoKey = @"VUploadManagerBytesSentUserInfoKey";
 NSString * const VUploadManagerTotalBytesUserInfoKey = @"VUploadManagerTotalBytesUserInfoKey";
 NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoKey";
@@ -26,6 +28,7 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 @property (nonatomic, strong) NSURLSession *urlSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
+@property (nonatomic, strong) NSMapTable *taskInformation;
 @property (nonatomic, strong) NSMapTable *completionBlocks;
 @property (nonatomic, strong) NSMapTable *responseData;
 
@@ -49,6 +52,7 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
         _useBackgroundSession = YES;
         _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
+        _taskInformation = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
     }
@@ -92,12 +96,13 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
         {
             [self.completionBlocks setObject:complete forKey:uploadSessionTask];
         }
+        [self.taskInformation setObject:uploadTask forKey:uploadSessionTask];
         [uploadSessionTask resume];
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
                                                                 object:self
-                                                              userInfo:@{VUploadManagerBytesSentUserInfoKey: @(0),
+                                                              userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
                                                                         }];
         });
     });
@@ -189,11 +194,19 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+            userInfo[VUploadManagerBytesSentUserInfoKey] = @(totalBytesSent);
+            userInfo[VUploadManagerTotalBytesUserInfoKey] = @(totalBytesExpectedToSend);
+            
+            VUploadTaskInformation *taskInformation = [self.taskInformation objectForKey:task];
+            if (taskInformation)
+            {
+                userInfo[VUploadManagerUploadTaskUserInfoKey] = taskInformation;
+            }
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
                                                                 object:self
-                                                              userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(totalBytesSent),
-                                                                          VUploadManagerTotalBytesUserInfoKey: @(totalBytesExpectedToSend),
-                                                                        }];
+                                                              userInfo:userInfo];
         });
     });
 }

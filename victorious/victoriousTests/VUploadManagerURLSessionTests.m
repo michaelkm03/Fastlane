@@ -75,19 +75,18 @@
     [self.mockSessionTask verify];
 }
 
-- (void)testProgressNotificationSentAtStart
+- (void)testNotificationSentAtStart
 {
     NSNumber *__block expectedTotalBytes;
     NSNumber *__block expectedBytesSent;
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
-    id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskProgressNotification
+    id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskBeganNotification
                                                                     object:nil
                                                                      queue:nil
                                                                 usingBlock:^(NSNotification *notification)
     {
-        XCTAssertEqualObjects(expectedTotalBytes, notification.userInfo[VUploadManagerTotalBytesUserInfoKey]);
-        XCTAssertEqualObjects(expectedBytesSent, notification.userInfo[VUploadManagerBytesSentUserInfoKey]);
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         [async signal];
     }];
     
@@ -120,6 +119,7 @@
     {
         XCTAssertEqualObjects(expectedTotalBytes, notification.userInfo[VUploadManagerTotalBytesUserInfoKey]);
         XCTAssertEqualObjects(expectedBytesSent, notification.userInfo[VUploadManagerBytesSentUserInfoKey]);
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         [async signal];
     }];
     
