@@ -19,6 +19,7 @@
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
@@ -42,6 +43,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 
 @property (nonatomic, strong) NSString *followersText;
+@property (nonatomic, assign, readwrite) BOOL hasReposted;
 
 @end
 
@@ -89,6 +91,18 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     return nil;
 }
 
+- (void)repost
+{
+    [[VObjectManager sharedManager] repostNode:self.currentNode
+                                      withName:nil
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         self.hasReposted = YES;
+     }
+                                     failBlock:nil];
+
+}
+
 - (void)fetchUserinfo
 {
     __weak typeof(self) welf = self;
@@ -96,9 +110,18 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          NSInteger followerCount = [resultObjects[0] integerValue];
-         welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+         if (followerCount > 0)
+         {
+             welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+         }
      }
                                                 failBlock:nil];
+    
+    [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
+                                                      withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
+     {
+         self.hasReposted = userInteractions.hasReposted;
+     }];
 }
 
 #pragma mark - Property Accessors

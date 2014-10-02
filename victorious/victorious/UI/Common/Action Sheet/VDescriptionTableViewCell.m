@@ -88,7 +88,7 @@ static const UIEdgeInsets kTextInsets        = { 12.0f, 30.0f, 13.0f, 30.0f};
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
-    return @{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont],
+    return @{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font],
              NSParagraphStyleAttributeName:paragraphStyle};
 }
 

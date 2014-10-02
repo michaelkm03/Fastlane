@@ -77,10 +77,9 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.blurringContainer insertSubview:blurredView
                                   atIndex:0];
     
-    [self.AvatarImageView v_addMotionEffectsWithMagnitude:10.0f];
     self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
     self.AvatarImageView.layer.masksToBounds = YES;
-    self.AvatarImageView.layer.borderWidth = 1.0f;
+    self.AvatarImageView.layer.borderWidth = 2.0f;
     self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
     self.tableView.separatorInset = kSeparatorInsets;
@@ -98,8 +97,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.gradientContainer.layer insertSublayer:gradient atIndex:0];
     self.gradientContainer.layer.mask = gradient;
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.userCaptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:18.0f];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
 
     self.topSeparatorHeightConstraint.constant = 1 / [UIScreen mainScreen].scale;
@@ -177,7 +176,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                  [self.AvatarImageView setImageWithURL:actionItem.avatarURL
                                       placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
                  self.usernameLabel.text = actionItem.title;
-                 self.userCaptionLabel.text = actionItem.detailText;
+                 self.userCaptionLabel.text = [actionItem.detailText uppercaseStringWithLocale:[NSLocale currentLocale]];
                  self.userItem = actionItem;
                  break;
              case VActionItemTypeDescriptionWithHashTags:
@@ -275,7 +274,10 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         case VActionSheetTableViewSecionDescription:
             return NO;
         case VActionSheetTableViewSecionActions:
-            return YES;
+        {
+            VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+            return actionItem.enabled;
+        }
     }
     return YES;
 }

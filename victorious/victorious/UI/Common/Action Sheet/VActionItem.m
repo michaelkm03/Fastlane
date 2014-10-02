@@ -15,6 +15,7 @@
 @property (nonatomic, strong, readwrite) NSString *detailText;
 @property (nonatomic, strong, readwrite) UIImage *icon;
 @property (nonatomic, strong, readwrite) NSURL *avatarURL;
+@property (nonatomic, assign, readwrite) BOOL enabled;
 
 @end
 
@@ -32,6 +33,18 @@
     actionItem.detailText = [detailText copy];
     actionItem.icon = actionIcon;
     
+    return actionItem;
+}
+
++ (instancetype)defaultActionItemWithTitle:(NSString *)title
+                                actionIcon:(UIImage *)actionIcon
+                                detailText:(NSString *)detailText
+                                   enabled:(BOOL)enabled
+{
+    VActionItem *actionItem = [self defaultActionItemWithTitle:title
+                                                    actionIcon:actionIcon
+                                                    detailText:detailText];
+    actionItem.enabled = enabled;
     return actionItem;
 }
 
@@ -60,6 +73,18 @@
     actionItem.hashTagSelectionHandler = hashTagSelectionHandler;
 
     return actionItem;
+}
+
+#pragma mark - Initializer
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        _enabled = YES;
+    }
+    return self;
 }
 
 @end

@@ -33,6 +33,18 @@ typedef NS_ENUM(NSInteger, VActionItemType)
                                 actionIcon:(UIImage *)actionIcon
                                 detailText:(NSString *)detailText;
 
+/**
+ *  Same as above but with the enabled parameter.
+ *
+ *  @param enabled    Whether this action item should be enabled by the UI.
+ *
+ *  @return An initialized action item.
+ */
++ (instancetype)defaultActionItemWithTitle:(NSString *)title
+                                actionIcon:(UIImage *)actionIcon
+                                detailText:(NSString *)detailText
+                                   enabled:(BOOL)enabled;
+
 + (instancetype)userActionItemUserWithTitle:(NSString *)title
                                   avatarURL:(NSURL *)avatarURL
                                  detailText:(NSString *)detailText;
@@ -45,6 +57,10 @@ typedef NS_ENUM(NSInteger, VActionItemType)
 @property (nonatomic, readonly) NSString *detailText;
 @property (nonatomic, readonly) UIImage *icon;
 @property (nonatomic, readonly) NSURL *avatarURL;
+/**
+ *  YES by default.
+ */
+@property (nonatomic, readonly) BOOL enabled;
 
 /**
  *  Called when the item is selected.
