@@ -31,7 +31,7 @@
 
 - (void)setup
 {
-    self.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.image = [self defaultImage];
     
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
     
@@ -44,10 +44,18 @@
 {
     _user = user;
     
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self setImageWithURL:[NSURL URLWithString:user.pictureUrl] placeholderImage:defaultImage];
-    
-//    self.imageView.tintColor = self.tintColor;
+    [self setImageWithURL:[NSURL URLWithString:user.pictureUrl] placeholderImage:[self defaultImage]];
+    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
+}
+
+- (UIImage *)defaultImage
+{
+    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        image = [UIImage imageNamed:@"profile_full"];
+    }
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

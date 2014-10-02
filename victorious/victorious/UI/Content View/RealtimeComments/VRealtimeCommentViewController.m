@@ -165,7 +165,7 @@
         
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
         VDefaultProfileImageView *progressBarImage = [[VDefaultProfileImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
-        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
+//        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);

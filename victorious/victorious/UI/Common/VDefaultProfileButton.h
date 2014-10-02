@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VDefaultProfileImageView.h"
+
 @class VUser;
 
+/**
+ *  A UIButton for profiles.  It will default the profile image to the themed profile image.
+ */
 @interface VDefaultProfileButton : UIButton
 
+@property (nonatomic, strong) VDefaultProfileImageView *profileImageView;
 @property (nonatomic, strong) VUser *user;
 
 @end

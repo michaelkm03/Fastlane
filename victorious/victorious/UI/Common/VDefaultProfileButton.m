@@ -18,29 +18,21 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.profileImageView = [[VDefaultProfileImageView alloc] initWithFrame:self.bounds];
+}
 
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    [self setImage:defaultImage forState:UIControlStateNormal];
-    
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
-    
-    self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
-    self.clipsToBounds = YES;
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+- (void)setProfileImageView:(VDefaultProfileImageView *)profileImageView
+{
+    [_profileImageView removeFromSuperview];
+    _profileImageView = profileImageView;
+    [self addSubview:_profileImageView];
 }
 
 - (void)setUser:(VUser *)user
 {
     _user = user;
-
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    [self setImageWithURL:[NSURL URLWithString:user.pictureUrl]
-          placeholderImage:defaultImage
-                  forState:UIControlStateNormal];
-    
-    self.imageView.tintColor = self.tintColor;
+    self.profileImageView.user = user;
 }
 
 @end
