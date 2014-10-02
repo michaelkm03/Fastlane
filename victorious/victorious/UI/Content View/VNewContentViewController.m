@@ -77,9 +77,7 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,
-//VKeyboardInputAccessoryViewDelegate,
-VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -105,6 +103,7 @@ VContentVideoCellDelgetate>
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
+@property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
 
 @end
 
@@ -204,6 +203,9 @@ VContentVideoCellDelgetate>
     
     VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
+    inputAccessoryView.returnKeyType = UIReturnKeyDone;
+    inputAccessoryView.delegate = self;
+    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 100.0f);jh l
     self.textEntryView = inputAccessoryView;
     NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
                                                                          attribute:NSLayoutAttributeLeading
@@ -219,7 +221,7 @@ VContentVideoCellDelgetate>
                                                                           attribute:NSLayoutAttributeTrailing
                                                                          multiplier:1.0f
                                                                            constant:0.0f];
-    NSLayoutConstraint *inputViewHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+    self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
                                                                                  attribute:NSLayoutAttributeHeight
                                                                                  relatedBy:NSLayoutRelationEqual
                                                                                     toItem:nil
@@ -235,7 +237,7 @@ VContentVideoCellDelgetate>
                                                                                    constant:45];
     self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
     [self.view addSubview:inputAccessoryView];
-    [self.view addConstraints:@[inputViewHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+    [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -395,16 +397,12 @@ VContentVideoCellDelgetate>
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
     CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    NSLog(@"%@", NSStringFromCGRect(endFrame));
-    
  
     if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
     {
         self.bottomKeyboardToContainerBottomConstraint.constant = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;
         [self.view layoutIfNeeded];
     }
-    
-
 }
 
 - (void)commentsDidUpdate:(NSNotification *)notification
@@ -978,12 +976,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
-//- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-//                         wantsSize:(CGSize)size
-//{
-//    self.inputAccessoryView.frame = CGRectMake(0, 0, size.width, size.height);
-//    [self.inputAccessoryView layoutIfNeeded];
-//}
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+                         wantsSize:(CGSize)size
+{
+    self.keyboardInputBarHeightConstraint.constant = size.height;
+    [self.view layoutIfNeeded];
+}
 //
 //- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 //{
