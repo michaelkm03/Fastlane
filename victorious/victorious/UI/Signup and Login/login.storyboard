@@ -257,6 +257,7 @@
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
                         <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
+                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithEmail" id="kIr-xa-HmJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -345,7 +346,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btI-78-6NP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1845" y="-699"/>
+            <point key="canvasLocation" x="1953" y="-699"/>
         </scene>
         <!--Profile Create View Controller-->
         <scene sceneID="n2v-Tj-rFs">
@@ -377,7 +378,7 @@
                                             <constraint firstAttribute="width" constant="56" id="v3O-v4-vyy"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="cameraButtonBack">
+                                        <state key="normal" image="Close">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -714,7 +715,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A1h-V7-CoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="dle-oC-Vjm" userLabel="Preview Image Tap Gesture"/>
             </objects>
-            <point key="canvasLocation" x="1303" y="-699"/>
+            <point key="canvasLocation" x="1465" y="-699"/>
         </scene>
         <!--Find Friends-->
         <scene sceneID="lTq-NW-HWb">
@@ -915,6 +916,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Dbj-pL-bxH"/>
+        <segue reference="kIr-xa-HmJ"/>
     </inferredMetricsTieBreakers>
 </document>

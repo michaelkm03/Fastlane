@@ -195,7 +195,14 @@
     
     self.profile = mainUser;
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didFailWithError:(NSError *)error

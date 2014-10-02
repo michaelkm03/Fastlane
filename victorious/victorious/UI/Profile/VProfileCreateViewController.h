@@ -9,7 +9,7 @@
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
 
-extern NSString * const kCreateProfileAborted;
+extern NSString * const VProfileCreateViewControllerWasAbortedNotification;
 
 @class VUser;
 

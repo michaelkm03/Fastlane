@@ -39,9 +39,9 @@
 
 - (IBAction)findFriendsAction:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
 

@@ -28,15 +28,14 @@
 
 #import "VTOSViewController.h"
 
-// A unique, randomly assigned tag value to identifiy alertViews in UIAlertViewDelegate method implementations
-static const NSUInteger kAlertViewTagProfileAborted = 9183982;
+#import "UIAlertView+VBlocks.h"
 
-NSString * const kCreateProfileAborted = @"CreateProfileAborted";
+NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
@@ -157,10 +156,6 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
-    {
-        self.backButton.hidden = YES;
-    }
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
@@ -480,34 +475,28 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
 - (IBAction)back:(id)sender
 {
     // Show Error Message
-    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                       message:NSLocalizedString(@"ProfileAborted", @"")
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-    alert.tag = kAlertViewTagProfileAborted;
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ( alertView.tag == kAlertViewTagProfileAborted )
-    {
-        if (buttonIndex != alertView.cancelButtonIndex)
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                       message:NSLocalizedString(@"ProfileAborted", @"")
+                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                onCancelButton:nil
+                    otherButtonTitlesAndBlocks:nil];
+    
+    [alert addButtonWithTitle:NSLocalizedString(@"OKButton", @"") block:^{
+        
+        BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
+        if ( wasPushedFromViewControllerInLoginFlow )
         {
-            BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
-            if ( wasPushedFromViewControllerInLoginFlow )
-            {
-                // The root of this login flow (VLoginViewController) should receive this and dismiss itself
-                [[NSNotificationCenter defaultCenter] postNotificationName:kCreateProfileAborted object:nil];
-            }
-            else
-            {
-                // We're a standalone view controller, so we'll dismiss ourselves
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
+            // The root of this login flow (VLoginViewController) should receive this and dismiss itself
+            [[NSNotificationCenter defaultCenter] postNotificationName:VProfileCreateViewControllerWasAbortedNotification object:nil];
         }
-    }
+        else
+        {
+            // We're a standalone view controller, so we'll dismiss ourselves
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+    
+    [alert show];
 }
 
 - (BOOL)shouldCreateProfile

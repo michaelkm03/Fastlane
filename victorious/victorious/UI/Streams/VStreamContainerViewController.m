@@ -202,7 +202,7 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
