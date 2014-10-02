@@ -10,8 +10,11 @@
 
 @class VUser;
 
+/**
+ *  An image view that defaults to the themed default profile image.
+ */
 @interface VDefaultProfileImageView : UIImageView
 
-@property (nonatomic, strong) VUser *user;
+@property (nonatomic, strong) VUser *user; ///<Updating this property updates the URL used for the profile Image.
 
 @end

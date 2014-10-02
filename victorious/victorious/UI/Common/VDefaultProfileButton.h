@@ -17,7 +17,7 @@
  */
 @interface VDefaultProfileButton : UIButton
 
-@property (nonatomic, strong) VDefaultProfileImageView *profileImageView;
-@property (nonatomic, strong) VUser *user;
+@property (nonatomic, strong) VDefaultProfileImageView *profileImageView;///< A VDefaultProfileImageView that is used instead of the normal imageView.  Note: if you use set or use the default image view, you may get unexpected behavior.
+@property (nonatomic, strong) VUser *user;///<Setting this property updates the URL of the profileImageView
 
 @end
