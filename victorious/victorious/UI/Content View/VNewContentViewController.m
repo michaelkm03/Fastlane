@@ -100,8 +100,6 @@ VContentVideoCellDelgetate>
 @property (nonatomic, weak) VExperienceEnhancerBar *experienceEnhancerBar;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 
-//@property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
-
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 
 // Constraints
@@ -264,12 +262,6 @@ VContentVideoCellDelgetate>
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
-    
-    
-    
-    // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
-//    [self becomeFirstResponder];
-//    [self resignFirstResponder];
 }
 
 - (UIView *)inputAccessoryView
@@ -318,14 +310,15 @@ VContentVideoCellDelgetate>
                                            placeholderImage:placeholderImage
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
 
-//    if (self.viewModel.type == VContentViewTypeVideo)
-//    {
-//        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
-//    }
-//    else
-//    {
-//        self.inputAccessoryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
-//    }
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
+    }
+    else
+    {
+        self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
+    }
+    
     self.inputAccessoryView.alpha = 0.0f;
     [UIView animateWithDuration:0.2f
                      animations:^
@@ -379,6 +372,7 @@ VContentVideoCellDelgetate>
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
+    NSLog(@"notification name: %@, endFrame", notification.name, NSStringFromCGRect([notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]));
 //    NSTimeInterval animationDuration;
 //    UIViewAnimationCurve animationCurve;
 //    NSDictionary *userInfo = [notification userInfo];
@@ -406,7 +400,7 @@ VContentVideoCellDelgetate>
  
     if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
     {
-        self.bottomKeyboardToContainerBottomConstraint.constant = - CGRectGetHeight(endFrame) - CGRectGetHeight(self.textEntryView.bounds);
+        self.bottomKeyboardToContainerBottomConstraint.constant = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;
         [self.view layoutIfNeeded];
     }
     
