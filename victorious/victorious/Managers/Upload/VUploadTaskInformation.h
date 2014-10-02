@@ -33,6 +33,11 @@
 @property (nonatomic, readonly) NSString *uploadDescription;
 
 /**
+ A unique identifier for this upload task
+ */
+@property (nonatomic, readonly) NSUUID *identifier;
+
+/**
  Creates a new instance of VUploadTaskInformation with the specified properties.
  */
 - (instancetype)initWithRequest:(NSURLRequest *)request bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription;
