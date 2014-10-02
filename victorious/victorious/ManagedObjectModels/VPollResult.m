@@ -2,7 +2,7 @@
 //  VPollResult.m
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 9/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,9 +14,9 @@
 @implementation VPollResult
 
 @dynamic answerId;
-@dynamic sequenceId;
 @dynamic count;
-@dynamic user;
+@dynamic sequenceId;
 @dynamic sequence;
+@dynamic user;
 
 @end

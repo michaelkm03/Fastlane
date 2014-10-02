@@ -16,6 +16,10 @@
 	<string>/api/tos</string>
 	<key>require_profile_image</key>
 	<true/>
+	<key>channelsEnabled</key>
+	<false/>
+	<key>marqueeEnabled</key>
+	<false/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
 </dict>

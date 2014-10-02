@@ -11,22 +11,24 @@
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VBadgeLabel.h"
+
 #import "VThemeManager.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Login.h"
+#import "VSettingManager.h"
+
+#import "VStream+Fetcher.h"
 #import "VUser+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 
 #import "VLoginViewController.h"
 #import "VStreamContainerViewController.h"
-
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
-
 #import "VInboxContainerViewController.h"
-
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VDirectoryViewController.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -84,6 +86,15 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
+    {
+        self.nameLabel.text = NSLocalizedString(@"Channels", nil);
+    }
+    else
+    {
+        self.nameLabel.text = NSLocalizedString(@"Channel", nil);
+    }
+    
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
 
@@ -124,7 +135,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             case VMenuRowOwnerChannel:
             {
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
+                {
+                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
+                }
+                else
+                {
+                    navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                }
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;

@@ -9,7 +9,10 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
+#import "VSettingManager.h"
 #import "VStreamTableDataSource.h"
+
+#import "VMarqueeTableViewCell.h"
 
 #import "VStream.h"
 
@@ -55,7 +58,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     
     if (_stream)
     {
-        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) context:&KVOContext];
+        [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
     }
     
     _stream = stream;
@@ -63,24 +66,25 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
     
     if (stream)
     {
-        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
 }
 
 - (VSequence *)sequenceAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.stream.sequences[indexPath.row];
+    return self.stream.streamItems[indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForSequence:(VSequence *)sequence
 {
-    NSUInteger index = [self.stream.sequences indexOfObject:sequence];
-    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
+    NSInteger section = self.shouldDisplayMarquee ? 1 : 0;
+    NSUInteger index = [self.stream.streamItems indexOfObject:sequence];
+    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
 {
-    return self.stream.sequences.count;
+    return self.stream.streamItems.count;
 }
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
@@ -136,18 +140,25 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (self.shouldDisplayMarquee)
+    {
+        return 2;
+    }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.shouldDisplayMarquee && section == 0)
+    {
+        return 1;
+    }
     return [self count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence *sequence = [self sequenceAtIndexPath:indexPath];
-    return [self.delegate dataSource:self cellForSequence:sequence atIndexPath:indexPath];
+    return [self.delegate dataSource:self cellForIndexPath:indexPath];
 }
 
 #pragma mark - NSNotification handlers
@@ -177,7 +188,7 @@ NSString *const VStreamTableDataSourceDidChangeNotification = @"VStreamTableData
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         if (!self.insertingContent)
         {

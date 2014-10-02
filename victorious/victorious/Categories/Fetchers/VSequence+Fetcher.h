@@ -7,6 +7,7 @@
 //
 
 #import "VSequence.h"
+#import "VStreamItem+Fetcher.h"
 
 @class VAsset;
 

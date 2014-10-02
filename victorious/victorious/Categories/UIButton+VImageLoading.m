@@ -15,9 +15,11 @@
        placeholderImage:(UIImage *)placeholderImage
                forState:(UIControlState)state
 {
+    [self setImage:placeholderImage forState:state];
+
     if (!url || [url.path isEmpty])
     {
-        [self setImage:placeholderImage forState:state];
+        return;
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -30,7 +32,8 @@
                                    {
                                        __strong UIButton *strongSelf = weakSelf;
                                        [strongSelf setImage:image forState:state];
-                                   } failure:nil];
+                                   }
+                                   failure:nil];
 }
 
 @end

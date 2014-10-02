@@ -32,6 +32,10 @@
 
 #import "VEphemeralTimerView.h"
 
+#import "UIImageView+VLoadingAnimations.h"
+
+NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
+
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
@@ -100,29 +104,9 @@
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
 
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:[UIImage resizeableImageWithColor:
-                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (!request)
-         {
-             self.previewImageView.image = image;
-             return;
-         }
-         
-         self.previewImageView.alpha = 0;
-         self.previewImageView.image = image;
-         [UIView animateWithDuration:.3f
-                          animations:^
-          {
-              self.previewImageView.alpha = 1;
-          }];
-     }
-                                          failure:nil];
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
+                           placeholderImage:[UIImage resizeableImageWithColor:
+                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
     // Check if being viewed from the User Profile
     if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])

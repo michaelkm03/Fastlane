@@ -122,7 +122,7 @@
     }
     else
     {
-        [urls addObject:[NSURL URLWithString:self.previewImage]];
+        [urls addObject:[NSURL URLWithString:[self.previewImagePaths firstObject]]];
     }
     
     if (self.user && self.user.pictureUrl)

@@ -90,7 +90,7 @@ NSString * const kCreateProfileAborted = @"CreateProfileAborted";
     self.profileImageView.clipsToBounds = YES;
     self.profileImageView.userInteractionEnabled = YES;
     [self.profileImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)]];
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+    [self.profileImageView setImageWithURL:[NSURL URLWithString: self.profile.pictureUrl]
                           placeholderImage:self.profileImageView.image];
     
     self.usernameTextField.delegate = self;
