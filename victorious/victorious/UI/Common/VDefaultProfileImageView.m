@@ -16,7 +16,21 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+    [self setup];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup
+{
     self.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
