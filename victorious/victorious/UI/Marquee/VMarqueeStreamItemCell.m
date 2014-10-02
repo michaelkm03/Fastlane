@@ -8,6 +8,8 @@
 
 #import "VMarqueeStreamItemCell.h"
 
+#import "VDefaultProfileButton.h"
+
 #import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
@@ -25,7 +27,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 
-@property (nonatomic, weak) IBOutlet UIButton *profileImageButton;
+@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
 
@@ -40,13 +42,9 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super awakeFromNib];
     
     self.originalNameLabelFrame = self.nameLabel.frame;
-    
-    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+
     self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
-    self.profileImageButton.clipsToBounds = YES;
-    self.profileImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-
     
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
@@ -73,9 +71,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ([streamItem isKindOfClass:[VSequence class]])
     {
-        [self.profileImageButton setImageWithURL:[NSURL URLWithString:((VSequence *)streamItem).user.pictureUrl]
-                                placeholderImage:[UIImage imageNamed:@"profile_full"]
-                                        forState:UIControlStateNormal];
+        self.profileImageButton.user = ((VSequence *)streamItem).user;
         self.profileImageButton.hidden = NO;
     }
     else

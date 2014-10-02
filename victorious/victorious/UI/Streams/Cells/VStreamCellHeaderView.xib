@@ -66,7 +66,7 @@
                         <constraint firstItem="ZLn-Aq-gHz" firstAttribute="leading" secondItem="mw8-p7-7U7" secondAttribute="leading" id="v4C-It-ULz"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCm-Z1-zjM" userLabel="Profile Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCm-Z1-zjM" userLabel="Profile Button" customClass="VDefaultProfileButton">
                     <rect key="frame" x="20" y="17" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
