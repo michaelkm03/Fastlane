@@ -11,6 +11,7 @@
 #import "VMessageCell.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
+#import "VDefaultProfileImageView.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
@@ -24,7 +25,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 @property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubbleArrow;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
@@ -40,9 +41,6 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     [super awakeFromNib];
     self.chatBubble.image = [[[UIImage imageNamed:kChatBubble] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
-    UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.profileImageView.tintColor = transparentAccent;
     [self resetView];
 }
 
@@ -182,7 +180,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.profileImageView awakeFromNib];
     self.profileImageOnRight = NO;
 }
 

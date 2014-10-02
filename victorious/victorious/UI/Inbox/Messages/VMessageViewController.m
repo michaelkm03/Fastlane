@@ -26,6 +26,9 @@
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 
+#warning 
+#import "VDefaultProfileImageView.h"
+
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
 @property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VCommentTextAndMediaView;
+@class VCommentTextAndMediaView, VDefaultProfileImageView;
 
 extern NSString * const kVMessageCellNibName;
 
@@ -14,7 +14,7 @@ extern NSString * const kVMessageCellNibName;
 
 @property (nonatomic, weak, readonly) IBOutlet VCommentTextAndMediaView  *commentTextView;
 @property (nonatomic, weak, readonly) IBOutlet UILabel                   *timeLabel;
-@property (nonatomic, weak, readonly) IBOutlet UIImageView               *profileImageView;
+@property (nonatomic, weak, readonly) IBOutlet VDefaultProfileImageView  *profileImageView;
 @property (nonatomic, copy)                    void                     (^onProfileImageTapped)();
 @property (nonatomic)                          BOOL                       profileImageOnRight; ///< If YES, the profile image is to the right of the chat bubble
 
