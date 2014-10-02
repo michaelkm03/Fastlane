@@ -252,13 +252,8 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning test code
-    VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:self.stream name:self.stream.remoteId title:self.stream.remoteId];
-    VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
-    [self.navigationController pushViewController:streamContainer animated:YES];
-    return ;
-    
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
+    //Commented out code is the inital logic for supporting other stream types / sequences in streams.
     if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
     {
         NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
@@ -268,17 +263,17 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
         VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
         [self.navigationController pushViewController:streamContainer animated:YES];
     }
-    else if ([item isKindOfClass:[VStream class]])
-    {
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
-        [self.navigationController pushViewController:sos animated:YES];
-    }
-    else if ([item isKindOfClass:[VSequence class]])
-    {
-        VContentViewController *contentViewController = [[VContentViewController alloc] init];
-        contentViewController.sequence = (VSequence *)item;
-        [self.navigationController pushViewController:contentViewController animated:YES];
-    }
+//    else if ([item isKindOfClass:[VStream class]])
+//    {
+//        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
+//        [self.navigationController pushViewController:sos animated:YES];
+//    }
+//    else if ([item isKindOfClass:[VSequence class]])
+//    {
+//        VContentViewController *contentViewController = [[VContentViewController alloc] init];
+//        contentViewController.sequence = (VSequence *)item;
+//        [self.navigationController pushViewController:contentViewController animated:YES];
+//    }
 }
 
 #pragma mark - VStreamCollectionDataDelegate

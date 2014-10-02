@@ -136,8 +136,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             {
                 if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
                 {
-#warning test code
-                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForMarquee]]];//streamForChannelsDirectory]]];
+                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
                 }
                 else
                 {
