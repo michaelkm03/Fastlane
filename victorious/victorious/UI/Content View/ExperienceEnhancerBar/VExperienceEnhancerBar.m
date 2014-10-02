@@ -8,24 +8,74 @@
 
 #import "VExperienceEnhancerBar.h"
 
+#import "VExperienceEnhancerCell.h"
+
+@interface VExperienceEnhancerBar () <UICollectionViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIButton *textEntryButton;
+
+@end
+
 @implementation VExperienceEnhancerBar
 
-- (id)initWithFrame:(CGRect)frame
+#pragma mark - Factory Methods
+
++ (instancetype)experienceEnhancerBar
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    UINib *nibForView = [UINib nibWithNibName:NSStringFromClass([self class])
+                                                     bundle:nil];
+    NSArray *nibContents = [nibForView instantiateWithOwner:nil
+                                                    options:nil];
+
+    return [nibContents firstObject];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+#pragma mark - NSObject
+
+- (void)awakeFromNib
 {
-    // Drawing code
+    [super awakeFromNib];
+    
+    self.collectionView.dataSource = self;
+    
+    [self.collectionView registerNib:[VExperienceEnhancerCell nibForCell]
+          forCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]];
 }
-*/
+
+#pragma mark - IBActions
+
+- (IBAction)pressedTextEntryButton:(id)sender
+{
+    if (self.pressedTextEntryHandler)
+    {
+        self.pressedTextEntryHandler();
+    }
+}
+
+#pragma mark - Property Accessors
+
+- (void)setActionItems:(NSArray *)actionItems
+{
+    _actionItems = actionItems;
+    [self.collectionView reloadData];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section
+{
+    return self.actionItems.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VExperienceEnhancerCell *experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]
+                                                                                                forIndexPath:indexPath];
+    
+    return experienceEnhancerCell;
+}
 
 @end

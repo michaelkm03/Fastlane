@@ -10,4 +10,10 @@
 
 @interface VExperienceEnhancerBar : UIView
 
++ (instancetype)experienceEnhancerBar;
+
+@property (nonatomic, strong) NSArray *actionItems;
+
+@property (nonatomic, copy) void (^pressedTextEntryHandler)(void);
+
 @end

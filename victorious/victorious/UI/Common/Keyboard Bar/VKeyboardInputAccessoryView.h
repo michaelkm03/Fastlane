@@ -10,6 +10,11 @@
 
 @class VKeyboardInputAccessoryView;
 
+UIKIT_EXTERN NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
+
+@interface VInputAccessoryView : UIView
+@end
+
 @protocol VKeyboardInputAccessoryViewDelegate <NSObject>
 
 /**
@@ -88,6 +93,7 @@
  */
 @property (nonatomic, assign) UIReturnKeyType returnKeyType;
 
+- (void)startEditing;
 - (void)clearTextAndResign;
 
 @end

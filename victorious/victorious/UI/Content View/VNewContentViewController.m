@@ -11,6 +11,9 @@
 // Theme
 #import "VThemeManager.h"
 
+// SubViews
+#import "VExperienceEnhancerBar.h"
+
 // View Categories
 #import "UIView+VShadows.h"
 #import "UIActionSheet+VBlocks.h"
@@ -74,7 +77,9 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,
+//VKeyboardInputAccessoryViewDelegate,
+VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -86,13 +91,22 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
+// Cells
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VTickerCell *tickerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 
-@property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
+// Experience Enhancers
+@property (nonatomic, weak) VExperienceEnhancerBar *experienceEnhancerBar;
+@property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
+
+//@property (nonatomic, readwrite) VKeyboardInputAccessoryView *inputAccessoryView;
 
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
+
+// Constraints
+@property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
+@property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 
 @end
 
@@ -149,13 +163,82 @@
     self.moreButton.imageView.tintColor = [UIColor whiteColor];
     [self.moreButton v_applyShadowsWithZIndex:2];
     
-    self.inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
-    self.inputAccessoryView.delegate = self;
-    self.inputAccessoryView.returnKeyType = UIReturnKeyDone;
-    self.inputAccessoryView.frame = CGRectMake(0,
-                                               CGRectGetHeight(self.view.bounds) - self.inputAccessoryView.intrinsicContentSize.height,
-                                               CGRectGetWidth(self.view.bounds),
-                                               self.inputAccessoryView.intrinsicContentSize.height);
+    VExperienceEnhancerBar *experienceEnhancerBar = [VExperienceEnhancerBar experienceEnhancerBar];
+    experienceEnhancerBar.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
+                                                                         attribute:NSLayoutAttributeLeading
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.view
+                                                                         attribute:NSLayoutAttributeLeading
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+    NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0f
+                                                                         constant:60.0f];
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.view
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    self.bottomExperienceEnhancerBarToContainerConstraint = bottomConstraint;
+    [self.view addSubview:experienceEnhancerBar];
+    [self.view addConstraints:@[leadingConstraint, trailingConstraint, heightConstraint, bottomConstraint]];
+
+    self.experienceEnhancerBar = experienceEnhancerBar;
+    self.experienceEnhancerBar.pressedTextEntryHandler = ^void()
+    {
+        [self.textEntryView startEditing];
+    };
+    self.experienceEnhancerBar.actionItems = @[@1, @2, @3];
+    
+    VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+    inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.textEntryView = inputAccessoryView;
+    NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                         attribute:NSLayoutAttributeLeading
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.view
+                                                                         attribute:NSLayoutAttributeLeading
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+    NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    NSLayoutConstraint *inputViewHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                 attribute:NSLayoutAttributeHeight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:nil
+                                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                                multiplier:1.0f
+                                                                                  constant:45];
+    self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.view
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                 multiplier:1.0f
+                                                                                   constant:45];
+    self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
+    [self.view addSubview:inputAccessoryView];
+    [self.view addConstraints:@[inputViewHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
@@ -182,9 +265,23 @@
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
     
+    
+    
     // There is a bug where input accessory view will go offscreen and not remain docked on first dismissal of the keyboard. This fixes that.
-    [self becomeFirstResponder];
-    [self resignFirstResponder];
+//    [self becomeFirstResponder];
+//    [self resignFirstResponder];
+}
+
+- (UIView *)inputAccessoryView
+{
+    static dispatch_once_t onceToken;
+    static VInputAccessoryView *_inputAccessoryView = nil;
+    
+    dispatch_once(&onceToken, ^{
+        _inputAccessoryView = [VInputAccessoryView new];
+    });
+        
+    return _inputAccessoryView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -200,7 +297,10 @@
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
 
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidChangeFrame:)
+                                                 name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -210,21 +310,22 @@
     [self.viewModel fetchComments];
     
     
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, self.inputAccessoryView.bounds.size.height, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.experienceEnhancerBar.bounds), 0);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.experienceEnhancerBar.bounds), 0);
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
                                            placeholderImage:placeholderImage
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
 
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
-    }
-    else
-    {
-        self.inputAccessoryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
-    }
+//    if (self.viewModel.type == VContentViewTypeVideo)
+//    {
+//        self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
+//    }
+//    else
+//    {
+//        self.inputAccessoryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
+//    }
     self.inputAccessoryView.alpha = 0.0f;
     [UIView animateWithDuration:0.2f
                      animations:^
@@ -278,27 +379,38 @@
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-    NSTimeInterval animationDuration;
-    UIViewAnimationCurve animationCurve;
-    NSDictionary *userInfo = [notification userInfo];
-    
-    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-    
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
-     {
-         self.contentCollectionView.contentInset = newInsets;
-         self.contentCollectionView.scrollIndicatorInsets = newInsets;
-     }
-                     completion:nil];
+//    NSTimeInterval animationDuration;
+//    UIViewAnimationCurve animationCurve;
+//    NSDictionary *userInfo = [notification userInfo];
+//    
+//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+//    
+//    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
+//    
+//    [UIView animateWithDuration:animationDuration delay:0
+//                        options:(animationCurve << 16) animations:^
+//     {
+//         self.contentCollectionView.contentInset = newInsets;
+//         self.contentCollectionView.scrollIndicatorInsets = newInsets;
+//     }
+//                     completion:nil];
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSLog(@"%@", NSStringFromCGRect(endFrame));
+    
+ 
+    if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
+    {
+        self.bottomKeyboardToContainerBottomConstraint.constant = - CGRectGetHeight(endFrame) - CGRectGetHeight(self.textEntryView.bounds);
+        [self.view layoutIfNeeded];
+    }
+    
+
 }
 
 - (void)commentsDidUpdate:(NSNotification *)notification
@@ -688,7 +800,7 @@
                 return videoCell;
             }
             case VContentViewTypePoll:
-                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
+                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];
         }
         case VContentViewSectionHistogram:
@@ -838,9 +950,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
+//    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
     
-    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -867,72 +979,71 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-    self.tickerCell.progress = 1.0f;
-    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size
-{
-    self.inputAccessoryView.frame = CGRectMake(0, 0, size.width, size.height);
-    [self.inputAccessoryView layoutIfNeeded];
-}
-
-- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    __weak typeof(self) welf = self;
-    [self.viewModel addCommentWithText:inputAccessoryView.composedText
-                              mediaURL:self.mediaURL
-                            completion:^(BOOL succeeded)
-     {
-         [welf.viewModel fetchComments];
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [welf.contentCollectionView reloadData];
-              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-          }];
-     }];
-    
-    [inputAccessoryView clearTextAndResign];
-    self.mediaURL = nil;
-}
-
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            self.mediaURL = capturedMediaURL;
-            [self.inputAccessoryView setSelectedThumbnail:previewImage];
-        }
-        [self dismissViewControllerAnimated:YES completion:^
-        {
-            [UIView animateWithDuration:0.0f
-                             animations:^
-             {
-                 [self.contentCollectionView reloadData];
-                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
-             }];
-        }];
-    };
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:navController animated:YES completion:nil];
-}
+//- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+//                         wantsSize:(CGSize)size
+//{
+//    self.inputAccessoryView.frame = CGRectMake(0, 0, size.width, size.height);
+//    [self.inputAccessoryView layoutIfNeeded];
+//}
+//
+//- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+//{
+//    if (![VObjectManager sharedManager].mainUser)
+//    {
+//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+//        return;
+//    }
+//    __weak typeof(self) welf = self;
+//    [self.viewModel addCommentWithText:inputAccessoryView.composedText
+//                              mediaURL:self.mediaURL
+//                            completion:^(BOOL succeeded)
+//     {
+//         [welf.viewModel fetchComments];
+//         [UIView animateWithDuration:0.0f
+//                          animations:^
+//          {
+//              [welf.contentCollectionView reloadData];
+//              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+//          }];
+//     }];
+//    
+//    [inputAccessoryView clearTextAndResign];
+//    self.mediaURL = nil;
+//}
+//
+//- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+//{
+//    if (![VObjectManager sharedManager].mainUser)
+//    {
+//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+//        return;
+//    }
+//    
+//    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+//    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+//    {
+//        if (finished)
+//        {
+//            self.mediaURL = capturedMediaURL;
+//            [self.inputAccessoryView setSelectedThumbnail:previewImage];
+//        }
+//        [self dismissViewControllerAnimated:YES completion:^
+//        {
+//            [UIView animateWithDuration:0.0f
+//                             animations:^
+//             {
+//                 [self.contentCollectionView reloadData];
+//                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
+//             }];
+//        }];
+//    };
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+//    [self presentViewController:navController animated:YES completion:nil];
+//}
 
 @end
