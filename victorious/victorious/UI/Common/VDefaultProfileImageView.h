@@ -12,6 +12,6 @@
 
 @interface VDefaultProfileImageView : UIImageView
 
-- (void)setImageWithUser:(VUser *)user;
+@property (nonatomic, strong) VUser *user;
 
 @end
