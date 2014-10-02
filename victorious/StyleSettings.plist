@@ -52,5 +52,7 @@
 <integer>1</integer>
 <key>kAsteriskSpacingRule</key>
 <integer>2</integer>
+<key>kRequireSpaceAfterReturnType</key>
+<false/>
 </dict>
 </plist>
