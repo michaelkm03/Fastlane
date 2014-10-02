@@ -85,6 +85,10 @@
     [self addSubview:self.commentHitboxButton];
 }
 
+- (void)dealloc
+{
+    _layoutManager.delegate = nil;
+}
 - (void)setupTappableTextView
 {
     NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
@@ -106,6 +110,7 @@
     textView.editable = NO;
     textView.selectable = NO;
     textView.scrollEnabled = NO;
+    textView.textContainerInset = UIEdgeInsetsZero; // leave this as zero. To inset the text, adjust the textView's frame instead.
     textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     [self.overlayView addSubview:textView];
     
@@ -121,15 +126,14 @@
 
 - (void)textTapped:(UITapGestureRecognizer *)tap
 {
-    NSString *fieldText = self.descriptionTextView.text;
+    self.descriptionTextView.textContainer.size = self.bounds.size;
+    self.descriptionTextView.attributedText = self.descriptionTextView.attributedText;
+    
+    [self.descriptionTextView setNeedsDisplay];
+    [self.descriptionTextView setNeedsLayout];
     
     CGPoint tapPoint = [tap locationInView:self.descriptionTextView];
-    NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.descriptionTextView.textContainer];
-    NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
-    
-   
-    //NSLog( @"character = %lu", (unsigned long) character );
-    //return;
+    NSString *fieldText = self.descriptionTextView.text;
     
     NSArray *hashTags = [VHashTags detectHashTags:fieldText];
     if ([hashTags count] > 0)
@@ -137,11 +141,15 @@
         [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop)
          {
              NSRange tagRange = [hastagRangeValue rangeValue];
-             if (NSLocationInRange(character, tagRange))
+             CGRect rect = [self.layoutManager boundingRectForGlyphRange:tagRange inTextContainer:self.descriptionTextView.textContainer];
+             NSUInteger margin = 10;
+             rect.origin.y -= margin;
+             rect.size.height += margin * 2.0;
+             if ( CGRectContainsPoint(rect, tapPoint) )
              {
                  if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
                  {
-                     [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:[fieldText substringWithRange:tagRange]];
+                    [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:[fieldText substringWithRange:tagRange]];
                      *stop = YES;
                  }
              }
