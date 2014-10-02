@@ -318,6 +318,15 @@ static const CGFloat kMinimumContentHeight = 125.0f;
     return desiredContentOffset;
 }
 
+#pragma mark - Property Accessors
+
+- (CGFloat)percentToShowBottomBar
+{
+    CGFloat catchToLockDelta = [self lockPoint].y - [self catchPoint].y;
+    CGFloat offsetToCatchDelta = self.collectionView.contentOffset.y - [self catchPoint].y;
+    return fmaxf(fminf(offsetToCatchDelta / catchToLockDelta, 1.0f), 0.0f);
+}
+
 #pragma mark - Convenience
 
 - (void)reloadMajorItemSizes

@@ -56,7 +56,6 @@
     self.experienceEnhancerLabel.text = _experienceEnhancerTitle;
 }
 
-
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;

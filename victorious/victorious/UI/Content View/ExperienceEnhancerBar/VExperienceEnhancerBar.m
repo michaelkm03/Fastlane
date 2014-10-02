@@ -14,7 +14,7 @@
 
 @end
 
-@interface VExperienceEnhancerBar () <UICollectionViewDataSource>
+@interface VExperienceEnhancerBar () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *textEntryButton;
@@ -86,6 +86,18 @@
     experienceEnhancerCell.experienceEnhancerTitle = enhancerForIndexPath.labelText;
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.icon;
     return experienceEnhancerCell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView
+didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VExperienceEnhancer *enhancerForIndexPath = [self.actionItems objectAtIndex:indexPath.row];
+    if (enhancerForIndexPath.selectionBlock)
+    {
+        enhancerForIndexPath.selectionBlock();
+    }
 }
 
 @end

@@ -31,4 +31,6 @@ UIKIT_EXTERN NSString *const VShrinkingContentLayoutAllCommentsHandle;
  */
 @property (nonatomic, assign) CGFloat allCommentsHandleBottomInset;
 
+@property (nonatomic, readonly) CGFloat percentToShowBottomBar;
+
 @end

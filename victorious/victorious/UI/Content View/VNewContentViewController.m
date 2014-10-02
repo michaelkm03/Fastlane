@@ -200,7 +200,7 @@
                                                                                      toItem:self.view
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                  multiplier:1.0f
-                                                                                   constant:45];
+                                                                                   constant:0.0f];
     self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
     [self.view addSubview:inputAccessoryView];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
@@ -403,13 +403,13 @@
         CGFloat newBottomKeyboardBarToContainerConstraintHeight = 0.0f;
         if (isnan(endFrame.origin.y) || isinf(endFrame.origin.y))
         {
+            
         }
         else
         {
             newBottomKeyboardBarToContainerConstraintHeight = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
         }
         
-        NSLog(@"%f, screenHeight: %f, endframeOrigin: %f", newBottomKeyboardBarToContainerConstraintHeight, -CGRectGetHeight([UIScreen mainScreen].bounds), endFrame.origin.y);
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
     }
@@ -871,6 +871,13 @@
 }
 
 #pragma mark - UICollectionViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    
+    self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
+}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
