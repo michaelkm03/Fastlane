@@ -8,6 +8,9 @@
 
 #import "VKeyboardInputAccessoryView.h"
 
+// Constants
+#import "VConstants.h"
+
 // Theme
 #import "VThemeManager.h"
 
@@ -188,23 +191,25 @@ shouldChangeTextInRange:(NSRange)range
 #pragma mark - Input AccessoryView
 
 NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.victorious.VInputAccessoryViewKeyboardFrameDidChangeNotification";
-#define UI_IS_IOS8_AND_HIGHER   ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0)
 
 @implementation VInputAccessoryView
 
 - (NSString *)keyPathForKeyboardHandling
 {
-    if (UI_IS_IOS8_AND_HIGHER) {
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
         return NSStringFromSelector(@selector(center));
     }
-    else {
+    else
+    {
         return NSStringFromSelector(@selector(frame));
     }
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
-    if (self.superview) {
+    if (self.superview)
+    {
         [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
     }
     
@@ -224,7 +229,8 @@ NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.v
 
 - (void)dealloc
 {
-    if (self.superview) {
+    if (self.superview)
+    {
         [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
     }
 }
