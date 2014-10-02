@@ -68,7 +68,7 @@ CGFloat const kVConversationCellHeight = 72;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.profileImageView awakeFromNib];
+    [self.profileImageView setup];
 }
 
 @end

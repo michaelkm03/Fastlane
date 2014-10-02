@@ -20,4 +20,6 @@
 @property (nonatomic, strong) VDefaultProfileImageView *profileImageView;
 @property (nonatomic, strong) VUser *user;
 
+- (void)setup;
+
 @end

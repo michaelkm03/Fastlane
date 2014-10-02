@@ -54,7 +54,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 - (void)prepareForReuse
 {
     [self.commentTextView resetView];
-    [self.profileImageView awakeFromNib];
+    [self.profileImageView setup];
 }
 
 @end

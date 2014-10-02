@@ -18,7 +18,21 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    [self setup];
+}
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup
+{
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     [self setImage:defaultImage forState:UIControlStateNormal];
@@ -28,6 +42,7 @@
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+
 }
 
 - (void)setUser:(VUser *)user

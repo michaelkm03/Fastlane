@@ -180,7 +180,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
-    [self.profileImageView awakeFromNib];
+    [self.profileImageView setup];
     self.profileImageOnRight = NO;
 }
 

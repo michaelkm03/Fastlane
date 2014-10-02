@@ -17,4 +17,6 @@
 
 @property (nonatomic, strong) VUser *user; ///<Updating this property updates the URL used for the profile Image.
 
+- (void)setup;
+
 @end
