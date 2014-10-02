@@ -54,6 +54,11 @@ do
 	fi
 done
 
+# Copy over Localizable.strings to the output directory
+echo ""
+echo "Copying over Localizable.strings file"
+cp ./victorious/victorious/Supporting\ Files/en.lproj/Localizable.strings "$OUTSUBDIR/Localizable.strings"
+
 echo ""
 echo "Finished!"
 echo ""
