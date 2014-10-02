@@ -83,7 +83,7 @@
                                   },
                                   NSLocalizedString(@"Create a Poll", @""), ^(void)
                                   {
-                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerWithDelegate:self];
+                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];
     [actionSheet showInView:self.view];
@@ -120,46 +120,6 @@
     };
     [navigationController pushViewController:cameraViewController animated:NO];
     [self presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)createPollWithQuestion:(NSString *)question
-                   answer1Text:(NSString *)answer1Text
-                   answer2Text:(NSString *)answer2Text
-                     media1URL:(NSURL *)media1URL
-                     media2URL:(NSURL *)media2URL
-{
-    [[VObjectManager sharedManager] createPollWithName:question
-                                           description:@"<none>"
-                                              question:question
-                                           answer1Text:answer1Text
-                                           answer2Text:answer2Text
-                                            media1Url:media1URL
-                                            media2Url:media2URL
-                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
-    {
-        if (error)
-        {
-            NSLog(@"%@", error);
-            NSString *title, *message;
-            
-            if (kVStillTranscodingError == error.code)
-            {
-                title = NSLocalizedString(@"TranscodingMediaTitle", @"");
-                message = NSLocalizedString(@"TranscodingMediaBody", @"");
-            }
-            else
-            {
-                title = NSLocalizedString(@"PollUploadTitle", @"");
-                message = error.localizedDescription;
-            }
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                            message:message
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-    }];
 }
 
 @end

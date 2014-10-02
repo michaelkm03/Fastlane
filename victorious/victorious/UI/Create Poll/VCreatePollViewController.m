@@ -13,6 +13,7 @@
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
+#import "VObjectManager+ContentCreation.h"
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
@@ -59,11 +60,10 @@ static char KVOContext;
 
 @implementation VCreatePollViewController
 
-+ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate
++ (instancetype)newCreatePollViewController
 {
-    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VCreatePollViewController *createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
-    createView.delegate = delegate;
     return createView;
 }
 
@@ -355,14 +355,39 @@ static char KVOContext;
 
 - (IBAction)postButtonAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(createPollWithQuestion:answer1Text:answer2Text:media1URL:media2URL:)])
+    [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
+                                           description:@"<none>"
+                                              question:self.questionTextView.text
+                                           answer1Text:self.leftAnswerTextView.text
+                                           answer2Text:self.rightAnswerTextView.text
+                                             media1Url:self.firstMediaURL
+                                             media2Url:self.secondMediaURL
+                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
     {
-        [self.delegate createPollWithQuestion:self.questionTextView.text
-                                  answer1Text:self.leftAnswerTextView.text
-                                  answer2Text:self.rightAnswerTextView.text
-                                    media1URL:self.firstMediaURL
-                                    media2URL:self.secondMediaURL];
-    }
+        if (error)
+        {
+            NSLog(@"%@", error);
+            
+            if (kVStillTranscodingError == error.code)
+            {
+                UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                     message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                    delegate:nil
+                                                           cancelButtonTitle:nil
+                                                           otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                [alert show];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
+                                                                message:error.localizedDescription
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                [alert show];
+            }
+        }
+    }];
     [self.navigationController popViewControllerAnimated:YES];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
@@ -386,7 +411,7 @@ static char KVOContext;
         imageSearch.searchTerm = self.leftAnswerTextView.text;
     }
     
-    VImageSearchViewController *__weak weakImageSearch = imageSearch;
+    VImageSearchViewController __weak *weakImageSearch = imageSearch;
     imageSearch.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)

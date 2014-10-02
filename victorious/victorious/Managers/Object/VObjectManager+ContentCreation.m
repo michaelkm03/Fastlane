@@ -279,7 +279,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 {
     NSString *extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     NSString *type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
-    NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
+    NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;

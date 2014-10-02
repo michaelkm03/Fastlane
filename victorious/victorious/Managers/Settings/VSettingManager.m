@@ -20,6 +20,9 @@ NSString * const   kVExportVideoQuality                =   @"remix";
 NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
 NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
 
+NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
+NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
+
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 
