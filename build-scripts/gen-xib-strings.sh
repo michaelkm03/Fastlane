@@ -6,7 +6,7 @@
 ###########
 
 XIB_INFILE=$1
-OUTDIR="./xib-strings"
+OUTDIR="./victorious/victorious/Supporting Files"
 OUTSUBDIR=$OUTDIR"/en.lproj"
 
 
@@ -34,6 +34,7 @@ if [ "$XIB_INFILE" ]; then
     exit 1
 fi
 
+
 # Sweep through project directory and locate all xib files
 echo ""
 echo "Generating Strings Files..."
@@ -53,11 +54,6 @@ do
 		echo ""
 	fi
 done
-
-# Copy over Localizable.strings to the output directory
-echo ""
-echo "Copying over Localizable.strings file"
-cp ./victorious/victorious/Supporting\ Files/en.lproj/Localizable.strings "$OUTSUBDIR/Localizable.strings"
 
 echo ""
 echo "Finished!"
