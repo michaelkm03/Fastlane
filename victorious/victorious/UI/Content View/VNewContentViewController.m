@@ -205,7 +205,7 @@
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
     inputAccessoryView.returnKeyType = UIReturnKeyDone;
     inputAccessoryView.delegate = self;
-    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 100.0f);jh l
+    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 100.0f);
     self.textEntryView = inputAccessoryView;
     NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
                                                                          attribute:NSLayoutAttributeLeading
@@ -268,13 +268,14 @@
 
 - (UIView *)inputAccessoryView
 {
-    static dispatch_once_t onceToken;
-    static VInputAccessoryView *_inputAccessoryView = nil;
+    VInputAccessoryView *_inputAccessoryView = nil;
+    if (_inputAccessoryView)
+    {
+        return _inputAccessoryView;
+    }
     
-    dispatch_once(&onceToken, ^{
-        _inputAccessoryView = [VInputAccessoryView new];
-    });
-        
+    _inputAccessoryView = [VInputAccessoryView new];
+    
     return _inputAccessoryView;
 }
 
@@ -374,24 +375,7 @@
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-    NSLog(@"notification name: %@, endFrame", notification.name, NSStringFromCGRect([notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue]));
-//    NSTimeInterval animationDuration;
-//    UIViewAnimationCurve animationCurve;
-//    NSDictionary *userInfo = [notification userInfo];
-//    
-//    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-//    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-//    
-//    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    UIEdgeInsets newInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(endFrame), 0);
-//    
-//    [UIView animateWithDuration:animationDuration delay:0
-//                        options:(animationCurve << 16) animations:^
-//     {
-//         self.contentCollectionView.contentInset = newInsets;
-//         self.contentCollectionView.scrollIndicatorInsets = newInsets;
-//     }
-//                     completion:nil];
+    
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
@@ -400,7 +384,27 @@
  
     if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
     {
-        self.bottomKeyboardToContainerBottomConstraint.constant = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;
+        if (CGRectGetMinY(endFrame) == CGRectGetHeight([UIScreen mainScreen].bounds))
+        {
+            // Keyboard is hidden
+            [UIView animateWithDuration:0.2f
+                             animations:^
+            {
+                self.bottomKeyboardToContainerBottomConstraint.constant = 0.0f;
+                [self.view layoutIfNeeded];
+            }];
+            return;
+        }
+        
+//        CGFloat percentShowing = (CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame)) / CGRectGetHeight(endFrame);
+//
+//        CGFloat offset = CGRectGetHeight(self.textEntryView.bounds);
+//        if (!isnan(percentShowing))
+//        {
+//            offset = CGRectGetHeight(self.textEntryView.bounds) * percentShowing;
+//        }
+        
+        self.bottomKeyboardToContainerBottomConstraint.constant = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
         [self.view layoutIfNeeded];
     }
 }
@@ -982,60 +986,60 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.keyboardInputBarHeightConstraint.constant = size.height;
     [self.view layoutIfNeeded];
 }
-//
-//- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-//{
-//    if (![VObjectManager sharedManager].mainUser)
-//    {
-//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-//        return;
-//    }
-//    __weak typeof(self) welf = self;
-//    [self.viewModel addCommentWithText:inputAccessoryView.composedText
-//                              mediaURL:self.mediaURL
-//                            completion:^(BOOL succeeded)
-//     {
-//         [welf.viewModel fetchComments];
-//         [UIView animateWithDuration:0.0f
-//                          animations:^
-//          {
-//              [welf.contentCollectionView reloadData];
-//              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-//          }];
-//     }];
-//    
-//    [inputAccessoryView clearTextAndResign];
-//    self.mediaURL = nil;
-//}
-//
-//- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-//{
-//    if (![VObjectManager sharedManager].mainUser)
-//    {
-//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-//        return;
-//    }
-//    
-//    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-//    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-//    {
-//        if (finished)
-//        {
-//            self.mediaURL = capturedMediaURL;
-//            [self.inputAccessoryView setSelectedThumbnail:previewImage];
-//        }
-//        [self dismissViewControllerAnimated:YES completion:^
-//        {
-//            [UIView animateWithDuration:0.0f
-//                             animations:^
-//             {
-//                 [self.contentCollectionView reloadData];
-//                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
-//             }];
-//        }];
-//    };
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-//    [self presentViewController:navController animated:YES completion:nil];
-//}
+
+- (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    __weak typeof(self) welf = self;
+    [self.viewModel addCommentWithText:inputAccessoryView.composedText
+                              mediaURL:self.mediaURL
+                            completion:^(BOOL succeeded)
+     {
+         [welf.viewModel fetchComments];
+         [UIView animateWithDuration:0.0f
+                          animations:^
+          {
+              [welf.contentCollectionView reloadData];
+              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+          }];
+     }];
+    
+    [inputAccessoryView clearTextAndResign];
+    self.mediaURL = nil;
+}
+
+- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (finished)
+        {
+            self.mediaURL = capturedMediaURL;
+            [self.textEntryView setSelectedThumbnail:previewImage];
+        }
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            [UIView animateWithDuration:0.0f
+                             animations:^
+             {
+                 [self.contentCollectionView reloadData];
+                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
+             }];
+        }];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
 
 @end
