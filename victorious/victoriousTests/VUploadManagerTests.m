@@ -73,6 +73,9 @@
         [async signal];
     }];
     [async waitForSignal:5.0];
+    
+    BOOL bodyFileStillExists = [[NSFileManager defaultManager] fileExistsAtPath:[self.bodyFileURL path] isDirectory:NULL];
+    XCTAssertFalse(bodyFileStillExists);
 }
 
 - (void)testError

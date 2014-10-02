@@ -238,6 +238,16 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             [self.responseData removeObjectForKey:task];
         }
         
+        if (!error)
+        {
+            VUploadTaskInformation *taskInformation = [self.taskInformation objectForKey:task];
+            if (taskInformation)
+            {
+                [[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:nil];
+                [self.taskInformation removeObjectForKey:task];
+            }
+        }
+        
         if (completionBlock)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
