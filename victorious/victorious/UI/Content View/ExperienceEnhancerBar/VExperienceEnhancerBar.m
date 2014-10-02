@@ -10,6 +10,10 @@
 
 #import "VExperienceEnhancerCell.h"
 
+@implementation VExperienceEnhancer
+
+@end
+
 @interface VExperienceEnhancerBar () <UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -41,6 +45,10 @@
     
     [self.collectionView registerNib:[VExperienceEnhancerCell nibForCell]
           forCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]];
+    
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    layout.minimumInteritemSpacing = 15.0f;
+    layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
 }
 
 #pragma mark - IBActions
@@ -74,7 +82,9 @@
 {
     VExperienceEnhancerCell *experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]
                                                                                                 forIndexPath:indexPath];
-    
+    VExperienceEnhancer *enhancerForIndexPath = [self.actionItems objectAtIndex:indexPath.row];
+    experienceEnhancerCell.experienceEnhancerTitle = enhancerForIndexPath.labelText;
+    experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.icon;
     return experienceEnhancerCell;
 }
 

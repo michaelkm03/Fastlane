@@ -14,9 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="35" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y89-2q-oh8">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tomato" translatesAutoresizingMaskIntoConstraints="NO" id="Y89-2q-oh8">
                         <rect key="frame" x="0.0" y="3" width="35" height="35"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Y89-2q-oh8" secondAttribute="height" multiplier="1:1" id="Y12-Ti-LUR"/>
                         </constraints>
@@ -46,4 +47,7 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="Tomato" width="160" height="60"/>
+    </resources>
 </document>

@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@interface VExperienceEnhancer : NSObject;
+
+@property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, copy) void (^selectionBlock)(void);
+
+@end
+
 @interface VExperienceEnhancerBar : UIView
 
 + (instancetype)experienceEnhancerBar;

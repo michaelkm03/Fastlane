@@ -132,9 +132,17 @@
 
 #pragma mark - UIResponder
 
-- (BOOL)canBecomeFirstResponder
+- (UIView *)inputAccessoryView
 {
-    return YES;
+    VInputAccessoryView *_inputAccessoryView = nil;
+    if (_inputAccessoryView)
+    {
+        return _inputAccessoryView;
+    }
+    
+    _inputAccessoryView = [VInputAccessoryView new];
+    
+    return _inputAccessoryView;
 }
 
 #pragma mark - UIViewController
@@ -159,6 +167,43 @@
                      forState:UIControlStateNormal];
     self.moreButton.imageView.tintColor = [UIColor whiteColor];
     [self.moreButton v_applyShadowsWithZIndex:2];
+    
+    VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+    inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
+    inputAccessoryView.returnKeyType = UIReturnKeyDone;
+    inputAccessoryView.delegate = self;
+    self.textEntryView = inputAccessoryView;
+    NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                  attribute:NSLayoutAttributeLeading
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.view
+                                                                                  attribute:NSLayoutAttributeLeading
+                                                                                 multiplier:1.0f
+                                                                                   constant:0.0f];
+    NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                   attribute:NSLayoutAttributeTrailing
+                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                      toItem:self.view
+                                                                                   attribute:NSLayoutAttributeTrailing
+                                                                                  multiplier:1.0f
+                                                                                    constant:0.0f];
+    self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:1.0f
+                                                                          constant:45];
+    self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:self.view
+                                                                                  attribute:NSLayoutAttributeBottom
+                                                                                 multiplier:1.0f
+                                                                                   constant:45];
+    self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
+    [self.view addSubview:inputAccessoryView];
+    [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
     VExperienceEnhancerBar *experienceEnhancerBar = [VExperienceEnhancerBar experienceEnhancerBar];
     experienceEnhancerBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -193,52 +238,36 @@
     self.bottomExperienceEnhancerBarToContainerConstraint = bottomConstraint;
     [self.view addSubview:experienceEnhancerBar];
     [self.view addConstraints:@[leadingConstraint, trailingConstraint, heightConstraint, bottomConstraint]];
-
+    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 70.0f);
+    
     self.experienceEnhancerBar = experienceEnhancerBar;
     self.experienceEnhancerBar.pressedTextEntryHandler = ^void()
     {
         [self.textEntryView startEditing];
     };
-    self.experienceEnhancerBar.actionItems = @[@1, @2, @3];
     
-    VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
-    inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-    inputAccessoryView.returnKeyType = UIReturnKeyDone;
-    inputAccessoryView.delegate = self;
-    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 100.0f);
-    self.textEntryView = inputAccessoryView;
-    NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                         attribute:NSLayoutAttributeLeading
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeLeading
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f];
-    self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                 attribute:NSLayoutAttributeHeight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0f
-                                                                                  constant:45];
-    self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.view
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                 multiplier:1.0f
-                                                                                   constant:45];
-    self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-    [self.view addSubview:inputAccessoryView];
-    [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+    VExperienceEnhancer *baconEnhancer = [[VExperienceEnhancer alloc] init];
+    baconEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
+    baconEnhancer.labelText = @"123";
 
+    VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
+    fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
+    fireworkEnhancer.labelText = @"143";
+    
+    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
+    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
+    thumbsUpEnhancer.labelText = @"321";
+    
+    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
+    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
+    tongueEnhancer.labelText = @"555";
+    
+    VExperienceEnhancer *winEnhancer = [[VExperienceEnhancer alloc] init];
+    winEnhancer.icon = [UIImage imageNamed:@"eb_win"];
+    winEnhancer.labelText = @"999";
+    
+    self.experienceEnhancerBar.actionItems = @[baconEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
@@ -264,19 +293,6 @@
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
-}
-
-- (UIView *)inputAccessoryView
-{
-    VInputAccessoryView *_inputAccessoryView = nil;
-    if (_inputAccessoryView)
-    {
-        return _inputAccessoryView;
-    }
-    
-    _inputAccessoryView = [VInputAccessoryView new];
-    
-    return _inputAccessoryView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -384,27 +400,17 @@
  
     if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
     {
-        if (CGRectGetMinY(endFrame) == CGRectGetHeight([UIScreen mainScreen].bounds))
+        CGFloat newBottomKeyboardBarToContainerConstraintHeight = 0.0f;
+        if (isnan(endFrame.origin.y) || isinf(endFrame.origin.y))
         {
-            // Keyboard is hidden
-            [UIView animateWithDuration:0.2f
-                             animations:^
-            {
-                self.bottomKeyboardToContainerBottomConstraint.constant = 0.0f;
-                [self.view layoutIfNeeded];
-            }];
-            return;
+        }
+        else
+        {
+            newBottomKeyboardBarToContainerConstraintHeight = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
         }
         
-//        CGFloat percentShowing = (CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame)) / CGRectGetHeight(endFrame);
-//
-//        CGFloat offset = CGRectGetHeight(self.textEntryView.bounds);
-//        if (!isnan(percentShowing))
-//        {
-//            offset = CGRectGetHeight(self.textEntryView.bounds) * percentShowing;
-//        }
-        
-        self.bottomKeyboardToContainerBottomConstraint.constant = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
+        NSLog(@"%f, screenHeight: %f, endframeOrigin: %f", newBottomKeyboardBarToContainerConstraintHeight, -CGRectGetHeight([UIScreen mainScreen].bounds), endFrame.origin.y);
+        self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
     }
 }
@@ -430,9 +436,6 @@
 
 - (IBAction)pressedMore:(id)sender
 {
-    [self becomeFirstResponder];
-    [self resignFirstResponder];
-    
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
@@ -624,7 +627,6 @@
                                                                           value:nil];
             [self reloadInputViews];
         };
-        [self resignFirstResponder];
         
         [self dismissViewControllerAnimated:YES
                                  completion:^
