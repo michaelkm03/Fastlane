@@ -839,7 +839,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
-    [self.tickerCell setProgress:progressedTime];
     
     self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
 }

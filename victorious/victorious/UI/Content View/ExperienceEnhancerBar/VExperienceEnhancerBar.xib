@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2m-OM-g4Y">
+                    <rect key="frame" x="260" y="0.0" width="60" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="91u-Tt-nQh"/>
+                    </constraints>
+                    <state key="normal" title="✏️">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UYg-a1-GEc">
+                    <rect key="frame" x="0.0" y="0.0" width="260" height="60"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="SPh-I5-cBb">
+                        <size key="itemSize" width="50" height="60"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <cells/>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="UYg-a1-GEc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0VM-eg-CqC"/>
+                <constraint firstAttribute="bottom" secondItem="UYg-a1-GEc" secondAttribute="bottom" id="3sr-cQ-WAy"/>
+                <constraint firstItem="D2m-OM-g4Y" firstAttribute="leading" secondItem="UYg-a1-GEc" secondAttribute="trailing" id="D9Z-sB-yl4"/>
+                <constraint firstAttribute="trailing" secondItem="D2m-OM-g4Y" secondAttribute="trailing" id="SCS-Wz-tQI"/>
+                <constraint firstItem="D2m-OM-g4Y" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UvJ-uJ-yNF"/>
+                <constraint firstAttribute="bottom" secondItem="D2m-OM-g4Y" secondAttribute="bottom" id="icE-St-fQv"/>
+                <constraint firstItem="UYg-a1-GEc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wjU-XE-pAU"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>
