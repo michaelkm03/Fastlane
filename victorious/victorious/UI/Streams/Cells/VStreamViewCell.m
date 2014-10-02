@@ -32,9 +32,9 @@
 
 #import "VEphemeralTimerView.h"
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate, NSLayoutManagerDelegate>
+#import "NSLayoutManager+VTableViewCellSupport.h"
 
-@property (nonatomic, strong) UITextView            *descriptionTextView;
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
@@ -47,32 +47,30 @@
 
 @end
 
-
-@interface NSLayoutManager(TableViewCellSupport)
-
-@end
-
-@implementation NSLayoutManager(TableViewCellSupport)
-
-- (void)layoutSubviewsOfCell:(UITableViewCell *)cell
-{
-    // This category is a hack to fix a crash when the layou
-}
-
-@end
-
 @implementation VStreamViewCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    
     self.originalHeight = self.frame.size.height;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    [self setupTappableTextView];
+    // Setup the layoutmanager, text container, and text storage (see also NSLayoutManager+VTableViewCellSupport)
+    self.layoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    textContainer.widthTracksTextView = YES;
+    textContainer.heightTracksTextView = YES;
+    [self.layoutManager addTextContainer:textContainer];
+    self.textStorage = [[NSTextStorage alloc] init];
+    [self.textStorage addLayoutManager:self.layoutManager];
+    
+    // Create text view and customize any further
+    self.descriptionTextView = [self createTappableTextViewInSuperView:self.overlayView withTextContainer:textContainer];
+    self.descriptionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
+    [self.descriptionTextView  addGestureRecognizer:tap];
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
@@ -85,25 +83,9 @@
     [self addSubview:self.commentHitboxButton];
 }
 
-- (void)dealloc
+- (UITextView *)createTappableTextViewInSuperView:(UIView *)targetSuperview withTextContainer:(NSTextContainer *)textContainer
 {
-    _layoutManager.delegate = nil;
-}
-- (void)setupTappableTextView
-{
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
-    textContainer.widthTracksTextView = YES;
-    textContainer.heightTracksTextView = YES;
-    
-    self.layoutManager = [[NSLayoutManager alloc] init];
-    self.layoutManager.delegate = self;
-    [self.layoutManager addTextContainer:textContainer];
-    
-    self.textStorage = [[NSTextStorage alloc] init];
-    [self.textStorage addLayoutManager:self.layoutManager];
-    
-    CGRect textViewFrame = self.bounds;
-    UITextView *textView = [[UITextView alloc] initWithFrame:textViewFrame textContainer:textContainer];
+    UITextView *textView = [[UITextView alloc] initWithFrame:self.bounds textContainer:textContainer];
     textView.backgroundColor = [UIColor clearColor];
     textView.textColor = [UIColor whiteColor];
     textView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -111,49 +93,66 @@
     textView.selectable = NO;
     textView.scrollEnabled = NO;
     textView.textContainerInset = UIEdgeInsetsZero; // leave this as zero. To inset the text, adjust the textView's frame instead.
-    textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    [self.overlayView addSubview:textView];
+    [targetSuperview addSubview:textView];
     
-    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView(34)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-    [self.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
+    NSDictionary *views = @{ @"textView" : textView };
+    [targetSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
+    [targetSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
-    [textView addGestureRecognizer:tap];
+    textView.textContainer.size = textView.superview.bounds.size;
     
-    self.descriptionTextView = textView;
+    return textView;
 }
 
 - (void)textTapped:(UITapGestureRecognizer *)tap
 {
-    self.descriptionTextView.textContainer.size = self.bounds.size;
-    self.descriptionTextView.attributedText = self.descriptionTextView.attributedText;
-    
-    [self.descriptionTextView setNeedsDisplay];
-    [self.descriptionTextView setNeedsLayout];
-    
-    CGPoint tapPoint = [tap locationInView:self.descriptionTextView];
-    NSString *fieldText = self.descriptionTextView.text;
-    
-    NSArray *hashTags = [VHashTags detectHashTags:fieldText];
-    if ([hashTags count] > 0)
+    if ( tap.view != nil && [tap.view isKindOfClass:[UITextView class]] )
     {
-        [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop)
+        UITextView *textView = (UITextView *)tap.view;
+        [self detectHashTagsInTextView:textView atPoint:[tap locationInView:textView] detectionCallback:^(NSString *hashTag) {
+            [self hashTagTapped:hashTag];
+        }];
+    }
+}
+
+- (void) detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
+{
+    // Error checking + optimization
+    if ( textView == nil || textView.layoutManager == nil || textView.textContainer == nil || textView.text.length == 0 )
+    {
+        return;
+    }
+    
+    NSString *fieldText = textView.text;
+    NSArray *hashTags = [VHashTags detectHashTags:fieldText];
+    if ( hashTags.count == 0 )
+    {
+        return;
+    }
+
+    [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop) {
+         
+         NSRange tagRange = [hastagRangeValue rangeValue];
+         CGRect rect = [textView.layoutManager boundingRectForGlyphRange:tagRange inTextContainer:textView.textContainer];
+         NSUInteger margin = 10;
+         rect.origin.y -= margin;
+         rect.size.height += margin * 2.0;
+         if ( CGRectContainsPoint(rect, tapPoint) )
          {
-             NSRange tagRange = [hastagRangeValue rangeValue];
-             CGRect rect = [self.layoutManager boundingRectForGlyphRange:tagRange inTextContainer:self.descriptionTextView.textContainer];
-             NSUInteger margin = 10;
-             rect.origin.y -= margin;
-             rect.size.height += margin * 2.0;
-             if ( CGRectContainsPoint(rect, tapPoint) )
+             if ( callback != nil )
              {
-                 if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
-                 {
-                    [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:[fieldText substringWithRange:tagRange]];
-                     *stop = YES;
-                 }
+                 callback( [fieldText substringWithRange:tagRange] );
              }
-         }];
+             *stop = YES;
+         }
+     }];
+}
+
+- (void) hashTagTapped:(NSString *)hashTag
+{
+    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
+    {
+        [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:hashTag];
     }
 }
 
@@ -237,7 +236,7 @@
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.maximumLineHeight = 25;
         paragraphStyle.minimumLineHeight = 25;
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
         NSShadow *shadow = [NSShadow new];
         [shadow setShadowBlurRadius:4.0f];
@@ -276,6 +275,42 @@
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
     }
+    
+    [self applyConstraintsWithTextView:self.descriptionTextView];
+}
+
+- (BOOL)applyConstraintsWithTextView:(UITextView *)textView
+{
+    if ( textView.superview == nil )
+    {
+        return NO;
+    }
+    
+    CGFloat width = CGRectGetWidth( textView.frame );
+    CGFloat height = [textView sizeThatFits:CGSizeMake( width, CGRectGetHeight( textView.superview.bounds ) * 0.5f )].height;
+    NSDictionary *metrics = @{ @"height" : [NSNumber numberWithFloat:height] };
+    NSDictionary *views = @{ @"textView" : textView };
+    
+    NSLayoutConstraint *heightConstraint = nil;
+    for ( NSLayoutConstraint *c in textView.constraints )
+    {
+        if ( c.firstItem == textView && c.firstAttribute == NSLayoutAttributeHeight && c.relation == NSLayoutRelationEqual )
+        {
+            heightConstraint = c;
+            break;
+        }
+    }
+    
+    if ( heightConstraint != nil )
+    {
+        heightConstraint.constant = height;
+    }
+    else
+    {
+        [textView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView(height)]" options:0 metrics:metrics views:views]];
+    }
+    
+    return YES;
 }
 
 - (void)setHeight:(CGFloat)height
@@ -335,12 +370,6 @@
     self.shadeView.alpha = 1;
     self.animationImage.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-#pragma mark - NSLayoutManagerDelegate methods
-
-- (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag
-{
 }
 
 @end

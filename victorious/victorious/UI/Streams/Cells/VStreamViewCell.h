@@ -33,7 +33,9 @@ static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
-@property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
+@property (nonatomic, weak) IBOutlet UIButton               *commentHitboxButton;
+
+@property (nonatomic, strong) UITextView                    *descriptionTextView;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
@@ -41,5 +43,6 @@ static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 
 - (void) hideOverlays;
 - (void) showOverlays;
+- (void) detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback;
 
 @end

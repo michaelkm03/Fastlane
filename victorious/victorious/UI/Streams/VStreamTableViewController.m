@@ -579,7 +579,7 @@
     }
     
     // Prevent another stream view for the current tag from being pushed
-    if ( [self.hashTag isEqualToString:tag] )
+    if ( [[self.hashTag lowercaseString] isEqualToString:[tag lowercaseString]] )
     {
         return;
     }
