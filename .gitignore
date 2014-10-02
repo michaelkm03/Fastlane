@@ -17,5 +17,3 @@ DerivedData
 *.xccheckout
 products
 *.swp
-# ibtool
-xib-strings/*
