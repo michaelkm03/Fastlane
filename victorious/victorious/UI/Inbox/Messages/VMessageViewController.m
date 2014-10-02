@@ -25,8 +25,6 @@
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
-
-#warning 
 #import "VDefaultProfileImageView.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
