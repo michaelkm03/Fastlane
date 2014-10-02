@@ -308,6 +308,7 @@
 		BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */; };
+		BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */; };
 		BE5C736A187E36E800A3340D /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7369187E36E800A3340D /* VRule.m */; };
@@ -929,6 +930,8 @@
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefaultProfileButton.h; sourceTree = "<group>"; };
 		BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultProfileButton.m; sourceTree = "<group>"; };
+		BE42842A19DDD0D500AEDBA6 /* VDefaultProfileImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefaultProfileImageView.h; sourceTree = "<group>"; };
+		BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultProfileImageView.m; sourceTree = "<group>"; };
 		BE46F02819D0C4B700CD7EF6 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE46F02919D0C4B700CD7EF6 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+UnreadMessageCount.h"; sourceTree = "<group>"; };
@@ -1283,6 +1286,7 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
@@ -1301,8 +1305,6 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
-				BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */,
-				BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2290,6 +2292,17 @@
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
 		};
+		BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */ = {
+			isa = PBXGroup;
+			children = (
+				BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */,
+				BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */,
+				BE42842A19DDD0D500AEDBA6 /* VDefaultProfileImageView.h */,
+				BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */,
+			);
+			name = DefaultProfileImages;
+			sourceTree = "<group>";
+		};
 		BE6464E419511F1B0089A34F /* Deeplink */ = {
 			isa = PBXGroup;
 			children = (
@@ -2971,6 +2984,7 @@
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
 				0314D4AB19B46B5E00FA363C /* VMessageContainerViewController.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
+				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				0314D4EE19B46B5E00FA363C /* VLoginViewController.m in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				0314D4CA19B46B5E00FA363C /* VRemixSliderRight.m in Sources */,
