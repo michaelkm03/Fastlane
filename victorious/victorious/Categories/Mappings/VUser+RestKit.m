@@ -24,8 +24,6 @@
                                   @"email" : VSelectorName(email),
                                   @"profile_tagline" : VSelectorName(tagline),
                                   @"profile_image" : VSelectorName(pictureUrl),
-                                  @"profile_image_original" : VSelectorName(profileImagePathOriginal),
-                                  @"profile_image_small" : VSelectorName(profileImagePathSmall),
                                   @"profile_location" : VSelectorName(location),
                                   @"name" : VSelectorName(name),
                                   @"access_level" : VSelectorName(accessLevel),
