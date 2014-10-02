@@ -225,7 +225,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    cell.profileImageView.user = comment.user;
+    [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];

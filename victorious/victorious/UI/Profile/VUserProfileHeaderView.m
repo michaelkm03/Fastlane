@@ -80,7 +80,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 - (void)setUser:(VUser *)user
 {
     _user = user;
-    self.profileImageView.user = user;
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
     
     // Set Profile data
     self.nameLabel.text = self.user.name;

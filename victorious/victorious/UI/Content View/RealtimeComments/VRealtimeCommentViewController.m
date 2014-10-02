@@ -171,7 +171,7 @@
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
-        progressBarImage.user = comment.user;
+        [progressBarImage setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
         
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];

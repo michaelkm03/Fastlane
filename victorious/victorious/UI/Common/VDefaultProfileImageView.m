@@ -9,7 +9,6 @@
 #import "VDefaultProfileImageView.h"
 
 #import "VThemeManager.h"
-#import "VUser.h"
 
 @implementation VDefaultProfileImageView
 
@@ -40,11 +39,9 @@
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
-- (void)setUser:(VUser *)user
+- (void)setProfileImageURL:(NSURL *)url
 {
-    _user = user;
-    
-    [self setImageWithURL:[NSURL URLWithString:user.pictureUrl] placeholderImage:[self defaultImage]];
+    [self setImageWithURL:url placeholderImage:[self defaultImage]];
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
 }
 

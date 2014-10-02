@@ -9,7 +9,6 @@
 #import "VDefaultProfileButton.h"
 
 #import "VThemeManager.h"
-#import "VUser.h"
 
 #import "UIButton+VImageLoading.h"
 
@@ -45,15 +44,14 @@
 
 }
 
-- (void)setUser:(VUser *)user
+- (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    _user = user;
-
+    
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    [self setImageWithURL:[NSURL URLWithString:user.pictureUrl]
-          placeholderImage:defaultImage
-                  forState:UIControlStateNormal];
+    
+    [self setImageWithURL:url
+         placeholderImage:defaultImage
+                 forState:controlState];
     
     self.imageView.tintColor = self.tintColor;
 }
