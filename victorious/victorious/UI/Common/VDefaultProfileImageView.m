@@ -40,14 +40,10 @@
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
-- (void)setUser:(VUser *)user
+- (void)setImageWithUser:(VUser *)user
 {
-    _user = user;
-    
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self setImageWithURL:[NSURL URLWithString:user.pictureUrl] placeholderImage:defaultImage];
-    
-//    self.imageView.tintColor = self.tintColor;
 }
 
 @end

@@ -47,7 +47,7 @@ CGFloat const kVConversationCellHeight = 72;
     self.usernameLabel.text  = conversation.user.name;
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
-    self.profileImageView.user = conversation.user;
+    [self.profileImageView setImageWithUser:conversation.user];
 
     if (self.conversation.isRead.boolValue)
     {
