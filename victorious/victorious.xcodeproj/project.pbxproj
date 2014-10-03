@@ -271,6 +271,7 @@
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
+		03D94C1E19DE00A700BFAA27 /* VObjectManagerStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
@@ -869,6 +870,7 @@
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
+		03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManagerStringTest.m; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
 		03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VSolidColor.m"; sourceTree = "<group>"; };
 		03FDA09D197A0AEC00405361 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
@@ -2114,6 +2116,9 @@
 				BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 				A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */,
+				BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */,
+				03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */,
+				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -3046,6 +3051,7 @@
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
 				039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */,
 				A7A7D61B19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m in Sources */,
+				03D94C1E19DE00A700BFAA27 /* VObjectManagerStringTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
