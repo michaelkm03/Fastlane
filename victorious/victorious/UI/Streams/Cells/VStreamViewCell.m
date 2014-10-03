@@ -32,21 +32,24 @@
 
 #import "VEphemeralTimerView.h"
 
-#import "NSLayoutManager+VTableViewCellSupport.h"
 #import "UIImageView+VLoadingAnimations.h"
+
+#import "VTappableHashTags.h"
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VTappableHashTagsDelegate>
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
 
 @property (nonatomic, strong) VEphemeralTimerView   *ephemeralTimerView;
-@property (nonatomic, strong) NSArray               *hashTagRanges;
 
+@property (nonatomic, strong) NSArray               *hashTagRanges;
 @property (nonatomic, strong) NSTextStorage         *textStorage;
 @property (nonatomic, strong) NSLayoutManager       *layoutManager;
+@property (nonatomic, strong) NSTextContainer       *textContainer;
+@property (nonatomic, strong) VTappableHashTags     *tappableHashTags;
 
 @end
 
@@ -60,25 +63,37 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    // Setup the layoutmanager, text container, and text storage (see also NSLayoutManager+VTableViewCellSupport)
+    // Setup the layoutmanager, text container, and text storage
     self.layoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
-    textContainer.widthTracksTextView = YES;
-    textContainer.heightTracksTextView = YES;
-    [self.layoutManager addTextContainer:textContainer];
+    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.heightTracksTextView = YES;
+    [self.layoutManager addTextContainer:self.textContainer];
     self.textStorage = [[NSTextStorage alloc] init];
     [self.textStorage addLayoutManager:self.layoutManager];
     
+    NSError *error = nil;
+    self.tappableHashTags = [[VTappableHashTags alloc] init];
+    if ( ![self.tappableHashTags setDelegate:self error:&error] )
+    {
+        VLog( @"Error setting delegate: %@", error.domain );
+    }
+    
     // Create text view and customize any further
-    self.descriptionTextView = [self createTappableTextViewInSuperView:self.overlayView withTextContainer:textContainer];
+    self.descriptionTextView = [self.tappableHashTags createTappableTextViewWithFrame:self.bounds];
+    [self.overlayView addSubview:self.descriptionTextView ];
+    
+    NSDictionary *views = @{ @"textView" : self.descriptionTextView };
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
     self.descriptionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
-    [self.descriptionTextView  addGestureRecognizer:tap];
+    self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
     self.ephemeralTimerView.center = self.center;
     [self addSubview:self.ephemeralTimerView];
+    
  
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
@@ -86,72 +101,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self addSubview:self.commentHitboxButton];
 }
 
-- (UITextView *)createTappableTextViewInSuperView:(UIView *)targetSuperview withTextContainer:(NSTextContainer *)textContainer
-{
-    UITextView *textView = [[UITextView alloc] initWithFrame:self.bounds textContainer:textContainer];
-    textView.backgroundColor = [UIColor clearColor];
-    textView.textColor = [UIColor whiteColor];
-    textView.translatesAutoresizingMaskIntoConstraints = NO;
-    textView.editable = NO;
-    textView.selectable = NO;
-    textView.scrollEnabled = NO;
-    textView.textContainerInset = UIEdgeInsetsZero; // leave this as zero. To inset the text, adjust the textView's frame instead.
-    [targetSuperview addSubview:textView];
-    
-    NSDictionary *views = @{ @"textView" : textView };
-    [targetSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
-    [targetSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
-    
-    textView.textContainer.size = textView.superview.bounds.size;
-    
-    return textView;
-}
-
-- (void)textTapped:(UITapGestureRecognizer *)tap
-{
-    if ( tap.view != nil && [tap.view isKindOfClass:[UITextView class]] )
-    {
-        UITextView *textView = (UITextView *)tap.view;
-        [self detectHashTagsInTextView:textView atPoint:[tap locationInView:textView] detectionCallback:^(NSString *hashTag) {
-            [self hashTagTapped:hashTag];
-        }];
-    }
-}
-
-- (void)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
-{
-    // Error checking + optimization
-    if ( textView == nil || textView.layoutManager == nil || textView.textContainer == nil || textView.text.length == 0 )
-    {
-        return;
-    }
-    
-    NSString *fieldText = textView.text;
-    NSArray *hashTags = [VHashTags detectHashTags:fieldText];
-    if ( hashTags.count == 0 )
-    {
-        return;
-    }
-
-    [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop) {
-         
-         NSRange tagRange = [hastagRangeValue rangeValue];
-         CGRect rect = [textView.layoutManager boundingRectForGlyphRange:tagRange inTextContainer:textView.textContainer];
-         NSUInteger margin = 10;
-         rect.origin.y -= margin;
-         rect.size.height += margin * 2.0;
-         if ( CGRectContainsPoint(rect, tapPoint) )
-         {
-             if ( callback != nil )
-             {
-                 callback( [fieldText substringWithRange:tagRange] );
-             }
-             *stop = YES;
-         }
-     }];
-}
-
-- (void)hashTagTapped:(NSString *)hashTag
+- (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView
 {
     if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
     {

@@ -9,12 +9,16 @@
 #import "VContentTitleTextView.h"
 #import "VThemeManager.h"
 #import "VHashTags.h"
+#import "VTappableHashTags.h"
 
-@interface VContentTitleTextView () <NSLayoutManagerDelegate>
+@interface VContentTitleTextView () <NSLayoutManagerDelegate, VTappableHashTagsDelegate>
 
-@property (nonatomic, weak)   UITextView         *textView;
+@property (nonatomic, strong)   UITextView         *textView;
 @property (nonatomic, strong) NSTextStorage      *textStorage;
 @property (nonatomic, strong) NSLayoutManager    *layoutManager;
+@property (nonatomic, strong) NSTextContainer    *textContainer;
+@property (nonatomic, strong) VTappableHashTags  *tappableHashTags;
+
 @property (nonatomic, strong) NSAttributedString *seeMoreString;
 @property (nonatomic)         BOOL                seeMoreTextAppended;
 @property (nonatomic)         CGSize              sizeDuringLastTextLayout;
@@ -49,32 +53,34 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (void)commonInit
 {
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
-    textContainer.widthTracksTextView = YES;
-    textContainer.heightTracksTextView = YES;
-
+    // Setup the layoutmanager, text container, and text storage
     self.layoutManager = [[NSLayoutManager alloc] init];
     self.layoutManager.delegate = self;
-    [self.layoutManager addTextContainer:textContainer];
-    
+    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.heightTracksTextView = YES;
+    [self.layoutManager addTextContainer:self.textContainer];
     self.textStorage = [[NSTextStorage alloc] init];
     [self.textStorage addLayoutManager:self.layoutManager];
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:self.bounds textContainer:textContainer];
-    textView.backgroundColor = [UIColor clearColor];
-    textView.translatesAutoresizingMaskIntoConstraints = NO;
-    textView.editable = NO;
-    textView.selectable = NO;
-    textView.textContainerInset = UIEdgeInsetsZero; // leave this as zero. To inset the text, adjust the textView's frame instead.
-    [self addSubview:textView];
+    NSError *error = nil;
+    self.tappableHashTags = [[VTappableHashTags alloc] init];
+    if ( ![self.tappableHashTags setDelegate:self error:&error] )
+    {
+        VLog( @"Error setting delegate: %@", error.domain );
+    }
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
-    [textView addGestureRecognizer:tap];
-
-    self.textView = textView;
+    self.textView = [self.tappableHashTags createTappableTextViewWithFrame:self.bounds];
+    self.textView.backgroundColor = [UIColor clearColor];
+    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.textView.editable = NO;
+    self.textView.selectable = NO;
+    self.textView.textContainerInset = UIEdgeInsetsZero; // leave this as zero. To inset the text, adjust the textView's frame instead.
+    [self addSubview:self.textView];
+    
+    NSDictionary *views = @{ @"textView" : self.textView };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]|" options:0 metrics:nil views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textView]|" options:0 metrics:nil views:views]];
 
     NSMutableAttributedString *seeMoreString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", NSLocalizedString(@"...", @"")] attributes:[self attributesForTitleText]];
     [seeMoreString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"See More", @"") attributes:[self attributesForSeeMore]]];
@@ -83,7 +89,7 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (void)dealloc
 {
-    _layoutManager.delegate = nil;
+    self.layoutManager.delegate = nil;
 }
 
 - (void)layoutSubviews
@@ -185,42 +191,13 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     return truncationPoint;
 }
 
-#pragma mark - Actions
+#pragma mark - VTappableHashTagsDelegate methods
 
-- (void)textTapped:(UITapGestureRecognizer *)tap
+- (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView
 {
-    NSString *fieldText = self.textView.text;
-    
-    CGPoint tapPoint = [tap locationInView:self.textView];
-    NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.textView.textContainer];
-    NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
-    
-    if (NSLocationInRange(character, self.seeMoreRange))
+    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
     {
-        if ([self.delegate respondsToSelector:@selector(seeMoreButtonTappedInContentTitleTextView:)])
-        {
-            [self.delegate seeMoreButtonTappedInContentTitleTextView:self];
-        }
-    }
-    else
-    {
-        self.hashTags = [VHashTags detectHashTags:fieldText];
-        if ([self.hashTags count] > 0)
-        {
-            [self.hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop)
-            {
-                NSRange tagRange = [hastagRangeValue rangeValue];
-                if (NSLocationInRange(character, tagRange))
-                {
-                    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
-                    {
-                        [self.delegate hashTagButtonTappedInContentTitleTextView:self
-                                                                         withTag:[fieldText substringWithRange:tagRange]];
-                        *stop = YES;
-                    }
-                }
-            }];
-        }
+        [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:hashTag];
     }
 }
 

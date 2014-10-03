@@ -273,9 +273,9 @@
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
-		6C617E88CAA00EBCF746959D /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A7A7D5C919DCDA5A00B18AB7 /* VHashTagsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */; };
-		A7A7D61219DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D61119DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */; };
+		A7A7D61E19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D61D19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */; };
+		A7A7D62A19DE451300B18AB7 /* VTappableHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */; };
 		AB58142E42806ACC4CF84A31 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		AD52A21D1319703CDE645C64 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
@@ -362,7 +362,6 @@
 		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
-		DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
@@ -875,8 +874,10 @@
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
-		A7A7D61019DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutManager+VTableViewCellSupport.h"; sourceTree = "<group>"; };
-		A7A7D61119DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutManager+VTableViewCellSupport.m"; sourceTree = "<group>"; };
+		A7A7D61C19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutManager+VTableViewCellSupport.h"; sourceTree = "<group>"; };
+		A7A7D61D19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutManager+VTableViewCellSupport.m"; sourceTree = "<group>"; };
+		A7A7D62819DE451300B18AB7 /* VTappableHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTappableHashTags.h; sourceTree = "<group>"; };
+		A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableHashTags.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1313,8 +1314,6 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
-				A7A7D61019DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.h */,
-				A7A7D61119DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2156,6 +2155,8 @@
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
+				A7A7D61C19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.h */,
+				A7A7D61D19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2443,6 +2444,8 @@
 			children = (
 				DB8D3A1119803A03005DD36D /* VHashTags.h */,
 				DB8D3A1219803A03005DD36D /* VHashTags.m */,
+				A7A7D62819DE451300B18AB7 /* VTappableHashTags.h */,
+				A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */,
 			);
 			path = HashTags;
 			sourceTree = "<group>";
@@ -2783,6 +2786,7 @@
 				0314D48419B46B5E00FA363C /* VCommentToStreamAnimator.m in Sources */,
 				0314D4E019B46B5E00FA363C /* VFindFriendsTableView.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
+				A7A7D61E19DE330600B18AB7 /* NSLayoutManager+VTableViewCellSupport.m in Sources */,
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
@@ -2819,7 +2823,6 @@
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
-				DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
@@ -2882,6 +2885,7 @@
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
+				A7A7D62A19DE451300B18AB7 /* VTappableHashTags.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				0314D49419B46B5E00FA363C /* VContentViewController+Polls.m in Sources */,
@@ -2965,7 +2969,6 @@
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
-				A7A7D61219DDD90700B18AB7 /* NSLayoutManager+VTableViewCellSupport.m in Sources */,
 				0314D46319B46B5E00FA363C /* VVideoPreviewViewController.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
