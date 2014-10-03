@@ -13,6 +13,7 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
+#import "VDefaultProfileImageView.h"
 
 static void * VProfileHeaderContext = &VProfileHeaderContext;
 
@@ -36,7 +37,6 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 {
     [super awakeFromNib];
     
-    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
     
@@ -80,11 +80,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 - (void)setUser:(VUser *)user
 {
     _user = user;
-    
-    UIImage *defaultBackgroundImage = self.profileImageView.image ?: [UIImage imageNamed:@"profileGenericUser"];
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.user.pictureUrl]
-                          placeholderImage:defaultBackgroundImage];
-    
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
     
     // Set Profile data
     self.nameLabel.text = self.user.name;
