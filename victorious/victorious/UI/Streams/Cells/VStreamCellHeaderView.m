@@ -8,6 +8,7 @@
 
 #import "VStreamCellHeaderView.h"
 #import "VStreamViewCell.h"
+#import "VDefaultProfileButton.h"
 
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
@@ -64,12 +65,12 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     _isFromProfile = NO;
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
-    self.profileImageButton.clipsToBounds = YES;
-}
+//- (void)layoutSubviews
+//{
+//    [super layoutSubviews];
+//    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+//    self.profileImageButton.clipsToBounds = YES;
+//}
 
 - (void)hideCommentsButton
 {
@@ -88,10 +89,8 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
     
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
-
+    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl] forState:UIControlStateNormal];
+    
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
 
     // Get comment count (if any)
