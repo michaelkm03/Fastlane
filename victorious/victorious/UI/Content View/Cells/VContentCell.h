@@ -10,8 +10,17 @@
 
 @interface VContentCell : VBaseCollectionViewCell
 
+/**
+ *  An array of UIImages to use for the animation.
+ */
 @property (nonatomic, strong) NSArray *animationSequence;
+
 @property (nonatomic, assign) NSTimeInterval animationDuration;
+
+/**
+ *  Defaults to 1.
+ */
+@property (nonatomic, assign) NSInteger repeatCount;
 
 - (void)playAnimation;
 

@@ -62,6 +62,8 @@
         self.animationImageView = animationImageView;
         [self.contentView addSubview:animationImageView];
     }
+    
+    self.repeatCount = 1;
 }
 
 #pragma mark - UIView
@@ -78,7 +80,7 @@
 {
     self.animationImageView.animationImages = self.animationSequence;
     self.animationImageView.animationDuration = self.animationDuration;
-    self.animationImageView.animationRepeatCount = 2;
+    self.animationImageView.animationRepeatCount = self.repeatCount;
     [self.animationImageView startAnimating];
 }
 
