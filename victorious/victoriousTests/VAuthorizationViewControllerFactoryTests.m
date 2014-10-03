@@ -35,7 +35,7 @@
     
     if ( _mainUserLoggedInOriginal != nil )
     {
-        [VObjectManager v_restoreOriginalImplementation:_mainUserProfileCompleteOriginal forClassMethod:@selector(mainUserLoggedIn)];
+        [VObjectManager v_restoreOriginalImplementation:_mainUserLoggedInOriginal forClassMethod:@selector(mainUserLoggedIn)];
     }
 }
 
