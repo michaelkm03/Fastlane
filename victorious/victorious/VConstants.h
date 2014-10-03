@@ -128,6 +128,11 @@ NSArray *VRemixCategories();
 
 static NSString * const   kTemporaryContentStatus = @"temp";
 
+#pragma mark - Status Levels
+
+static NSString * const   kUserStatusComplete = @"complete";
+static NSString * const   kUserStatusIncomplete = @"incomplete";
+
 #pragma mark - Access Levels
 
 static NSString * const   kOwnerAccessLevel = @"api_owner";
@@ -153,3 +158,5 @@ static NSString * const   kPollAnswerBarStoryboardID           = @"pollanswerbar
 static NSString * const   kHashTagsContainerStoryboardID       = @"hashtagscontainer";
 static NSString * const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString * const   kKeyboardBarStoryboardID             = @"keyboardbar";
+
+static NSString * const   kProfileCreateStoryboardID           = @"profileCreate";

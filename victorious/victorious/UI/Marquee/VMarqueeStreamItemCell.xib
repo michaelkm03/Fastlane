@@ -26,7 +26,7 @@
                         <rect key="frame" x="127" y="64" width="65" height="72"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
                         <rect key="frame" x="23" y="223" width="274" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -54,7 +54,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.9847146739" green="0.16595453669999999" blue="0.8836759931" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="1ty-At-fXf"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="5uf-3A-yHo"/>
@@ -62,7 +62,7 @@
                 <constraint firstItem="83k-OL-pLv" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="centerY" id="Hot-w0-A2T"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="centerX" secondItem="ODe-uo-H79" secondAttribute="centerX" id="YF6-NN-iYI"/>
                 <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="fOr-V2-P1Q" secondAttribute="bottom" constant="3" id="Z9t-70-S9q"/>
-                <constraint firstAttribute="centerX" secondItem="9uF-IU-Ue1" secondAttribute="centerX" id="iee-9L-sWr"/>
+                <constraint firstAttribute="centerX" secondItem="9uF-IU-Ue1" secondAttribute="centerX" placeholder="YES" id="iee-9L-sWr"/>
                 <constraint firstItem="fOr-V2-P1Q" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="bottom" id="mGO-EL-5C8"/>
                 <constraint firstAttribute="centerX" secondItem="fOr-V2-P1Q" secondAttribute="centerX" id="ygk-0W-Ud2"/>
             </constraints>

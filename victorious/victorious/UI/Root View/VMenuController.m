@@ -27,6 +27,7 @@
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"
 #import "VUserProfileViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
@@ -160,9 +161,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         switch (indexPath.row)
         {
             case VMenuRowInbox:
-                if (![VObjectManager sharedManager].authorized)
+                if ( ![VObjectManager sharedManager].authorized )
                 {
-                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else
@@ -173,7 +174,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             
             case VMenuRowProfile:
-                if (![VObjectManager sharedManager].authorized)
+                // Editing profile only required log in, not full authorization (profile complete)
+                if (![VObjectManager sharedManager].mainUserLoggedIn)
                 {
                     [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
@@ -188,7 +190,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowFindFriends:
                 if (![VObjectManager sharedManager].authorized)
                 {
-                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else

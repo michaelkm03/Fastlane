@@ -25,6 +25,9 @@
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
+
 @interface VStreamContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIButton *createButton;
@@ -146,10 +149,10 @@
 
 - (IBAction)changedFilterControls:(id)sender
 {
-    if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
+    if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)
     {
         [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
     }
     
     [super changedFilterControls:sender];
@@ -199,9 +202,9 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     

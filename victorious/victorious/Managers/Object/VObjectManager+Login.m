@@ -76,13 +76,24 @@ static NSString * const kVVideoQualityKey = @"video_quality";
            failBlock:failed];
 }
 
-#pragma mark - Facebook
+#pragma mark - Login and status
 
-- (BOOL)isAuthorized
+- (BOOL)mainUserProfileComplete
 {
-    BOOL authorized = (nil != self.mainUser);
-    return authorized;
+    return self.mainUser != nil && [self.mainUser.status isEqualToString:kUserStatusComplete];
 }
+
+- (BOOL)mainUserLoggedIn
+{
+    return self.mainUser != nil;
+}
+
+- (BOOL)authorized
+{
+    return self.mainUserLoggedIn && self.mainUserProfileComplete;
+}
+
+#pragma mark - Facebook
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
@@ -276,6 +287,18 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = self.mainUser;
+        
+        // TODO: This is a hack just to get the 'status' property quickly.  Mapping should be handled through RestKit properly in the future
+        NSDictionary *userDict = fullResponse[ kVPayloadKey ];
+        if ( userDict && [userDict isKindOfClass:[NSDictionary class]] )
+        {
+            NSString *statusValue = userDict[ @"status" ];
+            if ( statusValue && [statusValue isKindOfClass:[NSString class]] )
+            {
+                user.status = statusValue;
+            }
+        }
+        
         if (email)
         {
             user.email = email;
@@ -328,7 +351,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 
 - (RKManagedObjectRequestOperation *)logout
 {
-    if (![self isAuthorized]) //foolish mortal you need to log in to log out...
+    if ( !self.mainUserLoggedIn ) //foolish mortal you need to log in to log out...
     {
         return nil;
     }

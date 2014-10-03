@@ -42,4 +42,18 @@
  */
 - (void)waitForSignalUntil:(NSDate *)waitUntil;
 
+/**
+ Call this method just before your assertions. It
+ will not return until -signal is called or signalBlock returns YES.
+ If "waitTime" expires, an exception is thrown.
+ */
+- (void)waitForSignal:(NSTimeInterval)waitTime withSignalBlock:(BOOL(^)())signalBlock;
+
+/**
+ Call this method just before your assertions. It
+ will not return until -signal is called or signalBlock returns YES.
+ When the "waitUntil" date arrives, an exception is thrown.
+ */
+- (void)waitForSignalUntil:(NSDate *)waitUntil withSignalBlock:(BOOL(^)())signalBlock;
+
 @end

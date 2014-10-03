@@ -457,4 +457,20 @@
     return [sRFC2822DateFormatter stringFromDate:[NSDate date]];
 }
 
+- (NSString *)stringFromObject:(id)object
+{
+    if ([object isKindOfClass:[NSString class]])
+    {
+        return object;
+    }
+    else if ([object isKindOfClass:[NSNumber class]])
+    {
+        return [object stringValue];
+    }
+    else
+    {
+        return [object description];
+    }
+}
+
 @end

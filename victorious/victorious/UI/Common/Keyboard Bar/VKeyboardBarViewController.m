@@ -12,6 +12,9 @@
 #import "VKeyboardBarViewController.h"
 #import "VLoginViewController.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
+
 static const NSInteger kCharacterLimit = 255;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
@@ -98,9 +101,9 @@ static const NSInteger kCharacterLimit = 255;
         return;
     }
     
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -131,9 +134,9 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)cameraPressed:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -188,9 +191,9 @@ static const NSInteger kCharacterLimit = 255;
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return NO;
     }
     return YES;

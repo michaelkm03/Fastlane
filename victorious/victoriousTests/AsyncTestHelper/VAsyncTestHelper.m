@@ -39,13 +39,29 @@
 - (void)waitForSignal:(NSTimeInterval)waitTime
 {
     NSDate *waitUntil = [NSDate dateWithTimeIntervalSinceNow:waitTime];
-    [self waitForSignalUntil:waitUntil];
+    [self waitForSignalUntil:waitUntil withSignalBlock:nil];
 }
 
 - (void)waitForSignalUntil:(NSDate *)waitUntil
 {
+    [self waitForSignalUntil:waitUntil withSignalBlock:nil];
+}
+
+- (void)waitForSignal:(NSTimeInterval)waitTime withSignalBlock:(BOOL(^)())signalBlock
+{
+    NSDate *waitUntil = [NSDate dateWithTimeIntervalSinceNow:waitTime];
+    [self waitForSignalUntil:waitUntil withSignalBlock:signalBlock];
+}
+
+- (void)waitForSignalUntil:(NSDate *)waitUntil withSignalBlock:(BOOL(^)())signalBlock
+{
     while (dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_NOW))
     {
+        if ( signalBlock != nil && signalBlock() )
+        {
+            [self signal];
+        }
+        
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         if ([waitUntil timeIntervalSinceNow] <= 0)
         {

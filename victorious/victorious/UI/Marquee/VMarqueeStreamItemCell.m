@@ -30,6 +30,7 @@
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
+@property (nonatomic, strong) NSLayoutConstraint *centerConstraint;
 
 @end
 
@@ -47,7 +48,16 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.profileImageButton.layer.borderWidth = 4;
     
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    
+    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                       multiplier:1
+                                                                         constant:0];
+    [self addConstraint:self.centerConstraint];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -87,6 +97,16 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     self.streamItem = nil;
     self.nameLabel.frame = self.originalNameLabelFrame;
+    [self removeConstraint:self.centerConstraint];
+    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1
+                                                          constant:0];
+    [self addConstraint:self.centerConstraint];
+    [self layoutIfNeeded];
 }
 
 - (IBAction)userSelected:(id)sender

@@ -41,5 +41,6 @@
 @dynamic remixedSequences;
 @dynamic repostedSequences;
 @dynamic unreadConversation;
+@dynamic status;
 
 @end
