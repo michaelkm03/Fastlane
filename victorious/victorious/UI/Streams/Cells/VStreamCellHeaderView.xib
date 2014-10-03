@@ -12,10 +12,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-JK-HqJ" userLabel="Comment Button">
-                    <rect key="frame" x="255" y="17" width="55" height="32"/>
+                    <rect key="frame" x="255" y="6" width="55" height="55"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="55" id="4hE-5m-lE8"/>
-                        <constraint firstAttribute="height" constant="32" id="HqN-8c-Cdc"/>
+                        <constraint firstAttribute="height" constant="55" id="HqN-8c-Cdc"/>
                     </constraints>
                     <state key="normal" title=" 32" image="StreamComments"/>
                     <connections>
