@@ -335,8 +335,10 @@
     [self.viewModel fetchComments];
     
     
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.experienceEnhancerBar.bounds), 0);
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.experienceEnhancerBar.bounds), 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
+                                                                        0,
+                                                                        CGRectGetHeight(self.textEntryView.bounds), 0);
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
@@ -426,6 +428,20 @@
         
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
+        
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+        {
+#warning There are some ugly UI bugs when the user is scrolled to the bottom and then dismisses the keyboard. This will be fixed when moving the content out of the collectionview.
+            VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+            layout.contentInsets = UIEdgeInsetsMake(0, 0, -newBottomKeyboardBarToContainerConstraintHeight, 0);
+            [self.contentCollectionView.collectionViewLayout invalidateLayout];
+        }
+                         completion:nil];
     }
 }
 

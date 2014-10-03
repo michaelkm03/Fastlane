@@ -20,6 +20,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 UIKIT_EXTERN NSString *const VShrinkingContentLayoutContentBackgroundView;
 UIKIT_EXTERN NSString *const VShrinkingContentLayoutAllCommentsHandle;
 
+static const CGFloat VShrinkingContentLayoutMinimumContentHeight = 125.0f;
+
 /**
  *  Shrinking Content Layout. Lays out content/histogram/ticker from top top bottom in order for single cells. All Comments begin at the bounds of the collectionview height and subtracting the allCommentsHandleBottomInset property. Further comments are laid out below the handle header for all comments section. NOTE: Relies on the collectionView's delegate to implement UICollectionViewDelegateFlowLayout protocol.
  */
@@ -32,5 +34,10 @@ UIKIT_EXTERN NSString *const VShrinkingContentLayoutAllCommentsHandle;
 @property (nonatomic, assign) CGFloat allCommentsHandleBottomInset;
 
 @property (nonatomic, readonly) CGFloat percentToShowBottomBar;
+
+/**
+ *  Only bottom is currently supported.
+ */
+@property (nonatomic, assign) UIEdgeInsets contentInsets;
 
 @end
