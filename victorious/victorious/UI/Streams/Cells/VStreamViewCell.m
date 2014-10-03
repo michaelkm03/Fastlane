@@ -118,7 +118,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
 }
 
-- (void) detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
+- (void)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
 {
     // Error checking + optimization
     if ( textView == nil || textView.layoutManager == nil || textView.textContainer == nil || textView.text.length == 0 )
@@ -151,7 +151,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
      }];
 }
 
-- (void) hashTagTapped:(NSString *)hashTag
+- (void)hashTagTapped:(NSString *)hashTag
 {
     if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
     {
