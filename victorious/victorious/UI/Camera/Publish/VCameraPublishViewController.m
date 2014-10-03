@@ -43,6 +43,7 @@
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
+static const CGFloat kPublishQuoteFontSize = 23.0f;
 static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of space by which we push the canvas "up" for the 3.5" devices
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
@@ -347,7 +348,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
+             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:kPublishQuoteFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor whiteColor],
              NSStrokeWidthAttributeName : @(0)
