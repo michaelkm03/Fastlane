@@ -12,6 +12,13 @@
 
 @interface VTappableHashTags()
 
+/**
+ Performs the actual detection of hashtags in the supplied textview and calls the callback when a
+ hashtag exists at the supplied tap point.
+ @return BOOL Indicates whether or not preliminary error checking succeeded, not whether a hash tag was detected.
+ */
+- (BOOL)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback;
+
 @property (nonatomic, weak) id<VTappableHashTagsDelegate> delegate;
 
 @end
@@ -25,14 +32,6 @@
         return nil;
     }
     UITextView *textView = [[UITextView alloc] initWithFrame:frame textContainer:self.delegate.textContainer];
-    
-    [self configureTappableTextView:textView withFrame:frame];
-    
-    return textView;
-}
-
-- (void)configureTappableTextView:(UITextView *)textView withFrame:(CGRect)frame
-{
     textView.backgroundColor = [UIColor clearColor];
     textView.textColor = [UIColor whiteColor];
     textView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -43,6 +42,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
     [textView addGestureRecognizer:tap];
+    
+    return textView;
 }
 
 - (BOOL)hasValidDelegate
@@ -61,6 +62,11 @@
     {
         return NO;
     }
+}
+
+- (void)unsetDelegate
+{
+    _delegate = nil;
 }
 
 - (BOOL)validateDelegate:(id<VTappableHashTagsDelegate>)delegate error:(NSError**)error
@@ -118,19 +124,24 @@
     }
 }
 
-- (void)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
+- (BOOL)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback
 {
-    // Error checking + optimization
-    if ( !self.hasValidDelegate || textView == nil || textView.layoutManager == nil || textView.textContainer == nil || textView.text.length == 0 )
+    // Error checking
+    if ( !self.hasValidDelegate || textView == nil || textView.text.length == 0 )
     {
-        return;
+        return NO;
+    }
+    else if (  textView.layoutManager != [_delegate layoutManager] || textView.textContainer != [_delegate textContainer] )
+    {
+        return NO;
     }
     
     NSString *fieldText = textView.text;
     NSArray *hashTags = [VHashTags detectHashTags:fieldText];
+    // Quick optimization
     if ( hashTags.count == 0 )
     {
-        return;
+        return YES;
     }
     
     [hashTags enumerateObjectsUsingBlock:^(NSValue *hastagRangeValue, NSUInteger idx, BOOL *stop) {
@@ -149,6 +160,8 @@
             *stop = YES;
         }
     }];
+    
+    return YES;
 }
 
 @end
