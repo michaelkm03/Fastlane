@@ -165,7 +165,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         NSDictionary *payload = fullResponse[kVPayloadKey];
         
-        NSString *sequenceID = payload[@"sequence_id"];
+        NSString *sequenceID = [self stringFromObject:payload[@"sequence_id"]];
         
         //Try to fetch the sequence
         [self fetchSequenceByID:sequenceID successBlock:nil failBlock:nil];
