@@ -11,7 +11,8 @@
 #import "VAsyncTestHelper.h"
 #import "UIAlertView+VBlocks.h"
 
-@interface VUIAlertView_VBlocksTests : XCTestCase {
+@interface VUIAlertView_VBlocksTests : XCTestCase
+{
     VAsyncTestHelper *_asynHelper;
     NSString *_button1Text;
     NSString *_button2Text;

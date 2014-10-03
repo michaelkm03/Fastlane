@@ -15,7 +15,8 @@
 #import "VProfileCreateViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
-@interface VAuthorizationViewControllerFactorTests : XCTestCase {
+@interface VAuthorizationViewControllerFactorTests : XCTestCase
+{
     IMP _mainUserProfileCompleteOriginal;
     IMP _mainUserLoggedInOriginal;
 }
