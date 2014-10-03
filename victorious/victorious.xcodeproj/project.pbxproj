@@ -284,13 +284,12 @@
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
-		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
+		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
+		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7A7D61919DE17AF00B18AB7 /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323419DB763F0040DB30 /* VAuthorizationViewControllerFactoryTests.m */; };
 		A7A7D61B19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */; };
-		AB58142E42806ACC4CF84A31 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
-		AD52A21D1319703CDE645C64 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -906,6 +905,8 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
+		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
+		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A735323419DB763F0040DB30 /* VAuthorizationViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactoryTests.m; sourceTree = "<group>"; };
@@ -1065,6 +1066,7 @@
 		BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUnreadConversation+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C2A618848B3B00AAE975 /* VUnreadConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUnreadConversation.h; sourceTree = "<group>"; };
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
+		C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSharedCollectionReusableViewMethods.h; sourceTree = "<group>"; };
@@ -1082,6 +1084,8 @@
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
 		DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
+		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
+		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1100,7 +1104,7 @@
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
-				AB58142E42806ACC4CF84A31 /* libPods-victorious.a in Frameworks */,
+				9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,8 +1117,7 @@
 				BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */,
 				BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */,
-				08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */,
-				AD52A21D1319703CDE645C64 /* libPods-victorious.a in Frameworks */,
+				99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2067,6 +2070,10 @@
 				83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */,
 				138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */,
 				55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */,
+				8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */,
+				E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */,
+				910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */,
+				E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2107,6 +2114,7 @@
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
 				B528D1A8913A051BDDC4FE37 /* libPods-test.a */,
 				A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */,
+				C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2155,6 +2163,7 @@
 				BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */,
 				037CB73219CF86C60084BBED /* VMultipartFormDataWriterTests.m */,
 				03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */,
+				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 				A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */,
 				03D94C0F19DCBEF600BFAA27 /* VUploadManagerTests.m */,
@@ -2797,7 +2806,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious/Pods-victorious-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3216,7 +3225,7 @@
 		};
 		03D6382A191874590084FFC8 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */;
+			baseConfigurationReference = 910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3399,7 +3408,7 @@
 		};
 		BE171DAC1868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */;
+			baseConfigurationReference = 8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3428,7 +3437,7 @@
 		};
 		BE171DAD1868BE64004E5202 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
+			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3533,7 +3542,7 @@
 		};
 		BE4055A518A41BEE00092AE1 /* QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */;
+			baseConfigurationReference = E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 				FRAMEWORK_SEARCH_PATHS = (
