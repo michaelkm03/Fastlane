@@ -54,5 +54,9 @@
 <integer>2</integer>
 <key>kRequireSpaceAfterReturnType</key>
 <false/>
+<key>kRequireSpaceAfterPropertyDeclaration</key>
+<true/>
+<key>kRequireSpaceAfterPropertyTypeDeclaration</key>
+<true/>
 </dict>
 </plist>
