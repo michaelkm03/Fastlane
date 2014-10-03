@@ -36,7 +36,7 @@
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VStreamCellHeaderDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
 
@@ -69,6 +69,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self addSubview:self.ephemeralTimerView];
  
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    self.streamCellHeaderView.delegate = self;
     [self addSubview:self.streamCellHeaderView];
     
     [self addSubview:self.commentHitboxButton];
@@ -189,7 +190,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     return YES;
 }
 
-- (IBAction)commentButtonAction:(id)sender
+- (void)commentsPressedOnHeader:(VStreamCellHeaderView *)header
 {
     if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamViewCell:)])
     {
