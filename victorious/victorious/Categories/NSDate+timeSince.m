@@ -48,15 +48,15 @@
             return [NSString stringWithFormat:NSLocalizedString(@"MonthsAgo", @""), components.month];
         }
     }
-    else if (components.week >= 1)
+    else if (components.weekOfMonth >= 1)
     {
-        if (components.week == 1)
+        if (components.weekOfMonth == 1)
         {
             return NSLocalizedString(@"LastWeek", @"");
         }
         else
         {
-            return [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), components.week];
+            return [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), components.weekOfMonth];
         }
     }
     else if (components.day >= 1)    // up to 6 days ago
