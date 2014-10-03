@@ -235,11 +235,16 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
     switch (indexPath.section)
     {
         case VContentViewSectionContent:
+        {
+            UICollectionViewLayoutAttributes *contentAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
             layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                                     self.collectionView.contentOffset.y,
                                                                     CGRectGetWidth(self.collectionView.bounds),
-                                                                    VShrinkingContentLayoutMinimumContentHeight);
+                                                                    CGRectGetHeight(contentAttributes.frame));
             layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
+        }
+            
+
             break;
         case VContentViewSectionHistogram:
             break;
@@ -330,11 +335,6 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
 {
     _contentInsets = contentInsets;
     self.cachedContentSize = CGSizeZero;
-    NSLog(@"%f", contentInsets.bottom);
-//    UICollectionViewLayoutInvalidationContext *context = [self invalidationContextForBoundsChange:self.collectionView.bounds];
-//    [self invalidateLayoutWithContext:context];
-//    [self invalidateLayout];
-//    UICollectionViewLayoutInvalidationContext *context = [self invalidationContextForBoundsChange:<#(CGRect)#>]
 }
 
 #pragma mark - Convenience
