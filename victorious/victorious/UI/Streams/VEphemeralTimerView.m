@@ -68,7 +68,7 @@
 }
 */
 
-- (void) setExpireDate:(NSDate *)expireDate
+- (void)setExpireDate:(NSDate *)expireDate
 {
     _expireDate = expireDate;
     
