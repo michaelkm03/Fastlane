@@ -13,7 +13,7 @@
 
 @implementation VAuthorizationViewControllerFactory
 
-+ (UIViewController *) requiredViewController
++ (UIViewController *)requiredViewController
 {
     VObjectManager *objectManager = [VObjectManager sharedManager];
     

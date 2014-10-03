@@ -65,7 +65,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-+ (VProfileCreateViewController *) profileCreateViewController
++ (VProfileCreateViewController *)profileCreateViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];

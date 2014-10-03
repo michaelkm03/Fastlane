@@ -349,7 +349,7 @@
     return nil;
 }
 
-- (void) userDidAbortCreateProfile:(NSNotification *)note
+- (void)userDidAbortCreateProfile:(NSNotification *)note
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

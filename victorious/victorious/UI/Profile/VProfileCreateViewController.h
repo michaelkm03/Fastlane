@@ -18,6 +18,6 @@ extern NSString * const VProfileCreateViewControllerWasAbortedNotification;
 @property (nonatomic, strong)   VUser          *profile;
 @property (nonatomic, strong)   VRegistrationModel *registrationModel;
 
-+ (VProfileCreateViewController *) profileCreateViewController;
++ (VProfileCreateViewController *)profileCreateViewController;
 
 @end

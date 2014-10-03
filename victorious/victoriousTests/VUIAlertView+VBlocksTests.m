@@ -13,7 +13,9 @@
 
 @interface VUIAlertView_VBlocksTests : XCTestCase
 {
-    VAsyncTestHelper *_asynHelper;
+    NSTimeInterval _asyncWaitTime;
+    VAsyncTestHelper *_asyncHelper;
+    
     NSString *_button1Text;
     NSString *_button2Text;
     NSString *_titleText;
@@ -35,7 +37,8 @@
     _messageText = @"button";
     _cancelButtonText = @"cancel";
     
-    _asynHelper = [[VAsyncTestHelper alloc] init];
+    _asyncWaitTime = 5.0f;
+    _asyncHelper = [[VAsyncTestHelper alloc] init];
 }
 
 - (void)tearDown
@@ -74,7 +77,7 @@
     [alertView show];
     [alertView dismissWithClickedButtonIndex:alertView.cancelButtonIndex animated:NO];
     
-    [_asynHelper waitForSignal:1.0f withSignalBlock:^BOOL{
+    [_asyncHelper waitForSignal:_asyncWaitTime withSignalBlock:^BOOL{
         return wasBlockCalled;
     }];
     
@@ -99,14 +102,14 @@
     [alertView show];
     [alertView dismissWithClickedButtonIndex:1 animated:NO];
     
-    [_asynHelper waitForSignal:1.0f withSignalBlock:^BOOL{
+    [_asyncHelper waitForSignal:_asyncWaitTime withSignalBlock:^BOOL{
         return wasBlock1Called;
     }];
     
     [alertView show];
     [alertView dismissWithClickedButtonIndex:2 animated:NO];
     
-    [_asynHelper waitForSignal:1.0f withSignalBlock:^BOOL{
+    [_asyncHelper waitForSignal:_asyncWaitTime withSignalBlock:^BOOL{
         return wasBlock2Called;
     }];
     
