@@ -6,12 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCreateSequenceDelegate.h"
-
 @interface VCreatePollViewController : UIViewController
 
-@property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
-
-+ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate;
++ (instancetype)newCreatePollViewController;
 
 @end

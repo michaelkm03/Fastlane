@@ -41,8 +41,8 @@ static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 
 @property (nonatomic, weak) id<VStreamViewCellDelegate> delegate;
 
-- (void) hideOverlays;
-- (void) showOverlays;
+- (void)hideOverlays;
+- (void)showOverlays;
 - (void) detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback;
 
 @end

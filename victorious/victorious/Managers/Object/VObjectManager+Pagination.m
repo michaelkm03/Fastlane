@@ -18,7 +18,7 @@
 #import "VMessage.h"
 #import "VConversation+RestKit.h"
 
-#import "VStream.h"
+#import "VStream+Fetcher.h"
 
 #import "VStreamTableViewController.h"
 
@@ -39,14 +39,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [self refreshStream:[VStreamTableViewController ownerStream].currentStream
-               successBlock:nil
-                  failBlock:nil];
-        
-        [self refreshStream:[VStreamTableViewController communityStream].currentStream
-               successBlock:nil
-                  failBlock:nil];
     };
     
     return [self refreshStream:[VStreamTableViewController homeStream].currentStream
@@ -61,7 +53,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -520,19 +512,17 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             //If this is the first page, break the relationship to all the old objects.
             if (refresh)
             {
-                NSPredicate *tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
-                NSOrderedSet *filteredSequences = [stream.sequences filteredOrderedSetUsingPredicate:tempFilter];
-                stream.sequences = filteredSequences;
+                stream.streamItems = [[NSOrderedSet alloc] init];
             }
             
-            NSMutableOrderedSet *sequences = [stream.sequences mutableCopy];
-            for (VSequence *sequence in resultObjects)
+            NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+            for (VStreamItem *streamItem in resultObjects)
             {
-                VSequence *sequenceInContext = (VSequence *)[stream.managedObjectContext objectWithID:sequence.objectID];
-                [sequences addObject:sequenceInContext];
+                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+                [streamItems addObject:streamItemInContext];
             }
-            stream.sequences = sequences;
-        
+            stream.streamItems = streamItems;
+            
             if (success)
             {
                 success(operation, fullResponse, resultObjects);
@@ -541,13 +531,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         
         //Don't complete the fetch until we have the users
         NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VSequence *sequence in resultObjects)
+        for (VStreamItem *item in resultObjects)
         {
-            if (!sequence.user)
+            VSequence *sequence = (VSequence *)item;
+            if ([item isKindOfClass:[VSequence class]] && !sequence.user)
             {
                 [nonExistantUsers addObject:sequence.createdBy];
             }
-            if (sequence.parentUserId && !sequence.parentUser)
+            if ([item isKindOfClass:[VSequence class]] &&  sequence.parentUserId && !sequence.parentUser)
             {
                 [nonExistantUsers addObject:sequence.parentUserId];
             }
@@ -556,21 +547,21 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-            {
-                paginationBlock();
-            }
+             {
+                 paginationBlock();
+             }
                                              failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed with error: %@", error);
-                paginationBlock();
-            }];
+             {
+                 VLog(@"Failed with error: %@", error);
+                 paginationBlock();
+             }];
         }
         else
         {
             paginationBlock();
         }
     };
-
+    
     if (refresh)
     {
         return [self.paginationManager refreshFilter:filter successBlock:fullSuccessBlock failBlock:fail];
@@ -597,7 +588,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
 }
 
@@ -610,12 +601,22 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)filterForStream:(VStream *)stream
 {
-    if (!stream.apiPath.length)
+    NSString *apiPath;
+    if (stream.apiPath.length)
+    {
+        apiPath = stream.apiPath;
+    }
+    else if (stream.remoteId.length)
+    {
+        apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.remoteId ?: @"0"];
+        apiPath = [apiPath stringByAppendingPathComponent:stream.filterName ?: @"0"];
+    }
+    else
     {
         return nil;
     }
     
-    return [self.paginationManager filterForPath:stream.apiPath
+    return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 }

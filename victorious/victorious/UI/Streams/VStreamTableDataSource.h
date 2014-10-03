@@ -20,11 +20,13 @@ UIKIT_EXTERN NSString *const VStreamTableDataSourceDidChangeNotification;
 @protocol VStreamTableDataDelegate <NSObject>
 
 @required
-- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 @interface VStreamTableDataSource : NSObject <UITableViewDataSource>
+
+@property (nonatomic) BOOL shouldDisplayMarquee;///<If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 
 @property (nonatomic, weak)   id<VStreamTableDataDelegate>  delegate;
 @property (nonatomic, weak)   UITableView                  *tableView; ///< The UITableView object to which the receiver is providing data

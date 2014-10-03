@@ -21,9 +21,9 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber *)sequenceId
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
 {
     return [self fetchSequenceByID:sequenceId
                       successBlock:success
@@ -31,7 +31,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                        loadAttempt:0];
 }
 
-- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceID
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
@@ -44,7 +44,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         }
         return nil;
     }
-    NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
+    NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID];
     
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
@@ -79,7 +79,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 {
     return [self POST:@"/api/sequence/flag"
                object:nil
-           parameters:@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null]}
+           parameters:@{@"sequence_id" : sequence.remoteId ?: [NSNull null]}
          successBlock:success
             failBlock:fail];
 }
@@ -129,7 +129,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
+    NSDictionary *parameters = @{@"sequence_id":sequence.remoteId ?: [NSNull null],
                                  @"votetypes": voteTypes ?: [NSNull null],
                                  @"votecounts": voteCounts ?: [NSNull null]
                                  };
@@ -244,7 +244,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         }
     };
     
-    return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId.stringValue]
+    return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId]
               object:nil
           parameters:nil
         successBlock:fullSuccess
@@ -256,7 +256,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId.stringValue, self.mainUser.remoteId.stringValue]
+    return [self GET:[NSString stringWithFormat:@"/api/sequence/users_interactions/%@/%@", sequence.remoteId, self.mainUser.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

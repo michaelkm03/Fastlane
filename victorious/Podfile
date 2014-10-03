@@ -10,7 +10,7 @@ target :victorious do
     pod 'TestFlightSDK', '~> 3.0.0'
     pod 'TTTAttributedLabel', '~>1.8.1'
     pod 'MBProgressHUD', '~> 0.8'
-    link_with 'victorious'
+    link_with 'victorious','victoriousTests'
 end
 
 target :test do
