@@ -11,8 +11,8 @@
 #import <UIKit/UIKit.h>
 #import <OCMock/OCMock.h>
 
-@interface VHashTagsTest : XCTestCase {
-    
+@interface VHashTagsTest : XCTestCase
+{
     NSString *stringWithHashTag_;
     NSString *stringWithOutHashTag_;
     NSString *stringWith3HashTags_;
@@ -50,7 +50,7 @@
     return output;
 }
 
-- (void) testHashTag
+- (void)testHashTag
 {
     NSArray *hashTags = [VHashTags detectHashTags:stringWithHashTag_];
     XCTAssertEqual( hashTags.count, (NSUInteger)1 );
@@ -60,7 +60,7 @@
     XCTAssertEqual( resultRange.length, expectedRange.length );
 }
 
-- (void) test3HashTags
+- (void)test3HashTags
 {
     NSArray *hashTags = [VHashTags detectHashTags:stringWith3HashTags_];
     NSArray *expectedHashTags = @[ @"hashtag1",  @"hashtag2",  @"hashtag3" ];
@@ -74,14 +74,14 @@
     }
 }
 
-- (void) testNoHashTag
+- (void)testNoHashTag
 {
     NSArray *hashTags = [VHashTags detectHashTags:stringWithOutHashTag_];
     XCTAssertNotNil( hashTags );
     XCTAssertEqual( hashTags.count, (NSUInteger)0 );
 }
 
-- (void) testMultipleHashTags
+- (void)testMultipleHashTags
 {
     NSUInteger numTests = 50;
     for ( NSUInteger i = 0; i < numTests; i++ )
@@ -93,20 +93,20 @@
     }
 }
 
-- (void) testInvalidInput
+- (void)testInvalidInput
 {
     NSArray *hashTags = [VHashTags detectHashTags:nil];
     XCTAssertNil( hashTags );
 }
 
-- (void) testEmptyInput
+- (void)testEmptyInput
 {
     NSArray *hashTags = [VHashTags detectHashTags:@""];
     XCTAssertEqual( hashTags.count, (NSUInteger)0 );
     XCTAssertNotNil( hashTags );
 }
 
-- (void) testFormat
+- (void)testFormat
 {
     NSString *string = @"Caption that includes a #hashtag";
     NSArray *hashTags = [VHashTags detectHashTags:string];
@@ -135,7 +135,7 @@
     }
 }
 
-- (void) testFormatInvalidInputs
+- (void)testFormatInvalidInputs
 {
     NSString *string = @"Caption that includes a #hashtag";
     NSArray *hashTags = [VHashTags detectHashTags:string];
