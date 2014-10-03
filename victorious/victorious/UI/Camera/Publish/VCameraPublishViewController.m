@@ -348,7 +348,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:kPublsihQuoteFontSize],
+             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:kPublishQuoteFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor whiteColor],
              NSStrokeWidthAttributeName : @(0)
