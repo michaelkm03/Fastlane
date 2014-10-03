@@ -16,9 +16,9 @@ extern NSString * const kPollResultsLoaded;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber *)sequenceId
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)flagSequence:(VSequence *)sequence
                                      successBlock:(VSuccessBlock)success

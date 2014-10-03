@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VDefaultProfileButton;
 
 @interface VStreamCellHeaderView : UIView
 
@@ -18,7 +18,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, weak) IBOutlet UIView *userInfoView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *userInfoViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet UIButton *profileImageButton;
+@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 @property (nonatomic, weak) IBOutlet UIButton *profileHitboxutton;
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;

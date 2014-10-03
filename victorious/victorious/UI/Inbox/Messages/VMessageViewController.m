@@ -25,6 +25,7 @@
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VDefaultProfileImageView.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
@@ -167,7 +168,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:message.sender.profileImagePathSmall ?: message.sender.pictureUrl];
+    NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
     if (pictureURL)
     {
         [cell.profileImageView setImageWithURL:pictureURL];

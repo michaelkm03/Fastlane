@@ -35,6 +35,7 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VNoContentView.h"
+#import "VDefaultProfileImageView.h"
 
 @import Social;
 
@@ -224,11 +225,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
-    NSURL *pictureURL = [NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl];
-    if (pictureURL)
-    {
-        [cell.profileImageView setImageWithURL:pictureURL];
-    }
+    [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];

@@ -21,6 +21,8 @@
 #import "VImageLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
 
+#import "VDefaultProfileImageView.h"
+
 #import "UIImage+ImageCreation.h"
 
 #import "VElapsedTimeFormatter.h"
@@ -162,20 +164,15 @@
         CGFloat startTime = comment.realtime.floatValue;
         
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
-        UIImageView *progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
-        progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
-        progressBarImage.clipsToBounds = YES;
-        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
+        VDefaultProfileImageView *progressBarImage = [[VDefaultProfileImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
+//        progressBarImage.autoresizingMask = UIViewAutoresizingNone;
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);
         xCenter += imageHeight / 2;
         progressBarImage.center = CGPointMake(xCenter, self.progressBackgroundView.frame.size.height / 2);
-        UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-        progressBarImage.tintColor = transparentAccent;
-        [progressBarImage setImageWithURL:[NSURL URLWithString:comment.user.profileImagePathSmall ?: comment.user.pictureUrl]
-                         placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    
+        [progressBarImage setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
+        
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];
     }
@@ -242,7 +239,7 @@
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.profileImagePathSmall ?: _currentComment.user.pictureUrl]
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl]
                           placeholderImage:[[UIImage imageNamed:@"profile_full"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     

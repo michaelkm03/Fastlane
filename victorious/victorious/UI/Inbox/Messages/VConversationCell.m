@@ -18,6 +18,8 @@
 
 #import "VUserProfileViewController.h"
 
+#import "VDefaultProfileImageView.h"
+
 CGFloat const kVConversationCellHeight = 72;
 
 @implementation VConversationCell
@@ -43,12 +45,9 @@ CGFloat const kVConversationCellHeight = 72;
     _conversation = conversation;
     
     self.usernameLabel.text  = conversation.user.name;
-    UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.tintColor = transparentAccent;
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:conversation.user.profileImagePathSmall ?: conversation.user.pictureUrl]
-                          placeholderImage:[[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.messageLabel.text = conversation.lastMessageText;
     self.dateLabel.text = [conversation.postedAt timeSince];
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl]];
 
     if (self.conversation.isRead.boolValue)
     {
@@ -64,6 +63,12 @@ CGFloat const kVConversationCellHeight = 72;
 {
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.profileImageView setup];
 }
 
 @end

@@ -9,10 +9,12 @@
 #import "VFollowerTableViewController.h"
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
+#import "VConstants.h"
 
 @interface VFollowerTableViewController ()
 
@@ -46,6 +48,87 @@
     [self refreshFollowersList];
 }
 
+#pragma mark - Friend Actions
+
+- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    // Return if we don't have a way to handle the return
+    if (!successBlock)
+    {
+        return;
+    }
+    
+    [[VObjectManager sharedManager] followUser:user
+                                  successBlock:successBlock
+                                     failBlock:failureBlock];
+}
+
+- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock];
+}
+
+- (void)followFriendAction:(VUser *)user
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // Add user relationship to local persistent store
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = mainUser.managedObjectContext;
+        
+        [mainUser addFollowingObject:user];
+        [moc saveToPersistentStore:nil];
+        
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in indexPaths)
+        {
+            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            if (cell.profile == user)
+            {
+                [cell flipFollowIconAction:nil];
+                return;
+            }
+        }
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
+        {
+            // Add user relationship to local persistent store
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            NSManagedObjectContext *moc = mainUser.managedObjectContext;
+            
+            [mainUser addFollowingObject:user];
+            [moc saveToPersistentStore:nil];
+            
+            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+            for (NSIndexPath *indexPath in indexPaths)
+            {
+                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                if (cell.profile == user)
+                {
+                    [cell flipFollowIconAction:nil];
+                    return;
+                }
+            }
+            return;
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                        message:error.localizedDescription
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    // Add user at backend
+    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -55,10 +138,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    VUser *profile = self.followers[indexPath.row];
+    
+    BOOL haveRelationship = ([mainUser.followers containsObject:profile] || [mainUser.following containsObject:profile]);
+    
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.showButton = YES;
     cell.owner = self.profile;
+    cell.haveRelationship = haveRelationship;
+    
+    // Tell the button what to do when it's tapped
+    cell.followButtonAction = ^(void)
+    {
+        [self followFriendAction:profile];
+    };
     return cell;
 }
 
