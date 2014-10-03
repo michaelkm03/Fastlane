@@ -15,6 +15,9 @@
 @property (nonatomic, weak) IBOutlet UILabel                *connectPromptLabel;
 @property (nonatomic, weak) IBOutlet VActivityIndicatorView *activityIndicator;
 
+@property (nonatomic, strong) IBOutlet UIView               *safetyInfoView;
+@property (nonatomic, strong) IBOutlet UILabel              *safetyInfoLabel;
+
 @end
 
 @implementation VFindFriendsTableView
@@ -61,6 +64,24 @@
     paragraph.maximumLineHeight = 30.0f;
     paragraph.alignment = NSTextAlignmentCenter;
     return @{ NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont] };
+}
+
+- (void)setSafetyInfoLabelText:(NSString *)text
+{
+    self.safetyInfoLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:[self safetyInfoLabelTextAttributes]];
+}
+
+- (NSDictionary *)safetyInfoLabelTextAttributes
+{
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.minimumLineHeight = 15.0f;
+    paragraph.maximumLineHeight = 15.0f;
+    paragraph.alignment = NSTextAlignmentCenter;
+    NSDictionary *attributeDictionary = @{
+                                          NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor],
+                                          NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]
+                                          };
+    return attributeDictionary;
 }
 
 @end

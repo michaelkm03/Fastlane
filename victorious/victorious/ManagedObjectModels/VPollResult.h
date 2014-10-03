@@ -2,7 +2,7 @@
 //  VPollResult.h
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 9/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,9 +14,9 @@
 @interface VPollResult : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * answerId;
-@property (nonatomic, retain) NSNumber * sequenceId;
 @property (nonatomic, retain) NSNumber * count;
-@property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) NSString * sequenceId;
 @property (nonatomic, retain) VSequence *sequence;
+@property (nonatomic, retain) VUser *user;
 
 @end

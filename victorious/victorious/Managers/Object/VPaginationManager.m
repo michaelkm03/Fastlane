@@ -39,6 +39,15 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
+    NSAssert(filter, @"No filter provided to refreshFilter.");
+    if (!filter)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+    }
+    
     __block BOOL isLoading = NO;
     NSString *path = filter.filterAPIPath;
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)

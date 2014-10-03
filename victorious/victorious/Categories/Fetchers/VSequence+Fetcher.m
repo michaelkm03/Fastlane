@@ -122,12 +122,12 @@
     }
     else
     {
-        [urls addObject:[NSURL URLWithString:self.previewImage]];
+        [urls addObject:[NSURL URLWithString:[self.previewImagePaths firstObject]]];
     }
     
     if (self.user && self.user.pictureUrl)
     {
-        [urls addObject:[NSURL URLWithString:self.user.profileImagePathSmall ?: self.user.pictureUrl]];
+        [urls addObject:[NSURL URLWithString:self.user.pictureUrl]];
     }
     
     return [urls copy];

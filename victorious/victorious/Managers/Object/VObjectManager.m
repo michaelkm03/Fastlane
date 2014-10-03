@@ -29,6 +29,7 @@
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
+#import "VStream+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -100,13 +101,13 @@
                                                                                          keyPath:nil
                                                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    
     [self addResponseDescriptorsFromArray:[VUser descriptors]];
     [self addResponseDescriptorsFromArray:[VSequence descriptors]];
     [self addResponseDescriptorsFromArray:[VConversation descriptors]];
     [self addResponseDescriptorsFromArray:[VMessage descriptors]];
     [self addResponseDescriptorsFromArray:[VComment descriptors]];
     [self addResponseDescriptorsFromArray:[VNotification descriptors]];
+    [self addResponseDescriptorsFromArray:[VStream descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,

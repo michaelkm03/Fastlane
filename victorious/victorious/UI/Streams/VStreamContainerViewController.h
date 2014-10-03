@@ -19,6 +19,5 @@
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable;
 + (instancetype)modalContainerForStreamTable:(VStreamTableViewController *)streamTable;
-+ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable;
 
 @end
