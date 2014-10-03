@@ -10,6 +10,7 @@
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
+#import "VDefaultProfileImageView.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 
@@ -20,7 +21,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 
 @property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
 
 @end
@@ -32,9 +33,6 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     [super awakeFromNib];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    UIColor *transparentAccent = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.7f];
-    self.profileImageView.tintColor = transparentAccent;
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
@@ -56,7 +54,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 - (void)prepareForReuse
 {
     [self.commentTextView resetView];
-    self.profileImageView.image = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.profileImageView setup];
 }
 
 @end

@@ -66,14 +66,16 @@
                         <constraint firstItem="ZLn-Aq-gHz" firstAttribute="leading" secondItem="mw8-p7-7U7" secondAttribute="leading" id="v4C-It-ULz"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCm-Z1-zjM" userLabel="Profile Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCm-Z1-zjM" userLabel="Profile Button" customClass="VDefaultProfileButton">
                     <rect key="frame" x="20" y="17" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="vm6-Nd-wQQ"/>
                         <constraint firstAttribute="width" constant="32" id="vpO-6J-Awg"/>
                     </constraints>
-                    <state key="normal" image="profile_thumb">
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -123,6 +125,5 @@
     <resources>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
-        <image name="profile_thumb" width="32" height="32"/>
     </resources>
 </document>
