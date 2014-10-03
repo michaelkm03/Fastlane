@@ -22,6 +22,7 @@
 #import "VSelectorViewController.h"
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
+#import "VObjectManager.h"
 
 @import Accounts;
 @import Social;
@@ -76,6 +77,13 @@
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,7 +180,7 @@
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
             self.profile = user;
-            if (created)
+            if ( ![self.profile.status isEqualToString:kUserStatusComplete] )
             {
                 [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
             }
@@ -341,6 +349,11 @@
     return nil;
 }
 
+- (void)userDidAbortCreateProfile:(NSNotification *)note
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - VSelectorViewControllerDelegate
 
 - (void)vSelectorViewController:(VSelectorViewController *)selectorViewController
@@ -369,7 +382,7 @@
                               animated:YES];
          [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
          self.profile = user;
-         if (created)
+         if ( ![self.profile.status isEqualToString:kUserStatusComplete] )
          {
              [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
          }
