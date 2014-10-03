@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VUser;
+@class VUser, VDefaultProfileImageView;
 
 @protocol VUserProfileHeaderDelegate <NSObject>
 
@@ -21,7 +21,7 @@
 
 @interface VUserProfileHeaderView : UIView
 
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taglineLabel;

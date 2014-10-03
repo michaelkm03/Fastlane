@@ -15,7 +15,7 @@
 
 - (NSURL *)mp4UrlFromM3U8;
 
-- (BOOL) isEmpty;
-- (BOOL) isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
+- (BOOL)isEmpty;
+- (BOOL)isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
 
 @end

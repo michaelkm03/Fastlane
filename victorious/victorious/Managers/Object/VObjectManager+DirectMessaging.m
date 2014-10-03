@@ -116,9 +116,9 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation *)conversation
-                                            successBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)deleteConversation:(VConversation *)conversation
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/message/delete_conversation"
                object:conversation
@@ -127,9 +127,9 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *) flagConversation:(VConversation *)conversation
-                                            successBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)flagConversation:(VConversation *)conversation
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
 {
     if (!conversation)
     {
