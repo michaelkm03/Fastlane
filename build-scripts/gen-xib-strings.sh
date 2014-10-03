@@ -32,7 +32,7 @@ if [ "$XIB_INFILE" ]; then
 		echo "Error: Input file must be a xib file... exiting now"
 	fi
 	echo ""
-    exit 1
+    exit 0
 fi
 
 echo ""
