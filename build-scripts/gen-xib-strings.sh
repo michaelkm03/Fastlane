@@ -8,6 +8,7 @@
 XIB_INFILE=$1
 OUTDIR="./victorious/victorious/Supporting Files"
 OUTSUBDIR=$OUTDIR"/en.lproj"
+MINFILESIZE=2
 
 
 # Create output directory if it doesn't exist
@@ -34,10 +35,13 @@ if [ "$XIB_INFILE" ]; then
     exit 1
 fi
 
+echo ""
+echo "Generating Strings Files"
+
 
 # Sweep through project directory and locate all xib files
 echo ""
-echo "Generating Strings Files..."
+echo "xibs..."
 find . -name "*.xib" -print0 | while read -d $'\0' file
 do
 	path=${file/*}
@@ -46,11 +50,50 @@ do
 	if [ $fext = "xib" ]; then
 		filename=$(basename $file)
 		stringsFile=${base%.*}.strings
-		echo "$base -> $stringsFile"
 		ibtool --generate-strings-file "$OUTSUBDIR/$stringsFile" "$file"
+		filesize=$(stat -f%z "$OUTSUBDIR/$stringsFile")
+		if [ "$filesize" -le "$MINFILESIZE" ]; then
+			rm "$OUTSUBDIR/$stringsFile"
+			echo ""
+			echo "Error: Cannot generate $base strings file"
+			echo "Reason: File is empty"
+			echo ""
+		else
+			echo "$base -> $stringsFile"
+		fi
 	else
 		echo ""
 		echo "Skipping $file (Not a xib file)"
+		echo ""
+	fi
+done
+
+
+# Sweep through project directory and locate all xib files
+echo ""
+echo "Storyboards..."
+find . -name "*.storyboard" -print0 | while read -d $'\0' file
+do
+	path=${file/*}
+	base=${file##*/}
+	fext=${base##*.}
+	if [ $fext = "storyboard" ]; then
+		filename=$(basename $file)
+		stringsFile=${base%.*}.strings
+		ibtool --generate-strings-file "$OUTSUBDIR/$stringsFile" "$file"
+		filesize=$(stat -f%z "$OUTSUBDIR/$stringsFile")
+		if [ "$filesize" -le "$MINFILESIZE" ]; then
+			rm "$OUTSUBDIR/$stringsFile"
+			echo ""
+			echo "Error: Cannot generate $base strings file"
+			echo "Reason: File is empty"
+			echo ""
+		else
+			echo "$base -> $stringsFile"
+		fi
+	else
+		echo ""
+		echo "Skipping $file (Not a Storyboard file)"
 		echo ""
 	fi
 done

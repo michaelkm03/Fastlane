@@ -274,14 +274,13 @@
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
-		6A3C7ABA603A4FEEA4B31670 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		6C617E88CAA00EBCF746959D /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
 		BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */; };
 		BE11F26519CCADD200DEC776 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */; };
 		BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F27019CCF5B300DEC776 /* VObjectManager+Streams.m */; };
-		6C617E88CAA00EBCF746959D /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -366,17 +365,23 @@
 		DB2A48BC19DE1C0400CB687B /* VEphemeralTimerView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A489B19DE1C0400CB687B /* VEphemeralTimerView.strings */; };
 		DB2A48BD19DE1C0400CB687B /* VForceUpgradeViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A489D19DE1C0400CB687B /* VForceUpgradeViewController.strings */; };
 		DB2A48BE19DE1C0400CB687B /* VInviteFriendTableViewCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A489F19DE1C0400CB687B /* VInviteFriendTableViewCell.strings */; };
-		DB2A48BF19DE1C0400CB687B /* VMediaPreviewViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48A119DE1C0400CB687B /* VMediaPreviewViewController.strings */; };
 		DB2A48C019DE1C0400CB687B /* VMessageCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48A319DE1C0400CB687B /* VMessageCell.strings */; };
 		DB2A48C119DE1C0400CB687B /* VNoContentView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48A519DE1C0400CB687B /* VNoContentView.strings */; };
 		DB2A48C219DE1C0400CB687B /* VNotificationCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48A719DE1C0400CB687B /* VNotificationCell.strings */; };
-		DB2A48C319DE1C0400CB687B /* VPublishShareView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48A919DE1C0400CB687B /* VPublishShareView.strings */; };
 		DB2A48C419DE1C0400CB687B /* VStreamCellHeaderView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48AB19DE1C0400CB687B /* VStreamCellHeaderView.strings */; };
 		DB2A48C519DE1C0400CB687B /* VStreamPollCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48AD19DE1C0400CB687B /* VStreamPollCell.strings */; };
 		DB2A48C619DE1C0400CB687B /* VStreamVideoCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48AF19DE1C0400CB687B /* VStreamVideoCell.strings */; };
 		DB2A48C719DE1C0400CB687B /* VStreamViewCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48B119DE1C0400CB687B /* VStreamViewCell.strings */; };
 		DB2A48C819DE1C0400CB687B /* VUserProfileHeaderView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48B319DE1C0400CB687B /* VUserProfileHeaderView.strings */; };
-		DB2A48C919DE1C0400CB687B /* VWebContentViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48B519DE1C0400CB687B /* VWebContentViewController.strings */; };
+		DB2A48E419DE2B8D00CB687B /* Camera.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48CA19DE2B8D00CB687B /* Camera.strings */; };
+		DB2A48E519DE2B8D00CB687B /* login.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48CC19DE2B8D00CB687B /* login.strings */; };
+		DB2A48E619DE2B8D00CB687B /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48CE19DE2B8D00CB687B /* Main.strings */; };
+		DB2A48E719DE2B8D00CB687B /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48D019DE2B8D00CB687B /* Profile.strings */; };
+		DB2A48E819DE2B8D00CB687B /* settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48D219DE2B8D00CB687B /* settings.strings */; };
+		DB2A48E919DE2B8D00CB687B /* VideoRemix.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48D419DE2B8D00CB687B /* VideoRemix.strings */; };
+		DB2A48EA19DE2B8D00CB687B /* VMarqueeStreamItemCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48D619DE2B8D00CB687B /* VMarqueeStreamItemCell.strings */; };
+		DB2A48ED19DE2B8D00CB687B /* VNavigationHeaderView.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48DC19DE2B8D00CB687B /* VNavigationHeaderView.strings */; };
+		DB2A48EF19DE2B8D00CB687B /* VStreamDirectoryItemCell.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48E019DE2B8D00CB687B /* VStreamDirectoryItemCell.strings */; };
 		DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
@@ -889,6 +894,10 @@
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
+		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
+		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeStreamItemCell.h; sourceTree = "<group>"; };
 		BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeStreamItemCell.m; sourceTree = "<group>"; };
 		BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
@@ -900,10 +909,6 @@
 		BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
 		BE11F26F19CCF5B300DEC776 /* VObjectManager+Streams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Streams.h"; sourceTree = "<group>"; };
 		BE11F27019CCF5B300DEC776 /* VObjectManager+Streams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Streams.m"; sourceTree = "<group>"; };
-		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
-		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
-		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1048,6 +1053,7 @@
 		D836884019C370C400070F22 /* VBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		D836884219C3718A00070F22 /* VBaseSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseSupplementaryView.h; sourceTree = "<group>"; };
 		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
+		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A489219DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = FindFriendsTableView.strings; sourceTree = "<group>"; };
 		DB2A489419DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = followerCell.strings; sourceTree = "<group>"; };
 		DB2A489619DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VCommentCell.strings; sourceTree = "<group>"; };
@@ -1056,18 +1062,23 @@
 		DB2A489C19DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VEphemeralTimerView.strings; sourceTree = "<group>"; };
 		DB2A489E19DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		DB2A48A019DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VInviteFriendTableViewCell.strings; sourceTree = "<group>"; };
-		DB2A48A219DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VMediaPreviewViewController.strings; sourceTree = "<group>"; };
 		DB2A48A419DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VMessageCell.strings; sourceTree = "<group>"; };
 		DB2A48A619DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VNoContentView.strings; sourceTree = "<group>"; };
 		DB2A48A819DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VNotificationCell.strings; sourceTree = "<group>"; };
-		DB2A48AA19DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VPublishShareView.strings; sourceTree = "<group>"; };
 		DB2A48AC19DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VStreamCellHeaderView.strings; sourceTree = "<group>"; };
 		DB2A48AE19DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VStreamPollCell.strings; sourceTree = "<group>"; };
 		DB2A48B019DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VStreamVideoCell.strings; sourceTree = "<group>"; };
 		DB2A48B219DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VStreamViewCell.strings; sourceTree = "<group>"; };
 		DB2A48B419DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VUserProfileHeaderView.strings; sourceTree = "<group>"; };
-		DB2A48B619DE1C0400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VWebContentViewController.strings; sourceTree = "<group>"; };
-		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
+		DB2A48CB19DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Camera.strings; sourceTree = "<group>"; };
+		DB2A48CD19DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = login.strings; sourceTree = "<group>"; };
+		DB2A48CF19DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Main.strings; sourceTree = "<group>"; };
+		DB2A48D119DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Profile.strings; sourceTree = "<group>"; };
+		DB2A48D319DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = settings.strings; sourceTree = "<group>"; };
+		DB2A48D519DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VideoRemix.strings; sourceTree = "<group>"; };
+		DB2A48D719DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VMarqueeStreamItemCell.strings; sourceTree = "<group>"; };
+		DB2A48DD19DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VNavigationHeaderView.strings; sourceTree = "<group>"; };
+		DB2A48E119DE2B8D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = VStreamDirectoryItemCell.strings; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
@@ -1964,6 +1975,15 @@
 		03C185C919B42FE900E27D05 /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				DB2A48CA19DE2B8D00CB687B /* Camera.strings */,
+				DB2A48CC19DE2B8D00CB687B /* login.strings */,
+				DB2A48CE19DE2B8D00CB687B /* Main.strings */,
+				DB2A48D019DE2B8D00CB687B /* Profile.strings */,
+				DB2A48D219DE2B8D00CB687B /* settings.strings */,
+				DB2A48D419DE2B8D00CB687B /* VideoRemix.strings */,
+				DB2A48D619DE2B8D00CB687B /* VMarqueeStreamItemCell.strings */,
+				DB2A48DC19DE2B8D00CB687B /* VNavigationHeaderView.strings */,
+				DB2A48E019DE2B8D00CB687B /* VStreamDirectoryItemCell.strings */,
 				DB2A489119DE1C0400CB687B /* FindFriendsTableView.strings */,
 				DB2A489319DE1C0400CB687B /* followerCell.strings */,
 				DB2A489519DE1C0400CB687B /* VCommentCell.strings */,
@@ -1972,17 +1992,14 @@
 				DB2A489B19DE1C0400CB687B /* VEphemeralTimerView.strings */,
 				DB2A489D19DE1C0400CB687B /* VForceUpgradeViewController.strings */,
 				DB2A489F19DE1C0400CB687B /* VInviteFriendTableViewCell.strings */,
-				DB2A48A119DE1C0400CB687B /* VMediaPreviewViewController.strings */,
 				DB2A48A319DE1C0400CB687B /* VMessageCell.strings */,
 				DB2A48A519DE1C0400CB687B /* VNoContentView.strings */,
 				DB2A48A719DE1C0400CB687B /* VNotificationCell.strings */,
-				DB2A48A919DE1C0400CB687B /* VPublishShareView.strings */,
 				DB2A48AB19DE1C0400CB687B /* VStreamCellHeaderView.strings */,
 				DB2A48AD19DE1C0400CB687B /* VStreamPollCell.strings */,
 				DB2A48AF19DE1C0400CB687B /* VStreamVideoCell.strings */,
 				DB2A48B119DE1C0400CB687B /* VStreamViewCell.strings */,
 				DB2A48B319DE1C0400CB687B /* VUserProfileHeaderView.strings */,
-				DB2A48B519DE1C0400CB687B /* VWebContentViewController.strings */,
 				03C185CA19B42FE900E27D05 /* InfoPlist.strings */,
 				03C185C419B42FD600E27D05 /* Localizable.strings */,
 			);
@@ -2583,6 +2600,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
+				DB2A48E519DE2B8D00CB687B /* login.strings in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				DB2A48BE19DE1C0400CB687B /* VInviteFriendTableViewCell.strings in Resources */,
 				0314D4B919B46B5E00FA363C /* Main.storyboard in Resources */,
@@ -2590,21 +2608,26 @@
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
 				DB2A48C819DE1C0400CB687B /* VUserProfileHeaderView.strings in Resources */,
 				03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */,
+				DB2A48E619DE2B8D00CB687B /* Main.strings in Resources */,
 				0314D4BB19B46B5E00FA363C /* Profile.storyboard in Resources */,
+				DB2A48E419DE2B8D00CB687B /* Camera.strings in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
 				0314D4AA19B46B5E00FA363C /* VMessageCell.xib in Resources */,
 				0314D4A619B46B5E00FA363C /* VForceUpgradeViewController.xib in Resources */,
+				DB2A48EA19DE2B8D00CB687B /* VMarqueeStreamItemCell.strings in Resources */,
+				DB2A48E719DE2B8D00CB687B /* Profile.strings in Resources */,
 				DB2A48C119DE1C0400CB687B /* VNoContentView.strings in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
+				DB2A48EF19DE2B8D00CB687B /* VStreamDirectoryItemCell.strings in Resources */,
 				DB2A48B819DE1C0400CB687B /* followerCell.strings in Resources */,
 				BE799BC019C93C210023CE88 /* VStreamDirectoryItemCell.xib in Resources */,
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
+				DB2A48E919DE2B8D00CB687B /* VideoRemix.strings in Resources */,
 				0314D46219B46B5E00FA363C /* VMediaPreviewViewController.xib in Resources */,
 				DB2A48C719DE1C0400CB687B /* VStreamViewCell.strings in Resources */,
 				DB2A48BB19DE1C0400CB687B /* VCVideoPlayerToolbarView.strings in Resources */,
 				0314D4FC19B46B5E00FA363C /* VStreamViewCell.xib in Resources */,
 				0314D48B19B46B5E00FA363C /* VNoContentView.xib in Resources */,
-				DB2A48C919DE1C0400CB687B /* VWebContentViewController.strings in Resources */,
 				0314D4FA19B46B5E00FA363C /* VStreamVideoCell.xib in Resources */,
 				0314D4DD19B46B5E00FA363C /* FindFriendsTableView.xib in Resources */,
 				DB2A48C019DE1C0400CB687B /* VMessageCell.strings in Resources */,
@@ -2615,13 +2638,13 @@
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
+				DB2A48ED19DE2B8D00CB687B /* VNavigationHeaderView.strings in Resources */,
 				DB2A48BC19DE1C0400CB687B /* VEphemeralTimerView.strings in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				DB2A48C619DE1C0400CB687B /* VStreamVideoCell.strings in Resources */,
-				DB2A48C319DE1C0400CB687B /* VPublishShareView.strings in Resources */,
 				DB2A48BD19DE1C0400CB687B /* VForceUpgradeViewController.strings in Resources */,
 				DB2A48C219DE1C0400CB687B /* VNotificationCell.strings in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
@@ -2649,7 +2672,6 @@
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
-				DB2A48BF19DE1C0400CB687B /* VMediaPreviewViewController.strings in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */,
 				0314D4A819B46B5E00FA363C /* VConversationCell.xib in Resources */,
@@ -2658,6 +2680,7 @@
 				0314D4F919B46B5E00FA363C /* VStreamPollCell.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
+				DB2A48E819DE2B8D00CB687B /* settings.strings in Resources */,
 				0314D4C319B46B5E00FA363C /* VUserProfileHeaderView.xib in Resources */,
 				0314D50719B46B5E00FA363C /* VWebContentViewController.xib in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
@@ -3172,14 +3195,6 @@
 			name = VInviteFriendTableViewCell.strings;
 			sourceTree = "<group>";
 		};
-		DB2A48A119DE1C0400CB687B /* VMediaPreviewViewController.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A48A219DE1C0400CB687B /* en */,
-			);
-			name = VMediaPreviewViewController.strings;
-			sourceTree = "<group>";
-		};
 		DB2A48A319DE1C0400CB687B /* VMessageCell.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3202,14 +3217,6 @@
 				DB2A48A819DE1C0400CB687B /* en */,
 			);
 			name = VNotificationCell.strings;
-			sourceTree = "<group>";
-		};
-		DB2A48A919DE1C0400CB687B /* VPublishShareView.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A48AA19DE1C0400CB687B /* en */,
-			);
-			name = VPublishShareView.strings;
 			sourceTree = "<group>";
 		};
 		DB2A48AB19DE1C0400CB687B /* VStreamCellHeaderView.strings */ = {
@@ -3252,12 +3259,76 @@
 			name = VUserProfileHeaderView.strings;
 			sourceTree = "<group>";
 		};
-		DB2A48B519DE1C0400CB687B /* VWebContentViewController.strings */ = {
+		DB2A48CA19DE2B8D00CB687B /* Camera.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A48B619DE1C0400CB687B /* en */,
+				DB2A48CB19DE2B8D00CB687B /* en */,
 			);
-			name = VWebContentViewController.strings;
+			name = Camera.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48CC19DE2B8D00CB687B /* login.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48CD19DE2B8D00CB687B /* en */,
+			);
+			name = login.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48CE19DE2B8D00CB687B /* Main.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48CF19DE2B8D00CB687B /* en */,
+			);
+			name = Main.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48D019DE2B8D00CB687B /* Profile.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48D119DE2B8D00CB687B /* en */,
+			);
+			name = Profile.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48D219DE2B8D00CB687B /* settings.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48D319DE2B8D00CB687B /* en */,
+			);
+			name = settings.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48D419DE2B8D00CB687B /* VideoRemix.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48D519DE2B8D00CB687B /* en */,
+			);
+			name = VideoRemix.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48D619DE2B8D00CB687B /* VMarqueeStreamItemCell.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48D719DE2B8D00CB687B /* en */,
+			);
+			name = VMarqueeStreamItemCell.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48DC19DE2B8D00CB687B /* VNavigationHeaderView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48DD19DE2B8D00CB687B /* en */,
+			);
+			name = VNavigationHeaderView.strings;
+			sourceTree = "<group>";
+		};
+		DB2A48E019DE2B8D00CB687B /* VStreamDirectoryItemCell.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB2A48E119DE2B8D00CB687B /* en */,
+			);
+			name = VStreamDirectoryItemCell.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
