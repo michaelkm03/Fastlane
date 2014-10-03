@@ -31,7 +31,6 @@ static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
-@property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 

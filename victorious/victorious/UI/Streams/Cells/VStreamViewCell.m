@@ -71,8 +71,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
     self.streamCellHeaderView.delegate = self;
     [self addSubview:self.streamCellHeaderView];
-    
-    [self addSubview:self.commentHitboxButton];
 }
 
 - (void)contentExpired
