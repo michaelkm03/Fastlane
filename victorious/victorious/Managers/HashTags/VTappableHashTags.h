@@ -26,6 +26,11 @@
 @interface VTappableHashTags : NSObject
 
 /**
+ Used internally for error checking.
+ */
+@property (nonatomic, readonly) BOOL hasValidDelegate;
+
+/**
  Creates and returns a UITextView instance that is configured to work with ther hash tag tapping routines in this class.
  Also adds a tap gesture recognizer and handles all input until a hashtag is detect and the delegate's main method is called.
  */
@@ -35,7 +40,7 @@
  Configures an existing UITextView instance to work with ther hash tag tapping routines in this class.
  Also adds a tap gesture recognizer and handles all input until a hashtag is detect and the delegate's main method is called.
  */
--(void) configureTappableTextView:(UITextView *)textView withFrame:(CGRect)frame;
+- (void)configureTappableTextView:(UITextView *)textView withFrame:(CGRect)frame;
 
 /**
  Use this method to set the delegate.  There are some specific requirements for this delegate

@@ -14,8 +14,6 @@
 
 @property (nonatomic, weak) id<VTappableHashTagsDelegate> delegate;
 
-@property (nonatomic, readonly) BOOL hasValidDelegate;
-
 @end
 
 @implementation VTappableHashTags
@@ -67,29 +65,39 @@
 
 - (BOOL)validateDelegate:(id<VTappableHashTagsDelegate>)delegate error:(NSError**)error
 {
-    if ( [delegate textStorage] == nil )
+    NSString *errorMessage = nil;
+    
+    if ( delegate == nil )
     {
-        *error = [NSError errorWithDomain:@"Delegate's 'textStorage' property/selector must return a valid NSTextStorage" code:0 userInfo:nil];
-        return NO;
+        errorMessage = @"Delegate is nil.";
     }
-    if ( [delegate layoutManager] == nil )
+    else if ( [delegate textStorage] == nil )
     {
-        *error = [NSError errorWithDomain:@"Delegate's 'layoutManager' property/selector must return a valid NSLayoutManager" code:0 userInfo:nil];
-        return NO;
+        errorMessage = @"Delegate's 'textStorage' property/selector must return a valid NSTextStorage";
     }
-    if ( [delegate textContainer] == nil )
+    else if ( [delegate layoutManager] == nil )
     {
-        *error = [NSError errorWithDomain:@"Delegate's 'textContainer' property/selector must return a valid NSTextContainer" code:0 userInfo:nil];
-        return NO;
+        errorMessage = @"Delegate's 'layoutManager' property/selector must return a valid NSLayoutManager";
     }
-    if ( ![[[delegate layoutManager] textContainers] containsObject:[delegate textContainer]] )
+    else if ( [delegate textContainer] == nil )
     {
-        *error = [NSError errorWithDomain:@"Delegate's 'layoutManager' must contain its textContainer.  See 'addTextContainer' on NSLayoutManager" code:0 userInfo:nil];
-        return NO;
+        errorMessage = @"Delegate's 'textContainer' property/selector must return a valid NSTextContainer";
     }
-    if ( ![[[delegate textStorage] layoutManagers] containsObject:[delegate layoutManager]] )
+    else if ( ![[[delegate layoutManager] textContainers] containsObject:[delegate textContainer]] )
     {
-        *error = [NSError errorWithDomain:@"Delegate's 'textStorage' must contain its layoutManager.  See 'addLayoutManager' on NSTextStorage" code:0 userInfo:nil];
+        errorMessage = @"Delegate's 'layoutManager' must contain its textContainer.  See 'addTextContainer' on NSLayoutManager";
+    }
+    else if ( ![[[delegate textStorage] layoutManagers] containsObject:[delegate layoutManager]] )
+    {
+        errorMessage = @"Delegate's 'textStorage' must contain its layoutManager.  See 'addLayoutManager' on NSTextStorage";
+    }
+    
+    if ( errorMessage != nil )
+    {
+        if ( error != nil )
+        {
+            *error = [NSError errorWithDomain:errorMessage code:0 userInfo:nil];
+        }
         return NO;
     }
     
