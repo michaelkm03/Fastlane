@@ -42,6 +42,7 @@
     [super awakeFromNib];
     
     self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
     
     [self.collectionView registerNib:[VExperienceEnhancerCell nibForCell]
           forCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]];
@@ -91,7 +92,7 @@
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView
-didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.actionItems objectAtIndex:indexPath.row];
     if (enhancerForIndexPath.selectionBlock)

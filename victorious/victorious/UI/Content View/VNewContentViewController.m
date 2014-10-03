@@ -90,6 +90,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
 // Cells
+@property (nonatomic, weak) VContentCell *contentCell;
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VTickerCell *tickerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
@@ -249,6 +250,19 @@
     VExperienceEnhancer *baconEnhancer = [[VExperienceEnhancer alloc] init];
     baconEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
     baconEnhancer.labelText = @"123";
+    baconEnhancer.selectionBlock = ^(void)
+    {
+        NSMutableArray *animationImages = [NSMutableArray new];
+        for (int i = 1; i <= 6; i++)
+        {
+            NSString *animationName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i (dragged)", i];
+            [animationImages addObject:[UIImage imageNamed:animationName]];
+        }
+        
+        self.contentCell.animationDuration = 0.75f;
+        self.contentCell.animationSequence = animationImages;
+        [self.contentCell playAnimation];
+    };
 
     VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
     fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
@@ -781,6 +795,7 @@
                                                   placeholderImage:nil
                                                            success:nil
                                                            failure:nil];
+                self.contentCell = imageCell;
                 return imageCell;
             }
             case VContentViewTypeVideo:
@@ -795,6 +810,7 @@
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
                 self.videoCell = videoCell;
+                self.contentCell = videoCell;
                 return videoCell;
             }
             case VContentViewTypePoll:

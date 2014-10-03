@@ -361,7 +361,6 @@
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
 		D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC319CB7C80007FD86A /* VContentCell.m */; };
-		D8E39BD719CB7C80007FD86A /* VContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BC419CB7C80007FD86A /* VContentCell.xib */; };
 		D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC619CB7C80007FD86A /* VContentCommentsCell.m */; };
 		D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BC719CB7C80007FD86A /* VContentCommentsCell.xib */; };
 		D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC919CB7C80007FD86A /* VContentImageCell.m */; };
@@ -1054,7 +1053,6 @@
 		D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealtimeCommentsViewModel.m; sourceTree = "<group>"; };
 		D8E39BC219CB7C80007FD86A /* VContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCell.h; sourceTree = "<group>"; };
 		D8E39BC319CB7C80007FD86A /* VContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentCell.m; sourceTree = "<group>"; };
-		D8E39BC419CB7C80007FD86A /* VContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentCell.xib; sourceTree = "<group>"; };
 		D8E39BC519CB7C80007FD86A /* VContentCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentCommentsCell.h; sourceTree = "<group>"; };
 		D8E39BC619CB7C80007FD86A /* VContentCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentCommentsCell.m; sourceTree = "<group>"; };
 		D8E39BC719CB7C80007FD86A /* VContentCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentCommentsCell.xib; sourceTree = "<group>"; };
@@ -2463,7 +2461,6 @@
 			children = (
 				D8E39BC219CB7C80007FD86A /* VContentCell.h */,
 				D8E39BC319CB7C80007FD86A /* VContentCell.m */,
-				D8E39BC419CB7C80007FD86A /* VContentCell.xib */,
 				D8E39BC519CB7C80007FD86A /* VContentCommentsCell.h */,
 				D8E39BC619CB7C80007FD86A /* VContentCommentsCell.m */,
 				D8E39BC719CB7C80007FD86A /* VContentCommentsCell.xib */,
@@ -2641,7 +2638,6 @@
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
-				D8E39BD719CB7C80007FD86A /* VContentCell.xib in Resources */,
 				D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */,
 				039ED29B19C908F400305987 /* VCVideoPlayerToolbarView.xib in Resources */,
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,

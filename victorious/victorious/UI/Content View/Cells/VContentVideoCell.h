@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
+#import "VContentCell.h"
 
 #import "VCVideoPlayerViewController.h"
 
@@ -36,7 +36,7 @@
 /**
  *  A UICollectionViewCell for displaying video content. Contains a VCVideoPlayerViewController for displaying of video content.
  */
-@interface VContentVideoCell : VBaseCollectionViewCell
+@interface VContentVideoCell : VContentCell
 
 @property (nonatomic, copy) NSURL *videoURL;
 

@@ -10,4 +10,9 @@
 
 @interface VContentCell : VBaseCollectionViewCell
 
+@property (nonatomic, strong) NSArray *animationSequence;
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+
+- (void)playAnimation;
+
 @end
