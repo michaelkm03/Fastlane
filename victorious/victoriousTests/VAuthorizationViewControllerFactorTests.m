@@ -15,18 +15,44 @@
 #import "VProfileCreateViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
-@interface VAuthorizationViewControllerFactorTests : XCTestCase
+@interface VAuthorizationViewControllerFactorTests : XCTestCase {
+    IMP _mainUserProfileCompleteOriginal;
+    IMP _mainUserLoggedInOriginal;
+}
 
 @end
 
 @implementation VAuthorizationViewControllerFactorTests
 
+- (void)tearDown
+{
+    [super tearDown];
+    
+    if ( _mainUserProfileCompleteOriginal != nil )
+    {
+        [VObjectManager v_restoreOriginalImplementation:_mainUserProfileCompleteOriginal forClassMethod:@selector(mainUserProfileComplete)];
+    }
+    
+    if ( _mainUserLoggedInOriginal != nil )
+    {
+        [VObjectManager v_restoreOriginalImplementation:_mainUserProfileCompleteOriginal forClassMethod:@selector(mainUserLoggedIn)];
+    }
+}
+
+- (void)setUp
+{
+    [super setUp];
+    
+    _mainUserProfileCompleteOriginal = nil;
+    _mainUserLoggedInOriginal = nil;
+}
+
 - (void)testWithObjectManagerUserProfileIncomplete
 {
-    [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
+    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
         return NO;
     }];
-    [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
+    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
         return YES;
     }];
     
@@ -37,10 +63,10 @@
 
 - (void)testWithObjectManagerUserProfileComplete
 {
-    [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
+    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
         return YES;
     }];
-    [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
+    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
         return YES;
     }];
     
@@ -52,10 +78,10 @@
 
 - (void)testWithObjectManagerUserProfileLoggedIn
 {
-    [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
+    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
         return NO;
     }];
-    [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
+    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
         return NO;
     }];
     
@@ -71,10 +97,10 @@
 
 - (void)testWithObjectManagerUserProfileInvalid
 {
-    [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
+    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
         return YES;
     }];
-    [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
+    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
         return NO;
     }];
     
