@@ -62,7 +62,7 @@
     [super setUp];
     
     _asyncHelper = [[VAsyncTestHelper alloc] init];
-    _frame = CGRectMake( 0, 0, 20, 200 );
+    _frame = CGRectMake( 0, 0, 15, 320 );
     _tappableHashTags = [[VTappableHashTags alloc] init];
     _delegate = [[MockHashTagsDelegate alloc] initWithTextContainerSize:_frame.size];
 }
@@ -197,21 +197,41 @@
     // Should still return true without no hash tags.  Return value indicates an error, not hash tag detection
     XCTAssertTrue( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
     
-    NSString* hashTag1 = @"#world1";
-    NSString* hashTag2 = @"#world1";
-    textView.text = [NSString stringWithFormat:@"Hello %@ %@", hashTag1, hashTag2];
+    NSString *hashTag1 = @"world1";
+    NSString *hashTag2 = @"world2";
+    textView.text = [NSString stringWithFormat:@"Hello #%@ #%@", hashTag1, hashTag2];
     XCTAssertTrue( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
     
-    __block NSMutableArray* detectedHashTags = [[NSMutableArray alloc] init];
+    __block BOOL hashTag1Detected = NO;
+    __block BOOL hashTag2Detected = NO;
     
-    // The following loop simulates taps at every pixel on the x-axis across the midY point of the y-axis
+    // The following loop simulates a tap at every point in the textview's frame
     for ( NSUInteger x = CGRectGetMinX(_frame); x < CGRectGetMaxX(_frame); x++ )
     {
-        CGPoint point = CGPointMake( x, CGRectGetMidY( _frame ) );
-        [_tappableHashTags detectHashTagsInTextView:textView atPoint:point detectionCallback:^(NSString *hashTag) {
-            [detectedHashTags addObject:hashTag];
-        }];
+        for ( NSUInteger y = CGRectGetMinY(_frame); y < CGRectGetMaxY(_frame); y++ )
+        {
+            CGPoint point = CGPointMake( x, y );
+            [_tappableHashTags detectHashTagsInTextView:textView atPoint:point detectionCallback:^(NSString *hashTag) {
+                
+                if ( [hashTag isEqualToString:hashTag1] )
+                {
+                    hashTag1Detected = YES;
+                }
+                else if ( [hashTag isEqualToString:hashTag2] )
+                {
+                    hashTag2Detected = YES;
+                }
+            }];
+        }
     }
+    
+    [_asyncHelper waitForSignal:5.0f withSignalBlock:^BOOL{
+        // Check that both hash tags were detected
+        return hashTag1Detected && hashTag2Detected;
+    }];
+    
+    XCTAssertTrue( hashTag1Detected );
+    XCTAssertTrue( hashTag2Detected );
 }
 
 @end
