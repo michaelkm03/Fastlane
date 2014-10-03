@@ -273,6 +273,7 @@
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
+		AB58142E42806ACC4CF84A31 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		AD52A21D1319703CDE645C64 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */; };
@@ -1060,7 +1061,7 @@
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
-				6C617E88CAA00EBCF746959D /* libPods-victorious.a in Frameworks */,
+				AB58142E42806ACC4CF84A31 /* libPods-victorious.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
