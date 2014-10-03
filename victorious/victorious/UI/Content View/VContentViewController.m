@@ -58,6 +58,9 @@
 #import "VSettingManager.h"
 
 #import "MBProgressHUD.h"
+#import "VUserManager.h"
+
+#import "VAuthorizationViewControllerFactory.h"
 
 static const CGFloat kMaximumNoCaptionContentViewOffset     = 134.0f;
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
@@ -604,7 +607,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return;
     }
     
-    if ([[VObjectManager sharedManager] isAuthorized])
+    if ( [VObjectManager sharedManager].authorized )
     {
         self.repostButton.enabled = NO;
         if (![self.sequence.user isEqualToUser:[VObjectManager sharedManager].mainUser] &&
@@ -820,9 +823,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return;
     }
     
-    if (![VObjectManager sharedManager].mainUser)
+    
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -919,9 +923,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
     else //We're trying to post a RTC
     {
-        if (![VObjectManager sharedManager].mainUser)
+        if (![VObjectManager sharedManager].authorized)
         {
-            [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
             return;
         }
         
@@ -1026,9 +1030,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedRepost:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     

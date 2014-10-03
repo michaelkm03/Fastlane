@@ -272,6 +272,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *user = [resultObjects firstObject];
+        
         if (![user isKindOfClass:[VUser class]])
         {
             if (errorBlock)

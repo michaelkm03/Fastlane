@@ -19,7 +19,7 @@
 	<key>channelsEnabled</key>
 	<false/>
 	<key>marqueeEnabled</key>
-	<false/>
+	<true/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
 </dict>

@@ -78,7 +78,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     [super viewWillAppear:animated];
     
-    if ([VObjectManager sharedManager].isAuthorized)
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
         [self.logoutButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
@@ -146,7 +146,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 - (IBAction)logout:(id)sender
 {
-    if ([VObjectManager sharedManager].isAuthorized)
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Log Out" label:nil value:nil];
         [[VUserManager sharedInstance] logout];
@@ -212,7 +212,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].isAuthorized)
+        if ([VObjectManager sharedManager].authorized)
         {
             return self.tableView.rowHeight;
         }

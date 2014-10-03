@@ -33,6 +33,8 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 
 @end
 
+static const CGFloat kMarqueeBufferHeight = 3;
+
 @implementation VMarqueeTableViewCell
 
 - (void)awakeFromNib
@@ -44,6 +46,9 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
     self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
     self.tabView.spacingBetweenTabs = CGRectGetWidth(self.bounds) * kVTabSpacingRatio;
     self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
+    
+    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     [self addSubview:self.tabView];
 }
@@ -122,7 +127,9 @@ static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
+    CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
+    size.height += kMarqueeBufferHeight;
+    return size;
 }
 
 @end
