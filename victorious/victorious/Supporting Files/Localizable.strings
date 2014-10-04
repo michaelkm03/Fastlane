@@ -26,6 +26,7 @@
 "Publish"               =   "Publish";
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
+"Discover"              =   "Discover";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
