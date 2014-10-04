@@ -18,8 +18,8 @@
 
 - (void)testIdentification
 {
-    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:nil bodyFileURL:nil description:nil];
-    VUploadTaskInformation *task2 = [[VUploadTaskInformation alloc] initWithRequest:nil bodyFileURL:nil description:nil];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:nil previewImage:nil bodyFileURL:nil description:nil];
+    VUploadTaskInformation *task2 = [[VUploadTaskInformation alloc] initWithRequest:nil previewImage:nil bodyFileURL:nil description:nil];
     XCTAssertNotNil(task.identifier);
     XCTAssertNotEqual(task.identifier, task2.identifier);
 }

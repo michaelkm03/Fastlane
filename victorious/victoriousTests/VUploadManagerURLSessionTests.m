@@ -61,6 +61,7 @@
     [body writeToURL:self.bodyFileURL atomically:YES];
     
     self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com/"]]
+                                                         previewImage:nil
                                                           bodyFileURL:self.bodyFileURL
                                                           description:nil];
 }

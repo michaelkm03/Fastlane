@@ -48,7 +48,7 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:self.bodyFileURL description:nil];
         
     [[LSNocilla sharedInstance] start];
 }
@@ -238,7 +238,7 @@
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:self.bodyFileURL description:nil];
     
     stubRequest(@"POST", url.absoluteString).andReturn(200);
     

@@ -48,8 +48,8 @@
     NSURL *bodyFileURL2 = [NSURL fileURLWithPath:@"/bodyFile2"];
     NSString *description1 = @"fileDescription1";
     NSString *description2 = @"fileDescription2";
-    VUploadTaskInformation *uploadTask1 = [[VUploadTaskInformation alloc] initWithRequest:request1 bodyFileURL:bodyFileURL1 description:description1];
-    VUploadTaskInformation *uploadTask2 = [[VUploadTaskInformation alloc] initWithRequest:request2 bodyFileURL:bodyFileURL2 description:description2];
+    VUploadTaskInformation *uploadTask1 = [[VUploadTaskInformation alloc] initWithRequest:request1 previewImage:nil bodyFileURL:bodyFileURL1 description:description1];
+    VUploadTaskInformation *uploadTask2 = [[VUploadTaskInformation alloc] initWithRequest:request2 previewImage:nil bodyFileURL:bodyFileURL2 description:description2];
     
     if (![self.serializer saveUploadTasks:@[uploadTask1, uploadTask2]])
     {

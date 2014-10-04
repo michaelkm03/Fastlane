@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
  Stores information related to an ongoing upload task
@@ -27,6 +28,11 @@
 @property (nonatomic, readonly) NSURL *bodyFileURL;
 
 /**
+ A preview of the data being uploaded
+ */
+@property (nonatomic, readonly) UIImage *previewImage;
+
+/**
  A localized string that can be displayed
  to the user describing this upload.
  */
@@ -40,6 +46,6 @@
 /**
  Creates a new instance of VUploadTaskInformation with the specified properties.
  */
-- (instancetype)initWithRequest:(NSURLRequest *)request bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription;
+- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription;
 
 @end

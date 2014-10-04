@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class VUploadManager, VUploadTaskInformation;
 
@@ -34,6 +35,16 @@
  field will be ignored.
  */
 @property (nonatomic, strong) NSDictionary *formFields;
+
+/**
+ The preview image used to create the upload task.
+ */
+@property (nonatomic, strong) UIImage *previewImage;
+
+/**
+ The upload description used to create the upload task.
+ */
+@property (nonatomic, strong) NSString *uploadDescription;
 
 /**
  Creates a new VUploadTaskCreator instance

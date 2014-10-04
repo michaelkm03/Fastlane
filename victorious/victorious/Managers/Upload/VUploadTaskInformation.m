@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConstants.h"
 #import "VObjectManager+Private.h"
 #import "VUploadTaskInformation.h"
 
@@ -21,12 +22,13 @@
     return self;
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription
+- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription
 {
     self = [self init];
     if (self)
     {
         _request = [request copy];
+        _previewImage = previewImage;
         _bodyFileURL = bodyFileURL;
         _uploadDescription = [uploadDescription copy];
     }
@@ -42,6 +44,12 @@
         _bodyFileURL = [aDecoder decodeObjectOfClass:[NSURL class] forKey:NSStringFromSelector(@selector(bodyFileURL))];
         _uploadDescription = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(uploadDescription))];
         _identifier = [aDecoder decodeObjectOfClass:[NSUUID class] forKey:NSStringFromSelector(@selector(identifier))];
+        
+        NSData *previewImageData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(previewImage))];
+        if (previewImageData)
+        {
+            _previewImage = [UIImage imageWithData:previewImageData];
+        }
     }
     return self;
 }
@@ -59,6 +67,7 @@
     [aCoder encodeObject:self.bodyFileURL forKey:NSStringFromSelector(@selector(bodyFileURL))];
     [aCoder encodeObject:self.uploadDescription forKey:NSStringFromSelector(@selector(uploadDescription))];
     [aCoder encodeObject:self.identifier forKey:NSStringFromSelector(@selector(identifier))];
+    [aCoder encodeObject:UIImageJPEGRepresentation(self.previewImage, VConstantJPEGCompressionQuality) forKey:NSStringFromSelector(@selector(previewImage))];
 }
 
 - (NSUInteger)hash

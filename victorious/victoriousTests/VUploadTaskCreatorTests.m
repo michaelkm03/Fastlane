@@ -8,6 +8,7 @@
 
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
+#import "VUploadTaskInformation.h"
 
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
@@ -50,6 +51,25 @@
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:[self.uploadBodyFileURL path] isDirectory:&isDirectory];
     XCTAssertTrue(exists);
     XCTAssertFalse(isDirectory);
+}
+
+- (void)testPropertiesOfUploadTask
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com"]];
+    NSString *description = @"my description";
+    
+    NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleMultipartUpload" withExtension:@"jpg"];
+    UIImage *previewImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:previewImageFileURL]];
+    
+    self.uploadTaskCreator.request = request;
+    self.uploadTaskCreator.uploadDescription = description;
+    self.uploadTaskCreator.previewImage = previewImage;
+    
+    VUploadTaskInformation *uploadTask = [self.uploadTaskCreator createUploadTaskWithError:nil];
+    XCTAssertEqualObjects(request.URL, uploadTask.request.URL);
+    XCTAssertEqualObjects(request.HTTPMethod, uploadTask.request.HTTPMethod);
+    XCTAssertEqualObjects(previewImage, uploadTask.previewImage);
+    XCTAssertEqualObjects(description, uploadTask.uploadDescription);
 }
 
 @end
