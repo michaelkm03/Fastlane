@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSURL *bodyFileURL;
+@property (nonatomic, strong) NSURL *taskSaveFileURL;
 @property (nonatomic, strong) NSData *body;
 @property (nonatomic, strong) NSData *response;
 
@@ -30,8 +31,12 @@
     self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
     self.uploadManager.useBackgroundSession = NO;
     
-    NSString *filename = [[NSUUID UUID] UUIDString];
-    self.bodyFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
+    NSString *taskSaveFilename = [[NSUUID UUID] UUIDString];
+    self.taskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];
+    self.uploadManager.tasksSaveFileURL = self.taskSaveFileURL;
+    
+    NSString *bodyFilename = [[NSUUID UUID] UUIDString];
+    self.bodyFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
     self.body = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
     [self.body writeToURL:self.bodyFileURL atomically:YES];
     
@@ -45,6 +50,7 @@
     [[LSNocilla sharedInstance] clearStubs];
     [[LSNocilla sharedInstance] stop];
     [[NSFileManager defaultManager] removeItemAtURL:self.bodyFileURL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:self.taskSaveFileURL error:nil];
     [super tearDown];
 }
 
@@ -93,6 +99,126 @@
     {
         XCTAssertNotNil(error);
         [async signal];
+    }];
+    [async waitForSignal:5.0];
+}
+
+- (void)testGetQueuedUploadTasksInitiallyEmpty
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+    {
+        XCTAssertEqual(tasks.count, 0u);
+        [async signal];
+    }];
+    [async waitForSignal:5.0];
+}
+
+- (void)testQueuedUploadTasksReturnsNewUpload
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    
+    stubRequest(@"POST", url.absoluteString).withBody(self.body).andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+        {
+            if (tasks.count)
+            {
+                XCTAssertEqualObjects(tasks[0], task);
+            }
+            else
+            {
+                XCTFail(@"Enqueued upload task was not present in getUploadTasksWithCompletion return value");
+            }
+            [async signal];
+        }];
+        [async waitForSignal:5.0];
+        [async signal];
+    });
+    
+    [self.uploadManager enqueueUploadTask:task onComplete:nil];
+    [async waitForSignal:5.0];
+}
+
+- (void)testQueuedUploadTasksReturnsFailedUpload
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    
+    stubRequest(@"POST", url.absoluteString).andFailWithError([NSError errorWithDomain:@"domain" code:1 userInfo:nil]);
+    
+    [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    {
+        [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+        {
+            if (tasks.count)
+            {
+                XCTAssertEqualObjects(tasks[0], task);
+            }
+            else
+            {
+                XCTFail(@"Enqueued, failed upload task was not present in getUploadTasksWithCompletion return value");
+            }
+            [async signal];
+        }];
+    }];
+    [async waitForSignal:5.0];
+}
+
+- (void)testQueuedUploadTasksDoesNotReturnSuccessfulUpload
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    
+    stubRequest(@"POST", url.absoluteString).andReturn(200);
+    
+    [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    {
+        [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+        {
+            XCTAssertEqual(tasks.count, 0u, @"Completed upload task was still present in getUploadTasksWithCompletion return value");
+            [async signal];
+        }];
+    }];
+    [async waitForSignal:5.0];
+}
+
+- (void)testIsTaskInProgress
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request bodyFileURL:self.bodyFileURL description:nil];
+    
+    stubRequest(@"POST", url.absoluteString).andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
+    {
+        BOOL isInProgress = [self.uploadManager isTaskInProgress:task];
+        XCTAssertTrue(isInProgress);
+    });
+    
+    [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            BOOL isInProgress = [self.uploadManager isTaskInProgress:task];
+            XCTAssertFalse(isInProgress);
+            [async signal];
+        });
     }];
     [async waitForSignal:5.0];
 }

@@ -43,6 +43,13 @@ extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object e
 @property (nonatomic) BOOL useBackgroundSession;
 
 /**
+ A URL to a file where the upload tasks in progress can be saved.
+ This is here for unit testing purposes--there is a good default
+ that will be used if this not set.
+ */
+@property (nonatomic, strong) NSURL *tasksSaveFileURL;
+
+/**
  A completion handler that will be called in response to the NSURLSessionDelegate 
  method URLSessionDidFinishEventsForBackgroundURLSession:
  */
@@ -54,6 +61,13 @@ extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object e
  @param objectManager An instance of VObjectManager used to add authentication headers to HTTP requests.
  */
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
+
+/**
+ A unique URL where the body for a future upload can be stored.
+ The directories in this URL's path are not guaranteed to
+ exist, so please create them if needed.
+ */
+- (NSURL *)urlForNewUploadBodyFile;
 
 /**
  Adds a new upload task to the queue. It will be started
@@ -68,10 +82,17 @@ extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object e
 - (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete;
 
 /**
- A unique URL where the body for a future upload can be stored.
- The directories in this URL's path are not guaranteed to
- exist, so please create them if needed.
+ Asynchronously retrieves a list of previously-queued upload tasks.
+ The list passed to the completion block will not include tasks
+ that have completed successfully. Additionally, these tasks may
+ not actually be in the process of uploading--call
+ -isTaskInProgress: to get that information.
  */
-- (NSURL *)urlForNewUploadBodyFile;
+- (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray /* VUploadTaskInformation */ *tasks))completion;
+
+/**
+ Returns YES if the task is being uploaded.
+ */
+- (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;
 
 @end

@@ -28,7 +28,9 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 @property (nonatomic, strong) NSURLSession *urlSession;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
-@property (nonatomic, strong) NSMapTable *taskInformation;
+@property (nonatomic, readonly) dispatch_queue_t callbackQueue; ///< all callbacks should be made asynchronously on this queue
+@property (nonatomic, strong) NSMapTable *taskInformationBySessionTask; ///< Stores all VUploadTaskInformation objects referenced by their associated NSURLSessionTasks
+@property (nonatomic, strong) NSMutableArray *taskInformation; ///< Array of all queued upload tasks
 @property (nonatomic, strong) NSMapTable *completionBlocks;
 @property (nonatomic, strong) NSMapTable *responseData;
 
@@ -52,14 +54,14 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
         _useBackgroundSession = YES;
         _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
-        _taskInformation = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
+        _taskInformationBySessionTask = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
     }
     return self;
 }
 
-- (void)startURLSession
+- (void)startURLSessionWithCompletion:(void(^)(void))completion
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
@@ -78,34 +80,96 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
             {
                 // TODO: resume tracking of upload tasks
+                self.taskInformation = [[NSMutableArray alloc] init];
+                if (completion)
+                {
+                    dispatch_async(self.callbackQueue, ^(void)
+                    {
+                        completion();
+                    });
+                }
             }];
+        }
+        else if (completion)
+        {
+            dispatch_async(self.callbackQueue, ^(void)
+            {
+                completion();
+            });
         }
     });
 }
 
 - (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
-    [self startURLSession];
-    dispatch_async(self.sessionQueue, ^(void)
+    [self startURLSessionWithCompletion:^(void)
     {
-        NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-        [self.objectManager updateHTTPHeadersInRequest:request];
-        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
-        
-        if (complete)
+        dispatch_async(self.sessionQueue, ^(void)
         {
-            [self.completionBlocks setObject:complete forKey:uploadSessionTask];
-        }
-        [self.taskInformation setObject:uploadTask forKey:uploadSessionTask];
-        [uploadSessionTask resume];
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                                object:self
-                                                              userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
+            NSMutableURLRequest *request = [uploadTask.request mutableCopy];
+            [self.objectManager updateHTTPHeadersInRequest:request];
+            NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+
+            if (complete)
+            {
+               [self.completionBlocks setObject:complete forKey:uploadSessionTask];
+            }
+            [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+            [self.taskInformation addObject:uploadTask];
+            [uploadSessionTask resume];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
+                                                                    object:self
+                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
                                                                         }];
+            });
         });
+    }];
+}
+
+- (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray *tasks))completion
+{
+    if (completion)
+    {
+        dispatch_async(self.sessionQueue, ^(void)
+        {
+            NSArray *tasks = [self.taskInformation copy];
+            dispatch_async(self.callbackQueue, ^(void)
+            {
+                completion(tasks);
+            });
+        });
+    }
+}
+
+- (BOOL)isTaskInProgress:(VUploadTaskInformation *)task
+{
+    if (!task)
+    {
+        return NO;
+    }
+    
+    BOOL __block isInProgress = NO;
+    dispatch_sync(self.sessionQueue, ^(void)
+    {
+        if (self.urlSession)
+        {
+            for (VUploadTaskInformation *taskInProgress in [self.taskInformationBySessionTask objectEnumerator])
+            {
+                if ([taskInProgress isEqual:task])
+                {
+                    isInProgress = YES;
+                    return;
+                }
+            }
+        }
+        else
+        {
+            isInProgress = NO;
+        }
     });
+    return isInProgress;
 }
 
 #pragma mark - Filesystem
@@ -134,6 +198,11 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 #pragma mark - Properties
 
+- (dispatch_queue_t)callbackQueue
+{
+    return dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+}
+
 - (void)setBackgroundSessionEventsCompleteHandler:(void (^)(void))backgroundSessionEventsCompleteHandler
 {
     dispatch_async(self.sessionQueue, ^(void)
@@ -156,6 +225,12 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 {
     NSAssert(self.urlSession == nil, @"Can't change useBackgroundSession property after the session has already been created");
     _useBackgroundSession = useBackgroundSession;
+}
+
+- (void)setTasksSaveFileURL:(NSURL *)tasksSaveFileURL
+{
+    NSAssert(self.urlSession == nil, @"Can't change tasksSaveFileURL property after it has already been read from");
+    _tasksSaveFileURL = tasksSaveFileURL;
 }
 
 #pragma mark - NSURLSessionDelegate methods
@@ -198,7 +273,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             userInfo[VUploadManagerBytesSentUserInfoKey] = @(totalBytesSent);
             userInfo[VUploadManagerTotalBytesUserInfoKey] = @(totalBytesExpectedToSend);
             
-            VUploadTaskInformation *taskInformation = [self.taskInformation objectForKey:task];
+            VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
             if (taskInformation)
             {
                 userInfo[VUploadManagerUploadTaskUserInfoKey] = taskInformation;
@@ -240,16 +315,18 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         
         if (!error)
         {
-            VUploadTaskInformation *taskInformation = [self.taskInformation objectForKey:task];
+            VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
             if (taskInformation)
             {
                 [[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:nil];
-                [self.taskInformation removeObjectForKey:task];
+                [self.taskInformationBySessionTask removeObjectForKey:task];
+                [self.taskInformation removeObject:taskInformation];
             }
         }
         
         if (completionBlock)
         {
+            // An intentional exception to the "all callbacks made on self.callbackQueue" rule
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 completionBlock(task.response, data, error);

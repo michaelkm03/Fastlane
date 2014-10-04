@@ -43,6 +43,15 @@
     }];
     self.mockSessionTask = [OCMockObject niceMockForClass:[NSURLSessionTask class]];
     [[[self.mockURLSession stub] andReturn:self.mockSessionTask] uploadTaskWithRequest:OCMOCK_ANY fromFile:OCMOCK_ANY];
+    [[[self.mockURLSession stub] andDo:^(NSInvocation *invocation)
+    {
+        void (^completion)(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks);
+        [invocation getArgument:&completion atIndex:2];
+        if (completion)
+        {
+            completion(@[], @[], @[]);
+        }
+    }] getTasksWithCompletionHandler:OCMOCK_ANY];
     
     self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
     
