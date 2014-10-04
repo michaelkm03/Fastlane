@@ -90,7 +90,23 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
             [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
             {
-                // TODO: resume tracking of upload tasks
+                // Reconnect in-progress upload tasks with their VUploadTaskInformation instances
+                if (self.taskInformation.count)
+                {
+                    for (NSURLSessionUploadTask *task in uploadTasks)
+                    {
+                        NSUUID *identifier = [[NSUUID alloc] initWithUUIDString:task.taskDescription];
+                        if (identifier)
+                        {
+                            NSArray *taskInformation = [self.taskInformation filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=%@", NSStringFromSelector(@selector(identifier)), identifier]];
+                            if (taskInformation.count)
+                            {
+                                [self.taskInformationBySessionTask setObject:taskInformation[0] forKey:task];
+                            }
+                        }
+                    }
+                }
+                
                 if (completion)
                 {
                     dispatch_async(self.callbackQueue, ^(void)
@@ -127,6 +143,7 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
             [self.taskInformation addObject:uploadTask];
             [self.taskSerializer saveUploadTasks:self.taskInformation];
+            uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
             [uploadSessionTask resume];
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
