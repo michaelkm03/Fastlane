@@ -10,7 +10,7 @@
 
 @class VKeyboardInputAccessoryView;
 
-UIKIT_EXTERN NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
+extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
 
 @interface VInputAccessoryView : UIView
 

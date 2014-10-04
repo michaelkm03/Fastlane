@@ -17,8 +17,8 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
     VContentViewSectionCount
 };
 
-UIKIT_EXTERN NSString *const VShrinkingContentLayoutContentBackgroundView;
-UIKIT_EXTERN NSString *const VShrinkingContentLayoutAllCommentsHandle;
+extern NSString *const VShrinkingContentLayoutContentBackgroundView;
+extern NSString *const VShrinkingContentLayoutAllCommentsHandle;
 
 static const CGFloat VShrinkingContentLayoutMinimumContentHeight = 125.0f;
 

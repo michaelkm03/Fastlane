@@ -14,7 +14,7 @@
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
-UIKIT_EXTERN NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
