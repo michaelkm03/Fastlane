@@ -9,6 +9,7 @@
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
+#import "VUploadTaskSerializer.h"
 
 static NSString * const kDirectoryName = @"VUploadManager"; ///< The directory where pending uploads and configuration files are stored
 static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirectory of the directory above, where HTTP bodies are stored
@@ -67,6 +68,16 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     {
         if (!self.urlSession)
         {
+            NSArray *savedTasks = [self.taskSerializer uploadTasksFromDisk];
+            if (savedTasks)
+            {
+                self.taskInformation = [savedTasks mutableCopy];
+            }
+            else
+            {
+                self.taskInformation = [[NSMutableArray alloc] init];
+            }
+            
             NSURLSessionConfiguration *sessionConfig;
             if (self.useBackgroundSession)
             {
@@ -80,7 +91,6 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
             {
                 // TODO: resume tracking of upload tasks
-                self.taskInformation = [[NSMutableArray alloc] init];
                 if (completion)
                 {
                     dispatch_async(self.callbackQueue, ^(void)
@@ -116,6 +126,7 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             }
             [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
             [self.taskInformation addObject:uploadTask];
+            [self.taskSerializer saveUploadTasks:self.taskInformation];
             [uploadSessionTask resume];
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
@@ -132,14 +143,17 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 {
     if (completion)
     {
-        dispatch_async(self.sessionQueue, ^(void)
+        [self startURLSessionWithCompletion:^(void)
         {
-            NSArray *tasks = [self.taskInformation copy];
-            dispatch_async(self.callbackQueue, ^(void)
+            dispatch_async(self.sessionQueue, ^(void)
             {
-                completion(tasks);
+                NSArray *tasks = [self.taskInformation copy];
+                dispatch_async(self.callbackQueue, ^(void)
+                {
+                    completion(tasks);
+                });
             });
-        });
+        }];
     }
 }
 
@@ -225,12 +239,6 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 {
     NSAssert(self.urlSession == nil, @"Can't change useBackgroundSession property after the session has already been created");
     _useBackgroundSession = useBackgroundSession;
-}
-
-- (void)setTasksSaveFileURL:(NSURL *)tasksSaveFileURL
-{
-    NSAssert(self.urlSession == nil, @"Can't change tasksSaveFileURL property after it has already been read from");
-    _tasksSaveFileURL = tasksSaveFileURL;
 }
 
 #pragma mark - NSURLSessionDelegate methods
@@ -321,6 +329,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 [[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:nil];
                 [self.taskInformationBySessionTask removeObjectForKey:task];
                 [self.taskInformation removeObject:taskInformation];
+                [self.taskSerializer saveUploadTasks:self.taskInformation];
             }
         }
         

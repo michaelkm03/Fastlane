@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VObjectManager, VUploadTaskInformation;
+@class VObjectManager, VUploadTaskInformation, VUploadTaskSerializer;
 
 /**
  A block to be called when an upload task is completed.
@@ -43,11 +43,11 @@ extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object e
 @property (nonatomic) BOOL useBackgroundSession;
 
 /**
- A URL to a file where the upload tasks in progress can be saved.
+ A serializer object that will be used to save upload tasks to disk.
  This is here for unit testing purposes--there is a good default
  that will be used if this not set.
  */
-@property (nonatomic, strong) NSURL *tasksSaveFileURL;
+@property (nonatomic, strong) VUploadTaskSerializer *taskSerializer;
 
 /**
  A completion handler that will be called in response to the NSURLSessionDelegate 

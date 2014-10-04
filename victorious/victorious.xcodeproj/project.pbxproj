@@ -240,6 +240,8 @@
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
+		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
+		03B83B5719E068D000DC04E4 /* VUploadTaskSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5619E068D000DC04E4 /* VUploadTaskSerializerTests.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
 		03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856D19B42C9100E27D05 /* LICENSE.txt */; };
@@ -825,6 +827,9 @@
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03AFF99019CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+VNotificationDebugger.h"; sourceTree = "<group>"; };
 		03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+VNotificationDebugger.m"; sourceTree = "<group>"; };
+		03B83B5319E066AF00DC04E4 /* VUploadTaskSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskSerializer.h; sourceTree = "<group>"; };
+		03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializer.m; sourceTree = "<group>"; };
+		03B83B5619E068D000DC04E4 /* VUploadTaskSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializerTests.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		03C1856D19B42C9100E27D05 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -1818,6 +1823,8 @@
 				0372587419D61B0800836B3F /* VUploadTaskCreator.m */,
 				037CB74319CFE8D20084BBED /* VUploadTaskInformation.h */,
 				037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */,
+				03B83B5319E066AF00DC04E4 /* VUploadTaskSerializer.h */,
+				03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -2170,6 +2177,7 @@
 				03D94C1019DCBEF600BFAA27 /* VUploadManagerURLSessionTests.m */,
 				0372587619D7562F00836B3F /* VUploadTaskCreatorTests.m */,
 				03D94C1B19DCCEAC00BFAA27 /* VUploadTaskInformationTests.m */,
+				03B83B5619E068D000DC04E4 /* VUploadTaskSerializerTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 				BED89C8B19DC8046008334E6 /* VMarqueeControllerTests.m */,
 				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
@@ -2835,6 +2843,7 @@
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */,
+				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				0314D46619B46B5E00FA363C /* VExpirationDatePicker.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
@@ -3105,6 +3114,7 @@
 			files = (
 				0372587719D7562F00836B3F /* VUploadTaskCreatorTests.m in Sources */,
 				037CB73319CF86C60084BBED /* VMultipartFormDataWriterTests.m in Sources */,
+				03B83B5719E068D000DC04E4 /* VUploadTaskSerializerTests.m in Sources */,
 				03D94C1219DCBEF600BFAA27 /* VUploadManagerURLSessionTests.m in Sources */,
 				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
 				03D94C1119DCBEF600BFAA27 /* VUploadManagerTests.m in Sources */,
