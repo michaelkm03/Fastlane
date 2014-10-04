@@ -32,17 +32,22 @@ PODS:
 DEPENDENCIES:
   - IGDigest (~> 1.1.0)
   - MBProgressHUD (~> 0.8)
-  - Nocilla
+  - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
   - RestKit (~> 0.22.0)
   - TestFlightSDK (~> 3.0.0)
   - TTTAttributedLabel (~> 1.8.1)
+
+EXTERNAL SOURCES:
+  Nocilla:
+    :branch: block-response
+    :git: https://github.com/TouchFrame/Nocilla.git
 
 SPEC CHECKSUMS:
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
   IGDigest: 9d142a7926ecc2983e6208d938ac5dddd26ed9c2
   ISO8601DateFormatterValueTransformer: a7e1ecf4380d0b561306ced1a3f01bd5f65d2213
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  Nocilla: e573c2bf9113c8d77782b695a2f9362b7bc44e72
+  Nocilla: 8302b85f1e428a719ac76f78669d64a6872586bf
   RestKit: 6b82f862848cbe026ddc297985aa9a766b7e1a38
   RKValueTransformers: 994503e34bffdbe0159ff6b497290dd1f8d5657f
   SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
