@@ -194,7 +194,7 @@
                                                                             toItem:nil
                                                                          attribute:NSLayoutAttributeNotAnAttribute
                                                                         multiplier:1.0f
-                                                                          constant:45];
+                                                                          constant:VInputAccessoryViewDesiredMinimumHeight];
     self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
                                                                                   attribute:NSLayoutAttributeBottom
                                                                                   relatedBy:NSLayoutRelationEqual
@@ -228,7 +228,7 @@
                                                                            toItem:nil
                                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                                        multiplier:1.0f
-                                                                         constant:60.0f];
+                                                                         constant:VExperienceEnhancerDesiredMinimumHeight];
     NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
                                                                         attribute:NSLayoutAttributeBottom
                                                                         relatedBy:NSLayoutRelationEqual
@@ -239,7 +239,7 @@
     self.bottomExperienceEnhancerBarToContainerConstraint = bottomConstraint;
     [self.view addSubview:experienceEnhancerBar];
     [self.view addConstraints:@[leadingConstraint, trailingConstraint, heightConstraint, bottomConstraint]];
-    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 70.0f);
+    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 70.0f); // This is somewhat arbitrary to prevent the input accessory view from growing too much.
     
     self.experienceEnhancerBar = experienceEnhancerBar;
     self.experienceEnhancerBar.pressedTextEntryHandler = ^void()
@@ -417,11 +417,7 @@
     if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
     {
         CGFloat newBottomKeyboardBarToContainerConstraintHeight = 0.0f;
-        if (isnan(endFrame.origin.y) || isinf(endFrame.origin.y))
-        {
-            
-        }
-        else
+        if (!isnan(endFrame.origin.y) && !isinf(endFrame.origin.y))
         {
             newBottomKeyboardBarToContainerConstraintHeight = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
         }

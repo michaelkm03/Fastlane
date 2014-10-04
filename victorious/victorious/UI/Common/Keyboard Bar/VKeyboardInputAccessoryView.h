@@ -12,6 +12,8 @@
 
 extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
 
+const CGFloat VInputAccessoryViewDesiredMinimumHeight;
+
 @interface VInputAccessoryView : UIView
 
 @end

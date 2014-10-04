@@ -8,6 +8,8 @@
 
 #import "VExperienceEnhancerCell.h"
 
+static const CGFloat kVExperienceEnhancerCellWidth = 35.0f;
+
 @interface VExperienceEnhancerCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
@@ -21,7 +23,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(35, CGRectGetHeight(bounds));
+    return CGSizeMake(kVExperienceEnhancerCellWidth, CGRectGetHeight(bounds));
 }
 
 #pragma mark - NSObject

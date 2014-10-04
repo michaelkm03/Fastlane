@@ -10,6 +10,8 @@
 
 #import "VExperienceEnhancerCell.h"
 
+const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
+
 @implementation VExperienceEnhancer
 
 @end

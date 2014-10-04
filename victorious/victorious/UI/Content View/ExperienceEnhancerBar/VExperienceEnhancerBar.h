@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+const CGFloat VExperienceEnhancerDesiredMinimumHeight;
+
 @interface VExperienceEnhancer : NSObject;
 
 @property (nonatomic, strong) UIImage *icon;
