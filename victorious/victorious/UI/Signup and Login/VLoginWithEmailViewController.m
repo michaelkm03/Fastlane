@@ -195,7 +195,14 @@
     
     self.profile = mainUser;
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didFailWithError:(NSError *)error
@@ -326,10 +333,10 @@
 
 #pragma mark - Navigation
 
-- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
 {
     if ([toVC isKindOfClass:[VResetPasswordViewController class]])
     {

@@ -17,6 +17,7 @@
 #import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
 #import "VAnalyticsRecorder.h"
+#import "MBProgressHUD.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
@@ -200,6 +201,30 @@
     return YES;
 }
 
+#pragma mark - State
+
+- (void)didSignUpWithUser:(VUser *)mainUser
+{
+    self.profile = mainUser;
+    
+    // Go to Part II of Sign-up
+    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+}
+
+- (void)didFailWithError:(NSError *)error
+{
+    
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
+    
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
+}
+
 #pragma mark - Actions
 
 - (IBAction)signup:(id)sender
@@ -209,12 +234,30 @@
     if ([self shouldSignUpWithEmailAddress:self.emailTextField.text
                                   password:self.passwordTextField.text])
     {
+        // Let the User Know Something Is Happening
+        [MBProgressHUD showHUDAddedTo:self.view
+                             animated:YES];
+        
+        self.registrationModel.email = self.emailTextField.text;
+        self.registrationModel.password = self.passwordTextField.text;
+        
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Submitted email and password"
                                                                      action:nil
                                                                       label:nil
                                                                       value:nil];
-        // Go to Part II of Sign-up
-        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+        
+        
+        [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
+                                                 password:self.registrationModel.password
+                                                 userName:self.registrationModel.email
+                                             onCompletion:^(VUser *user, BOOL created)
+         {
+             [self didSignUpWithUser:user];
+         }
+                                                  onError:^(NSError *error)
+         {
+             [self didFailWithError:error];
+         }];
     }
 }
 
@@ -265,16 +308,14 @@
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
-        self.registrationModel.email = self.emailTextField.text;
-        self.registrationModel.password = self.passwordTextField.text;
         profileViewController.registrationModel = self.registrationModel;
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
 {
     VSignupTransitionAnimator   *animator = [[VSignupTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);

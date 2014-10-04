@@ -13,6 +13,8 @@
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 
+#import "VDefaultProfileImageView.h"
+
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser.h"
@@ -34,7 +36,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *createdByLabel;
 
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @property (nonatomic, weak) IBOutlet UIButton *reportButton;
@@ -119,8 +121,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     _sequence = sequence;
     
     self.nameLabel.text = sequence.user.name;
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
-    
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]];
     [self.tableView reloadData];
 }
 

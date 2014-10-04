@@ -136,7 +136,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     }
     else
     {
-        imageUrl = [NSURL URLWithString:self.sequence.previewImage];
+        imageUrl = [NSURL URLWithString:self.sequence.`];
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];

@@ -32,6 +32,8 @@
 
 #import "VUserProfileHeaderView.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+
 static const CGFloat kVNavigationBarHeight   =  44.0f;
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -253,9 +255,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (IBAction)composeMessage:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController]
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController]
                            animated:YES
                          completion:NULL];
         return;
@@ -280,9 +282,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)editProfileHandler
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -424,7 +426,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         return;
     }
     
-    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         if (self.tableDataSource.count)
         {
@@ -433,7 +435,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     
     [self.currentStream removeObserver:self
-                            forKeyPath:NSStringFromSelector(@selector(sequences))];
+                            forKeyPath:NSStringFromSelector(@selector(streamItems))];
 }
 
 @end

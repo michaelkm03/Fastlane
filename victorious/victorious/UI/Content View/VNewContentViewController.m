@@ -504,7 +504,7 @@
             return;
         }
         
-        NSString *label = [self.viewModel.sequence.remoteId.stringValue stringByAppendingPathComponent:self.viewModel.sequence.name];
+        NSString *label = [self.viewModel.sequence.remoteId stringByAppendingPathComponent:self.viewModel.sequence.name];
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
         
         if (self.viewModel.type == VContentViewTypeVideo)

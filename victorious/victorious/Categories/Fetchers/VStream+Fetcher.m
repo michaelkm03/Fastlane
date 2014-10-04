@@ -10,13 +10,25 @@
 
 #import "VSequence.h"
 #import "VObjectManager.h"
+#import "VThemeManager.h"
 #import "VUser.h"
+
+static NSString * const kVSequenceContentType = @"sequence";
+static NSString * const kVStreamContentType = @"stream";
+
+NSString * const VStreamFilterTypeRecent = @"recent";
+NSString * const VStreamFilterTypePopular = @"popular";
 
 @implementation VStream (Fetcher)
 
+- (BOOL)onlyContainsSequences
+{
+    return [self.streamContentType isEqualToString:kVSequenceContentType];
+}
+
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
+    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
@@ -50,11 +62,57 @@
 
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
 {
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+
     user = user ?: [VObjectManager sharedManager].mainUser;
     
     NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
     return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
++ (VStream *)streamForChannelsDirectory
+{
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+    
+    VStream *directory =  [self streamForRemoteId:@"directory" filterName:nil
+                             managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    
+    directory.name = NSLocalizedString(@"Channels", nil);
+    [directory.managedObjectContext saveToPersistentStore:nil];
+    return directory;
+}
+
++ (VStream *)streamForMarquee
+{
+    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
+    
+    return [self streamForRemoteId:@"marquee" filterName:nil
+              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+}
+
++ (VStream *)streamForRemoteId:(NSString *)remoteId
+                    filterName:(NSString *)filterName
+          managedObjectContext:(NSManagedObjectContext *)context
+{
+    NSString *streamIdKey = remoteId ?: @"0";
+    NSString *filterIdKey;
+    if (filterName.length)
+    {
+        filterIdKey = filterName;
+    }
+    else
+    {
+        filterIdKey = VStreamFilterTypeRecent;
+    }
+    
+    NSString *apiPath = [[@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey] stringByAppendingPathComponent:filterIdKey];
+    
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    stream.remoteId = remoteId;
+    stream.filterName = filterName;
+    [stream.managedObjectContext saveToPersistentStore:nil];
+    return stream;
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
@@ -73,7 +131,7 @@
         return object;
     }
     
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Stream"];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([VStream class])];
     NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", @"apiPath", apiPath];
     [request setPredicate:idFilter];
     NSError *error = nil;
@@ -90,9 +148,11 @@
     else
     {
         //Create a new one if it doesn't exist
-        object = [NSEntityDescription insertNewObjectForEntityForName:@"Stream"
+        object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class])
                                                inManagedObjectContext:context];
         object.apiPath = apiPath;
+        object.name = @"";
+        object.previewImagesObject = @"";
         [object.managedObjectContext saveToPersistentStore:nil];
         
         [streamCache setObject:object forKey:apiPath];

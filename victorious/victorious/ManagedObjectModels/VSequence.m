@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 9/16/14.
+//  Created by Will Long on 9/23/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -10,7 +10,6 @@
 #import "VComment.h"
 #import "VNode.h"
 #import "VPollResult.h"
-#import "VStream.h"
 #import "VUser.h"
 #import "VVoteResult.h"
 
@@ -36,7 +35,6 @@
 @dynamic pollResults;
 @dynamic remixers;
 @dynamic reposters;
-@dynamic streams;
 @dynamic user;
 @dynamic voteResults;
 
