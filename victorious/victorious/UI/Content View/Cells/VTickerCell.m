@@ -8,16 +8,12 @@
 
 #import "VTickerCell.h"
 
-// Subviews
-#import "VProgressBarView.h"
-
 // Theme
 #import "VThemeManager.h"
 
 @interface VTickerCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;
-@property (weak, nonatomic) IBOutlet VProgressBarView *progressBar;
 
 @end
 
@@ -32,18 +28,5 @@
 {
     return CGSizeMake(CGRectGetWidth(bounds), 5.0f);
 }
-
-#pragma mark - Property Acceossors
-
-- (void)setProgress:(CGFloat)progress
-{
-    _progress = progress;
-    
-    self.progressBar.progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    [self.progressBar setProgress:progress
-                         animated:YES];
-}
-
-#pragma mark - Public Methods
 
 @end

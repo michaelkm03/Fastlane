@@ -8,8 +8,10 @@
 
 #import "VBaseCollectionViewCell.h"
 
+#import "VContentCell.h"
+
 /// A UICollectionViewCell for displaying image content.
-@interface VContentImageCell : VBaseCollectionViewCell
+@interface VContentImageCell : VContentCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 

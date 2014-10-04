@@ -15,9 +15,4 @@
  */
 + (CGSize)desiredSizeForNoRealTimeCommentsWithCollectionViewBounds:(CGRect)bounds;
 
-/**
- *  Assign to this float a value between 0.0f and 1.0f to update the progress bar.
- */
-@property (nonatomic, assign) CGFloat progress;
-
 @end

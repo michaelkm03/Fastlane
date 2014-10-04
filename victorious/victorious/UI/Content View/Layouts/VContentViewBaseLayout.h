@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-UIKIT_EXTERN NSString * const VContentViewBaseLayoutDecelerationLocationDesiredContentOffset;
-UIKIT_EXTERN NSString * const VContentViewBaseLayoutDecelerationLocationThresholdAbove;
-UIKIT_EXTERN NSString * const VContentViewBaseLayoutDecelerationLocationThresholdBelow;
+extern NSString * const VContentViewBaseLayoutDecelerationLocationDesiredContentOffset;
+extern NSString * const VContentViewBaseLayoutDecelerationLocationThresholdAbove;
+extern NSString * const VContentViewBaseLayoutDecelerationLocationThresholdBelow;
 
 @interface VContentViewBaseLayout : UICollectionViewFlowLayout
 

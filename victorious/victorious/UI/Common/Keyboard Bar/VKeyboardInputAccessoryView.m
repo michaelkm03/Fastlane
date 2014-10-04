@@ -8,8 +8,13 @@
 
 #import "VKeyboardInputAccessoryView.h"
 
+// Constants
+#import "VConstants.h"
+
 // Theme
 #import "VThemeManager.h"
+
+const CGFloat VInputAccessoryViewDesiredMinimumHeight = 45.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -94,6 +99,11 @@
 
 #pragma mark - Public Methods
 
+- (void)startEditing
+{
+    [self.editingTextView becomeFirstResponder];
+}
+
 - (void)clearTextAndResign
 {
     self.editingTextView.text = nil;
@@ -175,6 +185,56 @@ shouldChangeTextInRange:(NSRange)range
 - (NSDictionary *)textEntryAttributes
 {
     return @{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
+}
+
+@end
+
+
+#pragma mark - Input AccessoryView
+
+NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.victorious.VInputAccessoryViewKeyboardFrameDidChangeNotification";
+
+@implementation VInputAccessoryView
+
+- (NSString *)keyPathForKeyboardHandling
+{
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        return NSStringFromSelector(@selector(center));
+    }
+    else
+    {
+        return NSStringFromSelector(@selector(frame));
+    }
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    if (self.superview)
+    {
+        [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
+    }
+    
+    [newSuperview addObserver:self forKeyPath:[self keyPathForKeyboardHandling] options:0 context:NULL];
+    
+    [super willMoveToSuperview:newSuperview];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isEqual:self.superview] && [keyPath isEqualToString:[self keyPathForKeyboardHandling]])
+    {
+        NSDictionary *userInfo = @{UIKeyboardFrameEndUserInfoKey:[NSValue valueWithCGRect:[object frame]]};
+        [[NSNotificationCenter defaultCenter] postNotificationName:VInputAccessoryViewKeyboardFrameDidChangeNotification object:nil userInfo:userInfo];
+    }
+}
+
+- (void)dealloc
+{
+    if (self.superview)
+    {
+        [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
+    }
 }
 
 @end

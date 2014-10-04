@@ -14,7 +14,6 @@ NSString *const VShrinkingContentLayoutAllCommentsHandle = @"com.victorious.VShr
 static const CGFloat kContentLayoutZIndex = 9999.0f;
 static const CGFloat kContentBackgroundZIndex = kContentLayoutZIndex - 1.0f;
 static const CGFloat kAllCommentsZIndex = 6666.0f;
-static const CGFloat kMinimumContentHeight = 125.0f;
 
 @interface VShrinkingContentLayout ()
 
@@ -107,7 +106,7 @@ static const CGFloat kMinimumContentHeight = 125.0f;
         allCommentsHeight = allCommentsHeight + CGRectGetHeight(layoutAttributesForComentAtIndex.frame);
     }
     
-    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds) - self.collectionView.contentInset.bottom + allCommentsHeight);
+    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds) + self.contentInsets.bottom + allCommentsHeight);
     return self.cachedContentSize;
 }
 
@@ -175,12 +174,12 @@ static const CGFloat kMinimumContentHeight = 125.0f;
                 CGFloat deltaCatchToLock = [self lockPoint].y - [self catchPoint].y;
                 CGFloat percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - [self catchPoint].y) / deltaCatchToLock);
                 
-                CGFloat sizeDelta = self.mediaContentSize.height - kMinimumContentHeight;
+                CGFloat sizeDelta = self.mediaContentSize.height - VShrinkingContentLayoutMinimumContentHeight;
                 CGFloat transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
                 
                 CGAffineTransform scaleTransform = CGAffineTransformMakeScale(transformScaleCoefficient, transformScaleCoefficient);
                 
-                CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (kMinimumContentHeight * 0.5f));
+                CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (VShrinkingContentLayoutMinimumContentHeight * 0.5f));
                 CGFloat translationCoefficient = -translationDelta * percentToLockPoint;
                 
                 CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(0, translationCoefficient);
@@ -236,11 +235,16 @@ static const CGFloat kMinimumContentHeight = 125.0f;
     switch (indexPath.section)
     {
         case VContentViewSectionContent:
+        {
+            UICollectionViewLayoutAttributes *contentAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
             layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                                     self.collectionView.contentOffset.y,
                                                                     CGRectGetWidth(self.collectionView.bounds),
-                                                                    kMinimumContentHeight);
+                                                                    CGRectGetHeight(contentAttributes.frame));
             layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
+        }
+            
+
             break;
         case VContentViewSectionHistogram:
             break;
@@ -318,6 +322,21 @@ static const CGFloat kMinimumContentHeight = 125.0f;
     return desiredContentOffset;
 }
 
+#pragma mark - Property Accessors
+
+- (CGFloat)percentToShowBottomBar
+{
+    CGFloat catchToLockDelta = [self lockPoint].y - [self catchPoint].y;
+    CGFloat offsetToCatchDelta = self.collectionView.contentOffset.y - [self catchPoint].y;
+    return fmaxf(fminf(offsetToCatchDelta / catchToLockDelta, 1.0f), 0.0f);
+}
+
+- (void)setContentInsets:(UIEdgeInsets)contentInsets
+{
+    _contentInsets = contentInsets;
+    self.cachedContentSize = CGSizeZero;
+}
+
 #pragma mark - Convenience
 
 - (void)reloadMajorItemSizes
@@ -351,7 +370,7 @@ static const CGFloat kMinimumContentHeight = 125.0f;
 - (CGPoint)lockPoint
 {
     CGPoint lockPoint = [self catchPoint];
-    lockPoint.y = lockPoint.y + kMinimumContentHeight + self.histogramSize.height + self.tickerSize.height;
+    lockPoint.y = lockPoint.y + VShrinkingContentLayoutMinimumContentHeight + self.histogramSize.height + self.tickerSize.height;
     return lockPoint;
 }
 

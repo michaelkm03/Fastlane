@@ -27,6 +27,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
                                                                                    bundle:nil];
     self.videoPlayerViewController.delegate = self;
