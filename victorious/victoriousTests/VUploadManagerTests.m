@@ -99,6 +99,42 @@
     [async waitForSignal:5.0];
 }
 
+- (void)testNotificationSentWhenTaskCompletes
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskFinishedNotification
+                                                                    object:self.uploadTask
+                                                                     queue:nil
+                                                                usingBlock:^(NSNotification *notification)
+    {
+        [async signal];
+    }];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(200);
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    [async waitForSignal:5.0];
+    [[NSNotificationCenter defaultCenter] removeObserver:observer];
+}
+
+- (void)testNotificationSentWhenTaskCompletesWithError
+{
+    NSError *error = [NSError errorWithDomain:@"error" code:1 userInfo:nil];
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskFailedNotification
+                                                                    object:self.uploadTask
+                                                                     queue:nil
+                                                                usingBlock:^(NSNotification *notification)
+    {
+        XCTAssertNotNil(error);
+        [async signal];
+    }];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError(error);
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    [async waitForSignal:5.0];
+    [[NSNotificationCenter defaultCenter] removeObserver:observer];
+}
+
 - (void)testGetQueuedUploadTasksInitiallyEmpty
 {
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
