@@ -24,7 +24,6 @@ extern NSString * const VUploadManagerTaskProgressNotification; ///< Sent period
 extern NSString * const VUploadManagerTaskFinishedNotification; ///< Sent when an upload task finishes successfully
 extern NSString * const VUploadManagerTaskFailedNotification; ///< Sent when an upload task fails
 
-extern NSString * const VUploadManagerUploadTaskUserInfoKey; ///< An instance of VUploadTaskInformation describing the upload
 extern NSString * const VUploadManagerBytesSentUserInfoKey; ///< The total number of bytes sent so far
 extern NSString * const VUploadManagerTotalBytesUserInfoKey; ///< The total number of bytes to be sent in this request
 extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object explaining why an upload failed

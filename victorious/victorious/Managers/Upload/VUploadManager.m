@@ -20,7 +20,6 @@ NSString * const VUploadManagerTaskBeganNotification = @"VUploadManagerTaskBegan
 NSString * const VUploadManagerTaskProgressNotification = @"VUploadManagerTaskProgressNotification";
 NSString * const VUploadManagerTaskFinishedNotification = @"VUploadManagerTaskFinishedNotification";
 NSString * const VUploadManagerTaskFailedNotification = @"VUploadManagerTaskFailedNotification";
-NSString * const VUploadManagerUploadTaskUserInfoKey = @"VUploadManagerUploadTaskUserInfoKey";
 NSString * const VUploadManagerBytesSentUserInfoKey = @"VUploadManagerBytesSentUserInfoKey";
 NSString * const VUploadManagerTotalBytesUserInfoKey = @"VUploadManagerTotalBytesUserInfoKey";
 NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoKey";
@@ -148,9 +147,8 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                                    object:self
-                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
-                                                                        }];
+                                                                    object:uploadTask
+                                                                  userInfo:nil];
             });
         });
     }];
@@ -294,19 +292,12 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-            userInfo[VUploadManagerBytesSentUserInfoKey] = @(totalBytesSent);
-            userInfo[VUploadManagerTotalBytesUserInfoKey] = @(totalBytesExpectedToSend);
-            
             VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
-            if (taskInformation)
-            {
-                userInfo[VUploadManagerUploadTaskUserInfoKey] = taskInformation;
-            }
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
-                                                                object:self
-                                                              userInfo:userInfo];
+                                                                object:taskInformation
+                                                              userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(totalBytesSent),
+                                                                          VUploadManagerTotalBytesUserInfoKey: @(totalBytesExpectedToSend)
+                                                                        }];
         });
     });
 }
