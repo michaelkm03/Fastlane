@@ -92,10 +92,11 @@
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
     id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskBeganNotification
-                                                                    object:self.uploadTask
+                                                                    object:self.uploadManager
                                                                      queue:nil
                                                                 usingBlock:^(NSNotification *notification)
     {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         [async signal];
     }];
     
@@ -128,6 +129,7 @@
     {
         XCTAssertEqualObjects(expectedTotalBytes, notification.userInfo[VUploadManagerTotalBytesUserInfoKey]);
         XCTAssertEqualObjects(expectedBytesSent, notification.userInfo[VUploadManagerBytesSentUserInfoKey]);
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         [async signal];
     }];
     

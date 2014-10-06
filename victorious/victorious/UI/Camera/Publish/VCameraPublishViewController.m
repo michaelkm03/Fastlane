@@ -712,6 +712,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     [[VObjectManager sharedManager] uploadMediaWithName:finalText
                                             description:finalText
+                                           previewImage:self.previewImage
                                             captionType:self.captionType
                                               expiresAt:self.expirationDateString
                                            parentNodeId:@(self.parentID)

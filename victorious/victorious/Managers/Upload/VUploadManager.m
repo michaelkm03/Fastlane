@@ -20,6 +20,7 @@ NSString * const VUploadManagerTaskBeganNotification = @"VUploadManagerTaskBegan
 NSString * const VUploadManagerTaskProgressNotification = @"VUploadManagerTaskProgressNotification";
 NSString * const VUploadManagerTaskFinishedNotification = @"VUploadManagerTaskFinishedNotification";
 NSString * const VUploadManagerTaskFailedNotification = @"VUploadManagerTaskFailedNotification";
+NSString * const VUploadManagerUploadTaskUserInfoKey = @"VUploadManagerUploadTaskUserInfoKey";
 NSString * const VUploadManagerBytesSentUserInfoKey = @"VUploadManagerBytesSentUserInfoKey";
 NSString * const VUploadManagerTotalBytesUserInfoKey = @"VUploadManagerTotalBytesUserInfoKey";
 NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoKey";
@@ -147,8 +148,9 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                                    object:uploadTask
-                                                                  userInfo:nil];
+                                                                    object:self
+                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
+                                                                        }];
             });
         });
     }];
@@ -291,14 +293,18 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     dispatch_async(self.sessionQueue, ^(void)
     {
         VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
-        dispatch_async(dispatch_get_main_queue(), ^(void)
+        if (taskInformation)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
-                                                                object:taskInformation
-                                                              userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(totalBytesSent),
-                                                                          VUploadManagerTotalBytesUserInfoKey: @(totalBytesExpectedToSend)
-                                                                        }];
-        });
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
+                                                                    object:taskInformation
+                                                                  userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(totalBytesSent),
+                                                                              VUploadManagerTotalBytesUserInfoKey: @(totalBytesExpectedToSend),
+                                                                              VUploadManagerUploadTaskUserInfoKey: taskInformation,
+                                                                            }];
+            });
+        }
     });
 }
 
@@ -338,7 +344,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                         object:taskInformation
-                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: error}];
+                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: error,
+                                                                                 VUploadManagerUploadTaskUserInfoKey: taskInformation}];
                 });
             }
             else
@@ -349,7 +356,9 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 [self.taskSerializer saveUploadTasks:self.taskInformation];
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification object:taskInformation];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
+                                                                        object:taskInformation
+                                                                      userInfo:@{VUploadManagerUploadTaskUserInfoKey: taskInformation}];
                 });
             }
         }

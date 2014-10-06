@@ -44,6 +44,7 @@ extern NSString * const VObjectManagerContentIndexKey;
 
 - (void)createPollWithName:(NSString *)name
                description:(NSString *)description
+              previewImage:(UIImage *)previewImage
                   question:(NSString *)question
                answer1Text:(NSString *)answer1Text
                answer2Text:(NSString *)answer2Text
@@ -53,6 +54,7 @@ extern NSString * const VObjectManagerContentIndexKey;
 
 - (void)uploadMediaWithName:(NSString *)name
                 description:(NSString *)description
+               previewImage:(UIImage *)previewImage
                 captionType:(VCaptionType)type
                   expiresAt:(NSString *)expiresAt
                parentNodeId:(NSNumber *)parentNodeId

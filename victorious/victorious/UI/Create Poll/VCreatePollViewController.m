@@ -357,6 +357,7 @@ static char KVOContext;
 {
     [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
                                            description:@"<none>"
+                                          previewImage:self.leftPreviewImageView.image
                                               question:self.questionTextView.text
                                            answer1Text:self.leftAnswerTextView.text
                                            answer2Text:self.rightAnswerTextView.text

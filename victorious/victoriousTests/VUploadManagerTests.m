@@ -107,6 +107,7 @@
                                                                      queue:nil
                                                                 usingBlock:^(NSNotification *notification)
     {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         [async signal];
     }];
     
@@ -125,6 +126,7 @@
                                                                      queue:nil
                                                                 usingBlock:^(NSNotification *notification)
     {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
         XCTAssertNotNil(error);
         [async signal];
     }];
