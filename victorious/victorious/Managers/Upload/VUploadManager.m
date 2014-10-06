@@ -11,6 +11,13 @@
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
 
+#define UPLOAD_MANAGER_TEST_MODE 0 // set to "1" to have the upload manager fire off fake upload notifications. useful for testing UI elements related to uploads
+                                   // NOTE: real uploads will not work with this mode enabled
+
+#if UPLOAD_MANAGER_TEST_MODE
+static NSString * const kUploadTaskInformationKey = @"kUploadTaskInformationKey";
+#endif
+
 static NSString * const kDirectoryName = @"VUploadManager"; ///< The directory where pending uploads and configuration files are stored
 static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirectory of the directory above, where HTTP bodies are stored
 static NSString * const kTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
@@ -66,6 +73,11 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
+        if (!self.taskSerializer)
+        {
+            self.taskSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForUploadTaskList]];
+        }
+        
         if (!self.urlSession)
         {
             NSArray *savedTasks = [self.taskSerializer uploadTasksFromDisk];
@@ -114,6 +126,17 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
                         completion();
                     });
                 }
+                
+#if UPLOAD_MANAGER_TEST_MODE
+#warning VUploadManager is in test mode
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                {
+                    UIImage *previewImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"sampleUpload" withExtension:@"jpg"]]];
+                    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] initWithRequest:nil previewImage:previewImage bodyFileURL:nil description:nil];
+                    [self enqueueUploadTask:uploadTask onComplete:nil];
+                });
+#endif
+                
             }];
         }
         else if (completion)
@@ -128,6 +151,14 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 - (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
+#if UPLOAD_MANAGER_TEST_MODE
+    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
+                                                        object:self
+                                                      userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
+                                                                 }];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(taskTimerFired:) userInfo:@{kUploadTaskInformationKey: uploadTask} repeats:YES];
+    return;
+#endif
     [self startURLSessionWithCompletion:^(void)
     {
         dispatch_async(self.sessionQueue, ^(void)
@@ -202,6 +233,34 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     });
     return isInProgress;
 }
+
+#pragma mark - Test Mode
+
+#if UPLOAD_MANAGER_TEST_MODE
+- (void)taskTimerFired:(NSTimer *)timer
+{
+    static NSInteger bytes = 0;
+    
+    VUploadTaskInformation *taskInformation = ((NSDictionary *)timer.userInfo)[kUploadTaskInformationKey];
+    bytes++;
+    
+    if (bytes > 100)
+    {
+        [timer invalidate];
+        bytes = 0;
+        [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
+                                                            object:taskInformation
+                                                          userInfo:@{VUploadManagerUploadTaskUserInfoKey: taskInformation}];
+        return;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
+                                                        object:taskInformation
+                                                      userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(bytes),
+                                                                  VUploadManagerTotalBytesUserInfoKey: @(100),
+                                                                  VUploadManagerUploadTaskUserInfoKey: taskInformation,
+                                                                }];
+}
+#endif
 
 #pragma mark - Filesystem
 

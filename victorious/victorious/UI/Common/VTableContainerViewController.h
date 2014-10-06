@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ Height of standard table header
+ */
+extern const CGFloat VTableContainerViewControllerStandardHeaderHeight;
+
 @interface VTableContainerViewController : UIViewController <UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *headerLabel;
@@ -24,7 +29,7 @@
 
 - (void)hideHeader;
 - (void)showHeader;
-
+- (CGFloat)hiddenHeaderHeight; //< When the header hides, it will scoot up off-screen by this amount.
 - (IBAction)changedFilterControls:(id)sender;
 
 @end
