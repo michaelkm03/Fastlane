@@ -11,6 +11,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-JK-HqJ" userLabel="Comment Button">
+                    <rect key="frame" x="255" y="6" width="55" height="55"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="55" id="4hE-5m-lE8"/>
+                        <constraint firstAttribute="height" constant="55" id="HqN-8c-Cdc"/>
+                    </constraints>
+                    <state key="normal" title=" 32" image="StreamComments"/>
+                    <connections>
+                        <action selector="commentButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="dFO-QL-uft"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mw8-p7-7U7" userLabel="userInfoView">
                     <rect key="frame" x="57" y="17" width="197" height="32"/>
                     <subviews>
@@ -78,21 +89,12 @@
                         <action selector="profileButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="OOD-Gn-Wp5"/>
                     </connections>
                 </button>
-                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-JK-HqJ" userLabel="Comment Button">
-                    <rect key="frame" x="257" y="17" width="55" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="55" id="4hE-5m-lE8"/>
-                        <constraint firstAttribute="height" constant="32" id="HqN-8c-Cdc"/>
-                    </constraints>
-                    <state key="normal" title=" 32" image="StreamComments"/>
-                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="YtL-IO-nl6" secondAttribute="bottom" id="4iQ-4w-jmv"/>
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" constant="20" id="6TK-Ei-zAQ"/>
                 <constraint firstItem="mw8-p7-7U7" firstAttribute="leading" secondItem="aCm-Z1-zjM" secondAttribute="trailing" constant="5" id="GrY-yQ-Msx"/>
-                <constraint firstItem="RMI-JK-HqJ" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" constant="17" id="RFQ-OX-YmD"/>
                 <constraint firstItem="YtL-IO-nl6" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" id="RIJ-8s-DbZ"/>
                 <constraint firstItem="YtL-IO-nl6" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" id="T2c-RO-vkG"/>
                 <constraint firstAttribute="trailing" secondItem="RMI-JK-HqJ" secondAttribute="trailing" constant="10" id="XOu-kN-ukU"/>
