@@ -328,6 +328,9 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
     self.experienceEnhancerBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.experienceEnhancerBar.bounds, -kExperienceEnhancerShadowWidthOverdraw, 0)].CGPath;
     
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    layout.allCommentsHandleBottomInset = CGRectGetHeight(self.experienceEnhancerBar.bounds);
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
@@ -479,7 +482,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         {
 #warning There are some ugly UI bugs when the user is scrolled to the bottom and then dismisses the keyboard. This will be fixed when moving the content out of the collectionview.
             VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-            layout.contentInsets = UIEdgeInsetsMake(0, 0, -newBottomKeyboardBarToContainerConstraintHeight, 0);
+//            layout.contentInsets = UIEdgeInsetsMake(0, 0, -newBottomKeyboardBarToContainerConstraintHeight, 0);
             [self.contentCollectionView.collectionViewLayout invalidateLayout];
         }
                          completion:nil];
@@ -1005,7 +1008,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionAllComments:
         {
             CGSize allCommentsHandleSize = (self.viewModel.commentCount == 0) ? CGSizeZero :[VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-            ((VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout).allCommentsHandleBottomInset = allCommentsHandleSize.height;
+//            ((VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout).allCommentsHandleBottomInset = allCommentsHandleSize.height;
             return allCommentsHandleSize;
         }
         case VContentViewSectionCount:
