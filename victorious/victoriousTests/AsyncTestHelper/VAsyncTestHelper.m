@@ -42,6 +42,12 @@
     [self waitForSignalUntil:waitUntil withSignalBlock:nil];
 }
 
+- (BOOL)waitForSignalWithoutThrowing:(NSTimeInterval)waitTime
+{
+    NSDate *waitUntil = [NSDate dateWithTimeIntervalSinceNow:waitTime];
+    return [self waitForSignalUntil:waitUntil withSignalBlock:nil throws:NO];
+}
+
 - (void)waitForSignalUntil:(NSDate *)waitUntil
 {
     [self waitForSignalUntil:waitUntil withSignalBlock:nil];
@@ -53,8 +59,14 @@
     [self waitForSignalUntil:waitUntil withSignalBlock:signalBlock];
 }
 
-- (void)waitForSignalUntil:(NSDate *)waitUntil withSignalBlock:(BOOL(^)())signalBlock
+- (void)waitForSignalUntil:(NSDate *)waitUntil withSignalBlock:(BOOL (^)())signalBlock
 {
+    [self waitForSignalUntil:waitUntil withSignalBlock:signalBlock throws:YES];
+}
+
+- (BOOL)waitForSignalUntil:(NSDate *)waitUntil withSignalBlock:(BOOL(^)())signalBlock throws:(BOOL)shouldThrow
+{
+    NSAssert(!shouldThrow || [NSThread isMainThread], @"shouldThrow should only be YES on the main thread");
     while (dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_NOW))
     {
         if ( signalBlock != nil && signalBlock() )
@@ -65,9 +77,17 @@
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         if ([waitUntil timeIntervalSinceNow] <= 0)
         {
-            [NSException raise:NSInternalInconsistencyException format:@"Asynchronous block never signaled"];
+            if (shouldThrow)
+            {
+                [NSException raise:NSInternalInconsistencyException format:@"Asynchronous block never signaled"];
+            }
+            else
+            {
+                return NO;
+            }
         }
     }
+    return YES;
 }
 
 @end
