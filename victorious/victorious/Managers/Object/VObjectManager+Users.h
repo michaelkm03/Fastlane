@@ -42,6 +42,14 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)unfollowUserWithId:(NSNumber *)remoteId
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)followUserWithId:(NSNumber *)remoteId
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail;

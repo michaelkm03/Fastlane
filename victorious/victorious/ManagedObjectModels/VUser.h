@@ -36,7 +36,7 @@
 @property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
 @property (nonatomic, retain) NSString* status;
-@property (nonatomic, retain) NSNumber* isFollowing;
+@property (nonatomic, retain) NSNumber* isFollowing; // Whether a loaded user is following the current authorized user
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)

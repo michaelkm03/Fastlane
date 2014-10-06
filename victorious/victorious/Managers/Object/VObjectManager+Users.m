@@ -215,7 +215,14 @@ static NSString * const kVAPIParamSearch = @"search";
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
+    return [self followUserWithId:user.remoteId successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)followUserWithId:(NSNumber *)remoteId
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{ @"target_user_id": remoteId };
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -232,11 +239,11 @@ static NSString * const kVAPIParamSearch = @"search";
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
+- (RKManagedObjectRequestOperation *)unfollowUserWithId:(NSNumber *)remoteId
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
+    NSDictionary *parameters = @{ @"target_user_id": remoteId };
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -251,6 +258,13 @@ static NSString * const kVAPIParamSearch = @"search";
            parameters:parameters
          successBlock:fullSuccess
             failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
+{
+    return [self unfollowUserWithId:user.remoteId successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user

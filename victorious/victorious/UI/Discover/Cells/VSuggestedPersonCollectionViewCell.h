@@ -10,11 +10,19 @@
 
 @interface VSuggestedPersonData : NSObject
 
-@property (nonatomic, assign) NSInteger remoteId;
-@property (nonatomic, assign) NSUInteger numberOfFollowers;
+@property (nonatomic, strong) NSNumber *remoteId;
+@property (nonatomic, strong) NSNumber *numberOfFollowers;
 @property (nonatomic, assign) BOOL isMainUserFollowing;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *pictureUrl;
+
+@end
+
+@protocol VSuggestedPersonCollectionViewCellDelegate
+
+@required
+- (void)unfollowPerson:(VSuggestedPersonData *)userData;
+- (void)followPerson:(VSuggestedPersonData *)userData;
 
 @end
 
@@ -25,6 +33,6 @@
 + (UIImage *)followedImage;
 + (UIImage *)followImage;
 
-- (IBAction)onFollow:(id)sender;
+@property (nonatomic, weak) id<VSuggestedPersonCollectionViewCellDelegate> delegate;
 
 @end

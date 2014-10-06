@@ -13,7 +13,7 @@
 
 static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonCollectionViewCell";
 
-@interface VSuggestedPeople ()
+@interface VSuggestedPeople () <VSuggestedPersonCollectionViewCellDelegate>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *suggestedPeople;
@@ -47,6 +47,8 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     [collectionView reloadData];
 }
 
+#pragma mark - Loading remote data and responses
+
 - (void)usersDidLoad:(NSArray *)users
 {
     NSMutableArray *suggestedUsersData = [[NSMutableArray alloc] init];
@@ -55,8 +57,8 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
         VSuggestedPersonData *data = [[VSuggestedPersonData alloc] init];
         data.isMainUserFollowing = user.isFollowing.boolValue;
         data.username = user.name;
-        data.numberOfFollowers = arc4random() % 1000;
-        data.remoteId = user.remoteId.integerValue;
+        data.numberOfFollowers = @( arc4random() % 1000 );
+        data.remoteId = user.remoteId;
         data.pictureUrl = user.pictureUrl;
         [suggestedUsersData addObject:data];
     }
@@ -72,8 +74,32 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
      }
                                                                    failBlock:^(NSOperation *operation, NSError *error)
      {
-         
+         // TODO: Handle error
      }];
+}
+
+#pragma mark - VSuggestedPersonCollectionViewCellDelegate
+
+- (void)unfollowPerson:(VSuggestedPersonData *)userData
+{
+    [[VObjectManager sharedManager] unfollowUserWithId:userData.remoteId successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+    }
+                                           failBlock:^(NSOperation *operation, NSError *error)
+     {
+         VLog( @"Unfollow failed: %@", [error localizedDescription] );
+    }];
+}
+
+- (void)followPerson:(VSuggestedPersonData *)userData
+{
+    [[VObjectManager sharedManager] followUserWithId:userData.remoteId successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+    }
+                                           failBlock:^(NSOperation *operation, NSError *error)
+     {
+         VLog( @"Follow failed: %@", [error localizedDescription] );
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -88,6 +114,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
     VSuggestedPersonData *suggestPersonData = self.suggestedPeople[ indexPath.row ];
     cell.data = suggestPersonData;
+    cell.delegate = self;
     return cell;
 }
 
@@ -95,7 +122,8 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    __unused NSNumber *userId = cell.data.remoteId;
 }
 
 @end

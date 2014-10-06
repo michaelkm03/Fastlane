@@ -22,6 +22,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
+- (IBAction)onFollow:(id)sender;
+
 @end
 
 @implementation VSuggestedPersonCollectionViewCell
@@ -67,28 +69,12 @@
 - (void)setData:(VSuggestedPersonData *)data
 {
     _data = data;
-    
-    if ( _data == nil )
-    {
-        [self clearData];
-    }
-    else
-    {
-        [self populateData];
-    }
-}
-
-- (void)clearData
-{
-    self.usernameLabel.text = nil;
-    self.descriptionLabel.text = nil;
-    [self.profileImageView setImage:nil];
-    [self.followButton setImage:[VSuggestedPersonCollectionViewCell followImage] forState:UIControlStateNormal];
+    [self populateData];
 }
 
 - (void)populateData
 {
-    self.descriptionLabel.text = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:self.data.numberOfFollowers];
+    self.descriptionLabel.text = [VFollowersTextFormatter shortLabelWithNumberOfFollowersObject:self.data.numberOfFollowers];
     
     self.usernameLabel.text = self.data.username;
     
@@ -97,6 +83,11 @@
         [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.data.pictureUrl]];
     }
     
+    [self updateFollowing];
+}
+
+- (void)updateFollowing
+{
     if ( self.data.isMainUserFollowing )
     {
         [self.followButton setImage:[VSuggestedPersonCollectionViewCell followedImage] forState:UIControlStateNormal];
@@ -109,7 +100,23 @@
 
 - (IBAction)onFollow:(id)sender
 {
-    //[self.delegate followUser:user];
+    if ( self.delegate == nil )
+    {
+        return;
+    }
+    
+    if ( self.data.isMainUserFollowing )
+    {
+        self.data.isMainUserFollowing = NO;
+        [self.delegate unfollowPerson:self.data];
+    }
+    else
+    {
+        self.data.isMainUserFollowing = YES;
+        [self.delegate followPerson:self.data];
+    }
+    
+    [self updateFollowing];
 }
 
 @end
