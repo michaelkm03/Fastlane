@@ -165,8 +165,6 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
-//    cell.delegate = self;
-    cell.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     return cell;
 }
