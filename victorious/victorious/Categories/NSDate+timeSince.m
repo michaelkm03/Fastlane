@@ -17,7 +17,7 @@
     NSDateComponents *components = [calendar components:
                                     NSYearCalendarUnit|
                                     NSMonthCalendarUnit|
-                                    NSWeekCalendarUnit|
+                                    NSWeekOfMonthCalendarUnit|
                                     NSDayCalendarUnit|
                                     NSHourCalendarUnit|
                                     NSMinuteCalendarUnit|
@@ -48,15 +48,15 @@
             return [NSString stringWithFormat:NSLocalizedString(@"MonthsAgo", @""), components.month];
         }
     }
-    else if (components.week >= 1)
+    else if (components.weekOfMonth >= 1)
     {
-        if (components.week == 1)
+        if (components.weekOfMonth == 1)
         {
             return NSLocalizedString(@"LastWeek", @"");
         }
         else
         {
-            return [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), components.week];
+            return [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), components.weekOfMonth];
         }
     }
     else if (components.day >= 1)    // up to 6 days ago
@@ -92,14 +92,10 @@
             return [NSString stringWithFormat:NSLocalizedString(@"MinutesAgo", @""), components.minute];
         }
     }
-    else //if (components.second < 5)
+    else
     {
         return NSLocalizedString(@"Now", @"");
     }
-//    else
-//    {
-//        return [NSString stringWithFormat:NSLocalizedString(@"SecondsAgo", @""), components.second];
-//    }
 }
 
 @end
