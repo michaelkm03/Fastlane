@@ -23,7 +23,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 32.0f);
+    return CGSizeMake(CGRectGetWidth(bounds), 37.0f);
 }
 
 #pragma mark - NSObject
