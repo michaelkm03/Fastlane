@@ -26,4 +26,7 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
 @property (nonatomic, copy) void (^pressedTextEntryHandler)(void);
 
+@property (nonatomic, copy) void (^selectedEmotiveBallistic)(NSArray *animationSequence);
+@property (nonatomic, copy) void (^selectedExperienceEnhancer)(NSArray *animationSequence);
+
 @end
