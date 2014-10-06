@@ -106,7 +106,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
         allCommentsHeight = allCommentsHeight + CGRectGetHeight(layoutAttributesForComentAtIndex.frame);
     }
     
-    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds) + self.contentInsets.bottom + allCommentsHeight);
+    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds) +  allCommentsHeight);
     return self.cachedContentSize;
 }
 

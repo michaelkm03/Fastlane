@@ -383,7 +383,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     [self.viewModel fetchComments];
     
     
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
                                                                         0,
                                                                         CGRectGetHeight(self.textEntryView.bounds), 0);
