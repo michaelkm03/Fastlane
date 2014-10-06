@@ -38,7 +38,7 @@
     NSDate *yearsAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [yearsAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"YearsAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed years ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed years ago");
 }
 
 - (void)testYearAgo
@@ -49,7 +49,7 @@
     // Create the NSDates
     NSDate *yearAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [yearAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"LastYear", @"")], @"Failed last year");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastYear", @"")], @"Failed last year");
 }
 
 - (void)testMonthsAgo
@@ -61,7 +61,7 @@
     NSDate *monthsAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [monthsAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"MonthsAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed months ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed months ago");
 }
 
 - (void)testMonthAgo
@@ -72,7 +72,7 @@
     // Create the NSDates
     NSDate *monthAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [monthAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"LastMonth", @"")], @"Failed last month");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastMonth", @"")], @"Failed last month");
 }
 
 - (void)testWeeksAgo
@@ -84,7 +84,7 @@
     NSDate *weeksAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [weeksAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed Weeks ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed Weeks ago");
 }
 
 - (void)testWeekAgo
@@ -95,7 +95,7 @@
     // Create the NSDates
     NSDate *weekAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [weekAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"LastWeek", @"")], @"Failed last Week");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastWeek", @"")], @"Failed last Week");
 }
 
 - (void)testDaysAgo
@@ -107,7 +107,7 @@
     NSDate *daysAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [daysAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"DaysAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed days ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed days ago");
 }
 
 - (void)testDayAgo
@@ -118,7 +118,7 @@
     // Create the NSDates
     NSDate *dayAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [dayAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"Yesterday", @"")], @"Failed Yesterday");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"Yesterday", @"")], @"Failed Yesterday");
 }
 
 - (void)testHoursAgo
@@ -130,7 +130,7 @@
     NSDate *hoursAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [hoursAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"HoursAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed Hours ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed Hours ago");
 }
 
 - (void)testHourAgo
@@ -141,7 +141,7 @@
     // Create the NSDates
     NSDate *hourAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [hourAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"HourAgo", @"")], @"Failed HourAgo");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"HourAgo", @"")], @"Failed HourAgo");
 }
 
 
@@ -154,7 +154,7 @@
     NSDate *minutesAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [minutesAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"MinutesAgo", @""), 3];
-    NSAssert([timeSince isEqualToString:testString], @"Failed Minutes ago");
+    XCTAssertTrue([timeSince isEqualToString:testString], @"Failed Minutes ago");
 }
 
 - (void)testMinuteAgo
@@ -165,7 +165,7 @@
     // Create the NSDates
     NSDate *minuteAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [minuteAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"MinuteAgo", @"")], @"Failed HourAgo");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"MinuteAgo", @"")], @"Failed HourAgo");
 }
 
 - (void)testNow
@@ -176,7 +176,7 @@
     // Create the NSDates
     NSDate *yearsAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [yearsAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"Now", @"")], @"Failed Now");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"Now", @"")], @"Failed Now");
 }
 
 - (void)testZero
@@ -187,7 +187,7 @@
     // Create the NSDates
     NSDate *yearsAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [yearsAgo timeSince];
-    NSAssert([timeSince isEqualToString:NSLocalizedString(@"Now", @"")], @"Failed Now");
+    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"Now", @"")], @"Failed Now");
 }
 
 @end
