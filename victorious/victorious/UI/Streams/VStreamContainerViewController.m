@@ -10,8 +10,6 @@
 
 #import "VLoginViewController.h"
 
-#import "VHashTagStreamViewController.h"
-
 #import "VCameraViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VObjectManager+ContentCreation.h"
