@@ -73,6 +73,11 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
+static const CGFloat kExperienceEnhancerShadowRadius = 3.0f;
+static const CGFloat kExperienceEnhancerShadowOffsetY = -3.0f;
+static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
+static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -315,7 +320,11 @@
     };
     
     self.experienceEnhancerBar.actionItems = @[baconEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
-    
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, kExperienceEnhancerShadowOffsetY);
+    self.experienceEnhancerBar.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.experienceEnhancerBar.layer.shadowRadius = kExperienceEnhancerShadowRadius;
+    self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
+    self.experienceEnhancerBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.experienceEnhancerBar.bounds, -kExperienceEnhancerShadowWidthOverdraw, 0)].CGPath;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
@@ -938,6 +947,9 @@
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     
     self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -3 * (1-layout.percentToShowBottomBar));
+    self.experienceEnhancerBar.layer.shadowRadius = ((1 -layout.percentToShowBottomBar) * 3.0f);
+    NSLog(@"%f", layout.percentToShowBottomBar);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
