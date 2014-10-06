@@ -24,7 +24,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.marquee = [[VMarqueeController alloc] init];
+    self.marquee = [[VMarqueeController alloc] initWithStream:nil];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 

@@ -32,6 +32,7 @@
 @property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
 @property (nonatomic, readonly) NSTimer *autoScrollTimer;///<The timer in control of auto scroll
 
+- (instancetype)initWithStream:(VStream *)stream;
 - (void)disableTimer;
 - (void)enableTimer;
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
