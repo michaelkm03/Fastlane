@@ -32,7 +32,7 @@
 - (void)testYearsAgo
 {
     // The time interval
-    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 365 * 3.1);//3.1 years ago - 1 second for the delay between calls
+    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 365 * 3.1);//3.1 years ago - extra bit for the delay between calls
     
     // Create the NSDates
     NSDate *yearsAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
