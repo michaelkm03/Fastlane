@@ -837,7 +837,7 @@
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
-                                                  placeholderImage:nil
+                                                  placeholderImage:self.placeholderImage?:nil
                                                            success:nil
                                                            failure:nil];
                 self.contentCell = imageCell;

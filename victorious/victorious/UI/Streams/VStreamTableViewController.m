@@ -294,6 +294,10 @@
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    
+    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+    
     UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
     contentNav.navigationBarHidden = YES;
     [self presentViewController:contentNav
