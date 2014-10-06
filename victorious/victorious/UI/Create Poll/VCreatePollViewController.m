@@ -363,32 +363,7 @@ static char KVOContext;
                                            answer2Text:self.rightAnswerTextView.text
                                              media1Url:self.firstMediaURL
                                              media2Url:self.secondMediaURL
-                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
-    {
-        if (error)
-        {
-            NSLog(@"%@", error);
-            
-            if (kVStillTranscodingError == error.code)
-            {
-                UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                     message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                    delegate:nil
-                                                           cancelButtonTitle:nil
-                                                           otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                [alert show];
-            }
-            else
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                                message:error.localizedDescription
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                [alert show];
-            }
-        }
-    }];
+                                            completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];

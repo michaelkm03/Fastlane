@@ -720,120 +720,78 @@ static const CGFloat kShareMargin = 34.0f;
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
                                            completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
-     {
-         if (error)
-         {
-             VLog(@"Failed with error: %@", error);
-             
-             if (kVStillTranscodingError == error.code)
+    {
+        NSDictionary *responseJSON = nil;
+        @try
+        {
+            responseJSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+        }
+        @catch (NSException *exception)
+        {
+        }
+        
+        if (![responseJSON isKindOfClass:[NSDictionary class]])
+        {
+            return;
+        }
+        
+        NSInteger sequenceId = [responseJSON[kVPayloadKey][@"sequence_id"] integerValue];
+        
+        NSString  *analyticsString;
+        if ([self.mediaURL v_hasVideoExtension])
+        {
+            analyticsString = [NSString stringWithFormat:@"Published video via"];
+        }
+        else
+        {
+            switch (self.captionType)
+            {
+                case VCaptionTypeNormal:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
+                    break;
+                case VCaptionTypeMeme:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
+                    break;
+                case VCaptionTypeQuote:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
+                    break;
+            }
+            
+        }
+        
+        if (facebookSelected)
+        {
+            [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
+                                                        accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                       successBlock:nil
+                                                          failBlock:^(NSOperation *operation, NSError *error)
              {
-                 UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                      message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                     delegate:nil
-                                                            cancelButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
-             }
-             else if (error.code == kVMediaAlreadyCreatedError)
-             {
-                 UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
-                                                                      message:NSLocalizedString(@"DuplicateVideoBody", @"")
-                                                                     delegate:nil
-                                                            cancelButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
-             }
-             else
-             {
-                 UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                                      message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                                     delegate:nil
-                                                            cancelButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
-             }
-         }
-         else
-         {
-             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
-                                                                  message:NSLocalizedString(@"PublishSucceededDetail", @"")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-             
-             NSDictionary *responseJSON = nil;
-             @try
-             {
-                 responseJSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-             }
-             @catch (NSException *exception)
-             {
-             }
-             
-             if (![responseJSON isKindOfClass:[NSDictionary class]])
-             {
-                 return;
-             }
-             
-             NSInteger sequenceId = [responseJSON[kVPayloadKey][@"sequence_id"] integerValue];
-             
-             NSString  *analyticsString;
-             if ([self.mediaURL v_hasVideoExtension])
-             {
-                 analyticsString = [NSString stringWithFormat:@"Published video via"];
-             }
-             else
-             {
-                 switch (self.captionType)
-                 {
-                     case VCaptionTypeNormal:
-                         analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
-                         break;
-                     case VCaptionTypeMeme:
-                         analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
-                         break;
-                     case VCaptionTypeQuote:
-                         analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
-                         break;
-                 }
-                 
-             }
-             
-             if (facebookSelected)
-             {
-                 [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
-                                                             accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                            successBlock:nil
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-                  {
-                      VLog(@"Failed with error: %@", error);
-                  }];
-                 
-                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
-                                                                              action:nil
-                                                                               label:nil
-                                                                               value:nil];
-             }
-             
-             if (twitterSelected)
-             {
-                 [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
-                                                             accessToken:[VTwitterManager sharedManager].oauthToken
-                                                                  secret:[VTwitterManager sharedManager].secret
-                                                            successBlock:nil
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-                 {
-                     VLog(@"Failed with error: %@", error);
-                 }];
-                 
-                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
-                                                                              action:nil
-                                                                               label:nil
-                                                                               value:nil];
-             }
-         }
-     }];
+                 VLog(@"Failed with error: %@", error);
+             }];
+            
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+        }
+        
+        if (twitterSelected)
+        {
+            [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
+                                                        accessToken:[VTwitterManager sharedManager].oauthToken
+                                                             secret:[VTwitterManager sharedManager].secret
+                                                       successBlock:nil
+                                                          failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed with error: %@", error);
+            }];
+            
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+        }
+    }];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
                                                                  action:@"Post Content"
