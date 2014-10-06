@@ -951,7 +951,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
     self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -3 * (1-layout.percentToShowBottomBar));
     self.experienceEnhancerBar.layer.shadowRadius = ((1 -layout.percentToShowBottomBar) * 3.0f);
-    NSLog(@"%f", layout.percentToShowBottomBar);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
