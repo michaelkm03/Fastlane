@@ -37,7 +37,12 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     [super viewDidLoad];
     
     [self registerCells];
+    
+    [self refresh];
+}
 
+- (void)refresh
+{
     self.trendingTags = @[ @"#Tag1", @"#AnotherTag2", @"#VaryingLengthsOfTag3", @"#Tag4", @"#TTTag5" ];
     [self.tableView reloadData];
 }

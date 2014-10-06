@@ -2943,6 +2943,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="wTI-zv-URY" secondAttribute="trailing" id="0Iw-Zb-ko6"/>
                             <constraint firstItem="MQI-Ex-j8c" firstAttribute="top" secondItem="7kF-3a-gQ1" secondAttribute="top" id="1He-TR-5br"/>
@@ -2977,7 +2978,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="39p-Uo-m0a">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="454"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <connections>
                             <outlet property="dataSource" destination="yE1-GE-ZwB" id="jUm-sn-dRc"/>
                             <outlet property="delegate" destination="yE1-GE-ZwB" id="Bca-TV-eWV"/>

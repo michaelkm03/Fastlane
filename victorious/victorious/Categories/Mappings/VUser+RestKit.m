@@ -31,6 +31,7 @@
                                   @"token_updated_at" : VSelectorName(tokenUpdatedAt),
                                   @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
                                   @"status" : VSelectorName(status),
+                                  @"following" : VSelectorName(isFollowing),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

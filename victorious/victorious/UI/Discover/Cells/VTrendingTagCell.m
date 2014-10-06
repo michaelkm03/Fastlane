@@ -7,6 +7,7 @@
 //
 
 #import "VTrendingTagCell.h"
+#import "VThemeManager.h"
 
 @interface VTrendingTagCell()
 
@@ -22,6 +23,14 @@
 {
     self.hashTagTextView.contentInset = UIEdgeInsetsMake( -4, 8, 0, 0 );
     self.addNewButton.layer.cornerRadius = 3;
+    
+    [self applyTheme];
+}
+
+- (void)applyTheme
+{
+    self.hashTagTextView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.addNewButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -8,6 +8,8 @@
 
 #import "VSuggestedPeople.h"
 #import "VSuggestedPersonCollectionViewCell.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
 
 static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonCollectionViewCell";
 
@@ -25,8 +27,6 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     self = [super init];
     if (self)
     {
-        self.suggestedPeople = @[ @"Michael", @"Josh", @"Lawrence", @"Will", @"Patrick" ];
-        
         self.collectionView = collectionView;
     }
     return self;
@@ -36,6 +36,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 {
     _collectionView = collectionView;
     [self configureCollectionView:self.collectionView];
+    [self refresh];
 }
 
 - (void)configureCollectionView:(UICollectionView *)collectionView
@@ -44,6 +45,35 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView reloadData];
+}
+
+- (void)usersDidLoad:(NSArray *)users
+{
+    NSMutableArray *suggestedUsersData = [[NSMutableArray alloc] init];
+    for ( VUser *user in users )
+    {
+        VSuggestedPersonData *data = [[VSuggestedPersonData alloc] init];
+        data.isMainUserFollowing = user.isFollowing.boolValue;
+        data.username = user.name;
+        data.numberOfFollowers = arc4random() % 1000;
+        data.remoteId = user.remoteId.integerValue;
+        data.pictureUrl = user.pictureUrl;
+        [suggestedUsersData addObject:data];
+    }
+    self.suggestedPeople = [NSArray arrayWithArray:suggestedUsersData];
+    [self.collectionView reloadData];
+}
+
+- (void)refresh
+{
+    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self usersDidLoad:resultObjects];
+     }
+                                                                   failBlock:^(NSOperation *operation, NSError *error)
+     {
+         
+     }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -56,6 +86,8 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
+    VSuggestedPersonData *suggestPersonData = self.suggestedPeople[ indexPath.row ];
+    cell.data = suggestPersonData;
     return cell;
 }
 

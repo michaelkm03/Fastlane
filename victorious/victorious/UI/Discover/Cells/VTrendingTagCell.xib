@@ -14,22 +14,24 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmT-7N-OT2">
-                        <rect key="frame" x="275" y="6" width="28" height="28"/>
+                        <rect key="frame" x="275" y="0.0" width="28" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="28" id="wcU-bL-5yy"/>
+                            <constraint firstAttribute="height" constant="28" id="bz8-Sz-3Fp"/>
+                            <constraint firstAttribute="width" constant="28" id="ggJ-hs-Z22"/>
                         </constraints>
                         <state key="normal" image="btnAddTag">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="#hashtag" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSa-4e-2hz">
-                        <rect key="frame" x="17" y="6" width="245" height="28"/>
+                        <rect key="frame" x="17" y="0.0" width="245" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="245" id="VDy-vL-PAa"/>
+                            <constraint firstAttribute="width" constant="245" id="A89-H1-Nn6"/>
+                            <constraint firstAttribute="height" constant="28" id="GYs-em-jsa"/>
                         </constraints>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -38,19 +40,17 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="jSa-4e-2hz" secondAttribute="bottom" constant="5" id="3SY-qM-SHf"/>
-                    <constraint firstItem="tmT-7N-OT2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="8F6-Bl-QWJ"/>
-                    <constraint firstItem="jSa-4e-2hz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="NSp-Gm-UGC"/>
-                    <constraint firstAttribute="trailing" secondItem="tmT-7N-OT2" secondAttribute="trailing" constant="17" id="Yzt-aE-OKp"/>
-                    <constraint firstAttribute="bottom" secondItem="tmT-7N-OT2" secondAttribute="bottom" constant="5" id="bhO-mU-lN6"/>
-                    <constraint firstItem="jSa-4e-2hz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="kZx-U0-peu"/>
+                    <constraint firstItem="jSa-4e-2hz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="fwp-A2-8Fc"/>
+                    <constraint firstItem="tmT-7N-OT2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="isb-Fe-B8X"/>
+                    <constraint firstItem="jSa-4e-2hz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lpb-lD-gWO"/>
+                    <constraint firstItem="tmT-7N-OT2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="275" id="r5n-3A-tH8"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="addNewButton" destination="tmT-7N-OT2" id="Sui-8A-xk9"/>
                 <outlet property="hashTagTextView" destination="jSa-4e-2hz" id="8GL-q8-8Yi"/>
-                <outlet property="widthConstraint" destination="VDy-vL-PAa" id="eNx-Ef-ZLq"/>
+                <outlet property="widthConstraint" destination="A89-H1-Nn6" id="Ptc-Zh-ykI"/>
             </connections>
         </tableViewCell>
     </objects>

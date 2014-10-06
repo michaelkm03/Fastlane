@@ -34,6 +34,7 @@
 @dynamic conversation;
 @dynamic followers;
 @dynamic following;
+@dynamic isFollowing;
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;

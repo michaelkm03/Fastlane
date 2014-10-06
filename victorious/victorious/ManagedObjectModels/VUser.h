@@ -36,6 +36,7 @@
 @property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
 @property (nonatomic, retain) NSString* status;
+@property (nonatomic, retain) NSNumber* isFollowing;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)

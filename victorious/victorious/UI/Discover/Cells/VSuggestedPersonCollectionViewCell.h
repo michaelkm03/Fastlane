@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@interface VSuggestedPersonData : NSObject
+
+@property (nonatomic, assign) NSInteger remoteId;
+@property (nonatomic, assign) NSUInteger numberOfFollowers;
+@property (nonatomic, assign) BOOL isMainUserFollowing;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *pictureUrl;
+
+@end
+
 @interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, assign) BOOL isFollowed;
+@property (nonatomic, assign) VSuggestedPersonData *data;
 
 + (UIImage *)followedImage;
 + (UIImage *)followImage;

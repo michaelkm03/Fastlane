@@ -1,4 +1,4 @@
-//
+    //
 //  VSuggestedPersonCollectionViewCell.m
 //  victorious
 //
@@ -7,11 +7,18 @@
 //
 
 #import "VSuggestedPersonCollectionViewCell.h"
+#import "VThemeManager.h"
+#import "VDefaultProfileImageView.h"
+#import "VFollowersTextFormatter.h"
+
+@implementation VSuggestedPersonData
+
+@end
 
 @interface VSuggestedPersonCollectionViewCell()
 
 @property (nonatomic, weak) IBOutlet UIButton *followButton;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
@@ -25,7 +32,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      followedImage = [UIImage imageNamed:@"followedIcon"];
+                      followedImage = [UIImage imageNamed:@"folllowedIcon"];
                   });
     return followedImage;
 }
@@ -36,7 +43,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      followImage = [UIImage imageNamed:@"followedIcon"];
+                      followImage = [UIImage imageNamed:@"folllowIcon"];
                   });
     return followImage;
 }
@@ -47,13 +54,50 @@
     
     CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
     self.profileImageView.layer.cornerRadius = radius;
+    
+    [self applyTheme];
 }
 
-- (void)setIsFollowed:(BOOL)isFollowed
+- (void)applyTheme
 {
-    _isFollowed = isFollowed;
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
+}
+
+- (void)setData:(VSuggestedPersonData *)data
+{
+    _data = data;
     
-    if ( self.isFollowed )
+    if ( _data == nil )
+    {
+        [self clearData];
+    }
+    else
+    {
+        [self populateData];
+    }
+}
+
+- (void)clearData
+{
+    self.usernameLabel.text = nil;
+    self.descriptionLabel.text = nil;
+    [self.profileImageView setImage:nil];
+    [self.followButton setImage:[VSuggestedPersonCollectionViewCell followImage] forState:UIControlStateNormal];
+}
+
+- (void)populateData
+{
+    self.descriptionLabel.text = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:self.data.numberOfFollowers];
+    
+    self.usernameLabel.text = self.data.username;
+    
+    if ( _data.pictureUrl != nil )
+    {
+        [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.data.pictureUrl]];
+    }
+    
+    if ( self.data.isMainUserFollowing )
     {
         [self.followButton setImage:[VSuggestedPersonCollectionViewCell followedImage] forState:UIControlStateNormal];
     }
@@ -65,14 +109,7 @@
 
 - (IBAction)onFollow:(id)sender
 {
-    if ( self.isFollowed )
-    {
-        //[self.delegate unfollowUser:user];
-    }
-    else
-    {
-        //[self.delegate followUser:user];
-    }
+    //[self.delegate followUser:user];
 }
 
 @end
