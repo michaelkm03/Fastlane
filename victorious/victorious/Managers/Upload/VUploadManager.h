@@ -91,6 +91,13 @@ extern NSString * const VUploadManagerErrorUserInfoKey; ///< An NSError object e
 - (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray /* VUploadTaskInformation */ *tasks))completion;
 
 /**
+ Attempts to cancel an in-progress upload task. If the task
+ is not currently in progress, it will be removed from
+ the queue.
+ */
+- (void)cancelUploadTask:(VUploadTaskInformation *)uploadTask;
+
+/**
  Returns YES if the task is being uploaded.
  */
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;

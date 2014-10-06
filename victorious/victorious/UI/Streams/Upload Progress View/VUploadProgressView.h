@@ -13,6 +13,7 @@
 typedef NS_ENUM(NSInteger, VUploadProgressViewState)
 {
     VUploadProgressViewStateInProgress,
+    VUploadProgressViewStateCancelling,
     VUploadProgressViewStateFailed,
     VUploadProgressViewStateFinalizing,
     VUploadProgressViewStateFinished,

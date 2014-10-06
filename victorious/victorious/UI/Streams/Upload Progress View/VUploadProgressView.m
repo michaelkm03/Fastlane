@@ -118,6 +118,11 @@ static const NSTimeInterval kAnimationDuration = 0.1;
             self.uploadingIcon.hidden = NO;
             break;
             
+        case VUploadProgressViewStateCancelling:
+            self.titleLabel.text = NSLocalizedString(@"Cancelling...", @"");
+            self.uploadingIcon.hidden = NO;
+            break;
+            
         case VUploadProgressViewStateFinalizing:
             self.titleLabel.text = NSLocalizedString(@"UploadFinalizing", @"");
             self.finalizingIcon.hidden = NO;

@@ -205,6 +205,21 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     }
 }
 
+- (void)cancelUploadTask:(VUploadTaskInformation *)uploadTask
+{
+    dispatch_async(self.sessionQueue, ^(void)
+    {
+        for (NSURLSessionTask *sessionTask in [self.taskInformationBySessionTask keyEnumerator])
+        {
+            if ([[self.taskInformationBySessionTask objectForKey:sessionTask] isEqual:uploadTask])
+            {
+                [sessionTask cancel];
+                break;
+            }
+        }
+    });
+}
+
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task
 {
     if (!task)
@@ -386,7 +401,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
         NSData *data = [self.responseData objectForKey:task];
         
         if (data)
@@ -422,6 +436,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             }
         }
         
+        VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
         if (completionBlock)
         {
             // An intentional exception to the "all callbacks made on self.callbackQueue" rule

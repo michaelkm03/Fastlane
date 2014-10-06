@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VUploadManager *uploadManager;
 @property (nonatomic, strong) VUploadTaskInformation *uploadTask;
 @property (nonatomic, strong) NSURL *bodyFileURL;
+@property (nonatomic) BOOL urlSessionHasBeenInitialized;
 
 @end
 
@@ -35,6 +36,7 @@
 - (void)setUp
 {
     [super setUp];
+    self.urlSessionHasBeenInitialized = NO;
     self.mockURLSession = [OCMockObject niceMockForClass:[NSURLSession class]];
     self.sessionWithConfigurationImp = [NSURLSession v_swizzleClassMethod:@selector(sessionWithConfiguration:delegate:delegateQueue:)
                                                                 withBlock:^(id me, NSURLSessionConfiguration *configuration, id<NSURLSessionDelegate> delegate, NSOperationQueue *queue)
@@ -51,6 +53,7 @@
         {
             completion(@[], @[], @[]);
         }
+        self.urlSessionHasBeenInitialized = YES;
     }] getTasksWithCompletionHandler:OCMOCK_ANY];
     
     self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
@@ -139,6 +142,22 @@
     [async waitForSignal:5.0];
     
     [[NSNotificationCenter defaultCenter] removeObserver:observer];
+}
+
+- (void)testCancel
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    [[[self.mockSessionTask expect] andDo:^(NSInvocation *invocation)
+    {
+        [async signal];
+    }] cancel];
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    [async waitForSignal:5.0 withSignalBlock:^(void)
+    {
+        return self.urlSessionHasBeenInitialized;
+    }];
+    [self.uploadManager cancelUploadTask:self.uploadTask];
+    [async waitForSignal:5.0];
 }
 
 @end

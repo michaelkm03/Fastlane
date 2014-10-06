@@ -160,6 +160,7 @@
 "UploadCancelAreYouSure" = "Are you sure you want to cancel this upload?";
 "YesCancelUpload"       =   "Yes, cancel this upload";
 "NoKeepUploading"       =   "No, keep uploading";
+"Cancelling..."         =   "Cancelling...";
 
 "RefreshError"          =   "Unable to refresh.";
 

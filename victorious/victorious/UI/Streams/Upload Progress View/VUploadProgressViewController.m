@@ -170,7 +170,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                        destructiveButtonTitle:NSLocalizedString(@"YesCancelUpload", @"")
                                                           onDestructiveButton:^(void)
             {
-                // TODO: cancel upload
+                uploadProgressView.state = VUploadProgressViewStateCancelling;
+                [self.uploadManager cancelUploadTask:uploadProgressView.uploadTask];
             }
                                                    otherButtonTitlesAndBlocks:nil];
             [actionSheet showInView:self.parentViewController.view];
@@ -206,7 +207,15 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     {
         if ([uploadProgressView.uploadTask isEqual:notification.object])
         {
-            uploadProgressView.state = VUploadProgressViewStateFailed;
+            NSError *error = notification.userInfo[VUploadManagerErrorUserInfoKey];
+            if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
+            {
+                [self removeUpload:uploadProgressView animated:YES];
+            }
+            else
+            {
+                uploadProgressView.state = VUploadProgressViewStateFailed;
+            }
             break;
         }
     }
