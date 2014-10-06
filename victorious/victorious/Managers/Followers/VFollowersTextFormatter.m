@@ -28,7 +28,6 @@
     {
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         formatter.numberStyle = NSNumberFormatterDecimalStyle;
-        formatter.maximumFractionDigits = 1;
         
         if ( numFollowers == 1 )
         {
@@ -38,8 +37,10 @@
         }
         else if ( numFollowers >= 1000 )
         {
+            formatter.maximumFractionDigits = 1;
+            formatter.minimumFractionDigits = 1;
             NSString *format = NSLocalizedString( @"SuggestedFollowersK", nil);
-            NSNumber *number = [NSNumber numberWithUnsignedInteger:numFollowers / 1000];
+            NSNumber *number = [NSNumber numberWithFloat:(CGFloat)numFollowers / 1000.0f];
             return [NSString stringWithFormat:format, [formatter stringFromNumber:number]];
         }
         else
