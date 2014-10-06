@@ -400,13 +400,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
-    
-    self.inputAccessoryView.alpha = 0.0f;
-    [UIView animateWithDuration:0.2f
-                     animations:^
-     {
-         self.inputAccessoryView.alpha = 1.0f;
-     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -429,20 +422,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     self.contentCollectionView.delegate = nil;
-    
-    [self.view.superview endEditing:YES];
-    
-    [UIView animateWithDuration:0.2f
-                     animations:^
-     {
-         self.inputAccessoryView.alpha = 0.0f;
-     }];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.inputAccessoryView removeFromSuperview];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -471,20 +450,10 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
-        
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-             usingSpringWithDamping:1.0f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-#warning There are some ugly UI bugs when the user is scrolled to the bottom and then dismisses the keyboard. This will be fixed when moving the content out of the collectionview.
-            VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-//            layout.contentInsets = UIEdgeInsetsMake(0, 0, -newBottomKeyboardBarToContainerConstraintHeight, 0);
-            [self.contentCollectionView.collectionViewLayout invalidateLayout];
-        }
-                         completion:nil];
+    }
+    else if ([notification.name isEqualToString:UIKeyboardDidChangeFrameNotification])
+    {
+        self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame), 0);
     }
 }
 
@@ -1007,7 +976,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionAllComments:
         {
             CGSize allCommentsHandleSize = (self.viewModel.commentCount == 0) ? CGSizeZero :[VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-//            ((VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout).allCommentsHandleBottomInset = allCommentsHandleSize.height;
             return allCommentsHandleSize;
         }
         case VContentViewSectionCount:
