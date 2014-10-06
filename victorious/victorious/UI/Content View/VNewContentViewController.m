@@ -276,7 +276,45 @@
     winEnhancer.icon = [UIImage imageNamed:@"eb_win"];
     winEnhancer.labelText = @"999";
     
-    self.experienceEnhancerBar.actionItems = @[baconEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
+    VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
+    tomatoEnhancer.icon = [UIImage imageNamed:@"Tomato"];
+    tomatoEnhancer.labelText = @"1";
+    tomatoEnhancer.selectionBlock = ^(void)
+    {
+        NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < 17; i++)
+        {
+            NSString *tomatoImage = [NSString stringWithFormat:@"Tomato%li", (long)i];
+            [tomatoSequence addObject:[[UIImage imageNamed:tomatoImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        }
+        
+        UIImageView *tomatoAnimation = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+        tomatoAnimation.tintColor = [UIColor redColor];
+        tomatoAnimation.image = [UIImage imageNamed:@"Tomato0"];
+        tomatoAnimation.animationImages = tomatoSequence;
+        tomatoAnimation.animationDuration = 1.0f;
+        tomatoAnimation.animationRepeatCount = 1.0f;
+        tomatoAnimation.center = [self.view convertPoint:self.experienceEnhancerBar.center fromView:self.experienceEnhancerBar];
+        [self.view addSubview:tomatoAnimation];
+        [UIView animateWithDuration:1.5f
+                         animations:^
+         {
+
+             CGPoint contentCenter = [self.view convertPoint:self.contentCell.center fromView:self.contentCell];
+             tomatoAnimation.center = contentCenter;
+         }
+         completion:^(BOOL finished)
+        {
+             [tomatoAnimation startAnimating];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [tomatoAnimation removeFromSuperview];
+            });
+
+         }];
+    };
+    
+    self.experienceEnhancerBar.actionItems = @[baconEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -978,9 +1016,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-//    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
-    
-//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -1007,7 +1043,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
