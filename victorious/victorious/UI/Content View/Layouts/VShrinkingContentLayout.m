@@ -205,7 +205,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
             if (indexPath.row == 0)
             {
                 layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                                CGRectGetHeight(self.collectionView.bounds) - self.allCommentsHandleBottomInset + self.allCommentsHandleSize.height - self.collectionView.contentInset.bottom,
+                                                                CGRectGetHeight(self.collectionView.bounds) - self.allCommentsHandleBottomInset + self.allCommentsHandleSize.height - self.contentInsets.bottom,
                                                                 CGRectGetWidth(self.collectionView.bounds),
                                                                 [self sizeForCommentIndexPath:indexPath].height);
             }
@@ -252,7 +252,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
             break;
         case VContentViewSectionAllComments:
             layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                                    CGRectGetHeight(self.collectionView.bounds) - self.allCommentsHandleBottomInset - self.collectionView.contentInset.bottom,
+                                                                    CGRectGetHeight(self.collectionView.bounds) - self.allCommentsHandleBottomInset - self.contentInsets.bottom,
                                                                     CGRectGetWidth(self.collectionView.bounds),
                                                                     self.allCommentsHandleSize.height);
             break;
