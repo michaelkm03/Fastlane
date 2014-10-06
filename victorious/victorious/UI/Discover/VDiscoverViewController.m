@@ -11,16 +11,26 @@
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 
-static NSString * const kSuggestedPeopleIdentifier  = @"VSuggestedPeopleCell";
-static NSString * const kTrendingTagIdentifier      = @"VTrendingTagCell";
+static NSString * const kSuggestedPeopleIdentifier      = @"VSuggestedPeopleCell";
+static NSString * const kTrendingTagIdentifier          = @"VTrendingTagCell";
+static const NSUInteger kNumberOfSectionsInTableView    = 2;
 
 @interface VDiscoverViewController ()
 
 @property (nonatomic, strong) NSArray *trendingTags;
+@property (nonatomic, strong) NSArray *sectionHeaders;
 
 @end
 
 @implementation VDiscoverViewController
+
+- (void)loadView
+{
+    [super loadView];
+    
+    // Call this here to ensure that header views are ready by the time the tableview asks for them
+    [self createSectionHeaderViews];
+}
 
 - (void)viewDidLoad
 {
@@ -28,7 +38,7 @@ static NSString * const kTrendingTagIdentifier      = @"VTrendingTagCell";
     
     [self registerCells];
 
-    self.trendingTags = @[ @"#Tag1", @"#Tag2", @"#Tag3", @"#Tag4", @"#Tag5" ];
+    self.trendingTags = @[ @"#Tag1", @"#AnotherTag2", @"#VaryingLengthsOfTag3", @"#Tag4", @"#TTTag5" ];
     [self.tableView reloadData];
 }
 
@@ -43,11 +53,22 @@ static NSString * const kTrendingTagIdentifier      = @"VTrendingTagCell";
     [self.tableView registerNib:[UINib nibWithNibName:kSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kSuggestedPeopleIdentifier];
 }
 
+- (void)createSectionHeaderViews
+{
+    NSString *title0 = NSLocalizedString( @"Suggested People", @"" );
+    VDiscoverTableHeaderViewController *section0Header = [[VDiscoverTableHeaderViewController alloc] initWithSectionTitle:title0];
+    
+    NSString *title1 = NSLocalizedString( @"Trending Tags", @"" );
+    VDiscoverTableHeaderViewController *section1Header = [[VDiscoverTableHeaderViewController alloc] initWithSectionTitle:title1];
+    
+    self.sectionHeaders = @[ section0Header.view, section1Header.view ];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return kNumberOfSectionsInTableView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -59,7 +80,9 @@ static NSString * const kTrendingTagIdentifier      = @"VTrendingTagCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30;
+    UIView *headerView = self.sectionHeaders[ section ];
+    NSAssert( headerView != nil, @"There was a problem with initialization of header views.  See 'createSectionHeaderViews' method." );
+    return CGRectGetHeight( headerView.frame );
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -69,9 +92,9 @@ static NSString * const kTrendingTagIdentifier      = @"VTrendingTagCell";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionTitle = section == 0 ? @"Suggested People" : @"Trending Tags";
-    VDiscoverTableHeaderViewController *titleViewController = [[VDiscoverTableHeaderViewController alloc] initWithSectionTitle:sectionTitle];
-    return titleViewController.view;
+    UIView *headerView = self.sectionHeaders[ section ];
+    NSAssert( headerView != nil, @"There was a problem with initialization of header views.  See 'createSectionHeaderViews' method." );
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

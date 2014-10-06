@@ -10,7 +10,9 @@
 
 @interface VTrendingTagCell()
 
-@property (nonatomic, strong) IBOutlet UILabel *hashTagLabel;
+@property (nonatomic, strong) IBOutlet UITextView *hashTagTextView;
+@property (nonatomic, strong) IBOutlet UIButton *addNewButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
 
 @end
 
@@ -18,6 +20,8 @@
 
 - (void)awakeFromNib
 {
+    self.hashTagTextView.contentInset = UIEdgeInsetsMake( -4, 8, 0, 0 );
+    self.addNewButton.layer.cornerRadius = 3;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -33,7 +37,12 @@
 - (void)setHashTag:(NSString *)hashTag
 {
     _hashTag = hashTag;
-    self.hashTagLabel.text = hashTag;
+    self.hashTagTextView.selectable = YES;
+    [self.hashTagTextView setText:hashTag];
+    self.hashTagTextView.selectable = NO;
+    
+    CGSize targetSize = [self.hashTagTextView sizeThatFits:self.hashTagTextView.frame.size];
+    self.widthConstraint.constant = targetSize.width + 4;
 }
 
 @end

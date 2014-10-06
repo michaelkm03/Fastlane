@@ -11,6 +11,7 @@
 @interface VDiscoverContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIButton *createButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 
 @end
 
@@ -25,6 +26,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // For now, search is hidden.  Uncomment this when the time comes to implement it.
+    self.searchBarHeightConstraint.constant = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated

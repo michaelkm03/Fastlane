@@ -10,4 +10,11 @@
 
 @interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, assign) BOOL isFollowed;
+
++ (UIImage *)followedImage;
++ (UIImage *)followImage;
+
+- (IBAction)onFollow:(id)sender;
+
 @end

@@ -2867,7 +2867,7 @@
                                     <constraint firstAttribute="height" constant="60" id="Na2-HK-e5j"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DWG-sh-z9W">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DWG-sh-z9W" userLabel="Search Bar Container">
                                 <rect key="frame" x="0.0" y="60" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -2947,7 +2947,7 @@
                             <constraint firstAttribute="trailing" secondItem="wTI-zv-URY" secondAttribute="trailing" id="0Iw-Zb-ko6"/>
                             <constraint firstItem="MQI-Ex-j8c" firstAttribute="top" secondItem="7kF-3a-gQ1" secondAttribute="top" id="1He-TR-5br"/>
                             <constraint firstItem="wTI-zv-URY" firstAttribute="leading" secondItem="7kF-3a-gQ1" secondAttribute="leading" id="9CJ-0A-GAe"/>
-                            <constraint firstItem="wTI-zv-URY" firstAttribute="top" secondItem="DWG-sh-z9W" secondAttribute="bottom" constant="-1" id="AD8-Fb-VgT"/>
+                            <constraint firstItem="wTI-zv-URY" firstAttribute="top" secondItem="DWG-sh-z9W" secondAttribute="bottom" constant="-1" id="BFp-9N-KSd"/>
                             <constraint firstItem="MQI-Ex-j8c" firstAttribute="leading" secondItem="7kF-3a-gQ1" secondAttribute="leading" id="Rgd-aQ-yZ1"/>
                             <constraint firstItem="Td2-in-KmZ" firstAttribute="top" secondItem="wTI-zv-URY" secondAttribute="bottom" id="Zdo-xc-1ps"/>
                             <constraint firstAttribute="trailing" secondItem="DWG-sh-z9W" secondAttribute="trailing" id="iNq-EZ-2wE"/>
@@ -2963,6 +2963,7 @@
                         <outlet property="headerLabel" destination="6n4-V9-ruF" id="NcW-G1-Iey"/>
                         <outlet property="headerView" destination="MQI-Ex-j8c" id="FWc-Va-Ple"/>
                         <outlet property="menuButton" destination="AgG-M4-bp5" id="RIJ-TY-0kl"/>
+                        <outlet property="searchBarHeightConstraint" destination="fcP-OA-zZu" id="j0e-z1-ixZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gE7-MF-9Tg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2972,7 +2973,7 @@
         <!--Discover View Controller-->
         <scene sceneID="6JC-FF-pQG">
             <objects>
-                <tableViewController id="yE1-GE-ZwB" customClass="VDiscoverViewController" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="yE1-GE-ZwB" customClass="VDiscoverViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="39p-Uo-m0a">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="454"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2982,10 +2983,13 @@
                             <outlet property="delegate" destination="yE1-GE-ZwB" id="Bca-TV-eWV"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="th0-mE-phr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3304" y="-2296"/>
+            <point key="canvasLocation" x="-3276" y="-2299"/>
         </scene>
     </scenes>
     <resources>

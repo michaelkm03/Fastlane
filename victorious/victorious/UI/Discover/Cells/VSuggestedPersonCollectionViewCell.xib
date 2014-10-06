@@ -31,10 +31,15 @@
                         <state key="normal" image="folllowIcon">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <state key="highlighted" image="folllowIcon"/>
+                        <connections>
+                            <action selector="onFollow:" destination="S5P-xq-Z0y" eventType="touchUpInside" id="h1i-Lp-gUk"/>
+                        </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rPy-IE-Url">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user-icon" translatesAutoresizingMaskIntoConstraints="NO" id="rPy-IE-Url">
                         <rect key="frame" x="7" y="0.0" width="80" height="80"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.88599694293478259" green="0.88599694293478259" blue="0.88599694293478259" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -51,5 +56,6 @@
     </objects>
     <resources>
         <image name="folllowIcon" width="42" height="27"/>
+        <image name="user-icon" width="51" height="74"/>
     </resources>
 </document>
