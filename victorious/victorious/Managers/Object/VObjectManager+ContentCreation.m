@@ -121,7 +121,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         return;
     }
-    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
 - (void)uploadMediaWithName:(NSString *)name
@@ -199,7 +199,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         return;
     }
-    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node

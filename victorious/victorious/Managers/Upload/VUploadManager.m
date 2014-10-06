@@ -249,6 +249,20 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     return isInProgress;
 }
 
+- (void)removeFromQueue:(VUploadTaskInformation *)taskInformation
+{
+    // TODO: assert that this is being run on self.sessionQueue
+    
+    [self.taskInformation removeObject:taskInformation];
+    [self.taskSerializer saveUploadTasks:self.taskInformation];
+    
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:&error])
+    {
+        VLog(@"Error deleting finished upload body: %@", [error localizedDescription]);
+    }
+}
+
 #pragma mark - Test Mode
 
 #if UPLOAD_MANAGER_TEST_MODE
@@ -413,6 +427,10 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         {
             if (error)
             {
+                if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
+                {
+                    [self removeFromQueue:taskInformation];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
@@ -423,10 +441,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             }
             else
             {
-                [[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:nil];
-                [self.taskInformationBySessionTask removeObjectForKey:task];
-                [self.taskInformation removeObject:taskInformation];
-                [self.taskSerializer saveUploadTasks:self.taskInformation];
+                [self removeFromQueue:taskInformation];
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
@@ -435,6 +450,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 });
             }
         }
+        
+        [self.taskInformationBySessionTask removeObjectForKey:task];
         
         VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
         if (completionBlock)

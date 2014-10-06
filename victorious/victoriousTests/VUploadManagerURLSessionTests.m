@@ -149,7 +149,13 @@
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
     [[[self.mockSessionTask expect] andDo:^(NSInvocation *invocation)
     {
-        [async signal];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void)
+        {
+            [(id)self.uploadManager URLSession:self.mockURLSession
+                                          task:self.mockSessionTask
+                          didCompleteWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil]];
+            [async signal];
+        });
     }] cancel];
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
     [async waitForSignal:5.0 withSignalBlock:^(void)
@@ -158,6 +164,17 @@
     }];
     [self.uploadManager cancelUploadTask:self.uploadTask];
     [async waitForSignal:5.0];
+    
+    [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+    {
+        BOOL containsTask = [tasks containsObject:self.uploadTask];
+        XCTAssertFalse(containsTask);
+        [async signal];
+    }];
+    [async waitForSignal:5.0];
+    
+    BOOL bodyFileStillExists = [[NSFileManager defaultManager] fileExistsAtPath:[self.bodyFileURL path] isDirectory:NULL];
+    XCTAssertFalse(bodyFileStillExists);
 }
 
 @end

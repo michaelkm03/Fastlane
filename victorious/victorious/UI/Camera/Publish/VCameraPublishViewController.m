@@ -815,6 +815,7 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.completion(YES);
     }
+    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
 }
 
 #pragma mark - UITextViewDelegate
