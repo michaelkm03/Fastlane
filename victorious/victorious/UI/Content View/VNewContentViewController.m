@@ -73,8 +73,8 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
-static const CGFloat kExperienceEnhancerShadowRadius = 3.0f;
-static const CGFloat kExperienceEnhancerShadowOffsetY = -3.0f;
+static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
+static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
 static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
 static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
@@ -301,11 +301,13 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         tomatoAnimation.animationRepeatCount = 1.0f;
         tomatoAnimation.center = [self.view convertPoint:self.experienceEnhancerBar.center fromView:self.experienceEnhancerBar];
         [self.view addSubview:tomatoAnimation];
-        [UIView animateWithDuration:1.5f
+        [UIView animateWithDuration:0.5f
                          animations:^
          {
-
-             CGPoint contentCenter = [self.view convertPoint:self.contentCell.center fromView:self.contentCell];
+             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.bounds));
+             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.bounds));
+             CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
+                                                    fromView:self.contentCell];
              tomatoAnimation.center = contentCenter;
          }
          completion:^(BOOL finished)
