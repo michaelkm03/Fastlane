@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VCommentCell"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VCommentCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VCommentCell" id="X3b-iY-v4q" customClass="VCommentCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="256"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X3b-iY-v4q" id="eAW-cc-13j">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Johnny Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
+                        <rect key="frame" x="66" y="14" width="196" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_full" translatesAutoresizingMaskIntoConstraints="NO" id="rxs-Gg-jrR" userLabel="Profile Image View" customClass="VDefaultProfileImageView">
+                        <rect key="frame" x="20" y="10" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="9Mx-40-v5g"/>
+                            <constraint firstAttribute="height" constant="32" id="JuX-73-mNN"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kz3-f7-Kav" userLabel="Profile Image Button">
+                        <rect key="frame" x="14" y="4" width="44" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="RvL-5M-4Vl"/>
+                            <constraint firstAttribute="width" constant="44" id="gi8-GJ-wl5"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="profileImageTapped:" destination="X3b-iY-v4q" eventType="touchUpInside" id="oZZ-Dr-TSr"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-Uh-Qd1">
+                        <rect key="frame" x="286" y="14" width="14" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.27058823529411763" green="0.27058823529411763" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="nnt-e6-nzy">
+                        <rect key="frame" x="270" y="14" width="13" height="13"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gyn-y5-GEV" customClass="VCommentTextAndMediaView">
+                        <rect key="frame" x="66" y="39" width="229" height="205"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="centerY" secondItem="nnt-e6-nzy" secondAttribute="centerY" id="3rf-au-JAw"/>
+                    <constraint firstAttribute="right" secondItem="LIQ-Uh-Qd1" secondAttribute="right" constant="20" id="Df1-hd-8Et"/>
+                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="66" id="Mqd-Tj-Zud"/>
+                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="N5I-mS-ds0"/>
+                    <constraint firstItem="kz3-f7-Kav" firstAttribute="centerX" secondItem="rxs-Gg-jrR" secondAttribute="centerX" id="O91-x4-1Pr"/>
+                    <constraint firstAttribute="bottom" secondItem="Gyn-y5-GEV" secondAttribute="bottom" constant="11" id="PHo-7I-Iy3"/>
+                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="trailing" secondItem="nnt-e6-nzy" secondAttribute="leading" constant="-8" id="YjX-HS-bm6"/>
+                    <constraint firstItem="Gyn-y5-GEV" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="10" id="bWO-9t-7if"/>
+                    <constraint firstItem="kz3-f7-Kav" firstAttribute="centerY" secondItem="rxs-Gg-jrR" secondAttribute="centerY" id="gMn-f5-VtX"/>
+                    <constraint firstItem="nnt-e6-nzy" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="gwe-5S-Xt3"/>
+                    <constraint firstItem="rxs-Gg-jrR" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="20" id="kAY-fC-vS0"/>
+                    <constraint firstItem="rxs-Gg-jrR" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="rQW-bG-E3F"/>
+                    <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="leading" secondItem="nnt-e6-nzy" secondAttribute="trailing" constant="3" id="sWn-Mu-r3J"/>
+                    <constraint firstItem="Gyn-y5-GEV" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="66" id="tbW-yA-scL"/>
+                    <constraint firstAttribute="right" secondItem="Gyn-y5-GEV" secondAttribute="right" constant="25" id="waE-ve-40G"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="commentTextView" destination="Gyn-y5-GEV" id="KQK-A0-OUh"/>
+                <outlet property="profileImageButton" destination="kz3-f7-Kav" id="ghf-p9-uJN"/>
+                <outlet property="profileImageView" destination="rxs-Gg-jrR" id="cu5-Tg-4od"/>
+                <outlet property="timeLabel" destination="LIQ-Uh-Qd1" id="Q7w-f5-Rfk"/>
+                <outlet property="usernameLabel" destination="yUe-8b-fBQ" id="S3a-Gc-AYh"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="StreamDate" width="13" height="13"/>
+        <image name="profile_full" width="80" height="80"/>
+    </resources>
+</document>
