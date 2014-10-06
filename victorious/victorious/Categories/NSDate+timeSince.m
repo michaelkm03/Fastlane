@@ -17,7 +17,7 @@
     NSDateComponents *components = [calendar components:
                                     NSYearCalendarUnit|
                                     NSMonthCalendarUnit|
-                                    NSWeekCalendarUnit|
+                                    NSWeekOfMonthCalendarUnit|
                                     NSDayCalendarUnit|
                                     NSHourCalendarUnit|
                                     NSMinuteCalendarUnit|
@@ -92,14 +92,10 @@
             return [NSString stringWithFormat:NSLocalizedString(@"MinutesAgo", @""), components.minute];
         }
     }
-    else //if (components.second < 5)
+    else
     {
         return NSLocalizedString(@"Now", @"");
     }
-//    else
-//    {
-//        return [NSString stringWithFormat:NSLocalizedString(@"SecondsAgo", @""), components.second];
-//    }
 }
 
 @end
