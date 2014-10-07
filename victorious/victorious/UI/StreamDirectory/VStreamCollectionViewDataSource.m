@@ -73,7 +73,9 @@ static char KVOContext;
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
-    return [NSIndexPath indexPathForRow:[self.stream.streamItems indexOfObject:streamItem] inSection:0];
+    NSInteger section = self.shouldDisplayMarquee ? 1 : 0;
+    NSUInteger index = [self.stream.streamItems indexOfObject:streamItem];
+    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
@@ -134,6 +136,11 @@ static char KVOContext;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (self.shouldDisplayMarquee && section == 0)
+    {
+        return 1;
+    }
+    
     return [self count];
 }
 
@@ -145,6 +152,10 @@ static char KVOContext;
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    if (self.shouldDisplayMarquee)
+    {
+        return 2;
+    }
     return 1;
 }
 

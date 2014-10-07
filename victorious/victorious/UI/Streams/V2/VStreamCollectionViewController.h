@@ -14,6 +14,8 @@
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController
 
+@property (nonatomic, readonly) BOOL shouldDisplayMarquee;
+
 + (instancetype)homeStreamCollection;
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams;
 

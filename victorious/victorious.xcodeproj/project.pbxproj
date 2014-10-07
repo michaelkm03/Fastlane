@@ -314,6 +314,8 @@
 		BE17463619E3658000A92E63 /* VStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE17463119E3658000A92E63 /* VStreamCollectionCell.m */; };
 		BE17463719E3658000A92E63 /* VStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE17463219E3658000A92E63 /* VStreamCollectionCell.xib */; };
 		BE17463819E3658000A92E63 /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE17463419E3658000A92E63 /* VStreamCollectionViewController.m */; };
+		BE17463B19E4A16000A92E63 /* VMarqueeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE17463A19E4A16000A92E63 /* VMarqueeCollectionCell.m */; };
+		BE17463D19E4A18400A92E63 /* VMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE17463C19E4A18400A92E63 /* VMarqueeCollectionCell.xib */; };
 		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
 		BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
@@ -967,6 +969,9 @@
 		BE17463219E3658000A92E63 /* VStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCell.xib; sourceTree = "<group>"; };
 		BE17463319E3658000A92E63 /* VStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewController.h; sourceTree = "<group>"; };
 		BE17463419E3658000A92E63 /* VStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewController.m; sourceTree = "<group>"; };
+		BE17463919E4A16000A92E63 /* VMarqueeCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeCollectionCell.h; sourceTree = "<group>"; };
+		BE17463A19E4A16000A92E63 /* VMarqueeCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeCollectionCell.m; sourceTree = "<group>"; };
+		BE17463C19E4A18400A92E63 /* VMarqueeCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeCollectionCell.xib; sourceTree = "<group>"; };
 		BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
 		BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTabIndicatorView.h; sourceTree = "<group>"; };
@@ -2502,6 +2507,9 @@
 				BE11447A19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib */,
 				BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */,
 				BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */,
+				BE17463919E4A16000A92E63 /* VMarqueeCollectionCell.h */,
+				BE17463A19E4A16000A92E63 /* VMarqueeCollectionCell.m */,
+				BE17463C19E4A18400A92E63 /* VMarqueeCollectionCell.xib */,
 			);
 			path = Marquee;
 			sourceTree = "<group>";
@@ -2677,6 +2685,7 @@
 				0314D4FA19B46B5E00FA363C /* VStreamVideoCell.xib in Resources */,
 				0314D4DD19B46B5E00FA363C /* FindFriendsTableView.xib in Resources */,
 				03C1859319B42CEA00E27D05 /* MuseoSans-500.otf in Resources */,
+				BE17463D19E4A18400A92E63 /* VMarqueeCollectionCell.xib in Resources */,
 				03C185CC19B42FE900E27D05 /* InfoPlist.strings in Resources */,
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
@@ -2997,6 +3006,7 @@
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */,
+				BE17463B19E4A16000A92E63 /* VMarqueeCollectionCell.m in Sources */,
 				0314D49E19B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,

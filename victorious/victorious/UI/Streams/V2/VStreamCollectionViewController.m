@@ -10,10 +10,13 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCollectionCell.h"
+#import "VMarqueeCollectionCell.h"
 
-//View Controllers
+//Controllers
 #import "VCommentsContainerViewController.h"
 #import "VContentViewController.h"
+#import "VUserProfileViewController.h"
+#import "VMarqueeController.h"
 
 //Views
 #import "VNavigationHeaderView.h"
@@ -25,6 +28,7 @@
 
 //Managers
 #import "VObjectManager+Sequence.h"
+#import "VAnalyticsRecorder.h"
 
 //Categories
 #import "UIImage+ImageCreation.h"
@@ -38,8 +42,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
-
+@property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) NSString *headerTitle;
+@property (strong, nonatomic) VMarqueeController *marquee;
+
+@property (nonatomic) BOOL shouldDisplayMarquee;
 
 @end
 
@@ -53,6 +60,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
     homeStream.headerTitle = NSLocalizedString(@"Home", nil);
+    homeStream.shouldDisplayMarquee = YES;
     return homeStream;
 }
 
@@ -61,6 +69,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamCollectionViewController *streamColllection = (VStreamCollectionViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamCollectionStoryboardId];
     
+    streamColllection.defaultStream = stream;
     streamColllection.currentStream = stream;
     streamColllection.allStreams = allStreams;
     
@@ -71,13 +80,18 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
+    [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
+          forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
+    
     UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
     self.navHeaderView.headerText = self.headerTitle ?: self.currentStream.name;
+
+    self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     
     [self refresh:self.refreshControl];
 }
@@ -89,6 +103,76 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.navHeaderView updateUI];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [self.preloadImageCache removeAllObjects];
+}
+
+#pragma mark - Properties
+
+- (NSCache *)preloadImageCache
+{
+    if (!_preloadImageCache)
+    {
+        self.preloadImageCache = [[NSCache alloc] init];
+        self.preloadImageCache.countLimit = 20;
+    }
+    return _preloadImageCache;
+}
+
+- (void)setCurrentStream:(VStream *)currentStream
+{
+    if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
+    {
+        self.streamDataSource.shouldDisplayMarquee =  self.shouldDisplayMarquee;
+    }
+    else
+    {
+        self.streamDataSource.shouldDisplayMarquee = NO;
+    }
+    
+    [super setCurrentStream:currentStream];
+}
+
+#pragma mark - VMarqueeDelegate
+
+- (void)marqueeRefreshedContent:(VMarqueeController *)marquee
+{
+    NSInteger count = self.marquee.streamDataSource.count;
+    
+    if (self.streamDataSource.shouldDisplayMarquee != count)
+    {
+        self.streamDataSource.shouldDisplayMarquee = count;
+    }
+}
+
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+{
+    [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
+- (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+{
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController *vc in self.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
+            fromProfile = YES;
+        }
+    }
+    if (fromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
 
 #pragma mark - UICollectionViewDelegate
 
@@ -165,6 +249,17 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        VMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]
+                                                                                            forIndexPath:indexPath];
+        cell.marquee = self.marquee;
+        CGSize desiredSize = [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        [cell restartAutoScroll];
+        return cell;
+    }
+    
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell;
     
