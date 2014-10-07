@@ -8,15 +8,21 @@
 
 #import "VAsyncTestHelper.h"
 #import "VConstants.h"
+#import "VObjectManager+Login.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
 
 #import <Nocilla/Nocilla.h>
+#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
+
+#undef andReturn // to make Nocilla play well with OCMock
+#undef andDo
 
 @interface VUploadManagerTests : XCTestCase
 
+@property (nonatomic, strong) id objectManagerMock;
 @property (nonatomic, strong) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSURL *bodyFileURL;
 @property (nonatomic, strong) NSURL *inProgressTaskSaveFileURL;
@@ -32,7 +38,11 @@
 - (void)setUp
 {
     [super setUp];
-    self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
+    
+    self.objectManagerMock = [OCMockObject niceMockForClass:[VObjectManager class]];
+    [[[self.objectManagerMock stub] andReturnValue:@(YES)] authorized];
+    
+    self.uploadManager = [[VUploadManager alloc] initWithObjectManager:self.objectManagerMock];
     self.uploadManager.useBackgroundSession = NO;
     
     NSString *taskSaveFilename = [[NSUUID UUID] UUIDString];
@@ -113,11 +123,38 @@
             [async signal];
         }];
     });
+    stubRequest(@"POST", upload2.request.URL.absoluteString).andReturn(200);
+    
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    [async waitForSignal:5.0];
+}
 
+- (void)testCancelQueuedUpload
+{
+    NSString *bodyFilename = [[NSUUID UUID] UUIDString];
+    NSURL *bodyFileURL2 = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
+    NSData *body2 = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
+    [body2 writeToURL:bodyFileURL2 atomically:YES];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example2.com/"]];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:bodyFileURL2 description:nil];
+    
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).withBody(self.body).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
+    {
+        [self.uploadManager enqueueUploadTask:upload2 onComplete:nil];
+        [self.uploadManager cancelUploadTask:upload2];
+    });
+    
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
-        [[LSNocilla sharedInstance] clearStubs];
-        stubRequest(@"POST", upload2.request.URL.absoluteString).andReturn(200);
+        // Wait for half a second to see if the cancelled upload tries to start.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+        {
+            [async signal];
+        });
     }];
     [async waitForSignal:5.0];
 }

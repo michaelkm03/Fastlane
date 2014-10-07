@@ -95,50 +95,68 @@ static inline BOOL isSessionQueue()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        VLog(@"starting url session");
-        if (!self.tasksInProgressSerializer)
+        [self _startURLSessionWithCompletion:^(void)
         {
-            self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
+            if (completion)
+            {
+                dispatch_async(self.callbackQueue, ^(void)
+                {
+                    completion();
+                });
+            }
+        }];
+    });
+}
+
+- (void)_startURLSessionWithCompletion:(void(^)(void))completion
+{
+    NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
+    VLog(@"starting url session");
+    if (!self.tasksInProgressSerializer)
+    {
+        self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
+    }
+    
+    if (!self.tasksPendingSerializer)
+    {
+        self.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForPendingTaskList]];
+    }
+    
+    if (!self.urlSession)
+    {
+        NSArray *savedTasks = [self.tasksInProgressSerializer uploadTasksFromDisk];
+        if (savedTasks)
+        {
+            self.taskInformation = [savedTasks mutableCopy];
+        }
+        else
+        {
+            self.taskInformation = [[NSMutableArray alloc] init];
         }
         
-        if (!self.tasksPendingSerializer)
+        NSArray *pendingTasks = [self.tasksPendingSerializer uploadTasksFromDisk];
+        if (pendingTasks)
         {
-            self.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForPendingTaskList]];
+            self.pendingTaskInformation = [pendingTasks mutableCopy];
+        }
+        else
+        {
+            self.pendingTaskInformation = [[NSMutableArray alloc] init];
         }
         
-        if (!self.urlSession)
+        NSURLSessionConfiguration *sessionConfig;
+        if (self.useBackgroundSession)
         {
-            NSArray *savedTasks = [self.tasksInProgressSerializer uploadTasksFromDisk];
-            if (savedTasks)
-            {
-                self.taskInformation = [savedTasks mutableCopy];
-            }
-            else
-            {
-                self.taskInformation = [[NSMutableArray alloc] init];
-            }
-            
-            NSArray *pendingTasks = [self.tasksPendingSerializer uploadTasksFromDisk];
-            if (pendingTasks)
-            {
-                self.pendingTaskInformation = [pendingTasks mutableCopy];
-            }
-            else
-            {
-                self.pendingTaskInformation = [[NSMutableArray alloc] init];
-            }
-            
-            NSURLSessionConfiguration *sessionConfig;
-            if (self.useBackgroundSession)
-            {
-                sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:kURLSessionIdentifier];
-            }
-            else
-            {
-                sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-            }
-            self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
-            [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
+            sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:kURLSessionIdentifier];
+        }
+        else
+        {
+            sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        }
+        self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
+        [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
+        {
+            dispatch_async(self.sessionQueue, ^(void)
             {
                 VLog(@"getting current tasks: %lu", (unsigned long)uploadTasks.count);
                 // Reconnect in-progress upload tasks with their VUploadTaskInformation instances
@@ -159,21 +177,15 @@ static inline BOOL isSessionQueue()
                 
                 if (completion)
                 {
-                    dispatch_async(self.callbackQueue, ^(void)
-                    {
-                        completion();
-                    });
+                    completion();
                 }
-            }];
-        }
-        else if (completion)
-        {
-            dispatch_async(self.callbackQueue, ^(void)
-            {
-                completion();
             });
-        }
-    });
+        }];
+    }
+    else if (completion)
+    {
+        completion();
+    }
 }
 
 - (BOOL)isYourBackgroundURLSession:(NSString *)backgroundSessionIdentifier
@@ -185,89 +197,89 @@ static inline BOOL isSessionQueue()
 
 - (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
-    [self startURLSessionWithCompletion:^(void)
+    dispatch_async(self.sessionQueue, ^(void)
     {
-        dispatch_async(self.sessionQueue, ^(void)
-        {
-            [self _enqueueUploadTask:uploadTask onComplete:complete];
-        });
-    }];
+        [self _enqueueUploadTask:uploadTask onComplete:complete];
+    });
 }
 
 - (void)_enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
-    if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
+    [self _startURLSessionWithCompletion:^(void)
     {
-        if (complete)
+        if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
         {
-            dispatch_async(self.callbackQueue, ^(void)
+            if (complete)
             {
-                complete(nil, nil, nil, [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil]);
-            });
+                dispatch_async(self.callbackQueue, ^(void)
+                {
+                    complete(nil, nil, nil, [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil]);
+                });
+            }
+            return;
         }
-        return;
-    }
-    
-    if (self.taskInformationBySessionTask.count >= kConcurrentTaskLimit)
-    {
-        [self.pendingTaskInformation addObject:uploadTask];
-        [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+        
+        if (self.taskInformationBySessionTask.count >= kConcurrentTaskLimit)
+        {
+            [self.pendingTaskInformation addObject:uploadTask];
+            [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+            
+            if (complete)
+            {
+                [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
+            }
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
+                                                                object:self
+                                                              userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+        });
+        
+        if ([self.taskInformation containsObject:uploadTask])
+        {
+            [self.taskInformation removeObject:uploadTask];
+        }
+        [self.taskInformation addObject:uploadTask];
+        [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
+        
+        NSMutableURLRequest *request = [uploadTask.request mutableCopy];
+        [self.objectManager updateHTTPHeadersInRequest:request];
+        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+        
+        if (!uploadSessionTask)
+        {
+            NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
+            if (complete)
+            {
+                dispatch_async(self.callbackQueue, ^(void)
+                {
+                   complete(nil, nil, nil, uploadError);
+                });
+            }
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
+                                                                    object:uploadTask
+                                                                  userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
+                                                                             VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+            });
+
+            return;
+        }
         
         if (complete)
         {
-            [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
+           [self.completionBlocks setObject:complete forKey:uploadSessionTask];
         }
-        return;
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                            object:self
-                                                          userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask}];
-    });
-    
-    if ([self.taskInformation containsObject:uploadTask])
-    {
-        [self.taskInformation removeObject:uploadTask];
-    }
-    [self.taskInformation addObject:uploadTask];
-    [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
-    
-    NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-    [self.objectManager updateHTTPHeadersInRequest:request];
-    NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
-    
-    if (!uploadSessionTask)
-    {
-        NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
-        if (complete)
-        {
-            dispatch_async(self.callbackQueue, ^(void)
-            {
-               complete(nil, nil, nil, uploadError);
-            });
-        }
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
-                                                                object:uploadTask
-                                                              userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
-                                                                         VUploadManagerUploadTaskUserInfoKey: uploadTask}];
-        });
-
-        return;
-    }
-    
-    if (complete)
-    {
-       [self.completionBlocks setObject:complete forKey:uploadSessionTask];
-    }
-    [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
-    
-    uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
-    [uploadSessionTask resume];
+        [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+        
+        uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
+        [uploadSessionTask resume];
+    }];
 }
 
 - (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray *tasks))completion
@@ -299,6 +311,11 @@ static inline BOOL isSessionQueue()
                 [sessionTask cancel];
                 break;
             }
+        }
+        if ([self.pendingTaskInformation containsObject:uploadTask])
+        {
+            [self.pendingTaskInformation removeObject:uploadTask];
+            [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
         }
     });
 }
