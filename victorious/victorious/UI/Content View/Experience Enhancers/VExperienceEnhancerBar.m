@@ -131,7 +131,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         [selectedCell.layer removeAllAnimations];
         [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationGrowDuration
                               delay:0.0f
-                            options:kNilOptions
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                          animations:^
          {
              selectedCell.transform = CGAffineTransformMakeScale(kExperienceEnhancerSelectionScale, kExperienceEnhancerSelectionScale);
@@ -139,10 +139,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                          completion:^(BOOL finished)
          {
              [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationDecayDuration
+                                   delay:0.0f
+                                 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                               animations:^
-              {
+             {
                   selectedCell.transform = CGAffineTransformIdentity;
-              }];
+             }
+                              completion:nil];
          }];
     
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
