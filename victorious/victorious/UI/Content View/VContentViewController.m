@@ -826,7 +826,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -925,7 +925,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         if (![VObjectManager sharedManager].authorized)
         {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
             return;
         }
         
@@ -1032,7 +1032,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     

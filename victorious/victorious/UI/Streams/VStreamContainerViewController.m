@@ -152,7 +152,7 @@
     if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)
     {
         [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
     }
     
     [super changedFilterControls:sender];
@@ -204,7 +204,7 @@
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     

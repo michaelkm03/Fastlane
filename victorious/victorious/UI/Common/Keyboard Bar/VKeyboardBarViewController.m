@@ -103,7 +103,7 @@ static const NSInteger kCharacterLimit = 255;
     
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -136,7 +136,7 @@ static const NSInteger kCharacterLimit = 255;
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -193,7 +193,7 @@ static const NSInteger kCharacterLimit = 255;
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
     }
     return YES;

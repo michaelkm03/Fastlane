@@ -85,7 +85,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
     }
     
     self.fetchedResultsController = nil;
