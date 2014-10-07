@@ -53,6 +53,9 @@
 // Formatters
 #import "VElapsedTimeFormatter.h"
 
+// Simple Models
+#import "VExperienceEnhancer.h"
+
 static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
 static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
 static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
@@ -227,86 +230,65 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     {
         [self.textEntryView startEditing];
     };
-    
-    VExperienceEnhancer *baconEnhancer = [[VExperienceEnhancer alloc] init];
-    baconEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
-    baconEnhancer.labelText = @"123";
-    baconEnhancer.selectionBlock = ^(void)
+    self.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, UIView *selectionView)
     {
-        NSMutableArray *animationImages = [NSMutableArray new];
-        for (int i = 1; i <= 6; i++)
+        if (selectedEnhancer.isBallistic)
         {
-            NSString *animationName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i (dragged)", i];
-            [animationImages addObject:[UIImage imageNamed:animationName]];
-        }
-        
-        self.contentCell.animationDuration = 0.75f;
-        self.contentCell.animationSequence = animationImages;
-        [self.contentCell playAnimation];
-    };
-
-    VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
-    fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
-    fireworkEnhancer.labelText = @"143";
-    
-    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
-    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
-    thumbsUpEnhancer.labelText = @"321";
-    
-    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
-    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
-    tongueEnhancer.labelText = @"555";
-    
-    VExperienceEnhancer *winEnhancer = [[VExperienceEnhancer alloc] init];
-    winEnhancer.icon = [UIImage imageNamed:@"eb_win"];
-    winEnhancer.labelText = @"999";
-    
-    VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
-    tomatoEnhancer.icon = [UIImage imageNamed:@"Tomato"];
-    tomatoEnhancer.labelText = @"1";
-    tomatoEnhancer.selectionBlock = ^(void)
-    {
-        NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < 17; i++)
-        {
-            NSString *tomatoImage = [NSString stringWithFormat:@"Tomato%li", (long)i];
-            [tomatoSequence addObject:[[UIImage imageNamed:tomatoImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-        }
-        
-        UIImageView *tomatoAnimation = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-        tomatoAnimation.tintColor = [UIColor redColor];
-        tomatoAnimation.image = [UIImage imageNamed:@"Tomato0"];
-        tomatoAnimation.animationImages = tomatoSequence;
-        tomatoAnimation.animationDuration = 1.0f;
-        tomatoAnimation.animationRepeatCount = 1.0f;
-        tomatoAnimation.center = [self.view convertPoint:self.experienceEnhancerBar.center fromView:self.experienceEnhancerBar];
-        [self.view addSubview:tomatoAnimation];
-        [UIView animateWithDuration:0.5f
-                         animations:^
-         {
-             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.bounds));
-             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.bounds));
-             CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
-                                                    fromView:self.contentCell];
-             tomatoAnimation.center = contentCenter;
-         }
-         completion:^(BOOL finished)
-        {
-             [tomatoAnimation startAnimating];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
+            CGPoint convertedCenterForAnimation = [self.view convertPoint:selectionView.center fromView:selectionView];
+            animationImageView.center = convertedCenterForAnimation;
+            animationImageView.image = selectedEnhancer.flightImage;
+            [self.view addSubview:animationImageView];
+            
+            [UIView animateWithDuration:selectedEnhancer.flightDuration
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^
             {
-                [tomatoAnimation removeFromSuperview];
-            });
+                CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.bounds));
+                CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.bounds));
+                CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
+                                                       fromView:self.contentCell];
+                animationImageView.center = contentCenter;
 
-         }];
+            }
+                             completion:^(BOOL finished)
+            {
+                animationImageView.animationDuration = selectedEnhancer.animationDuration;
+                animationImageView.animationImages = selectedEnhancer.animationSequence;
+                animationImageView.animationRepeatCount = 0;
+                [animationImageView startAnimating];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    [animationImageView removeFromSuperview];
+                });
+            }];
+        }
+        else // full overlay
+        {
+            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+            animationImageView.animationDuration = selectedEnhancer.animationDuration;
+            animationImageView.animationImages = selectedEnhancer.animationSequence;
+            animationImageView.animationRepeatCount = 0;
+            
+            [self.contentCell.contentView addSubview:animationImageView];
+            [animationImageView startAnimating];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [animationImageView removeFromSuperview];
+            });
+        }
     };
     
-    self.experienceEnhancerBar.actionItems = @[baconEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
     self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, kExperienceEnhancerShadowOffsetY);
     self.experienceEnhancerBar.layer.shadowColor = [UIColor blackColor].CGColor;
     self.experienceEnhancerBar.layer.shadowRadius = kExperienceEnhancerShadowRadius;
     self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
     self.experienceEnhancerBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.experienceEnhancerBar.bounds, -kExperienceEnhancerShadowWidthOverdraw, 0)].CGPath;
+    
+    self.viewModel.experienceEnhancerController.enhancerBar = experienceEnhancerBar;
     
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     layout.allCommentsHandleBottomInset = CGRectGetHeight(self.experienceEnhancerBar.bounds);

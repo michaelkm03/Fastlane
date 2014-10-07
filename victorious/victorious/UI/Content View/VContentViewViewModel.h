@@ -10,6 +10,7 @@
 
 #import "VRealtimeCommentsViewModel.h"
 
+#import "VExperienceEnhancerController.h"
 
 /**
  *  Posted whenever new comments are made available for a given sequence.
@@ -83,6 +84,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  A view model for the real time comments for the given sequence.
  */
 @property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
+
+@property (nonatomic, strong, readonly) VExperienceEnhancerController *experienceEnhancerController;
 
 /**
  *  For content type image this will be a convenient url request for setting the image.

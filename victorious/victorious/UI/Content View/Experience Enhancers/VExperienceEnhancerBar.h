@@ -10,11 +10,14 @@
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
-@interface VExperienceEnhancer : NSObject;
+@class VExperienceEnhancerBar;
+@class VExperienceEnhancer;
 
-@property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, copy) NSString *labelText;
-@property (nonatomic, copy) void (^selectionBlock)(void);
+@protocol VExperienceEnhancerBarDataSource <NSObject>
+
+- (NSInteger)numberOfExperienceEnhancers;
+
+- (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index;
 
 @end
 
@@ -22,11 +25,12 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
 + (instancetype)experienceEnhancerBar;
 
-@property (nonatomic, strong) NSArray *actionItems;
+@property (nonatomic, weak) id <VExperienceEnhancerBarDataSource> dataSource;
+
+- (void)reloadData;
 
 @property (nonatomic, copy) void (^pressedTextEntryHandler)(void);
 
-@property (nonatomic, copy) void (^selectedEmotiveBallistic)(NSArray *animationSequence);
-@property (nonatomic, copy) void (^selectedExperienceEnhancer)(NSArray *animationSequence);
+@property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, UIView *enhancerView);
 
 @end

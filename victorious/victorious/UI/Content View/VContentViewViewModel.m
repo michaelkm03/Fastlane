@@ -41,6 +41,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
+@property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
@@ -76,6 +77,8 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
             // Fall back to image.
             _type = VContentViewTypeImage;
         }
+        
+        _experienceEnhancerController = [VExperienceEnhancerController experienceEnhancerControllerForSequence:sequence];
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
