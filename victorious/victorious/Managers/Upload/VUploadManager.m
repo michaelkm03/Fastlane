@@ -19,9 +19,12 @@
 static NSString * const kUploadTaskInformationKey = @"kUploadTaskInformationKey";
 #endif
 
+static const NSInteger kConcurrentTaskLimit = 1; ///< Number of concurrent uploads. The NSURLSession API may also enforce its own limit on this number.
+
 static NSString * const kDirectoryName = @"VUploadManager"; ///< The directory where pending uploads and configuration files are stored
 static NSString * const kUploadBodySubdirectory = @"Uploads"; ///< A subdirectory of the directory above, where HTTP bodies are stored
-static NSString * const kTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
+static NSString * const kInProgressTaskListFilename = @"tasks"; ///< The file where information for current tasks is stored
+static NSString * const kPendingTaskListFilename = @"pendingTasks"; ///< The file where information for pending tasks is stored
 static NSString * const kURLSessionIdentifier = @"com.victorious.VUploadManager.urlSession";
 
 NSString * const VUploadManagerTaskBeganNotification = @"VUploadManagerTaskBeganNotification";
@@ -42,7 +45,9 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
 @property (nonatomic, readonly) dispatch_queue_t callbackQueue; ///< all callbacks should be made asynchronously on this queue
 @property (nonatomic, strong) NSMapTable *taskInformationBySessionTask; ///< Stores all VUploadTaskInformation objects referenced by their associated NSURLSessionTasks
-@property (nonatomic, strong) NSMutableArray *taskInformation; ///< Array of all queued upload tasks
+@property (nonatomic, strong) NSMutableArray *pendingTaskInformation; ///< Array of pending tasks
+@property (nonatomic, strong) NSMutableArray *taskInformation; ///< Array of in-progress or failed upload tasks
+@property (nonatomic, strong) NSMapTable *completionBlocksForPendingTasks;
 @property (nonatomic, strong) NSMapTable *completionBlocks;
 @property (nonatomic, strong) NSMapTable *responseData;
 
@@ -68,6 +73,7 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _taskInformationBySessionTask = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
+        _completionBlocksForPendingTasks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
     }
     return self;
@@ -77,14 +83,19 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        if (!self.taskSerializer)
+        if (!self.tasksInProgressSerializer)
         {
-            self.taskSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForUploadTaskList]];
+            self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
+        }
+        
+        if (!self.tasksPendingSerializer)
+        {
+            self.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForPendingTaskList]];
         }
         
         if (!self.urlSession)
         {
-            NSArray *savedTasks = [self.taskSerializer uploadTasksFromDisk];
+            NSArray *savedTasks = [self.tasksInProgressSerializer uploadTasksFromDisk];
             if (savedTasks)
             {
                 self.taskInformation = [savedTasks mutableCopy];
@@ -92,6 +103,16 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
             else
             {
                 self.taskInformation = [[NSMutableArray alloc] init];
+            }
+            
+            NSArray *pendingTasks = [self.tasksPendingSerializer uploadTasksFromDisk];
+            if (pendingTasks)
+            {
+                self.pendingTaskInformation = [pendingTasks mutableCopy];
+            }
+            else
+            {
+                self.pendingTaskInformation = [[NSMutableArray alloc] init];
             }
             
             NSURLSessionConfiguration *sessionConfig;
@@ -179,6 +200,18 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
                 return;
             }
             
+            if (self.taskInformationBySessionTask.count >= kConcurrentTaskLimit)
+            {
+                [self.pendingTaskInformation addObject:uploadTask];
+                [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+                
+                if (complete)
+                {
+                    [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
+                }
+                return;
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
@@ -191,7 +224,7 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
                 [self.taskInformation removeObject:uploadTask];
             }
             [self.taskInformation addObject:uploadTask];
-            [self.taskSerializer saveUploadTasks:self.taskInformation];
+            [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
             
             NSMutableURLRequest *request = [uploadTask.request mutableCopy];
             [self.objectManager updateHTTPHeadersInRequest:request];
@@ -297,7 +330,7 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
     // TODO: assert that this is being run on self.sessionQueue
     
     [self.taskInformation removeObject:taskInformation];
-    [self.taskSerializer saveUploadTasks:self.taskInformation];
+    [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
     
     NSError *error = nil;
     if (![[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:&error])
@@ -343,9 +376,14 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
     return [directory URLByAppendingPathComponent:uniqueID];
 }
 
-- (NSURL *)urlForUploadTaskList
+- (NSURL *)urlForInProgressTaskList
 {
-    return [[self configurationDirectoryURL] URLByAppendingPathComponent:kTaskListFilename];
+    return [[self configurationDirectoryURL] URLByAppendingPathComponent:kInProgressTaskListFilename];
+}
+
+- (NSURL *)urlForPendingTaskList
+{
+    return [[self configurationDirectoryURL] URLByAppendingPathComponent:kPendingTaskListFilename];
 }
 
 - (NSURL *)configurationDirectoryURL
@@ -542,6 +580,21 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 completionBlock(task.response, data, jsonObject, error ?: victoriousError);
             });
             [self.completionBlocks removeObjectForKey:task];
+        }
+        
+        if (self.pendingTaskInformation.count)
+        {
+            VUploadTaskInformation *nextUpload = self.pendingTaskInformation[0];
+            [self.pendingTaskInformation removeObjectAtIndex:0];
+            [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+            
+            VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocksForPendingTasks objectForKey:nextUpload];
+            if (completionBlock)
+            {
+                [self.completionBlocksForPendingTasks removeObjectForKey:nextUpload];
+            }
+            
+            [self enqueueUploadTask:nextUpload onComplete:completionBlock];
         }
     });
 }

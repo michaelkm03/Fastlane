@@ -47,11 +47,20 @@ extern const NSInteger VUploadManagerCouldNotStartUploadErrorCode; ///< Indicate
 @property (nonatomic) BOOL useBackgroundSession;
 
 /**
- A serializer object that will be used to save upload tasks to disk.
- This is here for unit testing purposes--there is a good default
- that will be used if this not set.
+ A serializer object that will be used to save upload tasks to
+ disk while they are uploading. This is here for unit testing 
+ purposes--there is a good default that will be used if this 
+ is not set.
  */
-@property (nonatomic, strong) VUploadTaskSerializer *taskSerializer;
+@property (nonatomic, strong) VUploadTaskSerializer *tasksInProgressSerializer;
+
+/**
+ A serializer object that will be used to save upload tasks to
+ disk while they are waiting to start uploading. This is here 
+ for unit testing purposes--there is a good default that will 
+ be used if this is not set.
+ */
+@property (nonatomic, strong) VUploadTaskSerializer *tasksPendingSerializer;
 
 /**
  A completion handler that will be called in response to the NSURLSessionDelegate 

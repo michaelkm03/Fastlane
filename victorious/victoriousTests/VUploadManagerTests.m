@@ -19,7 +19,8 @@
 
 @property (nonatomic, strong) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSURL *bodyFileURL;
-@property (nonatomic, strong) NSURL *taskSaveFileURL;
+@property (nonatomic, strong) NSURL *inProgressTaskSaveFileURL;
+@property (nonatomic, strong) NSURL *pendingTaskSaveFileURL;
 @property (nonatomic, strong) VUploadTaskInformation *uploadTask;
 @property (nonatomic, strong) NSData *body;
 @property (nonatomic, strong) NSData *response;
@@ -35,8 +36,12 @@
     self.uploadManager.useBackgroundSession = NO;
     
     NSString *taskSaveFilename = [[NSUUID UUID] UUIDString];
-    self.taskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];
-    self.uploadManager.taskSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
+    self.inProgressTaskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];
+    self.uploadManager.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.inProgressTaskSaveFileURL];
+    
+    taskSaveFilename = [[NSUUID UUID] UUIDString];
+    self.pendingTaskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];
+    self.uploadManager.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.pendingTaskSaveFileURL];
     
     NSString *bodyFilename = [[NSUUID UUID] UUIDString];
     self.bodyFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
@@ -59,7 +64,8 @@
     [[LSNocilla sharedInstance] clearStubs];
     [[LSNocilla sharedInstance] stop];
     [[NSFileManager defaultManager] removeItemAtURL:self.bodyFileURL error:nil];
-    [[NSFileManager defaultManager] removeItemAtURL:self.taskSaveFileURL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:self.inProgressTaskSaveFileURL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:self.pendingTaskSaveFileURL error:nil];
     [super tearDown];
 }
 
@@ -85,6 +91,35 @@
     
     BOOL bodyFileStillExists = [[NSFileManager defaultManager] fileExistsAtPath:[self.bodyFileURL path] isDirectory:NULL];
     XCTAssertFalse(bodyFileStillExists);
+}
+
+- (void)testQueueingMultipleUploads
+{
+    NSString *bodyFilename = [[NSUUID UUID] UUIDString];
+    NSURL *bodyFileURL2 = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
+    NSData *body2 = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
+    [body2 writeToURL:bodyFileURL2 atomically:YES];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example2.com/"]];
+    [request setHTTPMethod:@"POST"];
+    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:bodyFileURL2 description:nil];
+
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).withBody(self.body).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
+    {
+        [self.uploadManager enqueueUploadTask:upload2 onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+        {
+            [async signal];
+        }];
+    });
+
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
+    {
+        [[LSNocilla sharedInstance] clearStubs];
+        stubRequest(@"POST", upload2.request.URL.absoluteString).andReturn(200);
+    }];
+    [async waitForSignal:5.0];
 }
 
 - (void)testError
@@ -308,7 +343,7 @@
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
     {
-        VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
+        VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.inProgressTaskSaveFileURL];
         NSArray *tasks = [serializer uploadTasksFromDisk];
         XCTAssertTrue([tasks containsObject:self.uploadTask]);
         [async signal];
@@ -326,7 +361,7 @@
     
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
-        VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
+        VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.inProgressTaskSaveFileURL];
         NSArray *tasks = [serializer uploadTasksFromDisk];
         XCTAssertTrue([tasks containsObject:self.uploadTask]);
         [async signal];
@@ -347,7 +382,7 @@
     
     [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
      {
-         VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
+         VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.inProgressTaskSaveFileURL];
          NSArray *tasks = [serializer uploadTasksFromDisk];
          XCTAssertFalse([tasks containsObject:task]);
          [async signal];
@@ -360,7 +395,7 @@
     // At this point, VUploadManager has already been initialized. But
     // it should not read the tasks from disk on init, so now is not
     // too late to create this file.
-    VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
+    VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.inProgressTaskSaveFileURL];
     [serializer saveUploadTasks:@[self.uploadTask]];
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
