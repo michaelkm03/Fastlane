@@ -7,6 +7,9 @@
 //
 
 #import "VDiscoverContainerViewController.h"
+#import "VDiscoverConstants.h"
+#import "VUser.h"
+#import "VUserProfileViewController.h"
 
 @interface VDiscoverContainerViewController ()
 
@@ -29,12 +32,43 @@
     
     // For now, search is hidden.  Uncomment this when the time comes to implement it.
     self.searchBarHeightConstraint.constant = 0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSuggestedPersonProfile:) name:VDiscoverUserProfileSelectedNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.headerLabel.text = NSLocalizedString(@"Discover", nil);
+}
+
+- (void)showSuggestedPersonProfile:(NSNotification *)note
+{
+    if ( note.userInfo == nil )
+    {
+        return;
+    }
+    
+    VUser *user = note.userInfo[ VDiscoverUserProfileSelectedKeyUser ];
+    if ( user == nil )
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    if ( self.navigationController != nil )
+    {
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        [self presentViewController:profileViewController animated:YES completion:nil];
+    }
 }
 
 @end

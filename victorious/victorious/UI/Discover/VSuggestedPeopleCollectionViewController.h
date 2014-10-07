@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VUser;
+
 @interface VSuggestedPeopleCollectionViewController : UICollectionViewController
 
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
