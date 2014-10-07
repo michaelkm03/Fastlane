@@ -76,6 +76,24 @@ extern const NSInteger VUploadManagerCouldNotStartUploadErrorCode; ///< Indicate
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
 
 /**
+ Returns YES if the backgroundSessionIdentifier belongs to the reciever.
+ */
+- (BOOL)isYourBackgroundURLSession:(NSString *)backgroundSessionIdentifier;
+
+/**
+ Initializes the NSURLSession and reconnects with any in-progress
+ tasks happening in the background.
+ 
+ @discussion
+ It is normally not necessary to call this, as any operation on
+ this class that requires an initialized NSURLSession will call
+ it for you. The one time you will need it, however, is in
+ response to UIApplicationDelegate's 
+ handleEventsForBackgroundURLSession method.
+ */
+- (void)startURLSession;
+
+/**
  A unique URL where the body for a future upload can be stored.
  The directories in this URL's path are not guaranteed to
  exist, so please create them if needed.

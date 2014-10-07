@@ -7,17 +7,11 @@
 //
 
 #import "VConstants.h"
+#import "VObjectManager+Login.h"
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
-
-#define UPLOAD_MANAGER_TEST_MODE 0 // set to "1" to have the upload manager fire off fake upload notifications. useful for testing UI elements related to uploads
-                                   // NOTE: real uploads will not work with this mode enabled
-
-#if UPLOAD_MANAGER_TEST_MODE
-static NSString * const kUploadTaskInformationKey = @"kUploadTaskInformationKey";
-#endif
 
 static const NSInteger kConcurrentTaskLimit = 1; ///< Number of concurrent uploads. The NSURLSession API may also enforce its own limit on this number.
 
@@ -38,6 +32,13 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 NSString * const VUploadManagerErrorDomain = @"VUploadManagerErrorDomain";
 const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
+
+static char kSessionQueueSpecific;
+
+static inline BOOL isSessionQueue()
+{
+    return dispatch_get_specific(&kSessionQueueSpecific) != NULL;
+}
 
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
@@ -75,14 +76,26 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _completionBlocksForPendingTasks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
+        dispatch_queue_set_specific(_sessionQueue, &kSessionQueueSpecific, &kSessionQueueSpecific, NULL);
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)startURLSession
+{
+    [self startURLSessionWithCompletion:nil];
 }
 
 - (void)startURLSessionWithCompletion:(void(^)(void))completion
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
+        VLog(@"starting url session");
         if (!self.tasksInProgressSerializer)
         {
             self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
@@ -127,22 +140,22 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
             self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
             [self.urlSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks)
             {
+                VLog(@"getting current tasks: %lu", (unsigned long)uploadTasks.count);
                 // Reconnect in-progress upload tasks with their VUploadTaskInformation instances
                 if (self.taskInformation.count)
                 {
                     for (NSURLSessionUploadTask *task in uploadTasks)
                     {
-                        NSUUID *identifier = [[NSUUID alloc] initWithUUIDString:task.taskDescription];
-                        if (identifier)
+                        VUploadTaskInformation *taskInformation = [self informationForSessionTask:task];
+                        
+                        if (taskInformation)
                         {
-                            NSArray *taskInformation = [self.taskInformation filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=%@", NSStringFromSelector(@selector(identifier)), identifier]];
-                            if (taskInformation.count)
-                            {
-                                [self.taskInformationBySessionTask setObject:taskInformation[0] forKey:task];
-                            }
+                            [self.taskInformationBySessionTask setObject:taskInformation forKey:task];
                         }
                     }
                 }
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:self.objectManager];
                 
                 if (completion)
                 {
@@ -151,17 +164,6 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
                         completion();
                     });
                 }
-                
-#if UPLOAD_MANAGER_TEST_MODE
-#warning VUploadManager is in test mode
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
-                {
-                    UIImage *previewImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"sampleUpload" withExtension:@"jpg"]]];
-                    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] initWithRequest:nil previewImage:previewImage bodyFileURL:nil description:nil];
-                    [self enqueueUploadTask:uploadTask onComplete:nil];
-                });
-#endif
-                
             }];
         }
         else if (completion)
@@ -174,93 +176,98 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
     });
 }
 
+- (BOOL)isYourBackgroundURLSession:(NSString *)backgroundSessionIdentifier
+{
+    return [kURLSessionIdentifier isEqualToString:backgroundSessionIdentifier];
+}
+
+#pragma mark - Queue Management
+
 - (void)enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
 {
-#if UPLOAD_MANAGER_TEST_MODE
-    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                        object:self
-                                                      userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
-                                                                 }];
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(taskTimerFired:) userInfo:@{kUploadTaskInformationKey: uploadTask} repeats:YES];
-    return;
-#endif
     [self startURLSessionWithCompletion:^(void)
     {
         dispatch_async(self.sessionQueue, ^(void)
         {
-            if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
-            {
-                if (complete)
-                {
-                    dispatch_async(self.callbackQueue, ^(void)
-                    {
-                        complete(nil, nil, nil, [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil]);
-                    });
-                }
-                return;
-            }
-            
-            if (self.taskInformationBySessionTask.count >= kConcurrentTaskLimit)
-            {
-                [self.pendingTaskInformation addObject:uploadTask];
-                [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
-                
-                if (complete)
-                {
-                    [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
-                }
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                                    object:self
-                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask}];
-            });
-            
-            if ([self.taskInformation containsObject:uploadTask])
-            {
-                [self.taskInformation removeObject:uploadTask];
-            }
-            [self.taskInformation addObject:uploadTask];
-            [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
-            
-            NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-            [self.objectManager updateHTTPHeadersInRequest:request];
-            NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
-            
-            if (!uploadSessionTask)
-            {
-                NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
-                if (complete)
-                {
-                    dispatch_async(self.callbackQueue, ^(void)
-                    {
-                       complete(nil, nil, nil, uploadError);
-                    });
-                }
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
-                                                                        object:uploadTask
-                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
-                                                                                 VUploadManagerUploadTaskUserInfoKey: uploadTask}];
-                });
-
-                return;
-            }
-            
-            if (complete)
-            {
-               [self.completionBlocks setObject:complete forKey:uploadSessionTask];
-            }
-            [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
-            
-            uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
-            [uploadSessionTask resume];
+            [self _enqueueUploadTask:uploadTask onComplete:complete];
         });
     }];
+}
+
+- (void)_enqueueUploadTask:(VUploadTaskInformation *)uploadTask onComplete:(VUploadManagerTaskCompleteBlock)complete
+{
+    NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
+    if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
+    {
+        if (complete)
+        {
+            dispatch_async(self.callbackQueue, ^(void)
+            {
+                complete(nil, nil, nil, [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil]);
+            });
+        }
+        return;
+    }
+    
+    if (self.taskInformationBySessionTask.count >= kConcurrentTaskLimit)
+    {
+        [self.pendingTaskInformation addObject:uploadTask];
+        [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+        
+        if (complete)
+        {
+            [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
+        }
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
+                                                            object:self
+                                                          userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+    });
+    
+    if ([self.taskInformation containsObject:uploadTask])
+    {
+        [self.taskInformation removeObject:uploadTask];
+    }
+    [self.taskInformation addObject:uploadTask];
+    [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
+    
+    NSMutableURLRequest *request = [uploadTask.request mutableCopy];
+    [self.objectManager updateHTTPHeadersInRequest:request];
+    NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+    
+    if (!uploadSessionTask)
+    {
+        NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
+        if (complete)
+        {
+            dispatch_async(self.callbackQueue, ^(void)
+            {
+               complete(nil, nil, nil, uploadError);
+            });
+        }
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
+                                                                object:uploadTask
+                                                              userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
+                                                                         VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+        });
+
+        return;
+    }
+    
+    if (complete)
+    {
+       [self.completionBlocks setObject:complete forKey:uploadSessionTask];
+    }
+    [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+    
+    uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
+    [uploadSessionTask resume];
 }
 
 - (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray *tasks))completion
@@ -325,10 +332,33 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
     return isInProgress;
 }
 
+- (VUploadTaskInformation *)informationForSessionTask:(NSURLSessionTask *)task
+{
+    NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
+    VUploadTaskInformation *cachedInformation = [self.taskInformationBySessionTask objectForKey:task];
+    
+    if (cachedInformation)
+    {
+        return cachedInformation;
+    }
+    NSUUID *identifier = [[NSUUID alloc] initWithUUIDString:task.taskDescription];
+
+    if (!identifier)
+    {
+        return nil;
+    }
+    NSArray *taskInformation = [self.taskInformation filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=%@", NSStringFromSelector(@selector(identifier)), identifier]];
+    
+    if (taskInformation.count)
+    {
+        return taskInformation[0];
+    }
+    return nil;
+}
+
 - (void)removeFromQueue:(VUploadTaskInformation *)taskInformation
 {
-    // TODO: assert that this is being run on self.sessionQueue
-    
+    NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     [self.taskInformation removeObject:taskInformation];
     [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
     
@@ -339,33 +369,35 @@ const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
     }
 }
 
-#pragma mark - Test Mode
-
-#if UPLOAD_MANAGER_TEST_MODE
-- (void)taskTimerFired:(NSTimer *)timer
+- (void)startNextWaitingTask
 {
-    static NSInteger bytes = 0;
+    NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     
-    VUploadTaskInformation *taskInformation = ((NSDictionary *)timer.userInfo)[kUploadTaskInformationKey];
-    bytes++;
-    
-    if (bytes > 100)
+    BOOL __block authorized = NO;
+    dispatch_sync(dispatch_get_main_queue(), ^(void)
     {
-        [timer invalidate];
-        bytes = 0;
-        [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
-                                                            object:taskInformation
-                                                          userInfo:@{VUploadManagerUploadTaskUserInfoKey: taskInformation}];
+        authorized = [self.objectManager authorized];
+    });
+    if (!authorized)
+    {
         return;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
-                                                        object:taskInformation
-                                                      userInfo:@{ VUploadManagerBytesSentUserInfoKey: @(bytes),
-                                                                  VUploadManagerTotalBytesUserInfoKey: @(100),
-                                                                  VUploadManagerUploadTaskUserInfoKey: taskInformation,
-                                                                }];
+    
+    if (self.pendingTaskInformation.count)
+    {
+        VUploadTaskInformation *nextUpload = self.pendingTaskInformation[0];
+        [self.pendingTaskInformation removeObjectAtIndex:0];
+        [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
+        
+        VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocksForPendingTasks objectForKey:nextUpload];
+        if (completionBlock)
+        {
+            [self.completionBlocksForPendingTasks removeObjectForKey:nextUpload];
+        }
+        
+        [self _enqueueUploadTask:nextUpload onComplete:completionBlock];
+    }
 }
-#endif
 
 #pragma mark - Filesystem
 
@@ -524,6 +556,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
+    VLog(@"task did complete with error: %@", error.localizedDescription);
     dispatch_async(self.sessionQueue, ^(void)
     {
         NSError *victoriousError = nil;
@@ -540,9 +573,10 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             [self.responseData removeObjectForKey:task];
         }
         
-        VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
+        VUploadTaskInformation *taskInformation = [self informationForSessionTask:task];
         if (taskInformation)
         {
+            VLog(@"matched task with information: %@", taskInformation.identifier.UUIDString);
             if (error || victoriousError)
             {
                 if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
@@ -581,22 +615,22 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             });
             [self.completionBlocks removeObjectForKey:task];
         }
-        
-        if (self.pendingTaskInformation.count)
-        {
-            VUploadTaskInformation *nextUpload = self.pendingTaskInformation[0];
-            [self.pendingTaskInformation removeObjectAtIndex:0];
-            [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
-            
-            VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocksForPendingTasks objectForKey:nextUpload];
-            if (completionBlock)
-            {
-                [self.completionBlocksForPendingTasks removeObjectForKey:nextUpload];
-            }
-            
-            [self enqueueUploadTask:nextUpload onComplete:completionBlock];
-        }
+
+        [self startNextWaitingTask];
     });
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)loggedInChanged:(NSNotification *)notification
+{
+    [self startURLSessionWithCompletion:^(void)
+    {
+        dispatch_async(self.sessionQueue, ^(void)
+        {
+            [self startNextWaitingTask];
+        });
+    }];
 }
 
 @end

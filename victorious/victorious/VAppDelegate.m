@@ -21,6 +21,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VSessionTimer.h"
+#import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
 
@@ -93,6 +94,17 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
             NSLog(@"Error reporting install event: %@", [error localizedDescription]);
         }];
         [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
+    }
+}
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+{
+    VLog(@"handling events for background identifier: %@", identifier);
+    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    if ([uploadManager isYourBackgroundURLSession:identifier])
+    {
+        uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
+        [uploadManager startURLSession];
     }
 }
 
