@@ -13,10 +13,8 @@
 
 @implementation VAuthorizationViewControllerFactory
 
-+ (UIViewController *)requiredViewController
++ (UIViewController *)requiredViewControllerWithObjectManager:(VObjectManager *)objectManager
 {
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    
     if ( objectManager.mainUserLoggedIn && !objectManager.mainUserProfileComplete )
     {
         // User must create (complete) profile

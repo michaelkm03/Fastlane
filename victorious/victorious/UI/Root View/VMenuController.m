@@ -164,7 +164,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowInbox:
                 if ( ![VObjectManager sharedManager].authorized )
                 {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else
@@ -191,7 +191,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowFindFriends:
                 if (![VObjectManager sharedManager].authorized)
                 {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else
