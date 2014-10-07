@@ -42,9 +42,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
     
-//    CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
-//    self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
-    
     [self refresh:self.refreshControl];
 }
 

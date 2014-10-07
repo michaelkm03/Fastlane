@@ -21,13 +21,13 @@
 //Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
+#import "VAbstractFilter.h"
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readwrite) VStreamCollectionViewDataSource *streamDataSource;
 
-@property (nonatomic, strong) VNavigationHeaderView *navHeaderView;
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
 @end
@@ -198,6 +198,16 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
+    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
+        self.streamDataSource.count &&
+        ![self.streamDataSource isFilterLoading] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    {
+        [self loadNextPageAction];
+    }
+    
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     
     if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))

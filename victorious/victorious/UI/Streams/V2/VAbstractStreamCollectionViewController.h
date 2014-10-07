@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VStream, VStreamCollectionViewDataSource;
+@class VStream, VStreamCollectionViewDataSource, VNavigationHeaderView;
 
 @interface VAbstractStreamCollectionViewController : UIViewController
 
@@ -16,6 +16,7 @@
 @property (nonatomic, strong) VStream *stream;///<The stream to display
 @property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
 @property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
+@property (nonatomic, weak) VNavigationHeaderView *navHeaderView;///<The navigation header for the stream
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
 
