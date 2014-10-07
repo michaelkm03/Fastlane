@@ -34,7 +34,6 @@
 @dynamic conversation;
 @dynamic followers;
 @dynamic following;
-@dynamic isFollowing;
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;
@@ -43,5 +42,7 @@
 @dynamic repostedSequences;
 @dynamic unreadConversation;
 @dynamic status;
+@dynamic isFollowing;
+@dynamic numberOfFollowers;
 
 @end

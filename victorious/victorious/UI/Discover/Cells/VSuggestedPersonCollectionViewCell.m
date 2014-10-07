@@ -11,10 +11,6 @@
 #import "VDefaultProfileImageView.h"
 #import "VFollowersTextFormatter.h"
 
-@implementation VSuggestedPersonData
-
-@end
-
 @interface VSuggestedPersonCollectionViewCell()
 
 @property (nonatomic, weak) IBOutlet UIButton *followButton;
@@ -66,21 +62,21 @@
     self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
 }
 
-- (void)setData:(VSuggestedPersonData *)data
+- (void)setUser:(VUser *)user
 {
-    _data = data;
+    _user = user;
     [self populateData];
 }
 
 - (void)populateData
 {
-    self.descriptionLabel.text = [VFollowersTextFormatter shortLabelWithNumberOfFollowersObject:self.data.numberOfFollowers];
+    self.descriptionLabel.text = [VFollowersTextFormatter shortLabelWithNumberOfFollowersObject:self.user.numberOfFollowers];
     
-    self.usernameLabel.text = self.data.username;
+    self.usernameLabel.text = self.user.name;
     
-    if ( _data.pictureUrl != nil )
+    if ( self.user.pictureUrl != nil )
     {
-        [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.data.pictureUrl]];
+        [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.user.pictureUrl]];
     }
     
     [self updateFollowing];
@@ -88,7 +84,7 @@
 
 - (void)updateFollowing
 {
-    if ( self.data.isMainUserFollowing )
+    if ( self.user.isFollowing.boolValue )
     {
         [self.followButton setImage:[VSuggestedPersonCollectionViewCell followedImage] forState:UIControlStateNormal];
     }
@@ -105,15 +101,15 @@
         return;
     }
     
-    if ( self.data.isMainUserFollowing )
+    if ( self.user.isFollowing.boolValue )
     {
-        self.data.isMainUserFollowing = NO;
-        [self.delegate unfollowPerson:self.data];
+        self.user.isFollowing = @NO;
+        [self.delegate unfollowPerson:self.user];
     }
     else
     {
-        self.data.isMainUserFollowing = YES;
-        [self.delegate followPerson:self.data];
+        self.user.isFollowing = @YES;
+        [self.delegate followPerson:self.user];
     }
     
     [self updateFollowing];

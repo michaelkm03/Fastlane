@@ -22,8 +22,8 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
-                              withSuccessBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail;
+                               withSuccessBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate
@@ -41,14 +41,6 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)unfollowUserWithId:(NSNumber *)remoteId
-                                           successBlock:(VSuccessBlock)success
-                                              failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)followUserWithId:(NSNumber *)remoteId
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
                                               successBlock:(VSuccessBlock)success

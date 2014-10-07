@@ -15,7 +15,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 @interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
-@property (nonatomic, strong) NSArray *suggestedPeople;
+@property (nonatomic, strong) NSArray *suggestedUsers;
 
 @end
 
@@ -40,18 +40,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (void)usersDidLoad:(NSArray *)users
 {
-    NSMutableArray *suggestedUsersData = [[NSMutableArray alloc] init];
-    for ( VUser *user in users )
-    {
-        VSuggestedPersonData *data = [[VSuggestedPersonData alloc] init];
-        data.isMainUserFollowing = user.isFollowing.boolValue;
-        data.username = user.name;
-        data.numberOfFollowers = @( arc4random() % 1000 );
-        data.remoteId = user.remoteId;
-        data.pictureUrl = user.pictureUrl;
-        [suggestedUsersData addObject:data];
-    }
-    self.suggestedPeople = [NSArray arrayWithArray:suggestedUsersData];
+    self.suggestedUsers = users;
     [self.collectionView reloadData];
 }
 
@@ -59,34 +48,44 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 {
     [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         // TODO: Remote this loop, testing only
+         for ( VUser *user in resultObjects )
+         {
+             user.numberOfFollowers = @( arc4random() % 2000 );
+         }
          [self usersDidLoad:resultObjects];
      }
                                                                    failBlock:^(NSOperation *operation, NSError *error)
      {
          // TODO: Handle error
+         VLog( @"Recommended Friends failed: %@", [error localizedDescription] );
      }];
 }
 
 #pragma mark - VSuggestedPersonCollectionViewCellDelegate
 
-- (void)unfollowPerson:(VSuggestedPersonData *)userData
+- (void)unfollowPerson:(VUser *)user
 {
-    [[VObjectManager sharedManager] unfollowUserWithId:userData.remoteId successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-    {
+    [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         // Do nothing
     }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
+         // TODO: Handle error
          VLog( @"Unfollow failed: %@", [error localizedDescription] );
     }];
 }
 
-- (void)followPerson:(VSuggestedPersonData *)userData
+- (void)followPerson:(VUser *)user
 {
-    [[VObjectManager sharedManager] followUserWithId:userData.remoteId successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
+    [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        // Do nothing
     }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
+         // TODO: Handle error
          VLog( @"Follow failed: %@", [error localizedDescription] );
     }];
 }
@@ -95,14 +94,13 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.suggestedPeople.count;
+    return self.suggestedUsers.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
-    VSuggestedPersonData *suggestPersonData = self.suggestedPeople[ indexPath.row ];
-    cell.data = suggestPersonData;
+    cell.user = self.suggestedUsers[ indexPath.row ];
     cell.delegate = self;
     return cell;
 }
@@ -112,7 +110,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    __unused NSNumber *userId = cell.data.remoteId;
+    __unused VUser *user = cell.user;
 }
 
 @end

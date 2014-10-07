@@ -32,6 +32,7 @@
                                   @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
                                   @"status" : VSelectorName(status),
                                   @"following" : VSelectorName(isFollowing),
+                                  @"number_of_followers" : VSelectorName(numberOfFollowers),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

@@ -7,28 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface VSuggestedPersonData : NSObject
-
-@property (nonatomic, strong) NSNumber *remoteId;
-@property (nonatomic, strong) NSNumber *numberOfFollowers;
-@property (nonatomic, assign) BOOL isMainUserFollowing;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *pictureUrl;
-
-@end
+#import "VUser.h"
 
 @protocol VSuggestedPersonCollectionViewCellDelegate
 
 @required
-- (void)unfollowPerson:(VSuggestedPersonData *)userData;
-- (void)followPerson:(VSuggestedPersonData *)userData;
+- (void)unfollowPerson:(VUser *)user;
+- (void)followPerson:(VUser *)user;
 
 @end
 
 @interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, assign) VSuggestedPersonData *data;
+@property (nonatomic, strong) VUser *user;
 
 + (UIImage *)followedImage;
 + (UIImage *)followImage;
