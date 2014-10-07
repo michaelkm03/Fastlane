@@ -38,7 +38,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VDirectoryViewController *streamDirectory = (VDirectoryViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
     
-    streamDirectory.stream = stream;
+    streamDirectory.currentStream = stream;
     
     return streamDirectory;
 }
@@ -96,7 +96,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
+    VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;
 
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];

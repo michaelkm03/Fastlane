@@ -653,7 +653,6 @@
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
-
 }
 
 #pragma mark - Notifications

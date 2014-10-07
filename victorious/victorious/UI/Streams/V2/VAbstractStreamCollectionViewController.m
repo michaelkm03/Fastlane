@@ -38,13 +38,19 @@
 {
     [super viewDidLoad];
     
+    NSMutableArray *titles = [[NSMutableArray alloc] init];
+    for (VStream *stream in self.allStreams)
+    {
+        [titles addObject:stream.name];
+    }
+    
     if (self.navigationController.viewControllers.count == 1)
     {
-        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:nil];
+        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
     }
     else
     {
-        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:nil];
+        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
     }
     
     self.navHeaderView.delegate = self;
@@ -69,7 +75,7 @@
     
     [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
     
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.stream];
+    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
@@ -86,7 +92,7 @@
     [super viewWillAppear:animated];
     
     self.navHeaderView.showAddButton = NO;
-    self.navHeaderView.headerText = self.stream.name;//Set the title in case there is no logo
+    self.navHeaderView.headerText = self.currentStream.name;//Set the title in case there is no logo
     [self.navHeaderView updateUI];
 }
 
@@ -100,12 +106,12 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)setStream:(VStream *)stream
+- (void)setCurrentStream:(VStream *)currentStream
 {
-    _stream = stream;
+    _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        self.streamDataSource.stream = stream;
+        self.streamDataSource.stream = currentStream;
         self.collectionView.dataSource = self.streamDataSource;
     }
 }

@@ -14,6 +14,7 @@
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController
 
-+ (instancetype)streamViewControllerForStream:(VStream *)stream;
++ (instancetype)homeStreamCollection;
++ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams;
 
 @end
