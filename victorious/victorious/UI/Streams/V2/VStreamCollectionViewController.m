@@ -38,7 +38,7 @@
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -83,6 +83,10 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
+    
+    VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+    self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
+    self.marquee.delegate = self;
     
     UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
