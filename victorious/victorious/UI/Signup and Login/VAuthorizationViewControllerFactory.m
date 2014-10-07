@@ -13,7 +13,7 @@
 
 @implementation VAuthorizationViewControllerFactory
 
-+ (UIViewController *)requiredViewController:(VObjectManager *)objectManager
++ (UIViewController *)requiredViewControllerWithObjectManager:(VObjectManager *)objectManager
 {
     if ( objectManager.mainUserLoggedIn && !objectManager.mainUserProfileComplete )
     {

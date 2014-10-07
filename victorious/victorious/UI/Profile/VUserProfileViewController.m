@@ -257,7 +257,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]]
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
                            animated:YES
                          completion:NULL];
         return;
@@ -284,7 +284,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     

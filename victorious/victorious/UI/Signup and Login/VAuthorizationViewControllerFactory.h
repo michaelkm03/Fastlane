@@ -15,6 +15,6 @@
 /**
  @brief Instantiates a view controller appropriate for the main user's current level of authorization
  */
-+ (UIViewController *)requiredViewController:(VObjectManager *)objectManager;
++ (UIViewController *)requiredViewControllerWithObjectManager:(VObjectManager *)objectManager;
 
 @end

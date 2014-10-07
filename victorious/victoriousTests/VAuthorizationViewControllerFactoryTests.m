@@ -14,7 +14,8 @@
 #import "VProfileCreateViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
-@interface VAuthorizationViewControllerFactoryTests : XCTestCase {
+@interface VAuthorizationViewControllerFactoryTests : XCTestCase
+{
     id mockObjectManager;
 }
 
@@ -34,7 +35,7 @@
     OCMStub([mockObjectManager mainUserProfileComplete]).andReturn( NO );
     OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( YES );
     
-    id output = [VAuthorizationViewControllerFactory requiredViewController:mockObjectManager];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[VProfileCreateViewController class]] );
 }
@@ -46,7 +47,7 @@
     
     // Calling code should check the 'authorized' property before getting a view controller from this method,
     // threfore theoutput is nil because there is not view controller to display for that state
-    id output = [VAuthorizationViewControllerFactory requiredViewController:mockObjectManager];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNil( output );
 }
 
@@ -56,7 +57,7 @@
     OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( NO );
     
     // Expecting a UINavigationController with VLoginViewController as root view controller
-    id output = [VAuthorizationViewControllerFactory requiredViewController:mockObjectManager];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[UINavigationController class]] );
     UINavigationController *navController = (UINavigationController *)output;
@@ -71,7 +72,7 @@
     OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( NO );
     
     // This state should never occur, and therefore the method will reutrn nil
-    id output = [VAuthorizationViewControllerFactory requiredViewController:mockObjectManager];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNil( output );
 }
 
