@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConstants.h"
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
@@ -352,6 +353,36 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     _useBackgroundSession = useBackgroundSession;
 }
 
+#pragma mark - Response Parsing
+
+- (NSDictionary *)parsedResponseFromData:(NSData *)responseData parsedError:(NSError *__autoreleasing *)error
+{
+    NSDictionary *jsonObject = nil;
+    @try
+    {
+        jsonObject = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+    }
+    @catch (NSException *exception)
+    {
+    }
+    
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        NSInteger errorCode = [jsonObject[kVErrorKey] integerValue];
+        if (errorCode)
+        {
+            if (error)
+            {
+                *error = [NSError errorWithDomain:kVictoriousErrorDomain
+                                             code:errorCode
+                                         userInfo:nil];
+            }
+        }
+        return jsonObject;
+    }
+    return nil;
+}
+
 #pragma mark - NSURLSessionDelegate methods
 
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
@@ -421,17 +452,24 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
+        NSError *victoriousError = nil;
+        NSDictionary *jsonObject = nil;
         NSData *data = [self.responseData objectForKey:task];
         
         if (data)
         {
+            jsonObject = [self parsedResponseFromData:data parsedError:&victoriousError];
+            if (victoriousError)
+            {
+                [self.objectManager defaultErrorHandlingForCode:victoriousError.code];
+            }
             [self.responseData removeObjectForKey:task];
         }
-        
+
         VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
         if (taskInformation)
         {
-            if (error)
+            if (error || victoriousError)
             {
                 if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
                 {
@@ -441,7 +479,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                         object:taskInformation
-                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: error,
+                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: error ?: victoriousError,
                                                                                  VUploadManagerUploadTaskUserInfoKey: taskInformation}];
                 });
             }
@@ -465,7 +503,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             // An intentional exception to the "all callbacks made on self.callbackQueue" rule
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                completionBlock(task.response, data, error);
+                completionBlock(task.response, data, jsonObject, error ?: victoriousError);
             });
             [self.completionBlocks removeObjectForKey:task];
         }

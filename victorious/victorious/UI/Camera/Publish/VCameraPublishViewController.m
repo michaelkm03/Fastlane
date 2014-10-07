@@ -719,23 +719,19 @@ static const CGFloat kShareMargin = 34.0f;
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
-                                           completion:^(NSURLResponse *response, NSData *responseData, NSError *error)
+                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
-        NSDictionary *responseJSON = nil;
-        @try
-        {
-            responseJSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-        }
-        @catch (NSException *exception)
-        {
-        }
-        
-        if (![responseJSON isKindOfClass:[NSDictionary class]])
+        NSDictionary *payload = jsonDictionary[kVPayloadKey];
+        if (![payload isKindOfClass:[NSDictionary class]])
         {
             return;
         }
         
-        NSInteger sequenceId = [responseJSON[kVPayloadKey][@"sequence_id"] integerValue];
+        NSInteger sequenceId = [payload[@"sequence_id"] integerValue];
+        if (!sequenceId)
+        {
+            return;
+        }
         
         NSString  *analyticsString;
         if ([self.mediaURL v_hasVideoExtension])
@@ -756,7 +752,6 @@ static const CGFloat kShareMargin = 34.0f;
                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
                     break;
             }
-            
         }
         
         if (facebookSelected)
@@ -765,9 +760,9 @@ static const CGFloat kShareMargin = 34.0f;
                                                         accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                        successBlock:nil
                                                           failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 VLog(@"Failed with error: %@", error);
-             }];
+            {
+                VLog(@"Failed with error: %@", error);
+            }];
             
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
                                                                          action:nil

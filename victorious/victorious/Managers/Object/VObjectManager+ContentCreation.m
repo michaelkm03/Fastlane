@@ -84,7 +84,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+            completionBlock(nil, nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
         }
         return;
     }
@@ -117,7 +117,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             {
                 uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
             }
-            completionBlock(nil, nil, uploadCreationError);
+            completionBlock(nil, nil, nil, uploadCreationError);
         }
         return;
     }
@@ -140,7 +140,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+            completionBlock(nil, nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
         }
         return;
     }
@@ -195,7 +195,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             {
                 uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
             }
-            completionBlock(nil, nil, uploadCreationError);
+            completionBlock(nil, nil, nil, uploadCreationError);
         }
         return;
     }

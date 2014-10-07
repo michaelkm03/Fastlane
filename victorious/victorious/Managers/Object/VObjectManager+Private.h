@@ -57,6 +57,13 @@
 - (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request;
 
 /**
+ Invokes the default behaviors for the given victorious error code.
+ Currently, that means displaying an alert for a banned user or
+ presenting a forced upgrade screen.
+ */
+- (void)defaultErrorHandlingForCode:(NSInteger)errorCode;
+
+/**
  Returns a string representation of the given object.
  If object is a string, it is returned. If object
  is an NSNumber, the results of calling -stringValue

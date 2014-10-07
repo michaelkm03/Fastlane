@@ -7,6 +7,7 @@
 //
 
 #import "VAsyncTestHelper.h"
+#import "VConstants.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
@@ -74,7 +75,7 @@
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).withBody(self.body).andReturn(200).withBody(self.response);
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         XCTAssertEqual([(NSHTTPURLResponse *)response statusCode], 200);
         XCTAssertEqualObjects(responseData, self.response);
@@ -91,7 +92,7 @@
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).withBody(self.body).andFailWithError([NSError errorWithDomain:@"domain" code:100 userInfo:nil]);
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         XCTAssertNotNil(error);
         [async signal];
@@ -127,12 +128,54 @@
                                                                 usingBlock:^(NSNotification *notification)
     {
         XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
-        XCTAssertNotNil(error);
+        XCTAssertNotNil(notification.userInfo[VUploadManagerErrorUserInfoKey]);
         [async signal];
     }];
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError(error);
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    [async waitForSignal:5.0];
+    [[NSNotificationCenter defaultCenter] removeObserver:observer];
+}
+
+- (void)testVictoriousErrorsTreatedAsErrors
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskFailedNotification
+                                                                    object:self.uploadTask
+                                                                     queue:nil
+                                                                usingBlock:^(NSNotification *notification)
+    {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
+        
+        NSError *error = notification.userInfo[VUploadManagerErrorUserInfoKey];
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(error.domain, kVictoriousErrorDomain);
+        XCTAssertEqual(error.code, 400);
+        
+        [async signal];
+    }];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(200).withBody(@"{"
+                                                                                             "\"error\": 400,"
+                                                                                             "\"message\": \"400 - Bad Request\","
+                                                                                             "\"api_version\": \"2\","
+                                                                                             "\"host\": \"dev.getvictorious.com\","
+                                                                                             "\"app_id\": \"1\","
+                                                                                             "\"user_id\": \"403\","
+                                                                                             "\"page_number\": 1,"
+                                                                                             "\"total_pages\": 1,"
+                                                                                             "\"payload\": []"
+                                                                                             "}");
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+    {
+        XCTAssertNotNil(jsonResponse);
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(error.domain, kVictoriousErrorDomain);
+        XCTAssertEqual(error.code, 400);
+        [async signal];
+    }];
+    [async waitForSignal:5.0];
     [async waitForSignal:5.0];
     [[NSNotificationCenter defaultCenter] removeObserver:observer];
 }
@@ -181,7 +224,7 @@
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError([NSError errorWithDomain:@"domain" code:1 userInfo:nil]);
     
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
         {
@@ -205,13 +248,13 @@
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError([NSError errorWithDomain:@"domain" code:1 userInfo:nil]);
     
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             [[LSNocilla sharedInstance] clearStubs];
             stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(200);
-            [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+            [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
             {
                 [async signal];
             }];
@@ -226,7 +269,7 @@
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(200);
     
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
         {
@@ -247,7 +290,7 @@
         XCTAssertTrue(isInProgress);
     });
     
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
@@ -281,7 +324,7 @@
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError([NSError errorWithDomain:@"error" code:0 userInfo:nil]);
     
-    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
     {
         VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
         NSArray *tasks = [serializer uploadTasksFromDisk];
@@ -302,7 +345,7 @@
     
     stubRequest(@"POST", url.absoluteString).andReturn(200);
     
-    [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    [self.uploadManager enqueueUploadTask:task onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
      {
          VUploadTaskSerializer *serializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.taskSaveFileURL];
          NSArray *tasks = [serializer uploadTasksFromDisk];
