@@ -449,6 +449,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
         newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds) : newBottomInset;
         self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
+        self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
 }
 
