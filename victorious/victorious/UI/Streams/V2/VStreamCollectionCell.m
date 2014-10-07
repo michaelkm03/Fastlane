@@ -1,12 +1,13 @@
 //
-//  VStreamViewCell.m
-//  victoriOS
+//  VStreamCollectionCell.m
+//  victorious
 //
-//  Created by David Keegan on 12/16/13.
-//  Copyright (c) 2013 Victorious, Inc. All rights reserved.
+//  Created by Will Long on 10/6/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamViewCell.h"
+#import "VStreamCollectionCell.h"
+
 #import "VStreamCellHeaderView.h"
 #import "VStreamTableViewController.h"
 #import "VSequence.h"
@@ -30,25 +31,23 @@
 
 #import "VCommentCell.h"
 
-#import "VEphemeralTimerView.h"
-
 #import "UIImageView+VLoadingAnimations.h"
 
-NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
+//NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
+NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
+@interface VStreamCollectionCell()
 
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
 
-@property (nonatomic, strong) VEphemeralTimerView   *ephemeralTimerView;
 @property (nonatomic, strong) NSArray               *hashTagRanges;
 
 @end
 
-@implementation VStreamViewCell
+@implementation VStreamCollectionCell
 
 - (void)awakeFromNib
 {
@@ -61,27 +60,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
-    self.ephemeralTimerView.delegate = self;
-    self.ephemeralTimerView.center = self.center;
-    [self addSubview:self.ephemeralTimerView];
- 
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
-    
-    [self addSubview:self.commentHitboxButton];
-}
-
-- (void)contentExpired
-{
-//    self.shadeView.backgroundColor = [UIColor whiteColor];
-    self.previewImageView.alpha = .5f;
-}
-
-- (void)removeExpiredOverlay
-{
-//    self.shadeView.backgroundColor = [UIColor clearColor];
-    self.previewImageView.alpha = 1.0f;
 }
 
 - (NSDictionary *)attributesForCellText
@@ -97,21 +77,18 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
-    [self removeExpiredOverlay];
-
     [self.streamCellHeaderView setSequence:self.sequence];
-    [self.streamCellHeaderView setParentViewController:self.parentTableViewController];
-
+    [self.streamCellHeaderView setParentViewController:self.parentViewController];
+    
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
     // Check if being viewed from the User Profile
-    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
+    if ([self.parentViewController isKindOfClass:[VUserProfileViewController class]])
     {
         [self.streamCellHeaderView setIsFromProfile:YES];
     }
-
     
     VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
@@ -138,7 +115,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         [shadow setShadowBlurRadius:4.0f];
         [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
         [shadow setShadowOffset:CGSizeMake(0, 0)];
-
+        
         if ([self.hashTagRanges count] > 0)
         {
             [VHashTags formatHashTagsInString:newAttributedCellText
@@ -157,20 +134,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
-    
-    if (_sequence.expiresAt)
-    {
-        self.ephemeralTimerView.hidden = NO;
-        self.ephemeralTimerView.expireDate = _sequence.expiresAt;
-        self.animationImage.hidden = YES;
-        self.animationBackgroundImage.hidden = YES;
-    }
-    else
-    {
-        self.animationImage.hidden = NO;
-        self.animationBackgroundImage.hidden = NO;
-        self.ephemeralTimerView.hidden = YES;
-    }
+//    self.animationImage.hidden = NO;
+//    self.animationBackgroundImage.hidden = NO;
 }
 
 - (void)setHeight:(CGFloat)height
@@ -189,18 +154,17 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)commentButtonAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamViewCell:)])
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamCollectionCell:)])
     {
-        [self.delegate willCommentOnSequence:self.sequence inStreamViewCell:self];
+        [self.delegate willCommentOnSequence:self.sequence inStreamCollectionCell:self];
     }
-
 }
 
 - (IBAction)profileButtonAction:(id)sender
 {
     //If this cell is from the profile we should disable going to the profile
     BOOL fromProfile = NO;
-    for (UIViewController *vc in self.parentTableViewController.navigationController.viewControllers)
+    for (UIViewController *vc in self.parentViewController.navigationController.viewControllers)
     {
         if ([vc isKindOfClass:[VUserProfileViewController class]])
         {
@@ -213,14 +177,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
     
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
-    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    [self.parentViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)hideOverlays
 {
     self.overlayView.alpha = 0;
     self.shadeView.alpha = 0;
-    self.animationImage.alpha = 0;
+//    self.animationImage.alpha = 0;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y - self.frame.size.height);
 }
 
@@ -228,7 +192,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
-    self.animationImage.alpha = 1;
+//    self.animationImage.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
 }
 

@@ -30,6 +30,10 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 
+#warning test 
+#import "VStreamCollectionViewController.h"
+#import "VConstants.h"
+
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
     VMenuRowHome                =   0,
@@ -127,8 +131,10 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         {
             case VMenuRowHome:
             {
-                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-                homeContainer.shouldShowHeaderLogo = YES;
+//                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+//                homeContainer.shouldShowHeaderLogo = YES;
+                VStream *defaultStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+                VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController streamViewControllerForStream:defaultStream];
                 navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
             }
@@ -137,7 +143,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             {
                 if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
                 {
-                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
+                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext]]];//[VStream streamForChannelsDirectory]]];
                 }
                 else
                 {

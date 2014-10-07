@@ -8,16 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VAbstractStreamCollectionViewController.h"
+
 @class VStream, VStreamCollectionViewDataSource;
 
 /**
  *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
  */
-@interface VDirectoryViewController : UIViewController
-
-@property (nonatomic, readonly) VStream *stream;///<The stream to display
-@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *directoryDataSource;///<The VStreamCollectionViewDataSource for the object.
-@property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
+@interface VDirectoryViewController : VAbstractStreamCollectionViewController
 
 /**
  *  Instantiates a VDirectoryViewController from the main storyboard.
