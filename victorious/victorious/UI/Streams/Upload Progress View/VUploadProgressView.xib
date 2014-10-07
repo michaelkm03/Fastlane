@@ -33,6 +33,10 @@
                     <rect key="frame" x="286" y="8" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="uploadRetryButton" translatesAutoresizingMaskIntoConstraints="NO" id="aig-sa-Tkn" userLabel="Failed Icon">
+                    <rect key="frame" x="284" y="7" width="26" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F6z-W9-4t8" userLabel="Finished Icon">
                     <rect key="frame" x="286" y="8" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -97,6 +101,7 @@
                 <constraint firstAttribute="trailing" secondItem="BkJ-wz-2We" secondAttribute="trailing" id="L3T-PB-Vg5"/>
                 <constraint firstAttribute="centerY" secondItem="EeS-t3-qDB" secondAttribute="centerY" constant="2.5" id="P9W-J2-GSF"/>
                 <constraint firstItem="Tkg-fI-ton" firstAttribute="centerY" secondItem="BkJ-wz-2We" secondAttribute="centerY" id="R10-PF-tdu"/>
+                <constraint firstAttribute="trailing" secondItem="aig-sa-Tkn" secondAttribute="trailing" constant="10" id="XVD-tg-BRE"/>
                 <constraint firstAttribute="trailing" secondItem="F6z-W9-4t8" secondAttribute="trailing" constant="10" id="Zao-pU-ETo"/>
                 <constraint firstAttribute="trailing" secondItem="vXo-hS-7RO" secondAttribute="trailing" id="buX-2x-yzq"/>
                 <constraint firstItem="Tkg-fI-ton" firstAttribute="height" secondItem="BkJ-wz-2We" secondAttribute="height" id="dZ3-Si-r6x"/>
@@ -107,9 +112,11 @@
                 <constraint firstItem="Tkg-fI-ton" firstAttribute="leading" secondItem="BkJ-wz-2We" secondAttribute="leading" id="q9Q-g8-i8d"/>
                 <constraint firstAttribute="trailing" secondItem="A52-kn-Jlg" secondAttribute="trailing" constant="10" id="qFt-i3-lOB"/>
                 <constraint firstAttribute="centerY" secondItem="A52-kn-Jlg" secondAttribute="centerY" constant="2" id="rJB-Fh-4pe"/>
+                <constraint firstAttribute="centerY" secondItem="aig-sa-Tkn" secondAttribute="centerY" constant="2" id="smT-gB-aZ2"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="failedIcon" destination="aig-sa-Tkn" id="9yI-Xj-fvO"/>
                 <outlet property="finalizingIcon" destination="A52-kn-Jlg" id="JrX-vG-rcO"/>
                 <outlet property="finishedIcon" destination="F6z-W9-4t8" id="ems-DB-1bg"/>
                 <outlet property="finishedIconCheckmark" destination="BRd-LE-nZa" id="v26-Ke-fD0"/>
@@ -126,5 +133,6 @@
         <image name="uploadCancelButtonFilled" width="22" height="22"/>
         <image name="uploadCancelButtonStroke" width="24" height="24"/>
         <image name="uploadCheckmark" width="13" height="10"/>
+        <image name="uploadRetryButton" width="26" height="26"/>
     </resources>
 </document>

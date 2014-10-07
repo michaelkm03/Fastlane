@@ -22,6 +22,7 @@ static const NSTimeInterval kAnimationDuration = 0.1;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressWidthConstraint;
 @property (nonatomic, weak) IBOutlet UIView *uploadingIcon;
 @property (nonatomic, weak) IBOutlet UIView *finalizingIcon;
+@property (nonatomic, weak) IBOutlet UIView *failedIcon;
 @property (nonatomic, weak) IBOutlet UIView *finishedIcon;
 @property (nonatomic, weak) IBOutlet UIImageView *finishedIconCheckmark;
 
@@ -109,6 +110,7 @@ static const NSTimeInterval kAnimationDuration = 0.1;
 {
     self.uploadingIcon.hidden = YES;
     self.finalizingIcon.hidden = YES;
+    self.failedIcon.hidden = YES;
     self.finishedIcon.hidden = YES;
     
     switch (self.state)
@@ -130,7 +132,7 @@ static const NSTimeInterval kAnimationDuration = 0.1;
             
         case VUploadProgressViewStateFailed:
             self.titleLabel.text = NSLocalizedString(@"UploadFailed", @"");
-            self.finalizingIcon.hidden = NO;
+            self.failedIcon.hidden = NO;
             break;
             
         case VUploadProgressViewStateFinished:

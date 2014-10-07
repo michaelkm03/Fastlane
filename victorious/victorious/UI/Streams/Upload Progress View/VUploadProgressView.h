@@ -40,4 +40,9 @@ typedef NS_ENUM(NSInteger, VUploadProgressViewState)
  */
 + (instancetype)uploadProgressViewFromNib;
 
+/**
+ Updates the progress bar, with optional animation
+ */
+- (void)setProgress:(CGFloat)progressPercent animated:(BOOL)animated;
+
 @end

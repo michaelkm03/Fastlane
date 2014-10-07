@@ -172,8 +172,14 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
                [self.completionBlocks setObject:complete forKey:uploadSessionTask];
             }
             [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+            
+            if ([self.taskInformation containsObject:uploadTask])
+            {
+                [self.taskInformation removeObject:uploadTask];
+            }
             [self.taskInformation addObject:uploadTask];
             [self.taskSerializer saveUploadTasks:self.taskInformation];
+            
             uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
             [uploadSessionTask resume];
             dispatch_async(dispatch_get_main_queue(), ^(void)

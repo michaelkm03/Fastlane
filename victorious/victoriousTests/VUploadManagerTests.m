@@ -199,6 +199,27 @@
     [async waitForSignal:5.0];
 }
 
+- (void)testRetry
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError([NSError errorWithDomain:@"domain" code:1 userInfo:nil]);
+    
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[LSNocilla sharedInstance] clearStubs];
+            stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(200);
+            [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSError *error)
+            {
+                [async signal];
+            }];
+        });
+    }];
+    [async waitForSignal:5.0];
+}
+
 - (void)testQueuedUploadTasksDoesNotReturnSuccessfulUpload
 {
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];

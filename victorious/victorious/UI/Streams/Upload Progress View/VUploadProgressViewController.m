@@ -92,6 +92,15 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)addUpload:(VUploadTaskInformation *)uploadTask withState:(VUploadProgressViewState)state animated:(BOOL)animated
 {
+    NSArray *existingProgressViews = [self.uploadProgressViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K==%@", NSStringFromSelector(@selector(uploadTask)), uploadTask]];
+    if (existingProgressViews.count)
+    {
+        VUploadProgressView *upv = existingProgressViews[0];
+        [self.view bringSubviewToFront:upv];
+        upv.state = state;
+        return;
+    }
+    
     VUploadProgressView *progressView = [VUploadProgressView uploadProgressViewFromNib];
     progressView.translatesAutoresizingMaskIntoConstraints = NO;
     progressView.uploadTask = uploadTask;
@@ -179,9 +188,9 @@ static const NSTimeInterval kAnimationDuration = 0.2;
             break;
 
         case VUploadProgressViewStateFailed:
-        {
-            // TODO: retry upload
-        }
+            [self.uploadManager enqueueUploadTask:uploadProgressView.uploadTask onComplete:nil];
+            uploadProgressView.state = VUploadProgressViewStateInProgress;
+            [uploadProgressView setProgress:0 animated:NO];
             break;
             
         case VUploadProgressViewStateFinalizing:
@@ -215,6 +224,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
             else
             {
                 uploadProgressView.state = VUploadProgressViewStateFailed;
+                [uploadProgressView setProgress:0 animated:YES];
             }
             break;
         }
