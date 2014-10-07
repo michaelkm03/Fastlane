@@ -230,12 +230,13 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     {
         [self.textEntryView startEditing];
     };
-    self.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, UIView *selectionView)
+    self.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
     {
         if (selectedEnhancer.isBallistic)
         {
             UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
-            CGPoint convertedCenterForAnimation = [self.view convertPoint:selectionView.center fromView:selectionView];
+            
+            CGPoint convertedCenterForAnimation = [experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
             animationImageView.center = convertedCenterForAnimation;
             animationImageView.image = selectedEnhancer.flightImage;
             [self.view addSubview:animationImageView];
@@ -256,8 +257,11 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             {
                 animationImageView.animationDuration = selectedEnhancer.animationDuration;
                 animationImageView.animationImages = selectedEnhancer.animationSequence;
-                animationImageView.animationRepeatCount = 0;
+                animationImageView.animationRepeatCount = 1;
+                animationImageView.image = nil;
                 [animationImageView startAnimating];
+                
+
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                 {
@@ -270,7 +274,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
             animationImageView.animationDuration = selectedEnhancer.animationDuration;
             animationImageView.animationImages = selectedEnhancer.animationSequence;
-            animationImageView.animationRepeatCount = 0;
+            animationImageView.animationRepeatCount = 1;
             
             [self.contentCell.contentView addSubview:animationImageView];
             [animationImageView startAnimating];

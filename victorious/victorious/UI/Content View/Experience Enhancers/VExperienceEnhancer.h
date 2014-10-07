@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, copy) NSString *labelText;
 
+//TODO: Lazily load these
 @property (nonatomic, strong) NSArray *animationSequence;
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 

@@ -71,7 +71,7 @@
     tomatoEnhancer.animationSequence = tomatoSequence;
   
     
-    experienceEnhancerControllerForSequence.testEnhancers = @[lisaEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer];
+    experienceEnhancerControllerForSequence.testEnhancers = @[lisaEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, lisaEnhancer, tomatoEnhancer, lisaEnhancer, tomatoEnhancer];
     
     return experienceEnhancerControllerForSequence;
 }

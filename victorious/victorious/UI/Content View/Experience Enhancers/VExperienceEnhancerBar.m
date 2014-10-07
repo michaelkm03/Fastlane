@@ -124,7 +124,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     if (self.selectionBlock)
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        self.selectionBlock(enhancerForIndexPath, selectedCell);
+        CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
+                                                                toView:self];
+        self.selectionBlock(enhancerForIndexPath, convertedCenter);
     }
 }
 
