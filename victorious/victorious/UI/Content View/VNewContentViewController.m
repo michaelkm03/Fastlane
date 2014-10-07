@@ -818,6 +818,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         }
         [self dismissViewControllerAnimated:YES completion:^
         {
+            if (finished)
+            {
+                [self.textEntryView startEditing];
+            }
+            
             [UIView animateWithDuration:0.0f
                              animations:^
              {
