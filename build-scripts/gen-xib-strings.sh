@@ -52,8 +52,6 @@ do
         filename=$(basename $file)
         stringsFile=${base%.*}.strings
 
-        echo "$base -> $stringsFile"
-
         ibtool --generate-strings-file "$OUTSUBDIR/$stringsFile" "$file"
         filesize=$(stat -f%z "$OUTSUBDIR/$stringsFile")
         if [ "$filesize" -le "$MINFILESIZE" ]; then
