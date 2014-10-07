@@ -371,12 +371,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if (!self.hasAutoPlayed)
-    {
-        [self.videoCell play];
-        self.hasAutoPlayed = YES;
-    }
 
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -757,6 +751,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                      animations:^
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
+     }completion:^(BOOL finished) {
+         if (!self.hasAutoPlayed)
+         {
+             [self.videoCell play];
+             self.hasAutoPlayed = YES;
+         }
      }];
 }
 
