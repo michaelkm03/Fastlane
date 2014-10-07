@@ -585,6 +585,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             imageCell.contentView.backgroundColor = [UIColor blueColor];
+            imageCell.contentImageView.image = nil;
             return imageCell;
         }
         case VContentViewSectionTicker:
