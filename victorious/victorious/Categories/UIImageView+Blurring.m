@@ -23,6 +23,26 @@ static const char kAssociatedObjectKey;
     return objc_getAssociatedObject(self, &kAssociatedObjectKey);
 }
 
+- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
+{
+    self.image = placeholderImage;
+    
+    __weak typeof(self) welf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, welf.bounds).size
+                                              interpolationQuality:kCGInterpolationLow];
+                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                                                                       tintColor:tintColor
+                                                           saturationDeltaFactor:1.8
+                                                                       maskImage:nil];
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          welf.image = blurredImage;
+                                      });
+                   });
+}
+
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];

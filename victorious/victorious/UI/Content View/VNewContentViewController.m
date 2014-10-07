@@ -368,10 +368,9 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                                                                         0,
                                                                         CGRectGetHeight(self.textEntryView.bounds), 0);
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
-                                           placeholderImage:placeholderImage
-                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
+                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
