@@ -10,7 +10,6 @@
 
 #import "VLoginViewController.h"
 #import "VUploadProgressViewController.h"
-#import "VHashTagStreamViewController.h"
 
 #import "VCameraViewController.h"
 #import "VCameraPublishViewController.h"

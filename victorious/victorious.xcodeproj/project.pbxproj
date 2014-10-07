@@ -197,8 +197,6 @@
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
 		0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */; };
 		0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */; };
-		0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */; };
-		0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */; };
 		0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */; };
 		0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44F19B46B5E00FA363C /* VStreamTableDataSource.m */; };
 		0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D45119B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m */; };
@@ -753,10 +751,6 @@
 		0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEphemeralTimerView.h; sourceTree = "<group>"; };
 		0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEphemeralTimerView.m; sourceTree = "<group>"; };
 		0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEphemeralTimerView.xib; sourceTree = "<group>"; };
-		0314D44819B46B5E00FA363C /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
-		0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
-		0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagStreamViewController.h; sourceTree = "<group>"; };
-		0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagStreamViewController.m; sourceTree = "<group>"; };
 		0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContainerViewController.h; sourceTree = "<group>"; };
 		0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamContainerViewController.m; sourceTree = "<group>"; };
 		0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTableDataSource.h; sourceTree = "<group>"; };
@@ -1728,16 +1722,13 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				BE49323719E34D7000C0912E /* CollectionView */,
 				0314D43419B46B5E00FA363C /* Animators */,
 				0314D43919B46B5E00FA363C /* Cells */,
 				03B83B5819E0988200DC04E4 /* Upload Progress View */,
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */,
-				0314D44819B46B5E00FA363C /* VHashTagContainerViewController.h */,
-				0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */,
-				0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */,
-				0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */,
 				0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */,
 				0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */,
 				0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */,
@@ -2425,6 +2416,13 @@
 			name = DefaultProfileImages;
 			sourceTree = "<group>";
 		};
+		BE49323719E34D7000C0912E /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = CollectionView;
+			sourceTree = "<group>";
+		};
 		BE6464E419511F1B0089A34F /* Deeplink */ = {
 			isa = PBXGroup;
 			children = (
@@ -2890,7 +2888,6 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				0314D4C919B46B5E00FA363C /* VRemixSliderLeft.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
-				0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
@@ -3054,7 +3051,6 @@
 				0314D46719B46B5E00FA363C /* VExpirationPickerTextField.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
-				0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
