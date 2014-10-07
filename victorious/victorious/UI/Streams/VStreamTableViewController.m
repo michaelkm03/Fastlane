@@ -133,7 +133,8 @@
     self.tableDataSource.tableView = self.tableView;
     self.tableDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     
-    self.marquee = [[VMarqueeController alloc] init];
+    VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+    self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
     
     self.tableView.dataSource = self.tableDataSource;
