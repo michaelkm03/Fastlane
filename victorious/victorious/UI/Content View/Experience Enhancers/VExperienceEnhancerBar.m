@@ -13,6 +13,9 @@
 #import "VExperienceEnhancerCell.h"
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
+static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
+static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.15f;
+static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 
 @interface VExperienceEnhancerBar () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -116,10 +119,6 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 }
 
 #pragma mark - UICollectionViewDelegate
-
-static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
-static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.15f;
-static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath

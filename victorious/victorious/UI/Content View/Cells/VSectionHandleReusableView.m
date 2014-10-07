@@ -10,6 +10,8 @@
 
 #import "VThemeManager.h"
 
+static const CGFloat kHandleDesiredHeight = 37.0f;
+
 @interface VSectionHandleReusableView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
@@ -23,7 +25,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 37.0f);
+    return CGSizeMake(CGRectGetWidth(bounds), kHandleDesiredHeight);
 }
 
 #pragma mark - NSObject
