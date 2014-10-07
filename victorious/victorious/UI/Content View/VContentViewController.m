@@ -1207,7 +1207,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         return animator;
     }
     
-    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
+    if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[VStreamContainerViewController class]])
     {
         return [[VContentToStreamAnimator alloc] init];
     }

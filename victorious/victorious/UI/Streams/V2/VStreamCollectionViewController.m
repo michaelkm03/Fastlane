@@ -13,13 +13,18 @@
 
 //View Controllers
 #import "VCommentsContainerViewController.h"
+#import "VContentViewController.h"
 
 //Views
 #import "VNavigationHeaderView.h"
+#import "VNoContentView.h"
 
 //Data models
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
+
+//Managers
+#import "VObjectManager+Sequence.h"
 
 //Categories
 #import "UIImage+ImageCreation.h"
@@ -29,7 +34,7 @@
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -84,6 +89,78 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.navHeaderView updateUI];
 }
 
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.lastSelectedIndexPath = indexPath;
+    
+    VContentViewController *contentViewController = [[VContentViewController alloc] init];
+    
+//    VSequence *sequence = [self.streamDataSource itemAtIndexPath:indexPath];
+//    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
+//    {
+//        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        return;
+//    }
+//    
+//    self.selectedSequence = [self.streamDataSource itemAtIndexPath:indexPath];
+    VStreamCollectionCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//
+//    //TODO: we'll need to clean this up once they decide on the animation
+//    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
+//    {
+//        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
+//        {
+//            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
+//            [self.navigationController pushViewController:self.contentViewController animated:YES];
+//        }
+//        return;
+//    }
+//    
+//    if ([cell isKindOfClass:[VStreamPollCell class]])
+//    {
+//        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
+//        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
+//        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
+//    }
+    
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    contentViewController.sequence = sequence;
+    
+    //Every time we go to the content view, update the sequence
+    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
+    
+    [self setBackgroundImageWithURL:[[sequence initialImageURLs] firstObject]];
+    
+    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
+    if (collectionView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
+    {
+        [self.navigationController pushViewController:contentViewController animated:YES];
+    }
+    else
+    {
+        self.collectionView.userInteractionEnabled = NO;
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+         {
+             [collectionView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+         }
+                         completion:^(BOOL finished)
+         {
+             self.collectionView.userInteractionEnabled = YES;
+             [self.navigationController pushViewController:contentViewController animated:YES];
+         }];
+    }
+}
+
 #pragma mark - VStreamCollectionDataDelegate
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
@@ -116,6 +193,23 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     return YES;
 }
 
+#pragma mark - VStreamViewCellDelegate
+
+- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamCollectionCell:(VStreamCollectionCell *)streamCollectionCell
+{
+    VStreamCollectionCell *cell = streamCollectionCell;
+    
+    self.lastSelectedIndexPath = [self.collectionView indexPathForCell:cell];
+    
+    [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
+    //TODO: probly need to hide this
+    //    [self.delegate streamWillDisappear];
+    
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = sequenceObject;
+    [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
@@ -137,22 +231,5 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 //    self.hasRefreshed = YES;
 //    [self updateNoContentViewAnimated:YES];
 //}
-
-#pragma mark - VStreamViewCellDelegate
-
-- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamCollectionCell:(VStreamCollectionCell *)streamCollectionCell
-{
-    VStreamCollectionCell *cell = streamCollectionCell;
-    
-    self.lastSelectedIndexPath = [self.collectionView indexPathForCell:cell];
-    
-    [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
-    //TODO: probly need to hide this
-//    [self.delegate streamWillDisappear];
-    
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = sequenceObject;
-    [self.navigationController pushViewController:commentsTable animated:YES];
-}
 
 @end
