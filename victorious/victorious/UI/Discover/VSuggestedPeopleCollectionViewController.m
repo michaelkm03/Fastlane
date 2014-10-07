@@ -1,50 +1,39 @@
 //
-//  VSuggestedPeople.m
+//  VSuggestedPeopleCollectionViewController.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSuggestedPeople.h"
+#import "VSuggestedPeopleCollectionViewController.h"
 #import "VSuggestedPersonCollectionViewCell.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 
 static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonCollectionViewCell";
 
-@interface VSuggestedPeople () <VSuggestedPersonCollectionViewCellDelegate>
+@interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
-@property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *suggestedPeople;
 
 @end
 
-@implementation VSuggestedPeople
+@implementation VSuggestedPeopleCollectionViewController
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView
++ (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
-    self = [super init];
-    if (self)
-    {
-        self.collectionView = collectionView;
-    }
-    return self;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
+    return [storyboard instantiateViewControllerWithIdentifier:@"suggestedPeople"];
 }
 
-- (void)setCollectionView:(UICollectionView *)collectionView
+- (void)viewDidLoad
 {
-    _collectionView = collectionView;
-    [self configureCollectionView:self.collectionView];
+    [super viewDidLoad];
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
+    
     [self refresh];
-}
-
-- (void)configureCollectionView:(UICollectionView *)collectionView
-{
-    [collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
-    collectionView.delegate = self;
-    collectionView.dataSource = self;
-    [collectionView reloadData];
 }
 
 #pragma mark - Loading remote data and responses

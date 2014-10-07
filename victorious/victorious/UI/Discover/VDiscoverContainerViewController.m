@@ -19,7 +19,7 @@
 
 + (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle bundleForClass:[self class]]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
     return [storyboard instantiateViewControllerWithIdentifier:@"discover"];
 }
 

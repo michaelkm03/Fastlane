@@ -287,7 +287,7 @@
 		A7A7D66019DF735800B18AB7 /* VTrendingTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A7D65619DF735800B18AB7 /* VTrendingTagCell.xib */; };
 		A7A7D66119DF735800B18AB7 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D65819DF735800B18AB7 /* VDiscoverContainerViewController.m */; };
 		A7A7D66219DF735800B18AB7 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D65A19DF735800B18AB7 /* VDiscoverViewController.m */; };
-		A7A7D66319DF735800B18AB7 /* VSuggestedPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D65C19DF735800B18AB7 /* VSuggestedPeople.m */; };
+		A7A7D66319DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D65C19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m */; };
 		A7A7D66519DF76B300B18AB7 /* VSuggestedPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A7D66419DF76B300B18AB7 /* VSuggestedPeopleCell.xib */; };
 		A7A7D66819DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D66719DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.m */; };
 		A7A7D66A19DF7CA900B18AB7 /* VSuggestedPersonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A7D66919DF7CA900B18AB7 /* VSuggestedPersonCollectionViewCell.xib */; };
@@ -912,8 +912,8 @@
 		A7A7D65819DF735800B18AB7 /* VDiscoverContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverContainerViewController.m; sourceTree = "<group>"; };
 		A7A7D65919DF735800B18AB7 /* VDiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewController.h; sourceTree = "<group>"; };
 		A7A7D65A19DF735800B18AB7 /* VDiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewController.m; sourceTree = "<group>"; };
-		A7A7D65B19DF735800B18AB7 /* VSuggestedPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeople.h; sourceTree = "<group>"; };
-		A7A7D65C19DF735800B18AB7 /* VSuggestedPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeople.m; sourceTree = "<group>"; };
+		A7A7D65B19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCollectionViewController.h; sourceTree = "<group>"; };
+		A7A7D65C19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCollectionViewController.m; sourceTree = "<group>"; };
 		A7A7D66419DF76B300B18AB7 /* VSuggestedPeopleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedPeopleCell.xib; sourceTree = "<group>"; };
 		A7A7D66619DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPersonCollectionViewCell.h; sourceTree = "<group>"; };
 		A7A7D66719DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPersonCollectionViewCell.m; sourceTree = "<group>"; };
@@ -2083,8 +2083,8 @@
 				A7A7D65819DF735800B18AB7 /* VDiscoverContainerViewController.m */,
 				A7A7D65919DF735800B18AB7 /* VDiscoverViewController.h */,
 				A7A7D65A19DF735800B18AB7 /* VDiscoverViewController.m */,
-				A7A7D65B19DF735800B18AB7 /* VSuggestedPeople.h */,
-				A7A7D65C19DF735800B18AB7 /* VSuggestedPeople.m */,
+				A7A7D65B19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.h */,
+				A7A7D65C19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m */,
 				A7A7D66B19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.h */,
 				A7A7D66C19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.m */,
 				A7A7D66D19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.xib */,
@@ -3042,7 +3042,7 @@
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
-				A7A7D66319DF735800B18AB7 /* VSuggestedPeople.m in Sources */,
+				A7A7D66319DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				A7A7D66219DF735800B18AB7 /* VDiscoverViewController.m in Sources */,

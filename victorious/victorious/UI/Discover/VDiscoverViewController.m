@@ -10,12 +10,15 @@
 #import "VSuggestedPeopleCell.h"
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
+#import "VSuggestedPeopleCollectionViewController.h"
 
 static NSString * const kSuggestedPeopleIdentifier      = @"VSuggestedPeopleCell";
 static NSString * const kTrendingTagIdentifier          = @"VTrendingTagCell";
 static const NSUInteger kNumberOfSectionsInTableView    = 2;
 
 @interface VDiscoverViewController ()
+
+@property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeople;
 
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
@@ -27,6 +30,8 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
 - (void)loadView
 {
     [super loadView];
+    
+    self.suggestedPeople = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Main"];
     
     // Call this here to ensure that header views are ready by the time the tableview asks for them
     [self createSectionHeaderViews];
@@ -43,13 +48,10 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
 
 - (void)refresh
 {
+#if DEBUG
     self.trendingTags = @[ @"#Tag1", @"#AnotherTag2", @"#VaryingLengthsOfTag3", @"#Tag4", @"#TTTag5" ];
     [self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+#endif
 }
 
 - (void)registerCells
@@ -109,6 +111,7 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     if ( indexPath.section == 0 )
     {
         VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kSuggestedPeopleIdentifier forIndexPath:indexPath];
+        customCell.collectionView = self.suggestedPeople.collectionView;
         cell = customCell;
     }
     else if ( indexPath.section == 1 )
