@@ -34,6 +34,8 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
+@property (strong, nonatomic) NSString *headerTitle;
+
 @end
 
 @implementation VStreamCollectionViewController
@@ -44,7 +46,9 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
-    return [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
+    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
+    homeStream.headerTitle = NSLocalizedString(@"Home", nil);
+    return homeStream;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams
@@ -66,7 +70,18 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
     
+    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
+    [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
+    self.navHeaderView.headerText = self.headerTitle ?: self.currentStream.name;
+    
     [self refresh:self.refreshControl];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navHeaderView updateUI];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -86,12 +101,18 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 - (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView segmentControlChangeToIndex:(NSInteger)index
 {
-    if (self.allStreams.count >= (NSUInteger)index)
+    if (self.allStreams.count <= (NSUInteger)index)
     {
         return NO;
     }
     
     self.currentStream = self.allStreams[index];
+    
+    if (!self.currentStream.streamItems.count)
+    {
+        [self refresh:self.refreshControl];
+    }
+    
     return YES;
 }
 

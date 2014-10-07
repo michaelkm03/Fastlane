@@ -43,14 +43,18 @@ NSString * const VStreamFilterTypePopular = @"popular";
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *categoryString = [categories componentsJoinedByString:@","];
     NSString *apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Recent", nil);
+    return stream;
 }
 
 + (VStream *)hotSteamForSteamName:(NSString *)streamName
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Featured", nil);
+    return stream;
 }
 
 + (VStream *)streamForHashTag:(NSString *)hashTag
@@ -68,7 +72,9 @@ NSString * const VStreamFilterTypePopular = @"popular";
     
     NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Following", nil);
+    return stream;
 }
 
 + (VStream *)streamForChannelsDirectory
