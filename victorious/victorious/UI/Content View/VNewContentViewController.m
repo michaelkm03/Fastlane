@@ -286,7 +286,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         }
     };
     
-    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, kExperienceEnhancerShadowOffsetY);
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, 0);
     self.experienceEnhancerBar.layer.shadowColor = [UIColor blackColor].CGColor;
     self.experienceEnhancerBar.layer.shadowRadius = kExperienceEnhancerShadowRadius;
     self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
@@ -651,8 +651,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     
     self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
-    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -kExperienceEnhancerShadowOffsetY * (1-layout.percentToShowBottomBar));
-    self.experienceEnhancerBar.layer.shadowRadius = ((1 -layout.percentToShowBottomBar) * kExperienceEnhancerShadowRadius);
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -kExperienceEnhancerShadowOffsetY * (layout.percentToShowBottomBar));
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
