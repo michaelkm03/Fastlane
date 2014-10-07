@@ -33,6 +33,9 @@ NSString * const VUploadManagerBytesSentUserInfoKey = @"VUploadManagerBytesSentU
 NSString * const VUploadManagerTotalBytesUserInfoKey = @"VUploadManagerTotalBytesUserInfoKey";
 NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoKey";
 
+NSString * const VUploadManagerErrorDomain = @"VUploadManagerErrorDomain";
+const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
+
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *urlSession;
@@ -164,15 +167,24 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
     {
         dispatch_async(self.sessionQueue, ^(void)
         {
-            NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-            [self.objectManager updateHTTPHeadersInRequest:request];
-            NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
-
-            if (complete)
+            if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
             {
-               [self.completionBlocks setObject:complete forKey:uploadSessionTask];
+                if (complete)
+                {
+                    dispatch_async(self.callbackQueue, ^(void)
+                    {
+                        complete(nil, nil, nil, [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil]);
+                    });
+                }
+                return;
             }
-            [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
+                                                                    object:self
+                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+            });
             
             if ([self.taskInformation containsObject:uploadTask])
             {
@@ -181,15 +193,39 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
             [self.taskInformation addObject:uploadTask];
             [self.taskSerializer saveUploadTasks:self.taskInformation];
             
+            NSMutableURLRequest *request = [uploadTask.request mutableCopy];
+            [self.objectManager updateHTTPHeadersInRequest:request];
+            NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+            
+            if (!uploadSessionTask)
+            {
+                NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
+                if (complete)
+                {
+                    dispatch_async(self.callbackQueue, ^(void)
+                    {
+                       complete(nil, nil, nil, uploadError);
+                    });
+                }
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
+                                                                        object:uploadTask
+                                                                      userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
+                                                                                 VUploadManagerUploadTaskUserInfoKey: uploadTask}];
+                });
+
+                return;
+            }
+            
+            if (complete)
+            {
+               [self.completionBlocks setObject:complete forKey:uploadSessionTask];
+            }
+            [self.taskInformationBySessionTask setObject:uploadTask forKey:uploadSessionTask];
+            
             uploadSessionTask.taskDescription = [uploadTask.identifier UUIDString];
             [uploadSessionTask resume];
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskBeganNotification
-                                                                    object:self
-                                                                  userInfo:@{VUploadManagerUploadTaskUserInfoKey: uploadTask,
-                                                                        }];
-            });
         });
     }];
 }
@@ -465,7 +501,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             }
             [self.responseData removeObjectForKey:task];
         }
-
+        
         VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
         if (taskInformation)
         {

@@ -44,7 +44,11 @@
         return self.mockURLSession;
     }];
     self.mockSessionTask = [OCMockObject niceMockForClass:[NSURLSessionTask class]];
-    [[[self.mockURLSession stub] andReturn:self.mockSessionTask] uploadTaskWithRequest:OCMOCK_ANY fromFile:OCMOCK_ANY];
+    [[[self.mockURLSession stub] andDo:^(NSInvocation *invocation)
+    {
+        NSURLSessionTask *__autoreleasing returnValue = self.mockSessionTask;
+        [invocation setReturnValue:&returnValue];
+    }] uploadTaskWithRequest:OCMOCK_ANY fromFile:OCMOCK_ANY];
     [[[self.mockURLSession stub] andDo:^(NSInvocation *invocation)
     {
         void (^completion)(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks);
@@ -90,9 +94,6 @@
 
 - (void)testNotificationSentAtStart
 {
-    NSNumber *__block expectedTotalBytes;
-    NSNumber *__block expectedBytesSent;
-    
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
     id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskBeganNotification
                                                                     object:self.uploadManager
@@ -103,12 +104,63 @@
         [async signal];
     }];
     
-    expectedTotalBytes = nil;
-    expectedBytesSent = @(0);
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
     [async waitForSignal:5.0];
     
     [[NSNotificationCenter defaultCenter] removeObserver:observer];
+}
+
+- (void)testErrorReturnedWhenBodyFileDoesntExist
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    [[NSFileManager defaultManager] removeItemAtURL:self.bodyFileURL error:nil];
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+    {
+        XCTAssertEqualObjects(error.domain, VUploadManagerErrorDomain);
+        XCTAssertEqual(error.code, VUploadManagerCouldNotStartUploadErrorCode);
+        [async signal];
+    }];
+    [async waitForSignal:10.0];
+}
+
+- (void)testTaskFailsWhenNSURLSessionReturnsNoTask
+{
+    BOOL __block beginNotificationFired = NO;
+    BOOL __block failNotificationFired = NO;
+    
+    self.mockSessionTask = nil;
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    id observer1 = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskBeganNotification
+                                                                     object:self.uploadManager
+                                                                      queue:nil
+                                                                 usingBlock:^(NSNotification *notification)
+    {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
+        XCTAssertFalse(failNotificationFired);
+        beginNotificationFired = YES;
+        [async signal];
+    }];
+    id observer2 = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskFailedNotification
+                                                                     object:self.uploadTask
+                                                                      queue:nil
+                                                                 usingBlock:^(NSNotification *notification)
+    {
+        XCTAssertEqualObjects(self.uploadTask, notification.userInfo[VUploadManagerUploadTaskUserInfoKey]);
+        XCTAssertNotNil(notification.userInfo[VUploadManagerErrorUserInfoKey]);
+        XCTAssertTrue(beginNotificationFired);
+        failNotificationFired = YES;
+        [async signal];
+    }];
+
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
+    
+    [async waitForSignal:5.0];
+    [async waitForSignal:5.0];
+    
+    XCTAssertTrue(failNotificationFired);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:observer1];
+    [[NSNotificationCenter defaultCenter] removeObserver:observer2];
 }
 
 - (void)testProgressNotificationSentPeriodically
