@@ -151,6 +151,7 @@
 - (void)testQueuedUploadTasksReturnsNewUpload
 {
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    VAsyncTestHelper *async2 = [[VAsyncTestHelper alloc] init];
     
     stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).withBody(self.body).andDo(^(NSDictionary **headers, NSInteger *status, id<LSHTTPBody> *body)
     {
@@ -164,9 +165,9 @@
             {
                 XCTFail(@"Enqueued upload task was not present in getUploadTasksWithCompletion return value");
             }
-            [async signal];
+            [async2 signal];
         }];
-        [async waitForSignal:5.0];
+        XCTAssertTrue([async2 waitForSignalWithoutThrowing:5.0]);
         [async signal];
     });
     
