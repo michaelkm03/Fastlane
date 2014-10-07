@@ -8,6 +8,5 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *const VDiscoverUserProfileSelectedNotification     = @"VDiscoverUserProfileSelectedNotification";
-static NSString *const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
-static NSString *const VDiscoverUserProfileSelectedKeyUser          = @"VDiscoverUserProfileSelectedKeyUser";
+static NSString *const kVDiscoverUserProfileSelectedNotification     = @"VDiscoverUserProfileSelectedNotification";
+static NSString *const kVDiscoverUserProfileSelectedKeyUser          = @"VDiscoverUserProfileSelectedKeyUser";

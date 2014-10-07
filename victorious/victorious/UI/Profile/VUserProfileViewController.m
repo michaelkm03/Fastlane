@@ -33,7 +33,6 @@
 #import "VUserProfileHeaderView.h"
 
 #import "VAuthorizationViewControllerFactory.h"
-#import "VDiscoverConstants.h"
 
 static const CGFloat kVNavigationBarHeight   =  44.0f;
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
@@ -315,10 +314,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
             header.editProfileButton.enabled = YES;
             header.editProfileButton.selected = !header.editProfileButton.selected;
             [header.followButtonActivityIndicator stopAnimating];
-            header.user.isFollowing = @( !header.user.isFollowing );
             header.user = header.user;
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:@{ VDiscoverUserProfileSelectedKeyUser : header.user }];
         };
         
         if (header.editProfileButton.selected)

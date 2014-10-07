@@ -25,6 +25,9 @@
 
 @end
 
+NSString *const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
+NSString *const VMainUserDidChangeFollowingUserKeyUser       = @"VMainUserDidChangeFollowingUserKeyUser";
+
 static NSString * const kVAPIParamMessage = @"message";
 static NSString * const kVAPIParamContext = @"context";
 static NSString * const kVAPIParamSearch = @"search";
@@ -222,6 +225,10 @@ static NSString * const kVAPIParamSearch = @"search";
         if (success)
         {
             success(operation, fullResponse, resultObjects);
+            
+            // The backend returns nothing, so manually update the object:
+            user.isFollowing = @YES;
+            [self notifyIsFollowingUpdatedForUser:user];
         }
     };
     
@@ -243,6 +250,10 @@ static NSString * const kVAPIParamSearch = @"search";
         if (success)
         {
             success(operation, fullResponse, resultObjects);
+            
+            // The backend returns nothing, so manually update the object:
+            user.isFollowing = @NO;
+            [self notifyIsFollowingUpdatedForUser:user];
         }
     };
     
@@ -480,6 +491,12 @@ static NSString * const kVAPIParamSearch = @"search";
     }];
     
     return results;
+}
+
+- (void)notifyIsFollowingUpdatedForUser:(VUser *)user
+{
+    NSDictionary *userInfo = @{ VMainUserDidChangeFollowingUserKeyUser : user };
+    [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:userInfo];
 }
 
 @end

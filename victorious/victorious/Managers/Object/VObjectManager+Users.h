@@ -8,6 +8,9 @@
 
 #import "VObjectManager.h"
 
+extern NSString *const VMainUserDidChangeFollowingUserNotification;
+extern NSString *const VMainUserDidChangeFollowingUserKeyUser;
+
 typedef NS_ENUM(NSUInteger, VSocialSelector)
 {
     kVFacebookSocialSelector,

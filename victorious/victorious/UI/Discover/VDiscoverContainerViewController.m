@@ -33,7 +33,7 @@
     // For now, search is hidden.  Uncomment this when the time comes to implement it.
     self.searchBarHeightConstraint.constant = 0;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSuggestedPersonProfile:) name:VDiscoverUserProfileSelectedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSuggestedPersonProfile:) name:kVDiscoverUserProfileSelectedNotification object:nil];
 }
 
 - (void)dealloc
@@ -54,7 +54,7 @@
         return;
     }
     
-    VUser *user = note.userInfo[ VDiscoverUserProfileSelectedKeyUser ];
+    VUser *user = note.userInfo[ kVDiscoverUserProfileSelectedKeyUser ];
     if ( user == nil )
     {
         return;

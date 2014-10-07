@@ -52,7 +52,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
         return;
     }
     
-    VUser *updatedUser = note.userInfo[ VDiscoverUserProfileSelectedKeyUser ];
+    VUser *updatedUser = note.userInfo[ VMainUserDidChangeFollowingUserKeyUser ];
     if ( updatedUser == nil )
     {
         return;
@@ -94,35 +94,6 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
          // TODO: Handle error
          VLog( @"Recommended Friends failed: %@", [error localizedDescription] );
      }];
-}
-
-- (NSArray *)updateCachedModels:(NSArray *)models withEntityName:(NSString *)entityName
-{
-    NSMutableArray *updatedUsers = [[NSMutableArray alloc] init];
-    RKManagedObjectStore *store = [RKManagedObjectStore defaultStore];
-    NSError *error = nil;
-    for ( VUser *user in models )
-    {
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:[store mainQueueManagedObjectContext]];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:entityDescription];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(remoteId == %i)", user.remoteId.integerValue ];
-        [request setPredicate:predicate];
-        
-        NSArray *array = [[store mainQueueManagedObjectContext] executeFetchRequest:request error:&error];
-        if ( array != nil && array.count > 0 )
-        {
-            // Add the new updated object
-            [updatedUsers addObject:array[0]];
-        }
-        else
-        {
-            // Keep the old one if something failed
-            [updatedUsers addObject:user];
-        }
-    }
-    return [NSArray arrayWithArray:updatedUsers];
 }
 
 #pragma mark - VSuggestedPersonCollectionViewCellDelegate
@@ -174,8 +145,8 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     VUser *user = cell.user;
-    NSDictionary *userInfo = @{ VDiscoverUserProfileSelectedKeyUser : user };
-    [[NSNotificationCenter defaultCenter] postNotificationName:VDiscoverUserProfileSelectedNotification object:nil userInfo:userInfo];
+    NSDictionary *userInfo = @{ kVDiscoverUserProfileSelectedKeyUser : user };
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVDiscoverUserProfileSelectedNotification object:nil userInfo:userInfo];
 }
 
 @end

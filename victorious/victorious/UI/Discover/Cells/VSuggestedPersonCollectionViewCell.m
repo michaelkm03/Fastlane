@@ -103,12 +103,10 @@
     
     if ( self.user.isFollowing.boolValue )
     {
-        self.user.isFollowing = @NO;
         [self.delegate unfollowPerson:self.user];
     }
     else
     {
-        self.user.isFollowing = @YES;
         [self.delegate followPerson:self.user];
     }
     
