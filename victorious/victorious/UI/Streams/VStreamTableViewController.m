@@ -677,27 +677,6 @@
     [self updateNoContentViewAnimated:YES];
 }
 
-// #pragma mark - Navigation
-//
-// - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-//                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-//                                                fromViewController:(UIViewController *)fromVC
-//                                                  toViewController:(UIViewController *)toVC
-// {
-//     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.lastSelectedIndexPath];
-//     if (operation == UINavigationControllerOperationPush
-//         && ([toVC isKindOfClass:[VContentViewController class]])
-//         && [cell isKindOfClass:[VStreamViewCell class]])
-//     {
-//         return [[VStreamToContentAnimator alloc] init];;
-//     }
-//     else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
-//     {
-//         return [[VStreamToCommentAnimator alloc] init];
-//     }
-//     return nil;
-// }
-
 #pragma mark - VAnimation
 
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
