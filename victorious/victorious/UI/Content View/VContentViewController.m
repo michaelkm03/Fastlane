@@ -23,10 +23,6 @@
 #import "VCommentsContainerViewController.h"
 #import "VCameraPublishViewController.h"
 
-#import "VHashTagContainerViewController.h"
-
-#import "VHashTagStreamViewController.h"
-
 #import "VRemixSelectViewController.h"
 #import "VRemixTrimViewController.h"
 
@@ -61,6 +57,8 @@
 #import "VUserManager.h"
 
 #import "VAuthorizationViewControllerFactory.h"
+
+#import "VStreamContainerViewController.h"
 
 static const CGFloat kMaximumNoCaptionContentViewOffset     = 134.0f;
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
