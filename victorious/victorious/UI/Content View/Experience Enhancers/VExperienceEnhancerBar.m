@@ -128,30 +128,37 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     if (self.selectionBlock)
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        [selectedCell.layer removeAllAnimations];
-        [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationGrowDuration
-                              delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
-                         animations:^
-         {
-             selectedCell.transform = CGAffineTransformMakeScale(kExperienceEnhancerSelectionScale, kExperienceEnhancerSelectionScale);
-         }
-                         completion:^(BOOL finished)
-         {
-             [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationDecayDuration
-                                   delay:0.0f
-                                 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
-                              animations:^
-             {
-                  selectedCell.transform = CGAffineTransformIdentity;
-             }
-                              completion:nil];
-         }];
-    
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
                                                                 toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
     }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationGrowDuration
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
+                     animations:^
+     {
+         selectedCell.transform = CGAffineTransformMakeScale(kExperienceEnhancerSelectionScale, kExperienceEnhancerSelectionScale);
+     }
+                     completion:nil];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationDecayDuration
+                          delay:0.0f
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+     {
+         selectedCell.transform = CGAffineTransformIdentity;
+     }
+                     completion:nil];
+
 }
 
 @end
