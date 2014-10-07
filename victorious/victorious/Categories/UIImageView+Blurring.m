@@ -15,6 +15,8 @@
 #import <objc/runtime.h>
 
 static const char kAssociatedObjectKey;
+static const CGFloat kVBlurRadius = 25.0f;
+static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 @implementation UIImageView (Blurring)
 
@@ -32,9 +34,9 @@ static const char kAssociatedObjectKey;
                    {
                        UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, welf.bounds).size
                                               interpolationQuality:kCGInterpolationLow];
-                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
                                                                        tintColor:tintColor
-                                                           saturationDeltaFactor:1.8
+                                                           saturationDeltaFactor:kVSaturationDeltaFactor
                                                                        maskImage:nil];
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
@@ -59,9 +61,9 @@ static const char kAssociatedObjectKey;
                              {
                                  UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
                                                         interpolationQuality:kCGInterpolationLow];
-                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
                                                                                  tintColor:tintColor
-                                                                     saturationDeltaFactor:1.8 
+                                                                     saturationDeltaFactor:kVSaturationDeltaFactor
                                                                                  maskImage:nil];
                                  dispatch_async(dispatch_get_main_queue(), ^
                                  {

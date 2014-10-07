@@ -118,6 +118,8 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 #pragma mark - UICollectionViewDelegate
 
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
+static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.15f;
+static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -127,7 +129,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
         [selectedCell.layer removeAllAnimations];
-        [UIView animateWithDuration:0.15f
+        [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationGrowDuration
                               delay:0.0f
                             options:kNilOptions
                          animations:^
@@ -136,7 +138,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          }
                          completion:^(BOOL finished)
          {
-             [UIView animateWithDuration:0.1f
+             [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationDecayDuration
                               animations:^
               {
                   selectedCell.transform = CGAffineTransformIdentity;
