@@ -117,6 +117,8 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
 #pragma mark - UICollectionViewDelegate
 
+static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
+
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -124,6 +126,23 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     if (self.selectionBlock)
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+        [selectedCell.layer removeAllAnimations];
+        [UIView animateWithDuration:0.15f
+                              delay:0.0f
+                            options:kNilOptions
+                         animations:^
+         {
+             selectedCell.transform = CGAffineTransformMakeScale(kExperienceEnhancerSelectionScale, kExperienceEnhancerSelectionScale);
+         }
+                         completion:^(BOOL finished)
+         {
+             [UIView animateWithDuration:0.1f
+                              animations:^
+              {
+                  selectedCell.transform = CGAffineTransformIdentity;
+              }];
+         }];
+    
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
                                                                 toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
