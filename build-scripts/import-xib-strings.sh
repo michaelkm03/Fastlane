@@ -28,7 +28,7 @@ if [ "$STR_INFILE" ]; then
         dest_xib=${current_xib/en.lproj/'es.lproj'}
         echo "Current XIB: $current_xib"
         echo "Dest XIB: $dest_xib"
-        ibtool --strings-file $STR_INFILE $current_xib --write $dest_xib
+        ibtool --strings-file "$STR_INFILE" "$current_xib" --write "$dest_xib"
         echo "Finished!"
     else
         echo "Error: Input file must be a strings file... exiting now"
@@ -41,25 +41,26 @@ echo ""
 echo "Importing Localized Strings..."
 
 
-# Sweep through project directory and locate all strings files
+# Sweep through project directory and locate the xibs and storyboards files
 echo ""
 find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/en.lproj/' | while read -d $'\n' xib_file
 do
     path=${xib_file/*}
     base=${xib_file##*/}
     fext=${xib_file##*.}
+    strings_file="./xib-strings/es.lproj/"${base%.*}.strings
 
     echo "File: $base"
-    strings_file="./xib-strings/en.lproj/"${base%.*}.strings
+    echo "Strings File: $strings_file"
     
     if [ -e "$strings_file" ]; then
         dest_xib=${xib_file/en.lproj/'es.lproj'}
-        ibtool --strings-file $strings_file $xib_file --write $dest_xib
-        echo "Current XIB: $current_xib"
+        ibtool --strings-file "$strings_file" "$xib_file" --write "$dest_xib"
+        echo "Current XIB: $xib_file"
         echo "Dest XIB: $dest_xib"
         echo ""
     else
-        echo "$xib_file.strings does not exists"
+        echo "$strings_file does not exists"
         echo ""
     fi
 done
