@@ -175,9 +175,6 @@
 		0314D4FB19B46B5E00FA363C /* VStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44119B46B5E00FA363C /* VStreamViewCell.m */; };
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
 		0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */; };
-		0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */; };
-		0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */; };
-		0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */; };
 		0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */; };
 		0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44F19B46B5E00FA363C /* VStreamTableDataSource.m */; };
 		0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D45119B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m */; };
@@ -245,8 +242,6 @@
 		03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B719B42E5D00E27D05 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
-		03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */; };
-		03C185CC19B42FE900E27D05 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C185CA19B42FE900E27D05 /* InfoPlist.strings */; };
 		03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F219B47B590011BB9E /* VFacebookManager.m */; };
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
@@ -733,11 +728,6 @@
 		0314D44419B46B5E00FA363C /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCell.m; sourceTree = "<group>"; };
 		0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEphemeralTimerView.h; sourceTree = "<group>"; };
 		0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEphemeralTimerView.m; sourceTree = "<group>"; };
-		0314D44819B46B5E00FA363C /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
-		0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
-		0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagStreamViewController.h; sourceTree = "<group>"; };
-		0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagStreamViewController.m; sourceTree = "<group>"; };
-		0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContainerViewController.h; sourceTree = "<group>"; };
 		0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamContainerViewController.m; sourceTree = "<group>"; };
 		0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTableDataSource.h; sourceTree = "<group>"; };
@@ -1129,7 +1119,6 @@
 		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
-		DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -1768,11 +1757,6 @@
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
-				0314D44819B46B5E00FA363C /* VHashTagContainerViewController.h */,
-				0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */,
-				0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */,
-				0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */,
-				0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */,
 				0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */,
 				0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */,
 				0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */,
@@ -2606,6 +2590,7 @@
 				03CE66F819B50C340011BB9E /* Objective Clean */,
 				032948A81970BDA700208FBA /* Crashlytics */,
 				22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */,
+				DB34CCC919E4CF64008158C9 /* Import Localized Strings */,
 			);
 			buildRules = (
 			);
@@ -2726,13 +2711,7 @@
 				DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */,
 				DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
-				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
-				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
-				03C185C719B42FD600E27D05 /* Localizable.strings in Resources */,
-				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
-				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
-				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
@@ -2839,6 +2818,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		DB34CCC919E4CF64008158C9 /* Import Localized Strings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Import Localized Strings";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "../build-scripts/import-xib-strings.sh";
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
