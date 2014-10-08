@@ -22,7 +22,6 @@ extern NSString * const VStreamCollectionCellName;
 @interface VStreamCollectionCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
-@property (nonatomic, weak) IBOutlet UIImageView            *playButtonImage;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;

@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="oj3-Oe-ty5">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="oj3-Oe-ty5">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="ANb-iR-hwm">
@@ -56,6 +56,14 @@
                                 <rect key="frame" x="0.0" y="7" width="320" height="76"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="mEM-F3-EZt">
+                                <rect key="frame" x="134" y="134" width="52" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="NuW-UN-tpX">
+                                <rect key="frame" x="134" y="134" width="52" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -97,6 +105,8 @@
                 <outlet property="descriptionLabel" destination="h1z-VQ-pkX" id="uTa-0X-eH7"/>
                 <outlet property="lowerGradientView" destination="ANb-iR-hwm" id="44h-v9-vf4"/>
                 <outlet property="overlayView" destination="3gM-g0-IBc" id="5Fn-60-Yd9"/>
+                <outlet property="playBackgroundImageView" destination="NuW-UN-tpX" id="Bgz-8G-1he"/>
+                <outlet property="playImageView" destination="mEM-F3-EZt" id="Rs7-w9-56F"/>
                 <outlet property="previewImageView" destination="sTq-xU-n7a" id="icj-OA-E4p"/>
                 <outlet property="shadeView" destination="qPB-vc-HRS" id="Ddb-eA-6tF"/>
                 <outlet property="streamCellHeaderView" destination="XNn-If-c8r" id="pPZ-oe-pEe"/>
@@ -105,6 +115,8 @@
     </objects>
     <resources>
         <image name="BottomGradient" width="320" height="102"/>
+        <image name="PlayCircle" width="52" height="52"/>
+        <image name="PlayTriangle" width="52" height="52"/>
         <image name="topGradient" width="320" height="52"/>
     </resources>
 </document>

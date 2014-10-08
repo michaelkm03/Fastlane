@@ -38,6 +38,9 @@ NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
 
 @interface VStreamCollectionCell()
 
+@property (nonatomic, weak) IBOutlet UIImageView *playImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
+
 @property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
 
 @property (nonatomic) BOOL                          animating;
@@ -90,16 +93,6 @@ NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
         [self.streamCellHeaderView setIsFromProfile:YES];
     }
     
-    VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
-    if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
-    {
-        self.playButtonImage.hidden = NO;
-    }
-    else
-    {
-        self.playButtonImage.hidden = YES;
-    }
-    
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
         NSString *text = self.sequence.name;
@@ -134,8 +127,7 @@ NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
-//    self.animationImage.hidden = NO;
-//    self.animationBackgroundImage.hidden = NO;
+    self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
 }
 
 - (void)setHeight:(CGFloat)height
