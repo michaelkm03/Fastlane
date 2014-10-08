@@ -70,7 +70,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
     user = user ?: [VObjectManager sharedManager].mainUser;
     
-    NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
     VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     stream.name = NSLocalizedString(@"Following", nil);

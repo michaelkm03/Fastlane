@@ -17,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UIButton *menuButton;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic) NSInteger lastSelectedControl;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;

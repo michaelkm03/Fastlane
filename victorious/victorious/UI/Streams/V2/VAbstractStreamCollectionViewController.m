@@ -179,7 +179,7 @@
                                          failure:^(NSError *error)
      {
          [self.refreshControl endRefreshing];
-         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.superview animated:YES];
+         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
          hud.mode = MBProgressHUDModeText;
          hud.labelText = NSLocalizedString(@"RefreshError", @"");
          hud.userInteractionEnabled = NO;
@@ -234,7 +234,7 @@
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
 }

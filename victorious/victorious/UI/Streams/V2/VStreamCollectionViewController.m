@@ -102,6 +102,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
     self.navHeaderView.headerText = self.headerTitle ?: self.currentStream.name;
+    self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
 
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     
@@ -144,7 +145,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     self.preloadImageCache = nil;
 }
-
 
 #pragma mark - Properties
 
@@ -282,7 +282,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {

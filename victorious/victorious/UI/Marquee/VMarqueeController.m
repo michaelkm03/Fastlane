@@ -154,7 +154,7 @@
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
     VMarqueeStreamItemCell *cell;

@@ -134,6 +134,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 //                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
 //                homeContainer.shouldShowHeaderLogo = YES;
                 VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
+                homeContainer.shouldShowHeaderLogo = YES;
                 navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
             }

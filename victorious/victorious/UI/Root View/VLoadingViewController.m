@@ -9,6 +9,8 @@
 
 #import "VPushNotificationManager.h"
 #import "VStreamContainerViewController.h"
+#import "VStreamCollectionViewController.h"
+
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -166,18 +168,18 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoading = NO;
             _appInitLoaded = YES;
             
-            VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-            streamContainer.shouldShowHeaderLogo = YES;
+            VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
+            homeContainer.shouldShowHeaderLogo = YES;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [self.navigationController pushViewController:homeContainer animated:YES];
             }
                                                                         onError:^(NSError *error)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [self.navigationController pushViewController:homeContainer animated:YES];
             }];
         }
                                                       failBlock:^(NSOperation *operation, NSError *error)

@@ -94,7 +94,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     VDirectoryItemCell *cell;

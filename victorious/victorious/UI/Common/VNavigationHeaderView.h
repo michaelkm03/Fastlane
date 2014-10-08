@@ -68,7 +68,7 @@
 
 @property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;
 
-@property (nonatomic, readonly) UISegmentedControl *segmentedControl;
+@property (nonatomic, weak, readonly) UISegmentedControl *segmentedControl;
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles;
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;

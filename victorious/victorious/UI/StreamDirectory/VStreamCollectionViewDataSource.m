@@ -146,8 +146,7 @@ static char KVOContext;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
-    return [self.delegate dataSource:self cellForStreamItem:item atIndexPath:indexPath];
+    return [self.delegate dataSource:self cellForIndexPath:indexPath];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

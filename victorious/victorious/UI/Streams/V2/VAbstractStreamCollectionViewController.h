@@ -16,9 +16,13 @@
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
 @property (nonatomic, strong) VStream *defaultStream;///<The default stream
 @property (nonatomic, strong) NSArray *allStreams;///<All streams that can display
-@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
-@property (weak, nonatomic, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
+
+@property (nonatomic, strong, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
+
+@property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 @property (nonatomic, weak) VNavigationHeaderView *navHeaderView;///<The navigation header for the stream
+
+@property (nonatomic, assign) BOOL shouldShowHeaderLogo;
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
 
