@@ -18,12 +18,13 @@
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256(plaintext, strlen(plaintext), hash);
     
-    NSMutableString *returnValue = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+    NSUInteger hashedStringLength = CC_SHA256_DIGEST_LENGTH * 2;
+    NSMutableString *hashedString = [NSMutableString stringWithCapacity:hashedStringLength];
     for (NSInteger i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
     {
-        [returnValue appendFormat:@"%02x", hash[i]];
+        [hashedString appendFormat:@"%02x", hash[i]];
     }
-    return returnValue;
+    return hashedString;
 }
 
 @end
