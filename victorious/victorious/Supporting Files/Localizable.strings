@@ -154,8 +154,16 @@
 "DuplicateVideoTitle"   =   "Duplicate Video";
 "DuplicateVideoBody"    =   "It looks like you're trying to upload a video that has already been uploaded.";
 
+"Uploading"             =   "Your content is uploading...";
+"UploadFinalizing"      =   "We are finalizing your post, it will be available soon.";
+"UploadFailed"          =   "Sorry, your upload failed. Please check your connection and try again.";
+"UploadSuccess"         =   "Success! Your post has been uploaded.";
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Something went wrong, and we are unable to complete the upload at this time.";
+"UploadCancelAreYouSure" = "Are you sure you want to cancel this upload?";
+"YesCancelUpload"       =   "Yes, cancel this upload";
+"NoKeepUploading"       =   "No, keep uploading";
+"Cancelling..."         =   "Cancelling...";
 
 "RefreshError"          =   "Unable to refresh.";
 

@@ -168,6 +168,7 @@ static const NSUInteger kRetryAttempts = 5;
             
             VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
             streamContainer.shouldShowHeaderLogo = YES;
+            streamContainer.shouldShowUploadProgress = YES;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {

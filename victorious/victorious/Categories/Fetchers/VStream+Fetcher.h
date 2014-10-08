@@ -24,6 +24,6 @@ extern NSString * const VStreamFilterTypePopular;
 + (VStream *)streamForHashTag:(NSString *)hashTag; ///<Returns the stream for a hastag.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user; ///<Returns the following stream for streamName.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForChannelsDirectory;///<Returns the Channels stream.  Note: stream object will be the mainQueueManagedObjectContext.
-+ (VStream *)streamForMarquee;///<Returns the Marquee stream.  Note: stream object will be the mainQueueManagedObjectContext.
++ (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context;///<Returns the Marquee stream.
 
 @end

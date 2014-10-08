@@ -46,10 +46,22 @@
  * allURLs key:value must be NSString *parameterName:NSURL *localURL
  * allExtensions must have same keys are allURLs, values are NSString *fileExtension */
 - (AFHTTPRequestOperation *)uploadURLs:(NSDictionary *)allUrls
-                               toPath:(NSString *)path
-                           parameters:(NSDictionary *)parameters
-                         successBlock:(VSuccessBlock)successBlock
-                            failBlock:(VFailBlock)failBlock;
+                                toPath:(NSString *)path
+                            parameters:(NSDictionary *)parameters
+                          successBlock:(VSuccessBlock)successBlock
+                             failBlock:(VFailBlock)failBlock;
+
+/**
+ Sets the User-Agent, Authorization and Date headers in the given NSMutableURLRequest object
+ */
+- (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request;
+
+/**
+ Invokes the default behaviors for the given victorious error code.
+ Currently, that means displaying an alert for a banned user or
+ presenting a forced upgrade screen.
+ */
+- (void)defaultErrorHandlingForCode:(NSInteger)errorCode;
 
 /**
  Returns a string representation of the given object.

@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-
-#import "NSObject+VMethodSwizzling.h"
+#import "OCMock.h"
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 #import "VProfileCreateViewController.h"
@@ -17,77 +16,48 @@
 
 @interface VAuthorizationViewControllerFactoryTests : XCTestCase
 {
-    IMP _mainUserProfileCompleteOriginal;
-    IMP _mainUserLoggedInOriginal;
+    id mockObjectManager;
 }
 
 @end
 
 @implementation VAuthorizationViewControllerFactoryTests
 
-- (void)tearDown
-{
-    [super tearDown];
-    
-    if ( _mainUserProfileCompleteOriginal != nil )
-    {
-        [VObjectManager v_restoreOriginalImplementation:_mainUserProfileCompleteOriginal forClassMethod:@selector(mainUserProfileComplete)];
-    }
-    
-    if ( _mainUserLoggedInOriginal != nil )
-    {
-        [VObjectManager v_restoreOriginalImplementation:_mainUserLoggedInOriginal forClassMethod:@selector(mainUserLoggedIn)];
-    }
-}
-
 - (void)setUp
 {
     [super setUp];
     
-    _mainUserProfileCompleteOriginal = nil;
-    _mainUserLoggedInOriginal = nil;
+    mockObjectManager = OCMClassMock( [VObjectManager class] );
 }
 
 - (void)testWithObjectManagerUserProfileIncomplete
 {
-    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
-        return NO;
-    }];
-    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
-        return YES;
-    }];
+    OCMStub([mockObjectManager mainUserProfileComplete]).andReturn( NO );
+    OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( YES );
     
-    id output = [VAuthorizationViewControllerFactory requiredViewController];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[VProfileCreateViewController class]] );
 }
 
 - (void)testWithObjectManagerUserProfileComplete
 {
-    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
-        return YES;
-    }];
-    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
-        return YES;
-    }];
+    OCMStub([mockObjectManager mainUserProfileComplete]).andReturn( YES );
+    OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( YES );
     
     // Calling code should check the 'authorized' property before getting a view controller from this method,
     // threfore theoutput is nil because there is not view controller to display for that state
-    id output = [VAuthorizationViewControllerFactory requiredViewController];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNil( output );
 }
 
 - (void)testWithObjectManagerUserProfileLoggedIn
 {
-    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
-        return NO;
-    }];
-    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
-        return NO;
-    }];
+    OCMStub([mockObjectManager mainUserProfileComplete]).andReturn( NO );
+    OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( NO );
     
     // Expecting a UINavigationController with VLoginViewController as root view controller
-    id output = [VAuthorizationViewControllerFactory requiredViewController];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNotNil( output );
     XCTAssert( [output isMemberOfClass:[UINavigationController class]] );
     UINavigationController *navController = (UINavigationController *)output;
@@ -98,15 +68,11 @@
 
 - (void)testWithObjectManagerUserProfileInvalid
 {
-    _mainUserProfileCompleteOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserProfileComplete) withBlock:^BOOL{
-        return YES;
-    }];
-    _mainUserLoggedInOriginal = [VObjectManager v_swizzleMethod:@selector(mainUserLoggedIn) withBlock:^BOOL{
-        return NO;
-    }];
+    OCMStub([mockObjectManager mainUserProfileComplete]).andReturn( YES );
+    OCMStub([mockObjectManager mainUserLoggedIn]).andReturn( NO );
     
     // This state should never occur, and therefore the method will reutrn nil
-    id output = [VAuthorizationViewControllerFactory requiredViewController];
+    id output = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:mockObjectManager];
     XCTAssertNil( output );
 }
 
