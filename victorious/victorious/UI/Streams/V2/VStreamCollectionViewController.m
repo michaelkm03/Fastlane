@@ -300,6 +300,22 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     }
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
+    if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    {
+        return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+    }
+    else if ([sequence isPoll])
+    {
+        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.view.bounds];
+    }
+    return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+}
+
 #pragma mark - VStreamCollectionDataDelegate
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath

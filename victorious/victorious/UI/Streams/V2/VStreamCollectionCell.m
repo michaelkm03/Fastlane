@@ -198,12 +198,10 @@
                           bundle:nil];
 }
 
-//+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-//{
-//    CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
-//    size.height += kMarqueeBufferHeight;
-//    return size;
-//}
-
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    CGFloat width = CGRectGetWidth(bounds);
+    return CGSizeMake(width, width);
+}
 
 @end

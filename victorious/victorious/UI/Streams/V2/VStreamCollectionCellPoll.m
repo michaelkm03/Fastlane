@@ -22,6 +22,8 @@
 
 #import "VThemeManager.h"
 
+const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
+
 @interface VStreamCollectionCellPoll ()
 
 @property (nonatomic, weak) VAnswer *firstAnswer;
@@ -66,5 +68,13 @@
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
                           placeholderImage:placeholderImage];
 }
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    CGFloat width = CGRectGetWidth(bounds);
+    CGFloat height = width * kPollCellHeightRatio;
+    return CGSizeMake(width, height);
+}
+
 
 @end
