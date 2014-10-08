@@ -65,6 +65,7 @@
     
     self.navHeaderView.delegate = self;
     self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
+    self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
     [self.navHeaderView updateUI];
     [self.view addSubview:self.navHeaderView];
     

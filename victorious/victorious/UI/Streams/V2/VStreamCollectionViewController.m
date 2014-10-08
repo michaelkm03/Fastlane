@@ -129,7 +129,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
-    self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
 
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     
