@@ -30,9 +30,7 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 
-#warning test 
 #import "VStreamCollectionViewController.h"
-#import "VConstants.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
