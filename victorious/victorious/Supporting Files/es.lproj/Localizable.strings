@@ -1,10 +1,10 @@
-/* 
-  Localizable.strings
-  victorious
-
-  Created by Gary Philipp on 12/23/13.
-  Copyright (c) 2013 Victorious Inc. All rights reserved.
-*/
+/*
+ Localizable.strings
+ victorious
+ 
+ Created by Gary Philipp on 12/23/13.
+ Copyright (c) 2013 Victorious Inc. All rights reserved.
+ */
 
 
 
@@ -45,6 +45,7 @@
 "ProfileSaveFail" = "No se pudo guardar la información de tu perfil debido a un error en el servidor";
 "ProfileSave" = "Subiendo tu perfil";
 "ProfileIncomplete" = "Perfil incompleto";
+"ProfileAborted" = "No podrás usar algunas características hasta que tu perfil esté completo.";
 "ProfileRequired" = "Por favor proporciona lo siguiente:";
 "ProfileRequiredPhoto" = "Imagen del perfil";
 "ProfileRequiredName" = "Nombre";
@@ -150,8 +151,16 @@
 "DuplicateVideoTitle" = "Video duplicado";
 "DuplicateVideoBody" = "Parece que estás intentando subir un video que ya ha sido subido.";
 
+"Uploading" = "Tu contenido se está cargando...";
+"UploadFinalizing" = "Estamos finalizando tu publicación, pronto estará disponible.";
+"UploadFailed" = "Lo sentimos, falló tu carga. Por favor checa tu conexión y vuelve a intentarlo.";
+"UploadSuccess" = "¡Listo! Tu publicación ha sido cargada.";
 "UploadError" = "Error en la subida";
 "UploadErrorBody" = "Algo salió mal y no pudimos completar la subida en este momento.";
+"UploadCancelAreYouSure" = "¿Estás seguro de que quieres cancelar la carga?";
+"YesCancelUpload" = "Sí, cancelar la carga";
+"NoKeepUploading" = "No, seguir cargando";
+"Cancelling..." = "Cancelando...";
 
 "RefreshError" = "No se pudo refrescar.";
 
