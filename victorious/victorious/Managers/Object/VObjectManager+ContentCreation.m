@@ -84,7 +84,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+            completionBlock(nil, nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
         }
         return;
     }
@@ -117,11 +117,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             {
                 uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
             }
-            completionBlock(nil, nil, uploadCreationError);
+            completionBlock(nil, nil, nil, uploadCreationError);
         }
         return;
     }
-    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
 - (void)uploadMediaWithName:(NSString *)name
@@ -140,7 +140,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            completionBlock(nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
+            completionBlock(nil, nil, nil, [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil]);
         }
         return;
     }
@@ -195,11 +195,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             {
                 uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
             }
-            completionBlock(nil, nil, uploadCreationError);
+            completionBlock(nil, nil, nil, uploadCreationError);
         }
         return;
     }
-    [self.uploadManager enqueueUploadTask:[uploadTaskCreator createUploadTaskWithError:nil] onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
