@@ -2894,15 +2894,16 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="50U-yP-bn1"/>
-                                            <constraint firstAttribute="height" constant="20" id="NWH-DD-4yn"/>
+                                            <constraint firstAttribute="height" constant="20" id="Csw-ut-Oeg"/>
+                                            <constraint firstAttribute="width" constant="20" id="yLZ-E1-pfW"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CCW-B6-MBe" userLabel="Cancel Button">
                                         <rect key="frame" x="270" y="4" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="vYo-d0-Dbx"/>
+                                            <constraint firstAttribute="height" constant="50" id="0H5-M6-YqE"/>
+                                            <constraint firstAttribute="width" constant="50" id="FxT-kc-6bZ"/>
                                         </constraints>
                                         <state key="normal" image="Close">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -2915,6 +2916,9 @@
                                         <rect key="frame" x="43" y="19" width="227" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="19" id="3ad-xx-Xid"/>
+                                        </constraints>
                                         <color key="textColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
@@ -2928,36 +2932,34 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="4bW-r1-Uby"/>
+                                            <constraint firstAttribute="height" constant="1" id="nlj-dr-juE"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j5E-DX-I63" userLabel="Vertical Rule">
-                                        <rect key="frame" x="270" y="0.0" width="1" height="54"/>
+                                        <rect key="frame" x="270" y="0.0" width="1" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="1" id="ryq-kH-eUU"/>
+                                            <constraint firstAttribute="width" constant="1" id="nlV-HN-pNe"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="CCW-B6-MBe" firstAttribute="top" secondItem="DWG-sh-z9W" secondAttribute="top" constant="4" id="86V-Fi-WOS"/>
-                                    <constraint firstAttribute="bottom" secondItem="CCW-B6-MBe" secondAttribute="bottom" constant="1" id="B3d-uC-I56"/>
-                                    <constraint firstAttribute="bottom" secondItem="j5E-DX-I63" secondAttribute="bottom" constant="1" id="FZN-r6-MPR"/>
-                                    <constraint firstAttribute="centerY" secondItem="efC-uL-rse" secondAttribute="centerY" constant="-0.5" id="J7o-4F-Pea"/>
-                                    <constraint firstAttribute="bottom" secondItem="VAw-pL-Lv5" secondAttribute="bottom" constant="17" id="MOo-5y-VcU"/>
-                                    <constraint firstItem="ojr-oW-pjh" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="1" id="NVf-aY-tyi"/>
-                                    <constraint firstItem="j5E-DX-I63" firstAttribute="top" secondItem="DWG-sh-z9W" secondAttribute="top" id="SWi-OW-0MW"/>
-                                    <constraint firstItem="VAw-pL-Lv5" firstAttribute="leading" secondItem="efC-uL-rse" secondAttribute="trailing" constant="9" id="Tdc-cQ-9B6"/>
-                                    <constraint firstItem="efC-uL-rse" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="14" id="U5V-TB-YkO"/>
-                                    <constraint firstAttribute="bottom" secondItem="ojr-oW-pjh" secondAttribute="bottom" id="VZl-mP-HAa"/>
-                                    <constraint firstItem="VAw-pL-Lv5" firstAttribute="top" secondItem="DWG-sh-z9W" secondAttribute="top" constant="19" id="WIR-rt-Kyk"/>
-                                    <constraint firstAttribute="trailing" secondItem="ojr-oW-pjh" secondAttribute="trailing" constant="-1" id="XPZ-Er-zxe"/>
+                                    <constraint firstAttribute="centerY" secondItem="j5E-DX-I63" secondAttribute="centerY" id="0mx-Hp-2er"/>
+                                    <constraint firstItem="efC-uL-rse" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="14" id="4pw-Sb-xBP"/>
+                                    <constraint firstItem="CCW-B6-MBe" firstAttribute="leading" secondItem="j5E-DX-I63" secondAttribute="trailing" constant="-1" id="8Jd-DT-cr1"/>
+                                    <constraint firstAttribute="trailing" secondItem="VAw-pL-Lv5" secondAttribute="trailing" constant="50" id="Kyy-bZ-9dx"/>
+                                    <constraint firstItem="ojr-oW-pjh" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="1" id="Qw1-2J-4gw"/>
+                                    <constraint firstAttribute="centerY" secondItem="efC-uL-rse" secondAttribute="centerY" constant="-0.5" id="ck6-EL-IIJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="CCW-B6-MBe" secondAttribute="trailing" id="dBE-XE-g3C"/>
+                                    <constraint firstItem="VAw-pL-Lv5" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="43" id="eog-RL-06o"/>
                                     <constraint firstAttribute="height" constant="55" id="fcP-OA-zZu"/>
-                                    <constraint firstItem="j5E-DX-I63" firstAttribute="leading" secondItem="DWG-sh-z9W" secondAttribute="leading" constant="270" id="jwZ-Ny-lke"/>
-                                    <constraint firstAttribute="trailing" secondItem="VAw-pL-Lv5" secondAttribute="trailing" constant="50" id="kOC-er-5zn"/>
-                                    <constraint firstAttribute="trailing" secondItem="CCW-B6-MBe" secondAttribute="trailing" id="zKa-Ng-34q"/>
+                                    <constraint firstAttribute="trailing" secondItem="ojr-oW-pjh" secondAttribute="trailing" constant="-1" id="gw4-VS-x1f"/>
+                                    <constraint firstAttribute="centerY" secondItem="CCW-B6-MBe" secondAttribute="centerY" constant="-1.5" id="pUX-P5-yX3"/>
+                                    <constraint firstAttribute="centerY" secondItem="VAw-pL-Lv5" secondAttribute="centerY" constant="-1" id="qiM-Sy-cOA"/>
+                                    <constraint firstAttribute="bottom" secondItem="ojr-oW-pjh" secondAttribute="bottom" id="re8-eF-9Wp"/>
+                                    <constraint firstItem="j5E-DX-I63" firstAttribute="height" secondItem="DWG-sh-z9W" secondAttribute="height" id="yxE-ym-abI"/>
                                 </constraints>
                             </view>
                         </subviews>

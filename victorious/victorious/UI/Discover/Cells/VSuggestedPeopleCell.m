@@ -52,10 +52,10 @@
 
 - (void)applyConstraints
 {
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    /*self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *views = @{ @"subview" : self.collectionView };
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];*/
 }
 
 + (NSInteger)cellHeight

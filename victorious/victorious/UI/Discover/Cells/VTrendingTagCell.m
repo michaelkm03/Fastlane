@@ -14,7 +14,9 @@
 
 @property (nonatomic, strong) IBOutlet UITextView *hashTagTextView;
 @property (nonatomic, strong) IBOutlet UIButton *addNewButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
+
+@property (nonatomic, strong) IBOutlet UIView *textBackgroundView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundViewWidthConstraint;
 
 @end
 
@@ -22,7 +24,6 @@
 
 - (void)awakeFromNib
 {
-    self.hashTagTextView.contentInset = UIEdgeInsetsMake( -4, 8, 0, 0 );
     self.addNewButton.layer.cornerRadius = 3;
     
     [self applyTheme];
@@ -30,8 +31,9 @@
 
 - (void)applyTheme
 {
-    self.hashTagTextView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.textBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.addNewButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.hashTagTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -48,12 +50,14 @@
 {
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
+    // Setting .selecteable to YES then back to NO is a hack to stop losing text attribtues (size,color) set in IB
     self.hashTagTextView.selectable = YES;
     [self.hashTagTextView setText:text];
     self.hashTagTextView.selectable = NO;
     
+    // Match the label's size to the text
     CGSize targetSize = [self.hashTagTextView sizeThatFits:self.hashTagTextView.frame.size];
-    self.widthConstraint.constant = targetSize.width + 4;
+    self.textBackgroundViewWidthConstraint.constant = targetSize.width + 8;
 }
 
 @end
