@@ -283,6 +283,8 @@
 		A78149F319E4EA4100D89B90 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149F219E4EA4100D89B90 /* VHashtag.m */; };
 		A78149F619E4EB5C00D89B90 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */; };
 		A7814A0019E5BB4000D89B90 /* VHashtagsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149FF19E5BB4000D89B90 /* VHashtagsTests.m */; };
+		A7814A0719E5E87900D89B90 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0519E5E87900D89B90 /* VNoContentTableViewCell.m */; };
+		A7814A0819E5E87900D89B90 /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7814A0619E5E87900D89B90 /* VNoContentTableViewCell.xib */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7A7D61919DE17AF00B18AB7 /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323419DB763F0040DB30 /* VAuthorizationViewControllerFactoryTests.m */; };
 		A7A7D61B19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */; };
@@ -914,6 +916,9 @@
 		A78149F419E4EB5B00D89B90 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A78149FF19E5BB4000D89B90 /* VHashtagsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagsTests.m; sourceTree = "<group>"; };
+		A7814A0419E5E87900D89B90 /* VNoContentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentTableViewCell.h; sourceTree = "<group>"; };
+		A7814A0519E5E87900D89B90 /* VNoContentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentTableViewCell.m; sourceTree = "<group>"; };
+		A7814A0619E5E87900D89B90 /* VNoContentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNoContentTableViewCell.xib; sourceTree = "<group>"; };
 		A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUIAlertView+VBlocksTests.m"; sourceTree = "<group>"; };
 		A7A7D65119DF735800B18AB7 /* VSuggestedPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCell.h; sourceTree = "<group>"; };
 		A7A7D65219DF735800B18AB7 /* VSuggestedPeopleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCell.m; sourceTree = "<group>"; };
@@ -1367,6 +1372,9 @@
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				0314D35619B46B5E00FA363C /* VNoContentView.xib */,
+				A7814A0419E5E87900D89B90 /* VNoContentTableViewCell.h */,
+				A7814A0519E5E87900D89B90 /* VNoContentTableViewCell.m */,
+				A7814A0619E5E87900D89B90 /* VNoContentTableViewCell.xib */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
@@ -2720,6 +2728,7 @@
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				039ED29B19C908F400305987 /* VCVideoPlayerToolbarView.xib in Resources */,
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
+				A7814A0819E5E87900D89B90 /* VNoContentTableViewCell.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A7A7D66A19DF7CA900B18AB7 /* VSuggestedPersonCollectionViewCell.xib in Resources */,
@@ -2963,6 +2972,7 @@
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
 				0314D4CE19B46B5E00FA363C /* UIViewController+VSideMenuViewController.m in Sources */,
+				A7814A0719E5E87900D89B90 /* VNoContentTableViewCell.m in Sources */,
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,

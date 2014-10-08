@@ -12,6 +12,10 @@
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 
+- (void)clearErrorMessage;
+
+- (void)setErrorMesssage:(NSString *)text;
+
 + (NSInteger)cellHeight;
 
 @end

@@ -50,10 +50,7 @@
 {
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
-    // Setting .selecteable to YES then back to NO is a hack to stop losing text attribtues (size,color) set in IB
-    self.hashTagTextView.selectable = YES;
     [self.hashTagTextView setText:text];
-    self.hashTagTextView.selectable = NO;
     
     // Match the label's size to the text
     CGSize targetSize = [self.hashTagTextView sizeThatFits:self.hashTagTextView.frame.size];

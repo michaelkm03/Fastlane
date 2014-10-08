@@ -8,12 +8,6 @@
 
 #import "VSuggestedPeopleCell.h"
 
-@interface VSuggestedPeopleCell()
-
-@property (nonatomic, weak) IBOutlet UITextView *errorMessageTextView;
-
-@end
-
 @implementation VSuggestedPeopleCell
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -21,22 +15,6 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-}
-
-- (void)setErrorMesssage:(NSString *)text
-{
-    self.collectionView.hidden = YES;
-    
-    self.errorMessageTextView.hidden = NO;
-    self.errorMessageTextView.text = text;
-}
-
-- (void)clearErrorMessage
-{
-    self.errorMessageTextView.hidden = YES;
-    self.errorMessageTextView.text = nil;
-    
-    self.collectionView.hidden = NO;
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView

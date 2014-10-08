@@ -17,8 +17,6 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 @interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
-@property (nonatomic, strong) NSArray *suggestedUsers;
-
 @end
 
 @implementation VSuggestedPeopleCollectionViewController
@@ -43,6 +41,11 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)isShowingNoData
+{
+    return self.suggestedUsers.count == 0 || self.error != nil;
 }
 
 - (void)followingDidUpdate:(NSNotification *)note
@@ -70,30 +73,55 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     [self.collectionView reloadData];
 }
 
-#pragma mark - Loading remote data and responses
-
-- (void)usersDidLoad:(NSArray *)users
-{
-    self.suggestedUsers = users;
-    [self.collectionView reloadData];
-}
-
 - (void)refresh
 {
     [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         // TODO: Remote this loop, testing only
-         for ( VUser *user in resultObjects )
-         {
-             user.numberOfFollowers = @( arc4random() % 2000 );
-         }
-         [self usersDidLoad:resultObjects];
+         [self didLoadWithUsers:resultObjects];
      }
                                                                    failBlock:^(NSOperation *operation, NSError *error)
      {
-         // TODO: Handle error
-         VLog( @"Recommended Friends failed: %@", [error localizedDescription] );
+         [self didFailToLoadWithError:error];
      }];
+}
+
+- (void)didLoadWithUsers:(NSArray *)users
+{
+    // TODO: Remote this loop, testing only
+    for ( VUser *user in users )
+    {
+        user.numberOfFollowers = @( arc4random() % 2000 );
+    }
+    
+    if ( users.count == 0 )
+    {
+        [self clearDataAndHide];
+    }
+    else
+    {
+        self.suggestedUsers = users;
+        [self.collectionView reloadData];
+    }
+    if ( self.delegate != nil )
+    {
+        [self.delegate didFinishLoading];
+    }
+}
+
+- (void)didFailToLoadWithError:(NSError *)error
+{
+    self.error = error;
+    if ( self.delegate != nil )
+    {
+        [self.delegate didFailToLoad];
+    }
+    [self clearDataAndHide];
+}
+
+- (void)clearDataAndHide
+{
+    self.suggestedUsers = @[];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - VSuggestedPersonCollectionViewCellDelegate
