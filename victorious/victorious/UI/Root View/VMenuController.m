@@ -143,14 +143,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
+                    navigationController.viewControllers = @[[VStreamCollectionViewController ownerStreamCollection]];
                 }
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;
             
             case VMenuRowCommunityChannel:
-                navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
+                navigationController.viewControllers = @[[VStreamCollectionViewController communityStreamCollection]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
                 

@@ -70,8 +70,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     return homeStream;
 }
 
-
-+ (instancetype)communityStream
++ (instancetype)communityStreamCollection
 {
     VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
@@ -84,7 +83,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     return homeStream;
 }
 
-+ (instancetype)ownerStream
++ (instancetype)ownerStreamCollection
 {
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
