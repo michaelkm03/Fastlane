@@ -8,6 +8,12 @@
 
 #import "VHistogramCell.h"
 
+@interface VHistogramCell ()
+
+@property (nonatomic, weak, readwrite) IBOutlet VHistogramView *histogramView;
+
+@end
+
 @implementation VHistogramCell
 
 @end

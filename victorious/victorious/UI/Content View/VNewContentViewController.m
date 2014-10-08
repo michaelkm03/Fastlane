@@ -63,7 +63,7 @@ static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
 static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
 static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -80,6 +80,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VTickerCell *tickerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak) VHistogramCell *histogramCell;
 
 // Experience Enhancers
 @property (nonatomic, weak) VExperienceEnhancerBar *experienceEnhancerBar;
@@ -582,10 +583,17 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         }
         case VContentViewSectionHistogram:
         {
-            VHistogramCell *histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
+            if (self.histogramCell)
+            {
+                return self.histogramCell;
+            }
+            self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             
-            return histogramCell;
+            self.histogramCell.histogramView.dataSource = self;
+            [self.histogramCell.histogramView reloadData];
+            
+            return self.histogramCell;
         }
         case VContentViewSectionTicker:
         {
@@ -735,6 +743,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    
+    self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
+    
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -837,6 +848,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - VHistogramDataSource
+
+- (CGFloat)histogram:(VHistogramView *)histogramView
+ heightForSliceIndex:(NSInteger)sliceIndex
+         totalSlices:(NSInteger)totalSlices
+{
+    return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }
 
 @end

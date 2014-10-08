@@ -21,6 +21,9 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <connections>
+                <outlet property="histogramView" destination="8F6-nb-302" id="suA-Z8-hro"/>
+            </connections>
         </collectionViewCell>
     </objects>
 </document>

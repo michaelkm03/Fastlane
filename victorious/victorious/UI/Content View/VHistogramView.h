@@ -13,7 +13,7 @@
 @protocol VHistogramDataSource <NSObject>
 
 - (CGFloat)histogram:(VHistogramView *)histogramView
-  valueForSliceIndex:(NSInteger)sliceIndex
+ heightForSliceIndex:(NSInteger)sliceIndex
          totalSlices:(NSInteger)totalSlices;
 
 @end
@@ -24,6 +24,7 @@
  *  This value must be between 0 and 1 (inclusive).
  */
 @property (nonatomic, assign) CGFloat progress;
+
 
 @property (nonatomic, weak) id <VHistogramDataSource> dataSource;
 
@@ -41,5 +42,10 @@
  *  In points. Defaults to 1.
  */
 @property (nonatomic, assign) CGFloat tickSpacing;
+
+/**
+ *  Prompts a query of the data source.
+ */
+- (void)reloadData;
 
 @end
