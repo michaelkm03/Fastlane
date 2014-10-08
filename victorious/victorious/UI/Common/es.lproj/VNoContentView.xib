@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="noMessageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ht-CEA">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noMessageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ht-CEA">
                     <rect key="frame" x="123" y="150" width="74" height="53"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
@@ -37,12 +37,12 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="Vl7-Ht-CEA" secondAttribute="centerX" id="Hn0-lS-JTb"/>
+                <constraint firstItem="Vl7-Ht-CEA" firstAttribute="centerX" secondItem="hx0-YK-T9j" secondAttribute="centerX" id="4l1-Ze-xke"/>
                 <constraint firstItem="1Uw-A9-zfF" firstAttribute="top" secondItem="hx0-YK-T9j" secondAttribute="bottom" constant="10" id="Jfc-ZQ-nSc"/>
-                <constraint firstItem="hx0-YK-T9j" firstAttribute="top" secondItem="Vl7-Ht-CEA" secondAttribute="bottom" constant="40" id="KWB-SE-iNj"/>
                 <constraint firstAttribute="centerX" secondItem="hx0-YK-T9j" secondAttribute="centerX" id="TWW-aX-YcO"/>
                 <constraint firstAttribute="centerX" secondItem="1Uw-A9-zfF" secondAttribute="centerX" id="ld7-rs-OZl"/>
                 <constraint firstItem="hx0-YK-T9j" firstAttribute="centerY" secondItem="IRu-tO-WgG" secondAttribute="centerY" id="nhT-fX-gj8"/>
+                <constraint firstItem="hx0-YK-T9j" firstAttribute="top" secondItem="Vl7-Ht-CEA" secondAttribute="bottom" constant="40" id="r7W-mP-xrF"/>
             </constraints>
             <connections>
                 <outlet property="iconImageView" destination="Vl7-Ht-CEA" id="UZY-2b-wHN"/>

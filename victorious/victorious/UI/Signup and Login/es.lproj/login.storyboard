@@ -48,7 +48,7 @@
                                     <action selector="signup:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="O0M-Ua-m8S"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2n-re-bSf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2n-re-bSf">
                                 <rect key="frame" x="20" y="465" width="288" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="loginTwitter">
@@ -58,7 +58,7 @@
                                     <action selector="twitterClicked:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="tZu-Ct-gw3"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoh-zd-utn">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoh-zd-utn">
                                 <rect key="frame" x="20" y="407" width="288" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="loginFacebook">
@@ -68,7 +68,7 @@
                                     <action selector="facebookClicked:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="mZv-Gc-l4H"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Log in With Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-Dw-MLG">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in With Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-Dw-MLG">
                                 <rect key="frame" x="84" y="418" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -78,17 +78,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Log in With Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3q4-yP-lYm">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in With Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3q4-yP-lYm">
                                 <rect key="frame" x="84" y="476" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="205" id="WeP-7U-spk"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4p-sF-3n6">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t4p-sF-3n6">
                                 <rect key="frame" x="20" y="301" width="288" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -129,13 +126,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="c2n-re-bSf" firstAttribute="top" secondItem="Yoh-zd-utn" secondAttribute="bottom" constant="16" id="6yG-Mq-07d"/>
+                            <constraint firstItem="3q4-yP-lYm" firstAttribute="centerY" secondItem="c2n-re-bSf" secondAttribute="centerY" id="8Se-DB-szq"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="t4p-sF-3n6" secondAttribute="leading" id="8jN-Ol-bd0"/>
-                            <constraint firstItem="c2n-re-bSf" firstAttribute="centerY" secondItem="3q4-yP-lYm" secondAttribute="centerY" id="AaS-ea-qBF"/>
                             <constraint firstItem="DEt-dq-bzY" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" id="I8r-pu-mXr"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="centerY" secondItem="tgS-Dw-MLG" secondAttribute="centerY" id="LYm-fQ-6VL"/>
                             <constraint firstAttribute="trailing" secondItem="DEt-dq-bzY" secondAttribute="trailing" id="O19-ZI-MKW"/>
+                            <constraint firstItem="3q4-yP-lYm" firstAttribute="trailing" secondItem="tgS-Dw-MLG" secondAttribute="trailing" id="P8E-SK-1zV"/>
                             <constraint firstAttribute="trailing" secondItem="yeM-Dh-LIB" secondAttribute="trailing" constant="20" id="R6c-8q-PPO"/>
                             <constraint firstItem="DEt-dq-bzY" firstAttribute="top" secondItem="oJn-Cb-glm" secondAttribute="top" id="Tea-LD-G1b"/>
+                            <constraint firstItem="3q4-yP-lYm" firstAttribute="leading" secondItem="tgS-Dw-MLG" secondAttribute="leading" id="be6-dy-GhX"/>
                             <constraint firstItem="yeM-Dh-LIB" firstAttribute="top" secondItem="c2n-re-bSf" secondAttribute="bottom" constant="8" id="br9-Zi-HcZ"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="tgS-Dw-MLG" secondAttribute="leading" constant="-64" id="dWx-8A-Fee"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="yeM-Dh-LIB" secondAttribute="leading" id="iGm-iW-Bx6"/>
@@ -144,7 +143,6 @@
                             <constraint firstItem="9Aq-IC-kDE" firstAttribute="top" secondItem="yeM-Dh-LIB" secondAttribute="bottom" constant="8" id="qk3-cg-REQ"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="top" secondItem="t4p-sF-3n6" secondAttribute="bottom" constant="8" id="vZL-Wj-KE6"/>
                             <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="c2n-re-bSf" secondAttribute="leading" id="vqi-GC-nqj"/>
-                            <constraint firstItem="c2n-re-bSf" firstAttribute="leading" secondItem="3q4-yP-lYm" secondAttribute="leading" constant="-64" id="x12-gh-eYt"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="isi-ni-Mut"/>
@@ -161,7 +159,7 @@
                         <segue destination="iZ7-hd-8dA" kind="push" identifier="toEmailLogin" id="DLv-b3-ha2"/>
                         <segue destination="WjX-TR-OnL" kind="push" identifier="toSignup" id="9EH-It-qvD"/>
                         <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithTwitter" id="Dbj-pL-bxH"/>
-                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithFacebook" id="S0B-9g-2CY"/>
+                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithFacebook" id="L0J-p9-vsT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -257,7 +255,6 @@
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
                         <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
-                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithEmail" id="kIr-xa-HmJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -346,12 +343,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btI-78-6NP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1953" y="-699"/>
+            <point key="canvasLocation" x="1845" y="-699"/>
         </scene>
         <!--Profile Create View Controller-->
         <scene sceneID="n2v-Tj-rFs">
             <objects>
-                <viewController storyboardIdentifier="profileCreate" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
+                <viewController id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NqE-Ur-2Nw"/>
                         <viewControllerLayoutGuide type="bottom" id="YrE-kb-O2F"/>
@@ -378,7 +375,7 @@
                                             <constraint firstAttribute="width" constant="56" id="v3O-v4-vyy"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="Close">
+                                        <state key="normal" image="cameraButtonBack">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -715,7 +712,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A1h-V7-CoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="dle-oC-Vjm" userLabel="Preview Image Tap Gesture"/>
             </objects>
-            <point key="canvasLocation" x="1465" y="-699"/>
+            <point key="canvasLocation" x="1303" y="-699"/>
         </scene>
         <!--Find Friends-->
         <scene sceneID="lTq-NW-HWb">
@@ -916,6 +913,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="kIr-xa-HmJ"/>
+        <segue reference="671-FK-1wm"/>
     </inferredMetricsTieBreakers>
 </document>

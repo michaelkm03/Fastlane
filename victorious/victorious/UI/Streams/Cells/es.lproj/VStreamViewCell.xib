@@ -39,14 +39,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LQk-Ur-vph" firstAttribute="leading" secondItem="sdG-4D-kmq" secondAttribute="leading" id="3Q3-dv-XxC"/>
                             <constraint firstAttribute="bottom" secondItem="fTn-ss-uGL" secondAttribute="bottom" id="4wU-6K-n5J"/>
                             <constraint firstItem="sdG-4D-kmq" firstAttribute="bottom" secondItem="fTn-ss-uGL" secondAttribute="bottom" id="895-0V-IXJ"/>
-                            <constraint firstItem="LQk-Ur-vph" firstAttribute="leading" secondItem="fTn-ss-uGL" secondAttribute="leading" id="KkR-qC-tRt"/>
+                            <constraint firstItem="LQk-Ur-vph" firstAttribute="top" secondItem="sdG-4D-kmq" secondAttribute="top" id="Urf-P9-swd"/>
                             <constraint firstItem="sdG-4D-kmq" firstAttribute="top" secondItem="adD-xo-Uv6" secondAttribute="top" id="f6s-up-rpM"/>
                             <constraint firstItem="fTn-ss-uGL" firstAttribute="trailing" secondItem="sdG-4D-kmq" secondAttribute="trailing" id="h99-xh-hFd"/>
                             <constraint firstItem="sdG-4D-kmq" firstAttribute="leading" secondItem="adD-xo-Uv6" secondAttribute="leading" id="kzn-fx-Bmk"/>
-                            <constraint firstItem="LQk-Ur-vph" firstAttribute="top" secondItem="sdG-4D-kmq" secondAttribute="top" id="vIF-8Z-3Rs"/>
+                            <constraint firstItem="LQk-Ur-vph" firstAttribute="leading" secondItem="sdG-4D-kmq" secondAttribute="leading" id="tLz-S7-dmh"/>
+                            <constraint firstItem="LQk-Ur-vph" firstAttribute="leading" secondItem="fTn-ss-uGL" secondAttribute="leading" id="zUo-vt-oRC"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-kS-Ucs" userLabel="Overlay View">

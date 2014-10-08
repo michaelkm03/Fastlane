@@ -23,7 +23,7 @@
             </objects>
             <point key="canvasLocation" x="-373" y="84"/>
         </scene>
-        <!--Remix Select View Controller - Select It-->
+        <!--Remix Select View Controller - Select Clip-->
         <scene sceneID="5Zx-Yp-fgh">
             <objects>
                 <viewController id="iXn-fe-oA1" customClass="VRemixSelectViewController" sceneMemberID="viewController">
@@ -39,7 +39,7 @@
                                 <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="4qQ-50-2PX">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="4qQ-50-2PX">
                                         <rect key="frame" x="134" y="134" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -49,10 +49,10 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="4qQ-50-2PX" secondAttribute="centerX" id="3AE-av-8p7"/>
-                                    <constraint firstAttribute="centerY" secondItem="4qQ-50-2PX" secondAttribute="centerY" id="BzQ-ja-7fQ"/>
+                                    <constraint firstItem="4qQ-50-2PX" firstAttribute="top" secondItem="RjN-vu-MGb" secondAttribute="top" id="O6L-el-f7C"/>
                                     <constraint firstAttribute="centerX" secondItem="RjN-vu-MGb" secondAttribute="centerX" id="PtW-uy-cYp"/>
                                     <constraint firstAttribute="centerY" secondItem="RjN-vu-MGb" secondAttribute="centerY" id="WD4-Vd-pH5"/>
+                                    <constraint firstItem="4qQ-50-2PX" firstAttribute="leading" secondItem="RjN-vu-MGb" secondAttribute="leading" id="WjK-xl-3pa"/>
                                     <constraint firstAttribute="width" secondItem="1j4-RX-jZf" secondAttribute="height" multiplier="1:1" id="Zye-Rg-BPZ"/>
                                 </constraints>
                             </view>
@@ -60,7 +60,7 @@
                                 <rect key="frame" x="0.0" y="257" width="320" height="101"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To start remixing, pick your 15-second clip." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="Y2Z-7b-JsE">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To start remixing, pick your starting point for a 15-second clip." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="Y2Z-7b-JsE">
                                         <rect key="frame" x="15" y="9" width="290" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -106,7 +106,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="wIW-xv-nos"/>
                                 </constraints>
-                                <state key="normal" title="Start That Shiznit">
+                                <state key="normal" title="Start Remix">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -128,7 +128,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Select It" id="Uyd-gg-OYC">
+                    <navigationItem key="navigationItem" title="Select Clip" id="Uyd-gg-OYC">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="hs6-mu-6OT">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="iXn-fe-oA1" id="GJD-D8-QTt"/>
@@ -168,7 +168,7 @@
                                 <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="YQI-ac-uh8">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="YQI-ac-uh8">
                                         <rect key="frame" x="134" y="134" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -178,11 +178,11 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="YQI-ac-uh8" secondAttribute="centerY" id="1Un-qx-Xrh"/>
                                     <constraint firstAttribute="centerX" secondItem="ucr-Hp-JfF" secondAttribute="centerX" id="MFO-g2-Iek"/>
                                     <constraint firstAttribute="centerY" secondItem="ucr-Hp-JfF" secondAttribute="centerY" id="Qya-Pz-aUb"/>
+                                    <constraint firstItem="YQI-ac-uh8" firstAttribute="leading" secondItem="ucr-Hp-JfF" secondAttribute="leading" id="dxN-7K-1ZK"/>
                                     <constraint firstAttribute="width" secondItem="gBV-EL-ryr" secondAttribute="height" multiplier="1:1" id="eUo-8P-pQo"/>
-                                    <constraint firstAttribute="centerX" secondItem="YQI-ac-uh8" secondAttribute="centerX" id="zk7-Iw-4TC"/>
+                                    <constraint firstItem="YQI-ac-uh8" firstAttribute="top" secondItem="ucr-Hp-JfF" secondAttribute="top" id="vx3-zH-UAR"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDB-tA-otO" userLabel="Controls Container View">
@@ -315,7 +315,7 @@
                                 <rect key="frame" x="0.0" y="-44" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="ykO-ox-Rir">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="ykO-ox-Rir">
                                         <rect key="frame" x="134" y="134" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -325,10 +325,10 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="ykO-ox-Rir" secondAttribute="centerX" id="YCG-Ca-Jdd"/>
+                                    <constraint firstItem="ykO-ox-Rir" firstAttribute="top" secondItem="Ele-xw-w6U" secondAttribute="top" id="9sq-6w-1uV"/>
+                                    <constraint firstItem="ykO-ox-Rir" firstAttribute="leading" secondItem="Ele-xw-w6U" secondAttribute="leading" id="F6Q-vP-BfL"/>
                                     <constraint firstAttribute="centerY" secondItem="Ele-xw-w6U" secondAttribute="centerY" id="a47-Bl-aeT"/>
                                     <constraint firstAttribute="height" constant="320" id="euq-Vk-Pu7"/>
-                                    <constraint firstAttribute="centerY" secondItem="ykO-ox-Rir" secondAttribute="centerY" id="q9W-7B-vof"/>
                                     <constraint firstAttribute="centerX" secondItem="Ele-xw-w6U" secondAttribute="centerX" id="vJk-Ws-SaT"/>
                                 </constraints>
                             </view>

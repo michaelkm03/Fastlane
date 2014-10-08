@@ -60,7 +60,7 @@ do
         echo "Dest XIB: $dest_xib"
         echo ""
     else
-        echo "$strings_file does not exists"
+        echo "$strings_file does not exist"
         echo ""
     fi
 done
