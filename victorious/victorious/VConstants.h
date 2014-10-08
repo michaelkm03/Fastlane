@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import CoreGraphics;
 
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
@@ -74,6 +75,7 @@ static NSString * const   kGAID                    = @"GAID";
 
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
 static NSString * const   kVPayloadKey         = @"payload";
+static NSString * const   kVErrorKey           = @"error";
 static NSString * const   kRemoteIdKey         = @"remoteId";
 
 #pragma mark - Media Constants

@@ -344,7 +344,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Logout
@@ -393,7 +393,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     
     //Log out no matter what
     self.mainUser = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     
     return operation;
 }

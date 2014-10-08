@@ -177,6 +177,7 @@
 		0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */; };
 		0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */; };
 		0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */; };
+		0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */; };
 		0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */; };
 		0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44F19B46B5E00FA363C /* VStreamTableDataSource.m */; };
 		0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D45119B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m */; };
@@ -213,6 +214,9 @@
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
+		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
+		03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
+		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
 		03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856D19B42C9100E27D05 /* LICENSE.txt */; };
@@ -733,6 +737,7 @@
 		0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
 		0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagStreamViewController.h; sourceTree = "<group>"; };
 		0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagStreamViewController.m; sourceTree = "<group>"; };
+		0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContainerViewController.h; sourceTree = "<group>"; };
 		0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamContainerViewController.m; sourceTree = "<group>"; };
 		0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTableDataSource.h; sourceTree = "<group>"; };
@@ -802,6 +807,11 @@
 		03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+VNotificationDebugger.m"; sourceTree = "<group>"; };
 		03B83B5319E066AF00DC04E4 /* VUploadTaskSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskSerializer.h; sourceTree = "<group>"; };
 		03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializer.m; sourceTree = "<group>"; };
+		03B83B5B19E0990E00DC04E4 /* VUploadProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadProgressView.h; sourceTree = "<group>"; };
+		03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadProgressView.m; sourceTree = "<group>"; };
+		03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUploadProgressView.xib; sourceTree = "<group>"; };
+		03B83B6019E0D2CC00DC04E4 /* VUploadProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadProgressViewController.h; sourceTree = "<group>"; };
+		03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadProgressViewController.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		03C1856D19B42C9100E27D05 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -1751,8 +1761,10 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				BE49323719E34D7000C0912E /* CollectionView */,
 				0314D43419B46B5E00FA363C /* Animators */,
 				0314D43919B46B5E00FA363C /* Cells */,
+				03B83B5819E0988200DC04E4 /* Upload Progress View */,
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
@@ -1760,6 +1772,7 @@
 				0314D44919B46B5E00FA363C /* VHashTagContainerViewController.m */,
 				0314D44A19B46B5E00FA363C /* VHashTagStreamViewController.h */,
 				0314D44B19B46B5E00FA363C /* VHashTagStreamViewController.m */,
+				0314D44719B46B5E00FA363C /* VEphemeralTimerView.xib */,
 				0314D44C19B46B5E00FA363C /* VStreamContainerViewController.h */,
 				0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */,
 				0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */,
@@ -1903,6 +1916,18 @@
 				039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		03B83B5819E0988200DC04E4 /* Upload Progress View */ = {
+			isa = PBXGroup;
+			children = (
+				03B83B5B19E0990E00DC04E4 /* VUploadProgressView.h */,
+				03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */,
+				03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */,
+				03B83B6019E0D2CC00DC04E4 /* VUploadProgressViewController.h */,
+				03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */,
+			);
+			path = "Upload Progress View";
 			sourceTree = "<group>";
 		};
 		03C1856219B42C9100E27D05 /* Fonts */ = {
@@ -2254,12 +2279,12 @@
 				0314D06A19B4670A00FA363C /* UIImage+Masking.m */,
 				0314D06B19B4670A00FA363C /* UIImage+Resize.h */,
 				0314D06C19B4670A00FA363C /* UIImage+Resize.m */,
-				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
-				BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */,
 				03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */,
 				03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */,
 				0314D06D19B4670A00FA363C /* UIImageView+Blurring.h */,
 				0314D06E19B4670A00FA363C /* UIImageView+Blurring.m */,
+				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
+				BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */,
 				0314D05C19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.h */,
 				0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */,
 				0314D50819B46BCB00FA363C /* UIView+Masking.h */,
@@ -2424,6 +2449,13 @@
 				BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */,
 			);
 			name = DefaultProfileImages;
+			sourceTree = "<group>";
+		};
+		BE49323719E34D7000C0912E /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = CollectionView;
 			sourceTree = "<group>";
 		};
 		BE6464E419511F1B0089A34F /* Deeplink */ = {
@@ -2694,6 +2726,13 @@
 				DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */,
 				DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
+				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
+				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
+				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
+				03C185C719B42FD600E27D05 /* Localizable.strings in Resources */,
+				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
+				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
+				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
@@ -2859,6 +2898,7 @@
 				0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				0314D46619B46B5E00FA363C /* VExpirationDatePicker.m in Sources */,
+				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
@@ -2888,7 +2928,6 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				0314D4C919B46B5E00FA363C /* VRemixSliderLeft.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
-				0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
@@ -2923,6 +2962,7 @@
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
+				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				0314D50519B46B5E00FA363C /* VStreamTableViewController.m in Sources */,
@@ -3051,7 +3091,6 @@
 				0314D46719B46B5E00FA363C /* VExpirationPickerTextField.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
-				0314D50019B46B5E00FA363C /* VHashTagContainerViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,

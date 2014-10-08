@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
 
 @implementation VUploadTaskSerializer
@@ -22,10 +23,18 @@
 
 - (NSArray *)uploadTasksFromDisk
 {
-    NSArray *uploadTasks = nil;
+    NSMutableArray *uploadTasks = nil;
     @try
     {
-        uploadTasks = [NSKeyedUnarchiver unarchiveObjectWithFile:self.fileURL.path];
+        NSArray *unfilteredUploadTasks = [NSKeyedUnarchiver unarchiveObjectWithFile:self.fileURL.path];
+        uploadTasks = [[NSMutableArray alloc] initWithCapacity:unfilteredUploadTasks.count];
+        for (VUploadTaskInformation *uploadTask in unfilteredUploadTasks)
+        {
+            if ([uploadTask isKindOfClass:[VUploadTaskInformation class]] && [[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
+            {
+                [uploadTasks addObject:uploadTask];
+            }
+        }
     }
     @catch (NSException *exception)
     {
