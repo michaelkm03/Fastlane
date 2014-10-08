@@ -10,6 +10,7 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCollectionCell.h"
+#import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
 
 //Controllers
@@ -117,9 +118,10 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
-    
-    UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
+    [self.collectionView registerNib:[VStreamCollectionCell nibForCell]
+          forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
+          forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
@@ -313,11 +315,20 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
         return cell;
     }
     
-    VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
+    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell;
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VStreamCollectionCellName forIndexPath:indexPath];
-    cell.sequence = (VSequence *)item;
+    if ([sequence isPoll])
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
+    }
+    else
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
+    }
+    cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     

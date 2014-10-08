@@ -34,7 +34,6 @@
 #import "UIImageView+VLoadingAnimations.h"
 
 //NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
-NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
 
 @interface VStreamCollectionCell()
 
@@ -176,7 +175,6 @@ NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
 {
     self.overlayView.alpha = 0;
     self.shadeView.alpha = 0;
-//    self.animationImage.alpha = 0;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y - self.frame.size.height);
 }
 
@@ -184,8 +182,28 @@ NSString * const VStreamCollectionCellName = @"VStreamCollectionCell";
 {
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
-//    self.animationImage.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
 }
+
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
+
++ (UINib *)nibForCell
+{
+    return [UINib nibWithNibName:NSStringFromClass([self class])
+                          bundle:nil];
+}
+
+//+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+//{
+//    CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
+//    size.height += kMarqueeBufferHeight;
+//    return size;
+//}
+
 
 @end

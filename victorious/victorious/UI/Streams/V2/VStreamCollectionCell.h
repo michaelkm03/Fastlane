@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
+#import "VSharedCollectionReusableViewMethods.h"
 
-extern NSString * const VStreamCollectionCellName;
+@class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
 @protocol VStreamCollectionCellDelegate <NSObject>
 @required
@@ -19,7 +19,7 @@ extern NSString * const VStreamCollectionCellName;
 
 @end
 
-@interface VStreamCollectionCell : UICollectionViewCell
+@interface VStreamCollectionCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
