@@ -21,6 +21,7 @@
 //Views
 #import "VNavigationHeaderView.h"
 #import "VNoContentView.h"
+#import "MBProgressHUD.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -29,6 +30,7 @@
 //Managers
 #import "VObjectManager+Sequence.h"
 #import "VAnalyticsRecorder.h"
+#import "VThemeManager.h"
 
 //Categories
 #import "UIImage+ImageCreation.h"
@@ -46,11 +48,14 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 @property (strong, nonatomic) NSString *headerTitle;
 @property (strong, nonatomic) VMarqueeController *marquee;
 
+@property (nonatomic, assign) BOOL hasRefreshed;
 @property (nonatomic) BOOL shouldDisplayMarquee;
 
 @end
 
 @implementation VStreamCollectionViewController
+
+#pragma mark - Factory methods
 
 + (instancetype)homeStreamCollection
 {
@@ -76,10 +81,13 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     return streamColllection;
 }
 
+#pragma mark - View Heirarchy
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.hasRefreshed = NO;
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
@@ -114,6 +122,29 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
     [self.preloadImageCache removeAllObjects];
 }
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    
+    self.preloadImageCache = nil;
+}
+
 
 #pragma mark - Properties
 
@@ -270,7 +301,26 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VStreamCollectionCellName forIndexPath:indexPath];
     cell.sequence = (VSequence *)item;
     
+    [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
+    
     return cell;
+}
+
+- (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource
+{
+    if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
+    {
+        NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
+        VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
+        
+        for (NSURL *imageUrl in [preloadSequence initialImageURLs])
+        {
+            UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+            [preloadView setImageWithURL:imageUrl];
+            
+            [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
+        }
+    }
 }
 
 #pragma mark - VNavigationHeaderDelegate
@@ -323,12 +373,58 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-//#pragma mark - Notifications
-//
-//- (void)dataSourceDidChange:(NSNotification *)notification
-//{
-//    self.hasRefreshed = YES;
-//    [self updateNoContentViewAnimated:YES];
-//}
+#pragma mark - Notifications
+
+- (void)dataSourceDidChange:(NSNotification *)notification
+{
+    self.hasRefreshed = YES;
+    [self updateNoContentViewAnimated:YES];
+}
+
+- (void)updateNoContentViewAnimated:(BOOL)animated
+{
+    if (!self.noContentView)
+    {
+        return;
+    }
+    
+    void (^noContentUpdates)(void);
+    
+    if (self.streamDataSource.stream.streamItems.count <= 0)
+    {
+        if (![self.collectionView.backgroundView isEqual:self.noContentView])
+        {
+            self.collectionView.backgroundView = self.noContentView;
+        }
+        
+        self.refreshControl.layer.zPosition = self.collectionView.backgroundView.layer.zPosition + 1;
+        
+        noContentUpdates = ^void(void)
+        {
+            self.collectionView.backgroundView.alpha = (self.hasRefreshed && self.noContentView) ? 1.0f : 0.0f;
+        };
+    }
+    else
+    {
+        noContentUpdates = ^void(void)
+        {
+            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
+            self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
+        };
+    }
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:noContentUpdates
+                         completion:nil];
+    }
+    else
+    {
+        noContentUpdates();
+    }
+}
 
 @end
