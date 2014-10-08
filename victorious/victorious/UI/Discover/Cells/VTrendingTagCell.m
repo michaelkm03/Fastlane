@@ -8,6 +8,7 @@
 
 #import "VTrendingTagCell.h"
 #import "VThemeManager.h"
+#import "VHashTags.h"
 
 @interface VTrendingTagCell()
 
@@ -43,22 +44,9 @@
     return 40.0f;
 }
 
-- (NSString *)stringWithPrependingHashmark:(NSString *)text
-{
-    NSRange rangeOfHashmark = [text rangeOfString:@"#"];
-    if ( rangeOfHashmark.location != 0 || rangeOfHashmark.length != 1 )
-    {
-        return [NSString stringWithFormat:@"#%@", text];
-    }
-    else
-    {
-        return [text copy];
-    }
-}
-
 - (void)setHashtag:(VHashtag *)hashtag
 {
-    NSString *text = [self stringWithPrependingHashmark:hashtag.tag];
+    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
     self.hashTagTextView.selectable = YES;
     [self.hashTagTextView setText:text];
