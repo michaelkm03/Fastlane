@@ -330,8 +330,7 @@ static NSString * const kVAPIParamSearch = @"search";
     {
         return [email v_sha256];
     }];
-    
-    NSDictionary *parameters = @{ @"emails": hashedEmails };
+    NSString *emailString = [hashedEmails componentsJoinedByString:@","];
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -343,7 +342,7 @@ static NSString * const kVAPIParamSearch = @"search";
     
     return [self POST:@"/api/friend/find_by_email"
                object:nil
-           parameters:parameters
+           parameters:@{ @"emails": emailString }
          successBlock:fullSuccess
             failBlock:fail];
 }
