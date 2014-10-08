@@ -436,6 +436,15 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
     if ([self shouldCreateProfile])
     {
+        if (!self.registrationModel.username.length &&
+            !self.registrationModel.profileImageURL &&
+            !self.registrationModel.locationText.length &&
+            !self.registrationModel.taglineText.length)
+        {
+            [self didCreateProfile];
+            return;
+        }
+        
         [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                          password:nil
                                                              name:self.registrationModel.username
@@ -450,7 +459,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
          {
              [self didFailWithError:error];
          }];
-
     }
 }
 
@@ -503,7 +511,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
+                         (self.registrationModel.profileImageURL || self.profile.pictureUrl || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -529,7 +537,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
