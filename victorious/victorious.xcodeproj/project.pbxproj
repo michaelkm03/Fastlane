@@ -393,6 +393,8 @@
 		D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C7CF5E19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib */; };
 		D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C7CF6019DCD23D00BA33E5 /* VExperienceEnhancerBar.xib */; };
 		D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C9CF2E19E4F417007B461E /* VHistogramCell.m */; };
+		D8C9CF3219E5AE92007B461E /* VHistogramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C9CF3119E5AE92007B461E /* VHistogramView.m */; };
+		D8C9CF3419E5B30E007B461E /* VHistogramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
 		D8CA63B819D51D70002046E5 /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */; };
 		D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */; };
@@ -1152,6 +1154,9 @@
 		D8C7CF6019DCD23D00BA33E5 /* VExperienceEnhancerBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBar.xib; sourceTree = "<group>"; };
 		D8C9CF2D19E4F417007B461E /* VHistogramCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramCell.h; sourceTree = "<group>"; };
 		D8C9CF2E19E4F417007B461E /* VHistogramCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramCell.m; sourceTree = "<group>"; };
+		D8C9CF3019E5AE92007B461E /* VHistogramView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramView.h; sourceTree = "<group>"; };
+		D8C9CF3119E5AE92007B461E /* VHistogramView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramView.m; sourceTree = "<group>"; };
+		D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHistogramCell.xib; sourceTree = "<group>"; };
 		D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetViewController.h; sourceTree = "<group>"; };
 		D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetViewController.m; sourceTree = "<group>"; };
 		D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActionSheet.storyboard; sourceTree = "<group>"; };
@@ -1521,6 +1526,8 @@
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
+				D8C9CF3019E5AE92007B461E /* VHistogramView.h */,
+				D8C9CF3119E5AE92007B461E /* VHistogramView.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2762,6 +2769,7 @@
 				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
 				D8C9CF2D19E4F417007B461E /* VHistogramCell.h */,
 				D8C9CF2E19E4F417007B461E /* VHistogramCell.m */,
+				D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2886,6 +2894,7 @@
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				0314D46219B46B5E00FA363C /* VMediaPreviewViewController.xib in Resources */,
 				0314D4FC19B46B5E00FA363C /* VStreamViewCell.xib in Resources */,
+				D8C9CF3419E5B30E007B461E /* VHistogramCell.xib in Resources */,
 				0314D48B19B46B5E00FA363C /* VNoContentView.xib in Resources */,
 				0314D4FA19B46B5E00FA363C /* VStreamVideoCell.xib in Resources */,
 				0314D4DD19B46B5E00FA363C /* FindFriendsTableView.xib in Resources */,
@@ -3181,6 +3190,7 @@
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */,
+				D8C9CF3219E5AE92007B461E /* VHistogramView.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
 				0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */,

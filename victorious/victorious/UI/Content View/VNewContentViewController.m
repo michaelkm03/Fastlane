@@ -13,6 +13,7 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
+#import "VHistogramView.h"
 
 // View Categories
 #import "UIView+VShadows.h"
@@ -30,6 +31,7 @@
 #import "VContentImageCell.h"
 #import "VTickerCell.h"
 #import "VContentCommentsCell.h"
+#import "VHistogramCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -317,6 +319,8 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                  forCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
+                 forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -578,11 +582,10 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         }
         case VContentViewSectionHistogram:
         {
-            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+            VHistogramCell *histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
-            imageCell.contentView.backgroundColor = [UIColor blueColor];
-            imageCell.contentImageView.image = nil;
-            return imageCell;
+            
+            return histogramCell;
         }
         case VContentViewSectionTicker:
         {
