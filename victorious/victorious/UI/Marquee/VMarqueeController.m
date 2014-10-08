@@ -20,7 +20,7 @@
 
 #import "VThemeManager.h"
 
-@interface VMarqueeController () <VStreamCollectionDataDelegate>
+@interface VMarqueeController () <VStreamCollectionDataDelegate, VMarqueeCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
@@ -163,6 +163,7 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
+    cell.delegate = self;
     
     return cell;
 }
