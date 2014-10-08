@@ -61,12 +61,12 @@
 - (IBAction)done:(UIBarButtonItem *)sender
 {
     [[self view] endEditing:YES];
-    sender.enabled = NO;
     
-    if (![self shouldEditProfile])
+    if (![self validateInputs])
     {
         return;
     }
+    sender.enabled = NO;
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Save Profile" label:nil value:nil];
 
@@ -98,7 +98,14 @@
     }];
 }
 
-- (BOOL)shouldEditProfile
+/**
+ Validates input fields and displays an alert
+ to the user if their input is not valid.
+ 
+ @return YES if all inputs were valid, NO
+         otherwise
+ */
+- (BOOL)validateInputs
 {
     if (self.usernameTextField.text.length && self.locationTextField.text.length)
     {
