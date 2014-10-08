@@ -279,6 +279,9 @@
 		A781499C19E3485B00D89B90 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A781499B19E3485B00D89B90 /* VFollowersTextFormatter.m */; };
 		A781499E19E349FA00D89B90 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A781499D19E349FA00D89B90 /* VFollowersTextFormatterTests.m */; };
 		A78149A219E35DB700D89B90 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A78149A019E35DB700D89B90 /* victoriOS.xcdatamodeld */; };
+		A78149F019E4C24F00D89B90 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149EF19E4C24F00D89B90 /* VObjectManager+Discover.m */; };
+		A78149F319E4EA4100D89B90 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149F219E4EA4100D89B90 /* VHashtag.m */; };
+		A78149F619E4EB5C00D89B90 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7A7D61919DE17AF00B18AB7 /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323419DB763F0040DB30 /* VAuthorizationViewControllerFactoryTests.m */; };
 		A7A7D61B19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */; };
@@ -903,6 +906,12 @@
 		A781499D19E349FA00D89B90 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A78149A119E35DB700D89B90 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A78149A519E46A6000D89B90 /* VDiscoverConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDiscoverConstants.h; sourceTree = "<group>"; };
+		A78149EE19E4C24F00D89B90 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
+		A78149EF19E4C24F00D89B90 /* VObjectManager+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Discover.m"; sourceTree = "<group>"; };
+		A78149F119E4EA4100D89B90 /* VHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtag.h; sourceTree = "<group>"; };
+		A78149F219E4EA4100D89B90 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
+		A78149F419E4EB5B00D89B90 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
+		A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A7A7D61A19DE1B6800B18AB7 /* VUIAlertView+VBlocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUIAlertView+VBlocksTests.m"; sourceTree = "<group>"; };
 		A7A7D65119DF735800B18AB7 /* VSuggestedPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCell.h; sourceTree = "<group>"; };
 		A7A7D65219DF735800B18AB7 /* VSuggestedPeopleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCell.m; sourceTree = "<group>"; };
@@ -1169,6 +1178,8 @@
 				0314D0A819B4698800FA363C /* VObjectManager+Users.m */,
 				0314D0A919B4698800FA363C /* VObjectManager+Websites.h */,
 				0314D0AA19B4698800FA363C /* VObjectManager+Websites.m */,
+				A78149EE19E4C24F00D89B90 /* VObjectManager+Discover.h */,
+				A78149EF19E4C24F00D89B90 /* VObjectManager+Discover.m */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				0314D2E419B46B0E00FA363C /* VPaginationManager.h */,
@@ -2338,6 +2349,8 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
+				A78149F419E4EB5B00D89B90 /* VHashtag+RestKit.h */,
+				A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -2413,6 +2426,8 @@
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
+				A78149F119E4EA4100D89B90 /* VHashtag.h */,
+				A78149F219E4EA4100D89B90 /* VHashtag.m */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
@@ -2866,9 +2881,11 @@
 				0314D46619B46B5E00FA363C /* VExpirationDatePicker.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				A7A7D66E19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.m in Sources */,
+				A78149F619E4EB5C00D89B90 /* VHashtag+RestKit.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
 				0314D4CC19B46B5E00FA363C /* VRemixTrimViewController.m in Sources */,
+				A78149F319E4EA4100D89B90 /* VHashtag.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */,
@@ -3112,6 +3129,7 @@
 				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
+				A78149F019E4C24F00D89B90 /* VObjectManager+Discover.m in Sources */,
 				A78149A219E35DB700D89B90 /* victoriOS.xcdatamodeld in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,

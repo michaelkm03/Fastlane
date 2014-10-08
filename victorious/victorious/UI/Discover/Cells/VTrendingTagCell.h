@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHashtag.h"
 
 @interface VTrendingTagCell : UITableViewCell
 
 + (NSInteger)cellHeight;
 
-@property (nonatomic, strong) NSString *hashTag;
+- (void)setHashtag:(VHashtag *)hashtag;
 
 @end

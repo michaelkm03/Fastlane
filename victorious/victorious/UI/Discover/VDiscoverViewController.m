@@ -11,6 +11,10 @@
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
+#import "VObjectManager+Discover.h"
+#import "VHashtag.h"
+#import "VStreamContainerViewController.h"
+#import "VStreamTableViewController.h"
 
 static NSString * const kSuggestedPeopleIdentifier      = @"VSuggestedPeopleCell";
 static NSString * const kTrendingTagIdentifier          = @"VTrendingTagCell";
@@ -46,12 +50,22 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     [self refresh];
 }
 
+- (void)hashtagsDidLoad:(NSArray *)hashtags
+{
+    self.trendingTags = hashtags;
+    [self.tableView reloadData];
+}
+
 - (void)refresh
 {
-#if DEBUG
-    self.trendingTags = @[ @"#Tag1", @"#AnotherTag2", @"#VaryingLengthsOfTag3", @"#Tag4", @"#TTTag5" ];
-    [self.tableView reloadData];
-#endif
+    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self hashtagsDidLoad:resultObjects];
+     }
+                                               failBlock:^(NSOperation *operation, NSError *error)
+     {
+         
+     }];
 }
 
 - (void)registerCells
@@ -117,11 +131,22 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     else if ( indexPath.section == 1 )
     {
         VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kTrendingTagIdentifier forIndexPath:indexPath];
-        customCell.hashTag = self.trendingTags[ indexPath.row ];
+        VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+        [customCell setHashtag:hashtag];
         cell = customCell;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Show hashtag stream
+    VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashtag.tag]];
+    container.shouldShowHeaderLogo = NO;
+    container.hashTag = hashtag.tag;
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 @end

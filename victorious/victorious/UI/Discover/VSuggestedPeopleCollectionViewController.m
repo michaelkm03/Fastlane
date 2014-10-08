@@ -9,7 +9,7 @@
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VSuggestedPersonCollectionViewCell.h"
 #import "VObjectManager+Users.h"
-#import "VUser.h"
+#import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
 
@@ -80,7 +80,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (void)refresh
 {
-    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          // TODO: Remote this loop, testing only
          for ( VUser *user in resultObjects )

@@ -43,11 +43,25 @@
     return 40.0f;
 }
 
-- (void)setHashTag:(NSString *)hashTag
+- (NSString *)stringWithPrependingHashmark:(NSString *)text
 {
-    _hashTag = hashTag;
+    NSRange rangeOfHashmark = [text rangeOfString:@"#"];
+    if ( rangeOfHashmark.location != 0 || rangeOfHashmark.length != 1 )
+    {
+        return [NSString stringWithFormat:@"#%@", text];
+    }
+    else
+    {
+        return [text copy];
+    }
+}
+
+- (void)setHashtag:(VHashtag *)hashtag
+{
+    NSString *text = [self stringWithPrependingHashmark:hashtag.tag];
+    
     self.hashTagTextView.selectable = YES;
-    [self.hashTagTextView setText:hashTag];
+    [self.hashTagTextView setText:text];
     self.hashTagTextView.selectable = NO;
     
     CGSize targetSize = [self.hashTagTextView sizeThatFits:self.hashTagTextView.frame.size];

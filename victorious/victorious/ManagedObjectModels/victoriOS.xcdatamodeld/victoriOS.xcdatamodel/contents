@@ -60,6 +60,10 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversation" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
         <attribute name="nodeId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
@@ -207,6 +211,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
+        <element name="Hashtag" positionX="702" positionY="-459" width="128" height="73"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
