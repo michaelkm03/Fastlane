@@ -76,5 +76,4 @@ const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 wi
     return CGSizeMake(width, height);
 }
 
-
 @end

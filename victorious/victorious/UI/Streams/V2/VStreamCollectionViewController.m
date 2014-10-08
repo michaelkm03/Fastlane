@@ -304,12 +304,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
-    else if ([sequence isPoll])
+    else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
     {
         return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
