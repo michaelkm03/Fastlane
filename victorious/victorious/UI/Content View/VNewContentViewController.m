@@ -235,6 +235,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         if (selectedEnhancer.isBallistic)
         {
             UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
+            animationImageView.contentMode = UIViewContentModeScaleAspectFit;
             
             CGPoint convertedCenterForAnimation = [experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
             animationImageView.center = convertedCenterForAnimation;
@@ -246,8 +247,9 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^
             {
-                CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.bounds));
-                CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.bounds));
+                CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(self.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(self.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
+                CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(self.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(self.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
+                
                 CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
                                                        fromView:self.contentCell];
                 animationImageView.center = contentCenter;
