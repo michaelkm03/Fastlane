@@ -39,14 +39,14 @@ if [ "$STR_INFILE" ]; then
     fi
     echo ""
     exit 0
-else # Sweep through project directory and locate the xibs and storyboards files
+else # Sweep through entire project directory and locate the xib and storyboard files
     echo ""
     find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/en.lproj/' | while read -d $'\n' xib_file
     do
         path=${xib_file/*}
         base=${xib_file##*/}
         fext=${xib_file##*.}
-        strings_file="./xib-strings/es.lproj/"${base%.*}.strings
+        strings_file="../xib-strings/es.lproj/"${base%.*}.strings
 
         echo "File: $base"
         echo "Strings File: $strings_file"

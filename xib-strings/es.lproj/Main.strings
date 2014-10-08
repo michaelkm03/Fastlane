@@ -27,7 +27,7 @@
 "9lr-kw-Rjm.text" = "No hay conexión a Internet.";
 
 /* Class = "IBUILabel"; text = "Inbox"; ObjectID = "9mf-xA-Y30"; */
-"9mf-xA-Y30.text" = "Bandeja de entrada";
+"9mf-xA-Y30.text" = "Entrada";
 
 /* Class = "IBUINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
 "AHd-Fh-04G.title" = "Mensajes";
@@ -96,7 +96,7 @@
 "aHa-OF-GOS.text" = "Votar por eso";
 
 /* Class = "IBUILabel"; text = "Inbox"; ObjectID = "ds5-08-fik"; */
-"ds5-08-fik.text" = "Bandeja de entrada";
+"ds5-08-fik.text" = "Entrada";
 
 /* Class = "IBUILabel"; text = "Some really Long answer that hopefully will fit"; ObjectID = "fBr-Do-fCE"; */
 "fBr-Do-fCE.text" = "Algunas respuestas muy largas que tal vez se ajusten";
