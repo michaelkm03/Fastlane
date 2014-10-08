@@ -14,9 +14,9 @@
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField   *oldPasswordTextField;
-@property (weak, nonatomic) IBOutlet UITextField   *changedPasswordTextField;
-@property (weak, nonatomic) IBOutlet UITextField   *confirmPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *oldPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *changedPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *textFields;
@@ -49,9 +49,9 @@
 
 - (BOOL)shouldUpdatePassword:(NSString *)password confirmation:(NSString *)confirmationPassword
 {
-    NSError    *theError;
+    NSError *theError;
     
-    if (![self validatePassword:&password error:&theError])
+    if (![self validatePassword:password error:&theError])
     {
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
@@ -78,11 +78,11 @@
     return YES;
 }
 
-- (BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
+- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError
 {
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
+    if ( password == nil || password.length < 8 )
     {
-        if (outError != NULL)
+        if ( outError != nil )
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
@@ -90,10 +90,8 @@
                                                        code:VAccountUpdateViewControllerBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }
-        
         return NO;
     }
-    
     return YES;
 }
 
@@ -125,14 +123,10 @@
                  [alert show];
              };
              
-             [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                              password:self.changedPasswordTextField.text
-                                                                  name:nil
-                                                       profileImageURL:nil
-                                                              location:nil
-                                                               tagline:nil
-                                                          successBlock:success
-                                                             failBlock:fail];
+             [[VObjectManager sharedManager] updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
+                                                                   newPassword:self.changedPasswordTextField.text
+                                                                  successBlock:success
+                                                                     failBlock:fail];
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {
