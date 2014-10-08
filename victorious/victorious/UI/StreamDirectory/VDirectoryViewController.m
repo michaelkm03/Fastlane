@@ -103,7 +103,6 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     cell.streamItem = item;
     
     return cell;
-
 }
 
 @end

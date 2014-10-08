@@ -65,9 +65,38 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
     homeStream.headerTitle = NSLocalizedString(@"Home", nil);
+    homeStream.shouldShowHeaderLogo = YES;
     homeStream.shouldDisplayMarquee = YES;
     return homeStream;
 }
+
+
++ (instancetype)communityStream
+{
+    VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
+    VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
+    
+    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
+    homeStream.headerTitle = NSLocalizedString(@"Community", nil);
+
+//    [stream addCreateButton];
+    
+    return homeStream;
+}
+
++ (instancetype)ownerStream
+{
+    VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
+    VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
+    
+    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
+    homeStream.headerTitle = NSLocalizedString(@"Community", nil);
+    
+    //    [stream addCreateButton];
+    
+    return homeStream;
+}
+
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams
 {
@@ -92,12 +121,14 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
     
+    UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
+    
+    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
-    
-    UINib *nib = [UINib nibWithNibName:VStreamCollectionCellName bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VStreamCollectionCellName];
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
@@ -216,17 +247,9 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     self.lastSelectedIndexPath = indexPath;
     
     VContentViewController *contentViewController = [[VContentViewController alloc] init];
-    
-//    VSequence *sequence = [self.streamDataSource itemAtIndexPath:indexPath];
-//    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
-//    {
-//        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-//        return;
-//    }
-//    
-//    self.selectedSequence = [self.streamDataSource itemAtIndexPath:indexPath];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//
+
+//    the old setup code
 //    //TODO: we'll need to clean this up once they decide on the animation
 //    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
 //    {

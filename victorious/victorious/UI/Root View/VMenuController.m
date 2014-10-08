@@ -131,11 +131,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         {
             case VMenuRowHome:
             {
-//                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-//                homeContainer.shouldShowHeaderLogo = YES;
-                VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
-                homeContainer.shouldShowHeaderLogo = YES;
-                navigationController.viewControllers = @[homeContainer];
+                navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;
@@ -147,14 +143,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                    navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
                 }
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;
             
             case VMenuRowCommunityChannel:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController communityStream]]];
+                navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
                 
