@@ -11,6 +11,9 @@ LANG_DIR=$OUTDIR"/en.lproj"
 DEST_DIR="./victorious/victorious/"
 
 
+echo ""
+echo "Importing Localized Strings..."
+
 # Process any strings file passed in as a parameter
 if [ "$STR_INFILE" ]; then
     echo ""
@@ -19,12 +22,13 @@ if [ "$STR_INFILE" ]; then
     fext=${base##*.}
     filename=$(basename $STR_INFILE)
     xibname=${base%.*}.xib
+    storyboardname=${base%.*}.storyboard
     langdir=$( dirname "${STR_INFILE}" )
     lang=${langdir%.*}.lproj | grep '.lproj'
 
     if [ $fext = "strings" ]; then
         echo "Importing Strings File for $xibname"
-        current_xib=$(find . -name "$xibname" -print | grep '/en.lproj/')
+        current_xib=$(find . \( -name "$xibname" -or -name "$storyboardname" \) -print | grep '/en.lproj/')
         dest_xib=${current_xib/en.lproj/'es.lproj'}
         echo "Current XIB: $current_xib"
         echo "Dest XIB: $dest_xib"
@@ -35,37 +39,31 @@ if [ "$STR_INFILE" ]; then
     fi
     echo ""
     exit 0
-fi
+else # Sweep through project directory and locate the xibs and storyboards files
+    echo ""
+    find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/en.lproj/' | while read -d $'\n' xib_file
+    do
+        path=${xib_file/*}
+        base=${xib_file##*/}
+        fext=${xib_file##*.}
+        strings_file="./xib-strings/es.lproj/"${base%.*}.strings
 
-echo ""
-echo "Importing Localized Strings..."
-
-
-# Sweep through project directory and locate the xibs and storyboards files
-echo ""
-find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/en.lproj/' | while read -d $'\n' xib_file
-do
-    path=${xib_file/*}
-    base=${xib_file##*/}
-    fext=${xib_file##*.}
-    strings_file="./xib-strings/es.lproj/"${base%.*}.strings
-
-    echo "File: $base"
-    echo "Strings File: $strings_file"
+        echo "File: $base"
+        echo "Strings File: $strings_file"
     
-    if [ -e "$strings_file" ]; then
-        dest_xib=${xib_file/en.lproj/'es.lproj'}
-        ibtool --strings-file "$strings_file" "$xib_file" --write "$dest_xib"
-        echo "Current XIB: $xib_file"
-        echo "Dest XIB: $dest_xib"
-        echo ""
-    else
-        echo "$strings_file does not exist"
-        echo ""
-    fi
-done
+        if [ -e "$strings_file" ]; then
+            dest_xib=${xib_file/en.lproj/'es.lproj'}
+            ibtool --strings-file "$strings_file" "$xib_file" --write "$dest_xib"
+            echo "Current XIB: $xib_file"
+            echo "Dest XIB: $dest_xib"
+            echo ""
+        else
+            echo "$strings_file does not exist"
+            echo ""
+        fi
+    done
 
-
-echo ""
-echo "Finished!"
-echo ""
+    echo ""
+    echo "Finished!"
+    echo ""
+fi

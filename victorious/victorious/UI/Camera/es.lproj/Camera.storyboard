@@ -223,7 +223,7 @@
             </objects>
             <point key="canvasLocation" x="-113" y="51"/>
         </scene>
-        <!--Camera Publish View Controller - Publish-->
+        <!--Camera Publish View Controller - Publicar-->
         <scene sceneID="hiH-K5-ap5">
             <objects>
                 <viewController storyboardIdentifier="VCameraPublishViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1zz-KC-cVA" customClass="VCameraPublishViewController" sceneMemberID="viewController">
@@ -260,24 +260,24 @@
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" userLabel="Caption Placeholder Label" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="20" y="247" width="280" height="53"/>
-                                        <string key="text">Add a description...
-and don't forget #hashtags</string>
+                                        <string key="text">Agrega una descripción...
+y no olvides los #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="TwG-Lp-QLk" userLabel="Meme Placeholder Label" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="20" y="247" width="280" height="53"/>
-                                        <string key="text">Add a description...
-and don't forget #hashtags</string>
+                                        <string key="text">Agrega una descripción...
+y no olvides los #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="261" translatesAutoresizingMaskIntoConstraints="NO" id="2Pn-GI-xUc" userLabel="Quote Placeholder Label" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="29" y="133" width="261" height="53"/>
-                                        <string key="text">Add a description...
-and don't forget #hashtags</string>
+                                        <string key="text">Agrega una descripción...
+y no olvides los #hashtags</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -360,7 +360,7 @@ and don't forget #hashtags</string>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0I-mP-7db">
                                         <rect key="frame" x="0.0" y="0.0" width="107" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Caption">
+                                        <state key="normal" title="Leyenda">
                                             <color key="titleColor" red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -382,7 +382,7 @@ and don't forget #hashtags</string>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byc-3g-q5D">
                                         <rect key="frame" x="213" y="0.0" width="107" height="61"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Quote">
+                                        <state key="normal" title="Cita">
                                             <color key="titleColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -413,7 +413,7 @@ and don't forget #hashtags</string>
                                 <rect key="frame" x="0.0" y="381" width="320" height="127"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SHARE TO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="quq-i9-xCf">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="COMPARTIR CON" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="quq-i9-xCf">
                                         <rect key="frame" x="117" y="10" width="85" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -446,7 +446,7 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="height" constant="60" id="7xy-aJ-ex8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Publish">
+                                <state key="normal" title="Publicar">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -471,7 +471,7 @@ and don't forget #hashtags</string>
                             <constraint firstAttribute="trailing" secondItem="wOt-la-SB9" secondAttribute="trailing" id="vyD-9c-bKx"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Publish" id="bCT-xK-bEO">
+                    <navigationItem key="navigationItem" title="Publicar" id="bCT-xK-bEO">
                         <barButtonItem key="leftBarButtonItem" image="btnPrevArrowWhiteDs" id="gEL-hj-iBw">
                             <connections>
                                 <action selector="goBack:" destination="1zz-KC-cVA" id="nXM-hH-lpw"/>
@@ -547,7 +547,7 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="height" constant="60" id="gd4-Kv-p3i"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Cancel">
+                                <state key="normal" title="Cancelar">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -559,13 +559,13 @@ and don't forget #hashtags</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <items>
-                                    <barButtonItem title="CANCEL" id="vCC-fr-XKx">
+                                    <barButtonItem title="CANCELAR" id="vCC-fr-XKx">
                                         <connections>
                                             <action selector="cancel:" destination="ngC-QT-430" id="v6W-hq-iCX"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="0aL-bR-fIp"/>
-                                    <barButtonItem title="RESET" id="U2T-Yz-ShN">
+                                    <barButtonItem title="RESTABLECER" id="U2T-Yz-ShN">
                                         <connections>
                                             <action selector="reset:" destination="ngC-QT-430" id="jMx-3b-Jri"/>
                                         </connections>
@@ -574,7 +574,7 @@ and don't forget #hashtags</string>
                             </toolbar>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3Z-m2-gIh">
                                 <rect key="frame" x="0.0" y="123" width="160" height="50"/>
-                                <state key="normal" title="After">
+                                <state key="normal" title="Después">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -583,14 +583,14 @@ and don't forget #hashtags</string>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGh-61-oX4">
                                 <rect key="frame" x="160" y="123" width="160" height="50"/>
-                                <state key="normal" title="On">
+                                <state key="normal" title="Encendido">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="onButtonClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="o4v-jz-kZt"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post Will Expire" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhp-re-0dh">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="La publicación caducará" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhp-re-0dh">
                                 <rect key="frame" x="0.0" y="61" width="320" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -599,7 +599,7 @@ and don't forget #hashtags</string>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-Sn-My6">
                                 <rect key="frame" x="0.0" y="173" width="320" height="335"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-3f-ltw">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Etiqueta" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-3f-ltw">
                                         <rect key="frame" x="0.0" y="90" width="320" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="IqH-2K-VQB"/>
@@ -609,7 +609,7 @@ and don't forget #hashtags</string>
                                         <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Set An Expiration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHh-of-tVx">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Establece una caducidad" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHh-of-tVx">
                                         <rect key="frame" x="0.0" y="158" width="320" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="Tlw-4Y-3az"/>
@@ -619,7 +619,7 @@ and don't forget #hashtags</string>
                                         <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-NI-D2Y">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Etiqueta" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-NI-D2Y">
                                         <rect key="frame" x="0.0" y="187" width="320" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="320" id="190-Kc-y85"/>

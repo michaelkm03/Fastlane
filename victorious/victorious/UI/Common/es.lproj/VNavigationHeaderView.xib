@@ -65,13 +65,13 @@
                         <constraint firstAttribute="height" constant="28" id="1wj-1n-BHu"/>
                     </constraints>
                     <segments>
-                        <segment title="Featured"/>
-                        <segment title="Recent"/>
-                        <segment title="Following"/>
+                        <segment title="Destacado"/>
+                        <segment title="Reciente"/>
+                        <segment title="Siguiendo a"/>
                     </segments>
                     <color key="tintColor" white="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </segmentedControl>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESN-J9-ft1" userLabel="Header Label">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Etiqueta" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESN-J9-ft1" userLabel="Header Label">
                     <rect key="frame" x="55" y="10" width="210" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

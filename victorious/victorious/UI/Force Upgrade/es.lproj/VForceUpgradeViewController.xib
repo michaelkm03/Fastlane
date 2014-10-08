@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAKE ADVANTAGE OF MORE AWESOME FEATURES IN THE NEWEST VERSION." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="goh-WL-wbz">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APROVECHA MÁS CARACTERÍSTICAS ASOMBROSAS EN LA VERSIÓN MÁS RECIENTE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="goh-WL-wbz">
                     <rect key="frame" x="45" y="169" width="230" height="120"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="24"/>
@@ -31,7 +31,7 @@
                         <constraint firstAttribute="width" constant="280" id="WRS-Ml-nUu"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="20"/>
-                    <state key="normal" title="Upgrade Now">
+                    <state key="normal" title="Actualizar ahora">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
