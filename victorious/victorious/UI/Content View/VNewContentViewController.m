@@ -16,7 +16,6 @@
 
 // View Categories
 #import "UIView+VShadows.h"
-#import "UIActionSheet+VBlocks.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -43,28 +42,9 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
-#import "VActionSheetViewController.h"
-#import "VActionSheetTransitioningDelegate.h"
-#import "VCameraPublishViewController.h"
-#import "VRemixSelectViewController.h"
-#import "VUserProfileViewController.h"
-#import "VStreamContainerViewController.h"
-#import "VReposterTableViewController.h"
-
-//TODO: abstract this out of VC
-#import "VStream.h"
-#import "VStream+Fetcher.h"
-#import "VObjectManager+Sequence.h"
-
-// Analytics
-#import "VAnalyticsRecorder.h"
-
-// Activities
-#import "VFacebookActivity.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
-#import "VActionSheetPresentationAnimator.h"
 
 // Logged in
 #import "VObjectManager+Login.h"
@@ -72,6 +52,14 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
+
+// Simple Models
+#import "VExperienceEnhancer.h"
+
+static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
+static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
+static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
+static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
@@ -242,42 +230,74 @@
     {
         [self.textEntryView startEditing];
     };
-    
-    VExperienceEnhancer *baconEnhancer = [[VExperienceEnhancer alloc] init];
-    baconEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
-    baconEnhancer.labelText = @"123";
-    baconEnhancer.selectionBlock = ^(void)
+    self.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
     {
-        NSMutableArray *animationImages = [NSMutableArray new];
-        for (int i = 1; i <= 6; i++)
+        if (selectedEnhancer.isBallistic)
         {
-            NSString *animationName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i (dragged)", i];
-            [animationImages addObject:[UIImage imageNamed:animationName]];
-        }
-        
-        self.contentCell.animationDuration = 0.75f;
-        self.contentCell.animationSequence = animationImages;
-        [self.contentCell playAnimation];
-    };
+            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
+            animationImageView.contentMode = UIViewContentModeScaleAspectFit;
+            
+            CGPoint convertedCenterForAnimation = [experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
+            animationImageView.center = convertedCenterForAnimation;
+            animationImageView.image = selectedEnhancer.flightImage;
+            [self.view addSubview:animationImageView];
+            
+            [UIView animateWithDuration:selectedEnhancer.flightDuration
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^
+            {
+                CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(self.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(self.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
+                CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(self.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(self.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
+                
+                CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
+                                                       fromView:self.contentCell];
+                animationImageView.center = contentCenter;
 
-    VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
-    fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
-    fireworkEnhancer.labelText = @"143";
+            }
+                             completion:^(BOOL finished)
+            {
+                animationImageView.animationDuration = selectedEnhancer.animationDuration;
+                animationImageView.animationImages = selectedEnhancer.animationSequence;
+                animationImageView.animationRepeatCount = 1;
+                animationImageView.image = nil;
+                [animationImageView startAnimating];
+                
+
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    [animationImageView removeFromSuperview];
+                });
+            }];
+        }
+        else // full overlay
+        {
+            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+            animationImageView.animationDuration = selectedEnhancer.animationDuration;
+            animationImageView.animationImages = selectedEnhancer.animationSequence;
+            animationImageView.animationRepeatCount = 1;
+            
+            [self.contentCell.contentView addSubview:animationImageView];
+            [animationImageView startAnimating];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [animationImageView removeFromSuperview];
+            });
+        }
+    };
     
-    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
-    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
-    thumbsUpEnhancer.labelText = @"321";
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, 0);
+    self.experienceEnhancerBar.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.experienceEnhancerBar.layer.shadowRadius = kExperienceEnhancerShadowRadius;
+    self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
+    self.experienceEnhancerBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.experienceEnhancerBar.bounds, -kExperienceEnhancerShadowWidthOverdraw, 0)].CGPath;
     
-    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
-    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
-    tongueEnhancer.labelText = @"555";
+    self.viewModel.experienceEnhancerController.enhancerBar = experienceEnhancerBar;
     
-    VExperienceEnhancer *winEnhancer = [[VExperienceEnhancer alloc] init];
-    winEnhancer.icon = [UIImage imageNamed:@"eb_win"];
-    winEnhancer.labelText = @"999";
-    
-    self.experienceEnhancerBar.actionItems = @[baconEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, winEnhancer];
-    
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    layout.allCommentsHandleBottomInset = CGRectGetHeight(self.experienceEnhancerBar.bounds);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
@@ -330,16 +350,15 @@
     
     [self.viewModel fetchComments];
     
-    
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
                                                                         0,
                                                                         CGRectGetHeight(self.textEntryView.bounds), 0);
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
-                                           placeholderImage:placeholderImage
-                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
+                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -349,24 +368,11 @@
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
-    
-    self.inputAccessoryView.alpha = 0.0f;
-    [UIView animateWithDuration:0.2f
-                     animations:^
-     {
-         self.inputAccessoryView.alpha = 1.0f;
-     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if (!self.hasAutoPlayed)
-    {
-        [self.videoCell play];
-        self.hasAutoPlayed = YES;
-    }
 
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -378,20 +384,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     self.contentCollectionView.delegate = nil;
-    
-    [self.view.superview endEditing:YES];
-    
-    [UIView animateWithDuration:0.2f
-                     animations:^
-     {
-         self.inputAccessoryView.alpha = 0.0f;
-     }];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)presentViewController:(UIViewController *)viewControllerToPresent
+                     animated:(BOOL)flag
+                   completion:(void (^)(void))completion
 {
-    [super viewDidDisappear:animated];
-    [self.inputAccessoryView removeFromSuperview];
+    [super presentViewController:viewControllerToPresent
+                        animated:flag
+                      completion:completion];
+    
+    // Pause playback on presentation
+    [self.videoCell.videoPlayerViewController.player pause];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -420,20 +424,14 @@
         
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
-        
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-             usingSpringWithDamping:1.0f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-#warning There are some ugly UI bugs when the user is scrolled to the bottom and then dismisses the keyboard. This will be fixed when moving the content out of the collectionview.
-            VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-            layout.contentInsets = UIEdgeInsetsMake(0, 0, -newBottomKeyboardBarToContainerConstraintHeight, 0);
-            [self.contentCollectionView.collectionViewLayout invalidateLayout];
-        }
-                         completion:nil];
+    }
+    else if ([notification.name isEqualToString:UIKeyboardDidChangeFrameNotification])
+    {
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
+        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds) : newBottomInset;
+        self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
+        self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
 }
 
@@ -454,252 +452,6 @@
 {
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
-}
-
-- (IBAction)pressedMore:(id)sender
-{
-    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
-    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
-    
-    VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
-                                                           avatarURL:self.viewModel.avatarForAuthor
-                                                          detailText:self.viewModel.authorCaption];
-    userItem.selectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
-             [self.navigationController pushViewController:profileViewController animated:YES];
-         }];
-    };
-    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
-                                                      hashTagSelectionHandler:^(NSString *hashTag)
-                                    {
-                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
-                                        container.shouldShowHeaderLogo = NO;
-                                        
-                                        [self dismissViewControllerAnimated:YES
-                                                                 completion:^
-                                         {
-                                             [self.navigationController pushViewController:container
-                                                                                  animated:YES];
-                                         }];
-                                    }];
-    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
-                                                          actionIcon:[UIImage imageNamed:@"icon_remix"]
-                                                          detailText:self.viewModel.remixCountText];
-    remixItem.selectionHandler = ^(void)
-    {
-        if (![VObjectManager sharedManager].mainUser)
-        {
-            [self dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 [self presentViewController:[VLoginViewController loginViewController]
-                                    animated:YES
-                                  completion:NULL];
-             }];
-
-            return;
-        }
-        
-        NSString *label = [self.viewModel.sequence.remoteId stringByAppendingPathComponent:self.viewModel.sequence.name];
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
-        
-        if (self.viewModel.type == VContentViewTypeVideo)
-        {
-            UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.viewModel.sourceURLForCurrentAssetData
-                                                                                    sequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                                                        nodeID:self.viewModel.nodeID];
-            [self presentViewController:remixVC
-                               animated:YES
-                             completion:
-             ^{
-                 [self.videoCell.videoPlayerViewController.player pause];
-             }];
-        }
-        else
-        {
-            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-            publishViewController.previewImage = self.blurredBackgroundImageView.downloadedImage;
-            publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
-            publishViewController.completion = ^(BOOL complete)
-            {
-                [self dismissViewControllerAnimated:YES
-                                         completion:nil];
-            };
-            UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-            
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                               onCancelButton:nil
-                                                       destructiveButtonTitle:nil
-                                                          onDestructiveButton:nil
-                                                   otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
-                                          {
-                                              publishViewController.captionType = VCaptionTypeMeme;
-                                              
-                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
-                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                              {
-                                                  publishViewController.mediaURL = tempFile;
-                                                  [self presentViewController:remixNav
-                                                                     animated:YES
-                                                                   completion:nil];
-                                              }
-                                          },
-                                          NSLocalizedString(@"Quote", nil),  ^(void)
-                                          {
-                                              publishViewController.captionType = VCaptionTypeQuote;
-                                              
-                                              NSData *filteredImageData = UIImageJPEGRepresentation(self.blurredBackgroundImageView.downloadedImage, VConstantJPEGCompressionQuality);
-                                              NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                              NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                              if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                              {
-                                                  publishViewController.mediaURL = tempFile;
-                                                  [self presentViewController:remixNav
-                                                                     animated:YES
-                                                                   completion:nil];
-                                              }
-                                          }, nil];
-            [self dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 [actionSheet showInView:self.view];
-             }];
-
-        }
-    };
-    remixItem.detailSelectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-             VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-             streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-             streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-             streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-             [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
-             
-         }];
-    };
-    NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
-    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
-                                                           actionIcon:[UIImage imageNamed:@"icon_repost"]
-                                                           detailText:self.viewModel.repostCountText
-                                                              enabled:self.viewModel.hasReposted ? NO : YES];
-    repostItem.selectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-        {
-            if (![VObjectManager sharedManager].mainUser)
-            {
-                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                return;
-            }
-            if (self.viewModel.hasReposted)
-            {
-                return;
-            }
-            
-            [self.viewModel repost];
-        }];
-    };
-    repostItem.detailSelectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-        {
-            VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
-            vc.sequence = self.viewModel.sequence;
-            [self.navigationController pushViewController:vc animated:YES];
-        }];
-    };
-    VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"")
-                                                          actionIcon:[UIImage imageNamed:@"icon_share"]
-                                                          detailText:self.viewModel.shareCountText];
-
-    void (^shareHandler)(void) = ^void(void)
-    {
-        //Remove the styling for the mail view.
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
-        VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
-                                                                                                                     self.viewModel.shareText,
-                                                                                                                     self.viewModel.shareURL]
-                                                                                             applicationActivities:@[fbActivity]];
-        
-        NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
-        [activityViewController setValue:emailSubject forKey:@"subject"];
-        activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
-        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
-        {
-            [[VThemeManager sharedThemeManager] applyStyling];
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-            [self reloadInputViews];
-        };
-        
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             [self presentViewController:activityViewController
-                                animated:YES
-                              completion:nil];
-         }];
-    };
-    shareItem.selectionHandler = shareHandler;
-    shareItem.detailSelectionHandler = shareHandler;
-    
-    VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
-                                                         actionIcon:[UIImage imageNamed:@"icon_flag"]
-                                                         detailText:nil];
-    flagItem.selectionHandler = ^(void)
-    {
-        [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
-                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-             
-         }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed to flag sequence %@", self.viewModel.sequence);
-             
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-         }];
-    };
-    
-    [actionSheetViewController addActionItems:@[userItem, descripTionItem, remixItem, repostItem, shareItem, flagItem]];
-    
-    actionSheetViewController.cancelHandler = ^void(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
-    
-    [self presentViewController:actionSheetViewController
-                       animated:YES
-                     completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -799,7 +551,7 @@
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
-                                                  placeholderImage:nil
+                                                  placeholderImage:self.placeholderImage?:nil
                                                            success:nil
                                                            failure:nil];
                 self.contentCell = imageCell;
@@ -829,6 +581,7 @@
             VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             imageCell.contentView.backgroundColor = [UIColor blueColor];
+            imageCell.contentImageView.image = nil;
             return imageCell;
         }
         case VContentViewSectionTicker:
@@ -900,6 +653,7 @@
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     
     self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
+    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -kExperienceEnhancerShadowOffsetY * (layout.percentToShowBottomBar));
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -954,7 +708,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionAllComments:
         {
             CGSize allCommentsHandleSize = (self.viewModel.commentCount == 0) ? CGSizeZero :[VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-            ((VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout).allCommentsHandleBottomInset = allCommentsHandleSize.height;
             return allCommentsHandleSize;
         }
         case VContentViewSectionCount:
@@ -978,9 +731,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-//    CGFloat progressedTime = !isnan(CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime)) ? CMTimeGetSeconds(time)/CMTimeGetSeconds(totalTime) : 0.0f;
-    
-//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -1001,13 +752,19 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                      animations:^
      {
          [self.contentCollectionView.collectionViewLayout invalidateLayout];
+     }completion:^(BOOL finished) {
+         if (!self.hasAutoPlayed)
+         {
+             [self.videoCell play];
+             self.hasAutoPlayed = YES;
+         }
      }];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-//    self.inputAccessoryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -1062,6 +819,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         }
         [self dismissViewControllerAnimated:YES completion:^
         {
+            if (finished)
+            {
+                [self.textEntryView startEditing];
+            }
+            
             [UIView animateWithDuration:0.0f
                              animations:^
              {

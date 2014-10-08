@@ -294,6 +294,10 @@
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    
+    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+    
     UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
     contentNav.navigationBarHidden = YES;
     [self presentViewController:contentNav
@@ -672,27 +676,6 @@
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
 }
-
-// #pragma mark - Navigation
-//
-// - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-//                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-//                                                fromViewController:(UIViewController *)fromVC
-//                                                  toViewController:(UIViewController *)toVC
-// {
-//     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.lastSelectedIndexPath];
-//     if (operation == UINavigationControllerOperationPush
-//         && ([toVC isKindOfClass:[VContentViewController class]])
-//         && [cell isKindOfClass:[VStreamViewCell class]])
-//     {
-//         return [[VStreamToContentAnimator alloc] init];;
-//     }
-//     else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
-//     {
-//         return [[VStreamToCommentAnimator alloc] init];
-//     }
-//     return nil;
-// }
 
 #pragma mark - VAnimation
 

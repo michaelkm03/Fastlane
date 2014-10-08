@@ -15,12 +15,34 @@
 #import <objc/runtime.h>
 
 static const char kAssociatedObjectKey;
+static const CGFloat kVBlurRadius = 25.0f;
+static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 @implementation UIImageView (Blurring)
 
 - (UIImage *)downloadedImage
 {
     return objc_getAssociatedObject(self, &kAssociatedObjectKey);
+}
+
+- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
+{
+    self.image = placeholderImage;
+    
+    __weak typeof(self) welf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, welf.bounds).size
+                                              interpolationQuality:kCGInterpolationLow];
+                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
+                                                                       tintColor:tintColor
+                                                           saturationDeltaFactor:kVSaturationDeltaFactor
+                                                                       maskImage:nil];
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          welf.image = blurredImage;
+                                      });
+                   });
 }
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
@@ -39,9 +61,9 @@ static const char kAssociatedObjectKey;
                              {
                                  UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
                                                         interpolationQuality:kCGInterpolationLow];
-                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:25
+                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
                                                                                  tintColor:tintColor
-                                                                     saturationDeltaFactor:1.8 
+                                                                     saturationDeltaFactor:kVSaturationDeltaFactor
                                                                                  maskImage:nil];
                                  dispatch_async(dispatch_get_main_queue(), ^
                                  {

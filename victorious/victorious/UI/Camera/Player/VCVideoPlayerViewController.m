@@ -379,18 +379,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (CMTime)playerItemDuration
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay)
+    
+    if (CMTIME_IS_VALID(playerItem.duration))
     {
-        if (CMTIME_IS_VALID(playerItem.duration))
-        {
-            return playerItem.duration;
-        }
-        return kCMTimeZero;
+        return playerItem.duration;
     }
-    else
-    {
-        return kCMTimeInvalid;
-    }
+    return kCMTimeInvalid;
 }
 
 - (void)didPlayToTime:(CMTime)time

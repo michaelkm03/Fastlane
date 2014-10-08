@@ -10,6 +10,8 @@
 
 #import "VThemeManager.h"
 
+static const CGFloat kHandleDesiredHeight = 37.0f;
+
 @interface VSectionHandleReusableView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
@@ -23,7 +25,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 32.0f);
+    return CGSizeMake(CGRectGetWidth(bounds), kHandleDesiredHeight);
 }
 
 #pragma mark - NSObject
@@ -32,7 +34,6 @@
 {
     self.commentCountLabel.text = nil;
     self.commentCountLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    
     
     self.handleIcon.image = [self.handleIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.handleIcon.tintColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];

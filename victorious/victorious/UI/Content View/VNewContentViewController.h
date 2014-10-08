@@ -29,4 +29,6 @@
  */
 @property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
+@property (nonatomic, strong) UIImage *placeholderImage;
+
 @end
