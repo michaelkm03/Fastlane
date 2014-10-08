@@ -50,13 +50,10 @@
                         <constraint firstAttribute="width" constant="44" id="xGy-Fw-6pB"/>
                     </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <state key="normal" image="createContentButton">
+                    <state key="normal">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <connections>
-                        <action selector="pressedAdd:" destination="Ay5-2H-sPn" eventType="touchUpInside" id="du1-1X-BmG"/>
-                    </connections>
                 </button>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="cdH-vC-Oj7">
                     <rect key="frame" x="20" y="60" width="280" height="29"/>
@@ -124,6 +121,5 @@
     <resources>
         <image name="Menu" width="27" height="27"/>
         <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="createContentButton" width="27" height="27"/>
     </resources>
 </document>

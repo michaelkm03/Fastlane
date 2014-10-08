@@ -45,7 +45,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
-@property (strong, nonatomic) NSString *headerTitle;
 @property (strong, nonatomic) VMarqueeController *marquee;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
@@ -64,9 +63,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
-    homeStream.headerTitle = NSLocalizedString(@"Home", nil);
+    homeStream.title = NSLocalizedString(@"Home", nil);
     homeStream.shouldShowHeaderLogo = YES;
     homeStream.shouldDisplayMarquee = YES;
+    homeStream.hasAddAction = YES;
+    
     return homeStream;
 }
 
@@ -75,12 +76,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
-    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
-    homeStream.headerTitle = NSLocalizedString(@"Community", nil);
-
-//    [stream addCreateButton];
+    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
+    communityStream.title = NSLocalizedString(@"Community", nil);
+    communityStream.hasAddAction = YES;
     
-    return homeStream;
+    return communityStream;
 }
 
 + (instancetype)ownerStreamCollection
@@ -88,12 +88,10 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
-    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
-    homeStream.headerTitle = NSLocalizedString(@"Community", nil);
+    VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
+    ownerStream.title = NSLocalizedString(@"Community", nil);
     
-    //    [stream addCreateButton];
-    
-    return homeStream;
+    return ownerStream;
 }
 
 
@@ -131,7 +129,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
-    self.navHeaderView.headerText = self.headerTitle ?: self.currentStream.name;
     self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
 
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;

@@ -11,12 +11,22 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VDirectoryItemCell.h"
 
+#import "VNavigationHeaderView.h"
+#import "MBProgressHUD.h"
+
+#import "UIActionSheet+VBlocks.h"
+#import "VObjectManager+Login.h"
+
+//View Controllers
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
-#import "VNavigationHeaderView.h"
+#import "VCameraPublishViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
-#import "MBProgressHUD.h"
+#import "VCameraViewController.h"
+#import "VCreatePollViewController.h"
+#import "VFindFriendsViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -54,8 +64,22 @@
     }
     
     self.navHeaderView.delegate = self;
-    
+    self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
+    [self.navHeaderView updateUI];
     [self.view addSubview:self.navHeaderView];
+    
+    if (self.hasAddAction)
+    {
+        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"createContentButton"]
+                                     withAction:@selector(createButtonAction:)
+                                       onTarget:self];
+    }
+    else if (self.hasFindFriendsAction)
+    {
+        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
+                                     withAction:@selector(findFriendsAction:)
+                                       onTarget:self];
+    }
     
     self.headerYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
                                                           attribute:NSLayoutAttributeTop
@@ -85,15 +109,6 @@
                   forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.navHeaderView.showAddButton = NO;
-    self.navHeaderView.headerText = self.currentStream.name;//Set the title in case there is no logo
-    [self.navHeaderView updateUI];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -142,7 +157,6 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-
 - (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
 {
     if (navHeaderView == self.navHeaderView)
@@ -157,6 +171,82 @@
     {
         [self.sideMenuViewController presentMenuViewController];
     }
+}
+
+- (IBAction)findFriendsAction:(id)sender
+{
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+    [ffvc setShouldAutoselectNewFriends:NO];
+    [self.navigationController pushViewController:ffvc animated:YES];
+}
+
+- (IBAction)createButtonAction:(id)sender
+{
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:nil
+                                                  onDestructiveButton:nil
+                                           otherButtonTitlesAndBlocks:
+                                  NSLocalizedString(@"Create a Video Post", @""), ^(void)
+                                  {
+                                      [self presentCameraViewController:[VCameraViewController cameraViewController]];
+                                  },
+                                  NSLocalizedString(@"Create an Image Post", @""), ^(void)
+                                  {
+                                      [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
+                                  },
+                                  NSLocalizedString(@"Create a Poll", @""), ^(void)
+                                  {
+                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                      [self.navigationController pushViewController:createViewController animated:YES];
+                                  }, nil];
+    [actionSheet showInView:self.view];
+}
+
+- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
+{
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    UINavigationController *__weak weakNav = navigationController;
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (!finished || !capturedMediaURL)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.previewImage = previewImage;
+            publishViewController.mediaURL = capturedMediaURL;
+            publishViewController.completion = ^(BOOL complete)
+            {
+                if (complete)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [weakNav popViewControllerAnimated:YES];
+                }
+            };
+            [weakNav pushViewController:publishViewController animated:YES];
+        }
+    };
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Refresh

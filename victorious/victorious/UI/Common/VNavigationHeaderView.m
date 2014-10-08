@@ -152,18 +152,11 @@
     }
 }
 
-- (IBAction)pressedAdd:(id)sender
+- (void)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
 {
-    if ([self.delegate respondsToSelector:@selector(addPressedOnNavHeader:)])
-    {
-        [self.delegate addPressedOnNavHeader:self];
-    }
-}
-
-- (void)setShowAddButton:(BOOL)showAddButton
-{
-    _showAddButton = showAddButton;
-    self.addButton.hidden = YES;
+    self.addButton.hidden = !image;
+    [self.addButton setImage:image forState:UIControlStateNormal];
+    [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
 @end
