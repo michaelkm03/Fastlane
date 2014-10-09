@@ -61,6 +61,13 @@
                                      failBlock:failureBlock];
 }
 
+- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+{
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock];
+}
+
 - (void)followFriendAction:(VUser *)user
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -103,6 +110,50 @@
     [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
 }
 
+- (void)unfollowFriendAction:(VUser *)user
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = mainUser.managedObjectContext;
+        
+        [mainUser removeFollowingObject:user];
+        [moc saveToPersistentStore:nil];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        NSInteger errorCode = error.code;
+        if (errorCode == kVFollowsRelationshipDoesNotExistError)
+        {
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            NSManagedObjectContext *moc = mainUser.managedObjectContext;
+            
+            [mainUser removeFollowingObject:user];
+            [moc saveToPersistentStore:nil];
+            return;
+        }
+        
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    
+}
+
+#pragma mark - Check Relationship Status
+
+- (BOOL)determineRelationshipWithUser:(VUser *)targetUser
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    return ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -112,11 +163,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile = self.following[indexPath.row];
-    
-    BOOL haveRelationship = ([mainUser.followers containsObject:profile] || [mainUser.following containsObject:profile]);
-    
+    BOOL haveRelationship = [self determineRelationshipWithUser:profile];
 
     VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.following[indexPath.row];
@@ -126,7 +174,14 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        [self followFriendAction:profile];
+        if (haveRelationship)
+        {
+            [self unfollowFriendAction:profile];
+        }
+        else
+        {
+            [self followFriendAction:profile];
+        }
     };
     return cell;
 }

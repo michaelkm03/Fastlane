@@ -59,7 +59,7 @@
     
     if (_haveRelationship)
     {
-        self.followButton.hidden = YES;
+        self.followButton.imageView.image = self.unfollowImage;
     }
     else
     {
@@ -75,37 +75,29 @@
         self.followButtonAction();
     }
     
-    [self disableFollowIcon:nil];
+    [self flipFollowIconAction:nil];
 }
 
 #pragma mark - Button Actions
 
-- (void)enableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followButton.alpha = 1.0f;
-        self.followButton.imageView.image = self.unfollowImage;
-    };
-    
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:animations
-                    completion:nil];
-}
-
 - (void)flipFollowIconAction:(id)sender
 {
+    BOOL relationship = [self determineRelationshipWithUser:self.profile];
     void (^animations)() = ^(void)
     {
-        self.followButton.alpha = 1.0f;
-        self.followButton.imageView.image = self.unfollowImage;
+        if (relationship)
+        {
+            self.followButton.imageView.image = self.unfollowImage;
+        }
+        else
+        {
+            self.followButton.imageView.image = self.followImage;
+        }
     };
     
-    [UIView transitionWithView:self.followButton
+    [UIView transitionWithView:self.followButton.imageView
                       duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
+                       options:(relationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
                     animations:animations
                     completion:nil];
 }
@@ -123,6 +115,14 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:animations
                     completion:nil];
+}
+
+- (BOOL)determineRelationshipWithUser:(VUser *)targetUser
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
+    //NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
+    return relationship;
 }
 
 @end
