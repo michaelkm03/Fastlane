@@ -80,7 +80,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 
 - (BOOL)mainUserProfileComplete
 {
-    return self.mainUser != nil && [self.mainUser.status isEqualToString:kUserStatusComplete];
+    return self.mainUser != nil && ![self.mainUser.status isEqualToString:kUserStatusIncomplete];
 }
 
 - (BOOL)mainUserLoggedIn
