@@ -59,9 +59,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
         self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
         self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
 
-        
         self.backgroundColor = [UIColor colorWithWhite:0.94509803921 alpha:1];
-//        self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     }
     
     [self addSubview:self.tabView];
