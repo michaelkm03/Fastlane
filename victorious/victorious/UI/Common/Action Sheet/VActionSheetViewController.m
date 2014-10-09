@@ -235,10 +235,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
             actionitemCell.actionIcon = itemForCell.icon;
             actionitemCell.separatorInsets = self.tableView.separatorInset;
             actionitemCell.enabled = itemForCell.enabled;
-            if (!actionitemCell.enabled)
-            {
-                
-            }
             actionitemCell.accessorySelectionHandler = ^(void)
             {
                 if (itemForCell.detailSelectionHandler)
