@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "VChangePasswordViewController.h"
+#import "VConstants.h"
 
 @interface VChangePasswordViewController (UnitTest)
 
@@ -79,19 +80,19 @@
     XCTAssertFalse( [_viewController validatePassword:@"2short" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
     
     error = nil;
     XCTAssertFalse( [_viewController validatePassword:nil error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
     
     error = nil;
     XCTAssertFalse( [_viewController validatePassword:@"" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
 }
 
 @end

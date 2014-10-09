@@ -247,9 +247,9 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 }
 
 - (RKManagedObjectRequestOperation *)updatePasswordWithCurrentPassword:(NSString *)currentPassword
-                                                  newPassword:(NSString *)newPassword
-                                                 successBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail
+                                                           newPassword:(NSString *)newPassword
+                                                          successBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
 {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
     
@@ -457,13 +457,16 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             failBlock:fail];
 }
 
+
 - (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
                                                     deviceToken:(NSString *)deviceToken
+                                                    newPassword:(NSString *)newPassword
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"user_token": userToken ?: @"",
-                                 @"device_token" : deviceToken ?: @""};
+                                 @"device_token" : deviceToken ?: @"",
+                                 @"new_password" : newPassword ?: @""};
     
     return [self POST:@"api/password_reset"
                object:nil

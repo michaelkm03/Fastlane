@@ -10,4 +10,7 @@
 
 @interface VResetPasswordViewController : UIViewController
 
+@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *userToken;
+
 @end
