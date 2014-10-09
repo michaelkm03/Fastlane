@@ -33,15 +33,17 @@
     self.changedPasswordTextField.delegate =   self;
     self.confirmPasswordTextField.delegate =   self;
     
+    
     self.view.layer.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0].CGColor;
 
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
          label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
      }];
-    [self.textFields enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
+    [self.textFields enumerateObjectsUsingBlock:^(UITextField *textField, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         textField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         textField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
      }];
 }
 
