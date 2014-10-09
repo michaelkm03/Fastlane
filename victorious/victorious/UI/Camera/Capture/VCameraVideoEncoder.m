@@ -18,6 +18,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 @property (nonatomic, strong) AVAssetWriter *writer;
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
 @property (nonatomic, strong) AVAssetWriterInput *audioInput;
+@property (nonatomic) CMSampleBufferRef firstVideoFrame;
 @property (nonatomic) CMTime lastFrameTimeRecorded;
 @property (nonatomic) CMTime frameTimeOffset; ///< the difference between the frame timestamps we're getting from the source, and our output frame timestamps.
 @property (nonatomic, getter = isRecordingPaused) BOOL recordingPaused;
@@ -66,6 +67,14 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     }
 }
 
+- (void)dealloc
+{
+    if (_firstVideoFrame)
+    {
+        CFRelease(_firstVideoFrame);
+    }
+}
+
 #pragma mark - Properties
 
 - (BOOL)isRecording
@@ -93,6 +102,20 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         self.recordingPaused = YES;
     }
     _recording = recording;
+}
+
+- (void)setFirstVideoFrame:(CMSampleBufferRef)firstVideoFrame
+{
+    if (_firstVideoFrame)
+    {
+        CFRelease(_firstVideoFrame);
+    }
+    
+    if (firstVideoFrame)
+    {
+        CFRetain(firstVideoFrame);
+    }
+    _firstVideoFrame = firstVideoFrame;
 }
 
 #pragma mark -
@@ -232,6 +255,12 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioSettings];
         self.audioInput.expectsMediaDataInRealTime = YES;
         [self.writer addInput:self.audioInput];
+        
+        if (self.firstVideoFrame)
+        {
+            [self writeFrame:self.firstVideoFrame isVideo:YES];
+            self.firstVideoFrame = nil;
+        }
     };
     
     if (self.recordingPaused)
@@ -251,13 +280,11 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     {
         self.frameTimeOffset = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     }
+    CMSampleBufferRef adjustedSampleBuffer = [self copySample:sampleBuffer andAdjustTimeByOffset:self.frameTimeOffset];
     
     if (self.videoInput && self.audioInput)
     {
-        CMSampleBufferRef adjustedSampleBuffer = [self copySample:sampleBuffer andAdjustTimeByOffset:self.frameTimeOffset];
-
-        BOOL success = [self writeFrame:adjustedSampleBuffer isVideo:isVideo];
-        if (!success)
+        if (![self writeFrame:adjustedSampleBuffer isVideo:isVideo])
         {
             [self _setRecording:NO];
             id<VCameraVideoEncoderDelegate> delegate = self.delegate;
@@ -270,15 +297,15 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
                 }
                 [delegate videoEncoder:self didEncounterError:error];
             }
-        }
-        
-        CFRelease(adjustedSampleBuffer);
-        
-        if (!success)
-        {
+            CFRelease(adjustedSampleBuffer);
             return;
         }
     }
+    else
+    {
+        self.firstVideoFrame = adjustedSampleBuffer;
+    }
+    CFRelease(adjustedSampleBuffer);
     
     if (!isVideo)
     {
