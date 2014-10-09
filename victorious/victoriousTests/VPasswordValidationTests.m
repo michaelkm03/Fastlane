@@ -44,8 +44,14 @@
     NSString *current = @"password";
     NSString *confirm = @"password";
     XCTAssert( [_viewController shouldUpdatePassword:current confirmation:confirm] );
-    
-    XCTAssertFalse( [_viewController shouldUpdatePassword:current confirmation:@"nomatch"] );
+}
+
+- (void)testShouldUpdatePasswordInvalid
+{
+    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:@"nomatch"] );
+    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:nil] );
+    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@"nomatch"] );
+    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:@"nomatch"] );
     XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@""] );
     XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:nil] );
     XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:nil] );
@@ -65,7 +71,6 @@
     XCTAssertNil( error );
 }
 
-
 - (void)testValidatePasswordInvalid
 {
     NSError *error;
@@ -74,19 +79,19 @@
     XCTAssertFalse( [_viewController validatePassword:@"2short" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (int)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
     
     error = nil;
     XCTAssertFalse( [_viewController validatePassword:nil error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (int)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
     
     error = nil;
     XCTAssertFalse( [_viewController validatePassword:@"" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (int)VAccountUpdateViewControllerBadPasswordErrorCode );
+    XCTAssertEqual( error.code, (NSInteger)VAccountUpdateViewControllerBadPasswordErrorCode );
 }
 
 @end
