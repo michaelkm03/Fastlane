@@ -152,24 +152,13 @@
                                                     <outlet property="delegate" destination="zy4-f0-yQu" id="tuM-9i-9gH"/>
                                                 </connections>
                                             </tableView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7sz-Dt-SPo" userLabel="Top Separator">
-                                                <rect key="frame" x="20" y="0.0" width="280" height="1"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.16" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="KF0-ue-oev"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="dX5-Jj-M61" firstAttribute="leading" secondItem="Iq4-PT-v1o" secondAttribute="leading" id="7eN-kV-zaJ"/>
                                             <constraint firstAttribute="bottom" secondItem="dX5-Jj-M61" secondAttribute="bottom" id="92I-as-Tr1"/>
-                                            <constraint firstItem="7sz-Dt-SPo" firstAttribute="leading" secondItem="Iq4-PT-v1o" secondAttribute="leading" constant="20" id="PhN-go-imi"/>
                                             <constraint firstAttribute="trailing" secondItem="dX5-Jj-M61" secondAttribute="trailing" id="RIN-Ua-sMh"/>
                                             <constraint firstItem="dX5-Jj-M61" firstAttribute="top" secondItem="Iq4-PT-v1o" secondAttribute="top" id="S8R-aF-uPg"/>
-                                            <constraint firstItem="7sz-Dt-SPo" firstAttribute="top" secondItem="Iq4-PT-v1o" secondAttribute="top" id="f0e-LO-Lre"/>
-                                            <constraint firstAttribute="trailing" secondItem="7sz-Dt-SPo" secondAttribute="trailing" constant="20" id="fgi-vx-6IN"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wiR-Nr-0cm" userLabel="Cancel Button">
@@ -261,7 +250,6 @@
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
                         <outlet property="tableView" destination="dX5-Jj-M61" id="hFV-st-RLo"/>
-                        <outlet property="topSeparatorHeightConstraint" destination="KF0-ue-oev" id="T7L-Gc-3rl"/>
                         <outlet property="userCaptionLabel" destination="bwB-7w-LgK" id="VgD-AY-edV"/>
                         <outlet property="usernameLabel" destination="ObS-hY-o4S" id="ySg-FL-xbl"/>
                     </connections>
