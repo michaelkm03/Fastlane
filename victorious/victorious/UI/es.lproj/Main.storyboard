@@ -562,13 +562,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Entrada" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ds5-08-fik">
-                                                    <rect key="frame" x="20" y="15" width="60" height="35"/>
+                                                    <rect key="frame" x="20" y="15" width="80" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Etiqueta" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNr-Dn-A7l" customClass="VBadgeLabel">
-                                                    <rect key="frame" x="88" y="20" width="42" height="25"/>
+                                                    <rect key="frame" x="95" y="20" width="42" height="25"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -889,7 +889,7 @@
                                             <constraint firstAttribute="width" constant="107" id="ngq-dN-Dbw"/>
                                             <constraint firstAttribute="height" constant="40" id="oZm-IZ-YfA"/>
                                         </constraints>
-                                        <state key="normal" title=" REPUBLICACIÓN" image="repostIcon"/>
+                                        <state key="normal" title=" REPOST" image="repostIcon"/>
                                         <connections>
                                             <action selector="pressedRepost:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="ksv-9Y-FiC"/>
                                         </connections>
