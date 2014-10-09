@@ -277,33 +277,6 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)resetPasswordWithNewPassword:(NSString *)newPassword
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail
-{
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-    
-    
-    if (newPassword)
-    {
-        [parameters setObject:newPassword forKey:@"new_password"];
-    }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self POST:@"api/account/update"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:fail];
-}
-
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                                  name:(NSString *)name
@@ -484,8 +457,10 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             failBlock:fail];
 }
 
+
 - (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
                                                     deviceToken:(NSString *)deviceToken
+                                                    newPassword:(NSString *)newPassword
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {

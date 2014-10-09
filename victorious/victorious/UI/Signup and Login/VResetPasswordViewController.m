@@ -67,12 +67,14 @@
     
     if ([self shouldUpdatePassword])
     {
-        [[VObjectManager sharedManager] resetPasswordWithNewPassword:self.passwordTextField.text
-                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
+                                                       deviceToken:self.deviceToken
+                                                       newPassword:self.passwordTextField.text
+                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              [self dismissViewControllerAnimated:YES completion:NO];
          }
-                                                        failBlock:^(NSOperation *operation, NSError *error)
+                                                         failBlock:^(NSOperation *operation, NSError *error)
          {
              [self dismissViewControllerAnimated:YES completion:NO];
          }];
