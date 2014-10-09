@@ -20,6 +20,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
+#import "VPasswordValidator.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
@@ -123,7 +124,7 @@
         return NO;
     }
     
-    if (![self validatePassword:&password error:&theError])
+    if (![VPasswordValidator validatePassword:password error:&theError])
     {
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
@@ -158,25 +159,6 @@
             NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginErrorCodeBadEmailAddress
-                                                   userInfo:userInfoDict];
-        }
-
-        return NO;
-    }
-
-    return YES;
-}
-
-- (BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VLoginErrorCodeBadPassword
                                                    userInfo:userInfoDict];
         }
 

@@ -18,6 +18,7 @@
 #import "VRegistrationModel.h"
 #import "VAnalyticsRecorder.h"
 #import "MBProgressHUD.h"
+#import "VPasswordValidator.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
@@ -126,7 +127,7 @@
         return NO;
     }
 
-    if (![self validatePassword:&password error:&theError])
+    if (![VPasswordValidator validatePassword:password error:&theError])
     {
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
@@ -173,25 +174,6 @@
             NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignupErrorCodeBadEmailAddress
-                                                   userInfo:userInfoDict];
-        }
-
-        return NO;
-    }
-
-    return YES;
-}
-
-- (BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VSignupErrorCodeBadPassword
                                                    userInfo:userInfoDict];
         }
 
