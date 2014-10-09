@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VSequenceActionsDelegate.h"
+#import "VStreamCollectionCell.h"
+
 @class VSequence, VDefaultProfileButton;
 
 @interface VStreamCellHeaderView : UIView
@@ -21,7 +24,8 @@
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 @property (nonatomic, weak) IBOutlet UIButton *profileHitboxutton;
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
-@property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
+
+@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
 @property (nonatomic, strong) UIViewController *parentViewController;
 @property (nonatomic) BOOL isFromProfile;

@@ -34,9 +34,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "VSettingManager.h"
 
-//NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
-
-@interface VStreamCollectionCell()
+@interface VStreamCollectionCell() <VSequenceActionsDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -65,6 +63,7 @@
     
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
+    self.streamCellHeaderView.delegate = self;
 }
 
 - (NSDictionary *)attributesForCellText
@@ -75,6 +74,7 @@
              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
              };
 }
+
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -144,34 +144,6 @@
     return YES;
 }
 
-- (IBAction)commentButtonAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamCollectionCell:)])
-    {
-        [self.delegate willCommentOnSequence:self.sequence inStreamCollectionCell:self];
-    }
-}
-
-- (IBAction)profileButtonAction:(id)sender
-{
-    //If this cell is from the profile we should disable going to the profile
-    BOOL fromProfile = NO;
-    for (UIViewController *vc in self.parentViewController.navigationController.viewControllers)
-    {
-        if ([vc isKindOfClass:[VUserProfileViewController class]])
-        {
-            fromProfile = YES;
-        }
-    }
-    if (fromProfile)
-    {
-        return;
-    }
-    
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
-    [self.parentViewController.navigationController pushViewController:profileViewController animated:YES];
-}
-
 - (void)hideOverlays
 {
     self.overlayView.alpha = 0;
@@ -184,6 +156,26 @@
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
+}
+
+#pragma mark - VSequenceActionsDelegate
+
+- (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    {
+        [self.delegate willCommentOnSequence:self.sequence fromView:self];
+    }
+}
+
+- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    
+    if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+    {
+        [self.delegate selectedUserOnSequence:self.sequence fromView:self];
+    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

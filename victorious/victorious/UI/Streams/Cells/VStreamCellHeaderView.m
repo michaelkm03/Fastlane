@@ -124,16 +124,18 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    
-    //If this cell is from the profile we should disable going to the profile
-    if (self.isFromProfile)
+    if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
     {
-        return;
+        [self.delegate selectedUserOnSequence:self.sequence fromView:self];
     }
-    
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
-    [self.parentViewController.navigationController pushViewController:profileViewController animated:YES];
-    
+}
+
+- (IBAction)commentButtonAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    {
+        [self.delegate willCommentOnSequence:self.sequence fromView:self];
+    }
 }
 
 @end
