@@ -304,6 +304,11 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
+    
+    [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
+    
 	return;
 
     self.lastSelectedIndexPath = indexPath;
