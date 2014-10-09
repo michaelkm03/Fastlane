@@ -41,17 +41,13 @@ static CGFloat const kStreamViewCellHeight       = 320.0f;
 
 #pragma mark - Error Codes
 
-typedef NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
-{
-    VAccountUpdateViewControllerBadPasswordErrorCode
-};
-
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
 
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
 static NSUInteger const kVCurrentPasswordIsInvalid      = 5000;
+static NSUInteger const kVInvalidPasswordEntered        = 5051;
 static NSUInteger const kVPasswordResetCodeExpired      = 6700;
 
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;

@@ -98,7 +98,7 @@
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
             *outError = [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VAccountUpdateViewControllerBadPasswordErrorCode
+                                                       code:kVInvalidPasswordEntered
                                                    userInfo:userInfoDict];
         }
         return NO;
