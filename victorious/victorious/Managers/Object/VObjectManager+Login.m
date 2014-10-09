@@ -465,7 +465,8 @@ static NSString * const kVVideoQualityKey = @"video_quality";
                                                       failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"user_token": userToken ?: @"",
-                                 @"device_token" : deviceToken ?: @""};
+                                 @"device_token" : deviceToken ?: @"",
+                                 @"new_password" : newPassword ?: @""};
     
     return [self POST:@"api/password_reset"
                object:nil

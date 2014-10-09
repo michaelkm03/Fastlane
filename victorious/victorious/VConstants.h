@@ -41,6 +41,11 @@ static CGFloat const kStreamViewCellHeight       = 320.0f;
 
 #pragma mark - Error Codes
 
+typedef NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
+{
+    VAccountUpdateViewControllerBadPasswordErrorCode
+};
+
 static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
 
 static NSUInteger const kVStillTranscodingError         = 5500;
