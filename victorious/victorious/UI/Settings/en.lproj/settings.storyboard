@@ -287,7 +287,7 @@
                                         <rect key="frame" x="98" y="5" width="207" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="At least 8 characters" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AVA-KF-9I3">
                                         <rect key="frame" x="98" y="52" width="207" height="30"/>
@@ -369,6 +369,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="changedPasswordTextField" destination="AVA-KF-9I3" id="aYR-wp-2AX"/>
+                        <outlet property="confirmPasswordTextField" destination="YiX-cN-FLE" id="8T6-GX-UE1"/>
+                        <outlet property="oldPasswordTextField" destination="oCZ-Jb-QHR" id="K6b-Ee-ypT"/>
                         <outletCollection property="labels" destination="trt-hC-hUf" id="39w-SK-Rev"/>
                         <outletCollection property="labels" destination="Fjl-zb-Wox" id="kl8-Y2-jpR"/>
                         <outletCollection property="labels" destination="b6b-sA-Tu6" id="twP-dY-mY2"/>

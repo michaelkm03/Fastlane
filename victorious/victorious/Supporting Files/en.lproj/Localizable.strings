@@ -252,6 +252,15 @@
 "ResetPasswordPrompt"   =   "Please enter your e-mail address.";
 "ResetPasswordPlaceholder" = "E-mail Address";
 
+"ResetPasswordErrorExpiredTitle" = "Reset code expired.";
+"ResetPasswordErrorExpiredMessage" = "Reset code expired.";
+
+"ResetPasswordErrorIncorrectTitle" = "Current Password Invalid.";
+"ResetPasswordErrorIncorrectMessage" = "Please re-enter your current password.";
+
+"ResetPasswordErrorFailTitle" = "Password Reset Error";
+"ResetPasswordErrorFailMessage" = "We are unable to reset your password at this time.  Please try again later.";
+
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "ResendEmail"           =   "Resend Email";
@@ -260,8 +269,6 @@
 "Thanks"                =   "Thanks!";
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
-
-"IncorrectOldPassword"  =   "The current password is incorrect.";
 
 "Search for an image"   =   "Search for an image";
 "Pull up for more..."   =   "Pull up for more...";
