@@ -104,40 +104,57 @@
     if (YES == [self shouldUpdatePassword:self.changedPasswordTextField.text
                              confirmation:self.confirmPasswordTextField.text])
     {
-        [[VObjectManager sharedManager] loginToVictoriousWithEmail:[[VObjectManager sharedManager] mainUser].email
-                                                          password:self.oldPasswordTextField.text
-                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 [self.navigationController popViewControllerAnimated:YES];
-             };
-             
-             VFailBlock fail = ^(NSOperation *operation, NSError *error)
-             {
-                 UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
-                                                                        message:error.localizedDescription
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                              otherButtonTitles:nil];
-                 [alert show];
-             };
-             
-             [[VObjectManager sharedManager] updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
-                                                                   newPassword:self.changedPasswordTextField.text
-                                                                  successBlock:success
-                                                                     failBlock:fail];
-         }
-                                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                                message:NSLocalizedString(@"IncorrectOldPassword", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-         }];
+        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        };
+        
+        VFailBlock fail = ^(NSOperation *operation, NSError *error)
+        {
+            NSString *title = nil;
+            NSString *message = nil;
+            
+            [self localizedErrorStringsForError:error title:&title message:&message];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                            message:message
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        };
+        
+        [[VObjectManager sharedManager] updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
+                                                              newPassword:self.changedPasswordTextField.text
+                                                             successBlock:success
+                                                                failBlock:fail];
     }
+}
+
+- (BOOL)localizedErrorStringsForError:(NSError *)error title:(NSString **)title message:(NSString **)message
+{
+    if ( title == nil || message == nil )
+    {
+        return NO;
+    }
+    
+    if ( error.code == kVCurrentPasswordIsInvalid )
+    {
+        *title = NSLocalizedString(@"ResetPasswordErrorIncorrectTitle", @"");
+        *message = NSLocalizedString(@"ResetPasswordErrorIncorrectMessage", @"");
+    }
+    else if ( error.code == kVPasswordResetCodeExpired )
+    {
+        *title = NSLocalizedString(@"ResetPasswordErrorFailTitle", @"");
+        *message = NSLocalizedString(@"ResetPasswordErrorFailMessage", @"");
+    }
+    else
+    {
+        *title = NSLocalizedString(@"ResetPasswordErrorFailTitle", @"");
+        *message = NSLocalizedString(@"ResetPasswordErrorFailMessage", @"");
+    }
+    
+    return YES;
 }
 
 - (IBAction)goBack:(id)sender
