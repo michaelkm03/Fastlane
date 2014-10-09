@@ -18,6 +18,7 @@
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VObjectManager+Sequence.h"
+#import "VSequence+Fetcher.h"
 
 // Activities
 #import "VFacebookActivity.h"
@@ -68,6 +69,11 @@
                                                                                   animated:YES];
                                          }];
                                     }];
+    if (self.viewModel.sequence.canRemix)
+    {
+        
+    }
+    
     VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
                                                           actionIcon:[UIImage imageNamed:@"icon_remix"]
                                                           detailText:self.viewModel.remixCountText];

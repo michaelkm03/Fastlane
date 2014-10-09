@@ -1139,6 +1139,8 @@
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
 		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
+		D8B64CFC19E615BD0080A170 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequence.h; path = victorious/ManagedObjectModels/VSequence.h; sourceTree = "<group>"; };
+		D8B64CFD19E615BD0080A170 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequence.m; path = victorious/ManagedObjectModels/VSequence.m; sourceTree = "<group>"; };
 		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
 		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
@@ -2229,6 +2231,8 @@
 		BE171D6D1868BE64004E5202 = {
 			isa = PBXGroup;
 			children = (
+				D8B64CFC19E615BD0080A170 /* VSequence.h */,
+				D8B64CFD19E615BD0080A170 /* VSequence.m */,
 				03C1859419B42D3000E27D05 /* 3rd Party SDKs */,
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				03C1856219B42C9100E27D05 /* Fonts */,
@@ -3116,7 +3120,6 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				0314D4C919B46B5E00FA363C /* VRemixSliderLeft.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
-				0314D50119B46B5E00FA363C /* VHashTagStreamViewController.m in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
