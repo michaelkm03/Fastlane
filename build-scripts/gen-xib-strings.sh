@@ -1,8 +1,8 @@
 #!/bin/bash
 ###########
-# Creates a strings file that can be localized 
+# Creates a strings file that can be localized
 # from all the xib files in the Victorious code.
-# 
+#
 ###########
 
 XIB_INFILE=$1
@@ -69,5 +69,5 @@ else # Sweep through project directory and locate all xib files
 
     echo ""
     echo "Finished!"
-    echo ""    
+    echo ""
 fi
