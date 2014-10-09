@@ -247,9 +247,9 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 }
 
 - (RKManagedObjectRequestOperation *)updatePasswordWithCurrentPassword:(NSString *)currentPassword
-                                                  newPassword:(NSString *)newPassword
-                                                 successBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail
+                                                           newPassword:(NSString *)newPassword
+                                                          successBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
 {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
     
@@ -257,6 +257,33 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     {
         [parameters setObject:currentPassword forKey:@"current_password"];
     }
+    if (newPassword)
+    {
+        [parameters setObject:newPassword forKey:@"new_password"];
+    }
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self POST:@"api/account/update"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)resetPasswordWithNewPassword:(NSString *)newPassword
+                                                     successBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail
+{
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
+    
+    
     if (newPassword)
     {
         [parameters setObject:newPassword forKey:@"new_password"];

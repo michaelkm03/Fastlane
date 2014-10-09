@@ -65,6 +65,10 @@ extern NSString *kLoggedInChangedNotification;
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)resetPasswordWithNewPassword:(NSString *)newPassword
+                                                     successBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)logout;
 
 - (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email

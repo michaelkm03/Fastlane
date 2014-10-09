@@ -67,13 +67,8 @@
     
     if ([self shouldUpdatePassword])
     {
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                         password:self.passwordTextField.text
-                                                             name:nil
-                                                  profileImageURL:nil
-                                                         location:nil
-                                                          tagline:nil
-                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VObjectManager sharedManager] resetPasswordWithNewPassword:self.passwordTextField.text
+                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              [self dismissViewControllerAnimated:YES completion:NO];
          }
