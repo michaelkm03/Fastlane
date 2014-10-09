@@ -10,7 +10,7 @@
 
 @interface VNoContentTableViewCell : UITableViewCell
 
-- (void)setTitle:(NSString *)title message:(NSString *)message iconImageName:(NSString *)imageName;
+- (void)setMessage:(NSString *)message;
 
 + (VNoContentTableViewCell *)createCellFromTableView:(UITableView *)tableView;
 

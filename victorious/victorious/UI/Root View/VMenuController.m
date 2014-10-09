@@ -153,17 +153,11 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
                 
             case VMenuRowDiscover:
-                if (![VObjectManager sharedManager].authorized)
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-                else
-                {
-                    VDiscoverContainerViewController *discoverViewController = [VDiscoverContainerViewController instantiateFromStoryboard:@"Main"];
-                    navigationController.viewControllers = @[ discoverViewController ];
-                }
+            {
+                VDiscoverContainerViewController *discoverViewController = [VDiscoverContainerViewController instantiateFromStoryboard:@"Main"];
+                navigationController.viewControllers = @[ discoverViewController ];
                 [self.sideMenuViewController hideMenuViewController];
+            }
             break;
                 
             default:

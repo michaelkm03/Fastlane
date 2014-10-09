@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VDiscoverViewControllerProtocol.h"
 
 @class VUser;
 
@@ -14,10 +15,11 @@
 
 - (void)didFailToLoad;
 - (void)didFinishLoading;
+- (void)didAttemptActionThatRequiresLogin;
 
 @end
 
-@interface VSuggestedPeopleCollectionViewController : UICollectionViewController
+@interface VSuggestedPeopleCollectionViewController : UICollectionViewController <VDiscoverViewControllerProtocol>
 
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
@@ -25,7 +27,6 @@
 
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 
-@property (nonatomic, readonly) BOOL isShowingNoData;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, strong) NSArray *suggestedUsers;
 

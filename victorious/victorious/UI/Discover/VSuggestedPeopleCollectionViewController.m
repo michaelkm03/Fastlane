@@ -9,11 +9,13 @@
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VSuggestedPersonCollectionViewCell.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
 
-static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonCollectionViewCell";
+static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
+static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
 
 @interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
@@ -24,8 +26,10 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"suggestedPeople"];
+    return [storyboard instantiateViewControllerWithIdentifier:VStoryboardViewControllerIndentifier];
 }
+
+#pragma mark - View controller life cycle
 
 - (void)viewDidLoad
 {
@@ -43,10 +47,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)isShowingNoData
-{
-    return self.suggestedUsers.count == 0 || self.error != nil;
-}
+#pragma mark - NSNotification selectors
 
 - (void)followingDidUpdate:(NSNotification *)note
 {
@@ -62,16 +63,19 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     }
     
     // Find the user that was updated and update our version of it to match
-    for ( VUser *user in self.suggestedUsers )
+    [self.suggestedUsers enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
     {
         if ( [user isEqualToUser:updatedUser] )
         {
             user.isFollowing = updatedUser.isFollowing;
-            break;
+            *stop = YES;
         }
-    }
+    }];
+    
     [self.collectionView reloadData];
 }
+
+#pragma mark - Loading data
 
 - (void)refresh
 {
@@ -87,7 +91,9 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (void)didLoadWithUsers:(NSArray *)users
 {
-    // TODO: Remote this loop, testing only
+    self.hasLoadedOnce = YES;
+    
+#warning "The following loop is for testing/demo purposes until the numberOfFollowers value is available on the user objects returned from the server."
     for ( VUser *user in users )
     {
         user.numberOfFollowers = @( arc4random() % 2000 );
@@ -95,7 +101,7 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
     
     if ( users.count == 0 )
     {
-        [self clearDataAndHide];
+        [self clearData];
     }
     else
     {
@@ -110,53 +116,62 @@ static NSString * const kSuggestedPersonCellIdentifier = @"VSuggestedPersonColle
 
 - (void)didFailToLoadWithError:(NSError *)error
 {
+    self.hasLoadedOnce = YES;
+    
     self.error = error;
     if ( self.delegate != nil )
     {
         [self.delegate didFailToLoad];
     }
-    [self clearDataAndHide];
+    [self clearData];
 }
 
-- (void)clearDataAndHide
+- (void)clearData
 {
     self.suggestedUsers = @[];
     [self.collectionView reloadData];
+}
+
+#pragma mark - VTableViewControllerProtocol
+
+@synthesize hasLoadedOnce;
+
+- (BOOL)isShowingNoData
+{
+    return self.suggestedUsers.count == 0 || self.error != nil;
 }
 
 #pragma mark - VSuggestedPersonCollectionViewCellDelegate
 
 - (void)unfollowPerson:(VUser *)user
 {
-    [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         // Do nothing
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    {
+        [[VObjectManager sharedManager] unfollowUser:user successBlock:nil failBlock:nil];
     }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-     {
-         // TODO: Handle error
-         VLog( @"Unfollow failed: %@", [error localizedDescription] );
-    }];
+    else if ( self.delegate != nil )
+    {
+        [self.delegate didAttemptActionThatRequiresLogin];
+    }
 }
 
 - (void)followPerson:(VUser *)user
 {
-    [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
-        // Do nothing
+        [[VObjectManager sharedManager] followUser:user successBlock:nil failBlock:nil];
     }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-     {
-         // TODO: Handle error
-         VLog( @"Follow failed: %@", [error localizedDescription] );
-    }];
+    else if ( self.delegate != nil )
+    {
+        [self.delegate didAttemptActionThatRequiresLogin];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.suggestedUsers.count;
+    return self.isShowingNoData ? 0 : self.suggestedUsers.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

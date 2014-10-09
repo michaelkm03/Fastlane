@@ -343,3 +343,6 @@
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
 "SupportEmailSubject"  =   "Feedback on";
+
+"DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
+"DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";

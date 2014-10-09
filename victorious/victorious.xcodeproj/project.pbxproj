@@ -276,6 +276,20 @@
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		08E13CF9A7AE4F351E630975 /* libPods-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B528D1A8913A051BDDC4FE37 /* libPods-test.a */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
+		A705646F19E737A5004A8387 /* HelveticaNeue.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646119E737A5004A8387 /* HelveticaNeue.ttf */; };
+		A705647019E737A5004A8387 /* HelveticaNeueBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646219E737A5004A8387 /* HelveticaNeueBold.ttf */; };
+		A705647119E737A5004A8387 /* HelveticaNeueBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646319E737A5004A8387 /* HelveticaNeueBoldItalic.ttf */; };
+		A705647219E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646419E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf */; };
+		A705647319E737A5004A8387 /* HelveticaNeueCondensedBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646519E737A5004A8387 /* HelveticaNeueCondensedBold.ttf */; };
+		A705647419E737A5004A8387 /* HelveticaNeueItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646619E737A5004A8387 /* HelveticaNeueItalic.ttf */; };
+		A705647519E737A5004A8387 /* HelveticaNeueLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646719E737A5004A8387 /* HelveticaNeueLight.ttf */; };
+		A705647619E737A5004A8387 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646819E737A5004A8387 /* HelveticaNeueLightItalic.ttf */; };
+		A705647719E737A5004A8387 /* HelveticaNeueMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646919E737A5004A8387 /* HelveticaNeueMedium.ttf */; };
+		A705647819E737A5004A8387 /* HelveticaNeueMediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646A19E737A5004A8387 /* HelveticaNeueMediumItalic.ttf */; };
+		A705647919E737A5004A8387 /* HelveticaNeueThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646B19E737A5004A8387 /* HelveticaNeueThin.ttf */; };
+		A705647A19E737A5004A8387 /* HelveticaNeueThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646C19E737A5004A8387 /* HelveticaNeueThinItalic.ttf */; };
+		A705647B19E737A5004A8387 /* HelveticaNeueUltraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646D19E737A5004A8387 /* HelveticaNeueUltraLight.ttf */; };
+		A705647C19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A705646E19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf */; };
 		A781499C19E3485B00D89B90 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A781499B19E3485B00D89B90 /* VFollowersTextFormatter.m */; };
 		A781499E19E349FA00D89B90 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A781499D19E349FA00D89B90 /* VFollowersTextFormatterTests.m */; };
 		A78149A219E35DB700D89B90 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A78149A019E35DB700D89B90 /* victoriOS.xcdatamodeld */; };
@@ -901,6 +915,21 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
+		A705645C19E72124004A8387 /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
+		A705646119E737A5004A8387 /* HelveticaNeue.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeue.ttf; sourceTree = "<group>"; };
+		A705646219E737A5004A8387 /* HelveticaNeueBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueBold.ttf; sourceTree = "<group>"; };
+		A705646319E737A5004A8387 /* HelveticaNeueBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueBoldItalic.ttf; sourceTree = "<group>"; };
+		A705646419E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueCondensedBlack.ttf; sourceTree = "<group>"; };
+		A705646519E737A5004A8387 /* HelveticaNeueCondensedBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueCondensedBold.ttf; sourceTree = "<group>"; };
+		A705646619E737A5004A8387 /* HelveticaNeueItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueItalic.ttf; sourceTree = "<group>"; };
+		A705646719E737A5004A8387 /* HelveticaNeueLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLight.ttf; sourceTree = "<group>"; };
+		A705646819E737A5004A8387 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
+		A705646919E737A5004A8387 /* HelveticaNeueMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueMedium.ttf; sourceTree = "<group>"; };
+		A705646A19E737A5004A8387 /* HelveticaNeueMediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueMediumItalic.ttf; sourceTree = "<group>"; };
+		A705646B19E737A5004A8387 /* HelveticaNeueThin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueThin.ttf; sourceTree = "<group>"; };
+		A705646C19E737A5004A8387 /* HelveticaNeueThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueThinItalic.ttf; sourceTree = "<group>"; };
+		A705646D19E737A5004A8387 /* HelveticaNeueUltraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueUltraLight.ttf; sourceTree = "<group>"; };
+		A705646E19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueUltraLightItalic.ttf; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A735323419DB763F0040DB30 /* VAuthorizationViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactoryTests.m; sourceTree = "<group>"; };
@@ -1884,6 +1913,7 @@
 		03C1856219B42C9100E27D05 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				A705646019E737A5004A8387 /* HelveticaNeue */,
 				03C1856319B42C9100E27D05 /* Impact */,
 				03C1858D19B42CEA00E27D05 /* MuseoSans */,
 				03C1856A19B42C9100E27D05 /* PTSans-Narrow */,
@@ -2088,6 +2118,27 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A705646019E737A5004A8387 /* HelveticaNeue */ = {
+			isa = PBXGroup;
+			children = (
+				A705646119E737A5004A8387 /* HelveticaNeue.ttf */,
+				A705646219E737A5004A8387 /* HelveticaNeueBold.ttf */,
+				A705646319E737A5004A8387 /* HelveticaNeueBoldItalic.ttf */,
+				A705646419E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf */,
+				A705646519E737A5004A8387 /* HelveticaNeueCondensedBold.ttf */,
+				A705646619E737A5004A8387 /* HelveticaNeueItalic.ttf */,
+				A705646719E737A5004A8387 /* HelveticaNeueLight.ttf */,
+				A705646819E737A5004A8387 /* HelveticaNeueLightItalic.ttf */,
+				A705646919E737A5004A8387 /* HelveticaNeueMedium.ttf */,
+				A705646A19E737A5004A8387 /* HelveticaNeueMediumItalic.ttf */,
+				A705646B19E737A5004A8387 /* HelveticaNeueThin.ttf */,
+				A705646C19E737A5004A8387 /* HelveticaNeueThinItalic.ttf */,
+				A705646D19E737A5004A8387 /* HelveticaNeueUltraLight.ttf */,
+				A705646E19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf */,
+			);
+			path = HelveticaNeue;
+			sourceTree = "<group>";
+		};
 		A781499919E3483E00D89B90 /* Followers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2104,6 +2155,7 @@
 				A7A7D65019DF735800B18AB7 /* Cells */,
 				A7A7D65719DF735800B18AB7 /* VDiscoverContainerViewController.h */,
 				A7A7D65819DF735800B18AB7 /* VDiscoverContainerViewController.m */,
+				A705645C19E72124004A8387 /* VDiscoverViewControllerProtocol.h */,
 				A7A7D65919DF735800B18AB7 /* VDiscoverViewController.h */,
 				A7A7D65A19DF735800B18AB7 /* VDiscoverViewController.m */,
 				A7A7D65B19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.h */,
@@ -2686,11 +2738,14 @@
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				0314D4B919B46B5E00FA363C /* Main.storyboard in Resources */,
 				0314D4D519B46B5E00FA363C /* settings.storyboard in Resources */,
+				A705647519E737A5004A8387 /* HelveticaNeueLight.ttf in Resources */,
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
 				03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */,
+				A705647619E737A5004A8387 /* HelveticaNeueLightItalic.ttf in Resources */,
 				0314D4BB19B46B5E00FA363C /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
 				0314D4AA19B46B5E00FA363C /* VMessageCell.xib in Resources */,
+				A705646F19E737A5004A8387 /* HelveticaNeue.ttf in Resources */,
 				0314D4A619B46B5E00FA363C /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				BE799BC019C93C210023CE88 /* VStreamDirectoryItemCell.xib in Resources */,
@@ -2709,6 +2764,7 @@
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
+				A705647419E737A5004A8387 /* HelveticaNeueItalic.ttf in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				A7A7D66F19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
@@ -2717,6 +2773,8 @@
 				BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */,
 				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
 				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
+				A705647B19E737A5004A8387 /* HelveticaNeueUltraLight.ttf in Resources */,
+				A705647C19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
@@ -2724,9 +2782,11 @@
 				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
+				A705647219E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				039ED29B19C908F400305987 /* VCVideoPlayerToolbarView.xib in Resources */,
+				A705647919E737A5004A8387 /* HelveticaNeueThin.ttf in Resources */,
 				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
 				A7814A0819E5E87900D89B90 /* VNoContentTableViewCell.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
@@ -2735,16 +2795,22 @@
 				A7A7D66519DF76B300B18AB7 /* VSuggestedPeopleCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
+				A705647819E737A5004A8387 /* HelveticaNeueMediumItalic.ttf in Resources */,
 				BE11447B19D4A6E2006A6D65 /* VMarqueeStreamItemCell.xib in Resources */,
 				0314D4A819B46B5E00FA363C /* VConversationCell.xib in Resources */,
+				A705647719E737A5004A8387 /* HelveticaNeueMedium.ttf in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
 				A7A7D66019DF735800B18AB7 /* VTrendingTagCell.xib in Resources */,
+				A705647319E737A5004A8387 /* HelveticaNeueCondensedBold.ttf in Resources */,
 				0314D4F919B46B5E00FA363C /* VStreamPollCell.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				0314D4C319B46B5E00FA363C /* VUserProfileHeaderView.xib in Resources */,
+				A705647019E737A5004A8387 /* HelveticaNeueBold.ttf in Resources */,
+				A705647119E737A5004A8387 /* HelveticaNeueBoldItalic.ttf in Resources */,
 				0314D50719B46B5E00FA363C /* VWebContentViewController.xib in Resources */,
+				A705647A19E737A5004A8387 /* HelveticaNeueThinItalic.ttf in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				0314D4E719B46B5E00FA363C /* VInviteFriendTableViewCell.xib in Resources */,
 			);

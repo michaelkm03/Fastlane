@@ -9,34 +9,40 @@
 #import "VNoContentTableViewCell.h"
 #import "VThemeManager.h"
 
-static NSString *const kVNoContentTableViewCellIdentifier = @"VNoContentTableViewCell";
+static NSString *const kVNoContentTableViewCellIdentifier   = @"VNoContentTableViewCell";
+static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue Light Italic";
 
 @interface VNoContentTableViewCell()
 
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
-@property (weak, nonatomic) IBOutlet UIView *container;
 
 @end
 
 @implementation VNoContentTableViewCell
 
-- (void)setTitle:(NSString *)title message:(NSString *)message iconImageName:(NSString *)imageName
+- (void)setMessage:(NSString *)message
 {
-    self.titleLabel.text = title;
     self.messageLabel.text = message;
-    [self.iconImageView setImage:[UIImage imageNamed:imageName]];
-    
-    self.container.hidden = NO;
-    
+    self.messageLabel.hidden = NO;
     [self applyTheme];
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.messageLabel.hidden = YES;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    self.messageLabel.hidden = YES;
 }
 
 - (void)applyTheme
 {
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    CGFloat currentSize = self.messageLabel.font.pointSize;
+    self.messageLabel.font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -46,9 +52,7 @@ static NSString *const kVNoContentTableViewCellIdentifier = @"VNoContentTableVie
 
 + (VNoContentTableViewCell *)createCellFromTableView:(UITableView *)tableView
 {
-    VNoContentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVNoContentTableViewCellIdentifier];
-    cell.container.hidden = YES;
-    return cell;
+    return [tableView dequeueReusableCellWithIdentifier:kVNoContentTableViewCellIdentifier];
 }
 
 + (void)registerNibWithTableView:(UITableView *)tableView

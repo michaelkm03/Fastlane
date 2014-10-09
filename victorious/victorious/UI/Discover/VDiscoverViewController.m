@@ -16,22 +16,31 @@
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VNoContentTableViewCell.h"
+#import "VDiscoverViewControllerProtocol.h"
+#import "VLoginViewController.h"
 
-static NSString * const kSuggestedPeopleIdentifier      = @"VSuggestedPeopleCell";
-static NSString * const kTrendingTagIdentifier          = @"VTrendingTagCell";
-static const NSUInteger kNumberOfSectionsInTableView    = 2;
+static NSString * const kVSuggestedPeopleIdentifier          = @"VSuggestedPeopleCell";
+static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCell";
 
-@interface VDiscoverViewController () <VSuggestedPeopleCollectionViewControllerDelegate>
+enum {
+    VTableViewSectionSuggestedPeople,
+    VTableViewSectionTrendingTags,
+    VTableViewSectionsCount
+};
+
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
 @property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
+
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
 @property (nonatomic, strong) NSError *error;
-@property (nonatomic, readonly) BOOL isShowingNoData;
 
 @end
 
 @implementation VDiscoverViewController
+
+#pragma mark - View controller life cycle
 
 - (void)loadView
 {
@@ -54,19 +63,18 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     [self.suggestedPeopleViewController refresh];
 }
 
-- (BOOL)canShowCollectionView
-{
-    return self.trendingTags.count == 0 && self.error == nil;
-}
+#pragma mark - Loading data
 
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error
 {
+    self.hasLoadedOnce = YES;
     self.error = [error copy];
     [self.tableView reloadData];
 }
 
 - (void)hashtagsDidLoad:(NSArray *)hashtags
 {
+    self.hasLoadedOnce = YES;
     self.error = nil;
     self.trendingTags = hashtags;
     [self.tableView reloadData];
@@ -84,15 +92,21 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
      }];
 }
 
+#pragma mark - VTableViewControllerProtocol
+
+@synthesize hasLoadedOnce;
+
 - (BOOL)isShowingNoData
 {
     return self.trendingTags.count == 0 || self.error != nil;
 }
 
+#pragma mark - UI setup
+
 - (void)registerCells
 {
-    [self.tableView registerNib:[UINib nibWithNibName:kTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kTrendingTagIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kSuggestedPeopleIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
@@ -120,16 +134,29 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
     [self.tableView reloadData];
 }
 
+- (void)didAttemptActionThatRequiresLogin
+{
+    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return kNumberOfSectionsInTableView;
+    return VTableViewSectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 1 : MAX( self.trendingTags.count, (NSUInteger)1 );
+    if ( section == VTableViewSectionSuggestedPeople )
+    {
+        // There's always one suggested people row which shows either the suggested people collection view or an no data cell cell
+        return 1;
+    }
+    else
+    {
+        return self.isShowingNoData ? 1 : self.trendingTags.count;
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -150,58 +177,47 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == 0 )
-    {
-        return [VSuggestedPeopleCell cellHeight];
-    }
-    else
-    {
-        return self.isShowingNoData ? 140 : [VTrendingTagCell cellHeight];
-    }
+    return indexPath.section == VTableViewSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
     
-    if ( indexPath.section == 0 )
+    if ( indexPath.section == VTableViewSectionSuggestedPeople )
     {
-        if ( self.suggestedPeopleViewController.error != nil )
+        if ( self.suggestedPeopleViewController.isShowingNoData )
         {
             VNoContentTableViewCell *defaultCell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            [defaultCell setTitle:@"Error" message:@"There was an error loading suggested users." iconImageName:@"user-icon"];
-            cell = defaultCell;
-        }
-        else if ( self.suggestedPeopleViewController.suggestedUsers.count == 0 )
-        {
-            VNoContentTableViewCell *defaultCell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            [defaultCell setTitle:@"No Suggested Users" message:@"There are no suggested users." iconImageName:@"user-icon"];
+            if ( self.suggestedPeopleViewController.hasLoadedOnce )
+            {
+                // Only set the error message once something has been loaded, otherwise we see the error message before first load
+                [defaultCell setMessage:NSLocalizedString( @"DiscoverSuggestedPeopleError", @"")];
+            }
             cell = defaultCell;
         }
         else
         {
-            VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kSuggestedPeopleIdentifier forIndexPath:indexPath];
+            VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
             customCell.collectionView = self.suggestedPeopleViewController.collectionView;
             cell = customCell;
         }
     }
-    else if ( indexPath.section == 1 )
+    else if ( indexPath.section == VTableViewSectionTrendingTags )
     {
-        if ( self.error != nil )
+        if ( self.isShowingNoData )
         {
             VNoContentTableViewCell *defaultCell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            [defaultCell setTitle:@"Error" message:@"There was an error loading trending tags." iconImageName:@"cameraButtonHashTagAdd"];
-            cell = defaultCell;
-        }
-        else if ( self.trendingTags.count == 0 )
-        {
-            VNoContentTableViewCell *defaultCell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            [defaultCell setTitle:@"No Trending Tags" message:@"There are no trending tags." iconImageName:@"cameraButtonHashTagAdd"];
+            if ( self.hasLoadedOnce )
+            {
+                // Only set the error message once something has been loaded, otherwise we see the error message before first load
+                [defaultCell setMessage:NSLocalizedString( @"DiscoverTrendingTagsError", @"")];
+            }
             cell = defaultCell;
         }
         else
         {
-            VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kTrendingTagIdentifier forIndexPath:indexPath];
+            VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
             cell = customCell;
@@ -213,9 +229,9 @@ static const NSUInteger kNumberOfSectionsInTableView    = 2;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // No actions available for section 0
+    // No actions available for kTableViewSectionSuggestedPeople
     
-    if ( indexPath.section == 1 && self.isShowingNoData == NO )
+    if ( indexPath.section == VTableViewSectionTrendingTags && self.isShowingNoData == NO )
     {
         // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
