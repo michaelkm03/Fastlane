@@ -41,7 +41,7 @@
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -344,6 +344,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
                                                               forIndexPath:indexPath];
     }
     cell.sequence = sequence;
+    cell.delegate = self;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -386,9 +387,9 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     return YES;
 }
 
-#pragma mark - VStreamViewCellDelegate
+#pragma mark - VSequenceActionsDelegate
 
-- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamCollectionCell:(VStreamCollectionCell *)streamCollectionCell
+- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(VStreamCollectionCell *)streamCollectionCell
 {
     VStreamCollectionCell *cell = streamCollectionCell;
     
@@ -401,6 +402,26 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
+- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
+{
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController *vc in self.parentViewController.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
+            fromProfile = YES;
+        }
+    }
+    if (fromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 #pragma mark - Actions

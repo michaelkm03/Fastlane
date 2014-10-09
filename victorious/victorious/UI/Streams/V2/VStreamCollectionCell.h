@@ -9,15 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #import "VSharedCollectionReusableViewMethods.h"
+#import "VSequenceActionsDelegate.h"
 
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
-
-@protocol VStreamCollectionCellDelegate <NSObject>
-@required
-
-- (void)willCommentOnSequence:(VSequence *)sequenceObject inStreamCollectionCell:(VStreamCollectionCell *)streamCollectionCell;
-
-@end
 
 @interface VStreamCollectionCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
@@ -29,7 +23,7 @@
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
-@property (nonatomic, weak) id<VStreamCollectionCellDelegate> delegate;
+@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
 @property (nonatomic, weak) UIViewController *parentViewController;
 

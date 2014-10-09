@@ -1071,6 +1071,7 @@
 		BEB47B1419E5DF8800AE1E29 /* VStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamCollectionCellPoll.xib; path = V2/VStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
 		BEB47B1619E5DFD900AE1E29 /* VStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamCollectionCellPoll.h; path = V2/VStreamCollectionCellPoll.h; sourceTree = "<group>"; };
 		BEB47B1719E5DFD900AE1E29 /* VStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamCollectionCellPoll.m; path = V2/VStreamCollectionCellPoll.m; sourceTree = "<group>"; };
+		BEB47B1F19E70CAB00AE1E29 /* VSequenceActionsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VSequenceActionsDelegate.h; path = V2/VSequenceActionsDelegate.h; sourceTree = "<group>"; };
 		BEBF512819BA15B6007AB3BA /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BEBF512919BA15B6007AB3BA /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
 		BEC833B919D3646E00341EA9 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
@@ -2450,6 +2451,7 @@
 				BEB47B1419E5DF8800AE1E29 /* VStreamCollectionCellPoll.xib */,
 				BEB47B0919E5D10100AE1E29 /* VStreamCollectionViewController.h */,
 				BEB47B0A19E5D10100AE1E29 /* VStreamCollectionViewController.m */,
+				BEB47B1F19E70CAB00AE1E29 /* VSequenceActionsDelegate.h */,
 			);
 			name = CollectionView;
 			sourceTree = "<group>";
