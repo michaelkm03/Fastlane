@@ -107,11 +107,12 @@
                 UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.viewModel.sourceURLForCurrentAssetData
                                                                                         sequenceID:[self.viewModel.sequence.remoteId integerValue]
                                                                                             nodeID:self.viewModel.nodeID];
-                [self presentViewController:remixVC
-                                   animated:YES
-                                 completion:
-                 ^{
-                     
+                [self dismissViewControllerAnimated:YES
+                                         completion:^
+                 {
+                     [self presentViewController:remixVC
+                                        animated:YES
+                                      completion:nil];
                  }];
             }
             else
