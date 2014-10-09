@@ -1107,11 +1107,11 @@
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
-		DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellHeaderView.h; sourceTree = "<group>"; };
-		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
+		DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamCellHeaderView.h; path = Cells/VStreamCellHeaderView.h; sourceTree = "<group>"; };
+		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamCellHeaderView.m; path = Cells/VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
-		DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
+		DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamCellHeaderView.xib; path = Cells/VStreamCellHeaderView.xib; sourceTree = "<group>"; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -1778,9 +1778,6 @@
 			children = (
 				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
-				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
-				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
-				DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */,
 				0314D43C19B46B5E00FA363C /* VStreamPollCell.h */,
 				0314D43D19B46B5E00FA363C /* VStreamPollCell.m */,
 				0314D43E19B46B5E00FA363C /* VStreamPollCell.xib */,
@@ -2440,14 +2437,10 @@
 		BE49323719E34D7000C0912E /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				BEB47B2119E71B5800AE1E29 /* Cell Elements */,
+				BEB47B2019E71B4100AE1E29 /* Cells */,
 				BEB47B0419E5D10100AE1E29 /* VAbstractStreamCollectionViewController.h */,
 				BEB47B0519E5D10100AE1E29 /* VAbstractStreamCollectionViewController.m */,
-				BEB47B0619E5D10100AE1E29 /* VStreamCollectionCell.h */,
-				BEB47B0719E5D10100AE1E29 /* VStreamCollectionCell.m */,
-				BEB47B0819E5D10100AE1E29 /* VStreamCollectionCell.xib */,
-				BEB47B1619E5DFD900AE1E29 /* VStreamCollectionCellPoll.h */,
-				BEB47B1719E5DFD900AE1E29 /* VStreamCollectionCellPoll.m */,
-				BEB47B1419E5DF8800AE1E29 /* VStreamCollectionCellPoll.xib */,
 				BEB47B0919E5D10100AE1E29 /* VStreamCollectionViewController.h */,
 				BEB47B0A19E5D10100AE1E29 /* VStreamCollectionViewController.m */,
 			);
@@ -2556,6 +2549,29 @@
 				BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */,
 			);
 			path = OCMock;
+			sourceTree = "<group>";
+		};
+		BEB47B2019E71B4100AE1E29 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BEB47B0619E5D10100AE1E29 /* VStreamCollectionCell.h */,
+				BEB47B0719E5D10100AE1E29 /* VStreamCollectionCell.m */,
+				BEB47B0819E5D10100AE1E29 /* VStreamCollectionCell.xib */,
+				BEB47B1619E5DFD900AE1E29 /* VStreamCollectionCellPoll.h */,
+				BEB47B1719E5DFD900AE1E29 /* VStreamCollectionCellPoll.m */,
+				BEB47B1419E5DF8800AE1E29 /* VStreamCollectionCellPoll.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		BEB47B2119E71B5800AE1E29 /* Cell Elements */ = {
+			isa = PBXGroup;
+			children = (
+				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
+				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
+				DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */,
+			);
+			name = "Cell Elements";
 			sourceTree = "<group>";
 		};
 		D836883C19C36FF200070F22 /* UICollectionView */ = {
