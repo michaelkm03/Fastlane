@@ -32,6 +32,7 @@
 #import "VCommentCell.h"
 
 #import "UIImageView+VLoadingAnimations.h"
+#import "VSettingManager.h"
 
 //NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
@@ -189,19 +190,25 @@
 
 + (NSString *)suggestedReuseIdentifier
 {
-    return NSStringFromClass([self class]);
+    NSString *reuseID = NSStringFromClass([self class]);
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        reuseID = [reuseID stringByAppendingString:@"-C"];
+    }
+    return reuseID;
 }
 
 + (UINib *)nibForCell
 {
-    return [UINib nibWithNibName:NSStringFromClass([self class])
+    return [UINib nibWithNibName:[self suggestedReuseIdentifier]
                           bundle:nil];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
+    CGFloat ratio = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? 1.496875 : 1;
     CGFloat width = CGRectGetWidth(bounds);
-    return CGSizeMake(width, width);
+    return CGSizeMake(width, width * ratio);
 }
 
 @end

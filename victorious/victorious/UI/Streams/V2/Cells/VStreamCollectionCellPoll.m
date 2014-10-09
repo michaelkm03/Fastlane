@@ -21,8 +21,10 @@
 #import "NSString+VParseHelp.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
+const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 width
 
 @interface VStreamCollectionCellPoll ()
 
@@ -71,8 +73,9 @@ const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 wi
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
+    CGFloat ratio = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kPollCellHeightRatioC : kPollCellHeightRatio;
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width * kPollCellHeightRatio;
+    CGFloat height = width * ratio;
     return CGSizeMake(width, height);
 }
 
