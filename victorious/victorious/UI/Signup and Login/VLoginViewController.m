@@ -180,7 +180,7 @@
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
             self.profile = user;
-            if ( ![self.profile.status isEqualToString:kUserStatusComplete] )
+            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
             {
                 [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
             }
@@ -382,7 +382,7 @@
                               animated:YES];
          [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
          self.profile = user;
-         if ( ![self.profile.status isEqualToString:kUserStatusComplete] )
+         if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
          {
              [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
          }

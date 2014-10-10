@@ -355,46 +355,18 @@ static char KVOContext;
 
 - (IBAction)postButtonAction:(id)sender
 {
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-    };
-    
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        NSLog(@"%@", error);
-        
-        if (kVStillTranscodingError == error.code)
-        {
-            UIAlertView *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                              message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                             delegate:nil
-                                                    cancelButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-        else
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-    };
-    
     [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
                                            description:@"<none>"
+                                          previewImage:self.leftPreviewImageView.image
                                               question:self.questionTextView.text
                                            answer1Text:self.leftAnswerTextView.text
                                            answer2Text:self.rightAnswerTextView.text
                                              media1Url:self.firstMediaURL
                                              media2Url:self.secondMediaURL
-                                          successBlock:success
-                                             failBlock:fail];
-
+                                            completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
+    [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
 }
 
 - (IBAction)closeButtonAction:(id)sender

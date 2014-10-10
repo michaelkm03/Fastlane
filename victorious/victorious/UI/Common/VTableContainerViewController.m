@@ -13,6 +13,8 @@
 
 #import "VThemeManager.h"
 
+const CGFloat VTableContainerViewControllerStandardHeaderHeight = 100.0f;
+
 @implementation VTableContainerViewController
 
 - (BOOL)shouldAutorotate
@@ -101,7 +103,12 @@
 
 - (BOOL)isHeaderVisible
 {
-    return CGRectContainsRect(self.view.frame, self.headerView.frame);
+    return self.headerYConstraint.constant == 0;
+}
+
+- (CGFloat)hiddenHeaderHeight
+{
+    return VTableContainerViewControllerStandardHeaderHeight;
 }
 
 - (void)hideHeader
@@ -111,8 +118,7 @@
         return;
     }
     
-    self.headerYConstraint.constant = -self.headerView.frame.size.height;
-    [self.view layoutIfNeeded];
+    self.headerYConstraint.constant = -[self hiddenHeaderHeight];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -124,7 +130,6 @@
     }
     
     self.headerYConstraint.constant = 0;
-    [self.view layoutIfNeeded];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 

@@ -129,6 +129,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             {
                 VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
                 homeContainer.shouldShowHeaderLogo = YES;
+                homeContainer.shouldShowUploadProgress = YES;
                 navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
             }
@@ -171,7 +172,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowInbox:
                 if ( ![VObjectManager sharedManager].authorized )
                 {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else
@@ -192,6 +193,23 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 {
                     navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
                     [self.sideMenuViewController hideMenuViewController];
+                }
+            break;
+            
+            case VMenuRowFindFriends:
+                if (![VObjectManager sharedManager].authorized)
+                {
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+                else
+                {
+                    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+                    [ffvc setShouldAutoselectNewFriends:NO];
+                    [self presentViewController:ffvc animated:YES completion:^(void)
+                    {
+                        [self.sideMenuViewController hideMenuViewController];
+                    }];
                 }
             break;
                 

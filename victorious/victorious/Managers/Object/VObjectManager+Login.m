@@ -80,7 +80,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 
 - (BOOL)mainUserProfileComplete
 {
-    return self.mainUser != nil && [self.mainUser.status isEqualToString:kUserStatusComplete];
+    return self.mainUser != nil && ![self.mainUser.status isEqualToString:kUserStatusIncomplete];
 }
 
 - (BOOL)mainUserLoggedIn
@@ -246,6 +246,37 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)updatePasswordWithCurrentPassword:(NSString *)currentPassword
+                                                           newPassword:(NSString *)newPassword
+                                                          successBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
+    
+    if (currentPassword)
+    {
+        [parameters setObject:currentPassword forKey:@"current_password"];
+    }
+    if (newPassword)
+    {
+        [parameters setObject:newPassword forKey:@"new_password"];
+    }
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self POST:@"api/account/update"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                                  name:(NSString *)name
@@ -344,7 +375,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Logout
@@ -393,7 +424,7 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     
     //Log out no matter what
     self.mainUser = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     
     return operation;
 }
@@ -426,13 +457,16 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             failBlock:fail];
 }
 
+
 - (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
                                                     deviceToken:(NSString *)deviceToken
+                                                    newPassword:(NSString *)newPassword
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"user_token": userToken ?: @"",
-                                 @"device_token" : deviceToken ?: @""};
+                                 @"device_token" : deviceToken ?: @"",
+                                 @"new_password" : newPassword ?: @""};
     
     return [self POST:@"api/password_reset"
                object:nil

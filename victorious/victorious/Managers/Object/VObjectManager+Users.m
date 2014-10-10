@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
+#import "NSString+VCrypto.h"
+
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
 
@@ -334,8 +337,11 @@ static NSString * const kVAPIParamSearch = @"search";
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    NSString *emailString = [emails componentsJoinedByString:@","];
-    NSDictionary *parameters = @{ @"emails": emailString };
+    NSArray *hashedEmails = [emails v_map:^id (NSString *email)
+    {
+        return [email v_sha256];
+    }];
+    NSString *emailString = [hashedEmails componentsJoinedByString:@","];
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -347,7 +353,7 @@ static NSString * const kVAPIParamSearch = @"search";
     
     return [self POST:@"/api/friend/find_by_email"
                object:nil
-           parameters:parameters
+           parameters:@{ @"emails": emailString }
          successBlock:fullSuccess
             failBlock:fail];
 }
