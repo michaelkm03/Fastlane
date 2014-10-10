@@ -97,7 +97,6 @@
         {
             [self.followButton setImage:self.followImage forState:UIControlStateNormal];
         }
-        //self.followButton.userInteractionEnabled = YES;
     };
     [UIView transitionWithView:self.followButton
                       duration:0.3

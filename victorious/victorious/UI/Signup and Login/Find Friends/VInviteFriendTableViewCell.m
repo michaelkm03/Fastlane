@@ -10,6 +10,7 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 
 NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
 
@@ -65,12 +66,11 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     
     if (_haveRelationship)
     {
-        //self.followIconImageView.hidden = YES;
         self.followIconImageView.image = self.unfollowIcon;
     }
     else
     {
-        [self.followIconImageView setImage:self.followIcon];
+        self.followIconImageView.image = self.followIcon;
     }
 }
 
@@ -85,27 +85,37 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 #pragma mark - Button Actions
 
+- (void)flipFollowIconAction:(id)sender
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
+    void (^animations)() = ^(void)
+    {
+        if (relationship)
+        {
+            [self.followIconImageView setImage:self.unfollowIcon];
+        }
+        else
+        {
+            [self.followIconImageView setImage:self.followIcon];
+        }
+    };
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:^(BOOL finished)
+     {
+         [self enableFollowIcon:nil];
+     }];
+}
+
 - (void)enableFollowIcon:(id)sender
 {
     void (^animations)() = ^(void)
     {
         self.followIconImageView.alpha = 1.0f;
-        self.followIconImageView.image = self.unfollowIcon;
-    };
-    
-    [UIView transitionWithView:self.followIconImageView
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:animations
-                    completion:nil];
-}
-
-- (void)flipFollowIconAction:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        //self.followIconImageView.alpha = 1.0f;
-        [self.followIconImageView  setImage:self.unfollowIcon];
+        self.followIconImageView.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followIconImageView
@@ -139,7 +149,11 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
         self.followAction();
     }
     
-    [self disableFollowIcon:nil];
+    
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self disableFollowIcon:nil];
+    }
 }
 
 @end
