@@ -50,6 +50,16 @@
     [self refreshFollowersList];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Friend Actions
 
 - (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
@@ -184,7 +194,6 @@
                     return;
                 }
             }
-
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
@@ -205,7 +214,6 @@
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     BOOL relationship = ([mainUser.following containsObject:targetUser]);
-    NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
     return relationship;
 }
 

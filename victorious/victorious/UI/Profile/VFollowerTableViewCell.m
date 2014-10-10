@@ -8,6 +8,7 @@
 
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 
@@ -75,7 +76,10 @@
         self.followButtonAction();
     }
     
-    [self disableFollowIcon:nil];
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self disableFollowIcon:nil];
+    }
 }
 
 #pragma mark - Button Actions
