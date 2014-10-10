@@ -2219,6 +2219,7 @@
 			isa = PBXGroup;
 			children = (
 				A705648B19E78110004A8387 /* Cells */,
+				A7AA647919E786BB0068D2B1 /* Discover.storyboard */,
 				A705649E19E78110004A8387 /* VDiscoverConstants.h */,
 				A705649F19E78110004A8387 /* VDiscoverContainerViewController.h */,
 				A70564A019E78110004A8387 /* VDiscoverContainerViewController.m */,
@@ -2230,7 +2231,6 @@
 				A70564A619E78110004A8387 /* VDiscoverViewControllerProtocol.h */,
 				A70564A719E78110004A8387 /* VSuggestedPeopleCollectionViewController.h */,
 				A70564A819E78110004A8387 /* VSuggestedPeopleCollectionViewController.m */,
-				A7AA647919E786BB0068D2B1 /* Discover.storyboard */,
 			);
 			path = Discover;
 			sourceTree = "<group>";

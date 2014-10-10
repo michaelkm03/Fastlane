@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "VTableContainerViewController.h"
 
+enum
+{
+    VDiscoverViewControllerSectionSuggestedPeople,
+    VDiscoverViewControllerSectionTrendingTags,
+    VDiscoverViewControllerSectionsCount
+};
+
 @interface VDiscoverViewController : UITableViewController
 
 @end

@@ -147,7 +147,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 - (void)unfollowPerson:(VUser *)user
 {
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ([VObjectManager sharedManager].authorized)
     {
         [[VObjectManager sharedManager] unfollowUser:user successBlock:nil failBlock:nil];
     }
@@ -159,7 +159,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 - (void)followPerson:(VUser *)user
 {
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ([VObjectManager sharedManager].authorized)
     {
         [[VObjectManager sharedManager] followUser:user successBlock:nil failBlock:nil];
     }

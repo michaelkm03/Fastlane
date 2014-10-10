@@ -17,16 +17,10 @@
 #import "VStreamTableViewController.h"
 #import "VNoContentTableViewCell.h"
 #import "VDiscoverViewControllerProtocol.h"
-#import "VLoginViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 static NSString * const kVSuggestedPeopleIdentifier          = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCell";
-
-enum {
-    VTableViewSectionSuggestedPeople,
-    VTableViewSectionTrendingTags,
-    VTableViewSectionsCount
-};
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
@@ -137,24 +131,24 @@ enum {
 
 - (void)didAttemptActionThatRequiresLogin
 {
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return VTableViewSectionsCount;
+    return VDiscoverViewControllerSectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( section == VTableViewSectionSuggestedPeople )
+    if ( section == VDiscoverViewControllerSectionSuggestedPeople )
     {
         // There's always one suggested people row which shows either the suggested people collection view or an no data cell cell
         return 1;
     }
-    if ( section == VTableViewSectionTrendingTags )
+    if ( section == VDiscoverViewControllerSectionTrendingTags )
     {
         return self.isShowingNoData ? 1 : self.trendingTags.count;
     }
@@ -166,7 +160,7 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ( section >= 0 && section < VTableViewSectionsCount )
+    if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
     {
         UIView *headerView = self.sectionHeaders[ section ];
         return CGRectGetHeight( headerView.frame );
@@ -183,14 +177,14 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return indexPath.section == VTableViewSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
+    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
     
-    if ( indexPath.section == VTableViewSectionSuggestedPeople )
+    if ( indexPath.section == VDiscoverViewControllerSectionSuggestedPeople )
     {
         if ( self.suggestedPeopleViewController.isShowingNoData )
         {
@@ -209,7 +203,7 @@ enum {
             cell = customCell;
         }
     }
-    else if ( indexPath.section == VTableViewSectionTrendingTags )
+    else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags )
     {
         if ( self.isShowingNoData )
         {
@@ -237,7 +231,7 @@ enum {
 {
     // No actions available for kTableViewSectionSuggestedPeople
     
-    if ( indexPath.section == VTableViewSectionTrendingTags && self.isShowingNoData == NO )
+    if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
         // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];

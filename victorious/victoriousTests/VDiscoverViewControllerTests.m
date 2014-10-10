@@ -89,11 +89,11 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 
 - (void)testHeaderViews
 {
-    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:0] );
-    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:1] );
+    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:VDiscoverViewControllerSectionSuggestedPeople] );
+    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:VDiscoverViewControllerSectionTrendingTags] );
     XCTAssertEqual( _viewController.sectionHeaders.count, (NSUInteger)2 );
     
-    for ( NSInteger section = 0; section < 2; section++ )
+    for ( NSInteger section = 0; section < VDiscoverViewControllerSectionsCount; section++ )
     {
         UIView *headerView = _viewController.sectionHeaders[ section ];
         CGFloat height = [_viewController tableView:_tableView heightForHeaderInSection:section];
@@ -102,18 +102,19 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     
     // These are invalid sections (too low/high) and should return 0
     XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:-1], 0.0f );
-    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:3], 0.0f );
+    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:VDiscoverViewControllerSectionsCount], 0.0f );
 }
 
 - (void)testRowsAndSections
 {
     // Should be at least one table view cell even without data (for empty/error cell)
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:0], (NSInteger)1 );
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:1], (NSInteger)1 );
+    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionSuggestedPeople], (NSInteger)1 );
+    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], (NSInteger)1 );
     
-    XCTAssertEqual( [_viewController numberOfSectionsInTableView:_tableView], (NSInteger)2 );
+    XCTAssertEqual( [_viewController numberOfSectionsInTableView:_tableView], VDiscoverViewControllerSectionsCount );
     
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:2], (NSInteger)0,
+    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:-1], (NSInteger)0 );
+    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionsCount], (NSInteger)0,
                    @"Should return 0 since there are only 2 sections." );
     
     for ( NSInteger i = 1; i < 10; i++ )
@@ -124,7 +125,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
                        displayed in a collection view that is a subview of the table view cell." );
         
         _viewController.trendingTags = [VDummyModels createHashtags:i];
-        XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:1], i );
+        XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], i );
     }
 }
 
@@ -133,14 +134,14 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     UITableViewCell *cell = nil;
     
     // No data has been added, so a VNoContentTableViewCell should be created
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 1)];
+    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionTrendingTags)];
     XCTAssert( [cell isKindOfClass:[VNoContentTableViewCell class]],
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
     // Add some data
     _viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:2];
     
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 0)];
+    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
     XCTAssert( [cell isKindOfClass:[VSuggestedPeopleCell class]], @"Cell should be a valid VSuggestedPeopleCell" );
 }
 
@@ -148,7 +149,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     __block UITableViewCell *cell = nil;
     
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 0)];
+    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
     XCTAssert( [cell isKindOfClass:[VNoContentTableViewCell class]],
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
@@ -156,14 +157,14 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     _viewController.trendingTags = [VDummyModels createHashtags:5];
     
     [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
-        cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(idx, 1)];
+        cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];
         XCTAssert( [cell isKindOfClass:[VTrendingTagCell class]], @"Cell should be a valid VTrending" );
     }];
 }
 
 - (void)testInvalidSectionCell
 {
-    XCTAssertNil( [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 2)],
+    XCTAssertNil( [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionsCount)],
                  @"There are only 2 sections, so this should return nil" );
 }
 
@@ -213,7 +214,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     // Simulate selection of each cell
     [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
      {
-         [_viewController tableView:_tableView didSelectRowAtIndexPath:VIndexPathMake(idx, 1)];
+         [_viewController tableView:_tableView didSelectRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];
          XCTAssertEqualObjects( selectedHashtag, hashtag,
                                @"The swizzled method above should be called and should set selectedHashtag \
                                to the hashtag in _viewController.trendingTags that we're expecting." );
