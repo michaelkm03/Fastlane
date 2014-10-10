@@ -288,7 +288,6 @@
     };
     [actionItems addObject:flagItem];
     
-
     if ([self.viewModel.sequence canDelete])
     {
         VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
@@ -321,7 +320,6 @@
         };
         [actionItems addObject:deleteItem];
     }
-    
     
     [actionSheetViewController addActionItems:actionItems];
     
