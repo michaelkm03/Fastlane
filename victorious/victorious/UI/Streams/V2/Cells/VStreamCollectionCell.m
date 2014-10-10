@@ -57,7 +57,14 @@
     
     self.originalHeight = self.frame.size.height;
     
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    }
+    else
+    {
+        self.backgroundColor = [UIColor whiteColor];
+    }
     
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
@@ -68,10 +75,20 @@
 
 - (NSDictionary *)attributesForCellText
 {
+    
+    UIColor *textColor;
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    }
+    else
+    {
+        textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    }
     //TODO: Remvoe this hardcoded font size
     return @{
              NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-             NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
+             NSForegroundColorAttributeName: textColor,
              };
 }
 

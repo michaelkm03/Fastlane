@@ -21,7 +21,7 @@
 	<key>marqueeEnabled</key>
 	<true/>
 	<key>settingCEnabled</key>
-	<false/>
+	<true/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
 </dict>
