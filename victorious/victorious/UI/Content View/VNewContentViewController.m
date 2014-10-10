@@ -683,8 +683,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionHistogram:
-            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
-                              20.0f);
+            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionTicker:
         {
             return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),

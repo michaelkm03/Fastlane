@@ -8,6 +8,8 @@
 
 #import "VHistogramCell.h"
 
+static const CGFloat kHistogramDesiredHeight = 19.0f;
+
 @interface VHistogramCell ()
 
 @property (nonatomic, weak, readwrite) IBOutlet VHistogramView *histogramView;
@@ -15,5 +17,12 @@
 @end
 
 @implementation VHistogramCell
+
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), kHistogramDesiredHeight);
+}
 
 @end

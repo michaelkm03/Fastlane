@@ -25,7 +25,8 @@ static const CGFloat kColorAlpha = 0.6f;
 
 @interface VHistogramView ()
 
-@property (nonatomic, strong) NSMutableSet *slices;
+@property (nonatomic, strong) NSMutableArray *coloredSlices;
+@property (nonatomic, strong) NSMutableArray *dimmedSlices;
 
 @property (nonatomic, strong) CAShapeLayer *progressMask;
 
@@ -67,6 +68,9 @@ static const CGFloat kColorAlpha = 0.6f;
     progressMask.backgroundColor = [UIColor blackColor].CGColor;
     self.progressMask = progressMask;
     [self.layer addSublayer:progressMask];
+    
+    self.coloredSlices = [[NSMutableArray alloc] init];
+    self.dimmedSlices = [[NSMutableArray alloc] init];
 }
 
 #pragma mark - Property Accessors
@@ -75,7 +79,6 @@ static const CGFloat kColorAlpha = 0.6f;
 {
     _progress = progress;
     
-    self.progressMask.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds) * _progress, CGRectGetHeight(self.bounds));
 }
 
 - (NSInteger)totalSlices
@@ -91,10 +94,15 @@ static const CGFloat kColorAlpha = 0.6f;
 
 - (void)reloadData
 {
-    [self.slices enumerateObjectsUsingBlock:^(UIView *slice, BOOL *stop)
-     {
-         [slice removeFromSuperview];
-     }];
+    [self.coloredSlices enumerateObjectsUsingBlock:^(UIView *slice, NSUInteger idx, BOOL *stop)
+    {
+        [slice removeFromSuperview];
+    }];
+    
+    [self.dimmedSlices enumerateObjectsUsingBlock:^(UIView *slice, NSUInteger idx, BOOL *stop)
+    {
+        [slice removeFromSuperview];
+    }];
     
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
@@ -112,12 +120,14 @@ static const CGFloat kColorAlpha = 0.6f;
         darkenedSlice.frame = CGRectMake(0, 0, CGRectGetWidth(sliceForIndex.bounds), ++heightForSlice);
         darkenedSlice.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:kDarkeningAlpha].CGColor;
         [sliceForIndex.layer addSublayer:darkenedSlice];
+        [self.dimmedSlices  addObject:darkenedSlice];
         
         CALayer *coloredSlice = [CALayer layer];
         coloredSlice.frame = darkenedSlice.frame;
         coloredSlice.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:kColorAlpha].CGColor;
         [sliceForIndex.layer addSublayer:coloredSlice];
         coloredSlice.mask = self.progressMask;
+        [self.coloredSlices addObject:coloredSlice];
         
         [self addSubview:sliceForIndex];
     }
