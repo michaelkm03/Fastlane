@@ -73,10 +73,11 @@ const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 w
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGFloat ratio = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kPollCellHeightRatioC : kPollCellHeightRatio;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width * ratio;
-    return CGSizeMake(width, height);
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    CGFloat yRatio = isTemplateC ? kPollCellHeightRatioC : kPollCellHeightRatio;
+    CGFloat xRatio = isTemplateC ? 0.94375 : 1;
+    CGFloat width = CGRectGetWidth(bounds) * xRatio;
+    return CGSizeMake(width, width * yRatio);
 }
 
 @end

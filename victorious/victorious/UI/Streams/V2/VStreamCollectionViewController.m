@@ -258,25 +258,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     VContentViewController *contentViewController = [[VContentViewController alloc] init];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-
-//    the old setup code
-//    //TODO: we'll need to clean this up once they decide on the animation
-//    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
-//    {
-//        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
-//        {
-//            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
-//            [self.navigationController pushViewController:self.contentViewController animated:YES];
-//        }
-//        return;
-//    }
-//    
-//    if ([cell isKindOfClass:[VStreamPollCell class]])
-//    {
-//        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
-//        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
-//        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
-//    }
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     contentViewController.sequence = sequence;
@@ -326,6 +307,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
         return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
     return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? 8 : 0;
 }
 
 #pragma mark - VStreamCollectionDataDelegate
