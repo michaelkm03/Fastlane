@@ -13,6 +13,7 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
+#import "VHistogramView.h"
 
 // View Categories
 #import "UIView+VShadows.h"
@@ -30,6 +31,7 @@
 #import "VContentImageCell.h"
 #import "VTickerCell.h"
 #import "VContentCommentsCell.h"
+#import "VHistogramCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -61,7 +63,7 @@ static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
 static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
 static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -78,6 +80,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VTickerCell *tickerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak) VHistogramCell *histogramCell;
 
 // Experience Enhancers
 @property (nonatomic, weak) VExperienceEnhancerBar *experienceEnhancerBar;
@@ -317,6 +320,8 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                  forCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
+                 forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -578,11 +583,17 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
         }
         case VContentViewSectionHistogram:
         {
-            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+            if (self.histogramCell)
+            {
+                return self.histogramCell;
+            }
+            self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
-            imageCell.contentView.backgroundColor = [UIColor blueColor];
-            imageCell.contentImageView.image = nil;
-            return imageCell;
+            
+            self.histogramCell.histogramView.dataSource = self;
+            [self.histogramCell.histogramView reloadData];
+            
+            return self.histogramCell;
         }
         case VContentViewSectionTicker:
         {
@@ -672,8 +683,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionHistogram:
-            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
-                              20.0f);
+            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionTicker:
         {
             return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
@@ -732,6 +742,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    
+    self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
+    
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
@@ -834,6 +847,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - VHistogramDataSource
+
+- (CGFloat)histogram:(VHistogramView *)histogramView
+ heightForSliceIndex:(NSInteger)sliceIndex
+         totalSlices:(NSInteger)totalSlices
+{
+    return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }
 
 @end
