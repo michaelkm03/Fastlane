@@ -43,14 +43,36 @@
                                 <action selector="selectAllButtonTapped:" destination="-1" eventType="touchUpInside" id="HJ6-f1-WbE"/>
                             </connections>
                         </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STB-yT-Q8k">
+                            <rect key="frame" x="20" y="416" width="280" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="280" id="U2Y-r3-nhE"/>
+                                <constraint firstAttribute="height" constant="34" id="gSF-zo-RRv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="Invite Your Friends">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="inviteButtonTapped:" destination="-1" eventType="touchUpInside" id="14y-6v-nnz"/>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchUpInside" id="ZOc-Xx-kEz"/>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchDragExit" id="dbg-cR-lG1"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDown" id="8dX-gP-qeQ"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDragEnter" id="jiA-Gc-QHo"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="hcw-4q-StV" secondAttribute="trailing" constant="20" id="3Ui-G3-nAF"/>
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="top" secondItem="zKc-GL-com" secondAttribute="top" id="7Kd-nV-Hu7"/>
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="leading" secondItem="zKc-GL-com" secondAttribute="leading" id="8fC-of-Ivo"/>
+                        <constraint firstAttribute="bottom" secondItem="STB-yT-Q8k" secondAttribute="bottom" constant="13" id="8i0-aj-Q0C"/>
                         <constraint firstAttribute="bottom" secondItem="hcw-4q-StV" secondAttribute="bottom" constant="13" id="9O6-VT-VbY"/>
                         <constraint firstAttribute="trailing" secondItem="gft-qK-0Rj" secondAttribute="trailing" id="TkI-RK-zpO"/>
+                        <constraint firstAttribute="trailing" secondItem="STB-yT-Q8k" secondAttribute="trailing" constant="20" id="cFl-iN-gwD"/>
                         <constraint firstAttribute="bottom" secondItem="gft-qK-0Rj" secondAttribute="bottom" constant="60" id="hnl-ei-4jf"/>
                     </constraints>
                 </view>
@@ -124,7 +146,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="259" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-BR-Oom" userLabel="Info Label">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="259" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-BR-Oom" userLabel="Info Label">
                                     <rect key="frame" x="31" y="12" width="259" height="65"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <string key="text">¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.</string>
@@ -134,16 +156,22 @@
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="hgn-BR-Oom" firstAttribute="leading" secondItem="wtx-Nu-lyk" secondAttribute="leading" constant="31" id="Rmh-2c-Q1h"/>
+                                <constraint firstAttribute="bottom" secondItem="hgn-BR-Oom" secondAttribute="bottom" constant="13" id="jaM-oe-e6W"/>
+                                <constraint firstAttribute="trailing" secondItem="hgn-BR-Oom" secondAttribute="trailing" constant="30" id="nFH-or-DoP"/>
+                                <constraint firstItem="hgn-BR-Oom" firstAttribute="top" secondItem="wtx-Nu-lyk" secondAttribute="top" constant="12" id="rjk-bm-UpA"/>
+                            </constraints>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Busca e invita a tus amigos de tus contactos" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="224" translatesAutoresizingMaskIntoConstraints="NO" id="7dw-z9-qes" userLabel="Connect Prompt Label">
-                            <rect key="frame" x="48" y="97" width="224" height="34"/>
+                            <rect key="frame" x="48" y="52" width="224" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbC-61-nna" userLabel="Connect Button">
-                            <rect key="frame" x="20" y="172" width="280" height="47"/>
+                            <rect key="frame" x="20" y="127" width="280" height="47"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -172,8 +200,8 @@
                         <constraint firstAttribute="bottom" secondItem="wtx-Nu-lyk" secondAttribute="bottom" id="PCn-oB-jut"/>
                         <constraint firstItem="tbC-61-nna" firstAttribute="top" secondItem="7dw-z9-qes" secondAttribute="bottom" constant="41" id="Yle-yu-qHG"/>
                         <constraint firstItem="wtx-Nu-lyk" firstAttribute="leading" secondItem="0Kn-17-2W3" secondAttribute="leading" id="crY-dV-Psv"/>
-                        <constraint firstItem="7dw-z9-qes" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="97" id="dDz-zA-hNe"/>
-                        <constraint firstItem="wtx-Nu-lyk" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="373" id="jEi-wV-Y1p"/>
+                        <constraint firstItem="7dw-z9-qes" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="52" id="dDz-zA-hNe"/>
+                        <constraint firstItem="wtx-Nu-lyk" firstAttribute="top" relation="lessThanOrEqual" secondItem="0Kn-17-2W3" secondAttribute="top" constant="373" id="jEi-wV-Y1p"/>
                         <constraint firstAttribute="centerX" secondItem="tbC-61-nna" secondAttribute="centerX" id="kdQ-qL-WAa"/>
                     </constraints>
                 </view>
@@ -207,6 +235,7 @@
                 <outlet property="disconnectedView" destination="0Kn-17-2W3" id="Wou-PJ-TwT"/>
                 <outlet property="errorLabel" destination="mIW-p6-1ZK" id="3aY-Hy-1qB"/>
                 <outlet property="errorView" destination="vvS-Je-aZT" id="deV-BR-Poa"/>
+                <outlet property="inviteFriendsButton" destination="STB-yT-Q8k" id="bh2-VI-X66"/>
                 <outlet property="retryButton" destination="F5x-Zn-Qdu" id="uSz-ZI-8zZ"/>
                 <outlet property="safetyInfoLabel" destination="hgn-BR-Oom" id="gYw-B5-QRo"/>
                 <outlet property="safetyInfoView" destination="wtx-Nu-lyk" id="FIE-Zy-vPm"/>

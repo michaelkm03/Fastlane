@@ -75,7 +75,7 @@
         self.followButtonAction();
     }
     
-    [self flipFollowIconAction:nil];
+    [self disableFollowIcon:nil];
 }
 
 #pragma mark - Button Actions
@@ -87,19 +87,22 @@
     {
         if (relationship)
         {
-            self.followButton.imageView.image = self.unfollowImage;
+            [self.followButton setImage:self.unfollowImage forState:UIControlStateNormal];
         }
         else
         {
-            self.followButton.imageView.image = self.followImage;
+            [self.followButton setImage:self.followImage forState:UIControlStateNormal];
         }
+        //self.followButton.userInteractionEnabled = YES;
     };
-    
-    [UIView transitionWithView:self.followButton.imageView
+    [UIView transitionWithView:self.followButton
                       duration:0.3
-                       options:(relationship ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
+                       options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
-                    completion:nil];
+                    completion:^(BOOL finished)
+    {
+        [self enableFollowIcon:nil];
+    }];
 }
 
 - (void)disableFollowIcon:(id)sender
@@ -108,6 +111,21 @@
     {
         self.followButton.alpha = 0.3f;
         self.followButton.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)enableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followButton

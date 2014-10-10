@@ -297,6 +297,23 @@
     {
         if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
+            // Add user relationship to local persistent store
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            NSManagedObjectContext *moc = mainUser.managedObjectContext;
+            
+            [mainUser addFollowingObject:user];
+            [moc saveToPersistentStore:nil];
+            
+            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+            for (NSIndexPath *indexPath in indexPaths)
+            {
+                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                if (cell.profile == user)
+                {
+                    [cell flipFollowIconAction:nil];
+                    return;
+                }
+            }
             return;
         }
         
@@ -321,6 +338,28 @@
         
         [mainUser removeFollowingObject:user];
         [moc saveToPersistentStore:nil];
+        
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in indexPaths)
+        {
+            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            if (cell.profile == user)
+            {
+                void (^animations)() = ^(void)
+                {
+                    cell.haveRelationship = NO;
+                };
+                [UIView transitionWithView:cell.followButton
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionFlipFromTop
+                                animations:animations
+                                completion:nil];
+                
+                [cell flipFollowIconAction:nil];
+                return;
+            }
+        }
+        
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -333,7 +372,17 @@
             
             [mainUser removeFollowingObject:user];
             [moc saveToPersistentStore:nil];
-            return;
+            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+            for (NSIndexPath *indexPath in indexPaths)
+            {
+                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                if (cell.profile == user)
+                {
+                    [cell flipFollowIconAction:nil];
+                    return;
+                }
+            }
+            
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
@@ -360,7 +409,7 @@
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile = self.foundUsers[indexPath.row];
     
-    BOOL haveRelationship = ([mainUser.followers containsObject:profile] || [mainUser.following containsObject:profile]);
+    BOOL haveRelationship = ([mainUser.following containsObject:profile]);
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = profile;
@@ -369,7 +418,7 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        if (haveRelationship)
+        if ([mainUser.following containsObject:profile])
         {
             [self unfollowFriendAction:profile];
         }

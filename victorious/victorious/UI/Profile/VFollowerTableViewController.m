@@ -110,7 +110,7 @@
                 VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.profile == user)
                 {
-                    //[cell flipFollowIconAction:nil];
+                    [cell flipFollowIconAction:nil];
                     return;
                 }
             }
@@ -145,6 +145,16 @@
             VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             if (cell.profile == user)
             {
+                void (^animations)() = ^(void)
+                {
+                    cell.haveRelationship = NO;
+                };
+                [UIView transitionWithView:cell.followButton
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionFlipFromTop
+                                animations:animations
+                                completion:nil];
+
                 [cell flipFollowIconAction:nil];
                 return;
             }
@@ -168,7 +178,7 @@
                 VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.profile == user)
                 {
-                    //[cell flipFollowIconAction:nil];
+                    [cell flipFollowIconAction:nil];
                     return;
                 }
             }
@@ -192,8 +202,8 @@
 - (BOOL)determineRelationshipWithUser:(VUser *)targetUser
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
-    //NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
+    BOOL relationship = ([mainUser.following containsObject:targetUser]);
+    NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
     return relationship;
 }
 
@@ -207,7 +217,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *profile = self.followers[indexPath.row];
-    
     BOOL haveRelationship = [self determineRelationshipWithUser:profile];
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
@@ -216,18 +225,15 @@
     cell.owner = self.profile;
     cell.haveRelationship = haveRelationship;
     
-    VFollowerTableViewCell *__weak weakCell = cell;
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        if (haveRelationship)
+        if ([self determineRelationshipWithUser:profile])
         {
-            weakCell.haveRelationship = NO;
             [self unfollowFriendAction:profile];
         }
         else
         {
-            weakCell.haveRelationship = YES;
             [self followFriendAction:profile];
         }
     };

@@ -50,6 +50,10 @@
     self.selectAllButton.layer.borderColor = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
     self.selectAllButton.layer.borderWidth = 1.5f;
     self.selectAllButton.layer.cornerRadius = 3.0f;
+
+    self.inviteFriendsButton.layer.borderColor = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
+    self.inviteFriendsButton.layer.borderWidth = 1.5f;
+    self.inviteFriendsButton.layer.cornerRadius = 3.0f;
 }
 
 - (void)setConnectPromptLabelText:(NSString *)text
