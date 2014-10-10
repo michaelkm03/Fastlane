@@ -53,8 +53,10 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     [self registerCells];
     
-    [self refresh];
-    [self.suggestedPeopleViewController refresh];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self refresh];
+        [self.suggestedPeopleViewController refresh];
+    });
 }
 
 #pragma mark - Loading data
@@ -201,6 +203,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
             customCell.collectionView = self.suggestedPeopleViewController.collectionView;
             cell = customCell;
+            self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
     }
     else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags )

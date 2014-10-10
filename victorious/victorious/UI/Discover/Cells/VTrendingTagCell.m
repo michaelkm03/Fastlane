@@ -26,6 +26,8 @@
 {
     self.addNewButton.layer.cornerRadius = 3;
     
+    self.hashTagTextView.contentInset = UIEdgeInsetsMake( -4, 0, 0, 0 );
+    
     [self applyTheme];
 }
 

@@ -93,8 +93,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 - (void)didLoadWithUsers:(NSArray *)users
 {
-    self.hasLoadedOnce = YES;
-    
 #warning "The following loop is for testing/demo purposes until the numberOfFollowers value is available on the user objects returned from the server."
     for ( VUser *user in users )
     {
@@ -103,6 +101,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     if ( users.count == 0 )
     {
+        self.hasLoadedOnce = YES;
         [self clearData];
     }
     else

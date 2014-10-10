@@ -16,6 +16,16 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ttc-bR-lII" userLabel="Text Background ">
                         <rect key="frame" x="17" y="0.0" width="245" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="#hashtag" translatesAutoresizingMaskIntoConstraints="NO" id="jSa-4e-2hz">
+                                <rect key="frame" x="0.0" y="0.0" width="245" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="light"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="TbD-D0-nvk"/>
@@ -34,24 +44,10 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <textView multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="#hashtag" translatesAutoresizingMaskIntoConstraints="NO" id="jSa-4e-2hz">
-                        <rect key="frame" x="18" y="-7" width="245" height="39"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="39" id="t9C-NJ-vKd"/>
-                        </constraints>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="light"/>
-                    </textView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="jSa-4e-2hz" secondAttribute="trailing" constant="57" id="AOA-7k-kVV"/>
-                    <constraint firstItem="jSa-4e-2hz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="-7" id="F4f-0W-6tl"/>
                     <constraint firstItem="Ttc-bR-lII" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="YbN-Jw-Vyy"/>
-                    <constraint firstItem="jSa-4e-2hz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="Yz0-W6-L3e"/>
                     <constraint firstItem="tmT-7N-OT2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="isb-Fe-B8X"/>
                     <constraint firstItem="Ttc-bR-lII" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lug-bd-Cun"/>
                     <constraint firstItem="tmT-7N-OT2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="275" id="r5n-3A-tH8"/>
