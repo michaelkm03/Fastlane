@@ -18,6 +18,10 @@
 
 static const CGFloat kMinimumTickHeight = 3.0f;
 static const CGFloat kMaximumTickHeight = 19.0f;
+static const CGFloat kDefaultWidth = 2.0f;
+static const CGFloat kDefaultSpacing = 1.5f;
+static const CGFloat kDarkeningAlpha = 0.3f;
+static const CGFloat kColorAlpha = 0.6f;
 
 @interface VHistogramView ()
 
@@ -53,8 +57,8 @@ static const CGFloat kMaximumTickHeight = 19.0f;
 
 - (void)sharedInit
 {
-    _tickWidth = 2.0f;
-    _tickSpacing = 1.5f;
+    _tickWidth = kDefaultWidth;
+    _tickSpacing = kDefaultSpacing;
     
     self.backgroundColor = [UIColor clearColor];
     
@@ -106,12 +110,12 @@ static const CGFloat kMaximumTickHeight = 19.0f;
         
         CALayer *darkenedSlice = [CALayer layer];
         darkenedSlice.frame = CGRectMake(0, 0, CGRectGetWidth(sliceForIndex.bounds), ++heightForSlice);
-        darkenedSlice.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3].CGColor;
+        darkenedSlice.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:kDarkeningAlpha].CGColor;
         [sliceForIndex.layer addSublayer:darkenedSlice];
         
         CALayer *coloredSlice = [CALayer layer];
         coloredSlice.frame = darkenedSlice.frame;
-        coloredSlice.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.6f].CGColor;
+        coloredSlice.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:kColorAlpha].CGColor;
         [sliceForIndex.layer addSublayer:coloredSlice];
         coloredSlice.mask = self.progressMask;
         

@@ -39,7 +39,7 @@
 @property (nonatomic, assign) CGFloat tickWidth;
 
 /**
- *  In points. Defaults to 1.
+ *  In points.
  */
 @property (nonatomic, assign) CGFloat tickSpacing;
 
