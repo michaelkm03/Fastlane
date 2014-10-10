@@ -76,7 +76,7 @@
 
     [actionItems addObject:descripTionItem];
     
-    if (self.viewModel.sequence.canRemix)
+    if ([self.viewModel.sequence canRemix])
     {
         VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
                                                               actionIcon:[UIImage imageNamed:@"icon_remix"]
@@ -289,7 +289,7 @@
     [actionItems addObject:flagItem];
     
 
-    if (self.viewModel.sequence.canDelete)
+    if ([self.viewModel.sequence canDelete])
     {
         VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
                                                                actionIcon:nil

@@ -162,10 +162,7 @@ NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
-        if (permissionsMask & VSequencePermissionOptionsDelete)
-        {
-            return YES;
-        }
+        return (permissionsMask & VSequencePermissionOptionsDelete);
     }
     return NO;
 }
@@ -175,10 +172,7 @@ NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
-        if (permissionsMask & VSequencePermissionOptionsRemix)
-        {
-            return YES;
-        }
+        return (permissionsMask & VSequencePermissionOptionsRemix);
     }
     return YES;
 }
