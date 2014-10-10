@@ -14,11 +14,7 @@
 #import "VNoContentTableViewCell.h"
 #import "VTrendingTagCell.h"
 #import "VSuggestedPeopleCollectionViewController.h"
-#import "VUser.h"
-#import "VHashtag.h"
-#import "VObjectManager.h"
-#import "RKManagedObjectStore.h"
-#import "VAppDelegate.h"
+#import "VDummyModels.h"
 
 // Quick and dirty convenience method to avoid cluttering code
 NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
@@ -60,8 +56,6 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     [super setUp];
     
-    [VObjectManager setupObjectManager];
-    
     // Replace these with empty blocks to prevent them from making actual calls to the server
     _originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(refresh)
                                                               withBlock:^{}];
@@ -91,40 +85,6 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
         [VDiscoverViewController v_restoreOriginalImplementation:_originalShowHashtagStream
                                                        forMethod:@selector(showStreamWithHashtag:)];
     }
-}
-
-- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
-{
-    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
-}
-
-- (NSArray *)createUsers:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        VUser *user = (VUser *)[self objectWithEntityName:@"User" subclass:[VUser class]];
-        XCTAssertNotNil( user );
-        user.name = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
-        user.remoteId = @(i);
-        [models addObject:user];
-    }
-    return [NSArray arrayWithArray:models];
-}
-
-- (NSArray *)createHashtags:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        VHashtag *hashtag = (VHashtag *)[self objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
-        XCTAssertNotNil( hashtag );
-        hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
-        [models addObject:hashtag];
-    }
-    return [NSArray arrayWithArray:models];
 }
 
 - (void)testHeaderViews
@@ -158,11 +118,12 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     
     for ( NSInteger i = 1; i < 10; i++ )
     {
-        _viewController.suggestedPeopleViewController.suggestedUsers = [self createUsers:i];
+        _viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:i];
         XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:0], (NSInteger)1,
-                       @"Even with many users, there should only be 1 row in section 0." );
+                       @"Even with many users, there should only be 1 row in section 0 because users are \
+                       displayed in a collection view that is a subview of the table view cell." );
         
-        _viewController.trendingTags = [self createHashtags:i];
+        _viewController.trendingTags = [VDummyModels createHashtags:i];
         XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:1], i );
     }
 }
@@ -177,7 +138,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
     // Add some data
-    _viewController.suggestedPeopleViewController.suggestedUsers = [self createUsers:2];
+    _viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:2];
     
     cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 0)];
     XCTAssert( [cell isKindOfClass:[VSuggestedPeopleCell class]], @"Cell should be a valid VSuggestedPeopleCell" );
@@ -192,7 +153,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
     // Add some data
-    _viewController.trendingTags = [self createHashtags:5];
+    _viewController.trendingTags = [VDummyModels createHashtags:5];
     
     [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
         cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(idx, 1)];
@@ -210,7 +171,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     XCTAssertFalse( _viewController.hasLoadedOnce );
     NSUInteger objectsCount = 5;
-    [_viewController hashtagsDidLoad:[self createHashtags:objectsCount]];
+    [_viewController hashtagsDidLoad:[VDummyModels createHashtags:objectsCount]];
     XCTAssertNil( _viewController.error );
     XCTAssertEqual( _viewController.trendingTags.count, objectsCount );
     XCTAssert( _viewController.hasLoadedOnce );
@@ -237,10 +198,12 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 - (void)testSelectRow
 {
     // Add some data
-    _viewController.trendingTags = [self createHashtags:5];
+    _viewController.trendingTags = [VDummyModels createHashtags:5];
     
     __block VHashtag *selectedHashtag = nil;
     
+    // Replace this selector with one that sets our selectedHashtag variable to the
+    // hashtag that tableView:didSelectRowAtIndexPath: uses as a parameter when showStreamWithHashtag: is called
     _originalShowHashtagStream = [VDiscoverViewController v_swizzleMethod:@selector(showStreamWithHashtag:)
                                                                 withBlock:^void (VDiscoverViewController *obj, VHashtag *hashtag)
                                   {
@@ -251,7 +214,9 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
      {
          [_viewController tableView:_tableView didSelectRowAtIndexPath:VIndexPathMake(idx, 1)];
-         XCTAssertEqualObjects( selectedHashtag, hashtag );
+         XCTAssertEqualObjects( selectedHashtag, hashtag,
+                               @"The swizzled method above should be called and should set selectedHashtag \
+                               to the hashtag in _viewController.trendingTags that we're expecting." );
     }];
 }
 
