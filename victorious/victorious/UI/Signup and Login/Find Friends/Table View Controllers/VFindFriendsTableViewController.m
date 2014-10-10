@@ -293,21 +293,25 @@
 
 - (void)selectAllRows:(id)sender
 {
-    for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
-    {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
-        VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-        [cell disableFollowIcon:self];
-    }
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add user relationship to local persistent store
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = mainUser.managedObjectContext;
+
         for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
             VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-            [cell enableFollowIcon:self];
-            cell.haveRelationship = YES;
+
+            // Add user to persistent store
+            VUser *user = cell.profile;
+            [mainUser addFollowingObject:user];
+            [moc saveToPersistentStore:nil];
+
+            // Flip the icon
+            [cell flipFollowIconAction:nil];
         }
     };
     

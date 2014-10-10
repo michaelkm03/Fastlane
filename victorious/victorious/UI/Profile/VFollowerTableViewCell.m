@@ -97,15 +97,15 @@
         {
             [self.followButton setImage:self.followImage forState:UIControlStateNormal];
         }
+        
+        self.followButton.alpha = 1.0f;
+        self.followButton.userInteractionEnabled = YES;
     };
     [UIView transitionWithView:self.followButton
                       duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
-                    completion:^(BOOL finished)
-    {
-        [self enableFollowIcon:nil];
-    }];
+                    completion:nil];
 }
 
 - (void)disableFollowIcon:(id)sender
@@ -114,21 +114,6 @@
     {
         self.followButton.alpha = 0.3f;
         self.followButton.userInteractionEnabled = NO;
-    };
-    
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:animations
-                    completion:nil];
-}
-
-- (void)enableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followButton.alpha = 1.0f;
-        self.followButton.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followButton

@@ -94,30 +94,16 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
         if (relationship)
         {
             [self.followIconImageView setImage:self.unfollowIcon];
+
         }
         else
         {
             [self.followIconImageView setImage:self.followIcon];
         }
-    };
-    [UIView transitionWithView:self.followIconImageView
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:animations
-                    completion:^(BOOL finished)
-     {
-         [self enableFollowIcon:nil];
-     }];
-}
-
-- (void)enableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
+        
         self.followIconImageView.alpha = 1.0f;
         self.followIconImageView.userInteractionEnabled = YES;
     };
-    
     [UIView transitionWithView:self.followIconImageView
                       duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
