@@ -32,6 +32,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 //Categories
 #import "UIImage+ImageCreation.h"
@@ -123,7 +124,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
-    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    self.collectionView.backgroundColor = [self preferredBackgroundColor];
     
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
@@ -175,6 +176,18 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 }
 
 #pragma mark - Properties
+
+- (UIColor *)preferredBackgroundColor
+{
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [UIColor colorWithWhite:0.94509803921 alpha:1];
+    }
+    else
+    {
+        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    }
+}
 
 - (NSCache *)preloadImageCache
 {
@@ -473,7 +486,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     {
         noContentUpdates = ^void(void)
         {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
+            UIImage *newImage = [UIImage resizeableImageWithColor:[self preferredBackgroundColor]];
             self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
         };
     }

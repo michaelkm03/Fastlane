@@ -366,6 +366,7 @@
 		BEB47B1219E5D14200AE1E29 /* VMarqueeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB47B1019E5D14200AE1E29 /* VMarqueeCollectionCell.m */; };
 		BEB47B1319E5D14200AE1E29 /* VMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB47B1119E5D14200AE1E29 /* VMarqueeCollectionCell.xib */; };
 		BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF512919BA15B6007AB3BA /* VConversation.m */; };
+		BEBF80CC19E859350088E83F /* VStreamCellHeaderView-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBF80CB19E859350088E83F /* VStreamCellHeaderView-C.xib */; };
 		BEC833BB19D3646E00341EA9 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BA19D3646E00341EA9 /* VComment.m */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BED01E7A19E7497700E4DC02 /* VStreamCollectionCell-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = BED01E7219E7497700E4DC02 /* VStreamCollectionCell-C.xib */; };
@@ -1070,6 +1071,7 @@
 		BEB47B1F19E70CAB00AE1E29 /* VSequenceActionsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VSequenceActionsDelegate.h; path = V2/VSequenceActionsDelegate.h; sourceTree = "<group>"; };
 		BEBF512819BA15B6007AB3BA /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BEBF512919BA15B6007AB3BA /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
+		BEBF80CB19E859350088E83F /* VStreamCellHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCellHeaderView-C.xib"; sourceTree = "<group>"; };
 		BEC833B919D3646E00341EA9 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BEC833BA19D3646E00341EA9 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
@@ -1783,6 +1785,7 @@
 			children = (
 				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
+				BEBF80CB19E859350088E83F /* VStreamCellHeaderView-C.xib */,
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 				DBF9C55C19C8920500AC8CF5 /* VStreamCellHeaderView.xib */,
@@ -2764,6 +2767,7 @@
 				0314D4F919B46B5E00FA363C /* VStreamPollCell.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
+				BEBF80CC19E859350088E83F /* VStreamCellHeaderView-C.xib in Resources */,
 				0314D4C319B46B5E00FA363C /* VUserProfileHeaderView.xib in Resources */,
 				0314D50719B46B5E00FA363C /* VWebContentViewController.xib in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,

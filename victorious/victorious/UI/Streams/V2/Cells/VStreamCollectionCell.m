@@ -56,8 +56,8 @@
     
     
     self.originalHeight = self.frame.size.height;
-    
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    if (!isTemplateC)
     {
         self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     }
@@ -68,7 +68,8 @@
     
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
 }
@@ -211,9 +212,11 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGFloat ratio = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? 1.496875 : 1;
-    CGFloat width = CGRectGetWidth(bounds);
-    return CGSizeMake(width, width * ratio);
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    CGFloat yRatio = isTemplateC ? 1.49375 : 1;
+    CGFloat xRatio = isTemplateC ? 0.94375 : 1;
+    CGFloat width = CGRectGetWidth(bounds) * xRatio;
+    return CGSizeMake(width, width * yRatio);
 }
 
 @end
