@@ -20,6 +20,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <view opaque="NO" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cR6-Xx-dKv" userLabel="Darkening Overlay">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iL5-FN-2xy" userLabel="Content Collection View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -73,11 +78,15 @@
                             <constraint firstItem="DRU-0d-Xgx" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="D0c-mu-myW"/>
                             <constraint firstItem="ToS-oB-8Vg" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="Dh4-9h-GaK"/>
                             <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="FlH-k6-cIS"/>
+                            <constraint firstItem="cR6-Xx-dKv" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="J6I-8T-sbU"/>
+                            <constraint firstAttribute="trailing" secondItem="cR6-Xx-dKv" secondAttribute="trailing" id="RFO-rT-1tp"/>
                             <constraint firstItem="DRU-0d-Xgx" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="UCM-D2-PqF"/>
                             <constraint firstItem="p1f-ge-RSn" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="e5L-GF-jrX"/>
+                            <constraint firstItem="cR6-Xx-dKv" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="gQc-P8-blV"/>
                             <constraint firstAttribute="trailing" secondItem="DRU-0d-Xgx" secondAttribute="trailing" id="gsG-Xa-7Uz"/>
                             <constraint firstAttribute="trailing" secondItem="p1f-ge-RSn" secondAttribute="trailing" id="khd-Kq-iJM"/>
                             <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="iL5-FN-2xy" secondAttribute="bottom" id="nTg-Hf-Cd5"/>
+                            <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="cR6-Xx-dKv" secondAttribute="bottom" id="o7i-Rm-QJD"/>
                             <constraint firstItem="ToS-oB-8Vg" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="uNw-CT-JPL"/>
                         </constraints>
                     </view>

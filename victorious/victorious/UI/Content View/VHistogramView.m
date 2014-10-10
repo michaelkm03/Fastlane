@@ -16,6 +16,9 @@
 #define FLOOR(a) floorf(a)
 #endif
 
+static const CGFloat kMinimumTickHeight = 3.0f;
+static const CGFloat kMaximumTickHeight = 19.0f;
+
 @interface VHistogramView ()
 
 @property (nonatomic, strong) NSMutableSet *slices;
@@ -94,7 +97,8 @@
         CGFloat heightForSlice = [self.dataSource histogram:self
                                         heightForSliceIndex:sliceIndex
                                                 totalSlices:[self totalSlices]];
-        heightForSlice = (heightForSlice > 0) ? heightForSlice : 0.5f;
+        
+        heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];
         
@@ -102,12 +106,12 @@
         
         CALayer *darkenedSlice = [CALayer layer];
         darkenedSlice.frame = CGRectMake(0, 0, CGRectGetWidth(sliceForIndex.bounds), ++heightForSlice);
-        darkenedSlice.backgroundColor = [UIColor lightGrayColor].CGColor;
+        darkenedSlice.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3].CGColor;
         [sliceForIndex.layer addSublayer:darkenedSlice];
         
         CALayer *coloredSlice = [CALayer layer];
         coloredSlice.frame = darkenedSlice.frame;
-        coloredSlice.backgroundColor = [UIColor blueColor].CGColor;
+        coloredSlice.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.6f].CGColor;
         [sliceForIndex.layer addSublayer:coloredSlice];
         coloredSlice.mask = self.progressMask;
         

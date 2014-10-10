@@ -15,7 +15,7 @@
 #import <objc/runtime.h>
 
 static const char kAssociatedObjectKey;
-static const CGFloat kVBlurRadius = 25.0f;
+static const CGFloat kVBlurRadius = 12.5f;
 static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 @implementation UIImageView (Blurring)
