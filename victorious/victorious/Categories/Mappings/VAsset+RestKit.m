@@ -30,7 +30,8 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(nodeId) ];
+    // TODO: uncomment this after back-end fixes their shit or figure out another way to identify duplicate assets
+//    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
