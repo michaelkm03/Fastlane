@@ -18,8 +18,9 @@
 
 NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
-    VSequencePermissionOptionsDelete,
-    VSequencePermissionOptionsRemix
+    VSequencePermissionOptionsNone      = 0,
+    VSequencePermissionOptionsDelete    = 1 << 0,
+    VSequencePermissionOptionsRemix     = 1 << 1,
 };
 
 @implementation VSequence (Fetcher)
