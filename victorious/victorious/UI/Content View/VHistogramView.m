@@ -53,6 +53,8 @@
     _tickWidth = 2.0f;
     _tickSpacing = 1.5f;
     
+    self.backgroundColor = [UIColor clearColor];
+    
     CAShapeLayer *progressMask = [CAShapeLayer layer];
     progressMask.frame = CGRectMake(0, 0, 0, CGRectGetHeight(self.bounds));
     progressMask.backgroundColor = [UIColor blackColor].CGColor;
