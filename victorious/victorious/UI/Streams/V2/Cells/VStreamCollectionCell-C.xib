@@ -7,18 +7,18 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="4JO-Ba-PyN" customClass="VStreamCollectionCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="478"/>
+            <rect key="frame" x="0.0" y="0.0" width="302" height="486"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="478"/>
+                <rect key="frame" x="0.0" y="0.0" width="302" height="486"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="De6-Pn-uJH" userLabel="Preview Image View">
-                        <rect key="frame" x="0.0" y="79" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="83" width="302" height="320"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnr-LZ-FqW" userLabel="Shade View">
-                        <rect key="frame" x="0.0" y="79" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="83" width="320" height="320"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i7f-e2-vae">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
@@ -34,7 +34,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-ME-YWS" userLabel="Overlay View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="478"/>
+                        <rect key="frame" x="0.0" y="4" width="320" height="478"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="9rP-b8-aiM" userLabel="Description">
                                 <rect key="frame" x="20" y="426" width="280" height="21"/>

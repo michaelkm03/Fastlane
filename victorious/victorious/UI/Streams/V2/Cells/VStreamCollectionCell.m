@@ -73,25 +73,48 @@
     self.streamCellHeaderView.delegate = self;
 }
 
-- (NSDictionary *)attributesForCellText
+- (void)setDescriptionText:(NSString *)text
 {
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
     
-    UIColor *textColor;
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    }
-    else
-    {
-        textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    }
     //TODO: Remvoe this hardcoded font size
-    return @{
+    NSDictionary *attributes = @{
              NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-             NSForegroundColorAttributeName: textColor,
+             NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
              };
+    
+    NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
+                                                                                              attributes:attributes];
+    self.hashTagRanges = [VHashTags detectHashTags:text];
+    
+    if ([self.hashTagRanges count] > 0)
+    {
+        [VHashTags formatHashTagsInString:newAttributedCellText
+                            withTagRanges:self.hashTagRanges
+                               attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.maximumLineHeight = 25;
+    paragraphStyle.minimumLineHeight = 25;
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
+                                  value:paragraphStyle
+                                  range:NSMakeRange(0, newAttributedCellText.length)];
+    if (!isTemplateC)
+    {
+        NSShadow *shadow = [NSShadow new];
+        [shadow setShadowBlurRadius:4.0f];
+        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+        [shadow setShadowOffset:CGSizeMake(0, 0)];
+        [newAttributedCellText addAttribute:NSShadowAttributeName
+                                      value:shadow
+                                      range:NSMakeRange(0, newAttributedCellText.length)];
+    }
+    
+    self.descriptionLabel.attributedText = newAttributedCellText;
 }
-
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -112,34 +135,7 @@
     
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
-        NSString *text = self.sequence.name;
-        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[self attributesForCellText]];
-        self.hashTagRanges = [VHashTags detectHashTags:text];
-        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-        paragraphStyle.maximumLineHeight = 25;
-        paragraphStyle.minimumLineHeight = 25;
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-        
-        NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:4.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
-        [shadow setShadowOffset:CGSizeMake(0, 0)];
-        
-        if ([self.hashTagRanges count] > 0)
-        {
-            [VHashTags formatHashTagsInString:newAttributedCellText
-                                withTagRanges:self.hashTagRanges
-                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
-        }
-        [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
-                                      value:paragraphStyle
-                                      range:NSMakeRange(0, newAttributedCellText.length)];
-        [newAttributedCellText addAttribute:NSShadowAttributeName
-                                      value:shadow
-                                      range:NSMakeRange(0, newAttributedCellText.length)];
-        
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        [self setDescriptionText:self.sequence.name];
     }
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
