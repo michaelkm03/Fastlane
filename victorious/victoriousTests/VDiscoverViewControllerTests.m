@@ -43,14 +43,15 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error;
 - (void)hashtagsDidLoad:(NSArray *)hashtags;
+- (void)showStreamWithHashtag:(VHashtag *)hashtag;
 
 @end
 
 @interface VDiscoverViewControllerTests : XCTestCase
 {
-    VObjectManager *_objectManager;
     IMP _originalDiscoverRefresh;
     IMP _originalSuggestedPeopleRefresh;
+    IMP _originalShowHashtagStream;
     VDiscoverViewController *_viewController;
     UITableView *_tableView;
 }
@@ -63,15 +64,11 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     [super setUp];
     
-    _objectManager = [VObjectManager sharedManager];
-    
-    _originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(refresh) withBlock:^{
-        
-    }];
-    
-    _originalSuggestedPeopleRefresh = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(refresh) withBlock:^{
-        
-    }];
+    // Replace these with empty blocks to prevent them from making actual calls to the server
+    _originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(refresh)
+                                                              withBlock:^{}];
+    _originalSuggestedPeopleRefresh = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(refresh)
+                                                                                      withBlock:^{}];
     
     _viewController = [[VDiscoverViewController alloc] init];
     XCTAssertNotNil( _viewController );
@@ -86,10 +83,16 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     [super tearDown];
     
-    [VDiscoverViewController v_restoreOriginalImplementation:_originalDiscoverRefresh forMethod:@selector(refresh)];
-    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:_originalSuggestedPeopleRefresh forMethod:@selector(refresh)];
+    [VDiscoverViewController v_restoreOriginalImplementation:_originalDiscoverRefresh
+                                                   forMethod:@selector(refresh)];
+    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:_originalSuggestedPeopleRefresh
+                                                                    forMethod:@selector(refresh)];
     
-    _objectManager = nil;
+    if ( _originalShowHashtagStream != nil )
+    {
+        [VDiscoverViewController v_restoreOriginalImplementation:_originalShowHashtagStream
+                                                       forMethod:@selector(showStreamWithHastag:)];
+    }
 }
 
 - (NSArray *)createUsers:(NSInteger)count
@@ -97,8 +100,9 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VUser *user = (VUser *)[_objectManager objectWithEntityName:@"User" subclass:[VUser class]];
+        VUser *user = (VUser *)[[VObjectManager sharedManager] objectWithEntityName:@"User" subclass:[VUser class]];
         user.name = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
+        user.remoteId = @(i);
         [models addObject:user];
     }
     return [NSArray arrayWithArray:models];
@@ -109,7 +113,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VHashtag *hashtag = (VHashtag *)[_objectManager objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
+        VHashtag *hashtag = (VHashtag *)[[VObjectManager sharedManager] objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
         hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
         [models addObject:hashtag];
     }
@@ -121,14 +125,30 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:0] );
     XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:1] );
     XCTAssertEqual( _viewController.sectionHeaders.count, (NSUInteger)2 );
+    
+    for ( NSInteger section = 0; section < 2; section++ )
+    {
+        UIView *headerView = _viewController.sectionHeaders[ section ];
+        CGFloat height = [_viewController tableView:_tableView heightForHeaderInSection:section];
+        XCTAssertEqual( height, CGRectGetHeight( headerView.frame ) );
+    }
+    
+    // These are invalid sections (too low/high) and should return 0
+    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:-1], 0.0f );
+    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:3], 0.0f );
 }
 
-- (void)testNumberOfRows
+- (void)testRowsAndSections
 {
     // Should be at least one table view cell even without data (for empty/error cell)
     XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:0], (NSInteger)1 );
     XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:1], (NSInteger)1 );
-
+    
+    XCTAssertEqual( [_viewController numberOfSectionsInTableView:_tableView], (NSInteger)2 );
+    
+    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:2], (NSInteger)0,
+                   @"Should return 0 since there are only 2 sections." );
+    
     for ( NSInteger i = 1; i < 10; i++ )
     {
         _viewController.suggestedPeopleViewController.suggestedUsers = [self createUsers:i];
@@ -173,6 +193,12 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     }];
 }
 
+- (void)testInvalidSectionCell
+{
+    XCTAssertNil( [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, 2)],
+                 @"There are only 2 sections, so this should return nil" );
+}
+
 - (void)testNetworkRequestResponseSuccess
 {
     XCTAssertFalse( _viewController.hasLoadedOnce );
@@ -199,6 +225,27 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     XCTAssertNotNil( _viewController.error );
     XCTAssertEqual( _viewController.trendingTags.count, (NSUInteger)0 );
     XCTAssert( _viewController.hasLoadedOnce );
+}
+
+- (void)testSelectRow
+{
+    // Add some data
+    _viewController.trendingTags = [self createHashtags:5];
+    
+    __block VHashtag *selectedHashtag = nil;
+    
+    _originalShowHashtagStream = [VDiscoverViewController v_swizzleMethod:@selector(showStreamWithHashtag:)
+                                                                withBlock:^void (VDiscoverViewController* obj, VHashtag *hashtag)
+                                  {
+                                      selectedHashtag = hashtag;
+                                  }];
+    
+    // Simulate selection of each cell
+    [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
+     {
+         [_viewController tableView:_tableView didSelectRowAtIndexPath:VIndexPathMake(idx, 1)];
+         XCTAssertEqualObjects( selectedHashtag, hashtag );
+    }];
 }
 
 @end

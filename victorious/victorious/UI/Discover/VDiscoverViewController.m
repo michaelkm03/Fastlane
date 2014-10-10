@@ -154,25 +154,30 @@ enum {
         // There's always one suggested people row which shows either the suggested people collection view or an no data cell cell
         return 1;
     }
-    else
+    if ( section == VTableViewSectionTrendingTags )
     {
         return self.isShowingNoData ? 1 : self.trendingTags.count;
     }
+    
+    return 0;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = self.sectionHeaders[ section ];
-    NSAssert( headerView != nil, @"There was a problem with initialization of header views.  See 'createSectionHeaderViews' method." );
-    return CGRectGetHeight( headerView.frame );
+    if ( section >= 0 && section < VTableViewSectionsCount )
+    {
+        UIView *headerView = self.sectionHeaders[ section ];
+        return CGRectGetHeight( headerView.frame );
+    }
+    
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = self.sectionHeaders[ section ];
-    NSAssert( headerView != nil, @"There was a problem with initialization of header views.  See 'createSectionHeaderViews' method." );
     return headerView;
 }
 
