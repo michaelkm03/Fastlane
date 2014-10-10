@@ -255,6 +255,7 @@
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
                         <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
+                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithEmail" id="qFR-HG-giH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -348,7 +349,7 @@
         <!--Profile Create View Controller-->
         <scene sceneID="n2v-Tj-rFs">
             <objects>
-                <viewController id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileCreate" id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NqE-Ur-2Nw"/>
                         <viewControllerLayoutGuide type="bottom" id="YrE-kb-O2F"/>
@@ -916,6 +917,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="L0J-p9-vsT"/>
+        <segue reference="qFR-HG-giH"/>
     </inferredMetricsTieBreakers>
 </document>

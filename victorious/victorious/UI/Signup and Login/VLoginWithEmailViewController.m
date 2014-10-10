@@ -9,6 +9,7 @@
 #import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
 #import "VLoginViewController.h"
+#import "VProfileCreateViewController.h"
 #import "VResetPasswordViewController.h"
 #import "VEnterResetTokenViewController.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -332,6 +333,17 @@
 }
 
 #pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
+    {
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.profile = self.profile;
+        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+    }
+}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
