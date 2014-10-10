@@ -20,4 +20,6 @@
 @property (nonatomic, copy) void (^accessorySelectionHandler)(void);
 @property (nonatomic, assign) UIEdgeInsets separatorInsets;
 
+@property (nonatomic, assign) BOOL enabled;
+
 @end

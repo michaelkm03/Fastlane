@@ -65,6 +65,18 @@
     }
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.titleLabel.alpha = 1.0f;
+    self.actionIconImageView.alpha = 1.0f;
+    self.enabled = YES;
+    self.title = nil;
+    self.detailTitle = nil;
+    self.actionIcon = nil;
+}
+
 #pragma mark - Property Accessor
 
 - (void)setTitle:(NSString *)title
@@ -92,6 +104,14 @@
     _separatorInsets = separatorInsets;
     self.leadingSpaceSeparatorToContainerConstraint.constant = separatorInsets.left;
     self.trailingSpaceSeparatorToContainerConstraint.constant = separatorInsets.right;
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    self.titleLabel.textColor = enabled ? [UIColor blackColor] : [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.actionIconImageView.image = [self.actionIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.actionIconImageView.tintColor = enabled ? [UIColor blackColor] : [[UIColor blackColor] colorWithAlphaComponent:0.5f];
 }
 
 #pragma mark - IBActions

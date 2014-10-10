@@ -115,7 +115,8 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
          NSInteger followerCount = [resultObjects[0] integerValue];
          if (followerCount > 0)
          {
-             welf.followersText = [[VLargeNumberFormatter new] stringForInteger:followerCount];
+             
+             welf.followersText =  [NSString stringWithFormat:@"%@ %@", [[VLargeNumberFormatter new] stringForInteger:followerCount], NSLocalizedString(@"followers", @"")];
          }
      }
                                                 failBlock:nil];

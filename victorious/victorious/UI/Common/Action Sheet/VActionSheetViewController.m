@@ -44,7 +44,6 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSeparatorHeightConstraint;
 
 @end
 
@@ -86,7 +85,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     
     // gradient
     CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.tableView.frame;
+    gradient.frame = self.gradientContainer.bounds;
     gradient.colors = @[(id)[UIColor blackColor].CGColor,
                         (id)[UIColor clearColor].CGColor
                         ];
@@ -101,7 +100,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:18.0f];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
 
-    self.topSeparatorHeightConstraint.constant = 1 / [UIScreen mainScreen].scale;
     [self reloadData];
 }
 
@@ -233,6 +231,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
             actionitemCell.detailTitle = itemForCell.detailText;
             actionitemCell.actionIcon = itemForCell.icon;
             actionitemCell.separatorInsets = self.tableView.separatorInset;
+            actionitemCell.enabled = itemForCell.enabled;
             actionitemCell.accessorySelectionHandler = ^(void)
             {
                 if (itemForCell.detailSelectionHandler)
