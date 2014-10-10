@@ -10,10 +10,21 @@
 
 #import "VContentViewViewModel.h"
 
+@class VNewContentViewController;
+
+@protocol VNewContentViewControllerDelegate  <NSObject>
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController;
+- (void)newContentViewCOntrollerDidDeleteContnet:(VNewContentViewController *)contentViewController;
+
+@end
+
 /**
  *  The content view controller.
  */
 @interface VNewContentViewController : UIViewController
+
+@property (nonatomic, weak) id <VNewContentViewControllerDelegate> delegate;
 
 /**
  *  Designated factory method for the content viewcontroller.

@@ -301,6 +301,22 @@
                                      completion:^
              {
                  // Delete action
+                 [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                  {
+                      [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                      {
+
+                          [self.delegate newContentViewCOntrollerDidDeleteContnet:self];
+                      }
+                                                                         failBlock:^(NSOperation *operation, NSError *error)
+                      {
+                      }];
+                  }
+             failBlock:^(NSOperation *operation, NSError *error)
+                  {
+                  }];
              }];
         };
         [actionItems addObject:deleteItem];

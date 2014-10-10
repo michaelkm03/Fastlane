@@ -450,8 +450,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - Private Mehods
