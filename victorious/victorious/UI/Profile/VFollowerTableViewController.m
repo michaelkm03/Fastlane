@@ -10,6 +10,8 @@
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
+#import "VAuthorizationViewControllerFactory.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
@@ -228,6 +230,14 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
+        // Check if logged in before attempting to follow / unfollow
+        if (![VObjectManager sharedManager].authorized)
+        {
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+            return;
+        }
+        
+
         if ([self determineRelationshipWithUser:profile])
         {
             [self unfollowFriendAction:profile];

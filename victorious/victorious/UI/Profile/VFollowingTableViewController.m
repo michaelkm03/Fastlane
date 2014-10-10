@@ -10,6 +10,8 @@
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
+#import "VAuthorizationViewControllerFactory.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
@@ -200,7 +202,7 @@
 - (BOOL)determineRelationshipWithUser:(VUser *)targetUser
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
+    BOOL relationship = ([mainUser.following containsObject:targetUser]);
     //NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
     return relationship;
 }
@@ -225,7 +227,14 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        if (haveRelationship)
+        // Check if logged in before attempting to follow / unfollow
+        if (![VObjectManager sharedManager].authorized)
+        {
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+            return;
+        }
+
+        if ([self determineRelationshipWithUser:profile])
         {
             [self unfollowFriendAction:profile];
         }

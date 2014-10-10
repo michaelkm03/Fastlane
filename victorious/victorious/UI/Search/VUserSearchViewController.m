@@ -418,6 +418,13 @@
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
+        // Check if logged in before attempting to follow / unfollow
+        if (![VObjectManager sharedManager].authorized)
+        {
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+            return;
+        }
+
         if ([mainUser.following containsObject:profile])
         {
             [self unfollowFriendAction:profile];
