@@ -91,7 +91,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     if ( _originalShowHashtagStream != nil )
     {
         [VDiscoverViewController v_restoreOriginalImplementation:_originalShowHashtagStream
-                                                       forMethod:@selector(showStreamWithHastag:)];
+                                                       forMethod:@selector(showStreamWithHashtag:)];
     }
 }
 
@@ -235,7 +235,7 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     __block VHashtag *selectedHashtag = nil;
     
     _originalShowHashtagStream = [VDiscoverViewController v_swizzleMethod:@selector(showStreamWithHashtag:)
-                                                                withBlock:^void (VDiscoverViewController* obj, VHashtag *hashtag)
+                                                                withBlock:^void (VDiscoverViewController *obj, VHashtag *hashtag)
                                   {
                                       selectedHashtag = hashtag;
                                   }];

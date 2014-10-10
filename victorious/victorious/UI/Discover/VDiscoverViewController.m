@@ -46,7 +46,7 @@ enum {
 {
     [super loadView];
     
-    self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Main"];
+    self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.delegate = self;
     
     // Call this here to ensure that header views are ready by the time the tableview asks for them

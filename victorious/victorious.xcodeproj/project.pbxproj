@@ -256,9 +256,30 @@
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
+		A70564A919E78110004A8387 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705648D19E78110004A8387 /* VSuggestedPeopleCell.m */; };
+		A70564AA19E78110004A8387 /* VSuggestedPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A705648E19E78110004A8387 /* VSuggestedPeopleCell.xib */; };
+		A70564AB19E78110004A8387 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705649019E78110004A8387 /* VSuggestedPersonCollectionViewCell.m */; };
+		A70564AC19E78110004A8387 /* VSuggestedPersonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A705649119E78110004A8387 /* VSuggestedPersonCollectionViewCell.xib */; };
+		A70564AD19E78110004A8387 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705649319E78110004A8387 /* VTrendingTagCell.m */; };
+		A70564AE19E78110004A8387 /* VTrendingTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A705649419E78110004A8387 /* VTrendingTagCell.xib */; };
+		A70564B519E78110004A8387 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564A019E78110004A8387 /* VDiscoverContainerViewController.m */; };
+		A70564B619E78110004A8387 /* VDiscoverTableHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564A219E78110004A8387 /* VDiscoverTableHeaderViewController.m */; };
+		A70564B719E78110004A8387 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70564A319E78110004A8387 /* VDiscoverTableHeaderViewController.xib */; };
+		A70564B819E78110004A8387 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564A519E78110004A8387 /* VDiscoverViewController.m */; };
+		A70564B919E78110004A8387 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564A819E78110004A8387 /* VSuggestedPeopleCollectionViewController.m */; };
+		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
+		A70564BF19E781B4004A8387 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BE19E781B4004A8387 /* VHashtag.m */; };
+		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
+		A70564C419E781EE004A8387 /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */; };
+		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
+		A70564CA19E78220004A8387 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C919E78220004A8387 /* VFollowersTextFormatter.m */; };
+		A70564CE19E78250004A8387 /* VDiscoverViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */; };
+		A70564CF19E78250004A8387 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */; };
+		A70564D019E78250004A8387 /* VHashtagsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564CD19E78250004A8387 /* VHashtagsTests.m */; };
 		A7814A0A19E5FD0600D89B90 /* VPasswordValidationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */; };
 		A7814A0C19E61BA900D89B90 /* VChangePasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
+		A7AA647A19E786BB0068D2B1 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7AA647919E786BB0068D2B1 /* Discover.storyboard */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
 		BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */; };
@@ -866,7 +887,6 @@
 		03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeviceInfo.m; sourceTree = "<group>"; };
 		03CF151E195CFBE600F6477B /* NSArray+VMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VMap.h"; sourceTree = "<group>"; };
 		03CF151F195CFBE600F6477B /* NSArray+VMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VMap.m"; sourceTree = "<group>"; };
-		03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManagerStringTest.m; sourceTree = "<group>"; };
 		03D94C2819DE155400BFAA27 /* VAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsyncTestHelper.h; sourceTree = "<group>"; };
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
@@ -884,10 +904,45 @@
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
+		A705648C19E78110004A8387 /* VSuggestedPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCell.h; sourceTree = "<group>"; };
+		A705648D19E78110004A8387 /* VSuggestedPeopleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCell.m; sourceTree = "<group>"; };
+		A705648E19E78110004A8387 /* VSuggestedPeopleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedPeopleCell.xib; sourceTree = "<group>"; };
+		A705648F19E78110004A8387 /* VSuggestedPersonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPersonCollectionViewCell.h; sourceTree = "<group>"; };
+		A705649019E78110004A8387 /* VSuggestedPersonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPersonCollectionViewCell.m; sourceTree = "<group>"; };
+		A705649119E78110004A8387 /* VSuggestedPersonCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedPersonCollectionViewCell.xib; sourceTree = "<group>"; };
+		A705649219E78110004A8387 /* VTrendingTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrendingTagCell.h; sourceTree = "<group>"; };
+		A705649319E78110004A8387 /* VTrendingTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrendingTagCell.m; sourceTree = "<group>"; };
+		A705649419E78110004A8387 /* VTrendingTagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTrendingTagCell.xib; sourceTree = "<group>"; };
+		A705649E19E78110004A8387 /* VDiscoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverConstants.h; sourceTree = "<group>"; };
+		A705649F19E78110004A8387 /* VDiscoverContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverContainerViewController.h; sourceTree = "<group>"; };
+		A70564A019E78110004A8387 /* VDiscoverContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverContainerViewController.m; sourceTree = "<group>"; };
+		A70564A119E78110004A8387 /* VDiscoverTableHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverTableHeaderViewController.h; sourceTree = "<group>"; };
+		A70564A219E78110004A8387 /* VDiscoverTableHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverTableHeaderViewController.m; sourceTree = "<group>"; };
+		A70564A319E78110004A8387 /* VDiscoverTableHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverTableHeaderViewController.xib; sourceTree = "<group>"; };
+		A70564A419E78110004A8387 /* VDiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewController.h; sourceTree = "<group>"; };
+		A70564A519E78110004A8387 /* VDiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewController.m; sourceTree = "<group>"; };
+		A70564A619E78110004A8387 /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
+		A70564A719E78110004A8387 /* VSuggestedPeopleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCollectionViewController.h; sourceTree = "<group>"; };
+		A70564A819E78110004A8387 /* VSuggestedPeopleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCollectionViewController.m; sourceTree = "<group>"; };
+		A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
+		A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Discover.m"; sourceTree = "<group>"; };
+		A70564BD19E781B4004A8387 /* VHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtag.h; sourceTree = "<group>"; };
+		A70564BE19E781B4004A8387 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
+		A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentTableViewCell.h; sourceTree = "<group>"; };
+		A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentTableViewCell.m; sourceTree = "<group>"; };
+		A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNoContentTableViewCell.xib; sourceTree = "<group>"; };
+		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
+		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
+		A70564C819E78220004A8387 /* VFollowersTextFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowersTextFormatter.h; sourceTree = "<group>"; };
+		A70564C919E78220004A8387 /* VFollowersTextFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatter.m; sourceTree = "<group>"; };
+		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
+		A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
+		A70564CD19E78250004A8387 /* VHashtagsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagsTests.m; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VChangePasswordTests.m; sourceTree = "<group>"; };
+		A7AA647919E786BB0068D2B1 /* Discover.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1189,6 +1244,8 @@
 				0314D09919B4698800FA363C /* VObjectManager+DeviceRegistration.m */,
 				0314D09A19B4698800FA363C /* VObjectManager+DirectMessaging.h */,
 				0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */,
+				A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */,
+				A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */,
 				0314D09C19B4698800FA363C /* VObjectManager+Environment.h */,
 				0314D09D19B4698800FA363C /* VObjectManager+Environment.m */,
 				0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */,
@@ -1204,8 +1261,6 @@
 				0314D0A819B4698800FA363C /* VObjectManager+Users.m */,
 				0314D0A919B4698800FA363C /* VObjectManager+Websites.h */,
 				0314D0AA19B4698800FA363C /* VObjectManager+Websites.m */,
-				A78149EE19E4C24F00D89B90 /* VObjectManager+Discover.h */,
-				A78149EF19E4C24F00D89B90 /* VObjectManager+Discover.m */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				0314D2E419B46B0E00FA363C /* VPaginationManager.h */,
@@ -1395,6 +1450,9 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
+				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
+				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
+				A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2132,29 +2190,31 @@
 		A705646019E737A5004A8387 /* HelveticaNeue */ = {
 			isa = PBXGroup;
 			children = (
-				A705646119E737A5004A8387 /* HelveticaNeue.ttf */,
-				A705646219E737A5004A8387 /* HelveticaNeueBold.ttf */,
-				A705646319E737A5004A8387 /* HelveticaNeueBoldItalic.ttf */,
-				A705646419E737A5004A8387 /* HelveticaNeueCondensedBlack.ttf */,
-				A705646519E737A5004A8387 /* HelveticaNeueCondensedBold.ttf */,
-				A705646619E737A5004A8387 /* HelveticaNeueItalic.ttf */,
-				A705646719E737A5004A8387 /* HelveticaNeueLight.ttf */,
-				A705646819E737A5004A8387 /* HelveticaNeueLightItalic.ttf */,
-				A705646919E737A5004A8387 /* HelveticaNeueMedium.ttf */,
-				A705646A19E737A5004A8387 /* HelveticaNeueMediumItalic.ttf */,
-				A705646B19E737A5004A8387 /* HelveticaNeueThin.ttf */,
-				A705646C19E737A5004A8387 /* HelveticaNeueThinItalic.ttf */,
-				A705646D19E737A5004A8387 /* HelveticaNeueUltraLight.ttf */,
-				A705646E19E737A5004A8387 /* HelveticaNeueUltraLightItalic.ttf */,
 			);
 			path = HelveticaNeue;
+			sourceTree = "<group>";
+		};
+		A705648B19E78110004A8387 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A705648C19E78110004A8387 /* VSuggestedPeopleCell.h */,
+				A705648D19E78110004A8387 /* VSuggestedPeopleCell.m */,
+				A705648E19E78110004A8387 /* VSuggestedPeopleCell.xib */,
+				A705648F19E78110004A8387 /* VSuggestedPersonCollectionViewCell.h */,
+				A705649019E78110004A8387 /* VSuggestedPersonCollectionViewCell.m */,
+				A705649119E78110004A8387 /* VSuggestedPersonCollectionViewCell.xib */,
+				A705649219E78110004A8387 /* VTrendingTagCell.h */,
+				A705649319E78110004A8387 /* VTrendingTagCell.m */,
+				A705649419E78110004A8387 /* VTrendingTagCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		A781499919E3483E00D89B90 /* Followers */ = {
 			isa = PBXGroup;
 			children = (
-				A781499A19E3485B00D89B90 /* VFollowersTextFormatter.h */,
-				A781499B19E3485B00D89B90 /* VFollowersTextFormatter.m */,
+				A70564C819E78220004A8387 /* VFollowersTextFormatter.h */,
+				A70564C919E78220004A8387 /* VFollowersTextFormatter.m */,
 			);
 			path = Followers;
 			sourceTree = "<group>";
@@ -2162,36 +2222,21 @@
 		A7A7D64F19DF735800B18AB7 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
-				A78149A519E46A6000D89B90 /* VDiscoverConstants.h */,
-				A7A7D65019DF735800B18AB7 /* Cells */,
-				A7A7D65719DF735800B18AB7 /* VDiscoverContainerViewController.h */,
-				A7A7D65819DF735800B18AB7 /* VDiscoverContainerViewController.m */,
-				A705645C19E72124004A8387 /* VDiscoverViewControllerProtocol.h */,
-				A7A7D65919DF735800B18AB7 /* VDiscoverViewController.h */,
-				A7A7D65A19DF735800B18AB7 /* VDiscoverViewController.m */,
-				A7A7D65B19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.h */,
-				A7A7D65C19DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m */,
-				A7A7D66B19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.h */,
-				A7A7D66C19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.m */,
-				A7A7D66D19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.xib */,
+				A705648B19E78110004A8387 /* Cells */,
+				A705649E19E78110004A8387 /* VDiscoverConstants.h */,
+				A705649F19E78110004A8387 /* VDiscoverContainerViewController.h */,
+				A70564A019E78110004A8387 /* VDiscoverContainerViewController.m */,
+				A70564A119E78110004A8387 /* VDiscoverTableHeaderViewController.h */,
+				A70564A219E78110004A8387 /* VDiscoverTableHeaderViewController.m */,
+				A70564A319E78110004A8387 /* VDiscoverTableHeaderViewController.xib */,
+				A70564A419E78110004A8387 /* VDiscoverViewController.h */,
+				A70564A519E78110004A8387 /* VDiscoverViewController.m */,
+				A70564A619E78110004A8387 /* VDiscoverViewControllerProtocol.h */,
+				A70564A719E78110004A8387 /* VSuggestedPeopleCollectionViewController.h */,
+				A70564A819E78110004A8387 /* VSuggestedPeopleCollectionViewController.m */,
+				A7AA647919E786BB0068D2B1 /* Discover.storyboard */,
 			);
 			path = Discover;
-			sourceTree = "<group>";
-		};
-		A7A7D65019DF735800B18AB7 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				A7A7D65419DF735800B18AB7 /* VTrendingTagCell.h */,
-				A7A7D65519DF735800B18AB7 /* VTrendingTagCell.m */,
-				A7A7D65619DF735800B18AB7 /* VTrendingTagCell.xib */,
-				A7A7D65119DF735800B18AB7 /* VSuggestedPeopleCell.h */,
-				A7A7D65219DF735800B18AB7 /* VSuggestedPeopleCell.m */,
-				A7A7D66419DF76B300B18AB7 /* VSuggestedPeopleCell.xib */,
-				A7A7D66619DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.h */,
-				A7A7D66719DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.m */,
-				A7A7D66919DF7CA900B18AB7 /* VSuggestedPersonCollectionViewCell.xib */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
@@ -2288,6 +2333,9 @@
 				BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */,
 				A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */,
 				A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */,
+				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
+				A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */,
+				A70564CD19E78250004A8387 /* VHashtagsTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2429,8 +2477,8 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
-				A78149F419E4EB5B00D89B90 /* VHashtag+RestKit.h */,
-				A78149F519E4EB5C00D89B90 /* VHashtag+RestKit.m */,
+				A70564C519E7820A004A8387 /* VHashtag+RestKit.h */,
+				A70564C619E7820A004A8387 /* VHashtag+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -2505,8 +2553,8 @@
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
-				A78149F119E4EA4100D89B90 /* VHashtag.h */,
-				A78149F219E4EA4100D89B90 /* VHashtag.m */,
+				A70564BD19E781B4004A8387 /* VHashtag.h */,
+				A70564BE19E781B4004A8387 /* VHashtag.m */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
@@ -2766,15 +2814,18 @@
 				03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
+				A70564B719E78110004A8387 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				DB2A492B19DF443900CB687B /* VMessageCell.xib in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				DB2A495319DF453900CB687B /* VStreamDirectoryItemCell.xib in Resources */,
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */,
+				A70564AC19E78110004A8387 /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				DB2A495B19DF457500CB687B /* VStreamViewCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */,
+				A70564AE19E78110004A8387 /* VTrendingTagCell.xib in Resources */,
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
 				03C1859319B42CEA00E27D05 /* MuseoSans-500.otf in Resources */,
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
@@ -2783,12 +2834,12 @@
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				DB2A493719DF448800CB687B /* followerCell.xib in Resources */,
+				A70564C419E781EE004A8387 /* VNoContentTableViewCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
-				A705647419E737A5004A8387 /* HelveticaNeueItalic.ttf in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
-				A7A7D66F19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
+				A70564AA19E78110004A8387 /* VSuggestedPeopleCell.xib in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				DB2A492F19DF445C00CB687B /* VMarqueeTableViewCell.xib in Resources */,
 				DB2A494719DF44EE00CB687B /* login.storyboard in Resources */,
@@ -2802,13 +2853,12 @@
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
+				A7AA647A19E786BB0068D2B1 /* Discover.storyboard in Resources */,
 				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
-				A7A7D66A19DF7CA900B18AB7 /* VSuggestedPersonCollectionViewCell.xib in Resources */,
-				A7A7D66519DF76B300B18AB7 /* VSuggestedPeopleCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				DB2A493319DF446F00CB687B /* VMarqueeStreamItemCell.xib in Resources */,
@@ -2969,6 +3019,7 @@
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				0314D49119B46B5E00FA363C /* VContentToStreamAnimator.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
+				A70564CA19E78220004A8387 /* VFollowersTextFormatter.m in Sources */,
 				0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
@@ -2980,16 +3031,14 @@
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */,
+				A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				0314D46619B46B5E00FA363C /* VExpirationDatePicker.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
-				A7A7D66E19DF863D00B18AB7 /* VDiscoverTableHeaderViewController.m in Sources */,
-				A78149F619E4EB5C00D89B90 /* VHashtag+RestKit.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
 				0314D4CC19B46B5E00FA363C /* VRemixTrimViewController.m in Sources */,
-				A78149F319E4EA4100D89B90 /* VHashtag.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */,
@@ -2997,12 +3046,12 @@
 				0314D49219B46B5E00FA363C /* VContentInfoViewController.m in Sources */,
 				0314D4F519B46B5E00FA363C /* VStreamToCommentAnimator.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
+				A70564BF19E781B4004A8387 /* VHashtag.m in Sources */,
 				03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
 				0314D49519B46B5E00FA363C /* VPollAnswerBarViewController.m in Sources */,
 				0314D48E19B46B5E00FA363C /* VCommentToContentAnimator.m in Sources */,
-				A781499C19E3485B00D89B90 /* VFollowersTextFormatter.m in Sources */,
 				0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
@@ -3045,6 +3094,8 @@
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
+				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
+				A70564B919E78110004A8387 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
@@ -3057,6 +3108,7 @@
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
+				A70564B619E78110004A8387 /* VDiscoverTableHeaderViewController.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
@@ -3066,7 +3118,6 @@
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
 				0314D4CE19B46B5E00FA363C /* UIViewController+VSideMenuViewController.m in Sources */,
-				A7814A0719E5E87900D89B90 /* VNoContentTableViewCell.m in Sources */,
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
@@ -3080,6 +3131,7 @@
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */,
+				A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
@@ -3096,6 +3148,7 @@
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				0314D45C19B46B5E00FA363C /* VPhotoFilter.m in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
+				A70564B519E78110004A8387 /* VDiscoverContainerViewController.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				0314D06119B4666A00FA363C /* NSManagedObject+RestKit.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
@@ -3109,6 +3162,7 @@
 				0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
+				A70564A919E78110004A8387 /* VSuggestedPeopleCell.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
@@ -3136,7 +3190,6 @@
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
-				A7A7D66819DF7B0500B18AB7 /* VSuggestedPersonCollectionViewCell.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
@@ -3170,13 +3223,12 @@
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
-				A7A7D66319DF735800B18AB7 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
-				A7A7D66219DF735800B18AB7 /* VDiscoverViewController.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				0314D45919B46B5E00FA363C /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
+				A70564AB19E78110004A8387 /* VSuggestedPersonCollectionViewCell.m in Sources */,
 				0314D47B19B46B5E00FA363C /* VPublishShareController.m in Sources */,
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
@@ -3192,10 +3244,9 @@
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
 				0314D4BD19B46B5E00FA363C /* VFollowerTableViewCell.m in Sources */,
-				A7A7D65D19DF735800B18AB7 /* VSuggestedPeopleCell.m in Sources */,
+				A70564B819E78110004A8387 /* VDiscoverViewController.m in Sources */,
 				0314D4C219B46B5E00FA363C /* VUserProfileHeaderView.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
-				A7A7D65F19DF735800B18AB7 /* VTrendingTagCell.m in Sources */,
 				0314D4ED19B46B5E00FA363C /* VLoginTransitionAnimator.m in Sources */,
 				0314D50619B46B5E00FA363C /* VWebContentViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
@@ -3231,14 +3282,11 @@
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
-				A7A7D66119DF735800B18AB7 /* VDiscoverContainerViewController.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
 				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
-				A78149F019E4C24F00D89B90 /* VObjectManager+Discover.m in Sources */,
-				A78149A219E35DB700D89B90 /* victoriOS.xcdatamodeld in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
@@ -3254,6 +3302,7 @@
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				0314D4CA19B46B5E00FA363C /* VRemixSliderRight.m in Sources */,
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
+				A70564AD19E78110004A8387 /* VTrendingTagCell.m in Sources */,
 				0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3262,6 +3311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70564CF19E78250004A8387 /* VFollowersTextFormatterTests.m in Sources */,
 				BE96750519E335060072E87A /* VLargeNumberFormatterTests.m in Sources */,
 				03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */,
 				BE96750F19E335060072E87A /* VUploadTaskSerializerTests.m in Sources */,
@@ -3270,8 +3320,10 @@
 				BE96750B19E335060072E87A /* VUploadManagerTests.m in Sources */,
 				BE96750419E335060072E87A /* VElapsedTimeFormatterTests.m in Sources */,
 				A7814A0A19E5FD0600D89B90 /* VPasswordValidationTests.m in Sources */,
+				A70564D019E78250004A8387 /* VHashtagsTests.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
 				BE96750819E335060072E87A /* VObjectManagerStringTest.m in Sources */,
+				A70564CE19E78250004A8387 /* VDiscoverViewControllerTests.m in Sources */,
 				BE96750719E335060072E87A /* VMultipartFormDataWriterTests.m in Sources */,
 				BE96750319E335060072E87A /* VAuthorizationViewControllerFactoryTests.m in Sources */,
 				BE96750A19E335060072E87A /* VUIAlertView+VBlocksTests.m in Sources */,
@@ -4044,9 +4096,7 @@
 		A78149A019E35DB700D89B90 /* victoriOS.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				A78149A119E35DB700D89B90 /* victoriOS.xcdatamodel */,
 			);
-			currentVersion = A78149A119E35DB700D89B90 /* victoriOS.xcdatamodel */;
 			path = victoriOS.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
