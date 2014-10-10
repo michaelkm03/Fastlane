@@ -96,6 +96,38 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentButton setHidden:YES];
 }
 
+- (void)setParentText:(NSString *)text
+{
+    // Format repost / remix string
+    NSString *parentUserString;
+    if ([self.sequence isRepost] && self.sequence.parentUser)
+    {
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text];
+    }
+    
+    if ([self.sequence isRemix] && self.sequence.parentUser)
+    {
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), text];
+    }
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: self.parentLabel.font,
+                                 NSForegroundColorAttributeName:  self.parentLabel.textColor,
+                                 };
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
+                                                                                         attributes:attributes];
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        NSRange range = [parentUserString rangeOfString:text];
+        
+        [attributedString addAttribute:NSForegroundColorAttributeName
+                                 value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                                 range:range];
+    }
+    
+    self.parentLabel.attributedText = attributedString;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -108,20 +140,7 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    // Format repost / remix string
-    NSString *parentUserString;
-    if ([self.sequence isRepost] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    if ([self.sequence isRemix] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    self.parentLabel.text = parentUserString;
-    
+    [self setParentText:self.sequence.parentUser.name];
     // Set username and format date
     self.usernameLabel.text = self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
