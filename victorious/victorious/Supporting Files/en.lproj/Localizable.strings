@@ -277,10 +277,10 @@
 "InviteYourFriends"     =   "Invite your Friends!";
 "InviteUsingEmail"      =   "Invite using Email";
 "InviteUsingSMS"        =   "Invite using SMS";
-"InviteFriendsSubject"  =   "Check out this app by";
-"InviteFriendsBody"     =   "I downloaded a new app from %@. It's a community for other fans like us to interact. Download it now at:";
+"InviteFriendsSubject"  =   "Check out %@'s new app";
+"InviteFriendsBody"     =   "Hey!\n\nI downloaded a new app from %@. It's a community for people like us to interact. Download it now at:";
 
-"FindContacts"          =   "Search and invite your friends from your contacts";
+"FindContacts"          =   "Find friends from your contacts";
 "Access Your Contacts"  =   "Access your Contacts";
 "ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.";
 
@@ -293,15 +293,15 @@
 "AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
 "AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
 
-"FindFBFriends"         =   "Add your friends from Facebook by connecting your account";
+"FindFBFriends"         =   "Find friends from Facebook";
 "Connect to Facebook"   =   "Connect to Facebook";
 "FBSafety"              =   "We don't store your passwords and will never post anything without your permission.";
 
-"FindTwitterFriends"    =   "Add your friends from Twitter by connecting your account";
+"FindTwitterFriends"    =   "Find friends from Twitter";
 "Connect to Twitter"    =   "Connect to Twitter";
 "TwitterSafety"         =   "We don't store your passwords and will never post anything without your permission.";
 
-"FindInstagramFriends"  =   "Add your friends from Instagram";
+"FindInstagramFriends"  =   "Find friends from Instagram";
 "Connect to Instagram"  =   "Connect to Instagram";
 
 "Logout"                =   "Log Out";

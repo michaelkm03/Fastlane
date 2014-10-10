@@ -48,7 +48,7 @@
                                     <action selector="signup:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="O0M-Ua-m8S"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2n-re-bSf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2n-re-bSf">
                                 <rect key="frame" x="20" y="465" width="288" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="loginTwitter">
@@ -58,7 +58,7 @@
                                     <action selector="twitterClicked:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="tZu-Ct-gw3"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoh-zd-utn">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoh-zd-utn">
                                 <rect key="frame" x="20" y="407" width="288" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="loginFacebook">
@@ -68,7 +68,7 @@
                                     <action selector="facebookClicked:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="mZv-Gc-l4H"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Iniciar sesión con Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-Dw-MLG">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Iniciar sesión con Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-Dw-MLG">
                                 <rect key="frame" x="84" y="418" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -78,14 +78,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Iniciar sesión con Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="3q4-yP-lYm">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Iniciar sesión con Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="3q4-yP-lYm">
                                 <rect key="frame" x="84" y="476" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4p-sF-3n6">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t4p-sF-3n6">
                                 <rect key="frame" x="20" y="301" width="288" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -798,7 +798,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuM-Vh-XTe">
-                                <rect key="frame" x="0.0" y="77" width="320" height="491"/>
+                                <rect key="frame" x="0.0" y="57" width="320" height="511"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </containerView>
                         </subviews>
@@ -809,7 +809,7 @@
                             <constraint firstItem="RuM-Vh-XTe" firstAttribute="leading" secondItem="jhe-Kn-knr" secondAttribute="leading" id="QCN-8z-5J1"/>
                             <constraint firstItem="Tg4-SM-Gi4" firstAttribute="top" secondItem="jhe-Kn-knr" secondAttribute="top" id="drO-Jk-vNd"/>
                             <constraint firstItem="qW9-9s-Kfq" firstAttribute="top" secondItem="RuM-Vh-XTe" secondAttribute="bottom" id="gSx-yP-mf1"/>
-                            <constraint firstItem="RuM-Vh-XTe" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="bottom" constant="-59" id="sgf-hZ-L8Q"/>
+                            <constraint firstItem="RuM-Vh-XTe" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="bottom" constant="-79" id="sgf-hZ-L8Q"/>
                             <constraint firstItem="Tg4-SM-Gi4" firstAttribute="leading" secondItem="jhe-Kn-knr" secondAttribute="leading" id="yOl-iO-2FA"/>
                         </constraints>
                     </view>
