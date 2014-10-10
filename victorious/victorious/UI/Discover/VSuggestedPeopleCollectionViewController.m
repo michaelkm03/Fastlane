@@ -35,6 +35,8 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     [super viewDidLoad];
     
+    self.suggestedUsers = @[];
+    
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];

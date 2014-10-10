@@ -68,7 +68,8 @@ enum {
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error
 {
     self.hasLoadedOnce = YES;
-    self.error = [error copy];
+    self.error = (error == nil) ? [[NSError alloc] init] : [error copy];
+    self.trendingTags = @[];
     [self.tableView reloadData];
 }
 
@@ -182,7 +183,7 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    UITableViewCell *cell = nil;
     
     if ( indexPath.section == VTableViewSectionSuggestedPeople )
     {
@@ -235,11 +236,19 @@ enum {
     {
         // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashtag.tag]];
-        container.shouldShowHeaderLogo = NO;
-        container.hashTag = hashtag.tag;
-        [self.navigationController pushViewController:container animated:YES];
+        [self showStreamWithHashtag:hashtag];
     }
+}
+
+#pragma mark -
+
+- (void)showStreamWithHashtag:(VHashtag *)hashtag
+{
+    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashtag.tag]];
+    container.shouldShowHeaderLogo = NO;
+    container.hashTag = hashtag.tag;
+    [self.navigationController pushViewController:container animated:YES];
+    
 }
 
 @end
