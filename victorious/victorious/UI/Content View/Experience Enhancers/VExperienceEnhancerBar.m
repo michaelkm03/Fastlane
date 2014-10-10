@@ -9,7 +9,6 @@
 #import "VExperienceEnhancerBar.h"
 
 #import "VExperienceEnhancer.h"
-
 #import "VExperienceEnhancerCell.h"
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
@@ -22,7 +21,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 @property (nonatomic, strong) NSArray *enhancers;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UIButton *textEntryButton;
 
 @end
 
@@ -87,16 +85,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
     self.enhancers = [NSArray arrayWithArray:enhancers];
     
     [self.collectionView reloadData];
-}
-
-#pragma mark - IBActions
-
-- (IBAction)pressedTextEntryButton:(id)sender
-{
-    if (self.pressedTextEntryHandler)
-    {
-        self.pressedTextEntryHandler();
-    }
 }
 
 #pragma mark - UICollectionViewDataSource

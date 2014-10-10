@@ -128,7 +128,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
     UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
     [attributes addObject:histogramLayoutAttributes];
     
-    UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionTicker]];
+    UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
     [attributes addObject:tickerLayoutAttributes];
     
     NSInteger numberOfComments = [self.collectionView numberOfItemsInSection:VContentViewSectionAllComments];
@@ -194,7 +194,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
                                                             CGRectGetWidth(self.collectionView.bounds),
                                                             self.histogramSize.height);
             break;
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
             layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                             self.collectionView.contentOffset.y + self.mediaContentSize.height + self.histogramSize.height,
                                                             CGRectGetWidth(self.collectionView.bounds),
@@ -248,7 +248,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
             break;
         case VContentViewSectionHistogram:
             break;
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
             break;
         case VContentViewSectionAllComments:
             layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
@@ -352,7 +352,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
                                  sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
     self.tickerSize = [layoutDelegate collectionView:self.collectionView
                                               layout:self
-                              sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionTicker]];
+                              sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
     self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
                                                          layout:self
                                 referenceSizeForHeaderInSection:VContentViewSectionAllComments];

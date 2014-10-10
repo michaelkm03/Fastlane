@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="37"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="Drawer Handle Icon " translatesAutoresizingMaskIntoConstraints="NO" id="FrK-0D-wQa">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" misplaced="YES" image="Drawer Handle Icon " translatesAutoresizingMaskIntoConstraints="NO" id="FrK-0D-wQa">
                     <rect key="frame" x="125" y="9" width="51" height="4"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>

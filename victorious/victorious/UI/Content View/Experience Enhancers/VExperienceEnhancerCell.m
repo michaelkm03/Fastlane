@@ -61,7 +61,8 @@ static const CGFloat kVExperienceEnhancerCellWidth = 35.0f;
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
-    self.experienceEnhancerIconImageView.image = _experienceEnhancerIcon;
+    self.experienceEnhancerIconImageView.image = [_experienceEnhancerIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.experienceEnhancerIconImageView.tintColor = [UIColor whiteColor];
 }
 
 @end

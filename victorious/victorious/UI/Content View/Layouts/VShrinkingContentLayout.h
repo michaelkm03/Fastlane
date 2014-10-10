@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,
     VContentViewSectionHistogram,
-    VContentViewSectionTicker,
+    VContentViewSectionExperienceEnhancers,
     VContentViewSectionAllComments,
     VContentViewSectionCount
 };
