@@ -26,9 +26,7 @@ static const CGFloat kColorAlpha = 0.6f;
 @interface VHistogramView ()
 
 @property (nonatomic, strong) NSMutableArray *coloredSlices;
-@property (nonatomic, strong) NSMutableArray *dimmedSlices;
-
-@property (nonatomic, strong) CAShapeLayer *progressMask;
+@property (nonatomic, strong) NSMutableArray *sliceViews;
 
 @end
 
@@ -63,14 +61,10 @@ static const CGFloat kColorAlpha = 0.6f;
     
     self.backgroundColor = [UIColor clearColor];
     
-    CAShapeLayer *progressMask = [CAShapeLayer layer];
-    progressMask.frame = CGRectMake(0, 0, 0, CGRectGetHeight(self.bounds));
-    progressMask.backgroundColor = [UIColor blackColor].CGColor;
-    self.progressMask = progressMask;
-    [self.layer addSublayer:progressMask];
-    
     self.coloredSlices = [[NSMutableArray alloc] init];
-    self.dimmedSlices = [[NSMutableArray alloc] init];
+    self.sliceViews = [[NSMutableArray alloc] init];
+    
+    _progress = 0.0f;
 }
 
 #pragma mark - Property Accessors
@@ -79,6 +73,11 @@ static const CGFloat kColorAlpha = 0.6f;
 {
     _progress = progress;
     
+    [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *coloredLayer, NSUInteger idx, BOOL *stop)
+    {
+        CGFloat layerProgress = CGRectGetMidX(coloredLayer.superlayer.frame) / CGRectGetWidth(self.bounds);
+        coloredLayer.opacity = (layerProgress > self.progress) ? 0.0f : 1.0f;
+    }];
 }
 
 - (NSInteger)totalSlices
@@ -94,15 +93,18 @@ static const CGFloat kColorAlpha = 0.6f;
 
 - (void)reloadData
 {
-    [self.coloredSlices enumerateObjectsUsingBlock:^(UIView *slice, NSUInteger idx, BOOL *stop)
+    [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *dimmedLayer, NSUInteger idx, BOOL *stop)
     {
-        [slice removeFromSuperview];
+        [dimmedLayer removeFromSuperlayer];
     }];
+    [self.coloredSlices removeAllObjects];
     
-    [self.dimmedSlices enumerateObjectsUsingBlock:^(UIView *slice, NSUInteger idx, BOOL *stop)
+    [self.sliceViews enumerateObjectsUsingBlock:^(UIView *sliceView, NSUInteger idx, BOOL *stop)
     {
-        [slice removeFromSuperview];
+        [sliceView removeFromSuperview];
     }];
+    [self.sliceViews removeAllObjects];
+
     
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
@@ -113,6 +115,7 @@ static const CGFloat kColorAlpha = 0.6f;
         heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];
+        [self.sliceViews addObject:sliceForIndex];
         
         sliceForIndex.layer.affineTransform = CGAffineTransformMakeScale(1, -1);
         
@@ -120,15 +123,15 @@ static const CGFloat kColorAlpha = 0.6f;
         darkenedSlice.frame = CGRectMake(0, 0, CGRectGetWidth(sliceForIndex.bounds), ++heightForSlice);
         darkenedSlice.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:kDarkeningAlpha].CGColor;
         [sliceForIndex.layer addSublayer:darkenedSlice];
-        [self.dimmedSlices  addObject:darkenedSlice];
         
         CALayer *coloredSlice = [CALayer layer];
         coloredSlice.frame = darkenedSlice.frame;
         coloredSlice.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:kColorAlpha].CGColor;
         [sliceForIndex.layer addSublayer:coloredSlice];
-        coloredSlice.mask = self.progressMask;
         [self.coloredSlices addObject:coloredSlice];
         
+        CGFloat sliceProgress = CGRectGetMidX(sliceForIndex.frame) / CGRectGetWidth(self.bounds);
+        coloredSlice.opacity = (sliceProgress > self.progress) ? 0.0f : 1.0f;
         [self addSubview:sliceForIndex];
     }
 }
