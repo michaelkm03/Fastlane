@@ -58,7 +58,6 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-
 #pragma mark - Friend Actions
 
 - (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
