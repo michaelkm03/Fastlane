@@ -2,6 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,15 +15,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="302" height="370"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JTX-77-BzI">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-pN-LVg" userLabel="left Image View">
+                        <rect key="frame" x="0.0" y="50" width="151" height="202"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="cHq-pN-LVg" secondAttribute="height" multiplier="151:202" id="EeQ-cF-o3u"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTX-77-BzI" userLabel="right Image View">
                         <rect key="frame" x="151" y="50" width="151" height="202"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-pN-LVg">
-                        <rect key="frame" x="0.0" y="50" width="151" height="202"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WFR-h6-Ez8" userLabel="Shade View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFR-h6-Ez8" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="50" width="302" height="202"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg">
@@ -37,33 +42,51 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zOM-dU-k9m" userLabel="Overlay View">
-                        <rect key="frame" x="0.0" y="0.0" width="302" height="370"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="262" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-3d-OTo">
-                                <rect key="frame" x="20" y="318" width="262" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VUD-I2-add" customClass="VStreamCellHeaderView">
-                                <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
-                                <rect key="frame" x="119" y="115" width="65" height="72"/>
-                            </imageView>
-                        </subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="272" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-3d-OTo">
+                        <rect key="frame" x="15" y="267" width="272" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" placeholder="YES" id="g9h-5c-Zpd"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VUD-I2-add" customClass="VStreamCellHeaderView">
+                        <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" placeholder="YES" id="sYt-O7-T8k"/>
+                        </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
+                        <rect key="frame" x="118" y="149" width="65" height="72"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <constraints>
+                <constraint firstItem="JTX-77-BzI" firstAttribute="width" secondItem="cHq-pN-LVg" secondAttribute="width" id="0sy-6q-tm0"/>
+                <constraint firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="1p8-b6-av1"/>
+                <constraint firstItem="JTX-77-BzI" firstAttribute="height" secondItem="cHq-pN-LVg" secondAttribute="height" id="48X-Hk-w1A"/>
+                <constraint firstItem="cHq-pN-LVg" firstAttribute="top" secondItem="VUD-I2-add" secondAttribute="bottom" id="5lP-9N-Bkv"/>
+                <constraint firstAttribute="trailing" secondItem="VUD-I2-add" secondAttribute="trailing" id="BOK-ih-62S"/>
+                <constraint firstItem="9Jy-3d-OTo" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="15" id="IIm-FA-DAc"/>
+                <constraint firstAttribute="trailing" secondItem="9Jy-3d-OTo" secondAttribute="trailing" constant="15" id="KuS-AX-Yu2"/>
+                <constraint firstItem="cHq-pN-LVg" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="T1v-SY-KUV"/>
+                <constraint firstItem="WFR-h6-Ez8" firstAttribute="bottom" secondItem="cHq-pN-LVg" secondAttribute="bottom" id="aF8-bM-Bqy"/>
+                <constraint firstItem="WFR-h6-Ez8" firstAttribute="leading" secondItem="cHq-pN-LVg" secondAttribute="leading" id="c73-7I-oGm"/>
+                <constraint firstItem="JTX-77-BzI" firstAttribute="top" secondItem="VUD-I2-add" secondAttribute="bottom" id="ciE-m6-TrX"/>
+                <constraint firstItem="WFR-h6-Ez8" firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="eJI-ME-VVG"/>
+                <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="oN6-yP-4Io"/>
+                <constraint firstItem="cHq-pN-LVg" firstAttribute="trailing" secondItem="Wcp-yr-gTs" secondAttribute="centerX" id="q9c-4Z-9cc"/>
+                <constraint firstItem="VUD-I2-add" firstAttribute="top" secondItem="Wcp-yr-gTs" secondAttribute="top" id="wOc-hf-Z4A"/>
+                <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="ww1-Vf-Dtf"/>
+                <constraint firstItem="WFR-h6-Ez8" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="wwr-er-K7q"/>
+                <constraint firstItem="VUD-I2-add" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="yf6-2X-y8F"/>
+            </constraints>
             <size key="customSize" width="267" height="161"/>
             <connections>
                 <outlet property="descriptionLabel" destination="9Jy-3d-OTo" id="edw-gV-rDA"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
-                <outlet property="overlayView" destination="zOM-dU-k9m" id="dwc-oX-i0P"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
                 <outlet property="previewImageView" destination="cHq-pN-LVg" id="dTw-88-PxD"/>
                 <outlet property="shadeView" destination="WFR-h6-Ez8" id="J70-XR-y9X"/>
