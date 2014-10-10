@@ -367,13 +367,6 @@
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
-- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
-{
-    NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
-}
-
 - (NSManagedObject *)objectForID:(NSNumber *)objectID
                            idKey:(NSString *)idKey
                       entityName:(NSString *)entityName

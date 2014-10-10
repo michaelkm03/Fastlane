@@ -17,17 +17,13 @@
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VObjectManager.h"
+#import "RKManagedObjectStore.h"
+#import "VAppDelegate.h"
 
 // Quick and dirty convenience method to avoid cluttering code
 NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     return [NSIndexPath indexPathForRow:row inSection:section];
 }
-
-@interface VObjectManager (UnitTest)
-
-- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
-
-@end
 
 @interface VDiscoverViewController (UnitTest)
 
@@ -64,6 +60,8 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     [super setUp];
     
+    [VObjectManager setupObjectManager];
+    
     // Replace these with empty blocks to prevent them from making actual calls to the server
     _originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(refresh)
                                                               withBlock:^{}];
@@ -95,12 +93,20 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     }
 }
 
+- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
+{
+    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+}
+
 - (NSArray *)createUsers:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VUser *user = (VUser *)[[VObjectManager sharedManager] objectWithEntityName:@"User" subclass:[VUser class]];
+        VUser *user = (VUser *)[self objectWithEntityName:@"User" subclass:[VUser class]];
+        XCTAssertNotNil( user );
         user.name = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
         user.remoteId = @(i);
         [models addObject:user];
@@ -113,7 +119,8 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VHashtag *hashtag = (VHashtag *)[[VObjectManager sharedManager] objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
+        VHashtag *hashtag = (VHashtag *)[self objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
+        XCTAssertNotNil( hashtag );
         hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
         [models addObject:hashtag];
     }
