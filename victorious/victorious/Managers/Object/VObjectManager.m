@@ -32,6 +32,7 @@
 #import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
+#import "VVoteAction+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -78,6 +79,16 @@
     [self setSharedManager:manager];
 }
 
++ (NSDateFormatter *)dateFormatter
+{
+    NSDateFormatter *dateFormatter;
+    dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    return dateFormatter;
+}
+
 - (void)victoriousSetup
 {
     //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.
@@ -113,6 +124,7 @@
                                              [VUnreadConversation descriptor],
                                              [VVoteType descriptor],
                                              [VImageSearchResult descriptor],
+                                             [VVoteAction descriptor]
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];
@@ -392,6 +404,15 @@
     }
     
     return object;
+}
+
+- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
+{
+    NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+    
+    return nil;
 }
 
 #pragma mark - Subclass

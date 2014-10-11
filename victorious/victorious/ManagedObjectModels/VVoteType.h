@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-
+/**
+ A configuration setting received from the server indicating which
+ vote actions (VVoteAction) can be made while viewing a sequence.
+ */
 @interface VVoteType : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * display_order;

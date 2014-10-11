@@ -130,6 +130,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
                                                                 toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        
+        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath targetPoint:convertedCenter];
+    }
+    else
+    {
+        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath];
     }
 }
 

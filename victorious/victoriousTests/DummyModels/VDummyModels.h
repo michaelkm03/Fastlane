@@ -7,7 +7,7 @@
 //
 
 #import "VUser.h"
-#import "VHashtag.h"
+//#import "VHashtag.h"
 
 @interface VDummyModels : NSObject
 
@@ -32,6 +32,5 @@
 
 + (NSArray *)createUsers:(NSInteger)count;
 
-+ (NSArray *)createHashtags:(NSInteger)count;
-
+//+ (NSArray *)createHashtags:(NSInteger)count;
 @end

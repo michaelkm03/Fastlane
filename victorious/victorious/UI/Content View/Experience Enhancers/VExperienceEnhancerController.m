@@ -9,7 +9,13 @@
 #import "VExperienceEnhancerController.h"
 #import "VExperienceEnhancer.h"
 #import "VSequence.h"
+#import "VVoteType.h"
+#import "VVoteAction+RestKit.h"
 #import "VSettingManager.h"
+#import "VObjectManager+Sequence.h"
+#import "VObjectManager+Private.h"
+
+#define USE_SETTINGS 1
 
 @interface VExperienceEnhancerController ()
 
@@ -25,11 +31,49 @@
 
 + (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence
 {
-    VExperienceEnhancerController *experienceEnhancerControllerForSequence = [[VExperienceEnhancerController alloc] init];
-    experienceEnhancerControllerForSequence.sequence = sequence;
+    return [[VExperienceEnhancerController alloc] initWithSequence:sequence];
+}
+
+#pragma mark - Initialization
+
+- (instancetype)initWithSequence:(VSequence *)sequence
+{
+    self = [super init];
+    if (self)
+    {
+        self.sequence = sequence;
+        
+#if USE_SETTINGS
+        NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
+        self.testEnhancers = [self createTestingExperienceEnhancersFromVoteTypes:voteTypes];
+#else
+        self.testEnhancers = [self createTestingExperienceEnhancers];
+#endif
+    }
+    return self;
+}
+
+- (NSArray *)createTestingExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes
+{
+    NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
+        [experienceEnhanders addObject:[self experienceEnhancerFromVoteType:voteType]];
+    }];
+    return [NSArray arrayWithArray:experienceEnhanders];
+}
+
+- (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
+{
+    // TODO: Finish creating VExperiewnceEnhaners from VVoteTypes
     
-    NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
-    
+    VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
+    enhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
+    enhancer.labelText = voteType.name;
+    return enhancer;
+}
+
+- (NSArray *)createTestingExperienceEnhancers
+{
     VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
     lisaEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
     lisaEnhancer.labelText = @"123";
@@ -45,15 +89,15 @@
     VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
     fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
     fireworkEnhancer.labelText = @"143";
-
+    
     VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
     thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
     thumbsUpEnhancer.labelText = @"321";
-
+    
     VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
     tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
     tongueEnhancer.labelText = @"555";
-
+    
     VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
     tomatoEnhancer.ballistic = YES;
     tomatoEnhancer.flightImage = [UIImage imageNamed:@"Tomato0"];
@@ -69,11 +113,16 @@
         [tomatoSequence addObject:[[UIImage imageNamed:tomatoImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     }
     tomatoEnhancer.animationSequence = tomatoSequence;
-  
     
-    experienceEnhancerControllerForSequence.testEnhancers = @[lisaEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, lisaEnhancer, tomatoEnhancer, lisaEnhancer, tomatoEnhancer];
-    
-    return experienceEnhancerControllerForSequence;
+    return @[ lisaEnhancer,
+              tomatoEnhancer,
+              fireworkEnhancer,
+              thumbsUpEnhancer,
+              tongueEnhancer,
+              lisaEnhancer,
+              tomatoEnhancer,
+              lisaEnhancer,
+              tomatoEnhancer ];
 }
 
 #pragma mark - Property Accessors
@@ -83,6 +132,7 @@
     _enhancerBar = enhancerBar;
     
     enhancerBar.dataSource = self;
+    enhancerBar.delegate = self;
 }
 
 #pragma mark - VExperienceEnhancerBarDataSource
@@ -95,6 +145,27 @@
 - (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index
 {
     return [self.testEnhancers objectAtIndex:(NSUInteger)index];
+}
+
+#pragma mark - VExperienceEnhancerDelegate
+
+- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer targetPoint:(CGPoint)point
+{
+    // TODO: Support x & y points.  Until then:
+    [self didVoteWithExperienceEnhander:experienceEnhancer];
+}
+
+- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer
+{
+    VObjectManager *objectManager = [VObjectManager sharedManager];
+    VVoteAction *action = [objectManager objectWithEntityName:[VVoteAction entityName] subclass:[VVoteAction class]];
+    action.date = [NSDate date];
+    action.sequence = self.sequence;
+    [[VObjectManager sharedManager] voteSingle:action successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+        
+    } failBlock:^(NSOperation *operation, NSError *error) {
+        
+    }];
 }
 
 @end
