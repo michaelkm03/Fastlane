@@ -19,6 +19,7 @@
 #import "VStream+Fetcher.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
+#import "VUser+Fetcher.h"
 
 // Activities
 #import "VFacebookActivity.h"
@@ -258,37 +259,40 @@
     shareItem.detailSelectionHandler = shareHandler;
     [actionItems addObject:shareItem];
     
-    VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
-                                                         actionIcon:[UIImage imageNamed:@"icon_flag"]
-                                                         detailText:nil];
-    flagItem.selectionHandler = ^(void)
+    if (![[[VObjectManager sharedManager] mainUser] isOwner])
     {
-        [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
-                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-             
-         }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed to flag sequence %@", self.viewModel.sequence);
-             
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-         }];
-    };
-    [actionItems addObject:flagItem];
+        VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
+                                                             actionIcon:[UIImage imageNamed:@"icon_flag"]
+                                                             detailText:nil];
+        flagItem.selectionHandler = ^(void)
+        {
+            [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
+                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+             {
+                 UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                        message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                              otherButtonTitles:nil];
+                 [alert show];
+                 
+             }
+                                               failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 VLog(@"Failed to flag sequence %@", self.viewModel.sequence);
+                 
+                 UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                        message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                              otherButtonTitles:nil];
+                 [alert show];
+             }];
+        };
+        [actionItems addObject:flagItem];
+    }
     
-    if ([self.viewModel.sequence canDelete])
+    if ([self.viewModel.sequence canDelete] || [[[VObjectManager sharedManager] mainUser] isOwner])
     {
         VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
                                                                actionIcon:nil
@@ -299,23 +303,55 @@
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 // Delete action
-                 [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                  {
-                      [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                 if ([[[VObjectManager sharedManager] mainUser] isOwner])
+                 {
+                     if (self.viewModel.sequence.user.remoteId == [[VObjectManager sharedManager] mainUser].remoteId)
+                     {
+                         // Is owner's content   
+                     }
+                     else
+                     {
+                         [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
+                                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                          {
+                              UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                     message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                                    delegate:nil
+                                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                           otherButtonTitles:nil];
+                              [alert show];
+                          }
+                                                            failBlock:^(NSOperation *operation, NSError *error)
+                          {
+                              UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                                     message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                                    delegate:nil
+                                                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                           otherButtonTitles:nil];
+                              [alert show];
+                          }];
+                     }
+                 }
+                 else
+                 {
+                     // Delete action
+                     [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                       {
-
-                          [self.delegate newContentViewCOntrollerDidDeleteContnet:self];
+                          [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                           {
+                               
+                               [self.delegate newContentViewCOntrollerDidDeleteContnet:self];
+                           }
+                                                                             failBlock:^(NSOperation *operation, NSError *error)
+                           {
+                           }];
                       }
-                                                                         failBlock:^(NSOperation *operation, NSError *error)
+                                                                        failBlock:^(NSOperation *operation, NSError *error)
                       {
                       }];
-                  }
-             failBlock:^(NSOperation *operation, NSError *error)
-                  {
-                  }];
+                 }
              }];
         };
         [actionItems addObject:deleteItem];
