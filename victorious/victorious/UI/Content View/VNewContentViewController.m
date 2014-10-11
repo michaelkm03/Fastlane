@@ -250,7 +250,7 @@
     [self.viewModel fetchComments];
     
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds), 0);
+    layout.contentInsets = UIEdgeInsetsMake(0, 0, -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
                                                                         0,
                                                                         CGRectGetHeight(self.textEntryView.bounds), 0);
