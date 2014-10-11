@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "VSettingManager.h"
 #import "VVoteType.h"
+#import "VDummyModels.h"
 
 @interface VSettingManagerTests : XCTestCase
 {
@@ -35,8 +36,17 @@
 
 - (void)testVoteTypes
 {
-    NSArray *voteTypes = @[ [NSObject new], [NSObject new], [NSObject new] ];
+    NSArray *voteTypes = [VDummyModels objectsWithEntityName:@"VoteType" subclass:[VVoteType class] count:5];
     [_settingsManager updateSettingsWithVoteTypes:voteTypes];
+    XCTAssertEqual( _settingsManager.voteTypes.count, voteTypes.count );
+}
+
+- (void)testVoteTypesFiltered
+{
+    NSArray *voteTypes = [VDummyModels objectsWithEntityName:@"VoteType" subclass:[VVoteType class] count:5];
+    NSArray *invalidObjects = @[ [NSObject new], [NSObject new], [NSObject new] ];
+    NSArray *combined = [voteTypes arrayByAddingObjectsFromArray:invalidObjects];
+    [_settingsManager updateSettingsWithVoteTypes:combined];
     XCTAssertEqual( _settingsManager.voteTypes.count, voteTypes.count );
 }
 
