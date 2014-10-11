@@ -13,6 +13,7 @@
 #import "VThemeManager.h"
 
 #import "VObjectManager+Login.h"
+#import "VResetPasswordViewController.h"
 
 @interface VEnterResetTokenViewController () <UITextFieldDelegate>
 
@@ -131,8 +132,12 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [[VObjectManager sharedManager] resetPasswordWithUserToken:textField.text
+    // Capture the entered user token
+    self.userToken = textField.text;
+    
+    [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken
+                                                   newPassword:nil
                                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [self performSegueWithIdentifier:@"toResetPassword" sender:self];
@@ -148,6 +153,19 @@
      }];
     
     return YES;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ( [segue.identifier isEqualToString:@"toResetPassword"] )
+    {
+        // Pass along some properties that the next view controller will also need
+        VResetPasswordViewController *resetViewController = (VResetPasswordViewController *)segue.destinationViewController;
+        resetViewController.deviceToken = self.deviceToken;
+        resetViewController.userToken = self.userToken;
+    }
 }
 
 @end

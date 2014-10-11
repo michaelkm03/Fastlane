@@ -7,6 +7,7 @@
 //
 
 #import "VFindFriendsTableViewController.h"
+#import "VFindFriendsViewController.h"
 #import "VFindFriendsTableView.h"
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
@@ -42,6 +43,7 @@
 {
     self.view = [VFindFriendsTableView newFromNibWithOwner:self];
     [self.tableView.tableView registerNib:[UINib nibWithNibName:VInviteFriendTableViewCellNibName bundle:nil] forCellReuseIdentifier:VInviteFriendTableViewCellNibName];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,6 +102,7 @@
                 [self.tableView.tableView reloadData];
                 self.tableView.clearButton.hidden = NO;
                 self.tableView.selectAllButton.hidden = NO;
+                self.tableView.inviteFriendsButton.hidden = YES;
                 if (self.shouldAutoselectNewFriends)
                 {
                     [self selectAllRows:nil];
@@ -206,7 +209,9 @@
     // Disable the Add All button if we don't have anyone to potentially add
     if (self.usersNotFollowing.count == 0)
     {
-        [self.tableView.selectAllButton setEnabled:NO];
+        self.tableView.selectAllButton.hidden = YES;
+        self.tableView.inviteFriendsButton.hidden = NO;
+        //[self.tableView.selectAllButton setEnabled:NO];
         [self.tableView.selectAllButton.layer setBorderColor:[[UIColor colorWithWhite:0.781 alpha:1.000] CGColor]];
         [self.tableView.selectAllButton.titleLabel setTextColor:[UIColor colorWithWhite:0.781 alpha:1.000]];
     }
@@ -227,19 +232,20 @@
     {
         VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
         self.tableView.tableView.backgroundView = noFollowersView;
-        noFollowersView.titleLabel.text = NSLocalizedString(@"NoFriends", @"");
+        noFollowersView.titleLabel.text = [NSLocalizedString(@"NoFriends", @"") uppercaseString];
         noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
         noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
         self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.tableView.clearButton.hidden = YES;
         self.tableView.selectAllButton.hidden = YES;
+        self.tableView.inviteFriendsButton.hidden = NO;
     }
     else
     {
         self.tableView.tableView.backgroundView = nil;
         self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.tableView.separatorInset = UIEdgeInsetsZero;
     }
-
 }
 
 - (NSArray *)selectedUsers
@@ -275,6 +281,11 @@
 - (IBAction)selectAllButtonTapped:(id)sender
 {
     [self selectAllRows:sender];
+}
+
+- (IBAction)inviteButtonTapped:(id)sender
+{
+    [self.delegate inviteButtonWasTappedInFindFriendsTableViewController:self];
 }
 
 - (void)selectAllRows:(id)sender
@@ -522,6 +533,7 @@
     };
 
     return cell;
+    
 }
 
 @end

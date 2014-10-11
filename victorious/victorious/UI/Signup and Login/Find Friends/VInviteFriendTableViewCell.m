@@ -65,8 +65,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     
     if (_haveRelationship)
     {
-        self.followIconImageView.hidden = YES;
-        //self.followIconImageView.image = self.unfollowIcon;
+        //self.followIconImageView.hidden = YES;
+        self.followIconImageView.image = self.unfollowIcon;
     }
     else
     {
@@ -104,7 +104,7 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 {
     void (^animations)() = ^(void)
     {
-        self.followIconImageView.alpha = 1.0f;
+        //self.followIconImageView.alpha = 1.0f;
         [self.followIconImageView  setImage:self.unfollowIcon];
     };
     

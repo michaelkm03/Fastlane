@@ -25,8 +25,9 @@ static NSString * const kSequenceKey  = @"sequence";
     dispatch_once(&onceToken, ^(void)
     {
         dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     });
     return dateFormatter;
 }
