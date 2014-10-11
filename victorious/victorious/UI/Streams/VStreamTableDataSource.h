@@ -13,7 +13,7 @@
 /**
  *  Posted whenever the underlying data source chages.
  */
-UIKIT_EXTERN NSString *const VStreamTableDataSourceDidChangeNotification;
+extern NSString *const VStreamTableDataSourceDidChangeNotification;
 
 @class VSequence, VSequenceFilter, VAbstractFilter, VStreamTableDataSource;
 
