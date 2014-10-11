@@ -307,7 +307,7 @@
                  {
                      if (self.viewModel.sequence.user.remoteId == [[VObjectManager sharedManager] mainUser].remoteId)
                      {
-                         // Is owner's content   
+                         // Is owner's content
                      }
                      else
                      {
@@ -342,7 +342,7 @@
                                                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                            {
                                
-                               [self.delegate newContentViewCOntrollerDidDeleteContnet:self];
+                               [self.delegate newContentViewControllerDidDeleteContent:self];
                            }
                                                                              failBlock:^(NSOperation *operation, NSError *error)
                            {

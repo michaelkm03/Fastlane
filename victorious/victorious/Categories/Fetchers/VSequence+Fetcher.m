@@ -16,7 +16,7 @@
 #import "VAnswer.h"
 #import "VUser.h"
 
-NS_OPTIONS(NSInteger, VSequencePermissionOptions)
+typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VSequencePermissionOptionsNone      = 0,
     VSequencePermissionOptionsDelete    = 1 << 0,

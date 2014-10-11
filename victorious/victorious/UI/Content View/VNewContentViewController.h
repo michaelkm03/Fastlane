@@ -15,7 +15,7 @@
 @protocol VNewContentViewControllerDelegate  <NSObject>
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController;
-- (void)newContentViewCOntrollerDidDeleteContnet:(VNewContentViewController *)contentViewController;
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController;
 
 @end
 
@@ -24,6 +24,9 @@
  */
 @interface VNewContentViewController : UIViewController
 
+/**
+ *  VNewContentViewController informs its delegate when it is ready to be dismissed or performed a deletion action.
+ */
 @property (nonatomic, weak) id <VNewContentViewControllerDelegate> delegate;
 
 /**

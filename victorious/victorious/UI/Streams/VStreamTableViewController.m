@@ -841,7 +841,7 @@
                              completion:nil];
 }
 
-- (void)newContentViewCOntrollerDidDeleteContnet:(VNewContentViewController *)contentViewController
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
 {
     [self refreshWithCompletion:nil];
     [self dismissViewControllerAnimated:YES
