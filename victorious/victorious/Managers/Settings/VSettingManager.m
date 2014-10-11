@@ -12,6 +12,7 @@
 
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
+#import "VVoteType.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";
@@ -53,9 +54,30 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     {
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
+        
+        [self clearVoteTypes];
     }
     
     return self;
+}
+
+- (void)clearVoteTypes
+{
+    _voteTypes = @[];
+}
+
+- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
+{
+    // Error checking
+    if ( voteTypes == nil || voteTypes.count == 0 )
+    {
+        return;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return [evaluatedObject isMemberOfClass:[VVoteType class]];
+    }];
+    _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

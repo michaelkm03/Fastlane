@@ -7,10 +7,9 @@
 //
 
 #import "VExperienceEnhancerController.h"
-
 #import "VExperienceEnhancer.h"
-
 #import "VSequence.h"
+#import "VSettingManager.h"
 
 @interface VExperienceEnhancerController ()
 
@@ -27,8 +26,9 @@
 + (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence
 {
     VExperienceEnhancerController *experienceEnhancerControllerForSequence = [[VExperienceEnhancerController alloc] init];
-    
     experienceEnhancerControllerForSequence.sequence = sequence;
+    
+    NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
     
     VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
     lisaEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];

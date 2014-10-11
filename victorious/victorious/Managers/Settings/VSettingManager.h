@@ -37,4 +37,9 @@ extern NSString * const kVChannelURLSupport;
 - (NSString *)exportVideoQuality;
 - (NSString *)captureVideoQuality;
 
+- (void)clearVoteTypes;
+- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
+
+@property (nonatomic, readonly) NSArray *voteTypes;
+
 @end
