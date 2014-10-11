@@ -370,7 +370,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
 - (CGPoint)lockPoint
 {
     CGPoint lockPoint = [self catchPoint];
-    lockPoint.y = lockPoint.y + VShrinkingContentLayoutMinimumContentHeight + self.histogramSize.height + self.experienceEnhancerSize.height;
+    lockPoint.y = lockPoint.y + VShrinkingContentLayoutMinimumContentHeight + self.histogramSize.height + self.experienceEnhancerSize.height - self.allCommentsHandleSize.height;
     return lockPoint;
 }
 

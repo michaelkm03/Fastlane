@@ -752,8 +752,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [UIView animateWithDuration:0.0f
                           animations:^
           {
-              [welf.contentCollectionView reloadData];
-              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+              [welf commentsDidUpdate:nil];
           }];
      }];
     
