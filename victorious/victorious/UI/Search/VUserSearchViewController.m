@@ -41,6 +41,8 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 
+#import "VFriendsManager.h"
+
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -250,26 +252,6 @@
 
 #pragma mark - Friend Actions
 
-- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    // Return if we don't have a way to handle the return
-    if (!successBlock)
-    {
-        return;
-    }
-    
-    [[VObjectManager sharedManager] followUser:user
-                                  successBlock:successBlock
-                                     failBlock:failureBlock];
-}
-
-- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] unfollowUser:user
-                                    successBlock:successBlock
-                                       failBlock:failureBlock];
-}
-
 - (void)followFriendAction:(VUser *)user
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -326,7 +308,7 @@
     };
     
     // Add user at backend
-    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -359,7 +341,6 @@
                 return;
             }
         }
-        
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -393,7 +374,7 @@
         [alert show];
     };
     
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VFriendsManager sharedFriendsManager] unfollowUser:user withSuccess:successBlock withFailure:failureBlock];
     
 }
 
@@ -406,10 +387,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile = self.foundUsers[indexPath.row];
     
-    BOOL haveRelationship = ([mainUser.following containsObject:profile]);
+    BOOL haveRelationship = ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile]);
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = profile;
@@ -425,7 +405,7 @@
             return;
         }
 
-        if ([mainUser.following containsObject:profile])
+        if ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile])
         {
             [self unfollowFriendAction:profile];
         }

@@ -11,6 +11,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import "VFriendsManager.h"
 
 @interface      VFollowerTableViewCell ()
 
@@ -86,7 +87,7 @@
 
 - (void)flipFollowIconAction:(id)sender
 {
-    BOOL relationship = [self determineRelationshipWithUser:self.profile];
+    BOOL relationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:self.profile];
     void (^animations)() = ^(void)
     {
         if (relationship)
@@ -105,7 +106,10 @@
                       duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
-                    completion:nil];
+                    completion:^(BOOL finished)
+     {
+         [self enableFollowIcon:nil];
+     }];
 }
 
 - (void)disableFollowIcon:(id)sender
@@ -123,12 +127,19 @@
                     completion:nil];
 }
 
-- (BOOL)determineRelationshipWithUser:(VUser *)targetUser
+- (void)enableFollowIcon:(id)sender
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
-    //NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
-    return relationship;
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.userInteractionEnabled = YES;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
 }
 
 @end

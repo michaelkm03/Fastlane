@@ -10,6 +10,7 @@
 #import "VFindFriendsTableView.h"
 #import "VFindTwitterFriendsTableViewController.h"
 #import "VObjectManager+Users.h"
+#import "VFriendsManager.h"
 
 @import Accounts;
 
@@ -155,31 +156,16 @@
     });
 }
 
+#pragma mark - Follow / Unfollow Users
+
 - (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
 {
-    // Return if we don't have a way to handle the return
-    if (!successBlock)
-    {
-        return;
-    }
-    
-    [[VObjectManager sharedManager] followUser:user
-                                  successBlock:successBlock
-                                     failBlock:failureBlock];
+    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
 }
 
 - (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
 {
-    [[VObjectManager sharedManager] unfollowUser:user
-                                    successBlock:successBlock
-                                       failBlock:failureBlock];
-}
-
-#pragma mark - VFindFriendsDelegate Method
-
-- (void)didReceiveFriendRequestResponse:(NSArray *)responseObject
-{
-    NSLog(@"\n\n-----\nTwitter Find Friends Delegate is Being Called\n-----\n\n");
+    [[VFriendsManager sharedFriendsManager] unfollowUser:user withSuccess:successBlock withFailure:failureBlock];
 }
 
 @end

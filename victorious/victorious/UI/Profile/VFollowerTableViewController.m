@@ -17,6 +17,7 @@
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
+#import "VFriendsManager.h"
 
 @interface VFollowerTableViewController ()
 
@@ -61,26 +62,6 @@
 }
 
 #pragma mark - Friend Actions
-
-- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    // Return if we don't have a way to handle the return
-    if (!successBlock)
-    {
-        return;
-    }
-    
-    [[VObjectManager sharedManager] followUser:user
-                                  successBlock:successBlock
-                                     failBlock:failureBlock];
-}
-
-- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] unfollowUser:user
-                                    successBlock:successBlock
-                                       failBlock:failureBlock];
-}
 
 - (void)followFriendAction:(VUser *)user
 {
@@ -138,7 +119,7 @@
     };
     
     // Add user at backend
-    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -204,17 +185,8 @@
         [alert show];
     };
     
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VFriendsManager sharedFriendsManager] unfollowUser:user withSuccess:successBlock withFailure:failureBlock];
     
-}
-
-#pragma mark - Check Relationship Status
-
-- (BOOL)determineRelationshipWithUser:(VUser *)targetUser
-{
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = ([mainUser.following containsObject:targetUser]);
-    return relationship;
 }
 
 #pragma mark - Table view data source
@@ -227,7 +199,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *profile = self.followers[indexPath.row];
-    BOOL haveRelationship = [self determineRelationshipWithUser:profile];
+    BOOL haveRelationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:profile];
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
@@ -245,8 +217,7 @@
             return;
         }
         
-
-        if ([self determineRelationshipWithUser:profile])
+        if ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile])
         {
             [self unfollowFriendAction:profile];
         }
