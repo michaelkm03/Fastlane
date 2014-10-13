@@ -40,6 +40,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     
     [self refresh];
 }
@@ -50,6 +51,10 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 }
 
 #pragma mark - NSNotification selectors
+
+- (void)loginStatusDidChange:(NSNotification *)note
+{
+}
 
 - (void)followingDidUpdate:(NSNotification *)note
 {
@@ -66,13 +71,13 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     // Find the user that was updated and update our version of it to match
     [self.suggestedUsers enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
-    {
-        if ( [user isEqualToUser:updatedUser] )
-        {
-            user.isFollowing = updatedUser.isFollowing;
-            *stop = YES;
-        }
-    }];
+     {
+         if ( [user isEqualToUser:updatedUser] )
+         {
+             user.isFollowing = updatedUser.isFollowing;
+             *stop = YES;
+         }
+     }];
     
     [self.collectionView reloadData];
 }
@@ -85,7 +90,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
      {
          [self didLoadWithUsers:resultObjects];
      }
-                                                                   failBlock:^(NSOperation *operation, NSError *error)
+                                            failBlock:^(NSOperation *operation, NSError *error)
      {
          [self didFailToLoadWithError:error];
      }];
@@ -93,12 +98,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 - (void)didLoadWithUsers:(NSArray *)users
 {
-#warning "The following loop is for testing/demo purposes until the numberOfFollowers value is available on the user objects returned from the server."
-    for ( VUser *user in users )
-    {
-        user.numberOfFollowers = @( arc4random() % 2000 );
-    }
-    
     if ( users.count == 0 )
     {
         self.hasLoadedOnce = YES;
@@ -109,6 +108,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
         self.suggestedUsers = users;
         [self.collectionView reloadData];
     }
+    
     if ( self.delegate != nil )
     {
         [self.delegate didFinishLoading];
