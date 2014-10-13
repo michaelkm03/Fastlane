@@ -10,6 +10,7 @@
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
+#import "VFindFriendsTableViewController.h"
 #import "VFindInstagramFriendsViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
 #import "VObjectManager+Users.h"
@@ -21,7 +22,7 @@
 
 @import MessageUI;
 
-@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
+@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
@@ -72,7 +73,6 @@
     
     NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
     self.appStoreLink = appStoreUrl.absoluteString;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,6 +127,17 @@
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
                                           v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"])
                                           ];
+    
+    self.contactsInnerViewController.delegate = self;
+    self.facebookInnerViewController.delegate = self;
+    self.twitterInnerViewController.delegate = self;
+}
+
+#pragma mark - VFindFriendsTableViewControllerDelegate Method
+
+- (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController
+{
+    [self pressedInvite:nil];
 }
 
 #pragma mark - Button Actions
@@ -191,7 +202,7 @@
         [[VThemeManager sharedThemeManager] removeStyling];
         
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
+        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
@@ -215,7 +226,7 @@
         [[VThemeManager sharedThemeManager] removeStyling];
         
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"InviteFriendsSubject", @""), appName];
+        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];

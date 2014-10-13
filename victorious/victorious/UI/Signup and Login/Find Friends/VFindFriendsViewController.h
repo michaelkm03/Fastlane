@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface VFindFriendsViewController : UIViewController
 
 @property (nonatomic) BOOL shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed

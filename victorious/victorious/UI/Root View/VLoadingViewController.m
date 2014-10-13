@@ -12,6 +12,8 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
@@ -168,9 +170,13 @@ static const NSUInteger kRetryAttempts = 5;
             
             VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
             streamContainer.shouldShowHeaderLogo = YES;
+            streamContainer.shouldShowUploadProgress = YES;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
+                // Load a user's following and followers
+                [self loadFollowersAndFollowing:user];
+                
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
                 [self.navigationController pushViewController:streamContainer animated:YES];
             }
@@ -219,6 +225,74 @@ static const NSUInteger kRetryAttempts = 5;
     {
         [self loadInitData];
     }
+}
+
+- (void)loadFollowersAndFollowing:(VUser *)user
+{
+    VSuccessBlock followersSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.followers containsObject:userObject])
+            {
+                [mainUser addFollowersObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    VSuccessBlock followingSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.following containsObject:userObject])
+            {
+                [mainUser addFollowingObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+
+    
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:followersSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:followingSuccessBlock failBlock:nil];
+
+}
+
+- (void)loadFollowing:(VUser *)user
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.followers containsObject:userObject])
+            {
+                [mainUser addFollowingObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                        message:error.localizedDescription
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:successBlock failBlock:failureBlock];
+    
 }
 
 @end

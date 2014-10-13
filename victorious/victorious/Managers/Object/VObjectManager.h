@@ -8,7 +8,7 @@
 
 #import "RKObjectManager.h"
 
-@class VPaginationManager, VUser;
+@class VUploadManager, VPaginationManager, VUser;
 
 /*! Block that executes when the request succeeds. */
 typedef void (^VSuccessBlock) (NSOperation *operation, id result, NSArray *resultObjects);
@@ -18,7 +18,8 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 @interface VObjectManager : RKObjectManager
 
 @property (nonatomic, readonly) VUser              *mainUser;
-@property (nonatomic, readonly) VPaginationManager *paginationManager; ///< The pagination manager for the receiver
+@property (nonatomic, readonly) VPaginationManager *paginationManager; ///< An object responsible for tracking paginated responses
+@property (nonatomic, readonly) VUploadManager     *uploadManager; ///< An object responsible for uploading files
 
 + (void)setupObjectManager;
 

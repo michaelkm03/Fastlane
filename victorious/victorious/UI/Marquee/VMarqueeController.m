@@ -39,15 +39,13 @@
     return [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
-- (id)init
+- (instancetype)initWithStream:(VStream *)stream
 {
     self = [super init];
     if (self)
     {
-        self.stream = [VStream streamForMarquee];
-        // Do any additional setup after loading the view from its nib.
-        
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:_stream];
+        self.stream = stream;
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
         self.streamDataSource.delegate = self;
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;

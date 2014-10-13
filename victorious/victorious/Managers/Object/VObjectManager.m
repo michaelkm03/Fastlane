@@ -8,10 +8,12 @@
 
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
+#import "VMultipartFormDataWriter.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
+#import "VUploadManager.h"
 #import "VRootViewController.h"
 
 #import "VConstants.h"
@@ -36,6 +38,7 @@
 @interface VObjectManager ()
 
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
+@property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
 
 @end
 
@@ -53,15 +56,7 @@
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    
-    //Add the App ID to the User-Agent field
-    //(this is the only non-dynamic header, so set it now)
-    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[kVUserAgentHeader];
-    
-    NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSNumber *appID = [VObjectManager currentEnvironment].appID;
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
-    [[manager HTTPClient] setDefaultHeader:kVUserAgentHeader value:userAgent];
+    manager.uploadManager = [[VUploadManager alloc] initWithObjectManager:manager];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -414,7 +409,11 @@
 - (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request
 {
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString *userAgent = request.allHTTPHeaderFields[kVUserAgentHeader];
+    NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
+    NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSNumber *appID = [VObjectManager currentEnvironment].appID;
+    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
+    [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
     
     __block NSString *token;
     __block NSNumber *userID;
