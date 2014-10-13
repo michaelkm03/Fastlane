@@ -284,7 +284,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-             [collectionView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+             [collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
          }
                          completion:^(BOOL finished)
          {
