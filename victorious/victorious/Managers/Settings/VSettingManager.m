@@ -74,10 +74,59 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         return;
     }
     
+    // Check that only objects of type VVoteType are accepted
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         return [evaluatedObject isMemberOfClass:[VVoteType class]];
     }];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
+    
+    // Sort by display order
+    _voteTypes = [_voteTypes sortedArrayWithOptions:0 usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2) {
+        return [v1.display_order compare:v2.display_order];
+    }];
+    
+    [self cacheVoteTypeImages:_voteTypes];
+}
+
+- (void) cacheVoteTypeImages:(NSArray *)voteTypes
+{
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger i, BOOL *stop) {
+        
+        if ( [voteType.images isKindOfClass:[NSArray class]] )
+        {
+            
+            NSArray* images = (NSArray*)voteType.images;
+            [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                
+                NSString *path = [NSString stringWithFormat:@"vote_types/%@/sprites", voteType.name];
+                NSString *fullPath = [self getCachesDirectoryPathForPath:path];
+                
+            }];
+        }
+        
+    }];
+}
+
+- (NSString *) getCachesDirectoryPathForPath:(NSString*)path
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [paths objectAtIndex:0];
+    NSString *compoundPath = [cachePath stringByAppendingPathComponent:path];
+    
+    BOOL isDirectory;
+    BOOL doesFileExist = [[NSFileManager defaultManager] fileExistsAtPath:compoundPath isDirectory:&isDirectory];
+    if ( doesFileExist && !isDirectory ) {
+        NSError *error;
+        BOOL didCreateDirectory = [[NSFileManager defaultManager] createDirectoryAtPath:compoundPath
+                                                            withIntermediateDirectories:YES
+                                                                             attributes:nil
+                                                                                  error:&error];
+        if ( !didCreateDirectory ) {
+            return nil;
+        }
+    }
+    
+    return compoundPath;
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

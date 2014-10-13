@@ -14,8 +14,15 @@
 #import "VSettingManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
+#import "UIImageView+AFNetworking.h"
 
-#define USE_SETTINGS 1
+/**
+ This will switch between (0) using hardcoded experience enhancers that demonstrate
+ the full range of animation capabilities and (1) using only the experience enhancers
+ enabled by the server in its response to /api/init and the data each contains.
+ */
+// TODO: Remove this
+#define USE_INIT_SETTINGS 1
 
 @interface VExperienceEnhancerController ()
 
@@ -43,9 +50,9 @@
     {
         self.sequence = sequence;
         
-#if USE_SETTINGS
+#if USE_INIT_SETTINGS
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
-        self.testEnhancers = [self createTestingExperienceEnhancersFromVoteTypes:voteTypes];
+        self.testEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
 #else
         self.testEnhancers = [self createTestingExperienceEnhancers];
 #endif
@@ -53,7 +60,7 @@
     return self;
 }
 
-- (NSArray *)createTestingExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes
 {
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
@@ -64,11 +71,20 @@
 
 - (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
 {
-    // TODO: Finish creating VExperiewnceEnhaners from VVoteTypes
-    
     VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
-    enhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
     enhancer.labelText = voteType.name;
+    
+    // TODO: Finish creating VExperiewnceEnhaners from VVoteTypes, figure out what to do with images
+    if ( [voteType.images isKindOfClass:[NSArray class]] )
+    {
+        NSArray *images = (NSArray *)voteType.images;
+        if ( images.count > 0 )
+        {
+            NSURL *url = [NSURL URLWithString:voteType.images[0]];
+            enhancer.icon = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        }
+    }
+   
     return enhancer;
 }
 

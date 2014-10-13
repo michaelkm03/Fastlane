@@ -15,5 +15,6 @@
 @dynamic name;
 @dynamic remoteId;
 @dynamic images;
+@dynamic icon;
 
 @end

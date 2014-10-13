@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) id images;
+@property (nonatomic, retain) NSString * icon;
 
 @end

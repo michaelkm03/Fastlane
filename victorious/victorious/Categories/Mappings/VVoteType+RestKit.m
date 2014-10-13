@@ -23,7 +23,8 @@
                                   @"display_order"  : VSelectorName(display_order),
                                   @"name"           : VSelectorName(name),
                                   @"id"             : VSelectorName(remoteId),
-                                  @"images"         : VSelectorName(images)
+                                  @"images"         : VSelectorName(images),
+                                  @"icon"           : VSelectorName(icon)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

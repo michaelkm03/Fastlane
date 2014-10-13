@@ -34,6 +34,21 @@
     return [NSArray arrayWithArray:models];
 }
 
++ (NSArray *)createVoteTypes:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        VVoteType *voteType = (VVoteType *)[self objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
+        voteType.name = [NSString stringWithFormat:@"voteType_%lu", (unsigned long)i];
+        voteType.remoteId = @(i+1);
+        voteType.display_order = @(i+1);
+        voteType.images = @[ @"http://www.domain.com/image.png", @"http://www.domain.com/image.png", @"http://www.domain.com/image.png" ];
+        [models addObject:voteType];
+    }
+    return [NSArray arrayWithArray:models];
+}
+
 + (NSArray *)createUsers:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
