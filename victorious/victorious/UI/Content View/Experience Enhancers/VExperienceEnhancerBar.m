@@ -16,7 +16,7 @@ static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
 static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.15f;
 static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 
-@interface VExperienceEnhancerBar () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface VExperienceEnhancerBar () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSArray *enhancers;
 
@@ -107,6 +107,13 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 }
 
 #pragma mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [VExperienceEnhancerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+}
 
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath

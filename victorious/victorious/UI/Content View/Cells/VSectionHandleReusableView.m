@@ -33,7 +33,6 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
 - (void)awakeFromNib
 {
     self.commentCountLabel.text = nil;
-    self.commentCountLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
     self.handleIcon.image = [self.handleIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.handleIcon.tintColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
@@ -46,8 +45,12 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
     _numberOfComments = numberOfComments;
     
     NSString *commentText = [NSString stringWithFormat:@"%@ %@", @(numberOfComments), (numberOfComments > 1) ? NSLocalizedString(@"Comments", @"") : NSLocalizedString(@"Comment", @"")];
-    
-    self.commentCountLabel.text = commentText;
+
+    self.commentCountLabel.attributedText = [[NSAttributedString alloc] initWithString:commentText
+                                                                            attributes:@{
+                                                                                         NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font],
+                                                                                         NSForegroundColorAttributeName : [UIColor colorWithRed:35/255.0f green:35/255.0f blue:35/255.0f alpha:1.0f]
+                                                                                         }];
 }
 
 @end

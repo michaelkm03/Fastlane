@@ -35,7 +35,6 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
     [super awakeFromNib];
     
     VExperienceEnhancerBar *experienceEnhancerBar = [VExperienceEnhancerBar experienceEnhancerBar];
-//    experienceEnhancerBar.frame = self.contentView.bounds;
     experienceEnhancerBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:experienceEnhancerBar];
     

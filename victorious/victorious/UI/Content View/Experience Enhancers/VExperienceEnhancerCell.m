@@ -8,12 +8,17 @@
 
 #import "VExperienceEnhancerCell.h"
 
-static const CGFloat kVExperienceEnhancerCellWidth = 35.0f;
+#import "VThemeManager.h"
+
+static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
+static const CGFloat kThreePointFiveInchScreenHeight = 480.0f;
+static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
 @interface VExperienceEnhancerCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 
 @end
 
@@ -31,6 +36,11 @@ static const CGFloat kVExperienceEnhancerCellWidth = 35.0f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    if ([UIScreen mainScreen].bounds.size.height == kThreePointFiveInchScreenHeight)
+    {
+        self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
+    }
 }
 
 #pragma mark - UICollectionReusableView
@@ -56,6 +66,7 @@ static const CGFloat kVExperienceEnhancerCellWidth = 35.0f;
 {
     _experienceEnhancerTitle = [experienceEnhancerTitle copy];
     self.experienceEnhancerLabel.text = _experienceEnhancerTitle;
+    self.experienceEnhancerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon

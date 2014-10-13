@@ -10,15 +10,16 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="37"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" misplaced="YES" image="Drawer Handle Icon " translatesAutoresizingMaskIntoConstraints="NO" id="FrK-0D-wQa">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="Drawer Handle Icon " translatesAutoresizingMaskIntoConstraints="NO" id="FrK-0D-wQa">
                     <rect key="frame" x="125" y="9" width="51" height="4"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="4" id="XbD-k6-2Ft"/>
+                        <constraint firstAttribute="width" constant="51" id="iBc-O6-RYJ"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21 Comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6X-zQ-QMe">
-                    <rect key="frame" x="124" y="21" width="53" height="9"/>
+                    <rect key="frame" x="124" y="21" width="53" height="10"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="8"/>
                     <nil key="highlightedColor"/>
@@ -26,7 +27,6 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="C6X-zQ-QMe" secondAttribute="bottom" constant="7" id="KXI-kT-CrN"/>
                 <constraint firstAttribute="centerX" secondItem="C6X-zQ-QMe" secondAttribute="centerX" id="NSy-5X-2nb"/>
                 <constraint firstItem="FrK-0D-wQa" firstAttribute="top" secondItem="na0-Sx-iro" secondAttribute="top" constant="9" id="QHI-17-3Zz"/>
                 <constraint firstAttribute="centerX" secondItem="FrK-0D-wQa" secondAttribute="centerX" id="lva-Uu-mkj"/>
