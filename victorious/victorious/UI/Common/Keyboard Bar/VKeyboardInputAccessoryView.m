@@ -14,7 +14,7 @@
 // Theme
 #import "VThemeManager.h"
 
-const CGFloat VInputAccessoryViewDesiredMinimumHeight = 45.0f;
+const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
