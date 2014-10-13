@@ -262,6 +262,7 @@
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
 		A7814A0A19E5FD0600D89B90 /* VPasswordValidationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */; };
 		A7814A0C19E61BA900D89B90 /* VChangePasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */; };
+		A7A4648819EC59DB0062D540 /* VVoteTypeImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A4648719EC59DB0062D540 /* VVoteTypeImageCache.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -929,6 +930,8 @@
 		A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteAction+RestKit.m"; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VChangePasswordTests.m; sourceTree = "<group>"; };
+		A7A4648619EC59DB0062D540 /* VVoteTypeImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteTypeImageCache.h; sourceTree = "<group>"; };
+		A7A4648719EC59DB0062D540 /* VVoteTypeImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeImageCache.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1337,6 +1340,8 @@
 			children = (
 				0314D0BB19B469C100FA363C /* VSettingManager.h */,
 				0314D0BC19B469C100FA363C /* VSettingManager.m */,
+				A7A4648619EC59DB0062D540 /* VVoteTypeImageCache.h */,
+				A7A4648719EC59DB0062D540 /* VVoteTypeImageCache.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3361,6 +3366,7 @@
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				0314D0B419B4698800FA363C /* VObjectManager+Login.m in Sources */,
 				0314D48019B46B5E00FA363C /* VCommentCell.m in Sources */,
+				A7A4648819EC59DB0062D540 /* VVoteTypeImageCache.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,

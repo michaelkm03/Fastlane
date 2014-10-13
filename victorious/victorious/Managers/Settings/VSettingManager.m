@@ -13,6 +13,7 @@
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
 #import "VVoteType.h"
+#import "VVoteTypeImageCache.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";
@@ -31,6 +32,12 @@ NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
 NSString * const   kVAppStoreURL                       =   @"url.appstore";
 NSString * const   kVPrivacyUrl                        =   @"url.privacy";
+
+@interface VSettingManager()
+
+@property (nonatomic, strong) VVoteTypeImageCache *voteTypeImageCache;
+
+@end
 
 @implementation VSettingManager
 
@@ -56,6 +63,8 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
         
         [self clearVoteTypes];
+        
+        self.voteTypeImageCache = [[VVoteTypeImageCache alloc] init];
     }
     
     return self;
@@ -85,48 +94,9 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         return [v1.display_order compare:v2.display_order];
     }];
     
-    [self cacheVoteTypeImages:_voteTypes];
-}
-
-- (void) cacheVoteTypeImages:(NSArray *)voteTypes
-{
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger i, BOOL *stop) {
-        
-        if ( [voteType.images isKindOfClass:[NSArray class]] )
-        {
-            
-            NSArray* images = (NSArray*)voteType.images;
-            [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                
-                NSString *path = [NSString stringWithFormat:@"vote_types/%@/sprites", voteType.name];
-                NSString *fullPath = [self getCachesDirectoryPathForPath:path];
-                
-            }];
-        }
-        
+    [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
+        [self.voteTypeImageCache cacheImagesForVoteType:v];
     }];
-}
-
-- (NSString *) getCachesDirectoryPathForPath:(NSString*)path
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [paths objectAtIndex:0];
-    NSString *compoundPath = [cachePath stringByAppendingPathComponent:path];
-    
-    BOOL isDirectory;
-    BOOL doesFileExist = [[NSFileManager defaultManager] fileExistsAtPath:compoundPath isDirectory:&isDirectory];
-    if ( doesFileExist && !isDirectory ) {
-        NSError *error;
-        BOOL didCreateDirectory = [[NSFileManager defaultManager] createDirectoryAtPath:compoundPath
-                                                            withIntermediateDirectories:YES
-                                                                             attributes:nil
-                                                                                  error:&error];
-        if ( !didCreateDirectory ) {
-            return nil;
-        }
-    }
-    
-    return compoundPath;
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary
