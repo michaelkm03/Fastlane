@@ -124,13 +124,13 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
         [attributes addObject:contentBackgroundAttributes];
     }
     
-    if (self.collectionView.contentOffset.y < [self lockPoint].y)
+    if (self.collectionView.contentOffset.y < [self catchPoint].y)
     {
         UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
         [attributes addObject:histogramLayoutAttributes];
     }
     
-    if (self.collectionView.contentOffset.y < [self lockPoint].y)
+    if (self.collectionView.contentOffset.y < [self catchPoint].y)
     {
         UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
         [attributes addObject:tickerLayoutAttributes];
@@ -362,11 +362,13 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
                                                  layout:self
                                  sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
     self.experienceEnhancerSize = [layoutDelegate collectionView:self.collectionView
-                                              layout:self
-                              sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
+                                                          layout:self
+                                          sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
     self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
                                                          layout:self
                                 referenceSizeForHeaderInSection:VContentViewSectionAllComments];
+    
+    self.cachedContentSize = CGSizeZero;
     
 }
 
@@ -381,7 +383,8 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
 - (CGPoint)lockPoint
 {
     CGPoint lockPoint = [self catchPoint];
-    lockPoint.y = lockPoint.y + VShrinkingContentLayoutMinimumContentHeight + self.histogramSize.height + self.experienceEnhancerSize.height - self.allCommentsHandleSize.height;
+    lockPoint.y = lockPoint.y + fabsf(VShrinkingContentLayoutMinimumContentHeight - self.mediaContentSize.height);
+    
     return lockPoint;
 }
 
