@@ -23,6 +23,7 @@
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 #import "VObjectManager.h"
+#import "VFriendsManager.h"
 
 @import Accounts;
 @import Social;
@@ -186,7 +187,12 @@
             }
             else
             {
-                [self dismissViewControllerAnimated:YES completion:NULL];
+                [self dismissViewControllerAnimated:YES completion:^{
+
+                    // Load a user's following and followers
+                    [[VFriendsManager sharedFriendsManager] loadFollowersAndFollowing:user];
+
+                }];
             }
         });
     }

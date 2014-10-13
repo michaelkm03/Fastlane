@@ -21,6 +21,13 @@
 + (VFriendsManager *)sharedFriendsManager;
 
 /**
+ Retrieves all followers and following for a given user object
+ 
+ @param user User object to load followers and following for
+ */
+- (void)loadFollowersAndFollowing:(VUser *)user;
+
+/**
  Makes the backend call to follow a user
  
  @param user         User to be followed

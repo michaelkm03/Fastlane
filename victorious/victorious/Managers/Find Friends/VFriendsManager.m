@@ -66,6 +66,46 @@
 
 }
 
+- (void)loadFollowersAndFollowing:(VUser *)user
+{
+    VSuccessBlock followersSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.followers containsObject:userObject])
+            {
+                [mainUser addFollowersObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    VSuccessBlock followingSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.following containsObject:userObject])
+            {
+                [mainUser addFollowingObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    if (!user)
+    {
+        user = [[VObjectManager sharedManager] mainUser];
+    }
+    
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:followersSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:followingSuccessBlock failBlock:nil];
+    
+}
+
 #pragma mark - Public Instance Methods
 
 - (void)followUser:(VUser *)user withSuccess:(VSuccessBlock)success withFailure:(VFailBlock)failed

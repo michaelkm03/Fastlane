@@ -21,6 +21,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
+#import "VFriendsManager.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
@@ -202,7 +203,12 @@
     }
     else
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^(void)
+        {
+            // Load a user's following and followers
+            [[VFriendsManager sharedFriendsManager] loadFollowersAndFollowing:mainUser];
+
+        }];
     }
 }
 
