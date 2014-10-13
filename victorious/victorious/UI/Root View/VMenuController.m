@@ -97,8 +97,15 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         self.nameLabel.text = NSLocalizedString(@"Channel", nil);
     }
     
-    self.view.backgroundColor = [UIColor clearColor];
-    self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    else
+    {
+        self.view.backgroundColor = [UIColor clearColor];
+        self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
@@ -223,7 +230,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (1 == section)
+    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
         sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
