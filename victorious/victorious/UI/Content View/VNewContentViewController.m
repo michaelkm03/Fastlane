@@ -192,10 +192,6 @@
     [self.view addSubview:inputAccessoryView];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
-    
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    layout.allCommentsHandleBottomInset = CGRectGetHeight(self.textEntryView.bounds);
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
@@ -249,11 +245,8 @@
     
     [self.viewModel fetchComments];
     
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    layout.contentInsets = UIEdgeInsetsMake(0, 0, -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds), 0);
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
-                                                                        0,
-                                                                        CGRectGetHeight(self.textEntryView.bounds), 0);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
     [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
                                                   placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
@@ -328,7 +321,7 @@
     {
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
-        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds) : newBottomInset;
+        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? (CGRectGetHeight(self.textEntryView.bounds)) : newBottomInset;
         self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
         self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }

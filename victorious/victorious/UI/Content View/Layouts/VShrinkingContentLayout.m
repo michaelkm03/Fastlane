@@ -88,7 +88,6 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
     [self reloadMajorItemSizes];
 }
 
-
 - (CGSize)collectionViewContentSize
 {
     if (!CGSizeEqualToSize(self.cachedContentSize, CGSizeZero))
@@ -106,7 +105,7 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
         allCommentsHeight = allCommentsHeight + CGRectGetHeight(layoutAttributesForComentAtIndex.frame);
     }
     
-    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds) +  allCommentsHeight + fabsf(self.contentInsets.bottom));
+    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.mediaContentSize.height + self.histogramSize.height + self.experienceEnhancerSize.height + self.allCommentsHandleSize.height + allCommentsHeight + self.contentInsets.bottom);
     return self.cachedContentSize;
 }
 
@@ -125,11 +124,17 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
         [attributes addObject:contentBackgroundAttributes];
     }
     
-    UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
-    [attributes addObject:histogramLayoutAttributes];
+    if (self.collectionView.contentOffset.y < [self lockPoint].y)
+    {
+        UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
+        [attributes addObject:histogramLayoutAttributes];
+    }
     
-    UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
-    [attributes addObject:tickerLayoutAttributes];
+    if (self.collectionView.contentOffset.y < [self lockPoint].y)
+    {
+        UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
+        [attributes addObject:tickerLayoutAttributes];
+    }
     
     NSInteger numberOfComments = [self.collectionView numberOfItemsInSection:VContentViewSectionAllComments];
     if (numberOfComments > 0)
@@ -272,6 +277,12 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
     CGPoint desiredContentOffset = proposedContentOffset;
     
     __block void (^delayedContentOffsetBlock)(void);
+    
+    // If we are fully scrolled we want to show the bottom.
+    if ((self.collectionView.contentSize.height - CGRectGetHeight(self.collectionView.frame) - proposedContentOffset.y + self.collectionView.contentInset.bottom) == 0)
+    {
+        return proposedContentOffset;
+    }
     
     if ((proposedContentOffset.y > 0) && (proposedContentOffset.y < [self catchPoint].y))
     {
