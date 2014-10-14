@@ -16,16 +16,6 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ttc-bR-lII" userLabel="Text Background ">
                         <rect key="frame" x="17" y="0.0" width="245" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <textView multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="#hashtag" translatesAutoresizingMaskIntoConstraints="NO" id="jSa-4e-2hz">
-                                <rect key="frame" x="0.0" y="0.0" width="245" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="light"/>
-                            </textView>
-                        </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="TbD-D0-nvk"/>
@@ -56,7 +46,6 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="addNewButton" destination="tmT-7N-OT2" id="Sui-8A-xk9"/>
-                <outlet property="hashTagTextView" destination="jSa-4e-2hz" id="8GL-q8-8Yi"/>
                 <outlet property="textBackgroundView" destination="Ttc-bR-lII" id="kAc-Xb-cfZ"/>
                 <outlet property="textBackgroundViewWidthConstraint" destination="pJP-05-JX2" id="Ikn-bf-4pT"/>
             </connections>

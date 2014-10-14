@@ -189,7 +189,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
              }];
         }
     }
-    else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags )
+    else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && [cell isKindOfClass:[VTrendingTagCell class]] )
     {
         // Animate the cell only the first time it is loaded and displayed
         if ( !self.didTransitionIn && [cell isKindOfClass:[VTrendingTagCell class]] )

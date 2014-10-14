@@ -15,4 +15,6 @@
 
 - (void)setHashtag:(VHashtag *)hashtag;
 
+- (void)updateTextPosition;
+
 @end
