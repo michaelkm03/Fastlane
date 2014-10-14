@@ -33,6 +33,8 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 
+const CGFloat kVLoadNextPagePoint = .75f;
+
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -43,6 +45,11 @@
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+- (void)dealloc
+{
+    self.collectionView.dataSource = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -296,7 +303,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
     if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
         self.streamDataSource.count &&
         ![self.streamDataSource isFilterLoading] &&

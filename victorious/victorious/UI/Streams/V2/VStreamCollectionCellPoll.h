@@ -10,6 +10,6 @@
 
 @interface VStreamCollectionCellPoll : VStreamCollectionCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *previewImageTwo;
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageTwo;
 
 @end

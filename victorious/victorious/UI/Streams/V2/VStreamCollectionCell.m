@@ -38,12 +38,12 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
-@property (nonatomic) BOOL                          animating;
-@property (nonatomic) NSUInteger                    originalHeight;
+@property (nonatomic) BOOL animating;
+@property (nonatomic) NSUInteger originalHeight;
 
-@property (nonatomic, strong) NSArray               *hashTagRanges;
+@property (nonatomic, strong) NSArray *hashTagRanges;
 
 @end
 

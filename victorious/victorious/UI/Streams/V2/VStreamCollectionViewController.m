@@ -144,6 +144,12 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.navHeaderView updateUI];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.collectionView flashScrollIndicators];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -164,7 +170,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning
