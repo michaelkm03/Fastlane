@@ -374,8 +374,48 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
-
+    [self loadFollowersAndFollowing:user];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+}
+
+- (void)loadFollowersAndFollowing:(VUser *)user
+{
+    VSuccessBlock followersSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.followers containsObject:userObject])
+            {
+                [mainUser addFollowersObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    VSuccessBlock followingSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.following containsObject:userObject])
+            {
+                [mainUser addFollowingObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    if (!user)
+    {
+        user = [[VObjectManager sharedManager] mainUser];
+    }
+    
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:followersSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:followingSuccessBlock failBlock:nil];
 }
 
 #pragma mark - Logout
