@@ -11,6 +11,7 @@
 /**
  A protocol that defines some properties required to effictively manage state
  in data-driven table view controllers.
+ // TODO: If state management gets any more complex, implement an enum with specific states listed.
  */
 @protocol VDiscoverViewControllerProtocol <NSObject>
 
@@ -30,5 +31,7 @@
  has occurred -- whether it was successful or not.
  */
 @property (nonatomic, assign) BOOL hasLoadedOnce;
+
+@property (nonatomic, assign) BOOL didTransitionIn;
 
 @end

@@ -23,15 +23,22 @@
                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="E7J-3a-EFc">
+                        <rect key="frame" x="150" y="17" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="centerX" secondItem="E7J-3a-EFc" secondAttribute="centerX" id="9Ud-a5-oWm"/>
                     <constraint firstItem="tGz-Ao-OCf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="-3" id="P0I-NZ-ws7"/>
                     <constraint firstAttribute="trailing" secondItem="tGz-Ao-OCf" secondAttribute="trailing" constant="17" id="TLo-b3-E02"/>
                     <constraint firstItem="tGz-Ao-OCf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="Xuk-Lx-ocl"/>
+                    <constraint firstAttribute="centerY" secondItem="E7J-3a-EFc" secondAttribute="centerY" constant="-0.5" id="rmI-De-y9l"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="activityIndicator" destination="E7J-3a-EFc" id="i9M-zA-gc3"/>
                 <outlet property="messageLabel" destination="tGz-Ao-OCf" id="4V2-7R-yim"/>
             </connections>
         </tableViewCell>

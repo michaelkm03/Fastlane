@@ -27,7 +27,8 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
-    return [storyboard instantiateViewControllerWithIdentifier:VStoryboardViewControllerIndentifier];
+    VSuggestedPeopleCollectionViewController *vc = [storyboard instantiateViewControllerWithIdentifier:VStoryboardViewControllerIndentifier];
+    return vc;
 }
 
 #pragma mark - View controller life cycle
@@ -36,14 +37,12 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     [super viewDidLoad];
     
-    self.suggestedUsers = @[];
+    self.error = nil;
     
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
-    
-    [self refresh];
 }
 
 - (void)dealloc
@@ -67,18 +66,14 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     }
     else
     {
-        [self updateFollowing];
+        [self updateFollowingInUsers:self.suggestedUsers];
+        [self.collectionView reloadData];
     }
-}
-
-- (void)followingDidUpdate:(NSNotification *)note
-{
-    [self updateFollowing];
 }
 
 - (void)followingDidLoad
 {
-    [self updateFollowing];
+    [self updateFollowingInUsers:self.suggestedUsers];
     
     VObjectManager *objectManager = [VObjectManager sharedManager];
     [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
@@ -88,13 +83,20 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
      } failBlock:^(NSOperation *operation, NSError *error) {
          
      }];
+    [self.collectionView reloadData];
 }
 
-- (void)updateFollowing
+- (void)followingDidUpdate:(NSNotification *)note
+{
+    [self updateFollowingInUsers:self.suggestedUsers];
+    [self.collectionView reloadData];
+}
+
+- (void)updateFollowingInUsers:(NSArray *)users
 {
     VObjectManager *objectManager = [VObjectManager sharedManager];
     
-    [self.suggestedUsers enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
+    [users enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
      {
          if ( objectManager.mainUserLoggedIn )
          {
@@ -105,8 +107,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
              user.isFollowing = @NO;
          }
      }];
-    
-    [self.collectionView reloadData];
 }
 
 #pragma mark - Loading data
@@ -127,19 +127,22 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     if ( users.count == 0 )
     {
-        self.hasLoadedOnce = YES;
         [self clearData];
     }
     else
     {
-        self.suggestedUsers = users;
-        [self updateFollowing];  // Will also reload data, so no need to call reloadData again
+        _suggestedUsers = users;
+        [self updateFollowingInUsers:self.suggestedUsers];  // Will also reload data, so no need to call reloadData again
     }
+    
+    self.hasLoadedOnce = YES;
     
     if ( self.delegate != nil )
     {
-        [self.delegate didFinishLoading];
+        [self.delegate suggestedPeopleDidFinishLoading];
     }
+    
+    [self.collectionView reloadData];
 }
 
 - (void)didFailToLoadWithError:(NSError *)error
@@ -149,20 +152,22 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     self.error = error;
     if ( self.delegate != nil )
     {
-        [self.delegate didFailToLoad];
+        [self.delegate suggestedPeopleDidFailToLoad];
     }
     [self clearData];
 }
 
 - (void)clearData
 {
-    self.suggestedUsers = @[];
+    _suggestedUsers = @[];
     [self.collectionView reloadData];
 }
 
 #pragma mark - VTableViewControllerProtocol
 
 @synthesize hasLoadedOnce;
+
+@synthesize didTransitionIn;
 
 - (BOOL)isShowingNoData
 {

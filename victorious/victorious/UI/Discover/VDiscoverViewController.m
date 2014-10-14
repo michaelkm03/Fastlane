@@ -53,8 +53,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     [self registerCells];
     
-    [self refresh];
     [self.suggestedPeopleViewController refresh];
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,6 +89,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)refresh
 {
+    // This allows cells to transition in again once loading restarts
+    self.didTransitionIn = NO;
+    
     [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self hashtagsDidLoad:resultObjects];
@@ -99,9 +102,11 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
      }];
 }
 
-#pragma mark - VTableViewControllerProtocol
+#pragma mark - VDiscoverViewControllerProtocol
 
 @synthesize hasLoadedOnce;
+
+@synthesize didTransitionIn;
 
 - (BOOL)isShowingNoData
 {
@@ -131,12 +136,12 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 #pragma mark - VSuggestedPeopleCollectionViewControllerDelegate
 
-- (void)didFailToLoad
+- (void)suggestedPeopleDidFailToLoad
 {
     [self.tableView reloadData];
 }
 
-- (void)didFinishLoading
+- (void)suggestedPeopleDidFinishLoading
 {
     [self.tableView reloadData];
 }
@@ -164,11 +169,40 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     {
         return self.isShowingNoData ? 1 : self.trendingTags.count;
     }
-    
     return 0;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( indexPath.section == VDiscoverViewControllerSectionSuggestedPeople && [cell isKindOfClass:[VSuggestedPeopleCell class]] )
+    {
+        // Animate the cell only the first time it is loaded and displayed
+        if ( !self.suggestedPeopleViewController.didTransitionIn )
+        {
+            cell.alpha = 0.0f;
+            [UIView animateWithDuration:0.4f animations:^{
+                 cell.alpha = 1.0f;
+             } completion:^(BOOL finished){
+                 self.suggestedPeopleViewController.didTransitionIn = YES;
+             }];
+        }
+    }
+    else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags )
+    {
+        // Animate the cell only the first time it is loaded and displayed
+        if ( !self.didTransitionIn && [cell isKindOfClass:[VTrendingTagCell class]] )
+        {
+            cell.alpha = 0.0f;
+            [UIView animateWithDuration:0.4f animations:^{
+                cell.alpha = 1.0f;
+            } completion:^(BOOL finished){
+                self.didTransitionIn = YES;
+            }];
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -177,7 +211,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         UIView *headerView = self.sectionHeaders[ section ];
         return CGRectGetHeight( headerView.frame );
     }
-    
     return 0;
 }
 
@@ -204,7 +237,11 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             if ( self.suggestedPeopleViewController.hasLoadedOnce )
             {
                 // Only set the error message once something has been loaded, otherwise we see the error message before first load
-                [defaultCell setMessage:NSLocalizedString( @"DiscoverSuggestedPeopleError", @"")];
+                defaultCell.message = NSLocalizedString( @"DiscoverSuggestedPeopleError", @"");
+            }
+            else
+            {
+                defaultCell.isLoading = YES;
             }
             cell = defaultCell;
         }
@@ -224,7 +261,11 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             if ( self.hasLoadedOnce )
             {
                 // Only set the error message once something has been loaded, otherwise we see the error message before first load
-                [defaultCell setMessage:NSLocalizedString( @"DiscoverTrendingTagsError", @"")];
+                defaultCell.message = NSLocalizedString( @"DiscoverTrendingTagsError", @"");
+            }
+            else
+            {
+                defaultCell.isLoading = YES;
             }
             cell = defaultCell;
         }

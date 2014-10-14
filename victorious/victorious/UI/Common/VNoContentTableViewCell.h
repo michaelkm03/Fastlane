@@ -10,7 +10,9 @@
 
 @interface VNoContentTableViewCell : UITableViewCell
 
-- (void)setMessage:(NSString *)message;
+@property (nonatomic, assign) BOOL isLoading;
+
+@property (nonatomic, weak) NSString *message;
 
 + (VNoContentTableViewCell *)createCellFromTableView:(UITableView *)tableView;
 

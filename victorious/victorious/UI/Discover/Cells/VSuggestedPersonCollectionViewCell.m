@@ -52,8 +52,6 @@
     
     CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
     self.profileImageView.layer.cornerRadius = radius;
-    
-    [self applyTheme];
 }
 
 - (void)applyTheme
@@ -80,6 +78,8 @@
     }
     
     [self updateFollowing];
+    
+    [self applyTheme];
 }
 
 - (void)updateFollowing

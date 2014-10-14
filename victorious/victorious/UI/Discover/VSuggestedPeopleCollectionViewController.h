@@ -13,8 +13,8 @@
 
 @protocol VSuggestedPeopleCollectionViewControllerDelegate <NSObject>
 
-- (void)didFailToLoad;
-- (void)didFinishLoading;
+- (void)suggestedPeopleDidFailToLoad;
+- (void)suggestedPeopleDidFinishLoading;
 - (void)didAttemptActionThatRequiresLogin;
 
 @end
@@ -28,6 +28,6 @@
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSError *error;
-@property (nonatomic, strong) NSArray *suggestedUsers;
+@property (nonatomic, readonly, strong) NSArray *suggestedUsers;
 
 @end
