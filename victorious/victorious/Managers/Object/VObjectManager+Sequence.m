@@ -150,16 +150,23 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 {
     if (!poll || !answer)
     {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
         return nil;
     }
+
+    NSNumber *answerId = answer.remoteId;
+    NSString *sequenceId = poll.remoteId;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VPollResult *newPollResult = [NSEntityDescription
                                         insertNewObjectForEntityForName:[VPollResult entityName]
                                         inManagedObjectContext:self.mainUser.managedObjectContext];
-        newPollResult.answerId = answer.remoteId;
-        newPollResult.sequenceId = poll.remoteId;
+        newPollResult.answerId = answerId;
+        newPollResult.sequenceId = sequenceId;
         [self.mainUser addPollResultsObject:newPollResult];
         
         [self.mainUser.managedObjectContext saveToPersistentStore:nil];
