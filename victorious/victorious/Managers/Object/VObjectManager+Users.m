@@ -230,9 +230,8 @@ static NSString * const kVAPIParamSearch = @"search";
             success(operation, fullResponse, resultObjects);
         }
         
-        // The backend returns nothing, so manually update the object:
-        user.isFollowing = @YES;
-        [self notifyIsFollowingUpdatedForUser:user];
+        [self.mainUser addFollowingObject:user];
+        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/add"
@@ -255,9 +254,8 @@ static NSString * const kVAPIParamSearch = @"search";
             success(operation, fullResponse, resultObjects);
         }
         
-        // The backend returns nothing, so manually update the object:
-        user.isFollowing = @NO;
-        [self notifyIsFollowingUpdatedForUser:user];
+        [self.mainUser removeFollowingObject:user];
+        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/remove"
@@ -499,10 +497,9 @@ static NSString * const kVAPIParamSearch = @"search";
     return results;
 }
 
-- (void)notifyIsFollowingUpdatedForUser:(VUser *)user
+- (void)notifyIsFollowingUpdated
 {
-    NSDictionary *userInfo = @{ VMainUserDidChangeFollowingUserKeyUser : user };
-    [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:nil];
 }
 
 @end

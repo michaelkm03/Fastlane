@@ -57,6 +57,18 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [self.suggestedPeopleViewController refresh];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.suggestedPeopleViewController viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.suggestedPeopleViewController viewWillDisappear:animated];
+}
+
 #pragma mark - Loading data
 
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error

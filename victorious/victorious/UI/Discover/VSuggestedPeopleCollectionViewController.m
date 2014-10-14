@@ -10,6 +10,7 @@
 #import "VSuggestedPersonCollectionViewCell.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
@@ -54,28 +55,54 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 - (void)loginStatusDidChange:(NSNotification *)note
 {
+    VObjectManager *objectManager = [VObjectManager sharedManager];
+    
+    if ( objectManager.mainUserLoggedIn )
+    {
+        [objectManager refreshFollowingsForUser:objectManager.mainUser
+                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             [self followingDidLoad];
+         } failBlock:nil];
+    }
+    else
+    {
+        [self updateFollowing];
+    }
 }
 
 - (void)followingDidUpdate:(NSNotification *)note
 {
-    if ( note.userInfo == nil )
-    {
-        return;
-    }
+    [self updateFollowing];
+}
+
+- (void)followingDidLoad
+{
+    [self updateFollowing];
     
-    VUser *updatedUser = note.userInfo[ VMainUserDidChangeFollowingUserKeyUser ];
-    if ( updatedUser == nil )
-    {
-        return;
-    }
+    VObjectManager *objectManager = [VObjectManager sharedManager];
+    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
+                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self followingDidLoad];
+     } failBlock:^(NSOperation *operation, NSError *error) {
+         
+     }];
+}
+
+- (void)updateFollowing
+{
+    VObjectManager *objectManager = [VObjectManager sharedManager];
     
-    // Find the user that was updated and update our version of it to match
     [self.suggestedUsers enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
      {
-         if ( [user isEqualToUser:updatedUser] )
+         if ( objectManager.mainUserLoggedIn )
          {
-             user.isFollowing = updatedUser.isFollowing;
-             *stop = YES;
+             user.isFollowing = @( [objectManager.mainUser.following containsObject:user] );
+         }
+         else
+         {
+             user.isFollowing = @NO;
          }
      }];
     
@@ -106,7 +133,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     else
     {
         self.suggestedUsers = users;
-        [self.collectionView reloadData];
+        [self updateFollowing];  // Will also reload data, so no need to call reloadData again
     }
     
     if ( self.delegate != nil )
