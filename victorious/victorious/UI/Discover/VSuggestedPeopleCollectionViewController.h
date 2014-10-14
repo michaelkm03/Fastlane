@@ -28,6 +28,6 @@
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSError *error;
-@property (nonatomic, readonly, strong) NSArray *suggestedUsers;
+@property (nonatomic,  strong) NSArray *suggestedUsers;
 
 @end

@@ -19,7 +19,7 @@
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
-+ (void)formatHashTagsInString:(NSMutableAttributedString *)fieldText
++ (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
                  withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes;
 

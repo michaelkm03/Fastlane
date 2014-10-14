@@ -114,6 +114,7 @@
 - (void)setHashTag:(NSString *)hashTag
 {
     _hashTag = hashTag;
+    self.streamTable.hashTag = hashTag;
 }
 
 - (void)configureHeaderImage

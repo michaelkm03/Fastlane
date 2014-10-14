@@ -48,13 +48,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="213"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Etiqueta" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Vq-OQb">
-                                <rect key="frame" x="20" y="175" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6x-4t-qP9" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -65,11 +58,8 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="f6x-4t-qP9" secondAttribute="trailing" id="1wO-3v-4xV"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" id="3S0-vK-H6e"/>
-                            <constraint firstAttribute="trailing" secondItem="0rJ-Vq-OQb" secondAttribute="trailing" constant="20" id="RGb-zA-Vow"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" constant="7" id="cBl-fv-cgY"/>
                             <constraint firstAttribute="bottom" secondItem="f6x-4t-qP9" secondAttribute="bottom" constant="131" id="dSQ-Ia-tIw"/>
-                            <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="17" id="lBp-Vo-p0y"/>
-                            <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FRA-pa-1vI" userLabel="Comment Hitbox Button">
@@ -106,7 +96,6 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="commentHitboxButton" destination="FRA-pa-1vI" id="l8s-2K-Pnr"/>
-                <outlet property="descriptionLabel" destination="0rJ-Vq-OQb" id="zKC-06-GT1"/>
                 <outlet property="overlayView" destination="Qyu-uO-lf5" id="NDf-2z-bli"/>
                 <outlet property="previewImageTwo" destination="e2G-u3-diD" id="7Il-nc-jTL"/>
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>
