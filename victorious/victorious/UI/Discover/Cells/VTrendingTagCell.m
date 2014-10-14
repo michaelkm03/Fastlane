@@ -10,6 +10,9 @@
 #import "VThemeManager.h"
 #import "VHashTags.h"
 
+static const CGFloat kTrendingTagCellButtonBorderRadius     = 3.0f;
+static const CGFloat kTrendingTagCellRowHeight              = 40.0f;
+
 @interface VTrendingTagCell()
 
 @property (nonatomic, strong) IBOutlet UITextView *hashTagTextView;
@@ -24,9 +27,7 @@
 
 - (void)awakeFromNib
 {
-    self.addNewButton.layer.cornerRadius = 3;
-    
-    self.hashTagTextView.contentInset = UIEdgeInsetsMake( -4, 0, 0, 0 );
+    self.addNewButton.layer.cornerRadius = kTrendingTagCellButtonBorderRadius;
     
     [self applyTheme];
 }
@@ -45,18 +46,23 @@
 
 + (NSInteger)cellHeight
 {
-    return 40.0f;
+    return kTrendingTagCellRowHeight;
 }
 
 - (void)setHashtag:(VHashtag *)hashtag
 {
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
-    
     [self.hashTagTextView setText:text];
     
     // Match the label's size to the text
     CGSize targetSize = [self.hashTagTextView sizeThatFits:self.hashTagTextView.frame.size];
     self.textBackgroundViewWidthConstraint.constant = targetSize.width + 8;
+    
+    // Adjust the inset to center the text veritically in front of the background view
+    NSDictionary *attributes = @{ NSFontAttributeName : self.hashTagTextView.font };
+    CGSize textAreaSize = [self.hashTagTextView.text sizeWithAttributes:attributes];
+    CGFloat additionalTopInset = ( CGRectGetHeight(self.textBackgroundView.frame) - textAreaSize.height ) / 2.0f;
+    self.hashTagTextView.contentInset = UIEdgeInsetsMake( -(4.5f + additionalTopInset), 0, 0, 0 );
 }
 
 @end
