@@ -26,7 +26,7 @@ static const CGFloat kAvatarAnimationTranfromYTranlation = 100.0f;
 static const CGFloat kAnticipationYTranslation = 8.0f;
 static const CGFloat kAnticipationAnimationDurationPercentage = 1.0f/3.0f;
 static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipationAnimationDurationPercentage;
-static const CGFloat kDimmingViewTag = 12241989;
+static const NSInteger kDimmingViewTag = 12241989;
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 
