@@ -80,8 +80,6 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
-    self.backButton.hidden = self.inviteButton.hidden;
-    self.doneButton.hidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden
