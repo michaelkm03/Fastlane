@@ -1049,6 +1049,7 @@
 		BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTableViewCell.h; sourceTree = "<group>"; };
 		BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeTableViewCell.m; sourceTree = "<group>"; };
 		BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
+		BE9D081E19EDD1DA00A824C7 /* VNavigationSelectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationSelectorProtocol.h; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -2437,12 +2438,14 @@
 		BE193B6419EDB61B0088129A /* Nav Headers */ = {
 			isa = PBXGroup;
 			children = (
+				BE9D081E19EDD1DA00A824C7 /* VNavigationSelectorProtocol.h */,
 				BE799BC319C93C440023CE88 /* VNavigationHeaderView.h */,
 				BE799BC419C93C440023CE88 /* VNavigationHeaderView.m */,
 				BE799BC519C93C440023CE88 /* VNavigationHeaderView.xib */,
 				BE193B6519EDB63D0088129A /* VNavigationHeaderView-C.xib */,
 			);
 			name = "Nav Headers";
+			path = NavHeaders;
 			sourceTree = "<group>";
 		};
 		BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */ = {
