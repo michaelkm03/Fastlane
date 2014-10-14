@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VNavigationSelectorProtocol.h"
+
 @class  VNavigationHeaderView;
 
 @protocol VNavigationHeaderDelegate <NSObject>
@@ -56,7 +58,7 @@
 
 @property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;
 
-@property (nonatomic, weak, readonly) UISegmentedControl *segmentedControl;
+@property (nonatomic, weak, readonly) UIView<VNavigationSelectorProtocol> *navSelector;
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles;
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;

@@ -133,7 +133,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.marquee.delegate = self;
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
-    [self.navHeaderView.segmentedControl setSelectedSegmentIndex:selectedStream];
+    self.navHeaderView.navSelector.currentIndex = selectedStream;
 
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     

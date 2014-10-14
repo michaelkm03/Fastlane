@@ -55,22 +55,6 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="cdH-vC-Oj7">
-                    <rect key="frame" x="20" y="60" width="280" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="28" id="1wj-1n-BHu"/>
-                    </constraints>
-                    <segments>
-                        <segment title="Featured"/>
-                        <segment title="Recent"/>
-                        <segment title="Following"/>
-                    </segments>
-                    <color key="tintColor" white="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <connections>
-                        <action selector="changedFilterControls:" destination="Ay5-2H-sPn" eventType="valueChanged" id="ZYe-aZ-q5Z"/>
-                    </connections>
-                </segmentedControl>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESN-J9-ft1" userLabel="Header Label">
                     <rect key="frame" x="55" y="10" width="210" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -85,6 +69,17 @@
                         <constraint firstAttribute="height" constant="40" id="6vv-TG-gRp"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PAi-gS-Qn7" customClass="VSegmentedNavSelector">
+                    <rect key="frame" x="20" y="60" width="280" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="XCq-Wd-etW"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="Ay5-2H-sPn" id="j1S-2h-jhK"/>
+                    </connections>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -92,18 +87,18 @@
                 <constraint firstAttribute="trailing" secondItem="tkm-2G-q8x" secondAttribute="trailing" constant="14" id="588-PD-2ge"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="PAa-Hr-gey"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="WKP-Hw-E3j"/>
-                <constraint firstAttribute="trailing" secondItem="cdH-vC-Oj7" secondAttribute="trailing" constant="20" id="XrW-lx-Wl6"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>
                 <constraint firstAttribute="width" constant="320" id="YxW-7v-Jrt"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="a3L-cG-gAe"/>
+                <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="60" id="a3r-vZ-7DX"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
+                <constraint firstItem="PAi-gS-Qn7" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="20" id="hPZ-iJ-Q9b"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="10" id="k7Y-No-Dfd"/>
                 <constraint firstAttribute="trailing" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="55" id="mKT-Pc-3KL"/>
                 <constraint firstAttribute="trailing" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="55" id="ndY-dx-8J1"/>
-                <constraint firstItem="cdH-vC-Oj7" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="20" id="oWW-QR-eqG"/>
-                <constraint firstItem="cdH-vC-Oj7" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="60" id="ohZ-QH-Tsv"/>
+                <constraint firstAttribute="trailing" secondItem="PAi-gS-Qn7" secondAttribute="trailing" constant="20" id="ohb-qp-0FP"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="s5H-5F-TWq"/>
-                <constraint firstItem="cdH-vC-Oj7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="uf6-me-aeQ"/>
+                <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="sr0-zP-pNv"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zLI-kf-7se"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zjG-CK-3JC"/>
             </constraints>
@@ -114,7 +109,7 @@
                 <outlet property="headerLabel" destination="ESN-J9-ft1" id="agR-0G-lDG"/>
                 <outlet property="heightConstraint" destination="25X-sg-v7U" id="iwP-YJ-jus"/>
                 <outlet property="menuButton" destination="DUT-ma-Cbr" id="Qut-bS-chd"/>
-                <outlet property="segmentedControl" destination="cdH-vC-Oj7" id="rn6-J7-nqJ"/>
+                <outlet property="navSelector" destination="PAi-gS-Qn7" id="I5B-Lg-I8G"/>
             </connections>
         </view>
     </objects>

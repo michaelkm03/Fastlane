@@ -17,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UIButton *menuButton;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
-@property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;
@@ -50,15 +50,11 @@
 {
     if (!titles.count)
     {
-        self.heightConstraint.constant = CGRectGetMinY(self.segmentedControl.frame);
+        self.heightConstraint.constant = CGRectGetMinY(self.navSelector.frame);
     }
     else
     {
-        [self.segmentedControl removeAllSegments];
-        for (NSUInteger i = 0; i < titles.count; i++)
-        {
-            [self.segmentedControl insertSegmentWithTitle:titles[i] atIndex:i animated:NO];
-        }
+        self.navSelector.titles = titles;
     }
 }
 
@@ -92,47 +88,22 @@
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.headerLabel.text = self.headerText;
-    
-    self.segmentedControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.segmentedControl.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    self.segmentedControl.layer.cornerRadius = 4;
-    self.segmentedControl.clipsToBounds = YES;
-    
-    [self.segmentedControl setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorLeftUnselected"]
-                     forLeftSegmentState:UIControlStateNormal
-                       rightSegmentState:UIControlStateSelected
-                              barMetrics:UIBarMetricsDefault];
-    [self.segmentedControl setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorRightUnselected"]
-                     forLeftSegmentState:UIControlStateSelected
-                       rightSegmentState:UIControlStateNormal
-                              barMetrics:UIBarMetricsDefault];
-    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderUnselected"]
-                                   forState:UIControlStateNormal
-                                 barMetrics:UIBarMetricsDefault];
-    [self.segmentedControl setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderSelected"]
-                                   forState:UIControlStateSelected
-                                   barMetrics:UIBarMetricsDefault];
-    [self.segmentedControl setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12]}
-                                       forState:UIControlStateNormal];
-    [self.segmentedControl setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
-                                                  NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]}
-                                       forState:UIControlStateSelected];
 }
 
-- (IBAction)changedFilterControls:(id)sender
+- (void)navSelector:(UIView<VNavigationSelectorProtocol> *)selector selectedIndex:(NSInteger)index
 {
     BOOL shouldChange = YES;
     if ([self.delegate respondsToSelector:@selector(navHeaderView:segmentControlChangeToIndex:)])
     {
-        shouldChange = [self.delegate navHeaderView:self segmentControlChangeToIndex:self.segmentedControl.selectedSegmentIndex];
+        shouldChange = [self.delegate navHeaderView:self segmentControlChangeToIndex:index];
     }
     if (!shouldChange)
     {
-        [self.segmentedControl setSelectedSegmentIndex:self.lastSelectedControl];
+        self.navSelector.currentIndex = self.lastSelectedControl;
     }
     else
     {
-        self.lastSelectedControl = self.segmentedControl.selectedSegmentIndex;
+        self.lastSelectedControl = index;
     }
 }
 
