@@ -41,6 +41,8 @@
 #import "VConstants.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
+static CGFloat const kGreyBackgroundColor = 0.94509803921;
+static CGFloat const kTemplateCLineSpacing = 8;
 
 @interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
 
@@ -145,6 +147,12 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.navHeaderView updateUI];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.collectionView flashScrollIndicators];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -165,7 +173,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,7 +189,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 {
     if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        return [UIColor colorWithWhite:0.94509803921 alpha:1];
+        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
     }
     else
     {
@@ -311,7 +319,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? 8 : 0;
+    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
 }
 
 #pragma mark - VStreamCollectionDataDelegate

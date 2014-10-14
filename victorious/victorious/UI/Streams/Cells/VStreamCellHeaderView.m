@@ -31,6 +31,7 @@
 static VLargeNumberFormatter *largeNumberFormatter;
 
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
+static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @implementation VStreamCellHeaderView
 
@@ -72,7 +73,7 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     _isFromProfile = NO;
     
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
+    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kCommentButtonBuffer, 0, 0)];
 
 
     // Style the ui

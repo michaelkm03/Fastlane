@@ -39,14 +39,17 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
-@property (nonatomic) BOOL                          animating;
-@property (nonatomic) NSUInteger                    originalHeight;
+@property (nonatomic) BOOL animating;
+@property (nonatomic) NSUInteger originalHeight;
 
-@property (nonatomic, strong) NSArray               *hashTagRanges;
+@property (nonatomic, strong) NSArray *hashTagRanges;
 
 @end
+
+static const CGFloat kTemplateCYRatio = 1.49375;
+static const CGFloat kTemplateCXRatio = 0.94375;
 
 @implementation VStreamCollectionCell
 
@@ -213,8 +216,8 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    CGFloat yRatio = isTemplateC ? 1.49375 : 1;
-    CGFloat xRatio = isTemplateC ? 0.94375 : 1;
+    CGFloat yRatio = isTemplateC ? kTemplateCYRatio : 1;
+    CGFloat xRatio = isTemplateC ? kTemplateCXRatio : 1;
     CGFloat width = CGRectGetWidth(bounds) * xRatio;
     return CGSizeMake(width, width * yRatio);
 }

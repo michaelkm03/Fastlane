@@ -35,6 +35,8 @@
 
 #import "VSettingManager.h"
 
+const CGFloat kVLoadNextPagePoint = .75f;
+
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -45,6 +47,11 @@
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+- (void)dealloc
+{
+    self.collectionView.dataSource = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -94,16 +101,7 @@
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:0.0f];
-    
-    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                   attribute:NSLayoutAttributeTop
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:self.navHeaderView
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                  multiplier:1.0f
-                                                                                    constant:0.0f];
-    
-    [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
+    [self.view addConstraint:self.headerYConstraint];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -115,6 +113,9 @@
                   forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
+    UIEdgeInsets insets = self.collectionView.contentInset;
+    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+    self.collectionView.contentInset = insets;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -301,7 +302,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
     if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
         self.streamDataSource.count &&
         ![self.streamDataSource isFilterLoading] &&
