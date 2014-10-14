@@ -12,7 +12,7 @@
 
 @required
 - (NSTextStorage *)textStorage;
-- (NSLayoutManager *)layoutManager;
+- (NSLayoutManager *)containerLayoutManager;
 - (NSTextContainer *)textContainer;
 
 @optional

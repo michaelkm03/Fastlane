@@ -201,6 +201,11 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     }
 }
 
+- (NSLayoutManager *)containerLayoutManager
+{
+    return self.layoutManager;
+}
+
 #pragma mark - NSLayoutManagerDelegate methods
 
 - (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag
