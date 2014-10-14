@@ -26,7 +26,7 @@
 @interface MockHashTagsDelegate : NSObject <VTappableHashTagsDelegate>
 
 @property (nonatomic, strong) NSTextStorage *textStorage;
-@property (nonatomic, strong) NSLayoutManager *layoutManager;
+@property (nonatomic, strong) NSLayoutManager *containerLayoutManager;
 @property (nonatomic, strong) NSTextContainer *textContainer;
 
 @end
@@ -38,13 +38,13 @@
     self = [super init];
     if (self)
     {
-        self.layoutManager = [[NSLayoutManager alloc] init];
+        self.containerLayoutManager = [[NSLayoutManager alloc] init];
         self.textContainer = [[NSTextContainer alloc] initWithSize:size];
         self.textContainer.widthTracksTextView = YES;
         self.textContainer.heightTracksTextView = YES;
-        [self.layoutManager addTextContainer:self.textContainer];
+        [self.containerLayoutManager addTextContainer:self.textContainer];
         self.textStorage = [[NSTextStorage alloc] init];
-        [self.textStorage addLayoutManager:self.layoutManager];
+        [self.textStorage addLayoutManager:self.containerLayoutManager];
     }
     return self;
 }
@@ -103,7 +103,7 @@
 
 - (void)testDelegateInvalidNoLayoutManager
 {
-    _delegate.layoutManager = nil;
+    _delegate.containerLayoutManager = nil;
     [self runInvalidDelegateTests];
 }
 
@@ -115,13 +115,13 @@
 
 - (void)testDelegateInvalidNoTextContainerInLayoutMabager
 {
-    [[_delegate layoutManager] removeTextContainerAtIndex:0];
+    [_delegate.containerLayoutManager removeTextContainerAtIndex:0];
     [self runInvalidDelegateTests];
 }
 
 - (void)testDelegateInvalidNoLayoutManagerInTextStorage
 {
-    [[_delegate textStorage] removeLayoutManager:_delegate.layoutManager];
+    [[_delegate textStorage] removeLayoutManager:_delegate.containerLayoutManager];
     [self runInvalidDelegateTests];
 }
 
