@@ -33,6 +33,8 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 
+#import "VSettingManager.h"
+
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -69,9 +71,12 @@
     [self.navHeaderView updateUI];
     [self.view addSubview:self.navHeaderView];
     
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    
     if (self.hasAddAction)
     {
-        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"createContentButton"]
+        UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
+        [self.navHeaderView setRightButtonImage:image
                                      withAction:@selector(createButtonAction:)
                                        onTarget:self];
     }

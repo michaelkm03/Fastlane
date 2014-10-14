@@ -311,6 +311,7 @@
 		BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DCC1868C211004E5202 /* VSequence+RestKit.m */; };
 		BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DD41868C211004E5202 /* VUser+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
+		BE193B6619EDB63D0088129A /* VNavigationHeaderView-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE193B6519EDB63D0088129A /* VNavigationHeaderView-C.xib */; };
 		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
 		BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
@@ -969,6 +970,7 @@
 		BE171DD41868C211004E5202 /* VUser+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+RestKit.m"; sourceTree = "<group>"; };
 		BE171E371868C266004E5202 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VParseHelp.h"; sourceTree = "<group>"; };
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
+		BE193B6519EDB63D0088129A /* VNavigationHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VNavigationHeaderView-C.xib"; sourceTree = "<group>"; };
 		BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
 		BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTabIndicatorView.h; sourceTree = "<group>"; };
@@ -1365,6 +1367,7 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BE193B6419EDB61B0088129A /* Nav Headers */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
@@ -1374,9 +1377,6 @@
 				0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */,
 				0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */,
 				0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */,
-				BE799BC319C93C440023CE88 /* VNavigationHeaderView.h */,
-				BE799BC419C93C440023CE88 /* VNavigationHeaderView.m */,
-				BE799BC519C93C440023CE88 /* VNavigationHeaderView.xib */,
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				0314D35619B46B5E00FA363C /* VNoContentView.xib */,
@@ -2434,6 +2434,17 @@
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
 		};
+		BE193B6419EDB61B0088129A /* Nav Headers */ = {
+			isa = PBXGroup;
+			children = (
+				BE799BC319C93C440023CE88 /* VNavigationHeaderView.h */,
+				BE799BC419C93C440023CE88 /* VNavigationHeaderView.m */,
+				BE799BC519C93C440023CE88 /* VNavigationHeaderView.xib */,
+				BE193B6519EDB63D0088129A /* VNavigationHeaderView-C.xib */,
+			);
+			name = "Nav Headers";
+			sourceTree = "<group>";
+		};
 		BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -2751,6 +2762,7 @@
 				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
 				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
 				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
+				BE193B6619EDB63D0088129A /* VNavigationHeaderView-C.xib in Resources */,
 				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				039ED29B19C908F400305987 /* VCVideoPlayerToolbarView.xib in Resources */,
