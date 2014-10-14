@@ -32,6 +32,4 @@
  */
 @property (nonatomic, assign) BOOL hasLoadedOnce;
 
-@property (nonatomic, assign) BOOL didTransitionIn;
-
 @end

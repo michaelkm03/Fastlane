@@ -38,12 +38,17 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
     
     // Remove any excess padding
     self.hashTagTextView = [[UITextView alloc] init];
+    
     self.hashTagTextView.scrollEnabled = NO;
     self.hashTagTextView.selectable = NO;
+    self.hashTagTextView.userInteractionEnabled = NO;
+    
     self.hashTagTextView.backgroundColor = [UIColor clearColor];
     self.hashTagTextView.textColor = [UIColor whiteColor];
+    
     self.hashTagTextView.textContainer.lineFragmentPadding = 0;
     self.hashTagTextView.textContainerInset = UIEdgeInsetsZero;
+    
     [self.textBackgroundView addSubview:self.hashTagTextView];
 }
 

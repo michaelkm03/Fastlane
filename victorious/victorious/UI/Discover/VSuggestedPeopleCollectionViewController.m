@@ -167,8 +167,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 @synthesize hasLoadedOnce;
 
-@synthesize didTransitionIn;
-
 - (BOOL)isShowingNoData
 {
     return self.suggestedUsers.count == 0 || self.error != nil;

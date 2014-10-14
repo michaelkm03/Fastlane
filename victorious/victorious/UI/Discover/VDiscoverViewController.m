@@ -53,8 +53,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     [self registerCells];
     
-    [self.suggestedPeopleViewController refresh];
     [self refresh];
+    [self.suggestedPeopleViewController refresh];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,9 +90,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)refresh
 {
-    // This allows cells to transition in again once loading restarts
-    self.didTransitionIn = NO;
-    
     [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self hashtagsDidLoad:resultObjects];
@@ -105,8 +103,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 #pragma mark - VDiscoverViewControllerProtocol
 
 @synthesize hasLoadedOnce;
-
-@synthesize didTransitionIn;
 
 - (BOOL)isShowingNoData
 {
@@ -173,36 +169,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 }
 
 #pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( indexPath.section == VDiscoverViewControllerSectionSuggestedPeople && [cell isKindOfClass:[VSuggestedPeopleCell class]] )
-    {
-        // Animate the cell only the first time it is loaded and displayed
-        if ( !self.suggestedPeopleViewController.didTransitionIn )
-        {
-            cell.alpha = 0.0f;
-            [UIView animateWithDuration:0.4f animations:^{
-                 cell.alpha = 1.0f;
-             } completion:^(BOOL finished){
-                 self.suggestedPeopleViewController.didTransitionIn = YES;
-             }];
-        }
-    }
-    else if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && [cell isKindOfClass:[VTrendingTagCell class]] )
-    {
-        // Animate the cell only the first time it is loaded and displayed
-        if ( !self.didTransitionIn && [cell isKindOfClass:[VTrendingTagCell class]] )
-        {
-            cell.alpha = 0.0f;
-            [UIView animateWithDuration:0.4f animations:^{
-                cell.alpha = 1.0f;
-            } completion:^(BOOL finished){
-                self.didTransitionIn = YES;
-            }];
-        }
-    }
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
