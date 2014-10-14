@@ -16,7 +16,7 @@
 {
     const char *plaintext = [self UTF8String];
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(plaintext, strlen(plaintext), hash);
+    CC_SHA256(plaintext, (CC_LONG)strlen(plaintext), hash);
     
     NSUInteger hashedStringLength = CC_SHA256_DIGEST_LENGTH * 2;
     NSMutableString *hashedString = [NSMutableString stringWithCapacity:hashedStringLength];
