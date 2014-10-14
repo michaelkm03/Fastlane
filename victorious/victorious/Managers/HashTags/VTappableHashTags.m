@@ -7,7 +7,6 @@
 //
 
 #import "VTappableHashTags.h"
-#import "NSLayoutManager+VTableViewCellSupport.h"
 #import "VHashTags.h"
 
 @interface VTappableHashTags()
@@ -81,7 +80,7 @@
     {
         errorMessage = @"Delegate's 'textStorage' property/selector must return a valid NSTextStorage";
     }
-    else if ( [delegate layoutManager] == nil )
+    else if ( [delegate containerLayoutManager] == nil )
     {
         errorMessage = @"Delegate's 'layoutManager' property/selector must return a valid NSLayoutManager";
     }
@@ -89,11 +88,11 @@
     {
         errorMessage = @"Delegate's 'textContainer' property/selector must return a valid NSTextContainer";
     }
-    else if ( ![[[delegate layoutManager] textContainers] containsObject:[delegate textContainer]] )
+    else if ( ![[[delegate containerLayoutManager] textContainers] containsObject:[delegate textContainer]] )
     {
         errorMessage = @"Delegate's 'layoutManager' must contain its textContainer.  See 'addTextContainer' on NSLayoutManager";
     }
-    else if ( ![[[delegate textStorage] layoutManagers] containsObject:[delegate layoutManager]] )
+    else if ( ![[[delegate textStorage] layoutManagers] containsObject:[delegate containerLayoutManager]] )
     {
         errorMessage = @"Delegate's 'textStorage' must contain its layoutManager.  See 'addLayoutManager' on NSTextStorage";
     }
@@ -131,7 +130,7 @@
     {
         return NO;
     }
-    else if (  textView.layoutManager != [_delegate layoutManager] || textView.textContainer != [_delegate textContainer] )
+    else if (  textView.layoutManager != [_delegate containerLayoutManager] || textView.textContainer != [_delegate textContainer] )
     {
         return NO;
     }

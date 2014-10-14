@@ -47,7 +47,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @property (nonatomic, strong) NSArray               *hashTagRanges;
 @property (nonatomic, strong) NSTextStorage         *textStorage;
-@property (nonatomic, strong) NSLayoutManager       *layoutManager;
+@property (nonatomic, strong) NSLayoutManager       *containerLayoutManager;
 @property (nonatomic, strong) NSTextContainer       *textContainer;
 @property (nonatomic, strong) VTappableHashTags     *tappableHashTags;
 
@@ -64,13 +64,13 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     // Setup the layoutmanager, text container, and text storage
-    self.layoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
+    self.containerLayoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
     self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
     self.textContainer.widthTracksTextView = YES;
     self.textContainer.heightTracksTextView = YES;
-    [self.layoutManager addTextContainer:self.textContainer];
+    [self.containerLayoutManager addTextContainer:self.textContainer];
     self.textStorage = [[NSTextStorage alloc] init];
-    [self.textStorage addLayoutManager:self.layoutManager];
+    [self.textStorage addLayoutManager:self.containerLayoutManager];
     
     NSError *error = nil;
     self.tappableHashTags = [[VTappableHashTags alloc] init];
