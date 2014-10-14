@@ -11,7 +11,6 @@
 #import "VFacebookManager.h"
 #import "VObjectManager+Users.h"
 #import "VConstants.h"
-#import "VFriendsManager.h"
 
 
 @implementation VFindFacebookFriendsTableViewController
@@ -82,12 +81,12 @@
 
 - (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
 {
-    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 - (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
 {
-    [[VFriendsManager sharedFriendsManager] unfollowUser:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 @end

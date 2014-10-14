@@ -15,13 +15,13 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
-#import "VFriendsManager.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
@@ -206,8 +206,7 @@
         [self dismissViewControllerAnimated:YES completion:^(void)
         {
             // Load a user's following and followers
-            [[VFriendsManager sharedFriendsManager] loadFollowersAndFollowing:mainUser];
-
+            [self loadFollowersAndFollowing:mainUser];
         }];
     }
 }
@@ -226,6 +225,46 @@
                                                      otherButtonTitles:nil];
         [alert show];
     }
+}
+
+- (void)loadFollowersAndFollowing:(VUser *)user
+{
+    VSuccessBlock followersSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.followers containsObject:userObject])
+            {
+                [mainUser addFollowersObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    VSuccessBlock followingSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        NSManagedObjectContext *moc = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+        for (VUser *userObject in resultObjects)
+        {
+            if (![mainUser.following containsObject:userObject])
+            {
+                [mainUser addFollowingObject:userObject];
+                [moc saveToPersistentStore:nil];
+            }
+        }
+    };
+    
+    if (!user)
+    {
+        user = [[VObjectManager sharedManager] mainUser];
+    }
+    
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:followersSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:followingSuccessBlock failBlock:nil];
+    
 }
 
 #pragma mark - Actions

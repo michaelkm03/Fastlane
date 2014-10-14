@@ -41,8 +41,6 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 
-#import "VFriendsManager.h"
-
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -308,7 +306,7 @@
     };
     
     // Add user at backend
-    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -374,8 +372,7 @@
         [alert show];
     };
     
-    [[VFriendsManager sharedFriendsManager] unfollowUser:user withSuccess:successBlock withFailure:failureBlock];
-    
+    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 #pragma mark - TableView Delegate Methods
@@ -388,8 +385,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *profile = self.foundUsers[indexPath.row];
-    
-    BOOL haveRelationship = ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile]);
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL haveRelationship = [mainUser.following containsObject:profile];
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = profile;
@@ -405,7 +402,7 @@
             return;
         }
 
-        if ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile])
+        if ([mainUser.following containsObject:profile])
         {
             [self unfollowFriendAction:profile];
         }

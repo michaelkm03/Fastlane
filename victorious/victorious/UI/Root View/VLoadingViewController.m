@@ -17,7 +17,6 @@
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
-#import "VFriendsManager.h"
 
 #import "MBProgressHUD.h"
 
@@ -175,8 +174,6 @@ static const NSUInteger kRetryAttempts = 5;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
-                // Load a user's following and followers
-                [[VFriendsManager sharedFriendsManager] loadFollowersAndFollowing:user];
                 
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
                 [self.navigationController pushViewController:streamContainer animated:YES];

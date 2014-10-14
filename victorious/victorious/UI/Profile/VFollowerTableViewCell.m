@@ -11,7 +11,6 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
-#import "VFriendsManager.h"
 
 @interface      VFollowerTableViewCell ()
 
@@ -87,7 +86,8 @@
 
 - (void)flipFollowIconAction:(id)sender
 {
-    BOOL relationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:self.profile];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
     void (^animations)() = ^(void)
     {
         if (relationship)

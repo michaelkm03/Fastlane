@@ -18,7 +18,6 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VFriendsManager.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -168,7 +167,6 @@
     NSAssert(NO, @"class %@ needs to implement unFollowSingleFollower:withSuccess:withFailure:", NSStringFromClass([self class]));
 }
 
-
 - (void)_loadFriendsFromSocialNetwork
 {
     self.state = VFindFriendsTableViewStateLoading;
@@ -192,9 +190,11 @@
     self.usersFollowing = [[NSMutableArray alloc] init];
     self.usersNotFollowing = [[NSMutableArray alloc] init];
     
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+
     for (VUser *user in users)
     {
-        if ([[VFriendsManager sharedFriendsManager] isFollowingUser:user])
+        if ([mainUser.following containsObject:user])
         {
             [self.usersFollowing addObject:user];
         }
@@ -311,15 +311,7 @@
             [cell flipFollowIconAction:nil];
         }
     };
-    
-    [self loadBatchOfFollowers:self.usersNotFollowing withSuccess:successBlock withFailure:nil];
-}
-
-- (void)loadBatchOfFollowers:(NSArray *)followers withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] followUsers:followers
-                               withSuccessBlock:successBlock
-                                      failBlock:failureBlock];
+    [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
 }
 
 
@@ -391,7 +383,7 @@
     };
     
     // Add user at backend
-    [[VFriendsManager sharedFriendsManager] followUser:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -448,10 +440,7 @@
     };
     
     // Send unfollow to the backend
-    [[VFriendsManager sharedFriendsManager] unfollowUser:user
-                                             withSuccess:successBlock
-                                             withFailure:failureBlock];
-    
+    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 #pragma mark - UITableView Section Header
@@ -559,6 +548,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile;
     BOOL haveRelationship = NO;
 
@@ -572,7 +562,7 @@
         profile = self.usersFollowing[indexPath.row];
     }
     
-    haveRelationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:profile];
+    haveRelationship = [mainUser.following containsObject:profile];
     
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
@@ -587,7 +577,7 @@
             return;
         }
         
-        if ([[VFriendsManager sharedFriendsManager] isFollowingUser:profile])
+        if ([mainUser.following containsObject:profile])
         {
             [self unfollowFriendAction:profile];
         }

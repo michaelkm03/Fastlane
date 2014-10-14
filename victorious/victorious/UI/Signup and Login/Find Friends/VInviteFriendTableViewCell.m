@@ -11,7 +11,6 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Login.h"
-#import "VFriendsManager.h"
 
 NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
 
@@ -102,7 +101,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)flipFollowIconAction:(id)sender
 {
-    BOOL relationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:self.profile];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
     void (^animations)() = ^(void)
     {
         if (relationship)
@@ -113,7 +113,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
         {
             [self.followIconImageView setImage:self.followIcon];
         }
-        //self.followButton.userInteractionEnabled = YES;
     };
     [UIView transitionWithView:self.followIconImageView
                       duration:0.3
@@ -127,7 +126,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)disableFollowIcon:(id)sender
 {
-    BOOL relationship = [[VFriendsManager sharedFriendsManager] isFollowingUser:self.profile];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
     void (^animations)() = ^(void)
     {
         if (relationship)
