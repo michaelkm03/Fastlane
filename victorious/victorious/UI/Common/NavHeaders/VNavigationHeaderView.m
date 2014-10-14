@@ -9,6 +9,7 @@
 #import "VNavigationHeaderView.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @interface VNavigationHeaderView ()
 
@@ -28,7 +29,7 @@
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:[self preferredNibForTheme] owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
     
@@ -38,12 +39,24 @@
 
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:[self preferredNibForTheme] owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
     
     [header setupSegmentedControlWithTitles:titles];
     return header;
+}
+
++ (NSString *)preferredNibForTheme
+{
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [NSStringFromClass(self) stringByAppendingString:@"-C"];
+    }
+    else
+    {
+        return NSStringFromClass(self);
+    }
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
@@ -78,14 +91,17 @@
         self.headerLabel.text = self.headerText;
     }
     
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+
+    NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
     
-    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
     
-    self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.headerLabel.text = self.headerText;
 }

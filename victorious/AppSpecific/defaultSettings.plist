@@ -17,7 +17,7 @@
 	<key>require_profile_image</key>
 	<true/>
 	<key>channelsEnabled</key>
-	<true/>
+	<false/>
 	<key>marqueeEnabled</key>
 	<true/>
 	<key>settingCEnabled</key>
