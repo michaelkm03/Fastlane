@@ -23,8 +23,9 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
-const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 width
+static const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
+static const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 width
+static const CGFloat kPollCellWidthRatioC = 0.94375;
 
 @interface VStreamCollectionCellPoll ()
 
@@ -75,7 +76,7 @@ const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 w
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     CGFloat yRatio = isTemplateC ? kPollCellHeightRatioC : kPollCellHeightRatio;
-    CGFloat xRatio = isTemplateC ? 0.94375 : 1;
+    CGFloat xRatio = isTemplateC ? kPollCellWidthRatioC : 1;
     CGFloat width = CGRectGetWidth(bounds) * xRatio;
     return CGSizeMake(width, width * yRatio);
 }
