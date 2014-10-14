@@ -203,11 +203,7 @@
     }
     else
     {
-        [self dismissViewControllerAnimated:YES completion:^(void)
-        {
-            // Load a user's following and followers
-            [self loadFollowersAndFollowing:mainUser];
-        }];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
