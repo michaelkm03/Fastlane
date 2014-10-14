@@ -96,16 +96,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:0.0f];
-    
-    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                   attribute:NSLayoutAttributeTop
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:self.navHeaderView
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                  multiplier:1.0f
-                                                                                    constant:0.0f];
-    
-    [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
+    [self.view addConstraint:self.headerYConstraint];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -117,6 +108,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
                   forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
+    UIEdgeInsets insets = self.collectionView.contentInset;
+    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+    self.collectionView.contentInset = insets;
 }
 
 - (BOOL)prefersStatusBarHidden
