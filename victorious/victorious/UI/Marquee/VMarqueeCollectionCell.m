@@ -20,8 +20,10 @@
 #import "VUser.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
-static CGFloat const kVTabSpacingRatio = 0.0390625;//From spec file, 25/640
+static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
+static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 static const CGFloat kMarqueeBufferHeight = 3;
 
 @interface VMarqueeCollectionCell()
@@ -39,13 +41,26 @@ static const CGFloat kMarqueeBufferHeight = 3;
     [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
     
     self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.frame];
-    self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
-    self.tabView.spacingBetweenTabs = CGRectGetWidth(self.bounds) * kVTabSpacingRatio;
-    self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
     
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
+        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
+        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatio;
+        
+        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    }
+    else
+    {
+        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
+        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
+
+        self.backgroundColor = [UIColor clearColor];
+    }
     
     [self addSubview:self.tabView];
 }

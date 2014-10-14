@@ -32,6 +32,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 //Categories
 #import "UIImage+ImageCreation.h"
@@ -40,6 +41,8 @@
 #import "VConstants.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
+static CGFloat const kGreyBackgroundColor = 0.94509803921;
+static CGFloat const kTemplateCLineSpacing = 8;
 
 @interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
 
@@ -123,7 +126,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
-    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    self.collectionView.backgroundColor = [self preferredBackgroundColor];
     
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
@@ -181,6 +184,18 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 }
 
 #pragma mark - Properties
+
+- (UIColor *)preferredBackgroundColor
+{
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
+    }
+    else
+    {
+        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    }
+}
 
 - (NSCache *)preloadImageCache
 {
@@ -251,25 +266,6 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     
     VContentViewController *contentViewController = [[VContentViewController alloc] init];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-
-//    the old setup code
-//    //TODO: we'll need to clean this up once they decide on the animation
-//    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
-//    {
-//        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
-//        {
-//            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
-//            [self.navigationController pushViewController:self.contentViewController animated:YES];
-//        }
-//        return;
-//    }
-//    
-//    if ([cell isKindOfClass:[VStreamPollCell class]])
-//    {
-//        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
-//        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
-//        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
-//    }
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     contentViewController.sequence = sequence;
@@ -296,7 +292,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-             [collectionView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+             [collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
          }
                          completion:^(BOOL finished)
          {
@@ -319,6 +315,11 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
         return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
     return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -479,7 +480,7 @@ static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
     {
         noContentUpdates = ^void(void)
         {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
+            UIImage *newImage = [UIImage resizeableImageWithColor:[self preferredBackgroundColor]];
             self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
         };
     }

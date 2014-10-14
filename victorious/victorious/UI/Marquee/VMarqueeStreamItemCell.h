@@ -10,7 +10,7 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 
-@class VStreamItem, VUser, VMarqueeStreamItemCell;
+@class VStreamItem, VUser, VMarqueeStreamItemCell, VDefaultProfileButton;
 
 /**
  *  Delegate for a VMarqueeStreamItemCell

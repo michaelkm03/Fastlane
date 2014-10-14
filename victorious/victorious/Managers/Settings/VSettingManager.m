@@ -22,7 +22,7 @@ NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled
 
 NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
 NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
-
+NSString * const VSettingsTemplateCEnabled = @"settingCEnabled";
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 

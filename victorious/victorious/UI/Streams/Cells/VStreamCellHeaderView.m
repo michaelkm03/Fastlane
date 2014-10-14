@@ -25,11 +25,13 @@
 #import "VConstants.h"
 
 #import "VUserProfileViewController.h"
+#import "VSettingManager.h"
 
 
 static VLargeNumberFormatter *largeNumberFormatter;
 
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
+static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @implementation VStreamCellHeaderView
 
@@ -53,6 +55,12 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self commonInit];
+}
+
 - (void)commonInit
 {
     static dispatch_once_t onceToken;
@@ -63,6 +71,25 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     
     _commentViews = [[NSMutableArray alloc] init];
     _isFromProfile = NO;
+    
+    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kCommentButtonBuffer, 0, 0)];
+
+
+    // Style the ui
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
+    
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.parentLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+        self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    }
+    
+    self.dateImageView.tintColor = self.dateLabel.textColor;
 }
 
 - (void)hideCommentsButton
@@ -70,17 +97,41 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     [self.commentButton setHidden:YES];
 }
 
+- (void)setParentText:(NSString *)text
+{
+    // Format repost / remix string
+    NSString *parentUserString;
+    if ([self.sequence isRepost] && self.sequence.parentUser)
+    {
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text];
+    }
+    
+    if ([self.sequence isRemix] && self.sequence.parentUser)
+    {
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), text];
+    }
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: self.parentLabel.font,
+                                 NSForegroundColorAttributeName:  self.parentLabel.textColor,
+                                 };
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
+                                                                                         attributes:attributes];
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        NSRange range = [parentUserString rangeOfString:text];
+        
+        [attributedString addAttribute:NSForegroundColorAttributeName
+                                 value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                                 range:range];
+    }
+    
+    self.parentLabel.attributedText = attributedString;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    
-    // Style the ui
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
-    [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
     
     [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl] forState:UIControlStateNormal];
     
@@ -90,24 +141,10 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    // Format repost / remix string
-    NSString *parentUserString;
-    if ([self.sequence isRepost] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    if ([self.sequence isRemix] && self.sequence.parentUser)
-    {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
-    }
-    
-    self.parentLabel.text = parentUserString;
-    
+    [self setParentText:self.sequence.parentUser.name];
     // Set username and format date
     self.usernameLabel.text = self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
-    
     
     // Check if this is a repost / remix and size the userInfoView accordingly
     if (self.sequence.parentUser)

@@ -32,6 +32,7 @@
 #import "VCommentCell.h"
 
 #import "UIImageView+VLoadingAnimations.h"
+#import "VSettingManager.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate>
 
@@ -47,6 +48,9 @@
 
 @end
 
+static const CGFloat kTemplateCYRatio = 1.49375;
+static const CGFloat kTemplateCXRatio = 0.94375;
+
 @implementation VStreamCollectionCell
 
 - (void)awakeFromNib
@@ -55,25 +59,66 @@
     
     
     self.originalHeight = self.frame.size.height;
-    
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    if (!isTemplateC)
+    {
+        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    }
+    else
+    {
+        self.backgroundColor = [UIColor whiteColor];
+    }
     
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
 }
 
-- (NSDictionary *)attributesForCellText
+- (void)setDescriptionText:(NSString *)text
 {
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    
     //TODO: Remvoe this hardcoded font size
-    return @{
+    NSDictionary *attributes = @{
              NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-             NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
+             NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
              };
+    
+    NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
+                                                                                              attributes:attributes];
+    self.hashTagRanges = [VHashTags detectHashTags:text];
+    
+    if ([self.hashTagRanges count] > 0)
+    {
+        [VHashTags formatHashTagsInString:newAttributedCellText
+                            withTagRanges:self.hashTagRanges
+                               attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.maximumLineHeight = 25;
+    paragraphStyle.minimumLineHeight = 25;
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
+                                  value:paragraphStyle
+                                  range:NSMakeRange(0, newAttributedCellText.length)];
+    if (!isTemplateC)
+    {
+        NSShadow *shadow = [NSShadow new];
+        [shadow setShadowBlurRadius:4.0f];
+        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+        [shadow setShadowOffset:CGSizeMake(0, 0)];
+        [newAttributedCellText addAttribute:NSShadowAttributeName
+                                      value:shadow
+                                      range:NSMakeRange(0, newAttributedCellText.length)];
+    }
+    
+    self.descriptionLabel.attributedText = newAttributedCellText;
 }
-
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -94,34 +139,7 @@
     
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
-        NSString *text = self.sequence.name;
-        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[self attributesForCellText]];
-        self.hashTagRanges = [VHashTags detectHashTags:text];
-        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-        paragraphStyle.maximumLineHeight = 25;
-        paragraphStyle.minimumLineHeight = 25;
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-        
-        NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:4.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
-        [shadow setShadowOffset:CGSizeMake(0, 0)];
-        
-        if ([self.hashTagRanges count] > 0)
-        {
-            [VHashTags formatHashTagsInString:newAttributedCellText
-                                withTagRanges:self.hashTagRanges
-                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
-        }
-        [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
-                                      value:paragraphStyle
-                                      range:NSMakeRange(0, newAttributedCellText.length)];
-        [newAttributedCellText addAttribute:NSShadowAttributeName
-                                      value:shadow
-                                      range:NSMakeRange(0, newAttributedCellText.length)];
-        
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        [self setDescriptionText:self.sequence.name];
     }
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
@@ -181,19 +199,27 @@
 
 + (NSString *)suggestedReuseIdentifier
 {
-    return NSStringFromClass([self class]);
+    NSString *reuseID = NSStringFromClass([self class]);
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        reuseID = [reuseID stringByAppendingString:@"-C"];
+    }
+    return reuseID;
 }
 
 + (UINib *)nibForCell
 {
-    return [UINib nibWithNibName:NSStringFromClass([self class])
+    return [UINib nibWithNibName:[self suggestedReuseIdentifier]
                           bundle:nil];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGFloat width = CGRectGetWidth(bounds);
-    return CGSizeMake(width, width);
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    CGFloat yRatio = isTemplateC ? kTemplateCYRatio : 1;
+    CGFloat xRatio = isTemplateC ? kTemplateCXRatio : 1;
+    CGFloat width = CGRectGetWidth(bounds) * xRatio;
+    return CGSizeMake(width, width * yRatio);
 }
 
 @end
