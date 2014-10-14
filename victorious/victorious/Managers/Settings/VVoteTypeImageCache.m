@@ -45,28 +45,63 @@ static const char * const kDispatchQueueLabel               = "com.getvictorious
     
     // Load each sprite image on the concurrent queue
     NSArray *images = (NSArray *)voteType.images;
-    [images enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger idx, BOOL *stop) {
+    [images enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop){
+        
         dispatch_async( self.dispatchQueue, ^{
-            [self saveImage:imageUrl toPath:[self spritePathForVoteType:voteType atIndex:idx]];
+            [self saveImage:imageUrl toPath:[self spritePathForVoteType:voteType atIndex:i]];
         });
     }];
 }
 
 - (NSArray *)getCachedSpritesForVoteType:(VVoteType *)voteType
 {
-    __block NSMutableArray *images = nil;
+    __block NSMutableArray *loadedImages = nil;
     dispatch_barrier_sync( self.dispatchQueue, ^{
-        NSUInteger imagesCount = ((NSArray *)images).count;
-        for ( NSUInteger i = 0; i < imagesCount; i++ )
+        NSArray *images = (NSArray *)voteType.images;
+        [images enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop){
+            
+            UIImage *image = [UIImage imageWithContentsOfFile:[self spritePathForVoteType:voteType atIndex:i]];
+            if ( image != nil )
+            {
+                [loadedImages addObject:image];
+            }
+            else
+            {
+                // If there's an error, don't allow an incomplete array of images to be returned
+                [loadedImages removeAllObjects];
+                *stop = YES;
+            }
+        }];
+    });
+    return [NSArray arrayWithArray:loadedImages];
+}
+
+- (void)getCachedSpritesForVoteType:(VVoteType *)voteType complete:(void(^)(NSArray *))callback
+{
+    dispatch_barrier_async( self.dispatchQueue, ^{
+        NSMutableArray *loadedImages = nil;
+        NSArray *images = (NSArray *)voteType.images;
+        [images enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)
         {
             UIImage *image = [UIImage imageWithContentsOfFile:[self spritePathForVoteType:voteType atIndex:i]];
             if ( image != nil )
             {
-                [images addObject:image];
+                [loadedImages addObject:image];
             }
+            else
+            {
+                [self saveImage:imageUrl toPath:[self spritePathForVoteType:voteType atIndex:i]];
+            }
+        }];
+        
+        // Callback on the main thread with the loaded images
+        if ( callback != nil )
+        {
+            dispatch_async( dispatch_get_main_queue(), ^{
+                callback( [NSArray arrayWithArray:loadedImages] );
+            });
         }
     });
-    return [NSArray arrayWithArray:images];
 }
 
 - (UIImage *)getCachedIconForVoteType:(VVoteType *)voteType
