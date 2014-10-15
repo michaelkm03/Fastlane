@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *detailButton;
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceSeparatorToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceSeparatorToContainerConstraint;
@@ -62,6 +63,15 @@
     else
     {
         highlightAnimations();
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+    if (selected)
+    {
+        [self.activityIndicator startAnimating];
     }
 }
 

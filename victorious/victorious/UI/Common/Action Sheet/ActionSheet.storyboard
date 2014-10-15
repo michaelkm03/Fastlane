@@ -87,6 +87,10 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
+                                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="S09-W7-ikL" userLabel="Large White Activity Indicator">
+                                                                    <rect key="frame" x="7" y="12" width="20" height="20"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                </activityIndicatorView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="NCA-G7-lHm">
                                                                     <rect key="frame" x="35" y="12" width="22" height="19"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -138,6 +142,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
                                                             <outlet property="actionIconImageView" destination="NCA-G7-lHm" id="CPx-yc-xwm"/>
+                                                            <outlet property="activityIndicator" destination="S09-W7-ikL" id="uw2-vQ-xjx"/>
                                                             <outlet property="detailButton" destination="FZR-U7-hah" id="OK6-6n-5li"/>
                                                             <outlet property="leadingSpaceSeparatorToContainerConstraint" destination="6JH-9u-qeT" id="nF0-AU-jeN"/>
                                                             <outlet property="separatorHeightConstaint" destination="g1i-Uc-e9G" id="Ug7-3G-1b7"/>
@@ -268,7 +273,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="by8-un-abY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="134" y="194"/>
+            <point key="canvasLocation" x="-120" y="528"/>
         </scene>
     </scenes>
     <resources>

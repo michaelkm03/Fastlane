@@ -269,6 +269,11 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableView.indexPathForSelectedRow)
+    {
+        return NO;
+    }
+    
     switch (indexPath.section)
     {
         case VActionSheetTableViewSecionDescription:
@@ -285,6 +290,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+    self.view.userInteractionEnabled = NO;
     if (actionItem.selectionHandler)
     {
         actionItem.selectionHandler();
