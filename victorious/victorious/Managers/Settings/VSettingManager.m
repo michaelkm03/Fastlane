@@ -108,10 +108,9 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
         
         // Assign defaults if any values are missing
+        // TODO: Make these required by CoreData so taht they fail earlier than here
         v.icon = v.icon ? v.icon : ((NSArray *)v.images)[0];
         v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
-        v.flightDuration = v.flightDuration ? v.flightDuration : @( 0.5f );
-        v.animationDuration = v.animationDuration ? v.animationDuration : @( 0.5f );
         
         [fileCache cacheImagesForVoteType:v];
     }];

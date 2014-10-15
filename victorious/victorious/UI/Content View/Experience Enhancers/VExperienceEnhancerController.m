@@ -83,7 +83,7 @@
             enhancer.icon = image;
         }];
         [self.fileCache getImageWithName:VVoteTypeFlightImageName forVoteType:voteType completionCallback:^(UIImage *image) {
-            enhancer.icon = image;
+            enhancer.flightImage = image;
         }];
         [experienceEnhanders addObject:enhancer];
     }];
