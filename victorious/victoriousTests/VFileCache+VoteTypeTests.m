@@ -29,8 +29,6 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     VFileCache *_fileCache;
     VAsyncTestHelper *_asyncHelper;
     VVoteType *_voteType;
-    
-    BOOL _wereFilesCreated;
 }
 
 @end
@@ -41,8 +39,6 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
 {
     [super setUp];
     
-    _wereFilesCreated = NO;
-    
     _asyncHelper = [[VAsyncTestHelper alloc] init];
     _fileCache = [[VFileCache alloc] init];
     
@@ -50,17 +46,14 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     _voteType.name = @"vote_type_test_name";
     _voteType.icon = kTestImageUrl;
     _voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
+    
+    NSString *directoryPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name];
+    [VFileSystemTestHelpers deleteCachesDirectory:directoryPath];
 }
 
 - (void)tearDown
 {
     [super tearDown];
-    
-    if ( _wereFilesCreated )
-    {
-        NSString *directoryPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name];
-        XCTAssertEqual( _wereFilesCreated, [VFileSystemTestHelpers deleteCachesDirectory:directoryPath], @"Error deleting contents created by last test." );
-    }
     
     _voteType = nil;
     
@@ -102,6 +95,7 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     _voteType.icon = nil;
+    
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     _voteType.name = @"valid_name";
@@ -151,8 +145,6 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
         
         return iconExists && spritesExist;
     }];
-    
-    _wereFilesCreated = YES;
 }
 
 - (void)testCacheImagesInvalid

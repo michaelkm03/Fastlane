@@ -14,13 +14,34 @@
 static NSString * const kTestingPathRoot = @"file_cache_tests";
 static NSString * const kTestingFileUrl = @"http://www.google.com/";
 
+#pragma mark - Category exposing public methods
 
-// Simply exposes private methods and prpperties
 @interface VFileCache (UnitTest)
 
 - (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwite;
 - (NSString *)getCachesDirectoryPathForPath:(NSString *)path;
 - (BOOL)createDirectoryAtPath:(NSString *)path;
+- (BOOL)downloadAndWriteFile:(NSString *)fileUrl toPath:(NSString *)filepath;
+
+@end
+
+#pragma mark - Subclass with some test-specific functionality added
+
+@interface VFileCacheSubclass : VFileCache
+
+@property (nonatomic, assign) BOOL downloadAndWriteWasCalled;
+
+@end
+
+#pragma mark - Test cases
+
+@implementation VFileCacheSubclass
+
+- (BOOL)downloadAndWriteFile:(NSString *)fileUrl toPath:(NSString *)filepath
+{
+    self.downloadAndWriteWasCalled = YES;
+    return [super downloadAndWriteFile:fileUrl toPath:filepath];
+}
 
 @end
 
@@ -28,8 +49,7 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 {
     VFileCache *_fileCache;
     VAsyncTestHelper *_asyncHelper;
-    
-    BOOL _wereFilesCreated;
+    IMP _originalImplementation;
 }
 
 @end
@@ -40,21 +60,15 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 {
     [super setUp];
     
-    _wereFilesCreated = NO;
+    [VFileSystemTestHelpers deleteCachesDirectory:kTestingPathRoot];
     
     _asyncHelper = [[VAsyncTestHelper alloc] init];
-    _fileCache = [[VFileCache alloc] init];
+    _fileCache = [[VFileCacheSubclass alloc] init];
 }
 
 - (void)tearDown
 {
     [super tearDown];
-    
-    if ( _wereFilesCreated )
-    {
-        XCTAssert( [VFileSystemTestHelpers deleteCachesDirectory:kTestingPathRoot],
-                  @"Error deleting contents created by last test." );
-    }
 }
 
 /**
@@ -65,14 +79,12 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     NSString *fullPath = [_fileCache getCachesDirectoryPathForPath:keyPath];
     [_fileCache createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent]];
     XCTAssert( [_fileCache saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:YES] );
-    
-    _wereFilesCreated = YES;
 }
 
 - (void)testSaveFile
 {
     NSString *keyPath = [NSString stringWithFormat:@"%@/test_files/single_file.html", kTestingPathRoot];
-    XCTAssert( [_fileCache cacheFileAtUrl:kTestingFileUrl withKeyPath:keyPath] );
+    XCTAssert( [_fileCache cacheFileAtUrl:kTestingFileUrl withKeyPath:keyPath shouldOverwrite:YES] );
     
     [_asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
         return [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:keyPath];
@@ -101,14 +113,12 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
         [urls addObject: kTestingFileUrl];
     }
     
-    XCTAssert( [_fileCache cacheFilesAtUrls:urls withKeyPaths:keyPaths] );
+    XCTAssert( [_fileCache cacheFilesAtUrls:urls withKeyPaths:keyPaths shouldOverwrite:YES] );
     
     // If this fails occasionally, check your network settings or adjust the wait duration
     [_asyncHelper waitForSignal:20.0f withSignalBlock:^BOOL{
         return [VFileSystemTestHelpers numberOfFilesAtPath:localPath] == testFilesCount;
     }];
-    
-    _wereFilesCreated = YES;
 }
 
 - (void)testGetFileSynchronous
@@ -180,6 +190,27 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     // Synchronously load the file we just saved
     XCTAssertNotNil( [_fileCache getCachedFileForKeyPath:keyPath] );
     XCTAssert( decoderWasCalled );
+}
+
+- (void)testOverwrite
+{
+    VFileCacheSubclass *fcs = (VFileCacheSubclass *)_fileCache;
+    
+    NSString *keyPath = [NSString stringWithFormat:@"%@/test_files/file_overwrite.html", kTestingPathRoot];
+    NSString *fullPath = [_fileCache getCachesDirectoryPathForPath:keyPath];
+    [fcs createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent]];
+    
+    fcs.downloadAndWriteWasCalled = NO;
+    XCTAssert( [fcs saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:YES] );
+    XCTAssert( fcs.downloadAndWriteWasCalled );
+    
+    fcs.downloadAndWriteWasCalled = NO; // set to NO and test that it stays NO, i.e. 'downloadAndWriteFile:toPath:' is not called
+    XCTAssert( [fcs saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:NO] );
+    XCTAssertFalse( fcs.downloadAndWriteWasCalled );
+    
+    fcs.downloadAndWriteWasCalled = NO;
+    XCTAssert( [fcs saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:YES] );
+    XCTAssert( fcs.downloadAndWriteWasCalled );
 }
 
 @end

@@ -13,6 +13,8 @@
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
 #import "VVoteType.h"
+#import "VFileCache.h"
+#import "VFileCache+VoteType.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";
@@ -33,6 +35,8 @@ NSString * const   kVAppStoreURL                       =   @"url.appstore";
 NSString * const   kVPrivacyUrl                        =   @"url.privacy";
 
 @interface VSettingManager()
+
+@property (nonatomic, strong) VFileCache *fileCache;
 
 @end
 
@@ -58,6 +62,8 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     {
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
+        
+        self.fileCache = [[VFileCache alloc] init];
         
         [self clearVoteTypes];
     }
@@ -90,7 +96,11 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     }];
     
     [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
-        //[self.voteTypeImageCache cacheImagesForVoteType:v];
+        
+        // Until the backend supports the icon image, use this for demo purposes:
+        v.icon = ((NSArray *)v.images)[0];
+        
+        [self.fileCache cacheImagesForVoteType:v];
     }];
 }
 

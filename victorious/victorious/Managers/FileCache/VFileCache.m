@@ -214,11 +214,28 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     // Check if file already exists
     BOOL doesFileExist = [[NSFileManager defaultManager] fileExistsAtPath:filepath];
     BOOL isValidFile = [self fileSizeAtPath:filepath];
-    if ( doesFileExist && isValidFile && !shouldOverwrite )
+    if ( !shouldOverwrite && (isValidFile && doesFileExist) )
     {
         return YES;
     }
-    
+    else
+    {
+        return [self downloadAndWriteFile:fileUrl toPath:filepath];
+    }
+}
+
+- (BOOL)downloadAndWriteFile:(NSString *)fileUrl toPath:(NSString *)filepath
+{
+    // Error checking
+    if ( fileUrl == nil || fileUrl.length == 0 )
+    {
+        return NO;
+    }
+    if ( filepath == nil || filepath.length == 0 )
+    {
+        return NO;
+    }
+
     // Download the image data
     NSError *downloadError;
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileUrl] options:9 error:&downloadError];

@@ -255,7 +255,6 @@
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
-		A709635819EEE87300CE6633 /* VFileCache+VoteTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */; };
 		A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
 		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
@@ -3500,7 +3499,6 @@
 				03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */,
 				A7F6CF9519EE109D003F164C /* VFileCacheTests.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
-				A709635819EEE87300CE6633 /* VFileCache+VoteTypeTests.m in Sources */,
 				A7FE8C5619EE058400B91EF2 /* VFileSystemTestHelpers.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
 				A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */,

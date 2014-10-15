@@ -10,7 +10,7 @@
 #import "VFileCache.h"
 
 NSString * const VFileCacheCachedFilepathFormat     = @"com.getvictorious.vote_types/%@";
-NSString * const VFileCacheCachedSpriteNameFormat   = @"sprite_%i.png";
+NSString * const VFileCacheCachedSpriteNameFormat   = @"sprite_%lu.png";
 NSString * const VFileCacheCachedIconName           = @"icon.png";
 
 @implementation VFileCache (VoteType)
@@ -19,10 +19,10 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
 {
     BOOL isObjectValid = voteType != nil
         && [voteType isKindOfClass:[VVoteType class]]
-        && voteType.name != nil
-        && voteType.name.length > 0
         && voteType.icon != nil
-        && voteType.icon.length > 0;
+        && voteType.icon.length > 0
+        && voteType.name != nil
+        && voteType.name.length > 0;
     
     if ( !isObjectValid )
     {
@@ -73,11 +73,8 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
     [self cacheFileAtUrl:voteType.icon withKeyPath:iconKeyPath];
     
     NSArray *spriteImages = (NSArray *)voteType.images;
-    [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)
-    {
-        NSString *spriteKeyPath = [self keyPathForVoteTypeSprite:voteType atFrameIndex:i];
-        [self cacheFileAtUrl:voteType.icon withKeyPath:spriteKeyPath];
-    }];
+    NSArray *spriteKeyPaths = [self keyPathsForVoteTypeSprites:voteType];
+    [self cacheFilesAtUrls:spriteImages withKeyPaths:spriteKeyPaths];
     
     return YES;
 }
@@ -153,7 +150,7 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
     }
     
     NSString *localRootPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, voteType.name];
-    NSString *fileName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, index];
+    NSString *fileName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, (unsigned long)index];
     return [localRootPath stringByAppendingPathComponent:fileName];
 }
 
