@@ -20,7 +20,7 @@ extern NSString * const VFileCacheCachedIconName;
 /**
  Download and save the files to the cache directory asynchronously
  */
-- (void)cacheImagesForVoteType:(VVoteType *)voteType;
+- (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;
 
 /**
  Retrieve an array of sprite images synchronously.

@@ -17,6 +17,8 @@
 
 - (NSString *)keyPathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index;
 - (NSString *)keyPathForVoteTypeIcon:(VVoteType *)voteType;
+- (NSArray *)keyPathsForVoteTypeSprites:(VVoteType *)voteType;
+- (BOOL)validateVoteType:(VVoteType *)voteType;
 
 @end
 
@@ -28,7 +30,7 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     VAsyncTestHelper *_asyncHelper;
     VVoteType *_voteType;
     
-    BOOL _filesWereCreated;
+    BOOL _wereFilesCreated;
 }
 
 @end
@@ -39,7 +41,7 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
 {
     [super setUp];
     
-    _filesWereCreated = NO;
+    _wereFilesCreated = NO;
     
     _asyncHelper = [[VAsyncTestHelper alloc] init];
     _fileCache = [[VFileCache alloc] init];
@@ -54,10 +56,10 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
 {
     [super tearDown];
     
-    if ( _filesWereCreated )
+    if ( _wereFilesCreated )
     {
         NSString *directoryPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name];
-        XCTAssertEqual( _filesWereCreated, [VFileSystemTestHelpers deleteCachesDirectory:directoryPath], @"Error deleting contents created by last test." );
+        XCTAssertEqual( _wereFilesCreated, [VFileSystemTestHelpers deleteCachesDirectory:directoryPath], @"Error deleting contents created by last test." );
     }
     
     _voteType = nil;
@@ -65,7 +67,7 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     _fileCache = nil;
 }
 
-- (void)testKeyPathConstruction
+- (void)testIconKeyPathConstruction
 {
     NSString *iconKeyPath = [_fileCache keyPathForVoteTypeIcon:_voteType];
     NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:VFileCacheCachedIconName];
@@ -81,6 +83,49 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
         NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
         XCTAssert( [expectedKeyPath isEqualToString:spriteKeyPath] );
     }
+}
+
+- (void)testValidateVoteType
+{
+    XCTAssertFalse( [_fileCache validateVoteType:nil] );
+    
+    XCTAssertFalse( [_fileCache validateVoteType:(VVoteType *)[NSObject new]] );
+    
+    _voteType.name = @"";
+    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
+    
+    _voteType.name = nil;
+    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
+    
+    _voteType.name = @"valid_name";
+    _voteType.icon = @"";
+    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
+    
+    _voteType.icon = nil;
+    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
+    
+    _voteType.name = @"valid_name";
+    _voteType.icon = @"valid_icon";
+    _voteType.images = @[ kTestImageUrl, kTestImageUrl, @"", kTestImageUrl, kTestImageUrl ];
+    XCTAssertFalse( [_fileCache cacheImagesForVoteType:_voteType], @"Cannot have empty URLs in image array.");
+}
+
+- (void)testInvalidKeypathInputs
+{
+    XCTAssertNil( [_fileCache keyPathForVoteTypeIcon:nil] );
+    XCTAssertNil( [_fileCache keyPathsForVoteTypeSprites:nil] );
+    XCTAssertNil( [_fileCache keyPathForVoteTypeSprite:nil atFrameIndex:0] );
+}
+
+- (void)testSpriteKeyPathConstructionArray
+{
+    NSArray *keyPaths = [_fileCache keyPathsForVoteTypeSprites:_voteType];
+    
+    [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger i, BOOL *stop) {
+        NSString *spriteName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, i];
+        NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
+        XCTAssertEqualObjects( expectedKeyPath, keyPath );
+    }];
 }
 
 - (void)testCacheVoteTypeImages
@@ -107,7 +152,12 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
         return iconExists && spritesExist;
     }];
     
-    _filesWereCreated = YES;
+    _wereFilesCreated = YES;
+}
+
+- (void)testCacheImagesInvalid
+{
+    XCTAssertFalse( [_fileCache cacheImagesForVoteType:nil] );
 }
 
 - (void)testLoadFiles
