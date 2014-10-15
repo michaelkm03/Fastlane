@@ -45,6 +45,7 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VUserProfileViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -398,6 +399,11 @@
         [welf presentViewController:lightbox
                            animated:YES
                          completion:nil];
+    };
+    commentCell.onUserProfileTapped = ^(void)
+    {
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[self.viewModel userForCommentIndex:index]];
+        [self.navigationController pushViewController:profileViewController animated:YES];
     };
 }
 
