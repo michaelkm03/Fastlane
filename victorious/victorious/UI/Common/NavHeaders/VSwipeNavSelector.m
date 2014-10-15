@@ -53,7 +53,8 @@ static CGFloat const kVIndicatorViewHeight = 3;
     
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     self.scrollView.contentInset = UIEdgeInsetsMake(0, CGRectGetWidth(self.bounds)/2, 0, CGRectGetWidth(self.bounds)/2);
-    self.scrollView.pagingEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.showsVerticalScrollIndicator = NO;
 
     [self addSubview:self.scrollView];
     
