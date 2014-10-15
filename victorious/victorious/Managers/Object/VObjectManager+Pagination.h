@@ -45,14 +45,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser *)user
                                                         successBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser *)user
-                                            shouldRefresh:(BOOL)refresh
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)loadFollowingsForUser:(VUser *)user
-                                             shouldRefresh:(BOOL)refresh
-                                              successBlock:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail;
 
 #pragma mark Repost
 - (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence *)sequence
