@@ -16,7 +16,7 @@
 #import "VObjectManager+Private.h"
 #import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
-#import "VFileCache+VoteType.h"
+#import "VFileCache+VVoteType.h"
 
 /**
  This will switch between (0) using hardcoded experience enhancers that demonstrate
@@ -79,7 +79,10 @@
             enhancer.flightDuration = voteType.flightDuration.floatValue;
             enhancer.animationDuration = voteType.animationDuration.floatValue;
         }];
-        [self.fileCache getIconImageForVoteType:voteType completionCallback:^(UIImage *image) {
+        [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *image) {
+            enhancer.icon = image;
+        }];
+        [self.fileCache getImageWithName:VVoteTypeFlightImageName forVoteType:voteType completionCallback:^(UIImage *image) {
             enhancer.icon = image;
         }];
         [experienceEnhanders addObject:enhancer];

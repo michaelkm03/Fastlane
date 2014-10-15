@@ -1,5 +1,5 @@
 //
-//  VFileCache+VoteType.h
+//  VFileCache+VVoteType.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/13/14.
@@ -9,13 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-extern NSString * const VFileCacheCachedFilepathFormat;
-extern NSString * const VFileCacheCachedSpriteNameFormat;
-extern NSString * const VFileCacheCachedIconName;
+extern NSString * const VVoteTypeFilepathFormat;
+extern NSString * const VVoteTypeSpriteNameFormat;
+extern NSString * const VVoteTypeIconName;
+extern NSString * const VVoteTypeFlightImageName;
 
 @class VVoteType;
 
-@interface VFileCache (VoteType)
+@interface VFileCache (VVoteType)
 
 /**
  Download and save the files to the cache directory asynchronously
@@ -23,9 +24,9 @@ extern NSString * const VFileCacheCachedIconName;
 - (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;
 
 /**
- Retrieve the icon image synchronously.
+ Retrieve an image synchronously.
  */
-- (UIImage *)getIconImageForVoteType:(VVoteType *)voteType;
+- (UIImage *)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType;
 
 /**
  Retrieve an array of sprite images synchronously.
@@ -38,8 +39,8 @@ extern NSString * const VFileCacheCachedIconName;
 - (BOOL)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback;
 
 /**
- Retrieve the icon image asynchronously.
+ Retrieve an image asynchronously.
  */
-- (BOOL)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback;
+- (BOOL)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  VFileCache+VoteType.m
+//  VFileCache+VVoteType.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/13/14.
@@ -9,18 +9,22 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 
-NSString * const VFileCacheCachedFilepathFormat     = @"com.getvictorious.vote_types/%@";
-NSString * const VFileCacheCachedSpriteNameFormat   = @"sprite_%lu.png";
-NSString * const VFileCacheCachedIconName           = @"icon.png";
+NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
+NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
+NSString * const VVoteTypeIconName           = @"icon.png";
+NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
 
-@implementation VFileCache (VoteType)
+@implementation VFileCache (VVoteType)
 
 - (BOOL)validateVoteType:(VVoteType *)voteType
 {
+    // TODO: Once all values are expected from the server, let CoreData and RestKit validate models
     BOOL isObjectValid = voteType != nil
         && [voteType isKindOfClass:[VVoteType class]]
         && voteType.icon != nil
         && voteType.icon.length > 0
+        && voteType.flightImage != nil
+        && voteType.flightImage.length > 0
         && voteType.name != nil
         && voteType.name.length > 0;
     
@@ -69,8 +73,11 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
     
     [self setEncoder];
     
-    NSString *iconKeyPath = [self keyPathForVoteTypeIcon:voteType];
+    NSString *iconKeyPath = [self keyPathForImage:VVoteTypeIconName forVote:voteType];
     [self cacheFileAtUrl:voteType.icon withKeyPath:iconKeyPath];
+    
+    NSString *flightImageKeyPath = [self keyPathForImage:VVoteTypeFlightImageName forVote:voteType];
+    [self cacheFileAtUrl:voteType.icon withKeyPath:flightImageKeyPath];
     
     NSArray *spriteImages = (NSArray *)voteType.images;
     NSArray *spriteKeyPaths = [self keyPathsForVoteTypeSprites:voteType];
@@ -81,31 +88,31 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
 
 #pragma mark - Retrieve Images
 
-- (BOOL)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback
+- (BOOL)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback
 {
-    if ( ![self validateVoteType:voteType] )
+    if ( ![self validateVoteType:voteType] || imageName == nil || imageName.length == 0 )
     {
         return NO;
     }
     
     [self setDecoder];
     
-    NSString *iconKeyPath = [self keyPathForVoteTypeIcon:voteType];
+    NSString *iconKeyPath = [self keyPathForImage:imageName forVote:voteType];
     return [self getCachedFileForKeyPath:iconKeyPath completeCallback:^(NSData *data) {
         callback( (UIImage *)data );
     }];
 }
 
-- (UIImage *)getIconImageForVoteType:(VVoteType *)voteType
+- (UIImage *)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] )
+    if ( ![self validateVoteType:voteType] || imageName == nil || imageName.length == 0 )
     {
         return nil;
     }
     
     [self setDecoder];
     
-    NSString *iconKeyPath = [self keyPathForVoteTypeIcon:voteType];
+    NSString *iconKeyPath = [self keyPathForImage:imageName forVote:voteType];
     return (UIImage *)[self getCachedFileForKeyPath:iconKeyPath];
 }
 
@@ -118,8 +125,7 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
     
     [self setDecoder];
     
-    NSArray *spriteImages = (NSArray *)voteType.images;
-    return [self getCachedFilesForKeyPaths:spriteImages];
+    return [self getCachedFilesForKeyPaths:[self keyPathsForVoteTypeSprites:voteType]];
 }
 
 - (void)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback
@@ -136,36 +142,21 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
 
 #pragma mark - Build Key Paths
 
-- (NSString *)keyPathForVoteTypeIcon:(VVoteType *)voteType
+- (NSString *)keyPathForImage:(NSString *)imageName forVote:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] )
-    {
-        return nil;
-    }
-    
-    NSString *localRootPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, voteType.name];
-    return [localRootPath stringByAppendingPathComponent:VFileCacheCachedIconName];
+    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
+    return [localRootPath stringByAppendingPathComponent:imageName];
 }
 
 - (NSString *)keyPathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index
 {
-    if ( ![self validateVoteType:voteType] )
-    {
-        return nil;
-    }
-    
-    NSString *localRootPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, voteType.name];
-    NSString *fileName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, (unsigned long)index];
+    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
+    NSString *fileName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, (unsigned long)index];
     return [localRootPath stringByAppendingPathComponent:fileName];
 }
 
 - (NSArray *)keyPathsForVoteTypeSprites:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] )
-    {
-        return nil;
-    }
-    
     __block NSMutableArray *containerArray = [[NSMutableArray alloc] init];
     NSArray *spriteImages = (NSArray *)voteType.images;
     [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)

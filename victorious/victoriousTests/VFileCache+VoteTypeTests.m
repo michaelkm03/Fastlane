@@ -1,5 +1,5 @@
 //
-//  VFileCache+VoteTypeTests.m
+//  VFileCache+VVoteTypeTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/14/14.
@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "VFileCache.h"
-#import "VFileCache+VoteType.h"
+#import "VFileCache+VVoteType.h"
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
@@ -16,13 +16,13 @@
 @interface VFileCache ( UnitTest)
 
 - (NSString *)keyPathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index;
-- (NSString *)keyPathForVoteTypeIcon:(VVoteType *)voteType;
+- (NSString *)keyPathForImage:(NSString *)imageName forVote:(VVoteType *)voteType;
 - (NSArray *)keyPathsForVoteTypeSprites:(VVoteType *)voteType;
 - (BOOL)validateVoteType:(VVoteType *)voteType;
 
 @end
 
-static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/uploads/2014/03/Best-Software-Development-Strategies-3.png";
+static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamato_PNG45.png";
 
 @interface VFileCache_VoteTypeTests : XCTestCase
 {
@@ -43,11 +43,9 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     _fileCache = [[VFileCache alloc] init];
     
     _voteType = [VDummyModels objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
-    _voteType.name = @"vote_type_test_name";
-    _voteType.icon = kTestImageUrl;
-    _voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
+    [self resetVoteType];
     
-    NSString *directoryPath = [NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name];
+    NSString *directoryPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, _voteType.name];
     [VFileSystemTestHelpers deleteCachesDirectory:directoryPath];
 }
 
@@ -60,11 +58,26 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     _fileCache = nil;
 }
 
-- (void)testIconKeyPathConstruction
+- (void)resetVoteType
 {
-    NSString *iconKeyPath = [_fileCache keyPathForVoteTypeIcon:_voteType];
-    NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:VFileCacheCachedIconName];
-    XCTAssert( [expectedKeyPath isEqualToString:iconKeyPath] );
+    _voteType.name = @"vote_type_test_name";
+    _voteType.icon = kTestImageUrl;
+    _voteType.flightImage = kTestImageUrl;
+    _voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
+}
+
+- (void)testKeyPathConstructionIcon
+{
+    NSString *keyPath;
+    NSString *expectedKeyPath;
+    
+    keyPath = [_fileCache keyPathForImage:VVoteTypeIconName forVote:_voteType];
+    expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, _voteType.name] stringByAppendingPathComponent:VVoteTypeIconName];
+    XCTAssertEqualObjects( expectedKeyPath, keyPath );
+    
+    keyPath = [_fileCache keyPathForImage:VVoteTypeFlightImageName forVote:_voteType];
+    expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, _voteType.name] stringByAppendingPathComponent:VVoteTypeFlightImageName];
+    XCTAssertEqualObjects( expectedKeyPath, keyPath );
 }
 
 - (void)testSpriteKeyPathConstruction
@@ -72,9 +85,9 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     for ( NSUInteger i = 0; i < 20; i++ )
     {
         NSString *spriteKeyPath = [_fileCache keyPathForVoteTypeSprite:_voteType atFrameIndex:i];
-        NSString *spriteName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, i];
-        NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
-        XCTAssert( [expectedKeyPath isEqualToString:spriteKeyPath] );
+        NSString *spriteName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, i];
+        NSString *expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
+        XCTAssertEqualObjects( expectedKeyPath, spriteKeyPath );
     }
 }
 
@@ -84,31 +97,29 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     
     XCTAssertFalse( [_fileCache validateVoteType:(VVoteType *)[NSObject new]] );
     
+    [self resetVoteType];
     _voteType.name = @"";
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
+    [self resetVoteType];
     _voteType.name = nil;
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
-    _voteType.name = @"valid_name";
+    [self resetVoteType];
     _voteType.icon = @"";
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
+    [self resetVoteType];
     _voteType.icon = nil;
-    
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
-    _voteType.name = @"valid_name";
-    _voteType.icon = @"valid_icon";
+    [self resetVoteType];
+    _voteType.flightImage = nil;
+    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
+    
+    [self resetVoteType];
     _voteType.images = @[ kTestImageUrl, kTestImageUrl, @"", kTestImageUrl, kTestImageUrl ];
     XCTAssertFalse( [_fileCache cacheImagesForVoteType:_voteType], @"Cannot have empty URLs in image array.");
-}
-
-- (void)testInvalidKeypathInputs
-{
-    XCTAssertNil( [_fileCache keyPathForVoteTypeIcon:nil] );
-    XCTAssertNil( [_fileCache keyPathsForVoteTypeSprites:nil] );
-    XCTAssertNil( [_fileCache keyPathForVoteTypeSprite:nil atFrameIndex:0] );
 }
 
 - (void)testSpriteKeyPathConstructionArray
@@ -116,8 +127,8 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     NSArray *keyPaths = [_fileCache keyPathsForVoteTypeSprites:_voteType];
     
     [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger i, BOOL *stop) {
-        NSString *spriteName = [NSString stringWithFormat:VFileCacheCachedSpriteNameFormat, i];
-        NSString *expectedKeyPath = [[NSString stringWithFormat:VFileCacheCachedFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
+        NSString *spriteName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, i];
+        NSString *expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, _voteType.name] stringByAppendingPathComponent:spriteName];
         XCTAssertEqualObjects( expectedKeyPath, keyPath );
     }];
 }
@@ -128,9 +139,11 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
     
     [_asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
         
-        // Make sure the icon was saved to the right path
-        NSString *iconPath = [_fileCache keyPathForVoteTypeIcon:_voteType];
+        NSString *iconPath = [_fileCache keyPathForImage:VVoteTypeIconName forVote:_voteType];
         BOOL iconExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:iconPath];
+        
+        NSString *flightImagePath = [_fileCache keyPathForImage:VVoteTypeFlightImageName forVote:_voteType];
+        BOOL flightImageExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:flightImagePath];
         
         // Make sure the sprite image swere saved
         __block BOOL spritesExist = YES;
@@ -143,7 +156,7 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
             }
         }];
         
-        return iconExists && spritesExist;
+        return iconExists && flightImageExists && spritesExist;
     }];
 }
 
@@ -154,10 +167,20 @@ static NSString * const kTestImageUrl = @"http://mag-corp.com/blog/wp-content/up
 
 - (void)testLoadFiles
 {
+    // Run this test again to save theimages
     [self testCacheVoteTypeImages];
     
-    UIImage *image = [_fileCache getIconImageForVoteType:_voteType];
-    XCTAssertNotNil( image );
+    UIImage *iconImage = [_fileCache getImageWithName:VVoteTypeIconName forVoteType:_voteType];
+    XCTAssertNotNil( iconImage );
+    
+    UIImage *flightImage = [_fileCache getImageWithName:VVoteTypeIconName forVoteType:_voteType];
+    XCTAssertNotNil( flightImage );
+    
+    NSArray *spriteImages = [_fileCache getSpriteImagesForVoteType:_voteType];
+    XCTAssertEqual( spriteImages.count, ((NSArray *)_voteType.images).count );
+    [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        XCTAssert( [obj isKindOfClass:[UIImage class]] );
+    }];
 }
 
 @end
