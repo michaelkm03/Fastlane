@@ -90,10 +90,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 + (instancetype)ownerStreamCollection
 {
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
+    VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
     
     VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
-    ownerStream.title = NSLocalizedString(@"Community", nil);
+    ownerStream.title = NSLocalizedString(@"Owner", nil);
     
     return ownerStream;
 }

@@ -71,7 +71,6 @@
 {
     if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
     {
-//        _currentIndex = self.segmentedControl.selectedSegmentIndex
         [self.delegate navSelector:self selectedIndex:self.segmentedControl.selectedSegmentIndex];
     }
 }

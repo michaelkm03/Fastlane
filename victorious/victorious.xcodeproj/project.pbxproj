@@ -360,6 +360,7 @@
 		BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */; };
 		BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE9C262219D48B6200E43AFE /* VMarqueeTableViewCell.xib */; };
 		BE9D082119EDD56000A824C7 /* VSegmentedNavSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9D082019EDD56000A824C7 /* VSegmentedNavSelector.m */; };
+		BE9D082619EDF17600A824C7 /* VSwipeNavSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9D082519EDF17600A824C7 /* VSwipeNavSelector.m */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */; };
@@ -1053,6 +1054,8 @@
 		BE9D081E19EDD1DA00A824C7 /* VNavigationSelectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationSelectorProtocol.h; sourceTree = "<group>"; };
 		BE9D081F19EDD56000A824C7 /* VSegmentedNavSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSegmentedNavSelector.h; sourceTree = "<group>"; };
 		BE9D082019EDD56000A824C7 /* VSegmentedNavSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSegmentedNavSelector.m; sourceTree = "<group>"; };
+		BE9D082419EDF17600A824C7 /* VSwipeNavSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeNavSelector.h; sourceTree = "<group>"; };
+		BE9D082519EDF17600A824C7 /* VSwipeNavSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeNavSelector.m; sourceTree = "<group>"; };
 		BEA31EE7192292F300A90A10 /* VComment+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+Fetcher.h"; sourceTree = "<group>"; };
 		BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+Fetcher.m"; sourceTree = "<group>"; };
 		BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -2448,6 +2451,8 @@
 				BE193B6519EDB63D0088129A /* VNavigationHeaderView-C.xib */,
 				BE9D081F19EDD56000A824C7 /* VSegmentedNavSelector.h */,
 				BE9D082019EDD56000A824C7 /* VSegmentedNavSelector.m */,
+				BE9D082419EDF17600A824C7 /* VSwipeNavSelector.h */,
+				BE9D082519EDF17600A824C7 /* VSwipeNavSelector.m */,
 			);
 			name = "Nav Headers";
 			path = NavHeaders;
@@ -3063,6 +3068,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				0314D4F619B46B5E00FA363C /* VStreamToContentAnimator.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
+				BE9D082619EDF17600A824C7 /* VSwipeNavSelector.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,

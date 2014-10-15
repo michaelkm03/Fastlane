@@ -103,6 +103,12 @@ const CGFloat kVLoadNextPagePoint = .75f;
                                                            constant:0.0f];
     [self.view addConstraint:self.headerYConstraint];
     
+    VNavigationHeaderView *header = self.navHeaderView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[header]-0-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(header)]];
+    
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
