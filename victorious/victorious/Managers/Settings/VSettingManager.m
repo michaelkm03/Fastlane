@@ -95,6 +95,16 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         return [v1.display_order compare:v2.display_order];
     }];
     
+    [self cacheVoteTypeImagesWithFileCache:self.fileCache];
+}
+
+- (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
+{
+    if ( _voteTypes == nil )
+    {
+        return;
+    }
+    
     [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
         
         // Assign defaults if any values are missing
@@ -103,7 +113,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         v.flightDuration = v.flightDuration ? v.flightDuration : @( 0.5f );
         v.animationDuration = v.animationDuration ? v.animationDuration : @( 0.5f );
         
-        [self.fileCache cacheImagesForVoteType:v];
+        [fileCache cacheImagesForVoteType:v];
     }];
 }
 
