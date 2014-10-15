@@ -206,6 +206,8 @@
     [super viewDidLoad];
 
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
+    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                       forState:UIControlStateNormal];
