@@ -97,8 +97,11 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     
     [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
         
-        // Until the backend supports the icon image, use this for demo purposes:
-        v.icon = ((NSArray *)v.images)[0];
+        // Assign defaults if any values are missing
+        v.icon = v.icon ? v.icon : ((NSArray *)v.images)[0];
+        v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
+        v.flightDuration = v.flightDuration ? v.flightDuration : @( 0.5f );
+        v.animationDuration = v.animationDuration ? v.animationDuration : @( 0.5f );
         
         [self.fileCache cacheImagesForVoteType:v];
     }];

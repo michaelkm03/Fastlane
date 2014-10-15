@@ -23,6 +23,11 @@ extern NSString * const VFileCacheCachedIconName;
 - (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;
 
 /**
+ Retrieve the icon image synchronously.
+ */
+- (UIImage *)getIconImageForVoteType:(VVoteType *)voteType;
+
+/**
  Retrieve an array of sprite images synchronously.
  */
 - (NSArray *)getSpriteImagesForVoteType:(VVoteType *)voteType;
@@ -30,16 +35,11 @@ extern NSString * const VFileCacheCachedIconName;
 /**
  Retrieve an array of sprite images asynchronously.
  */
-- (void)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback;
+- (BOOL)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback;
 
 /**
  Retrieve the icon image asynchronously.
  */
-- (void)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback;
-
-/**
- Retrieve the icon image synchronously.
- */
-- (UIImage *)getIconImageForVoteType:(VVoteType *)voteType;
+- (BOOL)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback;
 
 @end

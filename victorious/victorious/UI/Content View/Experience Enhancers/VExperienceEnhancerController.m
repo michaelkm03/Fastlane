@@ -15,6 +15,8 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
 #import "UIImageView+AFNetworking.h"
+#import "VFileCache.h"
+#import "VFileCache+VoteType.h"
 
 /**
  This will switch between (0) using hardcoded experience enhancers that demonstrate
@@ -25,6 +27,8 @@
 #define USE_INIT_SETTINGS 1
 
 @interface VExperienceEnhancerController ()
+
+@property (nonatomic, strong) VFileCache *fileCache;
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 
@@ -50,6 +54,8 @@
     {
         self.sequence = sequence;
         
+        self.fileCache = [[VFileCache alloc] init];
+        
 #if USE_INIT_SETTINGS
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         self.testEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
@@ -64,28 +70,21 @@
 {
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
-        [experienceEnhanders addObject:[self experienceEnhancerFromVoteType:voteType]];
+        
+        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
+        enhancer.labelText = voteType.name;
+        [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images) {
+            enhancer.ballistic = YES;
+            enhancer.animationSequence = images;
+            enhancer.flightDuration = voteType.flightDuration.floatValue;
+            enhancer.animationDuration = voteType.animationDuration.floatValue;
+        }];
+        [self.fileCache getIconImageForVoteType:voteType completionCallback:^(UIImage *image) {
+            enhancer.icon = image;
+        }];
+        [experienceEnhanders addObject:enhancer];
     }];
     return [NSArray arrayWithArray:experienceEnhanders];
-}
-
-- (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
-{
-    VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
-    enhancer.labelText = voteType.name;
-    
-    // TODO: Finish creating VExperiewnceEnhaners from VVoteTypes, figure out what to do with images
-    if ( [voteType.images isKindOfClass:[NSArray class]] )
-    {
-        NSArray *images = (NSArray *)voteType.images;
-        if ( images.count > 0 )
-        {
-            NSURL *url = [NSURL URLWithString:voteType.images[0]];
-            enhancer.icon = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        }
-    }
-   
-    return enhancer;
 }
 
 - (NSArray *)createTestingExperienceEnhancers

@@ -81,14 +81,19 @@ NSString * const VFileCacheCachedIconName           = @"icon.png";
 
 #pragma mark - Retrieve Images
 
-- (void)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback
+- (BOOL)getIconImageForVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback
 {
     if ( ![self validateVoteType:voteType] )
     {
-        return;
+        return NO;
     }
     
     [self setDecoder];
+    
+    NSString *iconKeyPath = [self keyPathForVoteTypeIcon:voteType];
+    return [self getCachedFileForKeyPath:iconKeyPath completeCallback:^(NSData *data) {
+        callback( (UIImage *)data );
+    }];
 }
 
 - (UIImage *)getIconImageForVoteType:(VVoteType *)voteType
