@@ -414,8 +414,8 @@ static NSString * const kVVideoQualityKey = @"video_quality";
         user = [[VObjectManager sharedManager] mainUser];
     }
     
-    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:followersSuccessBlock failBlock:nil];
-    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:followingSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] loadFollowersForUser:user shouldRefresh:NO successBlock:followersSuccessBlock failBlock:nil];
+    [[VObjectManager sharedManager] loadFollowingsForUser:user shouldRefresh:NO successBlock:followingSuccessBlock failBlock:nil];
 }
 
 #pragma mark - Logout
