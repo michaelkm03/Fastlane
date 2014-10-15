@@ -148,6 +148,9 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
+    // Assert that we're on the main thread now because the success block (which will also execute on the main thread) is going to capture the "poll" variable.
+    NSAssert([NSThread isMainThread], @"This method should only be called on the main thread");
+    
     if (!poll || !answer)
     {
         if (fail)
@@ -156,18 +159,12 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         }
         return nil;
     }
-
-    NSNumber *answerId = answer.remoteId;
-    NSString *sequenceId = poll.remoteId;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VPollResult *newPollResult = [NSEntityDescription
-                                        insertNewObjectForEntityForName:[VPollResult entityName]
-                                        inManagedObjectContext:self.mainUser.managedObjectContext];
-        newPollResult.answerId = answerId;
-        newPollResult.sequenceId = sequenceId;
-        [self.mainUser addPollResultsObject:newPollResult];
+        VPollResult *pollResult = [self pollResultForAnswerID:answer.remoteId inPollSequence:poll];
+        [self.mainUser addPollResultsObject:pollResult];
+        pollResult.count = @(pollResult.count.integerValue + 1);
         
         [self.mainUser.managedObjectContext saveToPersistentStore:nil];
         
@@ -256,6 +253,30 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
+}
+
+- (VPollResult *)pollResultForAnswerID:(NSNumber *)answerID inPollSequence:(VSequence *)sequence
+{
+    VPollResult *pollResult = nil;
+    
+    NSManagedObjectContext *moc = sequence.managedObjectContext;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VPollResult entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"answerId==%@", answerID];
+    NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+    if (results.count)
+    {
+        pollResult = results[0];
+    }
+    else
+    {
+        pollResult = [NSEntityDescription insertNewObjectForEntityForName:[VPollResult entityName]
+                                                                   inManagedObjectContext:moc];
+        pollResult.answerId = answerID;
+        pollResult.sequenceId = sequence.remoteId;
+    }
+    
+    [sequence addPollResultsObject:pollResult];
+    return pollResult;
 }
 
 #pragma mark - UserInteractions
