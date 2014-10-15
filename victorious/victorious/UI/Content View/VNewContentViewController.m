@@ -92,6 +92,10 @@
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
 
+@property (nonatomic, assign) CGAffineTransform targetTransform;
+@property (nonatomic, assign) CGRect oldRect;
+@property (nonatomic, assign) CGAffineTransform videoTransform;
+
 @end
 
 @implementation VNewContentViewController
@@ -133,10 +137,68 @@
 }
 
 #pragma mark - UIViewController
+#pragma mark Rotation
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return (self.viewModel.type == VContentViewTypeVideo);
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    CGAffineTransform transform = [coordinator targetTransform];
+    if (CGAffineTransformIsIdentity(transform))
+    {
+        return;
+    }
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        {
+            [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetWidth([coordinator containerView].bounds), CGRectGetHeight([coordinator containerView].bounds));
+            self.view.transform = CGAffineTransformIdentity;
+            self.view.bounds = [coordinator containerView].bounds;
+        }
+        else
+        {
+            [coordinator containerView].transform = CGAffineTransformIdentity;
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetWidth([coordinator containerView].bounds), CGRectGetHeight([coordinator containerView].bounds));
+            self.view.transform = CGAffineTransformIdentity;
+        }
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    }];
+    
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    UIView *rootView = self.navigationController.view;//[[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
+
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        rootView.transform = CGAffineTransformIdentity;
+        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
+        self.view.transform = CGAffineTransformIdentity;
+        self.view.bounds = rootView.bounds;
+    }
+    else
+    {
+        self.view.transform = CGAffineTransformIdentity;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidLoad
