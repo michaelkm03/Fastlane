@@ -13,7 +13,6 @@
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
 #import "VVoteType.h"
-#import "VVoteTypeImageCache.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";
@@ -34,8 +33,6 @@ NSString * const   kVAppStoreURL                       =   @"url.appstore";
 NSString * const   kVPrivacyUrl                        =   @"url.privacy";
 
 @interface VSettingManager()
-
-@property (nonatomic, strong) VVoteTypeImageCache *voteTypeImageCache;
 
 @end
 
@@ -63,8 +60,6 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
         
         [self clearVoteTypes];
-        
-        self.voteTypeImageCache = [[VVoteTypeImageCache alloc] init];
     }
     
     return self;
@@ -95,7 +90,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     }];
     
     [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
-        [self.voteTypeImageCache cacheImagesForVoteType:v];
+        //[self.voteTypeImageCache cacheImagesForVoteType:v];
     }];
 }
 
