@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class VFindFriendsTableViewController;
+
+@protocol VFindFriendsTableViewControllerDelegate <NSObject>
+
+@required
+
+- (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController;
+
+@end
+
 typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
 {
     VFindFriendsTableViewStatePreConnect, ///< User has yet to connect to the social network, view is displaying connect button
@@ -18,16 +28,7 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
     VFindFriendsTableViewStateError      ///< User has authorized connection, but we weren't able to load friends
 };
 
-
-typedef NS_ENUM(NSInteger, VFindFriendsTableType)
-{
-    VFindFriendsTableTypeFacebook,      ///< Table used to display Facebook friends
-    VFindFriendsTableTypeTwitter,       ///< Table used to display Twitter friends
-    VFindFriendsTableTypeAddressBook    ///< Table used to display friends from the Address Book
-};
-
 @class VFindFriendsTableView;
-
 
 /**
  Base class for table view controllers 
@@ -35,10 +36,11 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableType)
  */
 @interface VFindFriendsTableViewController : UIViewController
 
+@property (nonatomic, weak) id<VFindFriendsTableViewControllerDelegate> delegate; ///< This controllers delegate
 @property (nonatomic, readonly) VFindFriendsTableView      *tableView; ///< Returns the same object as the "view" property
 @property (nonatomic, readonly) VFindFriendsTableViewState  state;
-@property (nonatomic) VFindFriendsTableType findFriendsTableType;
 @property (nonatomic)           BOOL                        shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed
+@property (nonatomic) BOOL shouldDisplayInviteButton; ///< If YES, an invite button will appear if no friends are available to add. Default is YES
 
 /**
  Not to be called directly. Subclasses should override this method.
@@ -64,5 +66,11 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableType)
  each user selected in the table view.
  */
 - (NSArray *)selectedUsers;
+
+/**
+ Subclasses should override this to specify
+ the text for the section 0 header view.
+ */
+- (NSString *)headerTextForNewFriendsSection;
 
 @end

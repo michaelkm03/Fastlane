@@ -22,6 +22,7 @@
 #import "VObjectManager+Sequence.h"
 
 #import "VThemeManager.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 @interface VPollAnswerBarViewController ()
 
@@ -195,9 +196,9 @@
 
 - (IBAction)pressedAnswerButton:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -224,17 +225,8 @@
 {
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        
-        [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             [self.delegate answeredPollWithAnswerId:answer.remoteId];
-             [self answerAnimationForAnswerID:answer.remoteId];
-         }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed with error: %@", error);
-         }];
+        [self.delegate answeredPollWithAnswerId:answer.remoteId];
+        [self answerAnimationForAnswerID:answer.remoteId];
     };
     
     [[VObjectManager sharedManager] answerPoll:self.sequence

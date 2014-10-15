@@ -583,7 +583,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 - (VAbstractFilter *)followingFilterForUser:(VUser *)user
 {
     NSString *apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
-    return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
+    VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:user.managedObjectContext];
+    filter.perPageNumber = @(1000);
+    return filter;
 }
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence

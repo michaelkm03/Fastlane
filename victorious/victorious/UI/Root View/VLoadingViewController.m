@@ -12,6 +12,8 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
@@ -168,9 +170,11 @@ static const NSUInteger kRetryAttempts = 5;
             
             VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
             streamContainer.shouldShowHeaderLogo = YES;
+            streamContainer.shouldShowUploadProgress = YES;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
+                
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
                 [self.navigationController pushViewController:streamContainer animated:YES];
             }

@@ -28,6 +28,8 @@
 #import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
+#import "VStreamContainerViewController.h"
+
 // Views
 #import "VNoContentView.h"
 
@@ -133,7 +135,8 @@
     self.tableDataSource.tableView = self.tableView;
     self.tableDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     
-    self.marquee = [[VMarqueeController alloc] init];
+    VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+    self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
     
     self.tableView.dataSource = self.tableDataSource;
@@ -355,6 +358,12 @@
         }];
 
     }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setNeedsLayout];
+    [cell setNeedsDisplay];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -653,6 +662,27 @@
     commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
 
+}
+
+- (void)hashTagButtonTappedInStreamViewCell:(VStreamViewCell *)streamViewCell withTag:(NSString *)tag
+{
+    // Error checking
+    if ( tag == nil || tag.length == 0 )
+    {
+        return;
+    }
+    
+    // Prevent another stream view for the current tag from being pushed
+    if ( [[self.hashTag lowercaseString] isEqualToString:[tag lowercaseString]] )
+    {
+        return;
+    }
+    
+    // Instanitate and push to stack
+    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    container.shouldShowHeaderLogo = NO;
+    container.hashTag = tag;
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 #pragma mark - Notifications

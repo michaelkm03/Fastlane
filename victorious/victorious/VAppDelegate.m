@@ -21,6 +21,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VSessionTimer.h"
+#import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
 
@@ -32,12 +33,18 @@
 @import MediaPlayer;
 @import CoreLocation;
 
+static BOOL isRunningTests(void) __attribute__((const));
 static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    if (isRunningTests())
+    {
+        return YES;
+    }
+    
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
@@ -90,6 +97,17 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     }
 }
 
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+{
+    VLog(@"handling events for background identifier: %@", identifier);
+    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
+    if ([uploadManager isYourBackgroundURLSession:identifier])
+    {
+        uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
+        [uploadManager startURLSession];
+    }
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     if ([[VFacebookManager sharedFacebookManager] canOpenURL:url])
@@ -137,6 +155,15 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+}
+
+#pragma mark -
+
+static BOOL isRunningTests(void)
+{
+    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+    NSString *injectBundle = environment[@"XCInjectBundle"];
+    return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
 
 @end

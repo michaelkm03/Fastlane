@@ -43,6 +43,7 @@
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
+static const CGFloat kPublishQuoteFontSize = 23.0f;
 static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of space by which we push the canvas "up" for the 3.5" devices
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VContentInputAccessoryViewDelegate>
@@ -347,7 +348,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     return @{
              NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
+             NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:kPublishQuoteFontSize],
              NSForegroundColorAttributeName : [UIColor whiteColor],
              NSStrokeColorAttributeName : [UIColor whiteColor],
              NSStrokeWidthAttributeName : @(0)
@@ -711,109 +712,81 @@ static const CGFloat kShareMargin = 34.0f;
     
     [[VObjectManager sharedManager] uploadMediaWithName:finalText
                                             description:finalText
+                                           previewImage:self.previewImage
                                             captionType:self.captionType
                                               expiresAt:self.expirationDateString
                                            parentNodeId:@(self.parentID)
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
-                                           successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
-                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
-                                                             delegate:nil
-                                                    cancelButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-         [alert show];
-         
-         NSString  *analyticsString;
-         if ([self.mediaURL v_hasVideoExtension])
-         {
-             analyticsString = [NSString stringWithFormat:@"Published video via"];
-         }
-         else
-         {
-             switch (self.captionType)
-             {
-                 case VCaptionTypeNormal:
-                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
-                     break;
-                 case VCaptionTypeMeme:
-                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
-                     break;
-                 case VCaptionTypeQuote:
-                     analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
-                     break;
-             }
-             
-         }
-         
-         if (facebookSelected)
-         {
-             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
-             [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
-                                                         accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-              {
-              }
-                                                           failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  VLog(@"Failed with error: %@", error);
-              }];
-             
-             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
-                                                                          action:nil
-                                                                           label:nil
-                                                                           value:nil];
-         }
-         
-         if (twitterSelected)
-         {
-             NSInteger sequenceId = ((NSString *)fullResponse[kVPayloadKey][@"sequence_id"]).integerValue;
-             [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
-                                                         accessToken:[VTwitterManager sharedManager].oauthToken
-                                                              secret:[VTwitterManager sharedManager].secret
-                                                        successBlock:nil
-                                                           failBlock:nil];
-             
-             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
-                                                                          action:nil
-                                                                           label:nil
-                                                                           value:nil];
-         }
-     }
-                                              failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed with error: %@", error);
-         
-         if (kVStillTranscodingError == error.code)
-         {
-             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-         }
-         else if (error.code == kVMediaAlreadyCreatedError)
-         {
-             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DuplicateVideoTitle", @"")
-                                                                  message:NSLocalizedString(@"DuplicateVideoBody", @"")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-         }
-         else
-         {
-             UIAlertView    *alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                                  message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-         }
-     }];
+                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
+    {
+        NSDictionary *payload = jsonDictionary[kVPayloadKey];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            return;
+        }
+        
+        NSInteger sequenceId = [payload[@"sequence_id"] integerValue];
+        if (!sequenceId)
+        {
+            return;
+        }
+        
+        NSString  *analyticsString;
+        if ([self.mediaURL v_hasVideoExtension])
+        {
+            analyticsString = [NSString stringWithFormat:@"Published video via"];
+        }
+        else
+        {
+            switch (self.captionType)
+            {
+                case VCaptionTypeNormal:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
+                    break;
+                case VCaptionTypeMeme:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
+                    break;
+                case VCaptionTypeQuote:
+                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
+                    break;
+            }
+        }
+        
+        if (facebookSelected)
+        {
+            [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
+                                                        accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                       successBlock:nil
+                                                          failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed with error: %@", error);
+            }];
+            
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+        }
+        
+        if (twitterSelected)
+        {
+            [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
+                                                        accessToken:[VTwitterManager sharedManager].oauthToken
+                                                             secret:[VTwitterManager sharedManager].secret
+                                                       successBlock:nil
+                                                          failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed with error: %@", error);
+            }];
+            
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
+                                                                         action:nil
+                                                                          label:nil
+                                                                          value:nil];
+        }
+    }];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
                                                                  action:@"Post Content"
@@ -837,6 +810,7 @@ static const CGFloat kShareMargin = 34.0f;
     {
         self.completion(YES);
     }
+    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
 }
 
 #pragma mark - UITextViewDelegate

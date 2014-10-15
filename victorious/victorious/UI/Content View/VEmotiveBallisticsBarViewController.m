@@ -22,6 +22,9 @@
 
 #import "VSequence.h"
 
+#import "VObjectManager+Login.h"
+#import "VAuthorizationViewControllerFactory.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (strong, nonatomic) VVoteType *likeVote;
@@ -138,9 +141,9 @@
 
 - (IBAction)pressedPostiveEmotive:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -154,9 +157,9 @@
 
 - (IBAction)pressedNegativeEmotive:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -170,9 +173,9 @@
 
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     

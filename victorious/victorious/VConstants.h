@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import CoreGraphics;
 
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
@@ -45,6 +46,10 @@ static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.vi
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
+static NSUInteger const kVCurrentPasswordIsInvalid      = 5000;
+static NSUInteger const kVInvalidPasswordEntered        = 5051;
+static NSUInteger const kVPasswordResetCodeExpired      = 6700;
+
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
 static NSUInteger const kVFollowsRelationshipAlreadyExistsError = 6001;
 
@@ -74,6 +79,7 @@ static NSString * const   kGAID                    = @"GAID";
 
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
 static NSString * const   kVPayloadKey         = @"payload";
+static NSString * const   kVErrorKey           = @"error";
 static NSString * const   kRemoteIdKey         = @"remoteId";
 
 #pragma mark - Media Constants
@@ -128,6 +134,11 @@ NSArray *VRemixCategories();
 
 static NSString * const   kTemporaryContentStatus = @"temp";
 
+#pragma mark - Status Levels
+
+static NSString * const   kUserStatusComplete = @"complete";
+static NSString * const   kUserStatusIncomplete = @"incomplete";
+
 #pragma mark - Access Levels
 
 static NSString * const   kOwnerAccessLevel = @"api_owner";
@@ -153,3 +164,5 @@ static NSString * const   kPollAnswerBarStoryboardID           = @"pollanswerbar
 static NSString * const   kHashTagsContainerStoryboardID       = @"hashtagscontainer";
 static NSString * const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString * const   kKeyboardBarStoryboardID             = @"keyboardbar";
+
+static NSString * const   kProfileCreateStoryboardID           = @"profileCreate";

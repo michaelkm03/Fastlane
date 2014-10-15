@@ -9,8 +9,7 @@
 #import "VStreamContainerViewController.h"
 
 #import "VLoginViewController.h"
-
-#import "VHashTagStreamViewController.h"
+#import "VUploadProgressViewController.h"
 
 #import "VCameraViewController.h"
 #import "VCameraPublishViewController.h"
@@ -25,9 +24,14 @@
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
-@interface VStreamContainerViewController ()
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
+
+@interface VStreamContainerViewController () <VUploadProgressViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *createButton;
+@property (nonatomic, strong) VUploadProgressViewController *uploadProgressViewController;
+@property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
 
 @end
 
@@ -89,6 +93,11 @@
     
     [self configureHeaderImage];
     [self configureSegmentedControl];
+    
+    if (self.shouldShowUploadProgress)
+    {
+        [self configureUploadProgressView];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,6 +114,7 @@
 - (void)setHashTag:(NSString *)hashTag
 {
     _hashTag = hashTag;
+    self.streamTable.hashTag = hashTag;
 }
 
 - (void)configureHeaderImage
@@ -146,10 +156,10 @@
 
 - (IBAction)changedFilterControls:(id)sender
 {
-    if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
+    if (self.filterControls.selectedSegmentIndex == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)
     {
         [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
     }
     
     [super changedFilterControls:sender];
@@ -184,6 +194,66 @@
     }
 }
 
+- (CGFloat)hiddenHeaderHeight
+{
+    if ([self isUploadProgressVisible])
+    {
+        return [super hiddenHeaderHeight] + VUploadProgressViewControllerIdealHeight;
+    }
+    return [super hiddenHeaderHeight];
+}
+
+#pragma mark - Upload Progress View
+
+- (void)configureUploadProgressView
+{
+    self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    self.uploadProgressViewController.delegate = self;
+    [self addChildViewController:self.uploadProgressViewController];
+    self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view insertSubview:self.uploadProgressViewController.view belowSubview:self.headerView];
+    [self.uploadProgressViewController didMoveToParentViewController:self];
+
+    UIView *upvc = self.uploadProgressViewController.view;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0f
+                                                           constant:VUploadProgressViewControllerIdealHeight]];
+    
+    self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
+                                                                      attribute:NSLayoutAttributeTop
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.headerView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1.0f
+                                                                       constant:-VUploadProgressViewControllerIdealHeight];
+    [self.view addConstraint:self.uploadProgressViewYconstraint];
+
+    if (self.uploadProgressViewController.numberOfUploads)
+    {
+        [self showUploads];
+    }
+}
+
+- (void)showUploads
+{
+    self.uploadProgressViewYconstraint.constant = 0;
+}
+
+- (BOOL)isUploadProgressVisible
+{
+    return self.uploadProgressViewController != nil && self.uploadProgressViewYconstraint.constant == 0;
+}
+
+- (void)hideUploads
+{
+    self.uploadProgressViewYconstraint.constant = -VUploadProgressViewControllerIdealHeight;
+}
+
 #pragma mark - Content Creation
 
 - (void)addCreateButton
@@ -199,9 +269,9 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -292,6 +362,20 @@
     else
     {
         return nil;
+    }
+}
+
+#pragma mark - VUploadProgressViewControllerDelegate methods
+
+- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+{
+    if (uploadCount)
+    {
+        [self showUploads];
+    }
+    else
+    {
+        [self hideUploads];
     }
 }
 

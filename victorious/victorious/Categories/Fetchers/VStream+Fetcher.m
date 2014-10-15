@@ -83,12 +83,9 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return directory;
 }
 
-+ (VStream *)streamForMarquee
++ (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context
 {
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    
-    return [self streamForRemoteId:@"marquee" filterName:nil
-              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForRemoteId:@"marquee" filterName:nil managedObjectContext:context];
 }
 
 + (VStream *)streamForRemoteId:(NSString *)remoteId

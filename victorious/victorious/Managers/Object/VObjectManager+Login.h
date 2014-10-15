@@ -12,7 +12,10 @@ extern NSString *kLoggedInChangedNotification;
 
 @interface VObjectManager (Login)
 
-@property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
+@property (nonatomic, readonly) BOOL mainUserProfileComplete;
+@property (nonatomic, readonly) BOOL mainUserLoggedIn;
+@property (nonatomic, readonly) BOOL authorized;
+
 
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
@@ -57,6 +60,11 @@ extern NSString *kLoggedInChangedNotification;
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;
 
+- (AFHTTPRequestOperation *)updatePasswordWithCurrentPassword:(NSString *)currentPassword
+                                                  newPassword:(NSString *)newPassword
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)logout;
 
 - (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email
@@ -65,6 +73,7 @@ extern NSString *kLoggedInChangedNotification;
 
 - (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
                                                     deviceToken:(NSString *)deviceToken
+                                                    newPassword:(NSString *)newPassword
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 

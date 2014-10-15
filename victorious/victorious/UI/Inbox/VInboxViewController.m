@@ -24,6 +24,8 @@
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 
+#import "VAuthorizationViewControllerFactory.h"
+#import "VObjectManager+Login.h"
 
 NS_ENUM(NSUInteger, VModeSelect)
 {
@@ -81,9 +83,9 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VModeSelect = idx;
     NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
     
-    if (![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].authorized)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
     }
     
     self.fetchedResultsController = nil;

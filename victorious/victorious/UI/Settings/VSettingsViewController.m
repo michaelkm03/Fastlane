@@ -54,6 +54,11 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,7 +83,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     [super viewWillAppear:animated];
     
-    if ([VObjectManager sharedManager].isAuthorized)
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
         [self.logoutButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
@@ -105,6 +110,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 #endif
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,6 +125,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotate
@@ -142,11 +152,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
 }
 
+- (void)loginStatusDidChange:(NSNotification *)note
+{
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
 #pragma mark - Actions
 
 - (IBAction)logout:(id)sender
 {
-    if ([VObjectManager sharedManager].isAuthorized)
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Log Out" label:nil value:nil];
         [[VUserManager sharedInstance] logout];
@@ -212,7 +228,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].isAuthorized)
+        if ([VObjectManager sharedManager].mainUserLoggedIn)
         {
             return self.tableView.rowHeight;
         }

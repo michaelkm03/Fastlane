@@ -28,6 +28,10 @@
 
 #import "VTOSViewController.h"
 
+#import "UIAlertView+VBlocks.h"
+
+NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
+
 @import CoreLocation;
 @import AddressBookUI;
 
@@ -61,6 +65,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
++ (VProfileCreateViewController *)profileCreateViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];
+    return viewController;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -83,10 +94,7 @@
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    if (self.loginType != kVLoginTypeEmail)
-    {
-        self.usernameTextField.text = self.profile.name;
-    }
+    self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
@@ -149,10 +157,6 @@
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
-    {
-        self.backButton.hidden = YES;
-    }
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
@@ -376,10 +380,8 @@
 
 #pragma mark - State
 
-- (void)didSignUpWithUser:(VUser *)mainUser
+- (void)didCreateProfile
 {
-    self.profile = mainUser;
-    
     switch (self.loginType)
     {
         case kVLoginTypeNone:
@@ -403,40 +405,18 @@
                                                                           value:nil];
             break;
     }
-
+    
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
     
     [self dismissViewControllerAnimated:YES
                              completion:nil];
-    
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
-                                                     password:self.registrationModel.password
-                                                         name:self.registrationModel.username
-                                              profileImageURL:self.registrationModel.profileImageURL
-                                                     location:self.registrationModel.locationText
-                                                      tagline:self.registrationModel.taglineText
-                                                 successBlock:nil
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed with error: %@ Retrying...", error);
-         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.registrationModel.email
-                                                          password:self.registrationModel.password
-                                                              name:self.registrationModel.username
-                                                   profileImageURL:self.registrationModel.profileImageURL
-                                                          location:self.registrationModel.locationText
-                                                           tagline:self.registrationModel.taglineText
-                                                      successBlock:nil
-                                                         failBlock:^(NSOperation *operation, NSError *error) {
-                                                             VLog(@"Failed with error: %@", error);
-                                                         }];
-     }];
 }
 
 - (void)didFailWithError:(NSError *)error
 {
     
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
@@ -457,24 +437,29 @@
 
     if ([self shouldCreateProfile])
     {
-        if (self.loginType == kVLoginTypeFaceBook || self.loginType == kVLoginTypeTwitter)
+        if (!self.registrationModel.username.length &&
+            !self.registrationModel.profileImageURL &&
+            !self.registrationModel.locationText.length &&
+            !self.registrationModel.taglineText.length)
         {
-            [self didSignUpWithUser:self.profile];
+            [self didCreateProfile];
             return;
         }
         
-        [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
-                                                 password:self.registrationModel.password
-                                                 userName:self.registrationModel.email
-                                             onCompletion:^(VUser *user, BOOL created)
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                         password:nil
+                                                             name:self.registrationModel.username
+                                                  profileImageURL:self.registrationModel.profileImageURL
+                                                         location:self.registrationModel.locationText
+                                                          tagline:self.registrationModel.taglineText
+                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             [self didSignUpWithUser:user];
+             [self didCreateProfile];
          }
-                                                  onError:^(NSError *error)
+                                                         failBlock:^(NSOperation *operation, NSError *error)
          {
              [self didFailWithError:error];
          }];
-
     }
 }
 
@@ -498,14 +483,36 @@
 
 - (IBAction)back:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    // Show Error Message
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                       message:NSLocalizedString(@"ProfileAborted", @"")
+                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                onCancelButton:nil
+                    otherButtonTitlesAndBlocks:nil];
+    
+    [alert addButtonWithTitle:NSLocalizedString(@"OKButton", @"") block:^{
+        
+        BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
+        if ( wasPushedFromViewControllerInLoginFlow )
+        {
+            // The root of this login flow (VLoginViewController) should receive this and dismiss itself
+            [[NSNotificationCenter defaultCenter] postNotificationName:VProfileCreateViewControllerWasAbortedNotification object:nil];
+        }
+        else
+        {
+            // We're a standalone view controller, so we'll dismiss ourselves
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+    
+    [alert show];
 }
 
 - (BOOL)shouldCreateProfile
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
+                         (self.registrationModel.profileImageURL || self.profile.pictureUrl || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -531,7 +538,7 @@
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }

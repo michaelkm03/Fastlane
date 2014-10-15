@@ -8,6 +8,7 @@
 
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 
@@ -59,7 +60,7 @@
     
     if (_haveRelationship)
     {
-        self.followButton.hidden = YES;
+        self.followButton.imageView.image = self.unfollowImage;
     }
     else
     {
@@ -75,39 +76,40 @@
         self.followButtonAction();
     }
     
-    [self disableFollowIcon:nil];
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self disableFollowIcon:nil];
+    }
 }
 
 #pragma mark - Button Actions
 
-- (void)enableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followButton.alpha = 1.0f;
-        self.followButton.imageView.image = self.unfollowImage;
-    };
-    
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:animations
-                    completion:nil];
-}
-
 - (void)flipFollowIconAction:(id)sender
 {
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
     void (^animations)() = ^(void)
     {
+        if (relationship)
+        {
+            [self.followButton setImage:self.unfollowImage forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.followButton setImage:self.followImage forState:UIControlStateNormal];
+        }
+        
         self.followButton.alpha = 1.0f;
-        self.followButton.imageView.image = self.unfollowImage;
+        self.followButton.userInteractionEnabled = YES;
     };
-    
     [UIView transitionWithView:self.followButton
                       duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
-                    completion:nil];
+                    completion:^(BOOL finished)
+     {
+         [self enableFollowIcon:nil];
+     }];
 }
 
 - (void)disableFollowIcon:(id)sender
@@ -116,6 +118,21 @@
     {
         self.followButton.alpha = 0.3f;
         self.followButton.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followButton
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)enableFollowIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followButton.alpha = 1.0f;
+        self.followButton.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followButton

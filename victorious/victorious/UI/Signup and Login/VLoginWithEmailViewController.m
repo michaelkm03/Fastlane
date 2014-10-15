@@ -9,11 +9,13 @@
 #import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
 #import "VLoginViewController.h"
+#import "VProfileCreateViewController.h"
 #import "VResetPasswordViewController.h"
 #import "VEnterResetTokenViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VThemeManager.h"
@@ -195,7 +197,14 @@
     
     self.profile = mainUser;
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didFailWithError:(NSError *)error
@@ -325,6 +334,17 @@
 }
 
 #pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
+    {
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.profile = self.profile;
+        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+    }
+}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
