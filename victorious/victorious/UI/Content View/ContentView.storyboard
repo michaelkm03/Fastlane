@@ -69,6 +69,10 @@
                                     <action selector="pressedMore:" destination="9O1-S6-jeB" eventType="touchUpInside" id="v7T-RD-b45"/>
                                 </connections>
                             </button>
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZqS-Yk-BYa" userLabel="Landscape Overlay">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -91,6 +95,7 @@
                         <outlet property="blurredBackgroundImageView" destination="DRU-0d-Xgx" id="Fc0-AK-MDc"/>
                         <outlet property="closeButton" destination="ToS-oB-8Vg" id="8eJ-1C-sNZ"/>
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
+                        <outlet property="landscapeMaskOverlay" destination="ZqS-Yk-BYa" id="MDK-Ti-0nG"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
                     </connections>
                 </viewController>

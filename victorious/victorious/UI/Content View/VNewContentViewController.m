@@ -59,11 +59,6 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
-//static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
-//static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
-//static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
-//static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
-
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -75,6 +70,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -158,15 +154,15 @@
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
-            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetWidth([coordinator containerView].bounds), CGRectGetHeight([coordinator containerView].bounds));
-            self.view.transform = CGAffineTransformIdentity;
-            self.view.bounds = [coordinator containerView].bounds;
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.landscapeMaskOverlay.alpha = 1.0f;
         }
         else
         {
             [coordinator containerView].transform = CGAffineTransformIdentity;
-            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetWidth([coordinator containerView].bounds), CGRectGetHeight([coordinator containerView].bounds));
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.view.transform = CGAffineTransformIdentity;
+            self.landscapeMaskOverlay.alpha = 0.0f;
         }
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
@@ -189,10 +185,12 @@
         rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
         self.view.transform = CGAffineTransformIdentity;
         self.view.bounds = rootView.bounds;
+        self.landscapeMaskOverlay.alpha = 1.0f;
     }
     else
     {
         self.view.transform = CGAffineTransformIdentity;
+        self.landscapeMaskOverlay.alpha = 0.0f;
     }
 }
 
@@ -253,7 +251,8 @@
                                                                                  multiplier:1.0f
                                                                                    constant:0.0f];
     self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-    [self.view addSubview:inputAccessoryView];
+    [self.view insertSubview:inputAccessoryView
+                belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
