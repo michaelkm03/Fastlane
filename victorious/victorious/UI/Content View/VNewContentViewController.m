@@ -343,8 +343,7 @@
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Private Mehods
