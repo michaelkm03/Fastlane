@@ -60,6 +60,15 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     [self addConstraint:self.userInfoWidthConstraint];
 }
 
+- (void)setProfile:(VUser *)profile
+{
+    _profile = profile;
+    
+    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    self.profileName.text = profile.name;
+    self.profileLocation.text = profile.location;
+}
+
 - (void)setHaveRelationship:(BOOL)haveRelationship
 {
     _haveRelationship = haveRelationship;
@@ -74,18 +83,48 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     }
 }
 
-- (void)setProfile:(VUser *)profile
+- (void)imageTapAction:(id)sender
 {
-    _profile = profile;
+    // Check for existance of follow block
+    if (self.followAction)
+    {
+        self.followAction();
+    }
     
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
-    self.profileName.text = profile.name;
-    self.profileLocation.text = profile.location;
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self disableFollowIcon:nil];
+    }
 }
 
 #pragma mark - Button Actions
 
 - (void)flipFollowIconAction:(id)sender
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
+    void (^animations)() = ^(void)
+    {
+        if (relationship)
+        {
+            self.followIconImageView.image = self.unfollowIcon;
+        }
+        else
+        {
+            [self.followIconImageView setImage:self.followIcon];
+        }
+    };
+    [UIView transitionWithView:self.followIconImageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:animations
+                    completion:^(BOOL finished)
+     {
+         [self enableFollowIcon:nil];
+     }];
+}
+
+- (void)disableFollowIcon:(id)sender
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     BOOL relationship = [mainUser.following containsObject:self.profile];
@@ -101,22 +140,23 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
             [self.followIconImageView setImage:self.followIcon];
         }
         
-        self.followIconImageView.alpha = 1.0f;
-        self.followIconImageView.userInteractionEnabled = YES;
+        self.followIconImageView.alpha = 0.3f;
+        self.followIconImageView.userInteractionEnabled = NO;
     };
     [UIView transitionWithView:self.followIconImageView
                       duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
+                       options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:animations
                     completion:nil];
+    
 }
 
-- (void)disableFollowIcon:(id)sender
+- (void)enableFollowIcon:(id)sender
 {
     void (^animations)() = ^(void)
     {
-        self.followIconImageView.alpha = 0.3f;
-        self.followIconImageView.userInteractionEnabled = NO;
+        self.followIconImageView.alpha = 1.0f;
+        self.followIconImageView.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followIconImageView
@@ -124,22 +164,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:animations
                     completion:nil];
-
-}
-
-- (void)imageTapAction:(id)sender
-{
-    // Check for existance of follow block
-    if (self.followAction)
-    {
-        self.followAction();
-    }
-    
-    
-    if ([VObjectManager sharedManager].authorized)
-    {
-        [self disableFollowIcon:nil];
-    }
 }
 
 @end

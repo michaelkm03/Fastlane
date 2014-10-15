@@ -15,6 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VThemeManager.h"
