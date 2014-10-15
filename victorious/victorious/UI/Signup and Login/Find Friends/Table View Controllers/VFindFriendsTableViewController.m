@@ -103,8 +103,8 @@
                 self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [self.tableView.tableView reloadData];
                 self.tableView.clearButton.hidden = NO;
-                self.tableView.selectAllButton.hidden = NO;
-                self.tableView.inviteFriendsButton.hidden = YES;
+                self.tableView.selectAllButton.hidden = YES;
+                self.tableView.inviteFriendsButton.hidden = NO;
                 if (self.shouldAutoselectNewFriends)
                 {
                     [self selectAllRows:nil];
@@ -167,7 +167,6 @@
     NSAssert(NO, @"class %@ needs to implement unFollowSingleFollower:withSuccess:withFailure:", NSStringFromClass([self class]));
 }
 
-
 - (void)_loadFriendsFromSocialNetwork
 {
     self.state = VFindFriendsTableViewStateLoading;
@@ -190,13 +189,12 @@
 {
     self.usersFollowing = [[NSMutableArray alloc] init];
     self.usersNotFollowing = [[NSMutableArray alloc] init];
-    VUser *me = [[VObjectManager sharedManager] mainUser];
     
-    NSSet *following = me.following;
-    
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+
     for (VUser *user in users)
     {
-        if ([following containsObject:user])
+        if ([mainUser.following containsObject:user])
         {
             [self.usersFollowing addObject:user];
         }
@@ -214,7 +212,6 @@
     {
         self.tableView.selectAllButton.hidden = YES;
         self.tableView.inviteFriendsButton.hidden = NO;
-        //[self.tableView.selectAllButton setEnabled:NO];
         [self.tableView.selectAllButton.layer setBorderColor:[[UIColor colorWithWhite:0.781 alpha:1.000] CGColor]];
         [self.tableView.selectAllButton.titleLabel setTextColor:[UIColor colorWithWhite:0.781 alpha:1.000]];
     }
@@ -314,15 +311,7 @@
             [cell flipFollowIconAction:nil];
         }
     };
-    
-    [self loadBatchOfFollowers:self.usersNotFollowing withSuccess:successBlock withFailure:nil];
-}
-
-- (void)loadBatchOfFollowers:(NSArray *)followers withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] followUsers:followers
-                               withSuccessBlock:successBlock
-                                      failBlock:failureBlock];
+    [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
 }
 
 
@@ -367,14 +356,22 @@
                 return;
             }
         }
-        
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         if (error.code == kVFollowsRelationshipAlreadyExistsError)
         {
-            return;
+            NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
+            for (NSIndexPath *indexPath in indexPaths)
+            {
+                VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
+                if (cell.profile == user)
+                {
+                    [cell flipFollowIconAction:nil];
+                    return;
+                }
+            }
         }
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
@@ -386,7 +383,7 @@
     };
     
     // Add user at backend
-    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -432,7 +429,6 @@
                     return;
                 }
             }
-            
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
@@ -443,8 +439,8 @@
         [alert show];
     };
     
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-    
+    // Send unfollow to the backend
+    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 #pragma mark - UITableView Section Header
@@ -549,27 +545,6 @@
     return sectionRows;
 }
 
-- (BOOL)determineRelationshipWithUser:(VUser *)targetUser atIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger section = indexPath.section;
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    VUser *profile;
-    BOOL haveRelationship = NO;
-    
-    if (section == 0)
-    {
-        profile = self.usersNotFollowing[indexPath.row];
-        haveRelationship = ([mainUser.following containsObject:profile]);
-    }
-    else if (section == 1)
-    {
-        profile = self.usersFollowing[indexPath.row];
-        haveRelationship = ([mainUser.following containsObject:profile]);
-    }
-    
-    return haveRelationship;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -587,7 +562,7 @@
         profile = self.usersFollowing[indexPath.row];
     }
     
-    haveRelationship = [self determineRelationshipWithUser:profile atIndexPath:indexPath];
+    haveRelationship = [mainUser.following containsObject:profile];
     
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
