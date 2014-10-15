@@ -190,7 +190,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    UIView *rootView = self.navigationController.view;//[[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
+    UIView *rootView = self.navigationController.view;
 
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
