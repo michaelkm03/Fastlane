@@ -12,7 +12,7 @@
 
 static CGFloat const kVIndicatorViewHeight = 3;
 
-@interface VSwipeNavSelector()
+@interface VSwipeNavSelector() <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIView *indicatorView;
 @property (nonatomic, strong) NSLayoutConstraint *widthConstraint;
@@ -20,6 +20,8 @@ static CGFloat const kVIndicatorViewHeight = 3;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *titleButtons;
 @property (nonatomic) CGFloat spacing;
+
+@property (nonatomic) BOOL isAnimatingScrollview;
 
 @end
 
@@ -52,9 +54,10 @@ static CGFloat const kVIndicatorViewHeight = 3;
     self.layer.borderWidth = 1;
     
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, CGRectGetWidth(self.bounds)/2, 0, CGRectGetWidth(self.bounds)/2);
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
+//    self.scrollView.pagingEnabled = YES;
+    self.scrollView.delegate = self;
 
     [self addSubview:self.scrollView];
     
@@ -62,30 +65,22 @@ static CGFloat const kVIndicatorViewHeight = 3;
     
     self.indicatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, kVIndicatorViewHeight)];
     self.indicatorView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-//    self.widthConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
-//                                                        attribute:NSLayoutAttributeWidth
-//                                                        relatedBy:NSLayoutRelationEqual
-//                                                           toItem:nil
-//                                                        attribute:NSLayoutAttributeNotAnAttribute
-//                                                       multiplier:1.0
-//                                                         constant:10];
-//    NSLayoutConstraint *centerConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
-//                                                                        attribute:NSLayoutAttributeCenterX
-//                                                                        relatedBy:NSLayoutRelationEqual
-//                                                                           toItem:self
-//                                                                        attribute:NSLayoutAttributeCenterX
-//                                                                       multiplier:1.0
-//                                                                         constant:0];
+    self.widthConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
+                                                        attribute:NSLayoutAttributeWidth
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:10];
+    NSLayoutConstraint *centerConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                       multiplier:1.0
+                                                                         constant:0];
     [self addSubview:self.indicatorView];
-//    [self addConstraints:@[centerConstraint, self.widthConstraint]];
-}
-
-- (void)valueChanged
-{
-    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
-    {
-//        [self.delegate navSelector:self selectedIndex:self.segmentedControl.selectedSegmentIndex];
-    }
+    [self addConstraints:@[centerConstraint, self.widthConstraint]];
 }
 
 - (void)setTitles:(NSArray *)titles
@@ -109,13 +104,22 @@ static CGFloat const kVIndicatorViewHeight = 3;
         titleButton.frame = CGRectMake(xOffset, yOffset, titleSize.width, titleSize.height);
         titleButton.titleLabel.font = font;
         [titleButton setTitle:title forState:UIControlStateNormal];
+        [titleButton addTarget:self action:@selector(pressedTitleButton:) forControlEvents:UIControlEventTouchUpInside];
+        
         [self.scrollView addSubview:titleButton];
         [newTitleButtons addObject:titleButton];
     
         xOffset = xOffset + titleSize.width + self.spacing;
     }
+    xOffset -= self.spacing;//Remove the extra spacing from the last loop.
     
     self.scrollView.contentSize = CGSizeMake(xOffset, CGRectGetHeight(self.scrollView.bounds));
+
+    UIButton *leftButton = [newTitleButtons firstObject];
+    CGFloat leftInset = (CGRectGetWidth(self.bounds) - CGRectGetWidth(leftButton.frame)) / 2;
+    UIButton *rightButton = [newTitleButtons lastObject];
+    CGFloat rightInset = (CGRectGetWidth(self.bounds) - CGRectGetWidth(rightButton.frame)) / 2;
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, leftInset, 0, rightInset);
     
     self.titleButtons = newTitleButtons;
     _titles = titles;
@@ -123,15 +127,56 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
+    if (_currentIndex == currentIndex || currentIndex > (NSInteger)self.titleButtons.count) //Prevent dem infinite loops
+    {
+        return;
+    }
+    
     _currentIndex = currentIndex;
-//    UIButton *button = self.titleButtons[currentIndex];
-//    [self.segmentedControl setSelectedSegmentIndex:self.currentIndex];
+    UIButton *button = self.titleButtons[currentIndex];
+    CGPoint contentOffset = CGPointMake(CGRectGetMidX(button.frame) - CGRectGetWidth(self.scrollView.frame) / 2,
+                                         self.scrollView.contentOffset.y);
+    self.isAnimatingScrollview = YES;
+    [self.scrollView setContentOffset:contentOffset animated:YES];
+    
+    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
+    {
+        [self.delegate navSelector:self selectedIndex:self.currentIndex];
+    }
 }
 
 - (void)pressedTitleButton:(id)sender
 {
     UIButton *button = sender;
     self.currentIndex = button.tag;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.isAnimatingScrollview)//if we're animating the scrollview we're already in the middle of a page animation
+    {
+        return;
+    }
+    
+    UIButton *closestButton;
+    CGFloat xOffset = scrollView.contentOffset.x + CGRectGetWidth(self.scrollView.frame) / 2;
+    for (UIButton *button in self.titleButtons)
+    {
+        CGFloat newButtonDifference = ABS(xOffset - CGRectGetMinX(button.frame));
+        CGFloat oldButtonDifference = ABS(xOffset - CGRectGetMinX(closestButton.frame));
+        if (newButtonDifference <= oldButtonDifference)
+        {
+            closestButton = button;
+        }
+    }
+    self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    self.isAnimatingScrollview = NO;
 }
 
 @end
