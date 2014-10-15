@@ -137,7 +137,8 @@
 
 - (BOOL)shouldAutorotate
 {
-    return (self.viewModel.type == VContentViewTypeVideo);
+    BOOL shouldRotate = (self.viewModel.type == VContentViewTypeVideo);
+    return shouldRotate;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size
@@ -148,11 +149,17 @@
     {
         return;
     }
+    UIInterfaceOrientation oldOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
+            if (UIInterfaceOrientationIsLandscape(oldOrientation))
+            {
+                [coordinator containerView].transform = CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform);
+                return;
+            }
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.landscapeMaskOverlay.alpha = 1.0f;
@@ -162,13 +169,19 @@
             [coordinator containerView].transform = CGAffineTransformIdentity;
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.view.transform = CGAffineTransformIdentity;
-            self.landscapeMaskOverlay.alpha = 0.0f;
         }
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+        {
+            [UIView animateWithDuration:0.2f
+                             animations:^
+             {
+                 self.landscapeMaskOverlay.alpha = 0.0f;
+             }];
+        }
         [self.contentCollectionView.collectionViewLayout invalidateLayout];
     }];
-    
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
