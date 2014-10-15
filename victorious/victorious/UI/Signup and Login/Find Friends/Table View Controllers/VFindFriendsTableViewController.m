@@ -157,17 +157,6 @@
     NSAssert(NO, @"class %@ needs to implement loadFriendsFromSocialNetworkWithCompletion:", NSStringFromClass([self class]));
 }
 
-- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    NSAssert(NO, @"class %@ needs to implement loadSingleFollower:withSuccess:withFailure:", NSStringFromClass([self class]));
-}
-
-- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    NSAssert(NO, @"class %@ needs to implement unFollowSingleFollower:withSuccess:withFailure:", NSStringFromClass([self class]));
-}
-
-
 - (void)_loadFriendsFromSocialNetwork
 {
     self.state = VFindFriendsTableViewStateLoading;
@@ -260,6 +249,11 @@
     }];
 }
 
+- (NSString *)headerTextForNewFriendsSection
+{
+    return @"";
+}
+
 #pragma mark - Button Actions
 
 - (IBAction)connectButtonTapped:(id)sender
@@ -270,15 +264,6 @@
 - (IBAction)retryButtonTapped:(id)sender
 {
     [self _loadFriendsFromSocialNetwork];
-}
-
-- (IBAction)clearButtonTapped:(id)sender
-{
-    NSArray *selectedIndexPaths = [self.tableView.tableView indexPathsForSelectedRows];
-    for (NSIndexPath *indexPath in selectedIndexPaths)
-    {
-        [self.tableView.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
 }
 
 - (IBAction)selectAllButtonTapped:(id)sender
@@ -293,7 +278,6 @@
 
 - (void)selectAllRows:(id)sender
 {
-    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Add user relationship to local persistent store
@@ -324,7 +308,6 @@
                                withSuccessBlock:successBlock
                                       failBlock:failureBlock];
 }
-
 
 - (IBAction)makeButtonGray:(UIButton *)sender
 {
@@ -385,8 +368,9 @@
         [alert show];
     };
     
-    // Add user at backend
-    [self loadSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
+    [[VObjectManager sharedManager] followUser:user
+                                  successBlock:successBlock
+                                     failBlock:failureBlock];
 }
 
 - (void)unfollowFriendAction:(VUser *)user
@@ -443,8 +427,9 @@
         [alert show];
     };
     
-    [self unFollowSingleFollower:user withSuccess:successBlock withFailure:failureBlock];
-    
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock];
 }
 
 #pragma mark - UITableView Section Header
@@ -473,23 +458,7 @@
     }
     else if (section == 0)
     {
-        switch (self.findFriendsTableType)
-        {
-            case VFindFriendsTableTypeFacebook:
-                text = NSLocalizedString(@"FacebookFollowingSectionHeader", @"");
-                break;
-                
-            case VFindFriendsTableTypeAddressBook:
-                text = NSLocalizedString(@"AddressBookFollowingSectionHeader", @"");
-                break;
-                
-            case VFindFriendsTableTypeTwitter:
-                text = NSLocalizedString(@"TwitterFollowingSectionHeader", @"");
-                break;
-                
-            default:
-                break;
-        }
+        text = [self headerTextForNewFriendsSection];
     }
     
     NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:([text uppercaseString] ?: @"") attributes:[self attributesForText]];
@@ -613,7 +582,6 @@
     };
 
     return cell;
-    
 }
 
 @end

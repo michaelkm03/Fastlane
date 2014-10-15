@@ -28,7 +28,6 @@
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
 @property (nonatomic, weak)   IBOutlet UIButton *backButton;
 @property (nonatomic, weak)   IBOutlet UIButton *inviteButton;
-@property (nonatomic, weak)   IBOutlet UIButton *doneButton;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
