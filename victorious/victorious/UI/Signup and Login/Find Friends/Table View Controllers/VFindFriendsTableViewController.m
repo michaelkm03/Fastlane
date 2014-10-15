@@ -37,6 +37,7 @@
     {
         _state = VFindFriendsTableViewStatePreConnect;
         _shouldAutoselectNewFriends = YES;
+        _shouldDisplayInviteButton = YES;
     }
     return self;
 }
@@ -202,8 +203,7 @@
     if (self.usersNotFollowing.count == 0)
     {
         self.tableView.selectAllButton.hidden = YES;
-        self.tableView.inviteFriendsButton.hidden = NO;
-        //[self.tableView.selectAllButton setEnabled:NO];
+        self.tableView.inviteFriendsButton.hidden = !self.shouldDisplayInviteButton;
         [self.tableView.selectAllButton.layer setBorderColor:[[UIColor colorWithWhite:0.781 alpha:1.000] CGColor]];
         [self.tableView.selectAllButton.titleLabel setTextColor:[UIColor colorWithWhite:0.781 alpha:1.000]];
     }
@@ -230,7 +230,7 @@
         self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.tableView.clearButton.hidden = YES;
         self.tableView.selectAllButton.hidden = YES;
-        self.tableView.inviteFriendsButton.hidden = NO;
+        self.tableView.inviteFriendsButton.hidden = !self.shouldDisplayInviteButton;
     }
     else
     {
