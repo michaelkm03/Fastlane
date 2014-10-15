@@ -10,15 +10,12 @@
 #import "VThemeManager.h"
 #import "VHashTags.h"
 
-static const CGFloat kTrendingTagCellButtonBorderRadius     = 3.0f;
 static const CGFloat kTrendingTagCellRowHeight              = 40.0f;
 static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
 
 @interface VTrendingTagCell()
 
 @property (strong, nonatomic) UITextView *hashTagTextView;
-
-@property (weak, nonatomic) IBOutlet UIButton *addNewButton;
 
 @property (weak, nonatomic) IBOutlet UIView *textBackgroundView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundViewWidthConstraint;
@@ -34,9 +31,6 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
 
 - (void)awakeFromNib
 {
-    self.addNewButton.layer.cornerRadius = kTrendingTagCellButtonBorderRadius;
-    
-    // Remove any excess padding
     self.hashTagTextView = [[UITextView alloc] init];
     
     self.hashTagTextView.scrollEnabled = NO;
@@ -46,6 +40,7 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
     self.hashTagTextView.backgroundColor = [UIColor clearColor];
     self.hashTagTextView.textColor = [UIColor whiteColor];
     
+    // Remove any excess padding
     self.hashTagTextView.textContainer.lineFragmentPadding = 0;
     self.hashTagTextView.textContainerInset = UIEdgeInsetsZero;
     
@@ -55,7 +50,6 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
 - (void)applyTheme
 {
     self.textBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.addNewButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.hashTagTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 

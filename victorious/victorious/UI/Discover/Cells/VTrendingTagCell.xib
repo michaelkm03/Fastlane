@@ -22,36 +22,18 @@
                             <constraint firstAttribute="width" constant="245" id="pJP-05-JX2"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmT-7N-OT2">
-                        <rect key="frame" x="275" y="0.0" width="28" height="28"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="28" id="bz8-Sz-3Fp"/>
-                            <constraint firstAttribute="width" constant="28" id="ggJ-hs-Z22"/>
-                        </constraints>
-                        <state key="normal" image="btnAddTag">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="Ttc-bR-lII" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="YbN-Jw-Vyy"/>
-                    <constraint firstItem="tmT-7N-OT2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="isb-Fe-B8X"/>
                     <constraint firstItem="Ttc-bR-lII" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lug-bd-Cun"/>
-                    <constraint firstItem="tmT-7N-OT2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="275" id="r5n-3A-tH8"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="addNewButton" destination="tmT-7N-OT2" id="Sui-8A-xk9"/>
                 <outlet property="textBackgroundView" destination="Ttc-bR-lII" id="kAc-Xb-cfZ"/>
                 <outlet property="textBackgroundViewWidthConstraint" destination="pJP-05-JX2" id="Ikn-bf-4pT"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="btnAddTag" width="28" height="28"/>
-    </resources>
 </document>
