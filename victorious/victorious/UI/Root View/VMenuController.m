@@ -29,7 +29,6 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
-#import "VFindFriendsViewController.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -39,8 +38,7 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
     VMenuRowDiscover            =   3,
     VMenuRowInbox               =   0,
     VMenuRowProfile             =   1,
-    VMenuRowSettings            =   2,
-    VMenuRowFindFriends         =   3,
+    VMenuRowSettings            =   2
 };
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
@@ -195,23 +193,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 {
                     navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
                     [self.sideMenuViewController hideMenuViewController];
-                }
-            break;
-            
-            case VMenuRowFindFriends:
-                if (![VObjectManager sharedManager].authorized)
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-                else
-                {
-                    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-                    [ffvc setShouldAutoselectNewFriends:NO];
-                    [self presentViewController:ffvc animated:YES completion:^(void)
-                    {
-                        [self.sideMenuViewController hideMenuViewController];
-                    }];
                 }
             break;
                 
