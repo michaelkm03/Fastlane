@@ -225,17 +225,8 @@
 {
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        
-        [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             [self.delegate answeredPollWithAnswerId:answer.remoteId];
-             [self answerAnimationForAnswerID:answer.remoteId];
-         }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed with error: %@", error);
-         }];
+        [self.delegate answeredPollWithAnswerId:answer.remoteId];
+        [self answerAnimationForAnswerID:answer.remoteId];
     };
     
     [[VObjectManager sharedManager] answerPoll:self.sequence

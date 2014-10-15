@@ -375,6 +375,10 @@ static NSString * const kVVideoQualityKey = @"video_quality";
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 
+    // Add followers and following to main user object
+    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:nil failBlock:nil];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:nil failBlock:nil];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
