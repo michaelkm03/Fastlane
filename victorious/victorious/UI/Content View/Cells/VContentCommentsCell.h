@@ -22,7 +22,7 @@
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
 @property (nonatomic, copy) void (^onMediaTapped)();
-
+@property (nonatomic, copy) void (^onUserProfileTapped)();
 @property (nonatomic, readonly) UIImage *previewImage;
 @property (nonatomic, readonly) UIView *previewView;
 

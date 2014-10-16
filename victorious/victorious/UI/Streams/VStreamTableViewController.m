@@ -293,19 +293,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    if (![[self.tableDataSource sequenceAtIndexPath:indexPath] isPoll])
+    {
+        VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+        
+        VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+        
+        [self.navigationController pushViewController:contentViewController
+                                             animated:YES];
+        return;
+    }
     
-    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
-	return;
-
     self.lastSelectedIndexPath = indexPath;
     
     self.contentViewController = [[VContentViewController alloc] init];

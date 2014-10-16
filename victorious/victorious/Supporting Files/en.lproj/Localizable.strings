@@ -341,7 +341,7 @@
 "Reposted"              =   "Reposted";
 "RepostContentView"     =   " REPOST";
 "RepostedContentView"   =   " REPOSTED";
-"comments"              =   "comments";
+"Comments"              =   "COMMENTS";
 "Comment"               =   "Comment";
 
 "repostedFromFormat"      =   "Repost from %@";
