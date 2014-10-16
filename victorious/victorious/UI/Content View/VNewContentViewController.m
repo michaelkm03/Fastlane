@@ -504,6 +504,7 @@
                 if (selectedEnhancer.isBallistic)
                 {
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
+                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
@@ -532,8 +533,6 @@
                          animationImageView.image = nil;
                          [animationImageView startAnimating];
                          
-                         
-                         
                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                                         {
                                             [animationImageView removeFromSuperview];
@@ -546,6 +545,7 @@
                     animationImageView.animationDuration = selectedEnhancer.animationDuration;
                     animationImageView.animationImages = selectedEnhancer.animationSequence;
                     animationImageView.animationRepeatCount = 1;
+                    animationImageView.contentMode = selectedEnhancer.shouldLetterBox ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
                     
                     [self.contentCell.contentView addSubview:animationImageView];
                     [animationImageView startAnimating];
