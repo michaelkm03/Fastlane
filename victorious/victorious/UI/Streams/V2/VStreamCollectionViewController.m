@@ -264,21 +264,19 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     self.lastSelectedIndexPath = indexPath;
     
-    VContentViewController *contentViewController = [[VContentViewController alloc] init];
-    
     UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
     VSequence *sequence;
     
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
-        sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+        sequence = ((VStreamCollectionCell *)cell).sequence;
     }
     else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
     {
-        sequence = (VSequence *)self.marquee.currentStreamItem;
+        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
     }
 
-    contentViewController.sequence = sequence;
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
                                          successBlock:nil
@@ -286,14 +284,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [self setBackgroundImageWithURL:[[sequence initialImageURLs] firstObject]];
     
+    VContentViewController *contentViewController = [[VContentViewController alloc] init];
+    contentViewController.sequence = sequence;
     CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
+    
     if (collectionView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
     {
         [self.navigationController pushViewController:contentViewController animated:YES];
     }
     else
     {
-        self.collectionView.userInteractionEnabled = NO;
+        collectionView.userInteractionEnabled = NO;
         [UIView animateWithDuration:0.2f
                               delay:0.0f
              usingSpringWithDamping:1.0f
@@ -301,11 +302,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-             [collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
+             [collectionView setContentOffset:CGPointMake(collectionView.contentOffset.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
          }
                          completion:^(BOOL finished)
          {
-             self.collectionView.userInteractionEnabled = YES;
+             collectionView.userInteractionEnabled = YES;
              [self.navigationController pushViewController:contentViewController animated:YES];
          }];
     }
