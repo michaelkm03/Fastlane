@@ -627,7 +627,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             
-
+            __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
                 if (selectedEnhancer.isBallistic)
@@ -639,18 +639,18 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
                     animationImageView.center = convertedCenterForAnimation;
                     animationImageView.image = selectedEnhancer.flightImage;
-                    [self.view addSubview:animationImageView];
+                    [welf.view addSubview:animationImageView];
                     
                     [UIView animateWithDuration:selectedEnhancer.flightDuration
                                           delay:0.0f
                                         options:UIViewAnimationOptionCurveLinear
                                      animations:^
                      {
-                         CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(self.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(self.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
-                         CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(self.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(self.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
+                         CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(welf.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(welf.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
+                         CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(welf.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(welf.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
                          
                          CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
-                                                                fromView:self.contentCell];
+                                                                fromView:welf.contentCell];
                          animationImageView.center = contentCenter;
                          
                      }
@@ -670,13 +670,13 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 }
                 else // full overlay
                 {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:welf.contentCell.bounds];
                     animationImageView.animationDuration = selectedEnhancer.animationDuration;
                     animationImageView.animationImages = selectedEnhancer.animationSequence;
                     animationImageView.animationRepeatCount = 1;
                     animationImageView.contentMode = selectedEnhancer.shouldLetterBox ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
                     
-                    [self.contentCell.contentView addSubview:animationImageView];
+                    [welf.contentCell.contentView addSubview:animationImageView];
                     [animationImageView startAnimating];
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^

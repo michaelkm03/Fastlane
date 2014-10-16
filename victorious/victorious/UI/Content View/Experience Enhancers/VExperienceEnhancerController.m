@@ -36,7 +36,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     NSMutableArray *fireworkAnimationImages = [NSMutableArray new];
     for (int i = 5; i <= 20; i++)
     {
-        NSString *imageName = [NSString stringWithFormat:@"Firework_v01.%05d", i];
+        NSString *imageName = [NSString stringWithFormat:@"Firework_v01.%05d.png", i];
         [fireworkAnimationImages addObject:[UIImage imageNamed:imageName]];
     }
     VExperienceEnhancer *fireworkEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_firework"]
@@ -46,12 +46,12 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
                                                                                 isBallistic:YES
                                                                             shouldLetterBox:YES
                                                                              flightDuration:0.35
-                                                                                flightImage:[UIImage imageNamed:@"Firework_v01.00000"]];
+                                                                                flightImage:[UIImage imageNamed:@"Firework_v01.00000.png"]];
     
     NSMutableArray *lolAnimationImages = [NSMutableArray new];
     for (int i = 0; i <= 24; i++)
     {
-        NSString *imageName = [NSString stringWithFormat:@"LOL_v02.%05d", i];
+        NSString *imageName = [NSString stringWithFormat:@"LOL_v02.%05d.png", i];
         [lolAnimationImages addObject:[UIImage imageNamed:imageName]];
     }
     VExperienceEnhancer *lolEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_lol"]
@@ -66,7 +66,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     NSMutableArray *glitterImages = [NSMutableArray new];
     for (int i = 0; i <= 30; i++)
     {
-        NSString *imageName = [NSString stringWithFormat:@"GLITTER_V01.%05d", i];
+        NSString *imageName = [NSString stringWithFormat:@"GLITTER_V01.%05d.png", i];
         [glitterImages addObject:[UIImage imageNamed:imageName]];
     }
     VExperienceEnhancer *glitterEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_glitter"]
@@ -80,7 +80,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     NSMutableArray *lightningImages = [NSMutableArray new];
     for (int i = 0; i <= 19; i++)
     {
-        NSString *imageName = [NSString stringWithFormat:@"Lightening_V01.%05d", i];
+        NSString *imageName = [NSString stringWithFormat:@"Lightening_V01.%05d.png", i];
         [lightningImages addObject:[UIImage imageNamed:imageName]];
     }
     
@@ -96,7 +96,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     NSMutableArray *waterBalloonAnimation = [NSMutableArray new];
     for (int i = 0; i <= 26; i++)
     {
-        NSString *imageName = [NSString stringWithFormat:@"WATERBALLOON_V01.%05d", i];
+        NSString *imageName = [NSString stringWithFormat:@"WATERBALLOON_V01.%05d.png", i];
         [waterBalloonAnimation addObject:[UIImage imageNamed:imageName]];
     }
     VExperienceEnhancer *waterBaloonEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_waterballoon"]
