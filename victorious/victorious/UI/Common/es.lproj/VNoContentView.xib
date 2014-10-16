@@ -13,6 +13,10 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noMessageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ht-CEA">
                     <rect key="frame" x="123" y="150" width="74" height="53"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="74" id="CQy-ok-3c5"/>
+                        <constraint firstAttribute="height" constant="53" id="Cp4-Ap-E1l"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO HAY MENSAJES TODAVÍA" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-YK-T9j">
                     <rect key="frame" x="30" y="243" width="260" height="23"/>

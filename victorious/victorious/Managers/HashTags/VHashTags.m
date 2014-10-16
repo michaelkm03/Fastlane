@@ -63,4 +63,35 @@
     return YES;
 }
 
++ (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string
+{
+    // Check invalid input
+    if ( string == nil || string.length == 0 )
+    {
+        return nil;
+    }
+    
+    // No spaces allowed
+    if ( [string rangeOfString:@" "].location != NSNotFound )
+    {
+        return nil;
+    }
+
+    // No dashes allowed
+    if ( [string rangeOfString:@"-"].location != NSNotFound )
+    {
+        return nil;
+    }
+    
+    NSRange rangeOfHashmark = [string rangeOfString:@"#"];
+    if ( rangeOfHashmark.location != 0 || rangeOfHashmark.length != 1 )
+    {
+        return [NSString stringWithFormat:@"#%@", string];
+    }
+    else
+    {
+        return [string copy];
+    }
+}
+
 @end
