@@ -158,7 +158,7 @@
     }
     else if (self.selectedCalendarUnit == 3)
     {
-        components.week = self.selectedValue;
+        components.weekOfMonth = self.selectedValue;
     }
     else if (self.selectedCalendarUnit == 4)
     {

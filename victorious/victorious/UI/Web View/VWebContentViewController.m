@@ -53,6 +53,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [self.webView stopLoading];
     
     self.webView.delegate = nil;    // disconnect the delegate as the webview is hidden

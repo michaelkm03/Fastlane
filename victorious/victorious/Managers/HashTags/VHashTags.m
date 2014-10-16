@@ -34,10 +34,22 @@
     return [NSArray arrayWithArray:array];
 }
 
-+ (void)formatHashTagsInString:(NSMutableAttributedString *)fieldText
++ (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
                  withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes
 {
+    // Error checking
+    if ( fieldText == nil || tagRanges == nil || attributes == nil )
+    {
+        return NO;
+    }
+    
+    // Optimizaitons
+    if ( fieldText.length == 0 || tagRanges.count == 0 || attributes.allKeys.count == 0 )
+    {
+        return NO;
+    }
+    
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
     {
         NSRange tagRange = [tagRangeValue rangeValue];
@@ -47,6 +59,8 @@
             [fieldText addAttributes:attributes range:tagRangeWithHash];
         }
     }];
+    
+    return YES;
 }
 
 @end

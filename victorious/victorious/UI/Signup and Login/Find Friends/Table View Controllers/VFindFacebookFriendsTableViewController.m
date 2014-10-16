@@ -21,8 +21,6 @@
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindFBFriends", @"")];
     [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"FBSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Facebook", @"") forState:UIControlStateNormal];
-    
-    self.findFriendsTableType = VFindFriendsTableTypeFacebook;
 }
 
 - (void)connectToSocialNetworkWithPossibleUserInteraction:(BOOL)userInteraction completion:(void (^)(BOOL, NSError *))completionBlock
@@ -77,31 +75,9 @@
     }];
 }
 
-- (void)loadSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
+- (NSString *)headerTextForNewFriendsSection
 {
-    // Return if we don't have a way to handle the return
-    if (!successBlock)
-    {
-        return;
-    }
-    
-   [[VObjectManager sharedManager] followUser:user
-                                 successBlock:successBlock
-                                    failBlock:failureBlock];
-}
-
-- (void)unFollowSingleFollower:(VUser *)user withSuccess:(VSuccessBlock)successBlock withFailure:(VFailBlock)failureBlock
-{
-    [[VObjectManager sharedManager] unfollowUser:user
-                                    successBlock:successBlock
-                                       failBlock:failureBlock];
-}
-
-#pragma mark - VFindFriendsDelegate Method
-
-- (void)didReceiveFriendRequestResponse:(NSArray *)responseObject
-{
-    NSLog(@"\n\n-----\nFind Friends Delegate is Being Called\n-----\n\n");
+    return NSLocalizedString(@"FacebookFollowingSectionHeader", @"");
 }
 
 @end
