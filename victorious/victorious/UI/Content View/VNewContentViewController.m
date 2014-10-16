@@ -155,6 +155,7 @@
     {
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
+            [self.videoCell.videoPlayerViewController.view.layer removeAllAnimations];
             if (UIInterfaceOrientationIsLandscape(oldOrientation))
             {
                 [coordinator containerView].transform = CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform);
@@ -162,6 +163,11 @@
             }
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            
+            self.videoCell.videoPlayerViewController.view.transform = [coordinator targetTransform];
+            self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.videoCell.videoPlayerViewController.view.center = self.view.center;
+            [self.view addSubview:self.videoCell.videoPlayerViewController.view];
             self.landscapeMaskOverlay.alpha = 1.0f;
         }
         else
@@ -169,15 +175,26 @@
             [coordinator containerView].transform = CGAffineTransformIdentity;
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.view.transform = CGAffineTransformIdentity;
+            self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
         }
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {
-            [UIView animateWithDuration:0.2f
+            [UIView animateWithDuration:0.35f
+                                  delay:0.0f
+                 usingSpringWithDamping:1.0f
+                  initialSpringVelocity:0.0f
+                                options:UIViewAnimationOptionBeginFromCurrentState
                              animations:^
              {
+                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+                 self.videoCell.videoPlayerViewController.view.frame = self.videoCell.contentView.bounds;
                  self.landscapeMaskOverlay.alpha = 0.0f;
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
              }];
         }
         [self.contentCollectionView.collectionViewLayout invalidateLayout];
