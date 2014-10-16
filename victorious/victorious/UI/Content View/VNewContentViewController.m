@@ -204,10 +204,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-}
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     UIView *rootView = self.navigationController.view;
@@ -219,7 +215,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
         self.view.transform = CGAffineTransformIdentity;
         self.view.bounds = rootView.bounds;
-        
 
         self.videoCell.videoPlayerViewController.view.transform = oldTransform;
         self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
