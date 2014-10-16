@@ -55,6 +55,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     NSMutableArray *titles = [[NSMutableArray alloc] init];
     for (VStream *stream in self.allStreams)
@@ -115,6 +117,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.collectionView.alwaysBounceVertical = YES;
     UIEdgeInsets insets = self.collectionView.contentInset;
     insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+
     self.collectionView.contentInset = insets;
 }
 
