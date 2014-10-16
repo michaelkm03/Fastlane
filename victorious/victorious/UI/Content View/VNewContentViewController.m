@@ -59,6 +59,9 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
+static const NSTimeInterval kRotationCompletionAnimationDuration = 0.35f;
+static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -155,7 +158,6 @@
     {
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
-            [self.videoCell.videoPlayerViewController.view.layer removeAllAnimations];
             if (UIInterfaceOrientationIsLandscape(oldOrientation))
             {
                 [coordinator containerView].transform = CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform);
@@ -181,9 +183,9 @@
     {
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {
-            [UIView animateWithDuration:0.35f
+            [UIView animateWithDuration:kRotationCompletionAnimationDuration
                                   delay:0.0f
-                 usingSpringWithDamping:1.0f
+                 usingSpringWithDamping:kRotationCompletionAnimationDamping
                   initialSpringVelocity:0.0f
                                 options:UIViewAnimationOptionBeginFromCurrentState
                              animations:^
@@ -194,6 +196,7 @@
              }
                              completion:^(BOOL finished)
              {
+
                  [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
              }];
         }
@@ -208,6 +211,7 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     UIView *rootView = self.navigationController.view;
+    CGAffineTransform oldTransform = rootView.transform;
 
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
@@ -215,17 +219,41 @@
         rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
         self.view.transform = CGAffineTransformIdentity;
         self.view.bounds = rootView.bounds;
+        
+
+        self.videoCell.videoPlayerViewController.view.transform = oldTransform;
+        self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        self.videoCell.videoPlayerViewController.view.center = rootView.center;
+        [self.view addSubview:self.videoCell.videoPlayerViewController.view];
         self.landscapeMaskOverlay.alpha = 1.0f;
     }
     else
     {
         self.view.transform = CGAffineTransformIdentity;
-        self.landscapeMaskOverlay.alpha = 0.0f;
     }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        [UIView animateWithDuration:kRotationCompletionAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kRotationCompletionAnimationDamping
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+         {
+             self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+             self.videoCell.videoPlayerViewController.view.frame = self.videoCell.contentView.bounds;
+             self.landscapeMaskOverlay.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             
+             [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+         }];
+    }
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
