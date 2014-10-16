@@ -343,7 +343,7 @@
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - Private Mehods

@@ -22,6 +22,9 @@
 - (BOOL)isRemix;
 - (BOOL)isRepost;
 
+- (BOOL)canDelete;
+- (BOOL)canRemix;
+
 - (VNode *)firstNode;
 
 - (NSArray *)initialImageURLs;
