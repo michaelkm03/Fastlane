@@ -117,9 +117,9 @@
 - (void)navSelector:(UIView<VNavigationSelectorProtocol> *)selector selectedIndex:(NSInteger)index
 {
     BOOL shouldChange = YES;
-    if ([self.delegate respondsToSelector:@selector(navHeaderView:segmentControlChangeToIndex:)])
+    if ([self.delegate respondsToSelector:@selector(navHeaderView:changedToIndex:)])
     {
-        shouldChange = [self.delegate navHeaderView:self segmentControlChangeToIndex:index];
+        shouldChange = [self.delegate navHeaderView:self changedToIndex:index];
     }
     if (!shouldChange)
     {
