@@ -52,13 +52,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Etiqueta" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
-                                <rect key="frame" x="20" y="278" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6WR-6s-hSP" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -69,11 +62,8 @@
                         <constraints>
                             <constraint firstItem="6WR-6s-hSP" firstAttribute="top" secondItem="H2p-kS-Ucs" secondAttribute="top" constant="7" id="Awn-i1-oAQ"/>
                             <constraint firstAttribute="trailing" secondItem="6WR-6s-hSP" secondAttribute="trailing" id="Rin-Pn-fH3"/>
-                            <constraint firstAttribute="bottom" secondItem="WLo-v6-MW0" secondAttribute="bottom" constant="20" id="TTm-KY-zwy"/>
                             <constraint firstAttribute="bottom" secondItem="6WR-6s-hSP" secondAttribute="bottom" constant="237" id="Ur9-bU-q5O"/>
                             <constraint firstItem="6WR-6s-hSP" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" id="aMW-bJ-hEl"/>
-                            <constraint firstAttribute="trailing" secondItem="WLo-v6-MW0" secondAttribute="trailing" constant="20" id="fAI-FJ-3K6"/>
-                            <constraint firstItem="WLo-v6-MW0" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" constant="20" id="n95-0X-R7c"/>
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="geG-k8-kCm" userLabel="Comment Hitbox Button">
@@ -113,14 +103,12 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentHitboxButton" destination="geG-k8-kCm" id="ide-Qz-sjS"/>
-                <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="BI6-9o-s8I"/>
                 <outlet property="lowerGradientView" destination="fTn-ss-uGL" id="h00-bz-zpQ"/>
                 <outlet property="mainView" destination="tlv-KZ-xzf" id="Wkj-5Q-90X"/>
                 <outlet property="overlayView" destination="H2p-kS-Ucs" id="raJ-Jb-enr"/>
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
                 <outlet property="shadeView" destination="adD-xo-Uv6" id="3wi-kO-1ke"/>
                 <outlet property="streamCellHeaderView" destination="6WR-6s-hSP" id="MqJ-fs-g12"/>
-                <outletCollection property="labels" destination="WLo-v6-MW0" id="8SQ-Z2-QBX"/>
             </connections>
         </tableViewCell>
     </objects>

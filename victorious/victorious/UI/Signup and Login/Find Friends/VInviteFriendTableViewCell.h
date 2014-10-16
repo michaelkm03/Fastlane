@@ -19,7 +19,6 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 @property (nonatomic, weak) IBOutlet UIImageView *followIconImageView;
 
 - (void)imageTapAction:(id)sender;
-- (void)enableFollowIcon:(id)sender;
 - (void)disableFollowIcon:(id)sender;
 - (void)flipFollowIconAction:(id)sender;
 

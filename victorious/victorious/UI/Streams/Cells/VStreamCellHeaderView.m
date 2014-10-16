@@ -65,13 +65,6 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
     _isFromProfile = NO;
 }
 
-//- (void)layoutSubviews
-//{
-//    [super layoutSubviews];
-//    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
-//    self.profileImageButton.clipsToBounds = YES;
-//}
-
 - (void)hideCommentsButton
 {
     [self.commentButton setHidden:YES];
@@ -129,6 +122,14 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 }
 
 #pragma mark - Button Actions
+
+- (IBAction)commentButtonAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(commentsPressedOnHeader:)])
+    {
+        [self.delegate commentsPressedOnHeader:self];
+    }
+}
 
 - (IBAction)profileButtonAction:(id)sender
 {

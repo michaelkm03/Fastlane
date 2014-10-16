@@ -255,6 +255,7 @@
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
                         <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
+                        <segue destination="a0y-4a-uKe" kind="push" identifier="toProfileWithEmail" id="qFR-HG-giH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -348,7 +349,7 @@
         <!--Profile Create View Controller-->
         <scene sceneID="n2v-Tj-rFs">
             <objects>
-                <viewController id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileCreate" id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NqE-Ur-2Nw"/>
                         <viewControllerLayoutGuide type="bottom" id="YrE-kb-O2F"/>
@@ -769,31 +770,15 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dI-fH-6bk" userLabel="Done Button">
-                                        <rect key="frame" x="264" y="10" width="56" height="56"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="56" id="Lnb-tf-fP1"/>
-                                            <constraint firstAttribute="width" constant="56" id="txD-4p-bWY"/>
-                                        </constraints>
-                                        <state key="normal" title="Done">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="pressedDone:" destination="qXP-WV-BMp" eventType="touchUpInside" id="RFB-Bt-l5t"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="AQr-df-rJr" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" constant="10" id="0KJ-cR-ADo"/>
                                     <constraint firstItem="nNU-ow-QSQ" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" constant="10" id="GWi-Me-OBL"/>
                                     <constraint firstItem="8up-xd-D5l" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" id="I4c-YV-w9p"/>
-                                    <constraint firstItem="3dI-fH-6bk" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" constant="10" id="OBx-dc-2B5"/>
                                     <constraint firstItem="8up-xd-D5l" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" constant="9" id="UBW-ac-wFX"/>
                                     <constraint firstAttribute="centerX" secondItem="nNU-ow-QSQ" secondAttribute="centerX" constant="-0.5" id="Ud4-7H-qsC"/>
                                     <constraint firstAttribute="height" constant="136" id="sGy-AW-b6a"/>
-                                    <constraint firstAttribute="right" secondItem="3dI-fH-6bk" secondAttribute="right" id="xAz-QU-amf"/>
                                     <constraint firstItem="AQr-df-rJr" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" constant="263" id="z3c-aU-E75"/>
                                 </constraints>
                             </view>
@@ -817,7 +802,6 @@
                     <connections>
                         <outlet property="backButton" destination="8up-xd-D5l" id="RWi-kj-TLU"/>
                         <outlet property="containerView" destination="RuM-Vh-XTe" id="L2h-Zm-k3c"/>
-                        <outlet property="doneButton" destination="3dI-fH-6bk" id="XKN-aA-V5C"/>
                         <outlet property="headerView" destination="Tg4-SM-Gi4" id="Vox-Lr-lcU"/>
                         <outlet property="inviteButton" destination="AQr-df-rJr" id="nwP-Xw-kWE"/>
                         <outlet property="titleLabel" destination="nNU-ow-QSQ" id="1Dg-Bt-Ky1"/>
@@ -916,6 +900,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="L0J-p9-vsT"/>
+        <segue reference="qFR-HG-giH"/>
     </inferredMetricsTieBreakers>
 </document>
