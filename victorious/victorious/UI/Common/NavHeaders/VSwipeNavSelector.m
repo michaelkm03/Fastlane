@@ -148,6 +148,11 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!self.scrollView.scrollEnabled)
+    {
+        return;
+    }
+    
     UIButton *closestButton;
     CGFloat xOffset = scrollView.contentOffset.x + CGRectGetWidth(self.scrollView.frame) / 2;
     for (UIButton *button in self.titleButtons)
