@@ -503,7 +503,7 @@
             {
                 if (selectedEnhancer.isBallistic)
                 {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
@@ -513,7 +513,7 @@
                     
                     [UIView animateWithDuration:selectedEnhancer.flightDuration
                                           delay:0.0f
-                                        options:UIViewAnimationOptionCurveEaseIn
+                                        options:UIViewAnimationOptionCurveLinear
                                      animations:^
                      {
                          CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(self.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(self.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));

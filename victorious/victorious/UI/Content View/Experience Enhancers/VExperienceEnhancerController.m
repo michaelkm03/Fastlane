@@ -12,6 +12,8 @@
 
 #import "VSequence.h"
 
+static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.5f;
+
 @interface VExperienceEnhancerController ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -30,49 +32,66 @@
     
     experienceEnhancerControllerForSequence.sequence = sequence;
     
-    VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
-    lisaEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
-    lisaEnhancer.labelText = @"123";
-    lisaEnhancer.animationDuration = 0.5f;
-    NSMutableArray *animationImages = [NSMutableArray new];
-    for (int i = 1; i <= 6; i++)
-    {
-        NSString *animationName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i (dragged)", i];
-        [animationImages addObject:[UIImage imageNamed:animationName]];
-    }
-    lisaEnhancer.animationSequence = animationImages;
     
     VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
     fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
-    fireworkEnhancer.labelText = @"143";
-
-    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
-    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
-    thumbsUpEnhancer.labelText = @"321";
-
-    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
-    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
-    tongueEnhancer.labelText = @"555";
-
-    VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
-    tomatoEnhancer.ballistic = YES;
-    tomatoEnhancer.flightImage = [UIImage imageNamed:@"Tomato0"];
-    tomatoEnhancer.flightDuration = 0.5f;
-    
-    tomatoEnhancer.animationDuration = 0.75f;
-    tomatoEnhancer.icon = [UIImage imageNamed:@"Tomato"];
-    tomatoEnhancer.labelText = @"🍹";
-    NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < 17; i++)
+    fireworkEnhancer.labelText = @"123";
+    fireworkEnhancer.animationDuration = 1.5f;
+    fireworkEnhancer.ballistic = YES;
+    fireworkEnhancer.flightImage = [UIImage imageNamed:@"Firework_v01.00000"];
+    fireworkEnhancer.flightDuration = 2.5f;
+    NSMutableArray *animationImages = [NSMutableArray new];
+    for (int i = 5; i <= 20; i++)
     {
-        NSString *tomatoImage = [NSString stringWithFormat:@"Tomato%li", (long)i];
-        [tomatoSequence addObject:[[UIImage imageNamed:tomatoImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        NSString *imageName = [NSString stringWithFormat:@"Firework_v01.%05d", i];
+        [animationImages addObject:[UIImage imageNamed:imageName]];
     }
-    tomatoEnhancer.animationSequence = tomatoSequence;
+    fireworkEnhancer.animationSequence = animationImages;
+    
+    
+//    VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
+//    lisaEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
+//    lisaEnhancer.labelText = @"123";
+//    lisaEnhancer.animationDuration = 0.5f;
+//    NSMutableArray *animationImages = [NSMutableArray new];
+//    for (int i = 1; i <= 6; i++)
+//    {
+//        NSString *animationName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i (dragged)", i];
+//        [animationImages addObject:[UIImage imageNamed:animationName]];
+//    }
+//    lisaEnhancer.animationSequence = animationImages;
+//    
+//    VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
+//    fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
+//    fireworkEnhancer.labelText = @"143";
+//
+//    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
+//    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
+//    thumbsUpEnhancer.labelText = @"321";
+//
+//    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
+//    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
+//    tongueEnhancer.labelText = @"555";
+//
+//    VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
+//    tomatoEnhancer.ballistic = YES;
+//    tomatoEnhancer.flightImage = [UIImage imageNamed:@"Tomato0"];
+//    tomatoEnhancer.flightDuration = 0.5f;
+//    
+//    tomatoEnhancer.animationDuration = 0.75f;
+//    tomatoEnhancer.icon = [UIImage imageNamed:@"Tomato"];
+//    tomatoEnhancer.labelText = @"🍹";
+//    NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
+//    for (NSInteger i = 0; i < 17; i++)
+//    {
+//        NSString *tomatoImage = [NSString stringWithFormat:@"Tomato%li", (long)i];
+//        [tomatoSequence addObject:[[UIImage imageNamed:tomatoImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+//    }
+//    tomatoEnhancer.animationSequence = tomatoSequence;
   
     
-    experienceEnhancerControllerForSequence.testEnhancers = @[lisaEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, lisaEnhancer, tomatoEnhancer, lisaEnhancer, tomatoEnhancer];
-    
+//    experienceEnhancerControllerForSequence.testEnhancers = @[lisaEnhancer, tomatoEnhancer, fireworkEnhancer, thumbsUpEnhancer, tongueEnhancer, lisaEnhancer, tomatoEnhancer, lisaEnhancer, tomatoEnhancer];
+    experienceEnhancerControllerForSequence.testEnhancers = @[fireworkEnhancer];
     return experienceEnhancerControllerForSequence;
 }
 
