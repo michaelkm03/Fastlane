@@ -188,7 +188,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
-        
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {
             [UIView animateWithDuration:kRotationCompletionAnimationDuration
