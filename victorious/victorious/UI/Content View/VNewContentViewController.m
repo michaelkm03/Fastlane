@@ -188,6 +188,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
+        
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {
             [UIView animateWithDuration:kRotationCompletionAnimationDuration
@@ -203,8 +204,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
              }
                              completion:^(BOOL finished)
              {
-
-                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+                 if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+                 {
+                     [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+                 }
              }];
         }
         [self.contentCollectionView.collectionViewLayout invalidateLayout];
