@@ -113,8 +113,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
                   forControlEvents:UIControlEventValueChanged];
+    
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
+    
     UIEdgeInsets insets = self.collectionView.contentInset;
     insets.top = CGRectGetHeight(self.navHeaderView.bounds);
 

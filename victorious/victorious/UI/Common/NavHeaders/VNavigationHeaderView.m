@@ -21,7 +21,7 @@
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *ratioConstraint;
 
 @end
 
@@ -63,7 +63,15 @@
 {
     if (!titles.count)
     {
-        self.heightConstraint.constant = CGRectGetMinY(self.navSelector.frame);
+        [self removeConstraint:self.ratioConstraint];
+        self.ratioConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self
+                                                            attribute:NSLayoutAttributeHeight
+                                                           multiplier:CGRectGetWidth(self.frame) / CGRectGetMinY(self.navSelector.frame)
+                                                             constant:0];
+        [self addConstraint:self.ratioConstraint];
     }
     else
     {

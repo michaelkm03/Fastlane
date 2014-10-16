@@ -22,6 +22,8 @@
 	<true/>
 	<key>template_c_enabled</key>
 	<true/>
+	<key>template_c_enabled - 2</key>
+	<true/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
 </dict>

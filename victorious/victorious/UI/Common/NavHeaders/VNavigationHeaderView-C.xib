@@ -99,6 +99,7 @@
                 <outlet property="headerLabel" destination="OdC-v0-4wZ" id="CtM-xP-FZM"/>
                 <outlet property="menuButton" destination="tpY-SB-B55" id="NIJ-1e-ZfI"/>
                 <outlet property="navSelector" destination="s8h-1I-uAz" id="8dz-yR-zun"/>
+                <outlet property="ratioConstraint" destination="2xq-vs-IaQ" id="eAj-Ef-4zU"/>
             </connections>
         </view>
     </objects>

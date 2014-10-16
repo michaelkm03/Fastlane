@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -83,12 +84,11 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="height" constant="100" id="25X-sg-v7U"/>
                 <constraint firstAttribute="trailing" secondItem="tkm-2G-q8x" secondAttribute="trailing" constant="14" id="588-PD-2ge"/>
+                <constraint firstAttribute="width" secondItem="Ay5-2H-sPn" secondAttribute="height" multiplier="16:5" id="ECt-Xu-bck"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="PAa-Hr-gey"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="WKP-Hw-E3j"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>
-                <constraint firstAttribute="width" constant="320" id="YxW-7v-Jrt"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="a3L-cG-gAe"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="60" id="a3r-vZ-7DX"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
@@ -107,9 +107,9 @@
                 <outlet property="backButton" destination="sMx-qo-hHL" id="FpG-G8-Y6k"/>
                 <outlet property="headerImageView" destination="ba7-Bo-OPS" id="hE7-58-zrY"/>
                 <outlet property="headerLabel" destination="ESN-J9-ft1" id="agR-0G-lDG"/>
-                <outlet property="heightConstraint" destination="25X-sg-v7U" id="iwP-YJ-jus"/>
                 <outlet property="menuButton" destination="DUT-ma-Cbr" id="Qut-bS-chd"/>
                 <outlet property="navSelector" destination="PAi-gS-Qn7" id="I5B-Lg-I8G"/>
+                <outlet property="ratioConstraint" destination="ECt-Xu-bck" id="d2h-Ic-DeF"/>
             </connections>
         </view>
     </objects>

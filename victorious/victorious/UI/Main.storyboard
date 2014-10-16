@@ -2531,7 +2531,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5FG-uk-w9i">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5FG-uk-w9i">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -2548,12 +2548,6 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="5FG-uk-w9i" firstAttribute="top" secondItem="nLd-AM-Mb1" secondAttribute="top" placeholder="YES" id="ABX-jt-WoK"/>
-                            <constraint firstAttribute="trailing" secondItem="5FG-uk-w9i" secondAttribute="trailing" id="GzN-pG-5Jh"/>
-                            <constraint firstItem="y9d-Su-UZu" firstAttribute="top" secondItem="5FG-uk-w9i" secondAttribute="bottom" id="M3d-3a-ZJk"/>
-                            <constraint firstItem="5FG-uk-w9i" firstAttribute="leading" secondItem="nLd-AM-Mb1" secondAttribute="leading" id="qrz-gF-ka3"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="5FG-uk-w9i" id="DNa-PK-9PX"/>
