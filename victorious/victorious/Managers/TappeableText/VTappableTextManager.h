@@ -17,7 +17,6 @@
 
 @optional
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView;
-- (void)textView:(UITextView *)textView tappedWithTap:(UIGestureRecognizer *)tap;
 
 @end
 

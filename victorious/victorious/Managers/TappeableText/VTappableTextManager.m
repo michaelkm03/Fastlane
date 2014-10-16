@@ -120,12 +120,6 @@
                 [self.delegate text:text tappedInTextView:textView];
             }
         }];
-        
-        // Forward the touch event to delegate
-        if ( [self.delegate respondsToSelector:@selector(textView:tappedWithTap:)] )
-        {
-            [self.delegate textView:textView tappedWithTap:tap];
-        }
     }
 }
 

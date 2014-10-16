@@ -196,31 +196,26 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
 {
-    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
-    {
-        NSString *textTapped = [text copy];
-        
-        NSString *wholeTextFromFragment = [self wholeStringInArray:[VHashTags getHashTags:self.text] thatContainsFragment:textTapped];
-        if ( wholeTextFromFragment != nil )
-        {
-            textTapped = wholeTextFromFragment;
-        }
-        
-        [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:textTapped];
-    }
-}
-
-- (void)textView:(UITextView *)textView tappedWithTap:(UITapGestureRecognizer *)tap
-{
-    CGPoint tapPoint = [tap locationInView:self.textView];
-    NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.textView.textContainer];
-    NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
-    
-    if (NSLocationInRange(character, self.seeMoreRange))
+    if ( [text isEqualToString:self.seeMoreString.string] )
     {
         if ([self.delegate respondsToSelector:@selector(seeMoreButtonTappedInContentTitleTextView:)])
         {
             [self.delegate seeMoreButtonTappedInContentTitleTextView:self];
+        }
+    }
+    else if ( [self.hashTags containsObject:[NSValue valueWithRange:[self.text rangeOfString:text]]] )
+    {
+        if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
+        {
+            NSString *textTapped = [text copy];
+            
+            NSString *wholeTextFromFragment = [self wholeStringInArray:[VHashTags getHashTags:self.text] thatContainsFragment:textTapped];
+            if ( wholeTextFromFragment != nil )
+            {
+                textTapped = wholeTextFromFragment;
+            }
+            
+            [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:textTapped];
         }
     }
 }
@@ -267,7 +262,9 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
                 // If see more is appended, the tappable text range must be updated
                 // in case the see more text range overlaps with a hash tag text range.
                 self.hashTags = [VHashTags detectHashTags:self.textView.text];
-                self.tappableTextManager.tappableTextRanges = self.hashTags;
+                NSArray *additionalRanges = @[ [NSValue valueWithRange:self.seeMoreRange] ];
+                NSArray *rangesOfAllTappableText = [self.hashTags arrayByAddingObjectsFromArray:additionalRanges];
+                self.tappableTextManager.tappableTextRanges = rangesOfAllTappableText;
             }
         }
         self.locationForLastLineOfText = CGRectGetMaxY([self lastLineFragmentInTextView]);
