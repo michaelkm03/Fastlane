@@ -17,6 +17,7 @@
 
 @optional
 - (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView;
+- (void)textView:(UITextView *)textView tappedWithTap:(UIGestureRecognizer *)tap;
 
 @end
 

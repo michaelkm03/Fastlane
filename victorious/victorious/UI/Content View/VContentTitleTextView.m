@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSTextStorage      *textStorage;
 @property (nonatomic, strong) NSLayoutManager    *layoutManager;
 @property (nonatomic, strong) NSTextContainer    *textContainer;
-@property (nonatomic, strong) VTappableHashTags  *tappableHashTags;
+@property (nonatomic, strong) VTappableHashTags  *tappableTextManager;
 
 @property (nonatomic, strong) NSAttributedString *seeMoreString;
 @property (nonatomic)         BOOL                seeMoreTextAppended;
@@ -64,13 +64,13 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     [self.textStorage addLayoutManager:self.layoutManager];
     
     NSError *error = nil;
-    self.tappableHashTags = [[VTappableHashTags alloc] init];
-    if ( ![self.tappableHashTags setDelegate:self error:&error] )
+    self.tappableTextManager = [[VTappableHashTags alloc] init];
+    if ( ![self.tappableTextManager setDelegate:self error:&error] )
     {
         VLog( @"Error setting delegate: %@", error.domain );
     }
     
-    self.textView = [self.tappableHashTags createTappableTextViewWithFrame:self.bounds];
+    self.textView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.editable = NO;
@@ -198,6 +198,21 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
     {
         [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:hashTag];
+    }
+}
+
+- (void)textView:(UITextView *)textView tappedWithTap:(UITapGestureRecognizer *)tap
+{
+    CGPoint tapPoint = [tap locationInView:self.textView];
+    NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.textView.textContainer];
+    NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
+    
+    if (NSLocationInRange(character, self.seeMoreRange))
+    {
+        if ([self.delegate respondsToSelector:@selector(seeMoreButtonTappedInContentTitleTextView:)])
+        {
+            [self.delegate seeMoreButtonTappedInContentTitleTextView:self];
+        }
     }
 }
 

@@ -114,12 +114,20 @@
     if ( tap.view != nil && [tap.view isKindOfClass:[UITextView class]] )
     {
         UITextView *textView = (UITextView *)tap.view;
+        
+        // Detect hash tags
         [self detectHashTagsInTextView:textView atPoint:[tap locationInView:textView] detectionCallback:^(NSString *hashTag) {
             if ( [self.delegate respondsToSelector:@selector(hashTag:tappedInTextView:)] )
             {
                 [self.delegate hashTag:hashTag tappedInTextView:textView];
             }
         }];
+        
+        // Forward the touch event to delegate
+        if ( [self.delegate respondsToSelector:@selector(hashTag:tappedInTextView:)] )
+        {
+            [self.delegate textView:textView tappedWithTap:tap];
+        }
     }
 }
 
