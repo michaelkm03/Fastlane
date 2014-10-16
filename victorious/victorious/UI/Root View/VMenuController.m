@@ -59,6 +59,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [super viewDidLoad];
     
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
+
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
          UIFont     *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
@@ -97,8 +99,15 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         self.nameLabel.text = NSLocalizedString(@"Channel", nil);
     }
     
-    self.view.backgroundColor = [UIColor clearColor];
-    self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    else
+    {
+        self.view.backgroundColor = [UIColor clearColor];
+        self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
@@ -223,26 +232,40 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (1 == section)
+    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
         sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         return sectionHeader;
     }
     
-    return nil;
+    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
 }
 
  - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (1 == section)
+    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         return 1.0;
+    }
+    else if (1 ==section)
+    {
+        return 0.01f;
     }
     else
     {
         return 100.0;
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return .01f;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
