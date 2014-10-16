@@ -59,7 +59,7 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
-static const NSTimeInterval kRotationCompletionAnimationDuration = 0.35f;
+static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
