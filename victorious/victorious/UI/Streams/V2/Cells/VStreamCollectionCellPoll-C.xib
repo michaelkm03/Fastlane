@@ -54,7 +54,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="50" placeholder="YES" id="sYt-O7-T8k"/>
+                            <constraint firstAttribute="width" secondItem="VUD-I2-add" secondAttribute="height" multiplier="151:25" id="As4-7V-KhG"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
@@ -74,10 +74,10 @@
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="T1v-SY-KUV"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="bottom" secondItem="cHq-pN-LVg" secondAttribute="bottom" id="aF8-bM-Bqy"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="leading" secondItem="cHq-pN-LVg" secondAttribute="leading" id="c73-7I-oGm"/>
-                <constraint firstItem="JTX-77-BzI" firstAttribute="top" secondItem="VUD-I2-add" secondAttribute="bottom" id="ciE-m6-TrX"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="eJI-ME-VVG"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="oN6-yP-4Io"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="trailing" secondItem="Wcp-yr-gTs" secondAttribute="centerX" id="q9c-4Z-9cc"/>
+                <constraint firstItem="JTX-77-BzI" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="uHJ-sR-Uvs"/>
                 <constraint firstItem="VUD-I2-add" firstAttribute="top" secondItem="Wcp-yr-gTs" secondAttribute="top" id="wOc-hf-Z4A"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="ww1-Vf-Dtf"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="wwr-er-K7q"/>
