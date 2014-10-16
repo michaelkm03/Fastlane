@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VAnalyticsConstants.h"
 
 @class VSequence;
 
@@ -20,5 +21,9 @@
  Send an analytics event to the server
  */
 - (RKManagedObjectRequestOperation *)addEvents:(NSArray /* NSDictionary */ *)event successBlock:(VSuccessBlock)success failBlock:(VFailBlock)fail;
+
+- (BOOL)trackEventWithUrl:(NSString *)url;
+
+- (BOOL)trackEventWithUrl:(NSString *)url andValues:(NSDictionary *)values;
 
 @end
