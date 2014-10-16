@@ -467,6 +467,11 @@
                 videoCell.delegate = self;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
+                self.videoCell.videoPlayerViewController.animateWithPlayControls = ^void(BOOL playControlsHidden)
+                {
+                    self.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                    self.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                };
                 return videoCell;
             }
             case VContentViewTypePoll:
