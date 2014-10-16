@@ -18,8 +18,7 @@
 @interface VTappableTextManager(UnitTests)
 
 - (void)textTapped:(UITapGestureRecognizer *)tap;
-
-- (BOOL)detectHashTagsInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *hashTag))callback;
+- (BOOL)findTextInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *text))callback;
 
 @end
 
@@ -53,7 +52,7 @@
 
 @interface VTappableTextManagerTests : XCTestCase
 {
-    VTappableTextManager *_tappableHashTags;
+    VTappableTextManager *_tappableTextManager;
     MockHashTagsDelegate *_delegate;
     CGRect _frame;
     VAsyncTestHelper *_asyncHelper;
@@ -69,30 +68,32 @@
     
     _asyncHelper = [[VAsyncTestHelper alloc] init];
     _frame = CGRectMake( 0, 0, 15, 320 );
-    _tappableHashTags = [[VTappableTextManager alloc] init];
+    _tappableTextManager = [[VTappableTextManager alloc] init];
     _delegate = [[MockHashTagsDelegate alloc] initWithTextContainerSize:_frame.size];
 }
 
 - (void)tearDown
 {
     [super tearDown];
+    
+    _tappableTextManager = nil;
 }
 
 - (void)runInvalidDelegateTests
 {
-    XCTAssertFalse( _tappableHashTags.hasValidDelegate, @"Delegate should be invalid before it is set." );
+    XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid before it is set." );
     
     NSError *error = nil;
-    XCTAssertFalse( [_tappableHashTags setDelegate:nil error:&error] );
+    XCTAssertFalse( [_tappableTextManager setDelegate:nil error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
     
     error = nil;
-    XCTAssertFalse( [_tappableHashTags setDelegate:_delegate error:&error] );
+    XCTAssertFalse( [_tappableTextManager setDelegate:_delegate error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
     
-    XCTAssertFalse( [_tappableHashTags setDelegate:_delegate error:nil] );
+    XCTAssertFalse( [_tappableTextManager setDelegate:_delegate error:nil] );
 }
 
 - (void)testDelegateInvalidNoTextStorage
@@ -127,35 +128,35 @@
 
 - (void)testDelegateValid
 {
-    XCTAssertFalse( _tappableHashTags.hasValidDelegate, @"Delegate should be invalid before it is set." );
+    XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid before it is set." );
     
     NSError *error = nil;
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:&error] );
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:&error] );
     XCTAssertNil( error );
     
-    XCTAssertTrue( _tappableHashTags.hasValidDelegate, @"Delegate should be valid now that it is set." );
+    XCTAssertTrue( _tappableTextManager.hasValidDelegate, @"Delegate should be valid now that it is set." );
     
-    [_tappableHashTags unsetDelegate];
-    XCTAssertFalse( _tappableHashTags.hasValidDelegate, @"Delegate should be invalid after it is unset." );
+    [_tappableTextManager unsetDelegate];
+    XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid after it is unset." );
     
     error = nil;
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:&error] );
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:&error] );
     XCTAssertNil( error );
     
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
 }
 
 - (void)testCreateTextViewWithoutDelegate
 {
-    UITextView *textView = [_tappableHashTags createTappableTextViewWithFrame:_frame];
+    UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     XCTAssertNil( textView, @"Without first setting a delegate, result should be nil" );
 }
 
 - (void)testCreateTextView
 {
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
     
-    UITextView *textView = [_tappableHashTags createTappableTextViewWithFrame:_frame];
+    UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     XCTAssertNotNil( textView );
     
     XCTAssertTrue( CGRectEqualToRect( textView.frame, _frame ) );
@@ -171,42 +172,57 @@
 
 - (void)testDetectHashTagsInvalidText
 {
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
-    UITextView *textView = [_tappableHashTags createTappableTextViewWithFrame:_frame];
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     textView.text = @""; // Empty
-    XCTAssertFalse( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+    XCTAssertFalse( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
 }
 
 - (void)testDetectHashTagsInvalidTextField
 {
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
     UITextView *textView = [[UITextView alloc] init];
     textView.text = @"Hello #world";
-    XCTAssertFalse( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+    XCTAssertFalse( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
 }
 
 - (void)testDetectHashTagsInvalidNoDelegate
 {
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
-    UITextView *textView = [_tappableHashTags createTappableTextViewWithFrame:_frame];
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     textView.text = @"Hello #world";
-    [_tappableHashTags unsetDelegate];
-    XCTAssertFalse( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+    [_tappableTextManager unsetDelegate];
+    XCTAssertFalse( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+}
+
+- (void)testRangesOfStrings
+{
+    NSString *hashTag1 = @"world1";
+    NSString *hashTag2 = @"world2";
+    NSString *text = [NSString stringWithFormat:@"Hello #%@ #%@", hashTag1, hashTag2];
+    NSArray *strings = @[ hashTag1, hashTag2 ];
+    NSArray *ranges = _tappableTextManager.tappableTextRanges = [_tappableTextManager rangesOfStrings:strings inText:text];
+    XCTAssertEqual( strings.count, ranges.count );
+    XCTAssertNotEqual( strings.count, (NSUInteger)0 );
+    [ranges enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        XCTAssert( [obj isKindOfClass:[NSValue class]] );
+    }];
 }
 
 - (void)testDetectHashTags
 {
-    XCTAssertTrue( [_tappableHashTags setDelegate:_delegate error:nil] );
-    UITextView *textView = [_tappableHashTags createTappableTextViewWithFrame:_frame];
+    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     
     textView.text = @"Hello world";
     // Should still return true without no hash tags.  Return value indicates an error, not hash tag detection
-    XCTAssertTrue( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+    XCTAssertTrue( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
     
     NSString *hashTag1 = @"world1";
     NSString *hashTag2 = @"world2";
     textView.text = [NSString stringWithFormat:@"Hello #%@ #%@", hashTag1, hashTag2];
-    XCTAssertTrue( [_tappableHashTags detectHashTagsInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
+    _tappableTextManager.tappableTextRanges = [_tappableTextManager rangesOfStrings:@[ hashTag1, hashTag2 ] inText:textView.text];
+    XCTAssertTrue( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
     
     __block BOOL hashTag1Detected = NO;
     __block BOOL hashTag2Detected = NO;
@@ -217,7 +233,7 @@
         for ( NSUInteger y = CGRectGetMinY(_frame); y < CGRectGetMaxY(_frame); y++ )
         {
             CGPoint point = CGPointMake( x, y );
-            [_tappableHashTags detectHashTagsInTextView:textView atPoint:point detectionCallback:^(NSString *hashTag) {
+            [_tappableTextManager findTextInTextView:textView atPoint:point detectionCallback:^(NSString *hashTag) {
                 
                 if ( [hashTag isEqualToString:hashTag1] )
                 {

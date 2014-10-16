@@ -129,6 +129,18 @@
     }
 }
 
+- (NSArray *)rangesOfStrings:(NSArray *)stringsArray inText:(NSString *)text
+{
+    NSMutableArray *container = [[NSMutableArray alloc] init];
+    [stringsArray enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL *stop)
+    {
+        NSRange range = [text rangeOfString:string];
+        NSValue *value = [NSValue valueWithRange:range];
+        [container addObject:value];
+    }];
+    return [NSArray arrayWithArray:container];
+}
+
 - (BOOL)findTextInTextView:(UITextView *)textView atPoint:(CGPoint)tapPoint detectionCallback:(void (^)(NSString *text))callback
 {
     // Error checking

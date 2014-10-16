@@ -34,6 +34,13 @@
 @property (nonatomic, strong) NSArray *tappableTextRanges;
 
 /**
+ Returns an array of NSValue-wrapped NSRanges of where each string exists in the text.
+ @param stringsArray Array of NSString objects from which to generate ranges.
+ @param text A string in which the ranges indicate the presence of each string in stringsArray
+ */
+- (NSArray *)rangesOfStrings:(NSArray *)stringsArray inText:(NSString *)text;
+
+/**
  Creates and returns a UITextView instance that is configured to work with text tapping routines in this class.
  Also adds a tap gesture recognizer and handles all input until a span of text is detect and the delegate's main method is called.
  */
