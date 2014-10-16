@@ -15,7 +15,6 @@ static CGFloat const kVIndicatorViewHeight = 3;
 @interface VSwipeNavSelector() <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIView *indicatorView;
-@property (nonatomic, strong) NSLayoutConstraint *widthConstraint;
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *titleButtons;
@@ -52,35 +51,22 @@ static CGFloat const kVIndicatorViewHeight = 3;
 {
     self.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor] colorWithAlphaComponent:.1].CGColor;
     self.layer.borderWidth = 1;
+
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self removeConstraints:self.constraints];//Need to do this because the autoresizing constraints are added before we init >:/
     
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
-//    self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
 
     [self addSubview:self.scrollView];
     
     self.spacing = 55;
     
-    self.indicatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, kVIndicatorViewHeight)];
+    self.indicatorView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame), 0, 0, kVIndicatorViewHeight)];
     self.indicatorView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-    self.widthConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
-                                                        attribute:NSLayoutAttributeWidth
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
-                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                       multiplier:1.0
-                                                         constant:10];
-    NSLayoutConstraint *centerConstraint = [NSLayoutConstraint constraintWithItem:self.indicatorView
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                       multiplier:1.0
-                                                                         constant:0];
     [self addSubview:self.indicatorView];
-    [self addConstraints:@[centerConstraint, self.widthConstraint]];
 }
 
 - (void)setTitles:(NSArray *)titles
@@ -138,6 +124,16 @@ static CGFloat const kVIndicatorViewHeight = 3;
                                          self.scrollView.contentOffset.y);
     self.isAnimatingScrollview = YES;
     [self.scrollView setContentOffset:contentOffset animated:YES];
+    
+    [UIView animateWithDuration:.2f
+                     animations:
+     ^{
+         self.indicatorView.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(button.frame)/2,
+                                               CGRectGetMinY(self.indicatorView.frame),
+                                               CGRectGetWidth(button.frame),
+                                               CGRectGetHeight(self.indicatorView.frame));
+     }];
+    
     
     if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
     {

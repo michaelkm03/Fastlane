@@ -61,8 +61,6 @@
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    
     if (!titles.count)
     {
         self.heightConstraint.constant = CGRectGetMinY(self.navSelector.frame);

@@ -171,11 +171,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return NO;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

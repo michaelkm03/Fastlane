@@ -131,7 +131,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+        : UIStatusBarStyleDefault;
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
