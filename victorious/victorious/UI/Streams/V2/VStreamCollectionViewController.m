@@ -18,6 +18,7 @@
 #import "VContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 //Views
 #import "VNavigationHeaderView.h"
@@ -374,6 +375,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView segmentControlChangeToIndex:(NSInteger)index
 {
+    
+    if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return NO;
+    }
+
     if (self.allStreams.count <= (NSUInteger)index)
     {
         return NO;

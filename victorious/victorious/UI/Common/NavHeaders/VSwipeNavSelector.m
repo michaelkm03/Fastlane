@@ -20,8 +20,6 @@ static CGFloat const kVIndicatorViewHeight = 3;
 @property (nonatomic, strong) NSArray *titleButtons;
 @property (nonatomic) CGFloat spacing;
 
-@property (nonatomic) BOOL isAnimatingScrollview;
-
 @end
 
 @implementation VSwipeNavSelector
@@ -118,11 +116,16 @@ static CGFloat const kVIndicatorViewHeight = 3;
         return;
     }
     
+    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
+    {
+        [self.delegate navSelector:self selectedIndex:self.currentIndex];
+    }
+    
     _currentIndex = currentIndex;
     UIButton *button = self.titleButtons[currentIndex];
     CGPoint contentOffset = CGPointMake(CGRectGetMidX(button.frame) - CGRectGetWidth(self.scrollView.frame) / 2,
                                          self.scrollView.contentOffset.y);
-    self.isAnimatingScrollview = YES;
+    self.scrollView.scrollEnabled = NO;
     [self.scrollView setContentOffset:contentOffset animated:YES];
     
     [UIView animateWithDuration:.2f
@@ -133,12 +136,6 @@ static CGFloat const kVIndicatorViewHeight = 3;
                                                CGRectGetWidth(button.frame),
                                                CGRectGetHeight(self.indicatorView.frame));
      }];
-    
-    
-    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
-    {
-        [self.delegate navSelector:self selectedIndex:self.currentIndex];
-    }
 }
 
 - (void)pressedTitleButton:(id)sender
@@ -151,11 +148,6 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.isAnimatingScrollview)//if we're animating the scrollview we're already in the middle of a page animation
-    {
-        return;
-    }
-    
     UIButton *closestButton;
     CGFloat xOffset = scrollView.contentOffset.x + CGRectGetWidth(self.scrollView.frame) / 2;
     for (UIButton *button in self.titleButtons)
@@ -172,7 +164,7 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    self.isAnimatingScrollview = NO;
+    self.scrollView.scrollEnabled = YES;
 }
 
 @end
