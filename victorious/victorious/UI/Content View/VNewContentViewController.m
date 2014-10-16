@@ -179,7 +179,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             self.view.transform = CGAffineTransformIdentity;
             self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
         }
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    }
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {
