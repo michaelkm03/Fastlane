@@ -1,5 +1,5 @@
 //
-//  VTappableHashTags.h
+//  VTappableTextManager.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/2/14.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VTappableHashTagsDelegate <NSObject>
+@protocol VTappableTextManagerDelegate <NSObject>
 
 @required
 - (NSTextStorage *)textStorage;
@@ -16,24 +16,26 @@
 - (NSTextContainer *)textContainer;
 
 @optional
-- (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView;
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView;
 - (void)textView:(UITextView *)textView tappedWithTap:(UIGestureRecognizer *)tap;
 
 @end
 
 /**
- A class that facilitates tappable hash tags in a UITextView that displays an attributed string.
+ A class that facilitates tappable text in a UITextView that displays an attributed string.
  */
-@interface VTappableHashTags : NSObject
+@interface VTappableTextManager : NSObject
 
 /**
  Used internally for error checking.
  */
 @property (nonatomic, readonly) BOOL hasValidDelegate;
 
+@property (nonatomic, strong) NSArray *tappableTextRanges;
+
 /**
- Creates and returns a UITextView instance that is configured to work with ther hash tag tapping routines in this class.
- Also adds a tap gesture recognizer and handles all input until a hashtag is detect and the delegate's main method is called.
+ Creates and returns a UITextView instance that is configured to work with text tapping routines in this class.
+ Also adds a tap gesture recognizer and handles all input until a span of text is detect and the delegate's main method is called.
  */
 - (UITextView *)createTappableTextViewWithFrame:(CGRect)frame;
 
@@ -42,7 +44,7 @@
  that go beyond simply conforming to a protocol, so make sure to check the return value and
  read the error message if something's not working/
  */
-- (BOOL)setDelegate:(id<VTappableHashTagsDelegate>)delegate error:(NSError**)error;
+- (BOOL)setDelegate:(id<VTappableTextManagerDelegate>)delegate error:(NSError**)error;
 
 /**
  Sets the internally (weak) referenced delegate to nil.  This is provided because the delegate

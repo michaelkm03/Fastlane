@@ -38,4 +38,16 @@
  */
 + (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string;
 
+/**
+ *  Find all hash tags within a given string and return the text of each one in an array.
+ *
+ *  @param fieldText The string to detect hash tags in.
+ *
+ *  @return An arry of NSStrings wrapped in NSValues.
+ */
++ (NSArray *)getHashTags:(NSString *)fieldText includeHashMark:(BOOL)includeHashMark;
+
+
++ (NSArray *)getHashTags:(NSString *)fieldText;
+
 @end

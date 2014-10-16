@@ -1,5 +1,5 @@
 //
-//  VTappableHashTagsTests.m
+//  VTappableTextManagerTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/2/14.
@@ -8,14 +8,14 @@
 
 #import <XCTest/XCTest.h>
 #import <UIKit/UIKit.h>
-#import "VTappableHashTags.h"
+#import "VTappableTextManager.h"
 #import "VAsyncTestHelper.h"
 #import "NSObject+VMethodSwizzling.h"
 
 /**
  Exposes private methods
  */
-@interface VTappableHashTags(UnitTests)
+@interface VTappableTextManager(UnitTests)
 
 - (void)textTapped:(UITapGestureRecognizer *)tap;
 
@@ -23,7 +23,7 @@
 
 @end
 
-@interface MockHashTagsDelegate : NSObject <VTappableHashTagsDelegate>
+@interface MockHashTagsDelegate : NSObject <VTappableTextManagerDelegate>
 
 @property (nonatomic, strong) NSTextStorage *textStorage;
 @property (nonatomic, strong) NSLayoutManager *containerLayoutManager;
@@ -51,9 +51,9 @@
 
 @end
 
-@interface VTappableHashTagsTests : XCTestCase
+@interface VTappableTextManagerTests : XCTestCase
 {
-    VTappableHashTags *_tappableHashTags;
+    VTappableTextManager *_tappableHashTags;
     MockHashTagsDelegate *_delegate;
     CGRect _frame;
     VAsyncTestHelper *_asyncHelper;
@@ -61,7 +61,7 @@
 
 @end
 
-@implementation VTappableHashTagsTests
+@implementation VTappableTextManagerTests
 
 - (void)setUp
 {
@@ -69,7 +69,7 @@
     
     _asyncHelper = [[VAsyncTestHelper alloc] init];
     _frame = CGRectMake( 0, 0, 15, 320 );
-    _tappableHashTags = [[VTappableHashTags alloc] init];
+    _tappableHashTags = [[VTappableTextManager alloc] init];
     _delegate = [[MockHashTagsDelegate alloc] initWithTextContainerSize:_frame.size];
 }
 
