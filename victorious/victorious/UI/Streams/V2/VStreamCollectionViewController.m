@@ -261,11 +261,20 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.lastSelectedIndexPath = indexPath;
     
     VContentViewController *contentViewController = [[VContentViewController alloc] init];
-    VStreamCollectionCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    VSequence *sequence;
+    
+    if ([cell isKindOfClass:[VStreamCollectionCell class]])
+    {
+        sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    }
+    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
+    {
+        sequence = (VSequence *)self.marquee.currentStreamItem;
+    }
+
     contentViewController.sequence = sequence;
-    
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
                                          successBlock:nil
