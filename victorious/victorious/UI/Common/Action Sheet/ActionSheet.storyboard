@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -81,11 +82,6 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="NCA-G7-lHm">
-                                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="S09-W7-ikL" userLabel="Large White Activity Indicator">
-                                                                    <rect key="frame" x="7" y="12" width="20" height="20"/>
-                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                </activityIndicatorView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="NCA-G7-lHm">
                                                                     <rect key="frame" x="35" y="12" width="22" height="19"/>
                                                                 </imageView>
@@ -116,6 +112,9 @@
                                                                         <constraint firstAttribute="height" constant="1" id="g1i-Uc-e9G"/>
                                                                     </constraints>
                                                                 </view>
+                                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="FVQ-F3-5I2">
+                                                                    <rect key="frame" x="7" y="12" width="20" height="20"/>
+                                                                </activityIndicatorView>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstAttribute="centerY" secondItem="NCA-G7-lHm" secondAttribute="centerY" id="3wR-3x-uWd"/>
@@ -133,7 +132,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
                                                             <outlet property="actionIconImageView" destination="NCA-G7-lHm" id="CPx-yc-xwm"/>
-                                                            <outlet property="activityIndicator" destination="S09-W7-ikL" id="uw2-vQ-xjx"/>
+                                                            <outlet property="activityIndicator" destination="FVQ-F3-5I2" id="Pvb-tm-QzL"/>
                                                             <outlet property="detailButton" destination="FZR-U7-hah" id="OK6-6n-5li"/>
                                                             <outlet property="leadingSpaceSeparatorToContainerConstraint" destination="6JH-9u-qeT" id="nF0-AU-jeN"/>
                                                             <outlet property="separatorHeightConstaint" destination="g1i-Uc-e9G" id="Ug7-3G-1b7"/>
