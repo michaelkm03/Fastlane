@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class VFindFriendsTableViewController;
+
+@protocol VFindFriendsTableViewControllerDelegate <NSObject>
+
+@required
+
+- (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController;
+
+@end
+
 typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
 {
     VFindFriendsTableViewStatePreConnect, ///< User has yet to connect to the social network, view is displaying connect button
@@ -35,6 +45,7 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableType)
  */
 @interface VFindFriendsTableViewController : UIViewController
 
+@property (nonatomic, weak) id<VFindFriendsTableViewControllerDelegate> delegate; ///< This controllers delegate
 @property (nonatomic, readonly) VFindFriendsTableView      *tableView; ///< Returns the same object as the "view" property
 @property (nonatomic, readonly) VFindFriendsTableViewState  state;
 @property (nonatomic) VFindFriendsTableType findFriendsTableType;

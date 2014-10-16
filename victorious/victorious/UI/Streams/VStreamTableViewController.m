@@ -54,7 +54,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate, VNewContentViewControllerDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -297,12 +297,20 @@
     {
         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-        
+        contentViewController.delegate = self;
         VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
         contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
         
-        [self.navigationController pushViewController:contentViewController
-                                             animated:YES];
+        UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+        contentNav.navigationBarHidden = YES;
+        [self presentViewController:contentNav
+                           animated:YES
+                         completion:nil];
+        
+        [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
+                                             successBlock:nil
+                                                failBlock:nil];
+        
         return;
     }
     
@@ -826,6 +834,21 @@
     {
         [self.delegate scrollViewDidScroll:scrollView];
     }
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self refreshWithCompletion:nil];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 @end

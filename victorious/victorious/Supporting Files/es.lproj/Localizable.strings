@@ -1,0 +1,351 @@
+/*
+ Localizable.strings
+ victorious
+ 
+ Created by Gary Philipp on 12/23/13.
+ Copyright (c) 2013 Victorious Inc. All rights reserved.
+ */
+
+
+
+"Home" = "Inicio";
+"Channel" = "Canal";
+"Channels" = "Canales";
+"Community" = "Comunidad";
+"Inbox" = "Entrada";
+"Comments" = "Comentarios";
+"Remixes" = "Remixes";
+"OKButton" = "OK";
+"CancelButton" = "Cancelar";
+"DeleteButton" = "Borrar";
+"ResetButton" = "Restablecer";
+"YesButton" = "Sí";
+"NoButton" = "No";
+"BackButton" = "Atrás";
+"Exit" = "Salir";
+"Publish" = "Publicar";
+"Quote" = "Cita";
+"Meme" = "Meme";
+
+"TimeSeparator" = ":";
+"InvalidTimePlaceholder" = "-:--";
+
+"SetupButton" = "Configurar";
+"EmailValidation" = "Dirección de email no válida";
+"PasswordValidation" = "La contraseña tiene menos de 8 caracteres";
+"UsernameValidation" = "El nombre de usuario tiene menos de 8 caracteres";
+"AgreeTOS" = "Debes hacer clic confirmando que al menos tienes 13 años y que aceptas los Términos de Servicio";
+"InvalidCredentials" = "Credenciales no válidas";
+"PasswordNotMatching" = "Las contraseñas no coinciden";
+"PollAlreadyAnswered" = "El resultado de la encuesta ya se respondió";
+"LoginFail" = "Falló el inicio de sesión";
+"LoginFailMessage" = "Algo salió mal.";
+"SignupFail" = "No se pudo crear la cuenta";
+"AccountUpdateFail" = "No se pudo actualizar la cuenta";
+"ProfileSaveFail" = "No se pudo guardar la información de tu perfil debido a un error en el servidor";
+"ProfileSave" = "Subiendo tu perfil";
+"ProfileIncomplete" = "Perfil incompleto";
+"ProfileAborted" = "No podrás usar algunas características hasta que tu perfil esté completo.";
+"ProfileRequired" = "Por favor proporciona lo siguiente:";
+"ProfileRequiredPhoto" = "Imagen del perfil";
+"ProfileRequiredName" = "Nombre";
+"ProfileRequiredLoc" = "Ubicación";
+"ProfileRequiredToS" = "Acepta nuestros términos";
+"ProfileRequiredTagLine" = "Tu lema";
+"ProfileUpdateFailed" = "No se pudo actualizar el perfil";
+
+"WereSorry" = "Lo sentimos";
+"ErrorOccured" = "Por alguna razón no nos podemos conectar con el servidor. ¡Por favor vuelve a intentarlo más tarde!";
+
+"NoEmail" = "No hay cuentas de email";
+"NoEmailDetail" = "No hay cuentas de email. ¿Quieres configurar una ahora?";
+"EmailFail" = "No se pudo enviar el email";
+"SMSFail" = "No se pudo enviar el SMS";
+"CouldNotSend" = "No se envió el mensaje";
+
+"Missing Content" = "¡Vaya!";
+"Missing Content Message" = "¡No podemos encontrar lo que buscas!";
+
+"NoMessagesTitle" = "NO HAY MENSAJES TODAVÍA";
+"NoMessagesMessage" = "¡Puedes enviar mensajes a cualquiera en la aplicación! Solo ve a su perfil y haz clic en el icono de redactar en la esquina superior derecha.";
+
+"NoCommentsTitle" = "¡SE EL PRIMERO EN COMENTAR!";
+"NoCommentsMessage" = "¡Publica comentarios de texto, fotos o videos y ve lo que dicen otros!";
+
+"NoFollowersTitle" = "¡VAYA, VAYA! NADIE TE SIGUE TODAVÍA";
+"NoFollowersMessage" = "Crea tu propio seguimiento compartiendo con la comunidad a través de comentarios, re-mezclando o publicando contenido nuevo.";
+
+"NotFollowingTitle" = "¡OH,OH! NO SIGUES A NADIE TODAVÍA";
+"NotFollowingMessage" = "Sigue a otros para que veas su contenido en tu stream. Es una gran forma de encontrar contenido nuevo o de hacer nuevos amigos.";
+
+"ProfileNoFollowersTitle" = "SÉ EL PRIMERO EN SEGUIR A ESTE USUARIO";
+"ProfileNoFollowersMessage" = "Crea tu comunidad siguiendo a otros usuarios. Recibirás alertas cuando publiquen contenido nuevo.";
+
+"ProfileNotFollowingTitle" = "¡OH, OH! ESTA PERSONA NO SIGUE A NADIE AÚN";
+"ProfileNotFollowingMessage" = "Crea una comunidad siguiendo a otros usuarios y animándolos a que te sigan.";
+
+"NoRepostersTitle" = "¡SÉ EL 1° EN REPUBLICAR!";
+"NoRepostersMessage" = "¡Comparte este contenido con todos tus seguidores!";
+
+"NoRemixersTitle" = "¡SÉ EL 1° EN HACER UN REMIX!";
+"NoRemixersMessage" = "¡Haz tuyo este contenido añadiendo un comentario, clip de video adicional y más!";
+
+"OwnerSharePollFormat" = "¡Checa esta encuesta de %@!"; //Check out this poll by <creator>! <URL>
+"OwnerShareVideoFormat" = "¡Checa el video \"%@\" de %@!";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareImageFormat" = "¡Checa esta foto de %@!";//Check out this photo by <creator>! <URL>
+"UGCSharePollFormat" = "¡Checa esta encuesta!";       //Check out this poll! <URL>
+"UGCShareVideoFormat" = "¡Checa este video!";      //Check out this video! <URL>
+"UGCShareImageFormat" = "¡Checa esta foto!";      //Check out this photo! <URL>
+"EmailShareSubjectFormat" = "¡Checa esta publicación de la aplicación %@!"; //Check out this post from the <creator name> app!
+
+
+"Facebook" = "Facebook";
+"FacebookFailed" = "No se pudo conectar a Facebook.";
+
+"SearchFailed" = "Falló la búsqueda.";
+"ImageDownloadFailed" = "No se pudo descargar la imagen.";
+
+"TwitterDeniedTitle" = "No se puede acceder a tu cuenta de Twitter";
+"TwitterDenied" = "Por favor, autoriza el acceso a tu cuenta de Twitter en Configuración -> Privacidad -> Twitter";
+
+"CameraRollDeniedTitle" = "No se pudo tener acceso a tus fotos";
+"CameraRollDenied" = "Por favor autoriza el acceso a tus fotos en Configuración -> Privacidad.";
+"CameraFailed" = "No se pudo iniciar la cámara";
+"CameraSwitchFailed" = "No se pudo cambiar el modo de la cámara";
+"StillCaptureFailed" = "No se pudo tomar la foto";
+"VideoCaptureFailed" = "No se pudo grabar el video";
+"VideoSaveFailed" = "No se pudo guardar el video";
+
+"NoTwitterTitle" = "¡No se puede encontrar una cuenta de Twitter!";
+"NoTwitterMessage" = "Por favor, abre la configuración de tu dispositivo y añade una cuenta de Twitter";
+
+"SelectTwitter" = "Selecciona una cuenta de twitter";
+
+"HelpNeeded" = "Necesito ayuda con...";
+
+"ReportInappropriate" = "Reportar inapropiado";
+"ReportedTitle" = "¡Lo tengo!";
+"ReportContentMessage" = "Revisaremos este contenido en las próximas 24 horas.";
+"ReportCommentMessage" = "Revisaremos este contenido en las próximas 24 horas.";
+"ReportUserMessage" = "Este usuario será revisado en las próximas 24 horas";
+
+"BlockUser" = "Bloquear usuario";
+"CopyProfileURL" = "Copiar URL del perfil";
+
+"Create a Video Post" = "Crear una publicación de video";
+"Create an Image Post" = "Crear una publicación de imagen";
+"Create a Poll" = "Crear una encuesta";
+
+"NEW POLL" = "Encuesta nueva";
+"Ask a question..." = "Hacer una pregunta...";
+"Vote this" = "Votar por esto";
+"Vote that" = "Votar por eso";
+"Create Poll" = "Crear una encuesta";
+
+"TranscodingMediaTitle" = "Transcodificando lo que subiste";
+"TranscodingMediaBody" = "La transcodificación de lo que subiste se está llevando más tiempo de lo normal. Aparecerá una vez que terminemos.";
+"PollUploadTitle" = "No se pudo subir la encuesta";
+"PollUploadBody" = "No se pudo subir la encuesta al servidor";
+
+"UploadFailedTitle" = "No se pudo subir el medio";
+"DuplicateVideoTitle" = "Video duplicado";
+"DuplicateVideoBody" = "Parece que estás intentando subir un video que ya ha sido subido.";
+
+"Uploading" = "Tu contenido se está cargando...";
+"UploadFinalizing" = "Estamos finalizando tu publicación, pronto estará disponible.";
+"UploadFailed" = "Lo sentimos, falló tu carga. Por favor checa tu conexión y vuelve a intentarlo.";
+"UploadSuccess" = "¡Listo! Tu publicación ha sido cargada.";
+"UploadError" = "Error en la subida";
+"UploadErrorBody" = "Algo salió mal y no pudimos completar la subida en este momento.";
+"UploadCancelAreYouSure" = "¿Estás seguro de que quieres cancelar la carga?";
+"YesCancelUpload" = "Sí, cancelar la carga";
+"NoKeepUploading" = "No, seguir cargando";
+"Cancelling..." = "Cancelando...";
+
+"RefreshError" = "No se pudo refrescar.";
+
+"MediaAlreadyCreated" = "El medio ya estaba creado.";
+
+"FollowError" = "Hubo un error al seguir a este usuario.";
+"UnfollowError" = "Hubo un error al dejar de seguir a este usuario.";
+
+"FollowingSectionHeader" = "Ya se está siguiendo";
+"FacebookFollowingSectionHeader" = "Sigue a tus amigos de Facebook";
+"TwitterFollowingSectionHeader" = "Sigue a tus amigos de Twitter";
+"AddressBookFollowingSectionHeader" = "Sigue a tus contactos";
+
+"ConversationLoadError" = "No se pudo cargar la conversación";
+"ConversationDelError" = "No se pudo borrar la conversación";
+"ConversationSendError" = "No se pudo enviar tu mensaje";
+
+"Normal" = "Normal";
+
+"ClosePreviewConfirm" = "¿Estás seguro de que quieres cerrar la ventana? Se perderá lo que creaste.";
+"Stay" = "Quedarme";
+"Close" = "Cerrar";
+
+"PublishUpload" = "Tu contenido se está subiendo.";
+
+"PublishSucceeded" = "Se publicó satisfactoriamente";
+"PublishSucceededDetail" = "Tu medio se envió al servidor. Puede tomar algunos minutos para que tu contenido aparezca.";
+
+"PublishDescriptionRequired" = "Se requiere un texto";
+"PublishDescription" = "Tienes que ingresar la leyenda de tu contenido.";
+
+"PublishDescriptionMinCharacters" = "Por favor ingresa una descripción más larga.";
+
+"ReplaceVideo" = "Reemplazar video";
+
+"VideoPlayFailed" = "No se pudo reproducir el video";
+"See More" = "Ver más";
+"..." = "...";
+
+"PostWillExpire" = "La publicación caducará";
+"CancelExpiration" = "¿Cancelar la caducidad?";
+"CancelExirationConfirm" = "¿Estás seguro que quieres cancelar la configuración de una fecha de caducidad?";
+
+"Now" = "Ahora";
+"SecondsAgo" = "%ds";
+"MinuteAgo" = "1m";
+"MinutesAgo" = "%dm";
+"HourAgo" = "1h";
+"HoursAgo" = "%dh";
+"Yesterday" = "1d";
+"DaysAgo" = "%dd";
+"LastWeek" = "1sem";
+"WeeksAgo" = "%dsem";
+"LastMonth" = "1mes";
+"MonthsAgo" = "%dmeses";
+"LastYear" = "1año";
+"YearsAgo" = "%daños";
+
+"Minute" = "Minuto";
+"Hour" = "Hora";
+"Day" = "Día";
+"Week" = "Semana";
+"Month" = "Mes";
+
+"Minutes" = "Minutos";
+"Hours" = "Horas";
+"Days" = "Días";
+"Weeks" = "Semanas";
+"Months" = "Meses";
+
+"JustAMoment" = "Un momento";
+"LocatingVideo" = "Localizando video...";
+"DownloadingVideo" = "Descargando video...";
+
+"SegmentDownloadFail" = "No se pudo obtener el video";
+
+"TryAgain" = "Por favor inténtalo más tarde.";
+
+"ExpiresOn" = "Expira el %@";
+
+"me" = "Yo";
+
+"editProfileButton" = "Editar perfil";
+"followers" = "Seguidores";
+"following" = "Siguiendo a";
+"follow" = "Seguir";
+
+"ResetPassword" = "Restablecer contraseña";
+"ResetPasswordPrompt" = "Por favor ingresa tu dirección de email";
+"ResetPasswordPlaceholder" = "Dirección de email";
+
+"EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña";
+"EnterCodeTitle" = "INGRESAR CÓDIGO";
+"ResendEmail" = "Volver a enviar email";
+
+"EmailNotFound" = "No se encontró esa dirección de email. Verifica que estás usando la cuenta de email que usaste para crear esta cuenta.";
+"Thanks" = "¡Gracias!";
+"CannotVerify" = "No se puede verificar la cuenta";
+"IncorrectCode" = "El código que se usó para verificar la cuenta no es correcto.";
+
+"IncorrectOldPassword" = "La contraseña actual no es correcta.";
+
+"Search for an image" = "Buscar una imagen";
+"Pull up for more..." = "Jalar más...";
+"No results" = "Sin resultados";
+
+"InviteYourFriends" = "¡Invita a tus amigos!";
+"InviteUsingEmail" = "Invita usando un email";
+"InviteUsingSMS" = "Invita usando un SMS";
+"InviteFriendsSubject" = "Checa esta aplicación de";
+"InviteFriendsBody" = "Descargué una nueva aplicación de %@. Es una comunidad para que gente como nosotros interactúen. Descárgala ahora en:";
+
+"FindContacts" = "Busca e invita a los amigos de tus contactos";
+"Access Your Contacts" = "Ten acceso a tus Contactos";
+"ContactsSafety" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.";
+
+"AccessMicrophoneDenied" = "Para grabar un video desde tu dispositivo, por favor autoriza el acceso en Configuración -> Privacidad -> Micrófono";
+"AccessMicrophoneRestricted" = "No se pudo tener acceso a tu micrófono debido a restricciones en tu dispositivo.";
+"AccessCameraDenied" = "Para grabar un video desde tu dispositivo, por favor autoriza el acceso en Configuración -> Privacidad";
+"AccessCameraRestricted" = "No se pudo tener acceso a tu cámara debido a restricciones en tu dispositivo.";
+
+"AccessContactsDenied" = "Para buscar amigos usando tu directorio, por favor autoriza el acceso en Configuración -> Privacidad -> Contactos";
+"AccessContactsRestricted" = "No se puede acceder a tus contactos debido a restricciones en tu dispositivo.";
+
+"FindFBFriends" = "Añade a tus amigos de Facebook conectando tu cuenta";
+"Connect to Facebook" = "Conéctate a Facebook";
+"FBSafety" = "No guardamos tus contraseñas y nunca publicaremos nada sin tu permiso.";
+
+"FindTwitterFriends" = "Añade a tus amigos de Twitter conectando tu cuenta";
+"Connect to Twitter" = "Conéctate a Twitter";
+"TwitterSafety" = "No guardamos tus contraseñas y nunca publicaremos nada sin tu permiso.";
+
+"FindInstagramFriends" = "Añade a tus amigos de Instagram";
+"Connect to Instagram" = "Conéctate a Instagram";
+
+"Logout" = "Cerrar sesión";
+"Login" = "Iniciar sesión";
+
+"UserBannedTitle" = "¡Oh, oh!";
+"UserBannedMessage" = "Desafortunadamente, eres un miembro excluido de la comunidad. Todavía podrás ver contenido, pero no podrás publicar o interactuar con otros.";
+
+"AddDescription" = "Añade una descripción... y no olvides los #hashtags";
+"AddDescriptionAnchor" = "#hashtags";
+"InsertTextHere" = "Inserta el texto aquí";
+
+"NotConnected" = "Sin conexión";
+"ConnectedTo" = "Conectado a %@";
+
+"Version" = "Versión %@";
+
+"ToSText" = "Términos de Servicio";
+"ToSAgreement" = "Tengo al menos 13 años y acepto los Términos de Servicio";
+
+"NoFriends" = "Sin coincidencias";
+"NoFriendsDetail" = "No pudimos encontrar a ninguno de tus amigos que use nuestra aplicación. ¡Adelante, ve e invítalos!";
+
+"RTCUserPostedAtSyntax" = "%@ a las %@";//e.g. "Username at 0:04"
+
+"Report/Flag" = "Reporte/Bandera";
+"CreatedBy" = "CREADO POR";
+"remixes" = "re-mezclas";
+"reposts" = "re-publicaciones";
+"REPOSTS" = "Republicados";
+"REMIXES" = "Remixes";
+"Repost" = "Republicar";
+"RepostContentView" = " REPUBLICAR";
+"RepostedContentView" = " REPUBLICADO";
+"comments" = "comentarios";
+
+"repostedFromFormat" = "Republicado de %@";
+"remixedFromFormat" = "Remix de %@";
+
+"leaveACommentFormat" = "Deja un comentario en %@";
+
+"facebook" = "facebook";
+"twitter" = "twitter";
+"tumblr" = "tumblr";
+"saveToLibrary" = "guardar en la librería";
+
+"areYouSure" = "¿Estás seguro?";
+"contentIsntPublished" = "¡Tu contenido no ha sido publicado aún! Si te sales ahora se perderán todos los cambios.";
+"captionIsntPublished" = "¡Tu contenido no ha sido publicado aún! Si regresas se perderá tu leyenda.";
+
+"SupportEmailSubject" = "Retroalimentación de";
+
+"CheckOutContent" = "!Checa esta asombrosa publicación!";
+"FacebookDeniedTitle" = "No se puede acceder a tu cuenta de Facebook";
+"FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";

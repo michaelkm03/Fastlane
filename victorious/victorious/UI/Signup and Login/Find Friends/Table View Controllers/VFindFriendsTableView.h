@@ -34,6 +34,7 @@
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIButton    *clearButton;
 @property (nonatomic, weak) IBOutlet UIButton    *selectAllButton;
+@property (nonatomic, weak) IBOutlet UIButton    *inviteFriendsButton;
 ///@}
 
 /**

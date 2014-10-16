@@ -26,6 +26,7 @@ static const CGFloat kAvatarAnimationTranfromYTranlation = 100.0f;
 static const CGFloat kAnticipationYTranslation = 8.0f;
 static const CGFloat kAnticipationAnimationDurationPercentage = 1.0f/3.0f;
 static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipationAnimationDurationPercentage;
+static const NSInteger kDimmingViewTag = 12241989;
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 
@@ -51,7 +52,6 @@ static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipatio
         self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:kDimmingViewAlpha];
         self.dimmingView.alpha = 0.0f;
         
-        [[transitionContext containerView] addSubview:fromViewController.view];
         [[transitionContext containerView] addSubview:self.dimmingView];
         [[transitionContext containerView] addSubview:toViewController.view];
         
@@ -80,7 +80,7 @@ static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipatio
          {
              toViewController.view.frame = fromViewController.view.bounds;
              self.dimmingView.alpha = 1.0f;
-             
+             self.dimmingView.tag = kDimmingViewTag;
              if ([toViewController isKindOfClass:[VActionSheetViewController class]])
              {
                  VActionSheetViewController *actionSheetViewController = (VActionSheetViewController *)toViewController;
@@ -97,16 +97,9 @@ static const CGFloat kDismissalAnimationDurationPercentage = 1.0f - kAnticipatio
         toViewController.view.userInteractionEnabled = YES;
         fromViewController.view.userInteractionEnabled = NO;
         
-        self.dimmingView = [[UIView alloc] initWithFrame:[transitionContext containerView].bounds];
-        self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:kDimmingViewAlpha];
-        self.dimmingView.alpha = 1.0f;
-        self.dimmingView.userInteractionEnabled = NO;
+        self.dimmingView = [[transitionContext containerView] viewWithTag:kDimmingViewTag];
 
         [transitionContext containerView].userInteractionEnabled = NO;
-        
-        [[transitionContext containerView] addSubview:toViewController.view];
-        [[transitionContext containerView] addSubview:self.dimmingView];
-        [[transitionContext containerView] addSubview:fromViewController.view];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext] * kAnticipationAnimationDurationPercentage
                               delay:0.0f
