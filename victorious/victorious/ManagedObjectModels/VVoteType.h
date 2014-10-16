@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *remoteId;
 @property (nonatomic, retain) id images;
-@property (nonatomic, retain) NSString *icon;
+@property (nonatomic, retain) NSString *iconImage;
 @property (nonatomic, retain) NSString *flightImage;
 @property (nonatomic, retain) NSNumber *flightDuration;
 @property (nonatomic, retain) NSNumber *animationDuration;

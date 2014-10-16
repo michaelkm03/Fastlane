@@ -80,7 +80,7 @@
             enhancer.animationDuration = voteType.animationDuration.floatValue;
         }];
         [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *image) {
-            enhancer.icon = image;
+            enhancer.iconImage = image;
         }];
         [self.fileCache getImageWithName:VVoteTypeFlightImageName forVoteType:voteType completionCallback:^(UIImage *image) {
             enhancer.flightImage = image;
@@ -93,7 +93,7 @@
 - (NSArray *)createTestingExperienceEnhancers
 {
     VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
-    lisaEnhancer.icon = [UIImage imageNamed:@"eb_bacon"];
+    lisaEnhancer.iconImage = [UIImage imageNamed:@"eb_bacon"];
     lisaEnhancer.labelText = @"123";
     lisaEnhancer.animationDuration = 0.5f;
     NSMutableArray *animationImages = [NSMutableArray new];
@@ -105,15 +105,15 @@
     lisaEnhancer.animationSequence = animationImages;
     
     VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
-    fireworkEnhancer.icon = [UIImage imageNamed:@"eb_firework"];
+    fireworkEnhancer.iconImage = [UIImage imageNamed:@"eb_firework"];
     fireworkEnhancer.labelText = @"143";
     
     VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
-    thumbsUpEnhancer.icon = [UIImage imageNamed:@"eb_thumbsup"];
+    thumbsUpEnhancer.iconImage = [UIImage imageNamed:@"eb_thumbsup"];
     thumbsUpEnhancer.labelText = @"321";
     
     VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
-    tongueEnhancer.icon = [UIImage imageNamed:@"eb_tongueout"];
+    tongueEnhancer.iconImage = [UIImage imageNamed:@"eb_tongueout"];
     tongueEnhancer.labelText = @"555";
     
     VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
@@ -122,7 +122,7 @@
     tomatoEnhancer.flightDuration = 0.5f;
     
     tomatoEnhancer.animationDuration = 0.75f;
-    tomatoEnhancer.icon = [UIImage imageNamed:@"Tomato"];
+    tomatoEnhancer.iconImage = [UIImage imageNamed:@"Tomato"];
     tomatoEnhancer.labelText = @"🍹";
     NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 17; i++)

@@ -10,7 +10,7 @@
 
 @interface VExperienceEnhancer : NSObject
 
-@property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) UIImage *iconImage;
 @property (nonatomic, copy) NSString *labelText;
 
 //TODO: Lazily load these

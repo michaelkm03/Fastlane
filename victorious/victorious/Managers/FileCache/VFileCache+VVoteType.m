@@ -21,8 +21,8 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     // TODO: Once all values are expected from the server, let CoreData and RestKit validate models
     BOOL isObjectValid = voteType != nil
         && [voteType isKindOfClass:[VVoteType class]]
-        && voteType.icon != nil
-        && voteType.icon.length > 0
+        && voteType.iconImage != nil
+        && voteType.iconImage.length > 0
         && voteType.flightImage != nil
         && voteType.flightImage.length > 0
         && voteType.name != nil
@@ -74,10 +74,10 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     [self setEncoder];
     
     NSString *iconKeyPath = [self keyPathForImage:VVoteTypeIconName forVote:voteType];
-    [self cacheFileAtUrl:voteType.icon withKeyPath:iconKeyPath];
+    [self cacheFileAtUrl:voteType.iconImage withKeyPath:iconKeyPath];
     
     NSString *flightImageKeyPath = [self keyPathForImage:VVoteTypeFlightImageName forVote:voteType];
-    [self cacheFileAtUrl:voteType.icon withKeyPath:flightImageKeyPath];
+    [self cacheFileAtUrl:voteType.iconImage withKeyPath:flightImageKeyPath];
     
     NSArray *spriteImages = (NSArray *)voteType.images;
     NSArray *spriteKeyPaths = [self keyPathsForVoteTypeSprites:voteType];

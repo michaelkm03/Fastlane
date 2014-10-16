@@ -24,7 +24,7 @@
                                   @"name"               : VSelectorName(name),
                                   @"id"                 : VSelectorName(remoteId),
                                   @"images"             : VSelectorName(images),
-                                  @"icon"               : VSelectorName(icon),
+                                  @"icon_image"         : VSelectorName(iconImage),
                                   @"flight_image"       : VSelectorName(flightImage),
                                   @"animation_duration" : VSelectorName(animationDuration),
                                   @"flight_duration"    : VSelectorName(flightDuration)

@@ -15,7 +15,7 @@
 @dynamic name;
 @dynamic remoteId;
 @dynamic images;
-@dynamic icon;
+@dynamic iconImage;
 @dynamic flightImage;
 @dynamic animationDuration;
 @dynamic flightDuration;

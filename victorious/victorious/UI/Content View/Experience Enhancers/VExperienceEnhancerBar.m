@@ -114,7 +114,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
                                                                                                 forIndexPath:indexPath];
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = enhancerForIndexPath.labelText;
-    experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.icon;
+    experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     return experienceEnhancerCell;
 }
 

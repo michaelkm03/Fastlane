@@ -109,7 +109,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         
         // Assign defaults if any values are missing
         // TODO: Make these required by CoreData so taht they fail earlier than here
-        v.icon = v.icon ? v.icon : ((NSArray *)v.images)[0];
+        v.iconImage = v.iconImage ? v.iconImage : ((NSArray *)v.images)[0];
         v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
         
         [fileCache cacheImagesForVoteType:v];
