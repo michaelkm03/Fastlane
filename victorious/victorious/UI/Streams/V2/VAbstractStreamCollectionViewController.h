@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class VStream, VStreamCollectionViewDataSource, VNavigationHeaderView;
+#import "VStreamCollectionViewDataSource.h"
 
-@interface VAbstractStreamCollectionViewController : UIViewController
+@class VStream, VNavigationHeaderView;
+
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
 @property (nonatomic, strong) VStream *defaultStream;///<The default stream
 @property (nonatomic, strong) NSArray *allStreams;///<All streams that can display
 
-@property (nonatomic, strong, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
+@property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 @property (nonatomic, weak) VNavigationHeaderView *navHeaderView;///<The navigation header for the stream

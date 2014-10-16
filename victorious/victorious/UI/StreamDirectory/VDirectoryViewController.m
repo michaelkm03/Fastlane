@@ -54,6 +54,11 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
     self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
     
+    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+    self.streamDataSource.delegate = self;
+    self.streamDataSource.collectionView = self.collectionView;
+    self.collectionView.dataSource = self.streamDataSource;
+    
     [self refresh:self.refreshControl];
 }
 

@@ -135,8 +135,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
     self.navHeaderView.navSelector.currentIndex = selectedStream;
-
+    
+    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+    self.streamDataSource.delegate = self;
+    self.streamDataSource.collectionView = self.collectionView;
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
+    self.collectionView.dataSource = self.streamDataSource;
     
     [self refresh:self.refreshControl];
 }

@@ -37,10 +37,9 @@
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
+@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic, readwrite) VStreamCollectionViewDataSource *streamDataSource;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
@@ -108,11 +107,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(header)]];
-    
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-    self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
-    self.collectionView.dataSource = self.streamDataSource;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
