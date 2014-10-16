@@ -27,7 +27,8 @@
                                   @"icon_image"         : VSelectorName(iconImage),
                                   @"flight_image"       : VSelectorName(flightImage),
                                   @"animation_duration" : VSelectorName(animationDuration),
-                                  @"flight_duration"    : VSelectorName(flightDuration)
+                                  @"flight_duration"    : VSelectorName(flightDuration),
+                                  @"is_ballistic"       : VSelectorName(isBallistic)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

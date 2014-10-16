@@ -19,5 +19,6 @@
 @dynamic flightImage;
 @dynamic animationDuration;
 @dynamic flightDuration;
+@dynamic isBallistic;
 
 @end

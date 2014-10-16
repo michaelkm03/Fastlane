@@ -76,6 +76,7 @@
         [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images) {
             enhancer.ballistic = YES;
             enhancer.animationSequence = images;
+            enhancer.ballistic = voteType.isBallistic.floatValue;
             enhancer.flightDuration = voteType.flightDuration.floatValue;
             enhancer.animationDuration = voteType.animationDuration.floatValue;
         }];

@@ -23,5 +23,6 @@
 @property (nonatomic, retain) NSString *flightImage;
 @property (nonatomic, retain) NSNumber *flightDuration;
 @property (nonatomic, retain) NSNumber *animationDuration;
+@property (nonatomic, retain) NSNumber *isBallistic;
 
 @end
