@@ -116,12 +116,13 @@ static CGFloat const kVIndicatorViewHeight = 3;
         return;
     }
     
+    _currentIndex = currentIndex;
+    
     if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
     {
-        [self.delegate navSelector:self selectedIndex:self.currentIndex];
+        [self.delegate navSelector:self selectedIndex:currentIndex];
     }
     
-    _currentIndex = currentIndex;
     UIButton *button = self.titleButtons[currentIndex];
     CGPoint contentOffset = CGPointMake(CGRectGetMidX(button.frame) - CGRectGetWidth(self.scrollView.frame) / 2,
                                          self.scrollView.contentOffset.y);
