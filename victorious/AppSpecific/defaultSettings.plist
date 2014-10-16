@@ -20,7 +20,7 @@
 	<true/>
 	<key>marqueeEnabled</key>
 	<true/>
-	<key>settingCEnabled</key>
+	<key>template_c_enabled</key>
 	<true/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
