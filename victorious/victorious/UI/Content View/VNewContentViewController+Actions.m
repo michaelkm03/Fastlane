@@ -43,16 +43,10 @@
 
 - (IBAction)pressedMore:(id)sender
 {
-    BOOL hasRemix = (self.viewModel.type == VContentViewTypePoll) ? NO : YES;
-    BOOL hasRepost = (self.viewModel.type == VContentViewTypePoll) ? NO : YES;
-    BOOL hasShare = YES;
-    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
-    
-    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
                                                            avatarURL:self.viewModel.avatarForAuthor
