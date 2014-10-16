@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 9/23/14.
+//  Created by Michael Sena on 10/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * isComplete;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
+@property (nonatomic, retain) NSNumber * permissions;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * remixCount;
 @property (nonatomic, retain) NSNumber * repostCount;

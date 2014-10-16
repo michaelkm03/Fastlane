@@ -299,6 +299,12 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                                                    andPostedTime:commentForIndex.realtime] string];
 }
 
+- (VUser *)userForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.user;
+}
+
 - (NSString *)authorName
 {
     return self.sequence.user.name;

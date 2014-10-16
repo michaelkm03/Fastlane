@@ -11,6 +11,9 @@
 // Theme
 #import "VThemeManager.h"
 
+// SubViews
+#import "VDefaultProfileImageView.h"
+
 // Cells
 #import "VActionItemTableViewCell.h"
 #import "VDescriptionTableViewCell.h"
@@ -36,7 +39,7 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @property (weak, nonatomic) IBOutlet UIView *blurringContainer;
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIImageView *AvatarImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *AvatarImageView;
 @property (weak, nonatomic) IBOutlet UIButton *avatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
@@ -75,11 +78,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     blurredView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.blurringContainer insertSubview:blurredView
                                   atIndex:0];
-    
-    self.AvatarImageView.layer.cornerRadius = CGRectGetWidth(self.AvatarImageView.bounds) * 0.5f;
-    self.AvatarImageView.layer.masksToBounds = YES;
-    self.AvatarImageView.layer.borderWidth = 2.0f;
-    self.AvatarImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
 
     self.tableView.separatorInset = kSeparatorInsets;
     
@@ -171,8 +169,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                  [actionItems addObject:actionItem];
                  break;
              case VActionItemTypeUser:
-                 [self.AvatarImageView setImageWithURL:actionItem.avatarURL
-                                      placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+                 [self.AvatarImageView setProfileImageURL:actionItem.avatarURL];
                  self.usernameLabel.text = actionItem.title;
                  self.userCaptionLabel.text = [actionItem.detailText uppercaseStringWithLocale:[NSLocale currentLocale]];
                  self.userItem = actionItem;
@@ -268,6 +265,11 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableView.indexPathForSelectedRow)
+    {
+        return NO;
+    }
+    
     switch (indexPath.section)
     {
         case VActionSheetTableViewSecionDescription:
@@ -284,6 +286,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+    self.view.userInteractionEnabled = NO;
     if (actionItem.selectionHandler)
     {
         actionItem.selectionHandler();

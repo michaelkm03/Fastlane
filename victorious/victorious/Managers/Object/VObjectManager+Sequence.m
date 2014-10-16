@@ -21,6 +21,17 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequences
 
+- (RKManagedObjectRequestOperation *)removeSequenceWithSequenceID:(NSInteger)sequenceId
+                                                     successBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/sequence/remove"
+               object:nil
+           parameters:@{@"sequence_id":@(sequenceId)}
+         successBlock:success
+            failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail

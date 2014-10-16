@@ -45,6 +45,7 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VUserProfileViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -464,8 +465,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - Private Mehods
@@ -520,6 +520,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         [welf presentViewController:lightbox
                            animated:YES
                          completion:nil];
+    };
+    commentCell.onUserProfileTapped = ^(void)
+    {
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[self.viewModel userForCommentIndex:index]];
+        [self.navigationController pushViewController:profileViewController animated:YES];
     };
 }
 

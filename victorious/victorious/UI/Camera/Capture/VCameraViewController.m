@@ -1121,7 +1121,18 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
         NSURL *movieURL = info[UIImagePickerControllerMediaURL];
-        [self moveToPreviewViewControllerWithContentURL:movieURL];
+        
+        if (movieURL)
+        {
+            [self moveToPreviewViewControllerWithContentURL:movieURL];
+        }
+        else
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
+            [hud hide:YES afterDelay:5.0];
+        }
     }
 }
 
