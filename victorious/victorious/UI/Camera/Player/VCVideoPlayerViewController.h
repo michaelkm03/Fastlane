@@ -44,6 +44,7 @@
 @property (nonatomic, copy)     NSString                  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
 @property (nonatomic)           BOOL                       shouldFireAnalytics; ///< Set to NO to disable analytics. YES by default.
 @property (nonatomic, readonly) CMTime                     currentTime;
+@property (nonatomic, assign)   BOOL                       shouldContinuePlayingAfterDismissal;
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
 

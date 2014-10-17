@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 9/23/14.
+//  Created by Michael Sena on 10/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -24,6 +24,7 @@
 @dynamic isComplete;
 @dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
+@dynamic permissions;
 @dynamic releasedAt;
 @dynamic remixCount;
 @dynamic repostCount;

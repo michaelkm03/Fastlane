@@ -16,6 +16,7 @@
 
 #import "VCommentsContainerViewController.h"
 #import "VContentViewController.h"
+#import "VNewContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryViewController.h"
 #import "VMarqueeController.h"
@@ -55,7 +56,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate, VNewContentViewControllerDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -294,6 +295,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (![[self.tableDataSource sequenceAtIndexPath:indexPath] isPoll])
+    {
+        VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+        contentViewController.delegate = self;
+        VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+        
+        UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+        contentNav.navigationBarHidden = YES;
+        [self presentViewController:contentNav
+                           animated:YES
+                         completion:nil];
+        
+        [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
+                                             successBlock:nil
+                                                failBlock:nil];
+        
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     self.contentViewController = [[VContentViewController alloc] init];
@@ -693,27 +715,6 @@
     [self updateNoContentViewAnimated:YES];
 }
 
-#pragma mark - Navigation
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.lastSelectedIndexPath];
-    if (operation == UINavigationControllerOperationPush
-        && ([toVC isKindOfClass:[VContentViewController class]])
-        && [cell isKindOfClass:[VStreamViewCell class]])
-    {
-        return [[VStreamToContentAnimator alloc] init];;
-    }
-    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
-    {
-        return [[VStreamToCommentAnimator alloc] init];
-    }
-    return nil;
-}
-
 #pragma mark - VAnimation
 
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
@@ -862,6 +863,21 @@
     {
         [self.delegate scrollViewDidScroll:scrollView];
     }
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self refreshWithCompletion:nil];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 @end
