@@ -233,7 +233,6 @@
 		03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857919B42C9100E27D05 /* Roboto-ThinItalic.ttf */; };
 		03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */; };
 		03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */; };
-		03C1859319B42CEA00E27D05 /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859519B42D3000E27D05 /* Crashlytics.framework */; };
 		03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859619B42D3000E27D05 /* FacebookSDK.framework */; };
 		03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859F19B42D3000E27D05 /* libGoogleAnalyticsServices.a */; };
@@ -249,7 +248,6 @@
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
 		03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */; };
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
-		03D94C1E19DE00A700BFAA27 /* VObjectManagerStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */; };
 		03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
@@ -354,7 +352,6 @@
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
-		D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		D82C08F719D0C09F00273E0D /* VContentViewVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */; };
 		D82C08FA19D0C11200273E0D /* VContentViewBaseLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F919D0C11200273E0D /* VContentViewBaseLayout.m */; };
 		D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */; };
@@ -362,37 +359,6 @@
 		D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
-		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
-		DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */; };
-		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
-		DB2A490319DF42DA00CB687B /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490519DF42DA00CB687B /* Camera.storyboard */; };
-		DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */; };
-		DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */; };
-		DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491119DF432F00CB687B /* VPublishShareView.xib */; };
-		DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491519DF434D00CB687B /* VCommentCell.xib */; };
-		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
-		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
-		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
-		DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492519DF441100CB687B /* VNotificationCell.xib */; };
-		DB2A492719DF442700CB687B /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492919DF442700CB687B /* VConversationCell.xib */; };
-		DB2A492B19DF443900CB687B /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492D19DF443900CB687B /* VMessageCell.xib */; };
-		DB2A492F19DF445C00CB687B /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493119DF445C00CB687B /* VMarqueeTableViewCell.xib */; };
-		DB2A493319DF446F00CB687B /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493519DF446F00CB687B /* VMarqueeStreamItemCell.xib */; };
-		DB2A493719DF448800CB687B /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493919DF448800CB687B /* followerCell.xib */; };
-		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
-		DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */; };
-		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
-		DB2A494719DF44EE00CB687B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494919DF44EE00CB687B /* login.storyboard */; };
-		DB2A494B19DF450300CB687B /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494D19DF450300CB687B /* VInviteFriendTableViewCell.xib */; };
-		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
-		DB2A495319DF453900CB687B /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495519DF453900CB687B /* VStreamDirectoryItemCell.xib */; };
-		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
-		DB2A495B19DF457500CB687B /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495D19DF457500CB687B /* VStreamViewCell.xib */; };
-		DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496119DF458000CB687B /* VStreamVideoCell.xib */; };
-		DB2A496319DF459000CB687B /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496519DF459000CB687B /* VStreamPollCell.xib */; };
-		DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496919DF45A200CB687B /* VStreamCellHeaderView.xib */; };
-		DB2A496B19DF45D500CB687B /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496D19DF45D500CB687B /* VWebContentViewController.xib */; };
-		DB2BE2E519C8DBD2004A9FF6 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
@@ -433,6 +399,36 @@
 		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
 		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
 		D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */; };
+		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
+		DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */; };
+		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
+		DB2A490319DF42DA00CB687B /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490519DF42DA00CB687B /* Camera.storyboard */; };
+		DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */; };
+		DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */; };
+		DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491119DF432F00CB687B /* VPublishShareView.xib */; };
+		DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491519DF434D00CB687B /* VCommentCell.xib */; };
+		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
+		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
+		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
+		DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492519DF441100CB687B /* VNotificationCell.xib */; };
+		DB2A492719DF442700CB687B /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492919DF442700CB687B /* VConversationCell.xib */; };
+		DB2A492B19DF443900CB687B /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492D19DF443900CB687B /* VMessageCell.xib */; };
+		DB2A492F19DF445C00CB687B /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493119DF445C00CB687B /* VMarqueeTableViewCell.xib */; };
+		DB2A493319DF446F00CB687B /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493519DF446F00CB687B /* VMarqueeStreamItemCell.xib */; };
+		DB2A493719DF448800CB687B /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493919DF448800CB687B /* followerCell.xib */; };
+		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
+		DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */; };
+		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
+		DB2A494719DF44EE00CB687B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494919DF44EE00CB687B /* login.storyboard */; };
+		DB2A494B19DF450300CB687B /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494D19DF450300CB687B /* VInviteFriendTableViewCell.xib */; };
+		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
+		DB2A495319DF453900CB687B /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495519DF453900CB687B /* VStreamDirectoryItemCell.xib */; };
+		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
+		DB2A495B19DF457500CB687B /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495D19DF457500CB687B /* VStreamViewCell.xib */; };
+		DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496119DF458000CB687B /* VStreamVideoCell.xib */; };
+		DB2A496319DF459000CB687B /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496519DF459000CB687B /* VStreamPollCell.xib */; };
+		DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496919DF45A200CB687B /* VStreamCellHeaderView.xib */; };
+		DB2A496B19DF45D500CB687B /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496D19DF45D500CB687B /* VWebContentViewController.xib */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
@@ -918,7 +914,6 @@
 		03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeviceInfo.m; sourceTree = "<group>"; };
 		03CF151E195CFBE600F6477B /* NSArray+VMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VMap.h"; sourceTree = "<group>"; };
 		03CF151F195CFBE600F6477B /* NSArray+VMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VMap.m"; sourceTree = "<group>"; };
-		03D94C1D19DE00A700BFAA27 /* VObjectManagerStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManagerStringTest.m; sourceTree = "<group>"; };
 		03D94C2819DE155400BFAA27 /* VAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsyncTestHelper.h; sourceTree = "<group>"; };
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
@@ -1528,7 +1523,6 @@
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				DB2A491D19DF437D00CB687B /* VNoContentView.xib */,
-				0314D35619B46B5E00FA363C /* VNoContentView.xib */,
 				D80C615919D0F692006AE41A /* VProgressBarView.h */,
 				D80C615A19D0F692006AE41A /* VProgressBarView.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
@@ -2961,15 +2955,7 @@
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */,
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
-				03C1859319B42CEA00E27D05 /* MuseoSans-500.otf in Resources */,
-				0314D46219B46B5E00FA363C /* VMediaPreviewViewController.xib in Resources */,
-				0314D4FC19B46B5E00FA363C /* VStreamViewCell.xib in Resources */,
 				D8C9CF3419E5B30E007B461E /* VHistogramCell.xib in Resources */,
-				0314D48B19B46B5E00FA363C /* VNoContentView.xib in Resources */,
-				0314D4FA19B46B5E00FA363C /* VStreamVideoCell.xib in Resources */,
-				0314D4DD19B46B5E00FA363C /* FindFriendsTableView.xib in Resources */,
-				03C1859319B42CEA00E27D05 /* MuseoSans-500.otf in Resources */,
-				03C185CC19B42FE900E27D05 /* InfoPlist.strings in Resources */,
 				D8E39BDB19CB7C80007FD86A /* VContentImageCell.xib in Resources */,
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
@@ -2977,7 +2963,6 @@
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				DB2A493719DF448800CB687B /* followerCell.xib in Resources */,
-				0314D4BA19B46B5E00FA363C /* followerCell.xib in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
@@ -2996,31 +2981,17 @@
 				DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
-				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				BE9C262419D48B6200E43AFE /* VMarqueeTableViewCell.xib in Resources */,
-				0314D4EA19B46B5E00FA363C /* login.storyboard in Resources */,
-				0314D48119B46B5E00FA363C /* VCommentCell.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
-				0314D4FF19B46B5E00FA363C /* VEphemeralTimerView.xib in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
-				0314D45819B46B5E00FA363C /* Camera.storyboard in Resources */,
-				03C185C719B42FD600E27D05 /* Localizable.strings in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
-				BE799BC719C93C440023CE88 /* VNavigationHeaderView.xib in Resources */,
-				0314D4AF19B46B5E00FA363C /* VNotificationCell.xib in Resources */,
-				0314D4C619B46B5E00FA363C /* VideoRemix.storyboard in Resources */,
-				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
-				DBF9C55D19C8920500AC8CF5 /* VStreamCellHeaderView.xib in Resources */,
 				D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */,
-				039ED29B19C908F400305987 /* VCVideoPlayerToolbarView.xib in Resources */,
-				0314D47D19B46B5E00FA363C /* VPublishShareView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				D8E39BDE19CB7C80007FD86A /* VContentVideoCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
