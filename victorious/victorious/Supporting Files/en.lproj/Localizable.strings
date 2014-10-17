@@ -288,7 +288,7 @@
 
 "FindContacts"          =   "Find friends from your contacts";
 "Access Your Contacts"  =   "Access your Contacts";
-"ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.";
+"ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contact information to our servers using a secure connection.";
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
 "AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
