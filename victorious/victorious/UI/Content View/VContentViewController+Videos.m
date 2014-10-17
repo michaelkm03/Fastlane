@@ -11,12 +11,12 @@
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
-#import "VObjectManager+DeprecatedAnalytics.h"
+#import "VObjectManager+Analytics.h"
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"
 #import "VSettingManager.h"
-#import "VAnalyticsManager.h"
+#import "VTrackingManager.h"
 #import <objc/runtime.h>
 
 const NSTimeInterval kVideoPlayerAnimationDuration = 0.2;
@@ -55,14 +55,7 @@ static const char kVideoPlayerKey;
     NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
-#warning This is just a test implementation, make sure to remove this and do it right.
-    VAnalyticsManager *analyticsMgr = [[VAnalyticsManager alloc] init];
-    NSDictionary *params = @{ kAnalyticsKeyTimeFrom : [NSNull null],
-                              kAnalyticsKeyTimeTo : [NSNull null],
-                              kAnalyticsKeySequenceId: self.sequence.remoteId,
-                              kAnalyticsKeyTimeStamp : [NSDate date]
-                              };
-    [analyticsMgr trackEventWithUrls:self.sequence.analytics.cellView andParameters:params];
+    [self.trackingManager trackEventWithUrls:self.sequence.tracking.videoStart andParameters:self.trackingParameters];
     
     if (self.videoPlayer)
     {

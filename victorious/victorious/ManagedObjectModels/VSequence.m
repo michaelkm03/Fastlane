@@ -7,7 +7,7 @@
 //
 
 #import "VSequence.h"
-#import "VAnalytics.h"
+#import "VTracking.h"
 #import "VComment.h"
 #import "VNode.h"
 #import "VPollResult.h"
@@ -38,6 +38,6 @@
 @dynamic reposters;
 @dynamic user;
 @dynamic voteResults;
-@dynamic analytics;
+@dynamic tracking;
 
 @end

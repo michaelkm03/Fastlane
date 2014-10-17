@@ -1,5 +1,5 @@
 //
-//  VAnalytics+RestKit.h
+//  VTracking+RestKit.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VAnalytics.h"
+#import "VTracking.h"
 
-@interface VAnalytics (RestKit)
-
-+ (NSArray *)descriptors;
+@interface VTracking (RestKit)
 
 @end

@@ -1,5 +1,5 @@
 //
-//  VObjectManager+DeprecatedAnalytics.h
+//  VObjectManager+Analytics.h
 //  victorious
 //
 //  Created by Josh Hinman on 7/22/14.
@@ -11,7 +11,11 @@
 
 @class VSequence;
 
-@interface VObjectManager (DeprecatedAnalytics)
+/**
+ This category is deprecated.  Use VTrackingManager and urls supplied remote in properties of VTracking.
+ @see VTrackingManager
+ */
+@interface VObjectManager (Analytics)
 
 - (NSDictionary *)dictionaryForInstallEventWithDate:(NSDate *)date;
 - (NSDictionary *)dictionaryForSessionEventWithDate:(NSDate *)date length:(NSTimeInterval)length;
@@ -20,6 +24,6 @@
 /**
  Send an analytics event to the server
  */
-- (RKManagedObjectRequestOperation *)addEvents:(NSArray /* NSDictionary */ *)event successBlock:(VSuccessBlock)success failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)addEvents:(NSArray /* NSDictionary */ *)event successBlock:(VSuccessBlock)success failBlock :(VFailBlock)fail __attribute__((deprecated));
 
 @end

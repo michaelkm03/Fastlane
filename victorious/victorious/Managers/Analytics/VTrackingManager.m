@@ -1,21 +1,21 @@
 //
-//  VAnalyticsManager.m
+//  VTrackingManager.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsManager.h"
+#import "VTrackingManager.h"
 #import <AFNetworking/AFNetworking.h>
 
-@interface VAnalyticsManager()
+@interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
 
 @end
 
-@implementation VAnalyticsManager
+@implementation VTrackingManager
 
 - (instancetype)init
 {

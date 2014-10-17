@@ -1,5 +1,5 @@
 //
-//  VAnalytics.h
+//  VTracking.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
@@ -11,7 +11,7 @@
 
 @class VSequence;
 
-@interface VAnalytics : NSManagedObject
+@interface VTracking : NSManagedObject
 
 @property (nonatomic, retain) id cellView;
 @property (nonatomic, retain) id cellClick;

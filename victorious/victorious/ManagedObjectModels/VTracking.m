@@ -1,16 +1,16 @@
 //
-//  VAnalytics.m
+//  VTracking.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalytics.h"
+#import "VTracking.h"
 #import "VSequence.h"
 
 
-@implementation VAnalytics
+@implementation VTracking
 
 @dynamic cellView;
 @dynamic cellClick;

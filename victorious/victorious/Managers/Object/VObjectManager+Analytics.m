@@ -1,5 +1,5 @@
 //
-//  VObjectManager+DeprecatedAnalytics.m
+//  VObjectManager+Analytics.m
 //  victorious
 //
 //  Created by Josh Hinman on 7/22/14.
@@ -7,7 +7,7 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VObjectManager+DeprecatedAnalytics.h"
+#import "VObjectManager+Analytics.h"
 #import "VObjectManager+Private.h"
 #import "VSequence.h"
 
@@ -16,7 +16,7 @@ static NSString * const kCreatedAtKey = @"created_at";
 static NSString * const kLengthKey    = @"length";
 static NSString * const kSequenceKey  = @"sequence";
 
-@implementation VObjectManager (DeprecatedAnalytics)
+@implementation VObjectManager (Analytics)
 
 + (NSDateFormatter *)analyticsDateFormatter
 {

@@ -10,7 +10,7 @@
 #import "VComment+RestKit.h"
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
-#import "VAnalytics+RestKit.h"
+#import "VTracking+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -59,8 +59,8 @@
     [mapping addPropertyMapping:voteResultMapping];
     
     RKRelationshipMapping *analyticsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
-                                                                                          toKeyPath:VSelectorName(analytics)
-                                                                                        withMapping:[VAnalytics entityMapping]];
+                                                                                          toKeyPath:VSelectorName(tracking)
+                                                                                        withMapping:[VTracking entityMapping]];
     [mapping addPropertyMapping:analyticsMapping];
     
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];

@@ -1,5 +1,5 @@
 //
-//  VAnalyticsManagerTests.m
+//  VTrackingManagerTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
@@ -8,9 +8,9 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock.h"
-#import "VAnalyticsManager.h"
+#import "VTrackingManager.h"
 
-@interface VAnalyticsManager (UnitTest)
+@interface VTrackingManager (UnitTest)
 
 @property (nonatomic, readonly) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSArray *registeredMacros;
@@ -22,20 +22,20 @@
 @end
 
 
-@interface VAnalyticsManagerTests : XCTestCase
+@interface VTrackingManagerTests : XCTestCase
 {
-    VAnalyticsManager *_analyticsManager;
+    VTrackingManager *_analyticsManager;
 }
 
 @end
 
-@implementation VAnalyticsManagerTests
+@implementation VTrackingManagerTests
 
 - (void)setUp
 {
     [super setUp];
     
-    _analyticsManager = [[VAnalyticsManager alloc] init];
+    _analyticsManager = [[VTrackingManager alloc] init];
     XCTAssertNotNil( _analyticsManager.registeredMacros );
     XCTAssertNotEqual( _analyticsManager.registeredMacros.count, (NSUInteger)0 );
 }

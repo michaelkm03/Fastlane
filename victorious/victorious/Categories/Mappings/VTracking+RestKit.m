@@ -1,19 +1,19 @@
 //
-//  VAnalytics+RestKit.m
+//  VTracking+RestKit.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalytics+RestKit.h"
+#import "VTracking+RestKit.h"
 #import "VSequence+RestKit.h"
 
-@implementation VAnalytics (RestKit)
+@implementation VTracking (RestKit)
 
 + (NSString *)entityName
 {
-    return @"Analytics";
+    return @"Tracking";
 }
 
 + (RKEntityMapping *)entityMapping

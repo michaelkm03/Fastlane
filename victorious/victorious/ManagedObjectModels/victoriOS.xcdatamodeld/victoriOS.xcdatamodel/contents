@@ -6,19 +6,6 @@
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
     </entity>
-    <entity name="Analytics" representedClassName="VAnalytics" syncable="YES">
-        <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoComplete100" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoError" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoSkip" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoStart" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="parentEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="analytics" inverseEntity="Sequence" syncable="YES"/>
-    </entity>
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="isCorrect" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -154,7 +141,7 @@
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
-        <relationship name="analytics" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analytics" inverseName="parentEntity" inverseEntity="Analytics" syncable="YES"/>
+        <relationship name="analytics" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="parentEntity" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
@@ -163,6 +150,19 @@
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
+    </entity>
+    <entity name="Tracking" representedClassName="VTracking" syncable="YES">
+        <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete100" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoError" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoSkip" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoStart" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="parentEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="analytics" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -220,6 +220,7 @@
     </entity>
     <elements>
         <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
+        <element name="Tracking" positionX="702" positionY="-459" width="128" height="210"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
@@ -241,6 +242,5 @@
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
         <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>
         <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
-        <element name="Analytics" positionX="702" positionY="-459" width="128" height="208"/>
     </elements>
 </model>

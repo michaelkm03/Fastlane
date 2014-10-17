@@ -1,5 +1,5 @@
 //
-//  VAnalyticsManager.h
+//  VTrackingManager.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/16/14.
@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "VAnalytics.h"
+#import "VTracking.h"
 #import "VAnalyticsConstants.h"
 
-@interface VAnalyticsManager : NSObject
+@interface VTrackingManager : NSObject
 
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters;
 
