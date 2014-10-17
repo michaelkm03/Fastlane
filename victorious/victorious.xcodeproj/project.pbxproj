@@ -326,6 +326,7 @@
 		BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3F518DA72140047B67E /* VInteractionAction.m */; };
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
+		BE74834C19F090280037F7B5 /* UIViewController+VNavMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = BE74834B19F090280037F7B5 /* UIViewController+VNavMenu.m */; };
 		BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B8B19C8A7C20023CE88 /* VAsset.m */; };
 		BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B8E19C8A91C0023CE88 /* VInteraction.m */; };
 		BE799B9219C8A91C0023CE88 /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B9119C8A91C0023CE88 /* VNode.m */; };
@@ -1001,6 +1002,8 @@
 		BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+RestKit.m"; sourceTree = "<group>"; };
 		BE6C15231880A31A00469BA8 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
 		BE6C15241880A31A00469BA8 /* VAnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswerAction.m; sourceTree = "<group>"; };
+		BE74834A19F090280037F7B5 /* UIViewController+VNavMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VNavMenu.h"; sourceTree = "<group>"; };
+		BE74834B19F090280037F7B5 /* UIViewController+VNavMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VNavMenu.m"; sourceTree = "<group>"; };
 		BE799B8A19C8A7C20023CE88 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
 		BE799B8B19C8A7C20023CE88 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		BE799B8D19C8A91C0023CE88 /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
@@ -2453,6 +2456,8 @@
 				BE9D082019EDD56000A824C7 /* VSegmentedNavSelector.m */,
 				BE9D082419EDF17600A824C7 /* VSwipeNavSelector.h */,
 				BE9D082519EDF17600A824C7 /* VSwipeNavSelector.m */,
+				BE74834A19F090280037F7B5 /* UIViewController+VNavMenu.h */,
+				BE74834B19F090280037F7B5 /* UIViewController+VNavMenu.m */,
 			);
 			name = "Nav Headers";
 			path = NavHeaders;
@@ -3005,6 +3010,7 @@
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
+				BE74834C19F090280037F7B5 /* UIViewController+VNavMenu.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,

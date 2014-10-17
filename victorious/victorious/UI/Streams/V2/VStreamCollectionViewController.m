@@ -38,6 +38,7 @@
 //Categories
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
+#import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
 
@@ -143,13 +144,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.collectionView.dataSource = self.streamDataSource;
     
     [self refresh:self.refreshControl];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navHeaderView updateUI];
 }
 
 - (void)viewDidAppear:(BOOL)animated

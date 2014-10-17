@@ -35,6 +35,8 @@
 
 #import "VSettingManager.h"
 
+#import "UIViewController+VNavMenu.h"
+
 const CGFloat kVLoadNextPagePoint = .75f;
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
@@ -63,21 +65,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [titles addObject:stream.name];
     }
-    
-    if (self.navigationController.viewControllers.count == 1)
-    {
-        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
-    }
-    else
-    {
-        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
-    }
-    
+    [self addNewNavHeaderWithTitles:titles];
     self.navHeaderView.delegate = self;
-    self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
     self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
-    [self.navHeaderView updateUI];
-    [self.view addSubview:self.navHeaderView];
     
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     
@@ -94,21 +84,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
                                      withAction:@selector(findFriendsAction:)
                                        onTarget:self];
     }
-    
-    self.headerYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f];
-    [self.view addConstraint:self.headerYConstraint];
-    
-    VNavigationHeaderView *header = self.navHeaderView;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[header]-0-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(header)]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
@@ -141,48 +116,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         self.streamDataSource.stream = currentStream;
         self.collectionView.dataSource = self.streamDataSource;
-    }
-}
-
-#pragma mark - Header
-
-- (void)hideHeader
-{
-    if (!CGRectContainsRect(self.view.frame, self.navHeaderView.frame))
-    {
-        return;
-    }
-    
-    self.headerYConstraint.constant = -self.navHeaderView.frame.size.height;
-    [self.view layoutIfNeeded];
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)showHeader
-{
-    if (CGRectContainsRect(self.view.frame, self.navHeaderView.frame))
-    {
-        return;
-    }
-    
-    self.headerYConstraint.constant = 0;
-    [self.view layoutIfNeeded];
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
-{
-    if (navHeaderView == self.navHeaderView)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
-- (void)menuPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
-{
-    if (navHeaderView == self.navHeaderView)
-    {
-        [self.sideMenuViewController presentMenuViewController];
     }
 }
 
@@ -307,7 +240,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
     CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
     if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
         self.streamDataSource.count &&

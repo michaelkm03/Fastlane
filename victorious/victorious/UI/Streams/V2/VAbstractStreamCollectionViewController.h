@@ -22,14 +22,11 @@
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
-@property (nonatomic, weak) VNavigationHeaderView *navHeaderView;///<The navigation header for the stream
 
 @property (nonatomic, assign) BOOL shouldShowHeaderLogo;
 @property (nonatomic, assign) BOOL hasAddAction;///<If enabled, shows the add action.  Default is to hide the action.  Calling this after viewDidLoad will have no effect.
 @property (nonatomic, assign) BOOL hasFindFriendsAction;///<If enabled, shows the find friends action.  Default is to hide the action.  hasAddAction will override this.  Calling this after viewDidLoad will have no effect.
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
-- (void)hideHeader;
-- (void)showHeader;
 
 @end
