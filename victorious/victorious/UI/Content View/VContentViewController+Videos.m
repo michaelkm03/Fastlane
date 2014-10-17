@@ -55,6 +55,8 @@ static const char kVideoPlayerKey;
     NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
+    
+    
     if (self.videoPlayer)
     {
         [self.videoPlayer willMoveToParentViewController:nil];

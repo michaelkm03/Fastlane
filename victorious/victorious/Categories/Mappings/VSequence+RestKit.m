@@ -10,6 +10,7 @@
 #import "VComment+RestKit.h"
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
+#import "VAnalytics+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -37,7 +38,7 @@
                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
                                   @"sequence_counts.remixes"    : VSelectorName(remixCount),
-                                  @"sequence_counts.reposts"    : VSelectorName(repostCount),
+                                  @"sequence_counts.reposts"    : VSelectorName(repostCount)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -57,10 +58,15 @@
                                                                                          withMapping:[VVoteResult entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];
     
+    RKRelationshipMapping *analyticsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+                                                                                          toKeyPath:VSelectorName(analytics)
+                                                                                        withMapping:[VAnalytics entityMapping]];
+    [mapping addPropertyMapping:analyticsMapping];
+    
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
-
+    
     return mapping;
 }
 

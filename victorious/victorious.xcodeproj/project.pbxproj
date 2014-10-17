@@ -263,6 +263,9 @@
 		A70564CA19E78220004A8387 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C919E78220004A8387 /* VFollowersTextFormatter.m */; };
 		A709641819F073DD00CE6633 /* VAnalyticsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709640419F0738200CE6633 /* VAnalyticsManagerTests.m */; };
 		A709641B19F08AAC00CE6633 /* VAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A709641A19F08AAC00CE6633 /* VAnalyticsManager.m */; };
+		A709642419F0A13800CE6633 /* VAnalytics+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VAnalytics+RestKit.m */; };
+		A709643319F0A47B00CE6633 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = A709643219F0A47B00CE6633 /* VSequence.m */; };
+		A709643619F0A47B00CE6633 /* VAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = A709643519F0A47B00CE6633 /* VAnalytics.m */; };
 		A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1819E8AC1E00EB87C1 /* VSuggestedPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0419E8AC1E00EB87C1 /* VSuggestedPeopleCell.xib */; };
@@ -348,7 +351,6 @@
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC518DBC93B00750EF6 /* VVoteType.m */; };
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
-		BEEDF45E19D2337A000DF6F5 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF45D19D2337A000DF6F5 /* VSequence.m */; };
 		BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF46019D2337B000DF6F5 /* VStreamItem.m */; };
 		BEEDF46419D2337B000DF6F5 /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF46319D2337B000DF6F5 /* VStream.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
@@ -908,6 +910,12 @@
 		A709640419F0738200CE6633 /* VAnalyticsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnalyticsManagerTests.m; sourceTree = "<group>"; };
 		A709641919F08AAC00CE6633 /* VAnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnalyticsManager.h; sourceTree = "<group>"; };
 		A709641A19F08AAC00CE6633 /* VAnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnalyticsManager.m; sourceTree = "<group>"; };
+		A709642219F0A13800CE6633 /* VAnalytics+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnalytics+RestKit.h"; sourceTree = "<group>"; };
+		A709642319F0A13800CE6633 /* VAnalytics+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnalytics+RestKit.m"; sourceTree = "<group>"; };
+		A709643119F0A47B00CE6633 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		A709643219F0A47B00CE6633 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
+		A709643419F0A47B00CE6633 /* VAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnalytics.h; sourceTree = "<group>"; };
+		A709643519F0A47B00CE6633 /* VAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnalytics.m; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
@@ -1091,8 +1099,6 @@
 		BEDF0FC518DBC93B00750EF6 /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
 		BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+Fetcher.h"; sourceTree = "<group>"; };
 		BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+Fetcher.m"; sourceTree = "<group>"; };
-		BEEDF45C19D2337A000DF6F5 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
-		BEEDF45D19D2337A000DF6F5 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEEDF45F19D2337B000DF6F5 /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
 		BEEDF46019D2337B000DF6F5 /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
 		BEEDF46219D2337B000DF6F5 /* VStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStream.h; sourceTree = "<group>"; };
@@ -2494,6 +2500,8 @@
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
 				A70564C519E7820A004A8387 /* VHashtag+RestKit.h */,
 				A70564C619E7820A004A8387 /* VHashtag+RestKit.m */,
+				A709642219F0A13800CE6633 /* VAnalytics+RestKit.h */,
+				A709642319F0A13800CE6633 /* VAnalytics+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -2523,6 +2531,10 @@
 		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
+				A709643419F0A47B00CE6633 /* VAnalytics.h */,
+				A709643519F0A47B00CE6633 /* VAnalytics.m */,
+				A709643119F0A47B00CE6633 /* VSequence.h */,
+				A709643219F0A47B00CE6633 /* VSequence.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
 				BEC833BC19D364A500341EA9 /* VPollResult.h */,
 				BEC833BD19D364A500341EA9 /* VPollResult.m */,
@@ -2556,8 +2568,6 @@
 				DB58EF4F1994174900D2A07F /* VNotification.m */,
 				BE5C7368187E36E800A3340D /* VRule.h */,
 				BE5C7369187E36E800A3340D /* VRule.m */,
-				BEEDF45C19D2337A000DF6F5 /* VSequence.h */,
-				BEEDF45D19D2337A000DF6F5 /* VSequence.m */,
 				BEEDF46219D2337B000DF6F5 /* VStream.h */,
 				BEEDF46319D2337B000DF6F5 /* VStream.m */,
 				BEEDF45F19D2337B000DF6F5 /* VStreamItem.h */,
@@ -3049,6 +3059,7 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
+				A709643619F0A47B00CE6633 /* VAnalytics.m in Sources */,
 				0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */,
 				A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
@@ -3082,6 +3093,7 @@
 				0314D4CD19B46B5E00FA363C /* VRemixVideoRangeSlider.m in Sources */,
 				0314D4E319B46B5E00FA363C /* VFindTwitterFriendsTableViewController.m in Sources */,
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,
+				A709642419F0A13800CE6633 /* VAnalytics+RestKit.m in Sources */,
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				0314D4C919B46B5E00FA363C /* VRemixSliderLeft.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
@@ -3145,6 +3157,7 @@
 				0314D4DF19B46B5E00FA363C /* VFindFacebookFriendsTableViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
+				A709643319F0A47B00CE6633 /* VSequence.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */,
@@ -3230,7 +3243,6 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
 				0314D49719B46B5E00FA363C /* VRealtimeCommentViewController.m in Sources */,
-				BEEDF45E19D2337A000DF6F5 /* VSequence.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
