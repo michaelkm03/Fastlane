@@ -166,7 +166,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         {
             if (UIInterfaceOrientationIsLandscape(oldOrientation))
             {
-                [coordinator containerView].transform = CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform);
+                [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
+                [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+                [self.view bringSubviewToFront:self.videoCell.videoPlayerViewController.view];
+
                 return;
             }
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
@@ -188,26 +191,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
-        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-        {
-            [UIView animateWithDuration:kRotationCompletionAnimationDuration
-                                  delay:0.0f
-                 usingSpringWithDamping:kRotationCompletionAnimationDamping
-                  initialSpringVelocity:0.0f
-                                options:UIViewAnimationOptionBeginFromCurrentState
-                             animations:^
-             {
-                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
-                 self.videoCell.videoPlayerViewController.view.frame = self.videoCell.contentView.bounds;
-                 self.landscapeMaskOverlay.alpha = 0.0f;
-             }
-                             completion:^(BOOL finished)
-             {
-
-                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
-             }];
-        }
-        [self.contentCollectionView.collectionViewLayout invalidateLayout];
+        [self animateVideoPlayerToPortrait];
     }];
 }
 
@@ -237,6 +221,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    [self animateVideoPlayerToPortrait];
+}
+
+- (void)animateVideoPlayerToPortrait
+{
     if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
     {
         [UIView animateWithDuration:kRotationCompletionAnimationDuration
@@ -246,14 +235,20 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-             self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
-             self.videoCell.videoPlayerViewController.view.frame = self.videoCell.contentView.bounds;
+
+             self.videoCell.videoPlayerViewController.view.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
+             self.videoCell.videoPlayerViewController.view.transform = self.videoCell.transform;
+             self.videoCell.videoPlayerViewController.view.center = self.videoCell.contentView.center;
+             
              self.landscapeMaskOverlay.alpha = 0.0f;
          }
                          completion:^(BOOL finished)
          {
-             
-             [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+             if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+             {
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+             }
          }];
     }
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
