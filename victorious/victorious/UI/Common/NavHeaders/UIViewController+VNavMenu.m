@@ -26,6 +26,7 @@ static const char kNavHeaderYConstraintKey;
 
 - (void)setNavHeaderView:(VNavigationHeaderView *)navHeaderView
 {
+    [self.navHeaderView removeFromSuperview];
     objc_setAssociatedObject(self, &kNavHeaderViewKey, navHeaderView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -48,11 +49,6 @@ static const char kNavHeaderYConstraintKey;
 
 - (void)addNewNavHeaderWithTitles:(NSArray *)titles
 {
-    if (self.navHeaderView)
-    {
-        [self.navHeaderView removeFromSuperview];
-    }
-    
     if (self.navigationController.viewControllers.count == 1)
     {
         self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
