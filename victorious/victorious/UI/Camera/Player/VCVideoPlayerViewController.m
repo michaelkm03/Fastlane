@@ -27,6 +27,9 @@
 @property (nonatomic)         BOOL                      finishedFirstQuartile;
 @property (nonatomic)         BOOL                      finishedMidpoint;
 @property (nonatomic)         BOOL                      finishedThirdQuartile;
+@property (nonatomic)         BOOL                      hasCaculatedItemTime;
+@property (nonatomic)         BOOL                      wasPlayingBeforeDissappeared;
+@property (nonatomic)         BOOL                      hasCalculatedItemSize;
 
 @property (nonatomic, readwrite) CMTime                 currentTime;
 
@@ -67,6 +70,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)commonInit
 {
+    self.wasPlayingBeforeDissappeared = NO;
+    self.shouldContinuePlayingAfterDismissal = YES;
     self.shouldShowToolbar = YES;
     self.shouldFireAnalytics = YES;
     self.shouldLoop = NO;
@@ -106,7 +111,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.view.clipsToBounds = YES;
 
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     [self.view.layer addSublayer:self.playerLayer];
     
     VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
@@ -152,7 +157,20 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.wasPlayingBeforeDissappeared && self.shouldContinuePlayingAfterDismissal)
+    {
+        self.wasPlayingBeforeDissappeared = NO;
+        [self.player play];
+    }
 }
 
 #pragma mark - Properties
@@ -361,14 +379,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (CMTime)playerItemDuration
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay)
+    
+    if (CMTIME_IS_VALID(playerItem.duration))
     {
         return playerItem.duration;
     }
-    else
-    {
-        return kCMTimeInvalid;
-    }
+    return kCMTimeInvalid;
 }
 
 - (void)didPlayToTime:(CMTime)time
@@ -459,13 +475,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
+        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration))];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
     }
     if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
+        self.hasCaculatedItemTime = NO;
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(duration))         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
@@ -473,6 +492,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)refreshNaturalSizePropertyFromTrack:(AVPlayerItemTrack *)track inItem:(AVPlayerItem *)item
 {
+    self.hasCalculatedItemSize = NO;
     VCVideoPlayerViewController *__weak weakSelf = self;
     AVAssetTrack *assetTrack = track.assetTrack;
     [assetTrack loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(naturalSize))] completionHandler:^(void)
@@ -487,7 +507,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             AVKeyValueStatus status = [assetTrack statusOfValueForKey:NSStringFromSelector(@selector(naturalSize)) error:nil];
             if (status == AVKeyValueStatusLoaded)
             {
+                // sometimes the size is incorrect
+                if (CGSizeEqualToSize(assetTrack.naturalSize, CGSizeZero))
+                {
+                    return;
+                }
                 weakSelf.naturalSize = assetTrack.naturalSize;
+                weakSelf.hasCalculatedItemSize = YES;
+                [self notifyDelegateReadyToPlayIfReallyReady];
             }
         });
     }];
@@ -676,15 +703,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 case AVPlayerItemStatusReadyToPlay:
                 {
-                    self.toolbarView.progressIndicator.duration = self.player.currentItem.duration;
-                    if (!self.delegateNotifiedOfReadinessToPlay)
-                    {
-                        if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
-                        {
-                            [self.delegate videoPlayerReadyToPlay:self];
-                        }
-                        self.delegateNotifiedOfReadinessToPlay = YES;
-                    }
+                    [self notifyDelegateReadyToPlayIfReallyReady];
                     break;
                 }
                 case AVPlayerItemStatusFailed:
@@ -720,6 +739,28 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             // commented out because the loadedTimeRanges value is unreliable
             // self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
+        }
+    }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(duration))])
+    {
+        if (CMTIME_IS_VALID([self playerItemDuration]) && (CMTimeGetSeconds([self playerItemDuration]) > 0))
+        {
+            self.hasCaculatedItemTime = YES;
+            [self notifyDelegateReadyToPlayIfReallyReady];
+        }
+    }
+}
+
+#pragma mark - Notifiers
+
+- (void)notifyDelegateReadyToPlayIfReallyReady
+{
+    if ((!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) && (self.hasCaculatedItemTime) && (self.hasCalculatedItemSize))
+    {
+        if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
+        {
+            [self.delegate videoPlayerReadyToPlay:self];
+            self.delegateNotifiedOfReadinessToPlay = YES;
         }
     }
 }
