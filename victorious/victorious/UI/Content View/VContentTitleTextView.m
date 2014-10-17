@@ -9,15 +9,15 @@
 #import "VContentTitleTextView.h"
 #import "VThemeManager.h"
 #import "VHashTags.h"
-#import "VTappableHashTags.h"
+#import "VTappableTextManager.h"
 
-@interface VContentTitleTextView () <NSLayoutManagerDelegate, VTappableHashTagsDelegate>
+@interface VContentTitleTextView () <NSLayoutManagerDelegate, VTappableTextManagerDelegate>
 
 @property (nonatomic, strong)   UITextView         *textView;
 @property (nonatomic, strong) NSTextStorage      *textStorage;
 @property (nonatomic, strong) NSLayoutManager    *layoutManager;
 @property (nonatomic, strong) NSTextContainer    *textContainer;
-@property (nonatomic, strong) VTappableHashTags  *tappableHashTags;
+@property (nonatomic, strong) VTappableTextManager  *tappableTextManager;
 
 @property (nonatomic, strong) NSAttributedString *seeMoreString;
 @property (nonatomic)         BOOL                seeMoreTextAppended;
@@ -64,13 +64,13 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     [self.textStorage addLayoutManager:self.layoutManager];
     
     NSError *error = nil;
-    self.tappableHashTags = [[VTappableHashTags alloc] init];
-    if ( ![self.tappableHashTags setDelegate:self error:&error] )
+    self.tappableTextManager = [[VTappableTextManager alloc] init];
+    if ( ![self.tappableTextManager setDelegate:self error:&error] )
     {
         VLog( @"Error setting delegate: %@", error.domain );
     }
     
-    self.textView = [self.tappableHashTags createTappableTextViewWithFrame:self.bounds];
+    self.textView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.editable = NO;
@@ -134,6 +134,7 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     
     NSMutableAttributedString *newAttributedText = [[NSMutableAttributedString alloc] initWithString:text ?: @"" attributes:[self attributesForTitleText]];
     self.hashTags = [VHashTags detectHashTags:text];
+    self.tappableTextManager.tappableTextRanges = self.hashTags;
     if ([self.hashTags count] > 0)
     {
         [VHashTags formatHashTagsInString:newAttributedText
@@ -191,19 +192,56 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     return truncationPoint;
 }
 
-#pragma mark - VTappableHashTagsDelegate methods
+#pragma mark - VTappableTextManagerDelegate methods
 
-- (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
 {
-    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
+    if ( [text isEqualToString:self.seeMoreString.string] )
     {
-        [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:hashTag];
+        if ([self.delegate respondsToSelector:@selector(seeMoreButtonTappedInContentTitleTextView:)])
+        {
+            [self.delegate seeMoreButtonTappedInContentTitleTextView:self];
+        }
+    }
+    else if ( [self.hashTags containsObject:[NSValue valueWithRange:[self.text rangeOfString:text]]] )
+    {
+        if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
+        {
+            NSString *textTapped = [text copy];
+            
+            NSString *wholeTextFromFragment = [self wholeStringInArray:[VHashTags getHashTags:self.text] thatContainsFragment:textTapped];
+            if ( wholeTextFromFragment != nil )
+            {
+                textTapped = wholeTextFromFragment;
+            }
+            
+            [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:textTapped];
+        }
     }
 }
 
 - (NSLayoutManager *)containerLayoutManager
 {
     return self.layoutManager;
+}
+
+#pragma mark -
+
+- (NSString *)wholeStringInArray:(NSArray *)array thatContainsFragment:(NSString *)fragment
+{
+    __block NSString *output = nil;
+    
+    // It's possible that the tapped hash tag might only be a partial tag cut off by appending "see more"
+    [array enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL *stop) {
+        NSRange rangeOfFragment = [string rangeOfString:fragment];
+        if ( rangeOfFragment.location == 0 && rangeOfFragment.length > 0 )
+        {
+            output = string;
+            *stop = YES;
+        }
+    }];
+    
+    return output;
 }
 
 #pragma mark - NSLayoutManagerDelegate methods
@@ -220,6 +258,13 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
                 [self.textStorage replaceCharactersInRange:NSMakeRange(index, self.textStorage.string.length - index) withAttributedString:self.seeMoreString];
                 self.seeMoreRange = NSMakeRange(index, self.seeMoreString.length);
                 self.seeMoreTextAppended = YES;
+                
+                // If see more is appended, the tappable text range must be updated
+                // in case the see more text range overlaps with a hash tag text range.
+                self.hashTags = [VHashTags detectHashTags:self.textView.text];
+                NSArray *additionalRanges = @[ [NSValue valueWithRange:self.seeMoreRange] ];
+                NSArray *rangesOfAllTappableText = [self.hashTags arrayByAddingObjectsFromArray:additionalRanges];
+                self.tappableTextManager.tappableTextRanges = rangesOfAllTappableText;
             }
         }
         self.locationForLastLineOfText = CGRectGetMaxY([self lastLineFragmentInTextView]);

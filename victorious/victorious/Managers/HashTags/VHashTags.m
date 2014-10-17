@@ -94,4 +94,25 @@
     }
 }
 
++ (NSArray *)getHashTags:(NSString *)fieldText includeHashMark:(BOOL)includeHashMark
+{
+    NSMutableArray *container = [[NSMutableArray alloc] init];
+    NSArray *ranges = [VHashTags detectHashTags:fieldText];
+    [ranges enumerateObjectsUsingBlock:^(NSValue *value, NSUInteger idx, BOOL *stop)
+     {
+         NSString *hashtag = [fieldText substringWithRange:[value rangeValue]];
+         if ( includeHashMark )
+         {
+             hashtag = [NSString stringWithFormat:@"#%@", hashtag];
+         }
+         [container addObject:hashtag];
+     }];
+    return [NSArray arrayWithArray:container];
+}
+
++ (NSArray *)getHashTags:(NSString *)fieldText
+{
+    return [VHashTags getHashTags:fieldText includeHashMark:NO];
+}
+
 @end
