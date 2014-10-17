@@ -7,7 +7,7 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeprecatedAnalytics.h"
 #import "VSessionTimer.h"
 
 NSTimeInterval kVFirstLaunch = DBL_MAX;

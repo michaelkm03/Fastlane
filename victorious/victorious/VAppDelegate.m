@@ -13,7 +13,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeprecatedAnalytics.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"

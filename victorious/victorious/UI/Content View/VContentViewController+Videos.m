@@ -11,7 +11,7 @@
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeprecatedAnalytics.h"
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"

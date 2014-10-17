@@ -1,5 +1,5 @@
 //
-//  VObjectManager+Analytics.m
+//  VObjectManager+DeprecatedAnalytics.m
 //  victorious
 //
 //  Created by Josh Hinman on 7/22/14.
@@ -7,7 +7,7 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager+DeprecatedAnalytics.h"
 #import "VObjectManager+Private.h"
 #import "VSequence.h"
 
@@ -16,7 +16,7 @@ static NSString * const kCreatedAtKey = @"created_at";
 static NSString * const kLengthKey    = @"length";
 static NSString * const kSequenceKey  = @"sequence";
 
-@implementation VObjectManager (Analytics)
+@implementation VObjectManager (DeprecatedAnalytics)
 
 + (NSDateFormatter *)analyticsDateFormatter
 {
@@ -72,79 +72,6 @@ static NSString * const kSequenceKey  = @"sequence";
            parameters:@{@"events": jsonObjects}
          successBlock:success
             failBlock:fail];
-}
-
-- (BOOL)trackEventWithUrl:(NSString *)url
-{
-    return [self trackEventWithUrl:url andValues:nil];
-}
-
-- (BOOL)trackEventWithUrl:(NSString *)url andValues:(NSDictionary *)values
-{
-    BOOL isParameterValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
-    if ( !isParameterValid )
-    {
-        return NO;
-    }
-    
-    __block NSString *formattedUrl = [url copy];
-    
-    if ( values != nil && values.allKeys.count > 0 )
-    {
-        [values enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
-            
-            formattedUrl = [self urlStringFromUrlString:formattedUrl byReplacingMacro:key withValue:value];
-            if ( formattedUrl == nil )
-            {
-                *stop = YES;
-            }
-        }];
-    }
-    
-    if ( formattedUrl == nil )
-    {
-        return NO;
-    }
-    
-    VLog( @"Track event with URL: %@", formattedUrl );
-    
-    return YES;
-}
-
-- (NSString *)urlStringFromUrlString:(NSString *)urlString byReplacingMacro:(NSString *)macro withValue:(id)value
-{
-    if ( urlString == nil || ![urlString isKindOfClass:[NSString class]] || urlString.length == 0 )
-    {
-        return nil;
-    }
-    if ( macro == nil || ![macro isKindOfClass:[NSString class]] || macro.length == 0 )
-    {
-        return urlString;
-    }
-    
-    NSString *formattedValue = nil;
-    
-    if ( [value isKindOfClass:[NSDate class]] )
-    {
-        formattedValue = [[VObjectManager analyticsDateFormatter] stringFromDate:(NSDate *)value];
-    }
-    else if ( [value isKindOfClass:[NSNumber class]] )
-    {
-        formattedValue = [NSString stringWithFormat:@"%@", (NSNumber *)value];
-    }
-    else if ( [value isKindOfClass:[NSString class]] )
-    {
-        formattedValue = value;
-    }
-    
-    BOOL isValueValue = formattedValue != nil && formattedValue.length > 0 && [formattedValue isKindOfClass:[NSString class]];
-
-    if ( !isValueValue )
-    {
-        return nil;
-    }
-    
-    return [urlString stringByReplacingOccurrencesOfString:macro withString:formattedValue];
 }
 
 @end
