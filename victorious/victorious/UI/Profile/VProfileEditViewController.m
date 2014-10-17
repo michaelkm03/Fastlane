@@ -8,6 +8,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VProfileEditViewController.h"
+#import "VSettingManager.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
 
@@ -55,9 +56,16 @@
     return NO;
 }
 
+#pragma mark - Actions
+
 - (IBAction)done:(UIBarButtonItem *)sender
 {
     [[self view] endEditing:YES];
+    
+    if (![self validateInputs])
+    {
+        return;
+    }
     sender.enabled = NO;
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Save Profile" label:nil value:nil];
@@ -90,7 +98,42 @@
     }];
 }
 
-#pragma mark - Actions
+/**
+ Validates input fields and displays an alert
+ to the user if their input is not valid.
+ 
+ @return YES if all inputs were valid, NO
+         otherwise
+ */
+- (BOOL)validateInputs
+{
+    if (self.usernameTextField.text.length && self.locationTextField.text.length)
+    {
+        return YES;
+    }
+    
+    // Identify Which Form Field is Missing
+    NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
+    
+    if (!self.usernameTextField.text.length)
+    {
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.locationTextField.text.length)
+    {
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                    message:errorMsg
+                                                   delegate:nil
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    [alert show];
+    
+    return NO;
+}
 
 - (IBAction)goBack:(id)sender
 {

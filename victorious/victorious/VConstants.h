@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
 
 #pragma mark - UI constants
 
+#define UI_IS_IOS8_AND_HIGHER   ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0)
+
 static NSUInteger const VConstantsMessageLength         = 140;
 static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
@@ -45,6 +47,10 @@ static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.vi
 
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
+
+static NSUInteger const kVCurrentPasswordIsInvalid      = 5000;
+static NSUInteger const kVInvalidPasswordEntered        = 5051;
+static NSUInteger const kVPasswordResetCodeExpired      = 6700;
 
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
 static NSUInteger const kVFollowsRelationshipAlreadyExistsError = 6001;
