@@ -50,7 +50,8 @@
     if (toView)
     {
         toView.frame = [transitionContext finalFrameForViewController:toViewController];
-        [inView addSubview:toViewController.view];
+        [inView addSubview:toView];
+        [toView layoutIfNeeded];
     }
     
     CGRect frameForContentView = toViewController.contentView.frame;
@@ -79,7 +80,7 @@
 - (UIImage *)blurredSnapshotOfView:(UIView *)view
 {
     UIGraphicsBeginImageContext(view.bounds.size);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return [image applyDarkEffect];
