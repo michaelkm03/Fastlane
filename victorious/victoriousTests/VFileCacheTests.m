@@ -20,9 +20,10 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 @interface VFileCache (UnitTest)
 
 - (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwite;
+- (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwrite withNumRetries:(NSUInteger)withNumRetries;
 - (NSString *)getCachesDirectoryPathForPath:(NSString *)path;
 - (BOOL)createDirectoryAtPath:(NSString *)path;
-- (BOOL)downloadAndWriteFile:(NSString *)fileUrl toPath:(NSString *)filepath;
+- (BOOL)downloadAndWriteFile:(NSString *)urlString toPath:(NSString *)filepath;
 
 @end
 
@@ -212,6 +213,52 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     fcs.downloadAndWriteWasCalled = NO;
     XCTAssert( [fcs saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:YES] );
     XCTAssert( fcs.downloadAndWriteWasCalled );
+}
+
+- (void)testRetries
+{
+    __block NSUInteger attempt = 0;
+    IMP implementation = [VFileCache v_swizzleMethod:@selector(saveFile:toPath:shouldOverwrite:) withBlock:^BOOL (NSString *fileUrl, NSString *filePath, BOOL shouldOverwrite )
+                          {
+                              BOOL shouldSucceed = attempt >= 3;
+                              attempt++;
+                              return shouldSucceed;
+                          }];
+    
+    XCTAssertFalse( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:0] );
+    XCTAssertFalse( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:1] );
+    XCTAssertFalse( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:2] );
+    XCTAssert( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:3] );
+    XCTAssert( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:4] );
+    XCTAssert( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:5] );
+    
+    [VFileCache v_restoreOriginalImplementation:implementation forMethod:@selector(saveFile:toPath:shouldOverwrite:)];
+}
+
+- (void)testRetriesNone
+{
+    IMP implementation = [VFileCache v_swizzleMethod:@selector(saveFile:toPath:shouldOverwrite:) withBlock:^BOOL (NSString *fileUrl, NSString *filePath, BOOL shouldOverwrite )
+                          {
+                              return YES;
+                          }];
+    
+    XCTAssert( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:0] );
+    
+    [VFileCache v_restoreOriginalImplementation:implementation forMethod:@selector(saveFile:toPath:shouldOverwrite:)];
+}
+
+- (void)testRetriesMax
+{
+    __block NSUInteger attempt = 0;
+    IMP implementation = [VFileCache v_swizzleMethod:@selector(saveFile:toPath:shouldOverwrite:) withBlock:^BOOL (NSString *fileUrl, NSString *filePath, BOOL shouldOverwrite )
+                          {
+                              return ++attempt > VFileCacheMaximumSaveFileRetries;
+                          }];
+    
+    NSUInteger retries = VFileCacheMaximumSaveFileRetries * 2;
+    XCTAssertFalse( [_fileCache saveFile:@"somefile" toPath:@"somepath" shouldOverwrite:YES withNumRetries:retries] );
+    
+    [VFileCache v_restoreOriginalImplementation:implementation forMethod:@selector(saveFile:toPath:shouldOverwrite:)];
 }
 
 @end

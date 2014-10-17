@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern const NSUInteger VFileCacheMaximumSaveFileRetries;
+
 @interface VFileCache : NSObject
 
 /**

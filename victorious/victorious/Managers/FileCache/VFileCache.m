@@ -10,6 +10,8 @@
 
 static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_dispatch_queue";
 
+const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
+
 @interface VFileCache()
 
 @property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
@@ -52,7 +54,7 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
         [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
         
         NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-        [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite maxRetries:5];
+        [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
     });
     
     return YES;
@@ -85,7 +87,7 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
         
         dispatch_barrier_async( self.dispatchQueue, ^{
             NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-            [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite maxRetries:5];
+            [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
         });
     }
     
@@ -199,11 +201,13 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     return data;
 }
 
-- (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwrite maxRetries:(NSUInteger)maxRetries
+- (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwrite withNumRetries:(NSUInteger)numRetries
 {
     BOOL didSucceed = NO;
     NSUInteger numAttempts = 0;
-    while ( numAttempts < maxRetries && !didSucceed )
+    numRetries = numRetries > VFileCacheMaximumSaveFileRetries ? VFileCacheMaximumSaveFileRetries : numRetries;
+    NSUInteger maxAttempts = (numRetries <= 1) ? 1 : numRetries - 1;
+    while ( numAttempts < maxAttempts && !didSucceed )
     {
         didSucceed = [self saveFile:fileUrl toPath:filepath shouldOverwrite:shouldOverwrite];
         numAttempts++;
