@@ -22,7 +22,7 @@ static const char kAssociatedObjectKey;
     VLightboxTransitioningDelegate *transitioningDelegate = [[self alloc] initWithReferenceView:referenceView];
     objc_setAssociatedObject(lightboxController, &kAssociatedObjectKey, transitioningDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     lightboxController.transitioningDelegate = transitioningDelegate;
-    lightboxController.modalPresentationStyle = UIModalPresentationCustom;
+    lightboxController.modalPresentationStyle = UIModalPresentationFullScreen;
     return transitioningDelegate;
 }
 
