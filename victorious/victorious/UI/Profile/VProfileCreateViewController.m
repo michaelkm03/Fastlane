@@ -94,10 +94,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    if (self.loginType != kVLoginTypeEmail)
-    {
-        self.usernameTextField.text = self.profile.name;
-    }
+    self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
@@ -118,6 +115,10 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+        {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     }
     
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];

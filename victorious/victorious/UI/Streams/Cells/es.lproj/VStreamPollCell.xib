@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,48 +16,33 @@
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OOq-Yb-3IQ">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="214"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e2G-u3-diD">
                         <rect key="frame" x="160" y="0.0" width="160" height="214"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ase-oe-rse" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wty-1B-4On">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Crt-cG-vGq">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="O3p-rB-txO">
                                 <rect key="frame" x="0.0" y="112" width="320" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qyu-uO-lf5" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="213"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Etiqueta" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Vq-OQb">
-                                <rect key="frame" x="20" y="175" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6x-4t-qP9" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -64,48 +50,25 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="f6x-4t-qP9" secondAttribute="trailing" id="1wO-3v-4xV"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" id="3S0-vK-H6e"/>
-                            <constraint firstAttribute="trailing" secondItem="0rJ-Vq-OQb" secondAttribute="trailing" constant="20" id="RGb-zA-Vow"/>
                             <constraint firstItem="f6x-4t-qP9" firstAttribute="top" secondItem="Qyu-uO-lf5" secondAttribute="top" constant="7" id="cBl-fv-cgY"/>
                             <constraint firstAttribute="bottom" secondItem="f6x-4t-qP9" secondAttribute="bottom" constant="131" id="dSQ-Ia-tIw"/>
-                            <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="17" id="lBp-Vo-p0y"/>
-                            <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FRA-pa-1vI" userLabel="Comment Hitbox Button">
-                        <rect key="frame" x="245" y="0.0" width="75" height="75"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="75" id="WfV-zo-O6B"/>
-                            <constraint firstAttribute="height" constant="75" id="fgu-Jt-vZN"/>
-                        </constraints>
-                        <state key="normal">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="commentButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="fyi-II-HUN"/>
-                        </connections>
-                    </button>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="Fse-X8-bIf">
                         <rect key="frame" x="127" y="74" width="66" height="72"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Qyu-uO-lf5" secondAttribute="trailing" id="7gL-G0-R2W"/>
                     <constraint firstItem="Qyu-uO-lf5" firstAttribute="leading" secondItem="727-Cq-Kk2" secondAttribute="leading" id="ARI-iF-VRe"/>
-                    <constraint firstAttribute="bottom" secondItem="FRA-pa-1vI" secondAttribute="bottom" constant="138" id="Szc-Bh-s2Q"/>
                     <constraint firstItem="Qyu-uO-lf5" firstAttribute="top" secondItem="727-Cq-Kk2" secondAttribute="top" id="VVx-2P-DSx"/>
-                    <constraint firstAttribute="trailing" secondItem="FRA-pa-1vI" secondAttribute="trailing" id="Vmq-il-T8r"/>
-                    <constraint firstItem="FRA-pa-1vI" firstAttribute="leading" secondItem="727-Cq-Kk2" secondAttribute="leading" constant="245" id="YMr-4H-Uly"/>
                     <constraint firstAttribute="bottom" secondItem="Qyu-uO-lf5" secondAttribute="bottom" id="ZQe-61-wuB"/>
-                    <constraint firstItem="FRA-pa-1vI" firstAttribute="top" secondItem="727-Cq-Kk2" secondAttribute="top" id="xJo-J9-y0t"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="commentHitboxButton" destination="FRA-pa-1vI" id="l8s-2K-Pnr"/>
                 <outlet property="descriptionLabel" destination="0rJ-Vq-OQb" id="zKC-06-GT1"/>
+                <outlet property="commentHitboxButton" destination="FRA-pa-1vI" id="l8s-2K-Pnr"/>
                 <outlet property="overlayView" destination="Qyu-uO-lf5" id="NDf-2z-bli"/>
                 <outlet property="previewImageTwo" destination="e2G-u3-diD" id="7Il-nc-jTL"/>
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>
