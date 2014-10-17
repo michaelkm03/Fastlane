@@ -86,7 +86,8 @@
 
 - (void)flipFollowIconAction:(id)sender
 {
-    BOOL relationship = [self determineRelationshipWithUser:self.profile];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL relationship = [mainUser.following containsObject:self.profile];
     void (^animations)() = ^(void)
     {
         if (relationship)
@@ -97,16 +98,18 @@
         {
             [self.followButton setImage:self.followImage forState:UIControlStateNormal];
         }
-        //self.followButton.userInteractionEnabled = YES;
+        
+        self.followButton.alpha = 1.0f;
+        self.followButton.userInteractionEnabled = YES;
     };
     [UIView transitionWithView:self.followButton
                       duration:0.3
                        options:UIViewAnimationOptionTransitionFlipFromTop
                     animations:animations
                     completion:^(BOOL finished)
-    {
-        [self enableFollowIcon:nil];
-    }];
+     {
+         [self enableFollowIcon:nil];
+     }];
 }
 
 - (void)disableFollowIcon:(id)sender
@@ -137,14 +140,6 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:animations
                     completion:nil];
-}
-
-- (BOOL)determineRelationshipWithUser:(VUser *)targetUser
-{
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = ([mainUser.followers containsObject:targetUser] || [mainUser.following containsObject:targetUser]);
-    //NSLog(@"\n\n%@ -> %@ - %@\n", mainUser.name, targetUser.name, (relationship ? @"YES":@"NO"));
-    return relationship;
 }
 
 @end

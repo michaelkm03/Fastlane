@@ -25,6 +25,11 @@
 
 - (NSURL *)mp4UrlFromM3U8
 {
+    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    {
+        return [NSURL URLWithString:self];
+    }
+    
     if (![[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         return nil;

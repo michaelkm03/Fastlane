@@ -187,7 +187,7 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     if ( data == nil )
     {
         VLog( @"Error reading image from path:\n%@\n%@", filepath, [error localizedDescription] );
-        return NO;
+        return nil;
     }
     
     // Allow a decoderBlock block to modify the data and return it

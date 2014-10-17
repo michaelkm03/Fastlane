@@ -249,8 +249,6 @@
     [UIView animateWithDuration:duration
                      animations:^
      {
-         frame.origin.x = CGRectGetWidth(self.conversationTableViewController.view.frame);
-         self.conversationTableViewController.view.frame = frame;
          for (UIView *view in self.view.subviews)
          {
              if ([view isKindOfClass:[UIImageView class]])

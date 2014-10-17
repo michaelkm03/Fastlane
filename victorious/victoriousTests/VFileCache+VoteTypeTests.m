@@ -61,7 +61,7 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamato_PNG45.
 - (void)resetVoteType
 {
     _voteType.name = @"vote_type_test_name";
-    _voteType.icon = kTestImageUrl;
+    _voteType.iconImage = kTestImageUrl;
     _voteType.flightImage = kTestImageUrl;
     _voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
 }
@@ -106,11 +106,11 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamato_PNG45.
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     [self resetVoteType];
-    _voteType.icon = @"";
+    _voteType.iconImage = @"";
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     [self resetVoteType];
-    _voteType.icon = nil;
+    _voteType.iconImage = nil;
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     [self resetVoteType];

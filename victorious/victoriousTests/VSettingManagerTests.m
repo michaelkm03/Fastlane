@@ -79,7 +79,11 @@
     XCTAssertEqual( _settingsManager.voteTypes.count, voteTypes.count );
     
     [_settingsManager.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger i, BOOL *stop) {
-        XCTAssertEqual( voteType.display_order, @(i+1) );
+        if ( i > 0 )
+        {
+            VVoteType *previousVoteType = [_settingsManager.voteTypes objectAtIndex:i-1];
+            XCTAssert( voteType.display_order.integerValue >= previousVoteType.display_order.integerValue );
+        }
     }];
 }
 

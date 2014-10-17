@@ -39,8 +39,6 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
 - (void)reloadData;
 
-@property (nonatomic, copy) void (^pressedTextEntryHandler)(void);
-
 @property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter);
 
 @end

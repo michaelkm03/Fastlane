@@ -8,9 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VDefaultProfileButton;
+@class VSequence, VDefaultProfileButton, VStreamCellHeaderView;
+
+@protocol VStreamCellHeaderDelegate <NSObject>
+
+- (void)commentsPressedOnHeader:(VStreamCellHeaderView *)header;
+
+@end
 
 @interface VStreamCellHeaderView : UIView
+
+@property (nonatomic, weak) id<VStreamCellHeaderDelegate> delegate;
 
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
