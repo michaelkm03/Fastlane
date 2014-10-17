@@ -7,7 +7,6 @@
 //
 
 #import "VObjectManager.h"
-#import "VAnalyticsConstants.h"
 
 @class VSequence;
 

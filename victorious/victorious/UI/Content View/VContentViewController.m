@@ -109,7 +109,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self = [super init];
     if (self)
     {
-        _trackingManager = [[VTrackingManager alloc] init];
     }
     return self;
 }
@@ -1465,19 +1464,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     container.shouldShowHeaderLogo = NO;
     container.hashTag = tag;
     [self.navigationController pushViewController:container animated:YES];
-}
-
-#pragma mark - Tracking
-
-- (NSDictionary *)trackingParameters
-{
-    // Populate this dictionary with any and all applicable parameters.
-    // The tracking manager will sort out which of them is needed
-    return @{
-             kAnalyticsKeySequenceId: self.sequence.remoteId,
-             kAnalyticsKeyTimeStamp : [NSDate date]
-             
-             };
 }
 
 @end

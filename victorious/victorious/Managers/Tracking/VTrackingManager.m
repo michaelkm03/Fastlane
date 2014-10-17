@@ -22,17 +22,17 @@
     self = [super init];
     if (self)
     {
-        _registeredMacros = @[ kAnalyticsKeyTimeFrom,
-                               kAnalyticsKeyTimeTo,
-                               kAnalyticsKeyTimeCurrent,
-                               kAnalyticsKeyTimeStamp,
-                               kAnalyticsKeyPageLAbel,
-                               kAnalyticsKeyStreamId,
-                               kAnalyticsKeySequenceId,
-                               kAnalyticsKeyPositionX,
-                               kAnalyticsKeyPositionY,
-                               kAnalyticsKeyNavigiationFrom,
-                               kAnalyticsKeyNavigiationTo ];
+        _registeredMacros = @[ kTrackingKeyTimeFrom,
+                               kTrackingKeyTimeTo,
+                               kTrackingKeyTimeCurrent,
+                               kTrackingKeyTimeStamp,
+                               kTrackingKeyPageLabel,
+                               kTrackingKeyStreamId,
+                               kTrackingKeySequenceId,
+                               kTrackingKeyPositionX,
+                               kTrackingKeyPositionY,
+                               kTrackingKeyNavigiationFrom,
+                               kTrackingKeyNavigiationTo ];
     }
     return self;
 }

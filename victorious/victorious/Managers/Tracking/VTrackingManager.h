@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "VTracking.h"
-#import "VAnalyticsConstants.h"
+#import "VTrackingConstants.h"
 
 @interface VTrackingManager : NSObject
 
