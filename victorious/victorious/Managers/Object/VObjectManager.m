@@ -22,6 +22,7 @@
 #import "NSString+VParseHelp.h"
 
 #import "VUser+RestKit.h"
+#import "VHashtag+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VConversation+RestKit.h"
@@ -103,6 +104,7 @@
     [self addResponseDescriptorsFromArray:[VComment descriptors]];
     [self addResponseDescriptorsFromArray:[VNotification descriptors]];
     [self addResponseDescriptorsFromArray:[VStream descriptors]];
+    [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,

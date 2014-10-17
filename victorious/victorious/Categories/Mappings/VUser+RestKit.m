@@ -31,6 +31,8 @@
                                   @"token_updated_at" : VSelectorName(tokenUpdatedAt),
                                   @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
                                   @"status" : VSelectorName(status),
+                                  @"following" : VSelectorName(isFollowing),
+                                  @"number_of_followers" : VSelectorName(numberOfFollowers),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -158,6 +160,12 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/userinfo/search"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/discover/users"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
              ];
