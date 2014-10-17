@@ -42,5 +42,7 @@
 @dynamic repostedSequences;
 @dynamic unreadConversation;
 @dynamic status;
+@dynamic isFollowing;
+@dynamic numberOfFollowers;
 
 @end

@@ -32,4 +32,10 @@
  */
 + (NSArray *)detectHashTags:(NSString *)fieldText;
 
+/**
+ Creates a copy of the input string with a hash mark (#) prepending, if it is not already prepending.
+ @param string The string with which to copy and prepend the hash mark.
+ */
++ (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string;
+
 @end

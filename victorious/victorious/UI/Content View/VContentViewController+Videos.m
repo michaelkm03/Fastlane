@@ -16,7 +16,7 @@
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"
 #import "VSettingManager.h"
-
+#import "VTrackingManager.h"
 #import <objc/runtime.h>
 
 const NSTimeInterval kVideoPlayerAnimationDuration = 0.2;
@@ -54,6 +54,8 @@ static const char kVideoPlayerKey;
 {
     NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
+    
+    [self.trackingManager trackEventWithUrls:self.sequence.tracking.videoStart andParameters:self.trackingParameters];
     
     if (self.videoPlayer)
     {

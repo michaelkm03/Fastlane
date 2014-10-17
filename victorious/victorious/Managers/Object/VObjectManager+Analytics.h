@@ -7,9 +7,14 @@
 //
 
 #import "VObjectManager.h"
+#import "VAnalyticsConstants.h"
 
 @class VSequence;
 
+/**
+ This category is deprecated.  Use VTrackingManager and urls supplied remote in properties of VTracking.
+ @see VTrackingManager
+ */
 @interface VObjectManager (Analytics)
 
 - (NSDictionary *)dictionaryForInstallEventWithDate:(NSDate *)date;
@@ -19,6 +24,6 @@
 /**
  Send an analytics event to the server
  */
-- (RKManagedObjectRequestOperation *)addEvents:(NSArray /* NSDictionary */ *)event successBlock:(VSuccessBlock)success failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)addEvents:(NSArray /* NSDictionary */ *)event successBlock:(VSuccessBlock)success failBlock :(VFailBlock)fail __attribute__((deprecated));
 
 @end
