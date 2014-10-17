@@ -28,14 +28,27 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    UIView *toView;
     UIView *inView = [transitionContext containerView];
     VLightboxViewController *fromViewController = (VLightboxViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     NSAssert([fromViewController isKindOfClass:[VLightboxViewController class]], @"VLightboxDismissAnimator is designed to be used exclusively with VLightboxViewController");
-
-    [inView insertSubview:toViewController.view belowSubview:fromViewController.view];
-    toViewController.view.frame = [transitionContext finalFrameForViewController:toViewController];
-
+    
+    if ([transitionContext respondsToSelector:@selector(viewForKey:)])
+    {
+        toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    }
+    else
+    {
+        toView = toViewController.view;
+    }
+    
+    if (toView)
+    {
+        [inView insertSubview:toView atIndex:0];
+        toView.frame = [transitionContext finalFrameForViewController:toViewController];
+    }
+    
     UIView *contentSnapshot = [fromViewController.contentView snapshotViewAfterScreenUpdates:NO];
     contentSnapshot.center = [inView convertPoint:fromViewController.contentView.center fromView:fromViewController.contentSuperview];
     contentSnapshot.transform = fromViewController.contentSuperview.transform;
@@ -66,8 +79,6 @@
     }
                      completion:^(BOOL finished)
     {
-        fromViewController.contentView.hidden = NO;
-        [fromViewController.view removeFromSuperview];
         [transitionContext completeTransition:YES];
     }];
 }

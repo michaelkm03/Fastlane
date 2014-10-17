@@ -29,16 +29,29 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    UIView *toView;
     UIView *inView = [transitionContext containerView];
+    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     VLightboxViewController *toViewController = (VLightboxViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *fromView = [[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey] view];
     NSAssert([toViewController isKindOfClass:[VLightboxViewController class]], @"VLightboxDisplayAnimator is designed to be used exclusively with VLightboxViewController");
     
-    UIImage *blurredSnapshot = [self blurredSnapshotOfView:fromView];
+    if ([transitionContext respondsToSelector:@selector(viewForKey:)])
+    {
+        toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    }
+    else
+    {
+        toView = toViewController.view;
+    }
+    
+    UIImage *blurredSnapshot = [self blurredSnapshotOfView:fromViewController.view];
     toViewController.backgroundView = [[UIImageView alloc] initWithImage:blurredSnapshot];
     
-    toViewController.view.frame = inView.bounds;
-    [inView addSubview:toViewController.view];
+    if (toView)
+    {
+        toView.frame = [transitionContext finalFrameForViewController:toViewController];
+        [inView addSubview:toViewController.view];
+    }
     
     CGRect frameForContentView = toViewController.contentView.frame;
     toViewController.backgroundView.alpha = 0;
@@ -54,7 +67,6 @@
     }
                      completion:^(BOOL finished)
     {
-        [fromView removeFromSuperview];
         [transitionContext completeTransition:YES];
     }];
 }
