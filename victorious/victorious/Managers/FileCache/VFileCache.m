@@ -26,9 +26,10 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 {
     static dispatch_queue_t dispatch_queue;
     static dispatch_once_t once_token;
-    dispatch_once( &once_token, ^{
-        dispatch_queue = dispatch_queue_create( kDispatchQueueLabel, DISPATCH_QUEUE_CONCURRENT );
-    });
+    dispatch_once( &once_token, ^void
+                  {
+                      dispatch_queue = dispatch_queue_create( kDispatchQueueLabel, DISPATCH_QUEUE_CONCURRENT );
+                  });
     return dispatch_queue;
 }
 
@@ -47,15 +48,16 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
         return NO;
     }
     
-    dispatch_barrier_async( self.dispatchQueue, ^{
-        
-        // Creates directory (if it doesn't exist already)
-        NSString *localDirectoryPath = [keyPath stringByDeletingLastPathComponent];
-        [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
-        
-        NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-        [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
-    });
+    dispatch_barrier_async( self.dispatchQueue, ^void
+                           {
+                               
+                               // Creates directory (if it doesn't exist already)
+                               NSString *localDirectoryPath = [keyPath stringByDeletingLastPathComponent];
+                               [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
+                               
+                               NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
+                               [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
+                           });
     
     return YES;
 }
@@ -85,10 +87,11 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
         NSString *keyPath = keyPaths[i];
         NSString *fileUrl = fileUrls[i];
         
-        dispatch_barrier_async( self.dispatchQueue, ^{
-            NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-            [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
-        });
+        dispatch_barrier_async( self.dispatchQueue, ^void
+                               {
+                                   NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
+                                   [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
+                               });
     }
     
     return YES;
@@ -142,16 +145,17 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
         return NO;
     }
     
-    dispatch_async( self.dispatchQueue, ^{
-        
-        // Load the data on this queue using synchronous method
-        NSData *fileData = [self readFileForKeyPath:keyPath];
-        
-        // Response on the main queue
-        dispatch_async( dispatch_get_main_queue(), ^{
-            completeCallback( fileData );
-        });
-    });
+    dispatch_async( self.dispatchQueue, ^void
+                   {
+                       // Load the data on this queue using synchronous method
+                       NSData *fileData = [self readFileForKeyPath:keyPath];
+                       
+                       // Response on the main queue
+                       dispatch_async( dispatch_get_main_queue(), ^void
+                                      {
+                                          completeCallback( fileData );
+                                      });
+                   });
     
     return YES;
 }
@@ -163,16 +167,17 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
         return NO;
     }
     
-    dispatch_async( self.dispatchQueue, ^{
-        
-        // Load the data on this queue using synchronous method
-        NSArray *fileDataArray = [self getCachedFilesForKeyPaths:keyPaths];
-        
-        // Response on the main queue
-        dispatch_async( dispatch_get_main_queue(), ^{
-            completeCallback( fileDataArray );
-        });
-    });
+    dispatch_async( self.dispatchQueue, ^void
+                   {
+                       // Load the data on this queue using synchronous method
+                       NSArray *fileDataArray = [self getCachedFilesForKeyPaths:keyPaths];
+                       
+                       // Response on the main queue
+                       dispatch_async( dispatch_get_main_queue(), ^void
+                                      {
+                                          completeCallback( fileDataArray );
+                                      });
+                   });
     
     return YES;
 }
