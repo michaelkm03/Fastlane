@@ -37,6 +37,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
 @interface VSettingManager()
 
 @property (nonatomic, strong) VFileCache *fileCache;
+@property (nonatomic, readwrite) NSArray *voteTypes;
 
 @end
 
@@ -73,7 +74,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
 
 - (void)clearVoteTypes
 {
-    _voteTypes = @[];
+    self.voteTypes = @[];
 }
 
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
@@ -89,25 +90,26 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
                               {
                                   return [evaluatedObject isMemberOfClass:[VVoteType class]];
                               }];
-    _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
+    self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
     // Sort by display order
-    _voteTypes = [_voteTypes sortedArrayWithOptions:0 usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
-                  {
-                      return [v1.display_order compare:v2.display_order];
-                  }];
+    self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
+                                            usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
+                      {
+                          return [v1.display_order compare:v2.display_order];
+                      }];
     
     [self cacheVoteTypeImagesWithFileCache:self.fileCache];
 }
 
 - (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
 {
-    if ( _voteTypes == nil )
+    if ( self.voteTypes == nil )
     {
         return;
     }
     
-    [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
+    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
      {
 #warning Testing only
          // TODO: Make these required by CoreData so taht they fail earlier than here

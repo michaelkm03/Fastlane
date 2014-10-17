@@ -13,21 +13,21 @@
 + (BOOL)fileExistsInCachesDirectoryWithLocalPath:(NSString *)localPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:localPath];
+    NSString *path = [[paths firstObject] stringByAppendingPathComponent:localPath];
     return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
 + (NSUInteger)numberOfFilesAtPath:(NSString *)localPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:localPath];
+    NSString *path = [[paths firstObject] stringByAppendingPathComponent:localPath];
     return [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil].count;
 }
 
 + (BOOL)deleteCachesDirectory:(NSString *)localPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:localPath];
+    NSString *path = [[paths firstObject] stringByAppendingPathComponent:localPath];
     NSError *error = nil;
     BOOL didSucceed = [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
     return didSucceed;

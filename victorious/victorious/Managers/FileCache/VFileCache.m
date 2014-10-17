@@ -297,7 +297,7 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 - (NSString *)getCachesDirectoryPathForPath:(NSString *)path
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [paths objectAtIndex:0];
+    NSString *cachePath = [paths firstObject];
     NSString *compoundPath = [cachePath stringByAppendingPathComponent:path];
     return compoundPath;
 }
