@@ -60,10 +60,8 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
-//static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
-//static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
-//static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
-//static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
+static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
+static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
 
@@ -76,6 +74,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -92,6 +91,10 @@
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
+
+@property (nonatomic, assign) CGAffineTransform targetTransform;
+@property (nonatomic, assign) CGRect oldRect;
+@property (nonatomic, assign) CGAffineTransform videoTransform;
 
 @end
 
@@ -134,10 +137,121 @@
 }
 
 #pragma mark - UIViewController
+#pragma mark Rotation
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay));
+    return shouldRotate;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    CGAffineTransform transform = [coordinator targetTransform];
+    if (CGAffineTransformIsIdentity(transform))
+    {
+        return;
+    }
+    UIInterfaceOrientation oldOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        {
+            if (UIInterfaceOrientationIsLandscape(oldOrientation))
+            {
+                [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
+                [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+                [self.view bringSubviewToFront:self.videoCell.videoPlayerViewController.view];
+
+                return;
+            }
+            [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            
+            self.videoCell.videoPlayerViewController.view.transform = [coordinator targetTransform];
+            self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.videoCell.videoPlayerViewController.view.center = self.view.center;
+            [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+            self.landscapeMaskOverlay.alpha = 1.0f;
+        }
+        else
+        {
+            [coordinator containerView].transform = CGAffineTransformIdentity;
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.view.transform = CGAffineTransformIdentity;
+            self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
+        }
+    }
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        [self animateVideoPlayerToPortrait];
+    }];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    UIView *rootView = self.navigationController.view;
+    CGAffineTransform oldTransform = rootView.transform;
+
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        rootView.transform = CGAffineTransformIdentity;
+        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
+        self.view.transform = CGAffineTransformIdentity;
+        self.view.bounds = rootView.bounds;
+
+        self.videoCell.videoPlayerViewController.view.transform = oldTransform;
+        self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        self.videoCell.videoPlayerViewController.view.center = rootView.center;
+        [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+        self.landscapeMaskOverlay.alpha = 1.0f;
+    }
+    else
+    {
+        self.view.transform = CGAffineTransformIdentity;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self animateVideoPlayerToPortrait];
+}
+
+- (void)animateVideoPlayerToPortrait
+{
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        [UIView animateWithDuration:kRotationCompletionAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kRotationCompletionAnimationDamping
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+         {
+
+             self.videoCell.videoPlayerViewController.view.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
+             self.videoCell.videoPlayerViewController.view.transform = self.videoCell.transform;
+             self.videoCell.videoPlayerViewController.view.center = self.videoCell.contentView.center;
+             
+             self.landscapeMaskOverlay.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+             {
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+             }
+         }];
+    }
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidLoad
@@ -145,6 +259,8 @@
     [super viewDidLoad];
 
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
+    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                       forState:UIControlStateNormal];
@@ -190,7 +306,8 @@
                                                                                  multiplier:1.0f
                                                                                    constant:0.0f];
     self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-    [self.view addSubview:inputAccessoryView];
+    [self.view insertSubview:inputAccessoryView
+                belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
