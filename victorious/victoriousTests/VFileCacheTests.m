@@ -10,6 +10,7 @@
 #import "VFileCache.h"
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
+#import "NSObject+VMethodSwizzling.h"
 
 static NSString * const kTestingPathRoot = @"file_cache_tests";
 static NSString * const kTestingFileUrl = @"http://www.google.com/";

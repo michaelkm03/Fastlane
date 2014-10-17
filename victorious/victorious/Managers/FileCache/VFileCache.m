@@ -52,7 +52,7 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
         [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
         
         NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-        [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite];
+        [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite maxRetries:5];
     });
     
     return YES;
@@ -85,7 +85,7 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
         
         dispatch_barrier_async( self.dispatchQueue, ^{
             NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
-            [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite];
+            [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite maxRetries:5];
         });
     }
     
@@ -112,21 +112,21 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     }
     
     NSMutableArray *fileDataContainer = [[NSMutableArray alloc] init];
-    [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger idx, BOOL *stop) {
-        
-        // Load the data on this queue using synchronous method
-        NSData *fileData = [self readFileForKeyPath:keyPath];
-        if ( fileData != nil )
-        {
-            [fileDataContainer addObject:fileData];
-        }
-        else
-        {
-            // Never return an incomplete array if there's an error
-            [fileDataContainer removeAllObjects];
-            *stop = YES;
-        }
-    }];
+    [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger idx, BOOL *stop)
+     {
+         // Load the data on this queue using synchronous method
+         NSData *fileData = [self readFileForKeyPath:keyPath];
+         if ( fileData != nil )
+         {
+             [fileDataContainer addObject:fileData];
+         }
+         else
+         {
+             // Never return an incomplete array if there's an error
+             [fileDataContainer removeAllObjects];
+             *stop = YES;
+         }
+     }];
     
     return [NSArray arrayWithArray:fileDataContainer];
 }
@@ -199,6 +199,18 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     return data;
 }
 
+- (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwrite maxRetries:(NSUInteger)maxRetries
+{
+    BOOL didSucceed = NO;
+    NSUInteger numAttempts = 0;
+    while ( numAttempts < maxRetries && !didSucceed )
+    {
+        didSucceed = [self saveFile:fileUrl toPath:filepath shouldOverwrite:shouldOverwrite];
+        numAttempts++;
+    }
+    return didSucceed;
+}
+
 - (BOOL)saveFile:(NSString *)fileUrl toPath:(NSString *)filepath shouldOverwrite:(BOOL)shouldOverwrite
 {
     // Error checking
@@ -224,10 +236,10 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     }
 }
 
-- (BOOL)downloadAndWriteFile:(NSString *)fileUrl toPath:(NSString *)filepath
+- (BOOL)downloadAndWriteFile:(NSString *)urlString toPath:(NSString *)filepath
 {
     // Error checking
-    if ( fileUrl == nil || fileUrl.length == 0 )
+    if ( urlString == nil || urlString.length == 0 )
     {
         return NO;
     }
@@ -238,10 +250,10 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
 
     // Download the image data
     NSError *downloadError;
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileUrl] options:9 error:&downloadError];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] options:9 error:&downloadError];
     if ( data == nil )
     {
-        VLog( @"Error downloading image from URL:\n%@\n%@", fileUrl, [downloadError localizedDescription] );
+        VLog( @"Error downloading image from URL:\n%@\n%@", urlString, [downloadError localizedDescription] );
         return NO;
     }
     
@@ -258,6 +270,16 @@ static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_di
     {
         VLog( @"Error writing image to path:\n%@\n%@", filepath, [writeError localizedDescription] );
     }
+    else
+    {
+        NSError *setValueError;
+        NSURL *url = [[NSURL alloc] initWithScheme:NSURLFileScheme host:@"" path:filepath];
+        if ( ![url setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:&setValueError] )
+        {
+            VLog( @"Error setting NSURLIsExcludedFromBackupKey to YES:\n%@\n%@", filepath, [setValueError localizedDescription] );
+        }
+    }
+    
     return didSucceed;
 }
 

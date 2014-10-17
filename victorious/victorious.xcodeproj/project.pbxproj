@@ -255,33 +255,33 @@
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
-		A709636719EF2ADA00CE6633 /* VSettingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFA19E8A6D600EB87C1 /* VSettingManagerTests.m */; };
-		A709636A19EF2AE400CE6633 /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
-		A714A5E219F197E100027210 /* VHashTagsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */; };
-		A714A5E319F197E100027210 /* VTappableHashTagsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62B19DE52DE00B18AB7 /* VTappableHashTagsTests.m */; };
-		A714A5E419F197E100027210 /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */; };
-		A714A5E519F197E100027210 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */; };
-		A714A5E619F197E100027210 /* VLargeNumberFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F819E335060072E87A /* VLargeNumberFormatterTests.m */; };
-		A714A5E719F197E100027210 /* VMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F919E335060072E87A /* VMarqueeControllerTests.m */; };
-		A714A5E819F197E100027210 /* VMultipartFormDataWriterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */; };
-		A714A5E919F197E100027210 /* VObjectManagerStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FB19E335060072E87A /* VObjectManagerStringTest.m */; };
-		A714A5EA19F197E100027210 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */; };
-		A714A5EB19F197E100027210 /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */; };
-		A714A5EC19F197E100027210 /* VUploadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FE19E335060072E87A /* VUploadManagerTests.m */; };
-		A714A5ED19F197E100027210 /* VUploadManagerURLSessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FF19E335060072E87A /* VUploadManagerURLSessionTests.m */; };
-		A714A5EE19F197E100027210 /* VUploadTaskCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */; };
-		A714A5EF19F197E100027210 /* VUploadTaskInformationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750119E335060072E87A /* VUploadTaskInformationTests.m */; };
-		A714A5F019F197E100027210 /* VUploadTaskSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */; };
-		A714A5F119F197E100027210 /* VPasswordValidationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */; };
-		A714A5F219F197E100027210 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
-		A714A5F319F197E100027210 /* VChangePasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */; };
-		A714A5F419F197E100027210 /* VFileCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */; };
-		A714A5F519F197E100027210 /* VFileCache+VoteTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */; };
+		A714A5F619F19AA600027210 /* VFileCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */; };
+		A714A5F719F19AA600027210 /* VFileCache+VoteTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */; };
 		A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
 		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7A7D62A19DE451300B18AB7 /* VTappableHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */; };
+		A7DE61B019F1BA36007DF2CD /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
+		A7DE61B119F1BA36007DF2CD /* VHashTagsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */; };
+		A7DE61B219F1BA36007DF2CD /* VTappableHashTagsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62B19DE52DE00B18AB7 /* VTappableHashTagsTests.m */; };
+		A7DE61B319F1BA36007DF2CD /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */; };
+		A7DE61B419F1BA36007DF2CD /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */; };
+		A7DE61B519F1BA36007DF2CD /* VLargeNumberFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F819E335060072E87A /* VLargeNumberFormatterTests.m */; };
+		A7DE61B619F1BA36007DF2CD /* VMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F919E335060072E87A /* VMarqueeControllerTests.m */; };
+		A7DE61B719F1BA36007DF2CD /* VMultipartFormDataWriterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */; };
+		A7DE61B819F1BA36007DF2CD /* VObjectManagerStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FB19E335060072E87A /* VObjectManagerStringTest.m */; };
+		A7DE61B919F1BA36007DF2CD /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */; };
+		A7DE61BA19F1BA36007DF2CD /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */; };
+		A7DE61BB19F1BA36007DF2CD /* VUploadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FE19E335060072E87A /* VUploadManagerTests.m */; };
+		A7DE61BC19F1BA36007DF2CD /* VUploadManagerURLSessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FF19E335060072E87A /* VUploadManagerURLSessionTests.m */; };
+		A7DE61BD19F1BA36007DF2CD /* VUploadTaskCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */; };
+		A7DE61BE19F1BA36007DF2CD /* VUploadTaskInformationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750119E335060072E87A /* VUploadTaskInformationTests.m */; };
+		A7DE61BF19F1BA36007DF2CD /* VUploadTaskSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */; };
+		A7DE61C019F1BA36007DF2CD /* VSettingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFA19E8A6D600EB87C1 /* VSettingManagerTests.m */; };
+		A7DE61C119F1BA36007DF2CD /* VPasswordValidationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */; };
+		A7DE61C219F1BA36007DF2CD /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
+		A7DE61C319F1BA36007DF2CD /* VChangePasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
 		A7F6CF9D19EEDA0B003F164C /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9B19EEDA0B003F164C /* VFileCache.m */; };
 		A7FE8C5619EE058400B91EF2 /* VFileSystemTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE8C5519EE058400B91EF2 /* VFileSystemTestHelpers.m */; };
@@ -3543,33 +3543,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A714A5E619F197E100027210 /* VLargeNumberFormatterTests.m in Sources */,
-				A714A5F519F197E100027210 /* VFileCache+VoteTypeTests.m in Sources */,
+				A7DE61BB19F1BA36007DF2CD /* VUploadManagerTests.m in Sources */,
 				03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */,
-				A714A5F019F197E100027210 /* VUploadTaskSerializerTests.m in Sources */,
+				A7DE61BC19F1BA36007DF2CD /* VUploadManagerURLSessionTests.m in Sources */,
+				A714A5F619F19AA600027210 /* VFileCacheTests.m in Sources */,
+				A7DE61BD19F1BA36007DF2CD /* VUploadTaskCreatorTests.m in Sources */,
+				A7DE61BF19F1BA36007DF2CD /* VUploadTaskSerializerTests.m in Sources */,
+				A7DE61B219F1BA36007DF2CD /* VTappableHashTagsTests.m in Sources */,
+				A7DE61C119F1BA36007DF2CD /* VPasswordValidationTests.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
+				A7DE61B819F1BA36007DF2CD /* VObjectManagerStringTest.m in Sources */,
+				A7DE61B919F1BA36007DF2CD /* VPhotoFilterSerializationTests.m in Sources */,
+				A7DE61B019F1BA36007DF2CD /* NSStringVCryptoTests.m in Sources */,
+				A7DE61C319F1BA36007DF2CD /* VChangePasswordTests.m in Sources */,
+				A7DE61C019F1BA36007DF2CD /* VSettingManagerTests.m in Sources */,
+				A7DE61B519F1BA36007DF2CD /* VLargeNumberFormatterTests.m in Sources */,
+				A714A5F719F19AA600027210 /* VFileCache+VoteTypeTests.m in Sources */,
+				A7DE61BA19F1BA36007DF2CD /* VUIAlertView+VBlocksTests.m in Sources */,
 				A7FE8C5619EE058400B91EF2 /* VFileSystemTestHelpers.m in Sources */,
-				A714A5EA19F197E100027210 /* VPhotoFilterSerializationTests.m in Sources */,
-				A714A5F119F197E100027210 /* VPasswordValidationTests.m in Sources */,
-				A714A5F419F197E100027210 /* VFileCacheTests.m in Sources */,
-				A714A5EE19F197E100027210 /* VUploadTaskCreatorTests.m in Sources */,
-				A714A5EF19F197E100027210 /* VUploadTaskInformationTests.m in Sources */,
-				A714A5EB19F197E100027210 /* VUIAlertView+VBlocksTests.m in Sources */,
-				A714A5E819F197E100027210 /* VMultipartFormDataWriterTests.m in Sources */,
-				A714A5E319F197E100027210 /* VTappableHashTagsTests.m in Sources */,
-				A714A5ED19F197E100027210 /* VUploadManagerURLSessionTests.m in Sources */,
-				A714A5F319F197E100027210 /* VChangePasswordTests.m in Sources */,
-				A714A5E219F197E100027210 /* VHashTagsTest.m in Sources */,
-				A709636719EF2ADA00CE6633 /* VSettingManagerTests.m in Sources */,
-				A714A5E419F197E100027210 /* VAuthorizationViewControllerFactoryTests.m in Sources */,
-				A714A5F219F197E100027210 /* NSDate+timeSinceTests.m in Sources */,
-				A714A5E719F197E100027210 /* VMarqueeControllerTests.m in Sources */,
+				A7DE61B319F1BA36007DF2CD /* VAuthorizationViewControllerFactoryTests.m in Sources */,
+				A7DE61BE19F1BA36007DF2CD /* VUploadTaskInformationTests.m in Sources */,
+				A7DE61B119F1BA36007DF2CD /* VHashTagsTest.m in Sources */,
+				A7DE61B419F1BA36007DF2CD /* VElapsedTimeFormatterTests.m in Sources */,
+				A7DE61B719F1BA36007DF2CD /* VMultipartFormDataWriterTests.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
-				A714A5E519F197E100027210 /* VElapsedTimeFormatterTests.m in Sources */,
-				A709636A19EF2AE400CE6633 /* NSStringVCryptoTests.m in Sources */,
-				A714A5EC19F197E100027210 /* VUploadManagerTests.m in Sources */,
 				A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */,
-				A714A5E919F197E100027210 /* VObjectManagerStringTest.m in Sources */,
+				A7DE61C219F1BA36007DF2CD /* NSDate+timeSinceTests.m in Sources */,
+				A7DE61B619F1BA36007DF2CD /* VMarqueeControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

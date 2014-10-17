@@ -85,15 +85,17 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     }
     
     // Check that only objects of type VVoteType are accepted
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        return [evaluatedObject isMemberOfClass:[VVoteType class]];
-    }];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
+                              {
+                                  return [evaluatedObject isMemberOfClass:[VVoteType class]];
+                              }];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
     // Sort by display order
-    _voteTypes = [_voteTypes sortedArrayWithOptions:0 usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2) {
-        return [v1.display_order compare:v2.display_order];
-    }];
+    _voteTypes = [_voteTypes sortedArrayWithOptions:0 usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
+                  {
+                      return [v1.display_order compare:v2.display_order];
+                  }];
     
     [self cacheVoteTypeImagesWithFileCache:self.fileCache];
 }
@@ -105,15 +107,17 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
         return;
     }
     
-    [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop) {
-        
-        // Assign defaults if any values are missing
-        // TODO: Make these required by CoreData so taht they fail earlier than here
-        v.iconImage = v.iconImage ? v.iconImage : ((NSArray *)v.images)[0];
-        v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
-        
-        [fileCache cacheImagesForVoteType:v];
-    }];
+    [_voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
+     {
+#warning Testing only
+         // TODO: Make these required by CoreData so taht they fail earlier than here
+         // TODO: Get the backend to suppor this stuff
+         v.isBallistic = @YES;
+         v.iconImage = v.iconImage ? v.iconImage : ((NSArray *)v.images)[0];
+         v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
+         
+         [fileCache cacheImagesForVoteType:v];
+     }];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

@@ -106,18 +106,6 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamato_PNG45.
     XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
     
     [self resetVoteType];
-    _voteType.iconImage = @"";
-    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
-    
-    [self resetVoteType];
-    _voteType.iconImage = nil;
-    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
-    
-    [self resetVoteType];
-    _voteType.flightImage = nil;
-    XCTAssertFalse( [_fileCache validateVoteType:_voteType] );
-    
-    [self resetVoteType];
     _voteType.images = @[ kTestImageUrl, kTestImageUrl, @"", kTestImageUrl, kTestImageUrl ];
     XCTAssertFalse( [_fileCache cacheImagesForVoteType:_voteType], @"Cannot have empty URLs in image array.");
 }

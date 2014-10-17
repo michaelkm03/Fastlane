@@ -21,4 +21,6 @@
 @property (nonatomic, assign) NSTimeInterval flightDuration;
 @property (nonatomic, strong) UIImage *flightImage;
 
+@property (nonatomic, readonly) BOOL hasRequiredImages;
+
 @end

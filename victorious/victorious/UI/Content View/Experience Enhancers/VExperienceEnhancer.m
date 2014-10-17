@@ -10,4 +10,16 @@
 
 @implementation VExperienceEnhancer
 
+- (BOOL)hasRequiredImages
+{
+    if ( self.isBallistic )
+    {
+        return self.flightImage != nil;
+    }
+    else
+    {
+        return self.iconImage != nil && self.animationSequence != nil && self.animationSequence.count > 0;
+    }
+}
+
 @end

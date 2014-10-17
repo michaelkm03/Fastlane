@@ -21,10 +21,6 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     // TODO: Once all values are expected from the server, let CoreData and RestKit validate models
     BOOL isObjectValid = voteType != nil
         && [voteType isKindOfClass:[VVoteType class]]
-        && voteType.iconImage != nil
-        && voteType.iconImage.length > 0
-        && voteType.flightImage != nil
-        && voteType.flightImage.length > 0
         && voteType.name != nil
         && voteType.name.length > 0;
     
@@ -35,13 +31,14 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     
     NSArray *spriteImages = (NSArray *)voteType.images;
     __block BOOL areImagesValid = spriteImages.count > 0;
-    [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop) {
-        if ( imageUrl.length == 0 || ![imageUrl isKindOfClass:[NSString class]] )
-        {
-            areImagesValid = NO;
-            *stop = YES;
-        }
-    }];
+    [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)
+     {
+         if ( imageUrl.length == 0 || ![imageUrl isKindOfClass:[NSString class]] )
+         {
+             areImagesValid = NO;
+             *stop = YES;
+         }
+     }];
     
     return areImagesValid;
 }
@@ -50,14 +47,16 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
 
 - (void)setEncoder
 {
-    self.encoderBlock = ^NSData *(NSData *data) {
+    self.encoderBlock = ^NSData *(NSData *data)
+    {
         return UIImagePNGRepresentation( [UIImage imageWithData:data] );
     };
 }
 
 - (void)setDecoder
 {
-    self.decoderBlock = ^id (NSData *data) {
+    self.decoderBlock = ^id (NSData *data)
+    {
         return [UIImage imageWithData:data];
     };
 }
@@ -98,9 +97,10 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     [self setDecoder];
     
     NSString *iconKeyPath = [self keyPathForImage:imageName forVote:voteType];
-    return [self getCachedFileForKeyPath:iconKeyPath completeCallback:^(NSData *data) {
-        callback( (UIImage *)data );
-    }];
+    return [self getCachedFileForKeyPath:iconKeyPath completeCallback:^(NSData *data)
+            {
+                callback( (UIImage *)data );
+            }];
 }
 
 - (UIImage *)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType
