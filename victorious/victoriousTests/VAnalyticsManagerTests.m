@@ -180,9 +180,9 @@
     NSString *macro = @"__macro__";
     NSString *urlWithMacro = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     
-    XCTAssertThrows( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
-    XCTAssertThrows( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
-    XCTAssertThrows( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
+    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
+    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
+    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
     
     XCTAssertThrows( [_analyticsManager stringFromString:@"" byReplacingString:macro withValue:@"valid_value"] );
     XCTAssertThrows( [_analyticsManager stringFromString:(NSString *)[NSObject new] byReplacingString:macro withValue:@"valid_value"] );

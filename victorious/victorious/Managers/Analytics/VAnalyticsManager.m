@@ -7,6 +7,7 @@
 //
 
 #import "VAnalyticsManager.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface VAnalyticsManager()
 
@@ -23,9 +24,11 @@
     {
         _registeredMacros = @[ kAnalyticsKeyTimeFrom,
                                kAnalyticsKeyTimeTo,
-                               kAnalyticsKeyUserTime,
+                               kAnalyticsKeyTimeCurrent,
+                               kAnalyticsKeyTimeStamp,
                                kAnalyticsKeyPageLAbel,
-                               kAnalyticsKeyStreamName,
+                               kAnalyticsKeyStreamId,
+                               kAnalyticsKeySequenceId,
                                kAnalyticsKeyPositionX,
                                kAnalyticsKeyPositionY,
                                kAnalyticsKeyNavigiationFrom,
@@ -82,7 +85,8 @@
         return NO;
     }
     
-    VLog( @"Track event with URL: %@", urlWithMacrosReplaced );
+    [self sendRequestWithUrlString:url];
+    
     return YES;
 }
 
@@ -102,7 +106,11 @@
         id value = parameters[ macro ];
         if ( value != nil )
         {
-            output = [self stringFromString:output byReplacingString:macro withValue:value];
+            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
+            if ( stringWithNextMacro != nil )
+            {
+                output = stringWithNextMacro;
+            }
         }
     }];
     
@@ -124,14 +132,26 @@
     {
         replacementValue = [NSString stringWithFormat:@"%@", (NSNumber *)value];
     }
-    else if ( [value isKindOfClass:[NSString class]] )
+    else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
     {
         replacementValue = value;
     }
     
-    NSAssert( replacementValue != nil && replacementValue.length > 0, @"Value must be convertible to a valid string by one of the previous techniues." );
+    if ( replacementValue == nil )
+    {
+        return nil;
+    }
     
     return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+}
+
+- (void)sendRequestWithUrlString:(NSString *)url
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               VLog( @"Tracking request sent. Error: %@", [connectionError localizedDescription] );
+                           }];
 }
 
 @end

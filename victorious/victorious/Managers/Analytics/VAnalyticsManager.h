@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "VAnalytics.h"
 #import "VAnalyticsConstants.h"
 
 @interface VAnalyticsManager : NSObject
