@@ -34,11 +34,11 @@
 
 #import "UIImageView+VLoadingAnimations.h"
 
-#import "VTappableHashTags.h"
+#import "VTappableTextManager.h"
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VStreamCellHeaderDelegate, VTappableHashTagsDelegate>
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VStreamCellHeaderDelegate, VTappableTextManagerDelegate>
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
@@ -49,7 +49,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (nonatomic, strong) NSTextStorage         *textStorage;
 @property (nonatomic, strong) NSLayoutManager       *containerLayoutManager;
 @property (nonatomic, strong) NSTextContainer       *textContainer;
-@property (nonatomic, strong) VTappableHashTags     *tappableHashTags;
+@property (nonatomic, strong) VTappableTextManager     *tappableTextManager;
 
 @end
 
@@ -73,14 +73,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.textStorage addLayoutManager:self.containerLayoutManager];
     
     NSError *error = nil;
-    self.tappableHashTags = [[VTappableHashTags alloc] init];
-    if ( ![self.tappableHashTags setDelegate:self error:&error] )
+    self.tappableTextManager = [[VTappableTextManager alloc] init];
+    if ( ![self.tappableTextManager setDelegate:self error:&error] )
     {
         VLog( @"Error setting delegate: %@", error.domain );
     }
     
     // Create text view and customize any further
-    self.descriptionTextView = [self.tappableHashTags createTappableTextViewWithFrame:self.bounds];
+    self.descriptionTextView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     [self.overlayView addSubview:self.descriptionTextView ];
     
     NSDictionary *views = @{ @"textView" : self.descriptionTextView };
@@ -102,11 +102,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self addSubview:self.commentHitboxButton];
 }
 
-- (void)hashTag:(NSString *)hashTag tappedInTextView:(UITextView *)textView
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
 {
     if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
     {
-        [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:hashTag];
+        [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:text];
     }
 }
 
@@ -167,6 +167,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[self attributesForCellText]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
+        self.tappableTextManager.tappableTextRanges = self.hashTagRanges;
+        
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.maximumLineHeight = 25;
         paragraphStyle.minimumLineHeight = 25;

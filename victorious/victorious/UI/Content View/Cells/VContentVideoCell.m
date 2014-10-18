@@ -28,14 +28,17 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+// iOS 7 bug when built with 6 http://stackoverflow.com/questions/15303100/uicollectionview-cell-subviews-do-not-resize
+    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.contentView.translatesAutoresizingMaskIntoConstraints = YES;
+// End iOS 7 bug when built with 6
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
                                                                                    bundle:nil];
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-    
+
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
