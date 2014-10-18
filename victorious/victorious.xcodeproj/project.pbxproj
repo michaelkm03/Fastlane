@@ -366,7 +366,7 @@
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
-		D89AC2BD19F1FD6B00921131 /* VHistogramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramView.m */; };
+		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
 		D89AC2BF19F1FEA700921131 /* VHistogramDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */; };
 		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
@@ -1296,8 +1296,8 @@
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramDataSource.h; sourceTree = "<group>"; };
 		D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSource.m; sourceTree = "<group>"; };
-		D89AC2BA19F1FD6B00921131 /* VHistogramView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramView.h; sourceTree = "<group>"; };
-		D89AC2BB19F1FD6B00921131 /* VHistogramView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramView.m; sourceTree = "<group>"; };
+		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
+		D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramBarView.m; sourceTree = "<group>"; };
 		D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSourceTests.m; sourceTree = "<group>"; };
 		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
 		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
@@ -3137,8 +3137,8 @@
 			children = (
 				D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */,
 				D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */,
-				D89AC2BA19F1FD6B00921131 /* VHistogramView.h */,
-				D89AC2BB19F1FD6B00921131 /* VHistogramView.m */,
+				D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */,
+				D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */,
 			);
 			path = Histogram;
 			sourceTree = "<group>";
@@ -3609,7 +3609,6 @@
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				D8D73A6919F072A800E6955C /* Firework_v01.00002.png in Resources */,
-				D811BBC019B92F75007398BF /* homeHeaderImage@2x.png in Resources */,
 				D8D73AD819F072A800E6955C /* WATERBALLOON_V01.00016.png in Resources */,
 				D8D73AAC19F072A800E6955C /* Lightening_V01.00017.png in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
@@ -4111,7 +4110,7 @@
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
-				D89AC2BD19F1FD6B00921131 /* VHistogramView.m in Sources */,
+				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
 				BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */,
 				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,

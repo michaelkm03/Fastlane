@@ -11,6 +11,7 @@
 @interface VHistogramDataSource ()
 
 @property (nonatomic, strong) NSArray *dataPoints;
+@property (nonatomic, assign) NSInteger largestPoint;
 
 @end
 
@@ -21,11 +22,20 @@
     self = [super init];
     if (self)
     {
+        // Check values
+        NSAssert((dataPoints.count > 0), @"Must pass in at lest 1 data point");
         [dataPoints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
         {
-            NSAssert([obj isKindOfClass:[NSValue class]], @"Must pass in an array of NSValue wrapped NSIntegers");
+            NSAssert([obj isKindOfClass:[NSNumber class]], @"Must pass in an array of NSValue wrapped NSIntegers");
             NSNumber *point = (NSNumber *)obj;
-            NSAssert(([point integerValue] > 0), @"Must pass in positive values");
+            NSAssert(([point integerValue] >= 0), @"Must pass in positive values, passed in: %li", (long)[point integerValue]);
+        }];
+        
+        _dataPoints = dataPoints;
+        _largestPoint = [[dataPoints firstObject] integerValue];
+        [dataPoints enumerateObjectsUsingBlock:^(NSNumber *dataPoint, NSUInteger idx, BOOL *stop)
+        {
+            _largestPoint = ([dataPoint integerValue] > _largestPoint) ? [dataPoint integerValue] : _largestPoint;
         }];
     }
     return self;
@@ -33,15 +43,14 @@
 
 #pragma mark - VHistogramDataSource
 
-- (NSInteger)numberOfSlicesForHistogramView:(VHistogramView *)histogramView
+- (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView forBarIndex:(NSInteger)barIndex totalBars:(NSInteger)totalBars
 {
-    return 0;
-}
-
-- (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
-                       forSliceIndex:(NSInteger)sliceIndex
-{
-    return 0.0f;
+    float percentThroughTimeline = (float) barIndex / (totalBars);
+    NSUInteger dataPointIndex = lroundf(percentThroughTimeline);
+    NSNumber *dataPointForBarIndex = [self.dataPoints objectAtIndex:dataPointIndex];
+    
+    CGFloat barHeightPercentage = (float)[dataPointForBarIndex integerValue] / self.largestPoint;
+    return barHeightPercentage;
 }
 
 @end

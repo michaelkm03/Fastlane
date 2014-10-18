@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 #import "VThemeManager.h"
 
@@ -23,14 +23,14 @@ static const CGFloat kDefaultSpacing = 1.5f;
 static const CGFloat kDarkeningAlpha = 0.3f;
 static const CGFloat kColorAlpha = 0.6f;
 
-@interface VHistogramView ()
+@interface VHistogramBarView ()
 
 @property (nonatomic, strong) NSMutableArray *coloredSlices;
 @property (nonatomic, strong) NSMutableArray *sliceViews;
 
 @end
 
-@implementation VHistogramView
+@implementation VHistogramBarView
 
 #pragma mark - Initializers
 
@@ -91,18 +91,6 @@ static const CGFloat kColorAlpha = 0.6f;
 
 #pragma mark - Public Methods
 
-- (NSInteger)numberOfSlices
-{
-    return 1;
-}
-
-- (NSInteger)desiredSlicesWithFrame:(CGRect)frame
-                          tickWidth:(CGFloat)tickWidth
-                        tickSpacing:(CGFloat)tickSpacing
-{
-    return 1;
-}
-
 - (void)reloadData
 {
     [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *dimmedLayer, NSUInteger idx, BOOL *stop)
@@ -121,7 +109,8 @@ static const CGFloat kColorAlpha = 0.6f;
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
         CGFloat heightForSlice = [self.dataSource histogramPercentageHeight:self
-                                                              forSliceIndex:sliceIndex];
+                                                                forBarIndex:sliceIndex
+                                                                  totalBars:[self totalSlices]];
         heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];

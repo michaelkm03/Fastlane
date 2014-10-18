@@ -13,7 +13,7 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 // View Categories
 #import "UIView+VShadows.h"
@@ -917,12 +917,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VHistogramDataSource
 
-- (NSInteger)numberOfSlicesForHistogramView:(VHistogramView *)histogramView
+- (NSInteger)numberOfSlicesForHistogramView:(VHistogramBarView *)histogramView
 {
     return 0;
 }
 
-- (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
+- (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView
                        forSliceIndex:(NSInteger)sliceIndex
 {
     return arc4random_uniform(CGRectGetHeight(histogramView.bounds));

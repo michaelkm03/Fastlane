@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
-@interface VHistogramDataSource : NSObject <VHistogramDataSource>
+@interface VHistogramDataSource : NSObject <VHistogramBarViewDataSource>
 
 /**
  Initializes a new VHistogramDataSource.
