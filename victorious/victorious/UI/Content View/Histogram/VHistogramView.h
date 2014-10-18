@@ -12,9 +12,9 @@
 
 @protocol VHistogramDataSource <NSObject>
 
-- (CGFloat)histogram:(VHistogramView *)histogramView
- heightForSliceIndex:(NSInteger)sliceIndex
-         totalSlices:(NSInteger)totalSlices;
+- (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
+                       forSliceIndex:(NSInteger)sliceIndex
+                         totalSlices:(NSInteger)totalSlices;
 
 @end
 

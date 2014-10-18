@@ -108,10 +108,8 @@ static const CGFloat kColorAlpha = 0.6f;
     
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
-        CGFloat heightForSlice = [self.dataSource histogram:self
-                                        heightForSliceIndex:sliceIndex
-                                                totalSlices:[self totalSlices]];
-        
+        CGFloat heightForSlice = [self.dataSource histogramPercentageHeight:self
+                                                              forSliceIndex:sliceIndex totalSlices:[self totalSlices]];
         heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];
