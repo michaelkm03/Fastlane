@@ -42,6 +42,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @property (nonatomic, readwrite) CMTime currentTime;
 
+@property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong) VTracking *trackingItem;
 
@@ -86,11 +87,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(currentItem))
                      options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                     context:NULL];
+                     context:nil];
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(rate))
                      options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                     context:NULL];
+                     context:nil];
     
     VCVideoPlayerViewController *__weak weakSelf = self;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
@@ -429,8 +430,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ kTrackingKeyTimeCurrent : @( self.currentTime.value ) };
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete25 andParameters:params];
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete25 andParameters:self.trackingParameters];
         }
         self.finishedFirstQuartile = YES;
     }
@@ -446,8 +446,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ kTrackingKeyTimeCurrent : @( self.currentTime.value ) };
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete50 andParameters:params];
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete50 andParameters:self.trackingParameters];
         }
         self.finishedMidpoint = YES;
     }
@@ -463,8 +462,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ kTrackingKeyTimeCurrent : @( self.currentTime.value ) };
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete75 andParameters:params];
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete75 andParameters:self.trackingParameters];
         }
         self.finishedThirdQuartile = YES;
     }
@@ -502,12 +500,39 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
         self.hasCaculatedItemTime = NO;
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(duration))         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
+        [currentItem addObserver:self
+                      forKeyPath:@"playbackBufferEmpty"
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:@"playbackLikelyToKeepUp"
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(status))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(tracks))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(duration))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemDidPlayToEndTime:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:currentItem];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemFailedToPlayToEndTime:)
+                                                     name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
 }
 
@@ -624,8 +649,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             }
             if ( self.isTrackingEnabled )
             {
-                NSDictionary *params = @{ kTrackingKeyTimeCurrent : @( self.currentTime.value ) };
-                [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete100 andParameters:params];
+                [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete100 andParameters:self.trackingParameters];
             }
             self.startedVideo          = NO;
             self.finishedFirstQuartile = NO;
@@ -679,8 +703,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 }
                 if ( self.isTrackingEnabled )
                 {
-                    NSDictionary *params = @{ kTrackingKeyTimeCurrent : @( self.currentTime.value ) };
-                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStart andParameters:params];
+                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStart andParameters:self.trackingParameters];
                 }
                 self.toolbarView.playButton.selected = YES;
                 [self startToolbarTimer];
@@ -743,6 +766,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     {
                         [self.delegate videoPlayerFailed:self];
                     }
+                    if ( self.isTrackingEnabled )
+                    {
+                        [self.trackingManager trackEventWithUrls:self.trackingItem.videoError andParameters:self.trackingParameters];
+                    }
                     break;
                 }
             }
@@ -780,6 +807,24 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }
     }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackBufferEmpty"])
+    {
+        if ( self.player.currentItem.playbackBufferEmpty )
+        {
+            CMTime time = self.currentTime;
+            CMTime duration = self.currentTime;
+            BOOL isAtEnd = time.value == duration.value;
+            if ( !isAtEnd && self.isTrackingEnabled )
+            {
+                [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+            }
+        }
+    }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackLikelyToKeepUp"])
+    {
+        // Do nothing for now
+    }
+    
 }
 
 #pragma mark - Notifiers
@@ -797,6 +842,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 }
 
 #pragma mark - Tracking
+
+- (NSDictionary *)trackingParameters
+{
+    return @{ kTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ) };
+}
 
 - (BOOL)isTrackingEnabled
 {
