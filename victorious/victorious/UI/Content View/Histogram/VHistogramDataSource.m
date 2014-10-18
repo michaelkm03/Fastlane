@@ -46,7 +46,7 @@
 - (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView forBarIndex:(NSInteger)barIndex totalBars:(NSInteger)totalBars
 {
     float percentThroughTimeline = (float) barIndex / (totalBars);
-    NSUInteger dataPointIndex = lroundf(percentThroughTimeline);
+    NSUInteger dataPointIndex = (percentThroughTimeline * (self.dataPoints.count));
     NSNumber *dataPointForBarIndex = [self.dataPoints objectAtIndex:dataPointIndex];
     
     CGFloat barHeightPercentage = (float)[dataPointForBarIndex integerValue] / self.largestPoint;

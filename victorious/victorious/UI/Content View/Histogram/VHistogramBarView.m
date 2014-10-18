@@ -80,6 +80,12 @@ static const CGFloat kColorAlpha = 0.6f;
     }];
 }
 
+- (void)setDataSource:(id<VHistogramBarViewDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    [self reloadData];
+}
+
 - (NSInteger)totalSlices
 {
     CGFloat spacePerTick = self.tickSpacing + self.tickWidth;
@@ -111,7 +117,8 @@ static const CGFloat kColorAlpha = 0.6f;
         CGFloat heightForSlice = [self.dataSource histogramPercentageHeight:self
                                                                 forBarIndex:sliceIndex
                                                                   totalBars:[self totalSlices]];
-        heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
+        
+        heightForSlice = fminf(fmaxf(heightForSlice * CGRectGetHeight(self.bounds), kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];
         [self.sliceViews addObject:sliceForIndex];

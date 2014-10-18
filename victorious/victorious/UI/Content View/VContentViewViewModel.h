@@ -12,6 +12,8 @@
 
 #import "VExperienceEnhancerController.h"
 
+#import "VHistogramDataSource.h"
+
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
@@ -212,5 +214,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return Whether or not the media for the comment is a video.
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+
+@property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
 
 @end

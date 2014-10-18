@@ -45,6 +45,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
+@property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 
 @end
 
@@ -446,6 +447,15 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     }
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
+}
+
+- (VHistogramDataSource *)histogramDataSource
+{
+    if (!_histogramDataSource)
+    {
+        _histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2, @3, @2, @1]];
+    }
+    return _histogramDataSource;
 }
 
 @end

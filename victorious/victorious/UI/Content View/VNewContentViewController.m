@@ -63,7 +63,7 @@
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -604,7 +604,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             
-            self.histogramCell.histogramView.dataSource = self;
+            self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
             [self.histogramCell.histogramView reloadData];
             
             return self.histogramCell;
@@ -913,19 +913,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-#pragma mark - VHistogramDataSource
-
-- (NSInteger)numberOfSlicesForHistogramView:(VHistogramBarView *)histogramView
-{
-    return 0;
-}
-
-- (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView
-                       forSliceIndex:(NSInteger)sliceIndex
-{
-    return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }
 
 @end

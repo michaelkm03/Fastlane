@@ -151,6 +151,21 @@
                                                                      forBarIndex:4
                                                                        totalBars:5];
     XCTAssert( (oneHunderPercentHeight == 1.0f) );
+    
+    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2, @3, @2, @1]];
+    CGFloat beginningPoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                     forBarIndex:0
+                                                                       totalBars:10];
+    XCTAssert( ((beginningPoint > 0.33) && (beginningPoint < 0.34) ) );
+    CGFloat middlePoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                  forBarIndex:5
+                                                                    totalBars:10];
+    XCTAssert( (middlePoint == 1.0f), @"%f", middlePoint );
+    CGFloat endPoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                               forBarIndex:9
+                                                                 totalBars:10];
+    XCTAssert( ((endPoint > 0.33) && (beginningPoint < 0.34)) );
+    
 }
 
 - (void)testMoreDataPointsThanBars
