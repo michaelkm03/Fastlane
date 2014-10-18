@@ -91,6 +91,18 @@ static const CGFloat kColorAlpha = 0.6f;
 
 #pragma mark - Public Methods
 
+- (NSInteger)numberOfSlices
+{
+    return 1;
+}
+
+- (NSInteger)desiredSlicesWithFrame:(CGRect)frame
+                          tickWidth:(CGFloat)tickWidth
+                        tickSpacing:(CGFloat)tickSpacing
+{
+    return 1;
+}
+
 - (void)reloadData
 {
     [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *dimmedLayer, NSUInteger idx, BOOL *stop)
@@ -109,7 +121,7 @@ static const CGFloat kColorAlpha = 0.6f;
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
         CGFloat heightForSlice = [self.dataSource histogramPercentageHeight:self
-                                                              forSliceIndex:sliceIndex totalSlices:[self totalSlices]];
+                                                              forSliceIndex:sliceIndex];
         heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];

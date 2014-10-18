@@ -33,9 +33,13 @@
 
 #pragma mark - VHistogramDataSource
 
+- (NSInteger)numberOfSlicesForHistogramView:(VHistogramView *)histogramView
+{
+    return 0;
+}
+
 - (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
                        forSliceIndex:(NSInteger)sliceIndex
-                         totalSlices:(NSInteger)totalSlices
 {
     return 0.0f;
 }

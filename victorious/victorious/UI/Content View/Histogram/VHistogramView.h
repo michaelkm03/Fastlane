@@ -12,9 +12,10 @@
 
 @protocol VHistogramDataSource <NSObject>
 
+- (NSInteger)numberOfSlicesForHistogramView:(VHistogramView *)histogramView;
+
 - (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
-                       forSliceIndex:(NSInteger)sliceIndex
-                         totalSlices:(NSInteger)totalSlices;
+                       forSliceIndex:(NSInteger)sliceIndex;
 
 @end
 
@@ -25,13 +26,7 @@
  */
 @property (nonatomic, assign) CGFloat progress;
 
-
 @property (nonatomic, weak) id <VHistogramDataSource> dataSource;
-
-/**
- *  Each slice of the histogram is the same width. So this is derived by the space given to the view.
- */
-@property (nonatomic, readonly) NSInteger totalSlices;
 
 /**
  *  In points. Defaults to 2.
@@ -47,5 +42,11 @@
  *  Prompts a query of the data source.
  */
 - (void)reloadData;
+
+- (NSInteger)numberOfSlices;
+
+- (NSInteger)desiredSlicesWithFrame:(CGRect)frame
+                          tickWidth:(CGFloat)tickWidth
+                        tickSpacing:(CGFloat)tickSpacing;
 
 @end

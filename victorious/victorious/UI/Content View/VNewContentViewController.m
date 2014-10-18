@@ -912,9 +912,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VHistogramDataSource
 
+- (NSInteger)numberOfSlicesForHistogramView:(VHistogramView *)histogramView
+{
+    return 0;
+}
+
 - (CGFloat)histogramPercentageHeight:(VHistogramView *)histogramView
                        forSliceIndex:(NSInteger)sliceIndex
-                         totalSlices:(NSInteger)totalSlices
 {
     return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }

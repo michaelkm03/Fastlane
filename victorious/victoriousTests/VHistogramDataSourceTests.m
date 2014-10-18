@@ -37,8 +37,8 @@
 {
     XCTAssert([[[VHistogramDataSource alloc] init] conformsToProtocol:@protocol(VHistogramDataSource)], @"Pass");
     XCTAssertNoThrow([self.histogramDataSource histogramPercentageHeight:nil
-                                                            forSliceIndex:0
-                                                              totalSlices:0]);
+                                                           forSliceIndex:0]);
+    XCTAssertNoThrow([self.histogramDataSource numberOfSlicesForHistogramView:nil]);
 }
 
 - (void)testBadData
