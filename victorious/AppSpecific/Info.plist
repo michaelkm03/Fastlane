@@ -93,6 +93,8 @@
 	</array>
 	<key>VictoriousAppID</key>
 	<integer>1</integer>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

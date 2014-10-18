@@ -27,6 +27,7 @@
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Discover"              =   "Discover";
+"Share"                 =   "Share";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -72,6 +73,8 @@
 
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
+"LeaveACommentAt"       =   "Leave a comment at ";
+"LaveAComment"          =   "Leave a comment";
 
 "NoFollowersTitle"      =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
 "NoFollowersMessage"    =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
@@ -336,13 +339,16 @@
 "Report/Flag"           =   "Report/Flag";
 "CreatedBy"             =   "CREATED BY";
 "remixes"               =   "remixes";
+"Remix"                 =   "Remix";
 "reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
 "REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
+"Reposted"              =   "Reposted";
 "RepostContentView"     =   " REPOST";
 "RepostedContentView"   =   " REPOSTED";
-"comments"              =   "comments";
+"Comments"              =   "COMMENTS";
+"Comment"               =   "Comment";
 
 "repostedFromFormat"      =   "Repost from %@";
 "remixedFromFormat"       =   "Remix from %@";

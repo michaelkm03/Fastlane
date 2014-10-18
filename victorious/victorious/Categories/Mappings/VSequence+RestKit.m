@@ -33,6 +33,7 @@
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
 //                                  @"expires_at"     :   VSelectorName(expiresAt),
+                                  @"permissions"    :   VSelectorName(permissions),
                                   @"parent_user_id" :   VSelectorName(parentUserId),
                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
