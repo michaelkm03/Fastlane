@@ -48,7 +48,7 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
 
     self.commentCountLabel.attributedText = [[NSAttributedString alloc] initWithString:commentText
                                                                             attributes:@{
-                                                                                         NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font],
+                                                                                         NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font],
                                                                                          NSForegroundColorAttributeName : [UIColor colorWithRed:35/255.0f green:35/255.0f blue:35/255.0f alpha:1.0f]
                                                                                          }];
 }
