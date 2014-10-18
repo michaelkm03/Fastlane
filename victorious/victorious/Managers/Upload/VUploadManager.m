@@ -127,7 +127,7 @@ static inline BOOL isSessionQueue()
         NSArray *savedTasks = [self.tasksInProgressSerializer uploadTasksFromDisk];
         if (savedTasks)
         {
-            self.taskInformation = [savedTasks mutableCopy];
+            self.taskInformation = [self arrayOfTasksByFilteringOutInvalidTasks:savedTasks];
         }
         else
         {
@@ -137,7 +137,7 @@ static inline BOOL isSessionQueue()
         NSArray *pendingTasks = [self.tasksPendingSerializer uploadTasksFromDisk];
         if (pendingTasks)
         {
-            self.pendingTaskInformation = [pendingTasks mutableCopy];
+            self.pendingTaskInformation = [self arrayOfTasksByFilteringOutInvalidTasks:pendingTasks];
         }
         else
         {
@@ -186,6 +186,25 @@ static inline BOOL isSessionQueue()
     {
         completion();
     }
+}
+
+- (NSMutableArray *)arrayOfTasksByFilteringOutInvalidTasks:(NSArray *)unfilteredTasks
+{
+    NSMutableArray *filteredTasks = [[NSMutableArray alloc] initWithCapacity:unfilteredTasks.count];
+    for (VUploadTaskInformation *uploadTask in unfilteredTasks)
+    {
+        if ([uploadTask isKindOfClass:[VUploadTaskInformation class]] && [uploadTask.bodyFilename isKindOfClass:[NSString class]])
+        {
+            NSURL *bodyFileURL = [[self uploadBodyDirectoryURL] URLByAppendingPathComponent:uploadTask.bodyFilename];
+            BOOL isDirectory = YES;
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:bodyFileURL.path isDirectory:&isDirectory] && !isDirectory)
+            {
+                [filteredTasks addObject:uploadTask];
+            }
+        }
+    }
+    return filteredTasks;
 }
 
 - (BOOL)isYourBackgroundURLSession:(NSString *)backgroundSessionIdentifier
@@ -292,10 +311,11 @@ static inline BOOL isSessionQueue()
         {
             dispatch_async(self.sessionQueue, ^(void)
             {
-                NSArray *tasks = [self.taskInformation copy];
+                NSArray *inProgressTasks = [self.taskInformation copy];
+                NSArray *pendingTasks = [self.pendingTaskInformation copy];
                 dispatch_async(self.callbackQueue, ^(void)
                 {
-                    completion(tasks);
+                    completion([pendingTasks arrayByAddingObjectsFromArray:inProgressTasks]);
                 });
             });
         }];
