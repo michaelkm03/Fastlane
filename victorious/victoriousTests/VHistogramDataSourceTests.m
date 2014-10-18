@@ -106,6 +106,51 @@
                                                                      forBarIndex:3
                                                                        totalBars:4];
     XCTAssert( (oneHunderPercentHeight == 1.0f) );
+    
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                 forBarIndex:0
+                                                                   totalBars:3];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                 forBarIndex:0
+                                                                   totalBars:3];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+    
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                             forBarIndex:1
+                                                               totalBars:3];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+    
+    oneHunderPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                     forBarIndex:2
+                                                                       totalBars:3];
+    XCTAssert( (oneHunderPercentHeight == 1.0f) );
+    
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                 forBarIndex:0
+                                                                   totalBars:5];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+    
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                 forBarIndex:1
+                                                                   totalBars:5];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+    
+    fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                 forBarIndex:2
+                                                                   totalBars:5];
+    XCTAssert( (fiftyPercentHeight == 0.5f) );
+    
+    oneHunderPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                     forBarIndex:3
+                                                                       totalBars:5];
+    XCTAssert( (oneHunderPercentHeight == 1.0f) );
+    
+    oneHunderPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                                     forBarIndex:4
+                                                                       totalBars:5];
+    XCTAssert( (oneHunderPercentHeight == 1.0f) );
 }
 
 - (void)testMoreDataPointsThanBars
