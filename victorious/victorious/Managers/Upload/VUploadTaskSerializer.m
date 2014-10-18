@@ -30,7 +30,8 @@
         uploadTasks = [[NSMutableArray alloc] initWithCapacity:unfilteredUploadTasks.count];
         for (VUploadTaskInformation *uploadTask in unfilteredUploadTasks)
         {
-            if ([uploadTask isKindOfClass:[VUploadTaskInformation class]] && [[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
+            // TODO
+            if ([uploadTask isKindOfClass:[VUploadTaskInformation class]]) // && [[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
             {
                 [uploadTasks addObject:uploadTask];
             }

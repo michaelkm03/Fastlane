@@ -62,14 +62,16 @@
     
     self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
     
-    NSString *filename = [[NSUUID UUID] UUIDString];
-    self.bodyFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
+    self.bodyFileURL = [self.uploadManager urlForNewUploadBodyFile];
+    NSURL *bodyFileDirectoryURL = [self.bodyFileURL URLByDeletingLastPathComponent];
+    [[NSFileManager defaultManager] createDirectoryAtURL:bodyFileDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
+    
     NSData *body = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
     [body writeToURL:self.bodyFileURL atomically:YES];
     
     self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com/"]]
                                                          previewImage:nil
-                                                          bodyFileURL:self.bodyFileURL
+                                                          bodyFilename:[self.bodyFileURL lastPathComponent]
                                                           description:nil];
 }
 

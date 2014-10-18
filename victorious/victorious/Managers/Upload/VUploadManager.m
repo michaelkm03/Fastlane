@@ -208,7 +208,9 @@ static inline BOOL isSessionQueue()
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     [self _startURLSessionWithCompletion:^(void)
     {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
+        NSURL *uploadBodyFileURL = [[self uploadBodyDirectoryURL] URLByAppendingPathComponent:uploadTask.bodyFilename];
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:[uploadBodyFileURL path]])
         {
             if (complete)
             {
@@ -248,7 +250,7 @@ static inline BOOL isSessionQueue()
         
         NSMutableURLRequest *request = [uploadTask.request mutableCopy];
         [self.objectManager updateHTTPHeadersInRequest:request];
-        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadTask.bodyFileURL];
+        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadBodyFileURL];
         
         if (!uploadSessionTask)
         {
@@ -380,7 +382,7 @@ static inline BOOL isSessionQueue()
     [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
     
     NSError *error = nil;
-    if (![[NSFileManager defaultManager] removeItemAtURL:taskInformation.bodyFileURL error:&error])
+    if (![[NSFileManager defaultManager] removeItemAtURL:[[self uploadBodyDirectoryURL] URLByAppendingPathComponent:taskInformation.bodyFilename] error:&error])
     {
         VLog(@"Error deleting finished upload body: %@", [error localizedDescription]);
     }
@@ -420,9 +422,8 @@ static inline BOOL isSessionQueue()
 
 - (NSURL *)urlForNewUploadBodyFile
 {
-    NSURL *directory = [[self configurationDirectoryURL] URLByAppendingPathComponent:kUploadBodySubdirectory];
     NSString *uniqueID = [[NSUUID UUID] UUIDString];
-    return [directory URLByAppendingPathComponent:uniqueID];
+    return [[self uploadBodyDirectoryURL] URLByAppendingPathComponent:uniqueID];
 }
 
 - (NSURL *)urlForInProgressTaskList
@@ -438,6 +439,11 @@ static inline BOOL isSessionQueue()
 - (NSURL *)configurationDirectoryURL
 {
     return [[self documentsDirectory] URLByAppendingPathComponent:kDirectoryName];
+}
+
+- (NSURL *)uploadBodyDirectoryURL
+{
+    return [[self configurationDirectoryURL] URLByAppendingPathComponent:kUploadBodySubdirectory];
 }
 
 - (NSURL *)documentsDirectory
