@@ -33,12 +33,12 @@
 /**
  *  In points. Defaults to 2.
  */
-@property (nonatomic, assign) CGFloat tickWidth;
+@property (nonatomic, assign, readonly) CGFloat tickWidth;
 
 /**
  *  In points.
  */
-@property (nonatomic, assign) CGFloat tickSpacing;
+@property (nonatomic, assign, readonly) CGFloat tickSpacing;
 
 /**
  *  Prompts a query of the data source.
