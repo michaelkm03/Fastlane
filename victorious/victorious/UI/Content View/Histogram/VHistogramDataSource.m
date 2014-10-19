@@ -43,7 +43,9 @@
 
 #pragma mark - VHistogramDataSource
 
-- (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView forBarIndex:(NSInteger)barIndex totalBars:(NSInteger)totalBars
+- (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView
+                         forBarIndex:(NSInteger)barIndex
+                           totalBars:(NSInteger)totalBars
 {
     float percentThroughTimeline = (float) barIndex / (totalBars);
     NSUInteger dataPointIndex = (percentThroughTimeline * (self.dataPoints.count));
