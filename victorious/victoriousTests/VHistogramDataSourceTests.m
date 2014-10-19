@@ -213,6 +213,23 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     XCTAssert( [self compare:average
                toSecondPoint:1.0f
                 withAccuracy:kHistogramDataSourceAccuracy], @"%f should equal 1.0f", average );
+    
+    
+    dataPoints = @[@0, @100,@1,@1];
+    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                      forBarIndex:0
+                                                        totalBars:2];
+    XCTAssert( average == 0.5f );
+    
+    dataPoints = @[@0, @0, @100, @0, @0, @0, @0, @0, @0];
+    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
+                                                      forBarIndex:0
+                                                        totalBars:3];
+    XCTAssert( [self compare:average
+               toSecondPoint:0.33f
+                withAccuracy:kHistogramDataSourceAccuracy]);
 }
 
 @end
