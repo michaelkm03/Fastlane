@@ -29,6 +29,7 @@
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
+#import "VContentPollCell.h"
 //#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
@@ -330,6 +331,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                  forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -592,8 +595,12 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 return videoCell;
             }
             case VContentViewTypePoll:
-                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
+            {
+                VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+                
+                return pollCell;
+            }
         }
         case VContentViewSectionHistogram:
         {
@@ -747,15 +754,29 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return [self.videoSizeValue CGSizeValue];
             }
-            return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            switch (self.viewModel.type)
+            {
+                case VContentViewTypeInvalid:
+                    return CGSizeZero;
+                case VContentViewTypeImage:
+                    return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypeVideo:
+                    return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypePoll:
+                    return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
         }
         case VContentViewSectionHistogram:
-            if (self.viewModel.type == VContentViewTypeImage)
+            if (self.viewModel.type == VContentViewTypeVideo)
+            {
+                return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
+            return CGSizeZero;
+        case VContentViewSectionExperienceEnhancers:
+            if (self.viewModel.type == VContentViewTypePoll)
             {
                 return CGSizeZero;
             }
-            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-        case VContentViewSectionExperienceEnhancers:
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
         {
@@ -763,7 +784,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
                                                andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
-            
         case VContentViewSectionCount:
             return CGSizeZero;
     }

@@ -8,11 +8,13 @@
 
 #import "VContentPollCell.h"
 
+static const CGFloat kDesiredPollCellHeight = 214.0f;
+
 @implementation VContentPollCell
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+    return CGSizeMake(CGRectGetWidth(bounds), kDesiredPollCellHeight);
 }
 
 @end

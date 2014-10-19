@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="vZY-Jm-za8" customClass="VContentPollCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KbT-8J-Bx0" userLabel="Poll Image View A">
+                        <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
+                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="8MO-Fd-OEQ"/>
+                <constraint firstItem="36J-hZ-MxW" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="9dR-pp-XHe"/>
+                <constraint firstItem="36J-hZ-MxW" firstAttribute="width" secondItem="KbT-8J-Bx0" secondAttribute="width" id="B4f-sS-VlI"/>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="FBs-qC-yll"/>
+                <constraint firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="G2s-Dy-440"/>
+                <constraint firstItem="36J-hZ-MxW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="trailing" constant="2" id="NHH-Qc-izN"/>
+                <constraint firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="T2W-Yv-sbY"/>
+                <constraint firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="UsZ-qL-enn"/>
+            </constraints>
+            <size key="customSize" width="250" height="223"/>
+            <point key="canvasLocation" x="431" y="487.5"/>
+        </collectionViewCell>
+    </objects>
+</document>
