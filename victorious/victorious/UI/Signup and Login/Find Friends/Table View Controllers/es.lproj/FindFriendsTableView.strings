@@ -1,0 +1,21 @@
+
+/* Class = "IBUILabel"; text = "Busca e invita a tus amigos de tus contactos"; ObjectID = "7dw-z9-qes"; */
+"7dw-z9-qes.text" = "Busca e invita a tus amigos de tus contactos";
+
+/* Class = "IBUIButton"; normalTitle = "Reintentar"; ObjectID = "F5x-Zn-Qdu"; */
+"F5x-Zn-Qdu.normalTitle" = "Reintentar";
+
+/* Class = "IBUIButton"; normalTitle = "Invite Your Friends"; ObjectID = "STB-yT-Q8k"; */
+"STB-yT-Q8k.normalTitle" = "Invite Your Friends";
+
+/* Class = "IBUIButton"; normalTitle = "Agregar todo"; ObjectID = "hcw-4q-StV"; */
+"hcw-4q-StV.normalTitle" = "Agregar todo";
+
+/* Class = "IBUILabel"; text = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura."; ObjectID = "hgn-BR-Oom"; */
+"hgn-BR-Oom.text" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.";
+
+/* Class = "IBUILabel"; text = "Hubo un problema para encontrar a tus amigos"; ObjectID = "mIW-p6-1ZK"; */
+"mIW-p6-1ZK.text" = "Hubo un problema para encontrar a tus amigos";
+
+/* Class = "IBUIButton"; normalTitle = "Ten acceso a tus contactos"; ObjectID = "tbC-61-nna"; */
+"tbC-61-nna.normalTitle" = "Ten acceso a tus contactos";

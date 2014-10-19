@@ -1,0 +1,69 @@
+
+/* Class = "IBUINavigationItem"; title = "Términos del Servicio"; ObjectID = "4Bo-2y-3qa"; */
+"4Bo-2y-3qa.title" = "Términos del Servicio";
+
+/* Class = "IBUILabel"; text = "Chromecast"; ObjectID = "4KJ-ZF-Avs"; */
+"4KJ-ZF-Avs.text" = "Chromecast";
+
+/* Class = "IBUITableViewController"; title = "Ambiente del servidor"; ObjectID = "6fa-Sd-wUR"; */
+"6fa-Sd-wUR.title" = "Ambiente del servidor";
+
+/* Class = "IBUITextField"; placeholder = "Por lo menos 8 caracteres"; ObjectID = "AVA-KF-9I3"; */
+"AVA-KF-9I3.placeholder" = "Por lo menos 8 caracteres";
+
+/* Class = "IBUILabel"; text = "Nueva"; ObjectID = "Fjl-zb-Wox"; */
+"Fjl-zb-Wox.text" = "Nueva";
+
+/* Class = "IBUINavigationItem"; title = "Cambiar contraseña"; ObjectID = "LKP-Bv-quY"; */
+"LKP-Bv-quY.title" = "Cambiar contraseña";
+
+/* Class = "IBUIButton"; normalTitle = "Cerrar sesión"; ObjectID = "LM5-sK-eej"; */
+"LM5-sK-eej.normalTitle" = "Cerrar sesión";
+
+/* Class = "IBUILabel"; text = "Etiqueta"; ObjectID = "OZa-mN-lgJ"; */
+"OZa-mN-lgJ.text" = "Etiqueta";
+
+/* Class = "IBUINavigationItem"; title = "Ambiente del servidor"; ObjectID = "Pog-vT-DdP"; */
+"Pog-vT-DdP.title" = "Ambiente del servidor";
+
+/* Class = "IBUILabel"; text = "Subtítulo"; ObjectID = "U7G-Km-0yw"; */
+"U7G-Km-0yw.text" = "Subtítulo";
+
+/* Class = "IBUITextField"; placeholder = "Confirmar la nueva contraseña"; ObjectID = "YiX-cN-FLE"; */
+"YiX-cN-FLE.placeholder" = "Confirmar la nueva contraseña";
+
+/* Class = "IBUILabel"; text = "Retroalimentación/Ayuda"; ObjectID = "Ywp-Nm-FQ2"; */
+"Ywp-Nm-FQ2.text" = "Retroalimentación/Ayuda";
+
+/* Class = "IBUILabel"; text = "Confirmar"; ObjectID = "b6b-sA-Tu6"; */
+"b6b-sA-Tu6.text" = "Confirmar";
+
+/* Class = "IBUINavigationItem"; title = "Política de Privacidad"; ObjectID = "dAg-zH-vd2"; */
+"dAg-zH-vd2.title" = "Política de Privacidad";
+
+/* Class = "IBUILabel"; text = "Ambiente del servidor"; ObjectID = "jjo-ti-snK"; */
+"jjo-ti-snK.text" = "Ambiente del servidor";
+
+/* Class = "IBUILabel"; text = "No hay conexión"; ObjectID = "krN-Xu-bYv"; */
+"krN-Xu-bYv.text" = "No hay conexión";
+
+/* Class = "IBUILabel"; text = "Términos del Servicio"; ObjectID = "mrn-LJ-NES"; */
+"mrn-LJ-NES.text" = "Términos del Servicio";
+
+/* Class = "IBUITextField"; placeholder = "Tu contraseña actual"; ObjectID = "oCZ-Jb-QHR"; */
+"oCZ-Jb-QHR.placeholder" = "Tu contraseña actual";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Acerca de"; ObjectID = "pML-Pk-7g5"; */
+"pML-Pk-7g5.headerTitle" = "Acerca de";
+
+/* Class = "IBUILabel"; text = "Actual"; ObjectID = "trt-hC-hUf"; */
+"trt-hC-hUf.text" = "Actual";
+
+/* Class = "IBUINavigationItem"; title = "Configuración"; ObjectID = "udt-VU-0Rh"; */
+"udt-VU-0Rh.title" = "Configuración";
+
+/* Class = "IBUILabel"; text = "Política de Privacidad"; ObjectID = "vRt-M4-9nW"; */
+"vRt-M4-9nW.text" = "Política de Privacidad";
+
+/* Class = "IBUILabel"; text = "Cambiar contraseña"; ObjectID = "xmy-by-M88"; */
+"xmy-by-M88.text" = "Cambiar contraseña";

@@ -1,0 +1,24 @@
+
+/* Class = "IBUINavigationItem"; title = "Editar perfil"; ObjectID = "AIv-0V-2Ca"; */
+"AIv-0V-2Ca.title" = "Editar perfil";
+
+/* Class = "IBUINavigationItem"; title = "Seguidores"; ObjectID = "QIL-B4-Htr"; */
+"QIL-B4-Htr.title" = "Seguidores";
+
+/* Class = "IBUINavigationItem"; title = "Perfil"; ObjectID = "SPx-xO-esM"; */
+"SPx-xO-esM.title" = "Perfil";
+
+/* Class = "IBUILabel"; text = "Dinos algo acerca de ti..."; ObjectID = "Trt-Yx-Qae"; */
+"Trt-Yx-Qae.text" = "Dinos algo acerca de ti...";
+
+/* Class = "IBUITextField"; placeholder = "Ubicación"; ObjectID = "bcg-p6-c76"; */
+"bcg-p6-c76.placeholder" = "Ubicación";
+
+/* Class = "IBUINavigationItem"; title = "Siguiendo a"; ObjectID = "lH8-cc-I2G"; */
+"lH8-cc-I2G.title" = "Siguiendo a";
+
+/* Class = "IBUITextField"; placeholder = "Nombre"; ObjectID = "lvT-v5-J29"; */
+"lvT-v5-J29.placeholder" = "Nombre";
+
+/* Class = "IBUILabel"; text = "Alias"; ObjectID = "uO9-eE-EdR"; */
+"uO9-eE-EdR.text" = "Alias";
