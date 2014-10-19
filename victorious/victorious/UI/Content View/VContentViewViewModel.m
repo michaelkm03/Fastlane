@@ -34,6 +34,7 @@
 #import "NSURL+MediaType.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
+NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 
 @interface VContentViewViewModel ()
 
@@ -85,6 +86,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         _currentAsset = [_currentNode.assets firstObject];
         
         [self fetchUserinfo];
+        [self fetchHistogramData];
     }
     return self;
 }
@@ -126,6 +128,29 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                                       withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
      {
          self.hasReposted = userInteractions.hasReposted;
+     }];
+    
+
+
+}
+
+- (void)fetchHistogramData
+{
+    if (![self.sequence isVideo])
+    {
+        return;
+    }
+
+    [[VObjectManager sharedManager] fetchHistogramDataForSequence:self.sequence
+                                                        withAsset:self.currentAsset
+                                                   withCompletion:^(NSArray *histogramData, NSError *error)
+     {
+         if (histogramData)
+         {
+             self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:histogramData];
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateHistogramDataNotification
+                                                                 object:self];
+         }
      }];
 }
 
@@ -447,15 +472,6 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     }
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
-}
-
-- (VHistogramDataSource *)histogramDataSource
-{
-    if (!_histogramDataSource)
-    {
-        _histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2, @3, @2, @1]];
-    }
-    return _histogramDataSource;
 }
 
 @end

@@ -314,6 +314,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
                                                object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -454,6 +458,15 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         
         self.handleView.numberOfComments = self.viewModel.commentCount;
     }
+}
+
+- (void)hitogramDataDidUpdate:(NSNotification *)notification
+{
+    if (!self.viewModel.histogramDataSource)
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
 }
 
 #pragma mark - IBActions

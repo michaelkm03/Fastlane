@@ -20,6 +20,11 @@
 extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 
 /**
+ *  Posted whenever new histogram data is made available.
+ */
+extern NSString *const VContentViewViewModelDidUpdateHistogramDataNotification;
+
+/**
  *  An enumeration of the various content types supported by VContentViewModel.
  */
 typedef NS_ENUM(NSInteger, VContentViewType)
