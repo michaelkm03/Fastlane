@@ -189,9 +189,11 @@
 		035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 035C2D821940F1B40023FC05 /* VAnalyticsRecorder.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */; };
+		036AA36519F32C0500FE6B9D /* VPhotoLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
-		037CB73519CFE02C0084BBED /* sampleMultipartUpload.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleMultipartUpload.jpg */; };
+		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
 		037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */; };
 		037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74119CFE8B20084BBED /* VUploadManager.m */; };
 		037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */; };
@@ -955,11 +957,14 @@
 		035C2D821940F1B40023FC05 /* VAnalyticsRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnalyticsRecorder.m; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		036AA36119F32B3800FE6B9D /* VPhotoLibraryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoLibraryManager.h; sourceTree = "<group>"; };
+		036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoLibraryManager.m; sourceTree = "<group>"; };
+		036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoLibraryManagerTests.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
-		037CB73419CFE02C0084BBED /* sampleMultipartUpload.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleMultipartUpload.jpg; sourceTree = "<group>"; };
+		037CB73419CFE02C0084BBED /* sampleImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleImage.jpg; sourceTree = "<group>"; };
 		037CB73A19CFE8550084BBED /* VMultipartFormDataWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipartFormDataWriter.h; sourceTree = "<group>"; };
 		037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriter.m; sourceTree = "<group>"; };
 		037CB74019CFE8B20084BBED /* VUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadManager.h; sourceTree = "<group>"; };
@@ -1780,6 +1785,8 @@
 				0314D30A19B46B5E00FA363C /* VExpirationDatePicker.m */,
 				0314D30B19B46B5E00FA363C /* VExpirationPickerTextField.h */,
 				0314D30C19B46B5E00FA363C /* VExpirationPickerTextField.m */,
+				036AA36119F32B3800FE6B9D /* VPhotoLibraryManager.h */,
+				036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */,
 				0314D30D19B46B5E00FA363C /* VPickerTextField.h */,
 				0314D30E19B46B5E00FA363C /* VPickerTextField.m */,
 				0314D30F19B46B5E00FA363C /* VSetExpirationViewController.h */,
@@ -2362,7 +2369,7 @@
 			isa = PBXGroup;
 			children = (
 				039D2FD5197D93C600DFBE60 /* filters.xml */,
-				037CB73419CFE02C0084BBED /* sampleMultipartUpload.jpg */,
+				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -2773,6 +2780,7 @@
 				BE9674FB19E335060072E87A /* VObjectManagerStringTest.m */,
 				A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */,
 				BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */,
+				036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */,
 				A7A7D62B19DE52DE00B18AB7 /* VTappableTextManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,
 				BE9674FE19E335060072E87A /* VUploadManagerTests.m */,
@@ -3714,7 +3722,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				037CB73519CFE02C0084BBED /* sampleMultipartUpload.jpg in Resources */,
+				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
 			);
@@ -4103,6 +4111,7 @@
 				D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
+				036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */,
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
@@ -4193,6 +4202,7 @@
 				A70564CE19E78250004A8387 /* VDiscoverViewControllerTests.m in Sources */,
 				039B614C19F2168500CB2796 /* VChangePasswordTests.m in Sources */,
 				A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */,
+				036AA36519F32C0500FE6B9D /* VPhotoLibraryManagerTests.m in Sources */,
 				039B615519F2168500CB2796 /* VUIAlertView+VBlocksTests.m in Sources */,
 				A7A7D62C19DE52DE00B18AB7 /* VTappableTextManagerTests.m in Sources */,
 				039B615019F2168500CB2796 /* VMarqueeControllerTests.m in Sources */,
