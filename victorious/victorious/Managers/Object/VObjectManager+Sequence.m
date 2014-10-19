@@ -327,7 +327,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
             {
                 //TODO: Parse result
-                NSArray *resultData = @[ @76, @93, @40, @7, @36, @77, @196, @66, @31, @16];
+                NSArray *resultData = @[ @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @36, @77, @196, @66, @31, @16, @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @66, @31, @16];
                 completion (resultData, nil);
             }
            failBlock:^(NSOperation *operation, NSError *error)
