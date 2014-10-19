@@ -14,7 +14,7 @@ oldIFS=$IFS
 IFS=$'\n'
 
 # Find storyboard file full path inside project folder
-for storyboardPath in `find . \( -name "*.$storyboardExt" -or -name "*.$xibExt" \) -print`
+for storyboardPath in `find . \( -name "*.$storyboardExt" -or -name "*.$xibExt" \) -print | grep Base.lproj`
 do
     # Get Base strings file full path
     baseStringsPath=$(echo "$storyboardPath" | sed -E "s/($storyboardExt|$xibExt)$/$stringsExt/")
@@ -53,27 +53,27 @@ do
           rm $newBaseStringsPath
         fi
 
-#        # Get all locale strings folder
-#        for localeStringsDir in `find $storyboardPath -name "*.$localeDirExt" -print`
-#        do
-#            # Skip Base strings folder
-#            if [ $localeStringsDir != $storyboardDir ]; then
-#                localeStringsPath=$localeStringsDir/$stringsFile
+        # Get all locale strings folder
+        for localeStringsDir in `find $storyboardPath -name "*.$localeDirExt" -print`
+        do
+            # Skip Base strings folder
+            if [ $localeStringsDir != $storyboardDir ]; then
+                localeStringsPath=$localeStringsDir/$stringsFile
 
-#                # Just copy base strings file on first time
-#                if [ ! -e $localeStringsPath ]; then
-#                    cp $baseStringsPath $localeStringsPath
-#                else
-#                    oldLocaleStringsPath=$(echo "$localeStringsPath" | sed "s/$stringsExt$/$oldStringsExt/")
-#                    cp $localeStringsPath $oldLocaleStringsPath
+                # Just copy base strings file on first time
+                if [ ! -e $localeStringsPath ]; then
+                    cp $baseStringsPath $localeStringsPath
+                else
+                    oldLocaleStringsPath=$(echo "$localeStringsPath" | sed "s/$stringsExt$/$oldStringsExt/")
+                    cp $localeStringsPath $oldLocaleStringsPath
 
-#                    # Merge baseStringsPath to localeStringsPath
-#                    awk 'NR == FNR && /^\/\*/ {x=$0; getline; a[x]=$0; next} /^\/\*/ {x=$0; print; getline; $0=a[x]?a[x]:$0; printf $0"\n\n"}' $oldLocaleStringsPath $baseStringsPath > $localeStringsPath
+                    # Merge baseStringsPath to localeStringsPath
+                    awk 'NR == FNR && /^\/\*/ {x=$0; getline; a[x]=$0; next} /^\/\*/ {x=$0; print; getline; $0=a[x]?a[x]:$0; printf $0"\n\n"}' $oldLocaleStringsPath $baseStringsPath > $localeStringsPath
 
-#                    rm $oldLocaleStringsPath
-#                fi
-#            fi
-#        done
+                    rm $oldLocaleStringsPath
+                fi
+            fi
+        done
     else
         echo "$storyboardPath file not modified."
     fi

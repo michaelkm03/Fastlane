@@ -7,7 +7,7 @@
 
 XIB_INFILE=$1
 OUTDIR="./xib-strings"
-OUTSUBDIR=$OUTDIR"/en.lproj"
+OUTSUBDIR=$OUTDIR"/Base.lproj"
 MINFILESIZE=2
 
 
@@ -39,7 +39,7 @@ if [ "$XIB_INFILE" ]; then
 else # Sweep through project directory and locate all xib files
     echo ""
     echo "xibs and storyboards..."
-    find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/en.lproj/' | while read -d $'\n' file
+    find . \( -name "*.xib" -or -name "*.storyboard" \) -print | grep '/Base.lproj/' | while read -d $'\n' file
     do
         path=${file/*}
         base=${file##*/}

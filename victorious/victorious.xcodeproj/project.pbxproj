@@ -3394,7 +3394,6 @@
 			buildConfigurationList = BE171DA81868BE64004E5202 /* Build configuration list for PBXNativeTarget "victorious" */;
 			buildPhases = (
 				E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */,
-				DB34CCC919E4CF64008158C9 /* Generate Localized XIBs */,
 				BE171D721868BE64004E5202 /* Sources */,
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
@@ -3774,20 +3773,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		DB34CCC919E4CF64008158C9 /* Generate Localized XIBs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Localized XIBs";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "../build-scripts/import-xib-strings.sh";
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
