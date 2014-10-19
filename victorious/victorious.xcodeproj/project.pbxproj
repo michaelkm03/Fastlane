@@ -287,6 +287,7 @@
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
+		03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F28F4A19F44728008BB3F7 /* VCommentCell.xib */; };
 		03F97F2A19F1EFA800E14BCC /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
@@ -569,7 +570,6 @@
 		DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */; };
 		DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */; };
 		DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491119DF432F00CB687B /* VPublishShareView.xib */; };
-		DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491519DF434D00CB687B /* VCommentCell.xib */; };
 		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
 		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
 		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
@@ -984,8 +984,6 @@
 		0390084F19F389EC00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VMediaPreviewViewController.strings; sourceTree = "<group>"; };
 		0390085019F38A9900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VPublishShareView.xib; sourceTree = "<group>"; };
 		0390085119F38AA000FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VPublishShareView.strings; sourceTree = "<group>"; };
-		0390085219F38B2B00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCommentCell.xib; sourceTree = "<group>"; };
-		0390085319F38B3500FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCommentCell.strings; sourceTree = "<group>"; };
 		0390085519F38BC600FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ActionSheet.storyboard; sourceTree = "<group>"; };
 		0390085819F38BC800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		0390085919F38C1200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VNavigationHeaderView.xib; sourceTree = "<group>"; };
@@ -1123,6 +1121,8 @@
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
+		03F28F4919F4459D008BB3F7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
+		03F28F4A19F44728008BB3F7 /* VCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCommentCell.xib; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
 		03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VSolidColor.m"; sourceTree = "<group>"; };
 		03FDA09D197A0AEC00405361 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
@@ -1554,7 +1554,6 @@
 		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DB2A495A19DF456300CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
@@ -1801,7 +1800,7 @@
 			children = (
 				0314D33F19B46B5E00FA363C /* VCommentCell.h */,
 				0314D34019B46B5E00FA363C /* VCommentCell.m */,
-				DB2A491519DF434D00CB687B /* VCommentCell.xib */,
+				03F28F4A19F44728008BB3F7 /* VCommentCell.xib */,
 				0314D34219B46B5E00FA363C /* VCommentsContainerViewController.h */,
 				0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */,
 				0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */,
@@ -3563,7 +3562,6 @@
 				D8D73ACB19F072A800E6955C /* WATERBALLOON_V01.00003.png in Resources */,
 				D8D73AC119F072A800E6955C /* LOL_v02.00018.png in Resources */,
 				D8D73A6D19F072A800E6955C /* Firework_v01.00006.png in Resources */,
-				DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
@@ -3571,6 +3569,7 @@
 				D8D73AC319F072A800E6955C /* LOL_v02.00020.png in Resources */,
 				DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */,
 				D8D73AA319F072A800E6955C /* Lightening_V01.00008.png in Resources */,
+				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
 				A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				D8D73AC519F072A800E6955C /* LOL_v02.00022.png in Resources */,
 				D8D73AE219F072A800E6955C /* WATERBALLOON_V01.00026.png in Resources */,
@@ -4297,15 +4296,6 @@
 			name = VPublishShareView.xib;
 			sourceTree = "<group>";
 		};
-		DB2A491519DF434D00CB687B /* VCommentCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0390085219F38B2B00FD7EDF /* Base */,
-				0390085319F38B3500FD7EDF /* es */,
-			);
-			name = VCommentCell.xib;
-			sourceTree = "<group>";
-		};
 		DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4381,8 +4371,8 @@
 		DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A495A19DF456300CB687B /* es */,
 				0390088F19F3A99100FD7EDF /* Base */,
+				03F28F4919F4459D008BB3F7 /* es */,
 			);
 			name = VEphemeralTimerView.xib;
 			sourceTree = "<group>";
