@@ -17,7 +17,7 @@
 	<key>require_profile_image</key>
 	<true/>
 	<key>histogram_enabled</key>
-	<true/>
+	<false/>
 	<key>channelsEnabled</key>
 	<false/>
 	<key>marqueeEnabled</key>

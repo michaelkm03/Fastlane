@@ -326,9 +326,11 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
           parameters:nil
         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
             {
-                //TODO: Parse result
-                NSArray *resultData = @[ @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @36, @77, @196, @66, @31, @16, @76, @93, @40, @7, @36, @77, @196, @66, @31, @16, @66, @31, @16];
-                completion (resultData, nil);
+                NSArray *buckets = result[@"payload"][@"buckets"];
+                if ([buckets isKindOfClass:[NSArray class]])
+                {
+                    completion (buckets, nil);
+                }
             }
            failBlock:^(NSOperation *operation, NSError *error)
             {
