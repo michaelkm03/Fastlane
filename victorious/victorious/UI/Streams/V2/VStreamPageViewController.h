@@ -10,6 +10,8 @@
 
 @interface VStreamPageViewController : UIPageViewController
 
+@property (nonatomic) BOOL shouldDisplayMarquee;
+
 + (instancetype)homeStream;
 + (instancetype)communityStream;
 + (instancetype)ownerStream;

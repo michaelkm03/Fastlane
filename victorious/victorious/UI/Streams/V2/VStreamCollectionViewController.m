@@ -54,7 +54,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VMarqueeController *marquee;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic) BOOL shouldDisplayMarquee;
 
 @end
 

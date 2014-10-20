@@ -43,9 +43,7 @@
     homeStream.defaultStream = recentStream;
     homeStream.allStreams = @[hotStream, recentStream, followingStream];
     homeStream.title = NSLocalizedString(@"Home", nil);
-//    homeStream.shouldShowHeaderLogo = YES;
-//    homeStream.shouldDisplayMarquee = YES;
-//    homeStream.hasAddAction = YES;
+    homeStream.shouldDisplayMarquee = YES;
     
     return homeStream;
 }
@@ -133,6 +131,11 @@
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
         streamVC.collectionView.contentInset = insets;
         streamVC.collectionView.contentOffset = CGPointMake(streamVC.collectionView.contentOffset.x, insets.top);
+        
+        if (stream == self.defaultStream)
+        {
+            streamVC.shouldDisplayMarquee = self.shouldDisplayMarquee;
+        }
         
         VLog(@"%@", NSStringFromUIEdgeInsets(insets));
         [self.streamVCs addObject:streamVC];

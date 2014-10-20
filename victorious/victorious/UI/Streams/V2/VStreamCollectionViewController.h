@@ -14,7 +14,7 @@
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController
 
-@property (nonatomic, readonly) BOOL shouldDisplayMarquee;
+@property (nonatomic) BOOL shouldDisplayMarquee;
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 
 + (instancetype)homeStreamCollection;
