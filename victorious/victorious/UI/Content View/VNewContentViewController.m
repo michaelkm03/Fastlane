@@ -467,6 +467,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         return;
     }
     self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 #pragma mark - IBActions
