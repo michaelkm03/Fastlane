@@ -9,6 +9,8 @@
 #import "VTrackingManager.h"
 #import <AFNetworking/AFNetworking.h>
 
+#define LOG_TRACKING_EVENTS 1
+
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
@@ -87,7 +89,7 @@
         return NO;
     }
     
-    [self sendRequestWithUrlString:url];
+    [self sendRequestWithUrlString:urlWithMacrosReplaced];
     
     return YES;
 }
@@ -144,7 +146,9 @@
         return nil;
     }
     
-    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    NSString *output = [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    
+    return output;
 }
 
 - (void)sendRequestWithUrlString:(NSString *)url
@@ -153,7 +157,16 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
-         VLog( @"Tracking request sent. Error: %@", [connectionError localizedDescription] );
+#if LOG_TRACKING_EVENTS
+         if ( connectionError )
+         {
+             VLog( @"TRACKING :: FAILSURE with URL %@:: error %@", url, [connectionError localizedDescription] );
+         }
+         else
+         {
+             VLog( @"TRACKING :: SUCCESS with URL %@", url );
+         }
+#endif
      }];
 }
 

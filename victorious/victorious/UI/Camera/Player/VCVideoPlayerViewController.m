@@ -43,6 +43,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @property (nonatomic, readwrite) CMTime previousTime;
 @property (nonatomic, readwrite) CMTime currentTime;
+@property (nonatomic, readonly) BOOL isAtEnd;
 
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
@@ -416,7 +417,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if ( [self didSkipFromPreviousTime:self.previousTime toCurrentTime:self.currentTime] )
     {
-        VLog( @"Video did skip from: %.2f to %.2f", CMTimeGetSeconds( self.previousTime ), CMTimeGetSeconds( self.currentTime ) );
         if ( self.isTrackingEnabled )
         {
             [self.trackingManager trackEventWithUrls:self.trackingItem.videoSkip andParameters:self.trackingParametersForSkipEvent];
@@ -847,12 +847,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.player.currentItem.playbackBufferEmpty )
         {
-            CMTime time = self.currentTime;
-            CMTime duration = self.currentTime;
-            BOOL isAtEnd = time.value == duration.value;
-            if ( !isAtEnd )
+            if ( !self.isAtEnd )
             {
-                VLog( @"Video did skip from: %.2f to %.2f", CMTimeGetSeconds( self.previousTime ), CMTimeGetSeconds( self.currentTime ) );
                 if ( self.isTrackingEnabled )
                 {
                     [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
@@ -865,6 +861,18 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         // This is where playback resumes after having been stalled.  Do nothing for now
     }
     
+}
+
+- (BOOL)isAtEnd
+{
+    CMTime time = self.currentTime;
+    CMTime duration = self.currentTime;
+    return time.value == duration.value;
+}
+
+- (BOOL)isAtStart
+{
+    return CMTimeGetSeconds( self.currentTime ) != 0.0;
 }
 
 #pragma mark - Notifiers
@@ -885,8 +893,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (NSDictionary *)trackingParametersForSkipEvent
 {
-    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.currentTime ) ),
-              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.previousTime ) ) };
+    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.previousTime ) ),
+              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.currentTime ) ) };
 }
 
 - (NSDictionary *)trackingParameters

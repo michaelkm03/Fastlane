@@ -24,8 +24,7 @@
 
 @interface VTrackingManagerTests : XCTestCase
 
-@property(nonatomic, strong) VTrackingManager *analyticsManager;
-
+@property (nonatomic, strong) VTrackingManager *analyticsManager;
 
 @end
 
@@ -76,8 +75,8 @@
 
 - (void)testTrackEventValues
 {
-    NSString *macro1 = @"__macro1__";
-    NSString *macro2 = @"__macro2__";
+    NSString *macro1 = @"%%macro1%%";
+    NSString *macro2 = @"%%macro2%%";
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
@@ -86,8 +85,8 @@
 
 - (void)testTrackEventValuesInvalid
 {
-    NSString *macro1 = @"__macro1__";
-    NSString *macro2 = @"__macro2__";
+    NSString *macro1 = @"%%macro1%%";
+    NSString *macro2 = @"%%macro2%%";
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters;
@@ -109,7 +108,7 @@
 {
     NSString *macro1 = self.analyticsManager.registeredMacros[0];
     NSString *macro2 = self.analyticsManager.registeredMacros[1];
-    NSString *macro3 = @"unregistered_macro";
+    NSString *macro3 = @"%%unregistered_macro%%";
     NSString *string = [NSString stringWithFormat:@"%@/%@/%@", macro1, macro2, macro3 ];
     
     NSString *output;
@@ -125,7 +124,7 @@
 
 - (void)testStringFromString
 {
-    NSString *macro = @"__macro__";
+    NSString *macro = @"%%macro%%";
     NSString *url = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     NSString *stringValue = @"__stringValue__";
     NSNumber *integerValue = @1;
@@ -158,7 +157,7 @@
 
 - (void)testUrlStringFromUrlStringNoChangeToUrl
 {
-    NSString *macro = @"__macro__";
+    NSString *macro = @"%%macro%%";
     NSString *url;
     NSString *output;
 
@@ -177,7 +176,7 @@
 
 - (void)testUrlStringFromUrlStringErrors
 {
-    NSString *macro = @"__macro__";
+    NSString *macro = @"%%macro%%";
     NSString *urlWithMacro = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     
     XCTAssertNil( [self.analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
