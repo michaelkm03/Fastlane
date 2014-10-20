@@ -201,6 +201,23 @@
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
 		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
 		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
+		0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390084819F37B1E00FD7EDF /* Camera.storyboard */; };
+		0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390085619F38BC600FD7EDF /* ActionSheet.storyboard */; };
+		0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */; };
+		0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
+		0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086B19F39F6A00FD7EDF /* VConversationCell.xib */; };
+		0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086D19F39F9900FD7EDF /* VMessageCell.xib */; };
+		0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */; };
+		0390087219F3A08100FD7EDF /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087119F3A08100FD7EDF /* VMarqueeTableViewCell.xib */; };
+		0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087319F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib */; };
+		0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087519F3A11A00FD7EDF /* followerCell.xib */; };
+		0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */; };
+		0390088619F3A76200FD7EDF /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088519F3A76200FD7EDF /* VStreamDirectoryItemCell.xib */; };
+		0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */; };
+		0390088A19F3A84D00FD7EDF /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088919F3A84D00FD7EDF /* VStreamPollCell.xib */; };
+		0390088C19F3A88B00FD7EDF /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088B19F3A88B00FD7EDF /* VStreamVideoCell.xib */; };
+		0390088E19F3A8FC00FD7EDF /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088D19F3A8FC00FD7EDF /* VStreamViewCell.xib */; };
+		0390089119F3AA4C00FD7EDF /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390089019F3AA4C00FD7EDF /* VWebContentViewController.xib */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		039B614B19F2168500CB2796 /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */; };
@@ -270,6 +287,7 @@
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03D94C2D19DE155400BFAA27 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
+		03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F28F4A19F44728008BB3F7 /* VCommentCell.xib */; };
 		03F97F2A19F1EFA800E14BCC /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
@@ -291,7 +309,6 @@
 		A75FAF1A19E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0719E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.xib */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
 		A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */; };
-		A75FAF1D19E8AC1E00EB87C1 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0B19E8AC1E00EB87C1 /* Discover.storyboard */; };
 		A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */; };
 		A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m */; };
 		A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */; };
@@ -398,7 +415,6 @@
 		D8C9CF3219E5AE92007B461E /* VHistogramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C9CF3119E5AE92007B461E /* VHistogramView.m */; };
 		D8C9CF3419E5B30E007B461E /* VHistogramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
-		D8CA63B819D51D70002046E5 /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */; };
 		D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */; };
 		D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */; };
 		D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */; };
@@ -544,7 +560,6 @@
 		D8E39BE119CB7C80007FD86A /* VTickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BD419CB7C80007FD86A /* VTickerCell.m */; };
 		D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BD519CB7C80007FD86A /* VTickerCell.xib */; };
 		D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */; };
-		D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */; };
 		D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BED19CB99A8007FD86A /* ContentView.storyboard */; };
 		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
 		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
@@ -552,33 +567,18 @@
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
-		DB2A490319DF42DA00CB687B /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490519DF42DA00CB687B /* Camera.storyboard */; };
 		DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */; };
 		DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */; };
 		DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491119DF432F00CB687B /* VPublishShareView.xib */; };
-		DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491519DF434D00CB687B /* VCommentCell.xib */; };
 		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
 		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
 		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
-		DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492519DF441100CB687B /* VNotificationCell.xib */; };
-		DB2A492719DF442700CB687B /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492919DF442700CB687B /* VConversationCell.xib */; };
-		DB2A492B19DF443900CB687B /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492D19DF443900CB687B /* VMessageCell.xib */; };
-		DB2A492F19DF445C00CB687B /* VMarqueeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493119DF445C00CB687B /* VMarqueeTableViewCell.xib */; };
-		DB2A493319DF446F00CB687B /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493519DF446F00CB687B /* VMarqueeStreamItemCell.xib */; };
-		DB2A493719DF448800CB687B /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493919DF448800CB687B /* followerCell.xib */; };
 		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
 		DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */; };
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
 		DB2A494719DF44EE00CB687B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494919DF44EE00CB687B /* login.storyboard */; };
-		DB2A494B19DF450300CB687B /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494D19DF450300CB687B /* VInviteFriendTableViewCell.xib */; };
 		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
-		DB2A495319DF453900CB687B /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495519DF453900CB687B /* VStreamDirectoryItemCell.xib */; };
 		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
-		DB2A495B19DF457500CB687B /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495D19DF457500CB687B /* VStreamViewCell.xib */; };
-		DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496119DF458000CB687B /* VStreamVideoCell.xib */; };
-		DB2A496319DF459000CB687B /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496519DF459000CB687B /* VStreamPollCell.xib */; };
-		DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496919DF45A200CB687B /* VStreamCellHeaderView.xib */; };
-		DB2A496B19DF45D500CB687B /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A496D19DF45D500CB687B /* VWebContentViewController.xib */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
@@ -975,6 +975,55 @@
 		038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ADEUMInstrumentation.framework; sourceTree = "<group>"; };
 		038B7F9619DB8EB300F739DF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		038B7F9819DB8EBC00F739DF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0390084719F37B1E00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
+		0390084A19F37B2800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Camera.strings; sourceTree = "<group>"; };
+		0390084B19F386E200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0390084C19F3893900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
+		0390084D19F3894700FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCVideoPlayerToolbarView.strings; sourceTree = "<group>"; };
+		0390084E19F389E100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VMediaPreviewViewController.xib; sourceTree = "<group>"; };
+		0390084F19F389EC00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VMediaPreviewViewController.strings; sourceTree = "<group>"; };
+		0390085019F38A9900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VPublishShareView.xib; sourceTree = "<group>"; };
+		0390085119F38AA000FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VPublishShareView.strings; sourceTree = "<group>"; };
+		0390085519F38BC600FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ActionSheet.storyboard; sourceTree = "<group>"; };
+		0390085819F38BC800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ActionSheet.strings; sourceTree = "<group>"; };
+		0390085919F38C1200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VNavigationHeaderView.xib; sourceTree = "<group>"; };
+		0390085A19F38C2700FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VNavigationHeaderView.strings; sourceTree = "<group>"; };
+		0390085B19F38C9500FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VNoContentView.xib; sourceTree = "<group>"; };
+		0390085C19F38C9F00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VNoContentView.strings; sourceTree = "<group>"; };
+		0390085E19F38D5C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
+		0390086119F38D5F00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
+		0390086319F38FD700FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Discover.storyboard; sourceTree = "<group>"; };
+		0390086619F38FDB00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Discover.strings; sourceTree = "<group>"; };
+		0390086719F39DFD00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0390086819F39E0B00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		0390086919F39EB700FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VForceUpgradeViewController.xib; sourceTree = "<group>"; };
+		0390086A19F39EC200FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
+		0390086B19F39F6A00FD7EDF /* VConversationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VConversationCell.xib; sourceTree = "<group>"; };
+		0390086D19F39F9900FD7EDF /* VMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMessageCell.xib; sourceTree = "<group>"; };
+		0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotificationCell.xib; sourceTree = "<group>"; };
+		0390087119F3A08100FD7EDF /* VMarqueeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
+		0390087319F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
+		0390087519F3A11A00FD7EDF /* followerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = followerCell.xib; sourceTree = "<group>"; };
+		0390087719F3A14500FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
+		0390087819F3A14E00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Profile.strings; sourceTree = "<group>"; };
+		0390087919F3A2A000FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VUserProfileHeaderView.xib; sourceTree = "<group>"; };
+		0390087A19F3A2AA00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VUserProfileHeaderView.strings; sourceTree = "<group>"; };
+		0390087B19F3A31400FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VideoRemix.storyboard; sourceTree = "<group>"; };
+		0390087C19F3A31E00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VideoRemix.strings; sourceTree = "<group>"; };
+		0390087D19F3A4A900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/settings.storyboard; sourceTree = "<group>"; };
+		0390087E19F3A4B400FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/settings.strings; sourceTree = "<group>"; };
+		0390087F19F3A53C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/login.storyboard; sourceTree = "<group>"; };
+		0390088019F3A54A00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/login.strings; sourceTree = "<group>"; };
+		0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInviteFriendTableViewCell.xib; sourceTree = "<group>"; };
+		0390088319F3A63C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
+		0390088419F3A64600FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		0390088519F3A76200FD7EDF /* VStreamDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
+		0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
+		0390088919F3A84D00FD7EDF /* VStreamPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamPollCell.xib; sourceTree = "<group>"; };
+		0390088B19F3A88B00FD7EDF /* VStreamVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamVideoCell.xib; sourceTree = "<group>"; };
+		0390088D19F3A8FC00FD7EDF /* VStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamViewCell.xib; sourceTree = "<group>"; };
+		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
+		0390089019F3AA4C00FD7EDF /* VWebContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VWebContentViewController.xib; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039B614919F2162D00CB2796 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
@@ -1072,6 +1121,8 @@
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
+		03F28F4919F4459D008BB3F7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
+		03F28F4A19F44728008BB3F7 /* VCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCommentCell.xib; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
 		03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VSolidColor.m"; sourceTree = "<group>"; };
 		03FDA09D197A0AEC00405361 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
@@ -1113,7 +1164,6 @@
 		A75FAF0819E8AC1E00EB87C1 /* VTrendingTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrendingTagCell.h; sourceTree = "<group>"; };
 		A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrendingTagCell.m; sourceTree = "<group>"; };
 		A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTrendingTagCell.xib; sourceTree = "<group>"; };
-		A75FAF0B19E8AC1E00EB87C1 /* Discover.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
 		A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverConstants.h; sourceTree = "<group>"; };
 		A75FAF0D19E8AC1E00EB87C1 /* VDiscoverContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverContainerViewController.h; sourceTree = "<group>"; };
 		A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverContainerViewController.m; sourceTree = "<group>"; };
@@ -1336,7 +1386,6 @@
 		D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHistogramCell.xib; sourceTree = "<group>"; };
 		D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetViewController.h; sourceTree = "<group>"; };
 		D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetViewController.m; sourceTree = "<group>"; };
-		D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActionSheet.storyboard; sourceTree = "<group>"; };
 		D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetPresentationAnimator.h; sourceTree = "<group>"; };
 		D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetPresentationAnimator.m; sourceTree = "<group>"; };
 		D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTransitioningDelegate.h; sourceTree = "<group>"; };
@@ -1497,7 +1546,6 @@
 		D8E39BD519CB7C80007FD86A /* VTickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTickerCell.xib; sourceTree = "<group>"; };
 		D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardInputAccessoryView.h; sourceTree = "<group>"; };
 		D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryView.m; sourceTree = "<group>"; };
-		D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VKeyboardInputAccessoryView.xib; sourceTree = "<group>"; };
 		D8E39BED19CB99A8007FD86A /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VShadows.h"; sourceTree = "<group>"; };
 		D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VShadows.m"; sourceTree = "<group>"; };
@@ -1505,66 +1553,7 @@
 		D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
-		DB2A48F819DF2D1000CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DB2A48FC19DF3F3100CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/VideoRemix.storyboard; sourceTree = "<group>"; };
-		DB2A48FE19DF3F4800CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/VideoRemix.storyboard; sourceTree = "<group>"; };
-		DB2A490019DF429700CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DB2A490219DF429D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DB2A490419DF42DA00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Camera.storyboard; sourceTree = "<group>"; };
-		DB2A490619DF42DF00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/Camera.storyboard; sourceTree = "<group>"; };
-		DB2A490819DF42F300CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
-		DB2A490A19DF42F800CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
-		DB2A490C19DF430D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VMediaPreviewViewController.xib; sourceTree = "<group>"; };
-		DB2A490E19DF431200CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VMediaPreviewViewController.xib; sourceTree = "<group>"; };
-		DB2A491019DF432F00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VPublishShareView.xib; sourceTree = "<group>"; };
-		DB2A491219DF433500CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VPublishShareView.xib; sourceTree = "<group>"; };
-		DB2A491419DF434D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VCommentCell.xib; sourceTree = "<group>"; };
-		DB2A491619DF435200CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VCommentCell.xib; sourceTree = "<group>"; };
-		DB2A491819DF436E00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VNavigationHeaderView.xib; sourceTree = "<group>"; };
-		DB2A491A19DF437400CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VNavigationHeaderView.xib; sourceTree = "<group>"; };
-		DB2A491C19DF437D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VNoContentView.xib; sourceTree = "<group>"; };
-		DB2A491E19DF438200CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VNoContentView.xib; sourceTree = "<group>"; };
-		DB2A492019DF43F900CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VForceUpgradeViewController.xib; sourceTree = "<group>"; };
-		DB2A492219DF43FE00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VForceUpgradeViewController.xib; sourceTree = "<group>"; };
-		DB2A492419DF441100CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VNotificationCell.xib; sourceTree = "<group>"; };
-		DB2A492619DF441600CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VNotificationCell.xib; sourceTree = "<group>"; };
-		DB2A492819DF442700CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VConversationCell.xib; sourceTree = "<group>"; };
-		DB2A492A19DF442C00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VConversationCell.xib; sourceTree = "<group>"; };
-		DB2A492C19DF443900CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VMessageCell.xib; sourceTree = "<group>"; };
-		DB2A492E19DF443F00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VMessageCell.xib; sourceTree = "<group>"; };
-		DB2A493019DF445C00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
-		DB2A493219DF446200CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VMarqueeTableViewCell.xib; sourceTree = "<group>"; };
-		DB2A493419DF446F00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
-		DB2A493619DF447600CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
-		DB2A493819DF448800CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/followerCell.xib; sourceTree = "<group>"; };
-		DB2A493A19DF448C00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/followerCell.xib; sourceTree = "<group>"; };
-		DB2A493C19DF449400CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Profile.storyboard; sourceTree = "<group>"; };
-		DB2A493E19DF449A00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/Profile.storyboard; sourceTree = "<group>"; };
-		DB2A494019DF44A500CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VUserProfileHeaderView.xib; sourceTree = "<group>"; };
-		DB2A494219DF44AA00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VUserProfileHeaderView.xib; sourceTree = "<group>"; };
-		DB2A494419DF44CF00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/settings.storyboard; sourceTree = "<group>"; };
-		DB2A494619DF44D500CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/settings.storyboard; sourceTree = "<group>"; };
-		DB2A494819DF44EE00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/login.storyboard; sourceTree = "<group>"; };
-		DB2A494A19DF44F400CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/login.storyboard; sourceTree = "<group>"; };
-		DB2A494C19DF450300CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VInviteFriendTableViewCell.xib; sourceTree = "<group>"; };
-		DB2A494E19DF450A00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VInviteFriendTableViewCell.xib; sourceTree = "<group>"; };
-		DB2A495019DF451600CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
-		DB2A495219DF451C00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
-		DB2A495419DF453900CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
-		DB2A495619DF454C00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
-		DB2A495819DF455D00CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
-		DB2A495A19DF456300CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
-		DB2A495C19DF457500CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VStreamViewCell.xib; sourceTree = "<group>"; };
-		DB2A495E19DF457900CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VStreamViewCell.xib; sourceTree = "<group>"; };
-		DB2A496019DF458000CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VStreamVideoCell.xib; sourceTree = "<group>"; };
-		DB2A496219DF458900CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VStreamVideoCell.xib; sourceTree = "<group>"; };
-		DB2A496419DF459000CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VStreamPollCell.xib; sourceTree = "<group>"; };
-		DB2A496619DF459700CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VStreamPollCell.xib; sourceTree = "<group>"; };
-		DB2A496819DF45A200CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VStreamCellHeaderView.xib; sourceTree = "<group>"; };
-		DB2A496A19DF45A700CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VStreamCellHeaderView.xib; sourceTree = "<group>"; };
-		DB2A496C19DF45D500CB687B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VWebContentViewController.xib; sourceTree = "<group>"; };
-		DB2A496E19DF45DB00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/VWebContentViewController.xib; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
@@ -1723,7 +1712,7 @@
 		0314D2EB19B46B5D00FA363C /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				DB2A490519DF42DA00CB687B /* Camera.storyboard */,
+				0390084819F37B1E00FD7EDF /* Camera.storyboard */,
 				0395575719C142C2005E32FB /* Capture */,
 				039ED28D19C908F400305987 /* Player */,
 				0314D2ED19B46B5D00FA363C /* Preview */,
@@ -1811,7 +1800,7 @@
 			children = (
 				0314D33F19B46B5E00FA363C /* VCommentCell.h */,
 				0314D34019B46B5E00FA363C /* VCommentCell.m */,
-				DB2A491519DF434D00CB687B /* VCommentCell.xib */,
+				03F28F4A19F44728008BB3F7 /* VCommentCell.xib */,
 				0314D34219B46B5E00FA363C /* VCommentsContainerViewController.h */,
 				0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */,
 				0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */,
@@ -1838,6 +1827,9 @@
 				BE799BC319C93C440023CE88 /* VNavigationHeaderView.h */,
 				BE799BC419C93C440023CE88 /* VNavigationHeaderView.m */,
 				DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */,
+				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
+				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
+				A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */,
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				DB2A491D19DF437D00CB687B /* VNoContentView.xib */,
@@ -1847,9 +1839,6 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
-				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
-				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
-				A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1859,7 +1848,7 @@
 			children = (
 				D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */,
 				D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */,
-				D8E39BEA19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib */,
+				0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */,
 				0314D34A19B46B5E00FA363C /* VKeyboardBarContainerViewController.h */,
 				0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */,
 				0314D34C19B46B5E00FA363C /* VKeyboardBarViewController.h */,
@@ -2014,10 +2003,10 @@
 			children = (
 				0314D39819B46B5E00FA363C /* VConversationCell.h */,
 				0314D39919B46B5E00FA363C /* VConversationCell.m */,
-				DB2A492919DF442700CB687B /* VConversationCell.xib */,
+				0390086B19F39F6A00FD7EDF /* VConversationCell.xib */,
 				0314D39B19B46B5E00FA363C /* VMessageCell.h */,
 				0314D39C19B46B5E00FA363C /* VMessageCell.m */,
-				DB2A492D19DF443900CB687B /* VMessageCell.xib */,
+				0390086D19F39F9900FD7EDF /* VMessageCell.xib */,
 				0314D39E19B46B5E00FA363C /* VMessageContainerViewController.h */,
 				0314D39F19B46B5E00FA363C /* VMessageContainerViewController.m */,
 				0314D3A019B46B5E00FA363C /* VMessageTableDataSource.h */,
@@ -2033,7 +2022,7 @@
 			children = (
 				0314D3A519B46B5E00FA363C /* VNotificationCell.h */,
 				0314D3A619B46B5E00FA363C /* VNotificationCell.m */,
-				DB2A492519DF441100CB687B /* VNotificationCell.xib */,
+				0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -2060,7 +2049,7 @@
 		0314D3BC19B46B5E00FA363C /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DB2A493919DF448800CB687B /* followerCell.xib */,
+				0390087519F3A11A00FD7EDF /* followerCell.xib */,
 				DB2A493D19DF449400CB687B /* Profile.storyboard */,
 				0314D3BF19B46B5E00FA363C /* VAbstractProfileEditViewController.h */,
 				0314D3C019B46B5E00FA363C /* VAbstractProfileEditViewController.m */,
@@ -2199,7 +2188,7 @@
 				0314D41619B46B5E00FA363C /* VFindFriendsViewController.m */,
 				0314D41719B46B5E00FA363C /* VInviteFriendTableViewCell.h */,
 				0314D41819B46B5E00FA363C /* VInviteFriendTableViewCell.m */,
-				DB2A494D19DF450300CB687B /* VInviteFriendTableViewCell.xib */,
+				0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */,
 				0314D41A19B46B5E00FA363C /* VTabBarViewController.h */,
 				0314D41B19B46B5E00FA363C /* VTabBarViewController.m */,
 				0314D41C19B46B5E00FA363C /* VTabInfo.h */,
@@ -2233,7 +2222,6 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
-				BE49323719E34D7000C0912E /* CollectionView */,
 				0314D43419B46B5E00FA363C /* Animators */,
 				0314D43919B46B5E00FA363C /* Cells */,
 				03B83B5819E0988200DC04E4 /* Upload Progress View */,
@@ -2244,10 +2232,10 @@
 				0314D44D19B46B5E00FA363C /* VStreamContainerViewController.m */,
 				0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */,
 				0314D44F19B46B5E00FA363C /* VStreamTableDataSource.m */,
-				0314D45019B46B5E00FA363C /* VStreamTableViewController+ContentCreation.h */,
-				0314D45119B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m */,
 				0314D45219B46B5E00FA363C /* VStreamTableViewController.h */,
 				0314D45319B46B5E00FA363C /* VStreamTableViewController.m */,
+				0314D45019B46B5E00FA363C /* VStreamTableViewController+ContentCreation.h */,
+				0314D45119B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -2270,14 +2258,14 @@
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
-				DB2A496919DF45A200CB687B /* VStreamCellHeaderView.xib */,
+				0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */,
 				0314D43C19B46B5E00FA363C /* VStreamPollCell.h */,
 				0314D43D19B46B5E00FA363C /* VStreamPollCell.m */,
-				DB2A496519DF459000CB687B /* VStreamPollCell.xib */,
-				DB2A496119DF458000CB687B /* VStreamVideoCell.xib */,
+				0390088919F3A84D00FD7EDF /* VStreamPollCell.xib */,
+				0390088B19F3A88B00FD7EDF /* VStreamVideoCell.xib */,
 				0314D44019B46B5E00FA363C /* VStreamViewCell.h */,
 				0314D44119B46B5E00FA363C /* VStreamViewCell.m */,
-				DB2A495D19DF457500CB687B /* VStreamViewCell.xib */,
+				0390088D19F3A8FC00FD7EDF /* VStreamViewCell.xib */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
 			);
@@ -2289,7 +2277,7 @@
 			children = (
 				0314D45519B46B5E00FA363C /* VWebContentViewController.h */,
 				0314D45619B46B5E00FA363C /* VWebContentViewController.m */,
-				DB2A496D19DF45D500CB687B /* VWebContentViewController.xib */,
+				0390089019F3AA4C00FD7EDF /* VWebContentViewController.xib */,
 			);
 			path = "Web View";
 			sourceTree = "<group>";
@@ -2632,7 +2620,7 @@
 			isa = PBXGroup;
 			children = (
 				A75FAF0119E8AC1E00EB87C1 /* Cells */,
-				A75FAF0B19E8AC1E00EB87C1 /* Discover.storyboard */,
+				0390086419F38FD700FD7EDF /* Discover.storyboard */,
 				A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */,
 				A75FAF0D19E8AC1E00EB87C1 /* VDiscoverContainerViewController.h */,
 				A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */,
@@ -3019,13 +3007,6 @@
 			name = DefaultProfileImages;
 			sourceTree = "<group>";
 		};
-		BE49323719E34D7000C0912E /* CollectionView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = CollectionView;
-			sourceTree = "<group>";
-		};
 		BE6464E419511F1B0089A34F /* Deeplink */ = {
 			isa = PBXGroup;
 			children = (
@@ -3080,7 +3061,7 @@
 			children = (
 				BE799BB819C93C210023CE88 /* VDirectoryItemCell.h */,
 				BE799BB919C93C210023CE88 /* VDirectoryItemCell.m */,
-				DB2A495519DF453900CB687B /* VStreamDirectoryItemCell.xib */,
+				0390088519F3A76200FD7EDF /* VStreamDirectoryItemCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3090,14 +3071,14 @@
 			children = (
 				BE80780319D778E500EECDEB /* VMarqueeController.h */,
 				BE80780419D778E500EECDEB /* VMarqueeController.m */,
-				BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */,
-				BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */,
-				DB2A493119DF445C00CB687B /* VMarqueeTableViewCell.xib */,
 				BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */,
 				BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */,
-				DB2A493519DF446F00CB687B /* VMarqueeStreamItemCell.xib */,
+				0390087319F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib */,
 				BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */,
 				BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */,
+				BE9C262019D48B6200E43AFE /* VMarqueeTableViewCell.h */,
+				BE9C262119D48B6200E43AFE /* VMarqueeTableViewCell.m */,
+				0390087119F3A08100FD7EDF /* VMarqueeTableViewCell.xib */,
 			);
 			path = Marquee;
 			sourceTree = "<group>";
@@ -3187,7 +3168,7 @@
 			children = (
 				D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */,
 				D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */,
-				D8CA63B719D51D70002046E5 /* ActionSheet.storyboard */,
+				0390085619F38BC600FD7EDF /* ActionSheet.storyboard */,
 				D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */,
 				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
 				D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */,
@@ -3413,7 +3394,6 @@
 			buildConfigurationList = BE171DA81868BE64004E5202 /* Build configuration list for PBXNativeTarget "victorious" */;
 			buildPhases = (
 				E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */,
-				DB34CCC919E4CF64008158C9 /* Generate Localized XIBs */,
 				BE171D721868BE64004E5202 /* Sources */,
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
@@ -3480,10 +3460,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				de,
 				es,
-				fr,
-				it,
+				base,
+				Base,
 			);
 			mainGroup = BE171D6D1868BE64004E5202;
 			productRefGroup = BE171D771868BE64004E5202 /* Products */;
@@ -3502,12 +3481,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D73A8E19F072A800E6955C /* GLITTER_V01.00018.png in Resources */,
+				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
+				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
 				D8D73A8519F072A800E6955C /* GLITTER_V01.00009.png in Resources */,
 				D8D73AE119F072A800E6955C /* WATERBALLOON_V01.00025.png in Resources */,
 				D8D73A8019F072A800E6955C /* GLITTER_V01.00004.png in Resources */,
 				D8D73A7C19F072A800E6955C /* GLITTER_V01.00000.png in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				D8D73A9219F072A800E6955C /* GLITTER_V01.00022.png in Resources */,
+				0390088A19F3A84D00FD7EDF /* VStreamPollCell.xib in Resources */,
 				D8D73AD219F072A800E6955C /* WATERBALLOON_V01.00010.png in Resources */,
 				D8D73AA119F072A800E6955C /* Lightening_V01.00006.png in Resources */,
 				D8D73A6E19F072A800E6955C /* Firework_v01.00007.png in Resources */,
@@ -3515,25 +3497,21 @@
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
-				D8CA63B819D51D70002046E5 /* ActionSheet.storyboard in Resources */,
+				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
-				DB2A492B19DF443900CB687B /* VMessageCell.xib in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				D8D73AD919F072A800E6955C /* WATERBALLOON_V01.00017.png in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
-				DB2A495319DF453900CB687B /* VStreamDirectoryItemCell.xib in Resources */,
 				D8D73AA619F072A800E6955C /* Lightening_V01.00011.png in Resources */,
 				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				D8D73A7919F072A800E6955C /* Firework_v01.00018.png in Resources */,
 				DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */,
-				DB2A495B19DF457500CB687B /* VStreamViewCell.xib in Resources */,
 				D8D73A8119F072A800E6955C /* GLITTER_V01.00005.png in Resources */,
 				D8D73AA519F072A800E6955C /* Lightening_V01.00010.png in Resources */,
 				D8D73A9419F072A800E6955C /* GLITTER_V01.00024.png in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
-				DB2A495F19DF458000CB687B /* VStreamVideoCell.xib in Resources */,
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
 				D8D73A9F19F072A800E6955C /* Lightening_V01.00004.png in Resources */,
 				D8D73A7719F072A800E6955C /* Firework_v01.00016.png in Resources */,
@@ -3548,6 +3526,7 @@
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				D8D73A6B19F072A800E6955C /* Firework_v01.00004.png in Resources */,
 				D8D73AA819F072A800E6955C /* Lightening_V01.00013.png in Resources */,
+				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				D8D73AB519F072A800E6955C /* LOL_v02.00006.png in Resources */,
 				D8D73ACE19F072A800E6955C /* WATERBALLOON_V01.00006.png in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
@@ -3557,7 +3536,6 @@
 				D8D73A7E19F072A800E6955C /* GLITTER_V01.00002.png in Resources */,
 				D8D73AAB19F072A800E6955C /* Lightening_V01.00016.png in Resources */,
 				D8D73AB419F072A800E6955C /* LOL_v02.00005.png in Resources */,
-				DB2A493719DF448800CB687B /* followerCell.xib in Resources */,
 				D8D73ABD19F072A800E6955C /* LOL_v02.00014.png in Resources */,
 				D8D73A9119F072A800E6955C /* GLITTER_V01.00021.png in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
@@ -3579,28 +3557,24 @@
 				D8D73AD619F072A800E6955C /* WATERBALLOON_V01.00014.png in Resources */,
 				D8D73AB919F072A800E6955C /* LOL_v02.00010.png in Resources */,
 				D8D73A8619F072A800E6955C /* GLITTER_V01.00010.png in Resources */,
-				DB2A492F19DF445C00CB687B /* VMarqueeTableViewCell.xib in Resources */,
 				DB2A494719DF44EE00CB687B /* login.storyboard in Resources */,
 				D8D73ACB19F072A800E6955C /* WATERBALLOON_V01.00003.png in Resources */,
 				D8D73AC119F072A800E6955C /* LOL_v02.00018.png in Resources */,
 				D8D73A6D19F072A800E6955C /* Firework_v01.00006.png in Resources */,
-				DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */,
 				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
-				DB2A490319DF42DA00CB687B /* Camera.storyboard in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				D8D73AE019F072A800E6955C /* WATERBALLOON_V01.00024.png in Resources */,
 				D8D73AC319F072A800E6955C /* LOL_v02.00020.png in Resources */,
 				DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */,
 				D8D73AA319F072A800E6955C /* Lightening_V01.00008.png in Resources */,
-				DB2A492319DF441100CB687B /* VNotificationCell.xib in Resources */,
+				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
 				A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				D8D73AC519F072A800E6955C /* LOL_v02.00022.png in Resources */,
 				D8D73AE219F072A800E6955C /* WATERBALLOON_V01.00026.png in Resources */,
 				D8D73A7A19F072A800E6955C /* Firework_v01.00019.png in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
 				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
-				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				D8D73ABE19F072A800E6955C /* LOL_v02.00015.png in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8D73AC419F072A800E6955C /* LOL_v02.00021.png in Resources */,
@@ -3622,6 +3596,7 @@
 				D8D73A6919F072A800E6955C /* Firework_v01.00002.png in Resources */,
 				D8D73AD819F072A800E6955C /* WATERBALLOON_V01.00016.png in Resources */,
 				D8D73AAC19F072A800E6955C /* Lightening_V01.00017.png in Resources */,
+				0390089119F3AA4C00FD7EDF /* VWebContentViewController.xib in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8D73A9D19F072A800E6955C /* Lightening_V01.00002.png in Resources */,
 				D8D73A8C19F072A800E6955C /* GLITTER_V01.00016.png in Resources */,
@@ -3629,8 +3604,9 @@
 				D8D73ADA19F072A800E6955C /* WATERBALLOON_V01.00018.png in Resources */,
 				D8D73AB719F072A800E6955C /* LOL_v02.00008.png in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
-				D8E39BEC19CB7D92007FD86A /* VKeyboardInputAccessoryView.xib in Resources */,
+				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				A75FAF1A19E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.xib in Resources */,
+				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
 				A75FAF1819E8AC1E00EB87C1 /* VSuggestedPeopleCell.xib in Resources */,
 				D8D73AB319F072A800E6955C /* LOL_v02.00004.png in Resources */,
 				D8D73ACD19F072A800E6955C /* WATERBALLOON_V01.00005.png in Resources */,
@@ -3639,6 +3615,7 @@
 				D8D73ADB19F072A800E6955C /* WATERBALLOON_V01.00019.png in Resources */,
 				D8D73ACF19F072A800E6955C /* WATERBALLOON_V01.00007.png in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
+				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
 				D8D73ADD19F072A800E6955C /* WATERBALLOON_V01.00021.png in Resources */,
 				D8D73A7D19F072A800E6955C /* GLITTER_V01.00001.png in Resources */,
 				D8D73AC219F072A800E6955C /* LOL_v02.00019.png in Resources */,
@@ -3649,8 +3626,6 @@
 				D8D73AAA19F072A800E6955C /* Lightening_V01.00015.png in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				D8D73AB219F072A800E6955C /* LOL_v02.00003.png in Resources */,
-				DB2A493319DF446F00CB687B /* VMarqueeStreamItemCell.xib in Resources */,
-				DB2A492719DF442700CB687B /* VConversationCell.xib in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				D8D73A9919F072A800E6955C /* GLITTER_V01.00029.png in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
@@ -3664,6 +3639,7 @@
 				D8D73ADC19F072A800E6955C /* WATERBALLOON_V01.00020.png in Resources */,
 				D8D73A9019F072A800E6955C /* GLITTER_V01.00020.png in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
+				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				D8D73A8F19F072A800E6955C /* GLITTER_V01.00019.png in Resources */,
 				D8D73A7219F072A800E6955C /* Firework_v01.00011.png in Resources */,
 				D8D73A8919F072A800E6955C /* GLITTER_V01.00013.png in Resources */,
@@ -3672,10 +3648,13 @@
 				D8D73A6C19F072A800E6955C /* Firework_v01.00005.png in Resources */,
 				D8D73AC819F072A800E6955C /* WATERBALLOON_V01.00000.png in Resources */,
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
+				0390088C19F3A88B00FD7EDF /* VStreamVideoCell.xib in Resources */,
+				0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */,
 				D8D73AC619F072A800E6955C /* LOL_v02.00023.png in Resources */,
 				D8D73A9B19F072A800E6955C /* Lightening_V01.00000.png in Resources */,
 				D8D73AD419F072A800E6955C /* WATERBALLOON_V01.00012.png in Resources */,
 				D8D73AD319F072A800E6955C /* WATERBALLOON_V01.00011.png in Resources */,
+				0390088E19F3A8FC00FD7EDF /* VStreamViewCell.xib in Resources */,
 				D8D73ACA19F072A800E6955C /* WATERBALLOON_V01.00002.png in Resources */,
 				D8D73A9719F072A800E6955C /* GLITTER_V01.00027.png in Resources */,
 				D8D73A6719F072A800E6955C /* Firework_v01.00000.png in Resources */,
@@ -3683,7 +3662,6 @@
 				D8D73AA919F072A800E6955C /* Lightening_V01.00014.png in Resources */,
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				D8D73A7619F072A800E6955C /* Firework_v01.00015.png in Resources */,
-				DB2A496319DF459000CB687B /* VStreamPollCell.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				D8D73A7319F072A800E6955C /* Firework_v01.00012.png in Resources */,
 				D8D73A7819F072A800E6955C /* Firework_v01.00017.png in Resources */,
@@ -3694,17 +3672,18 @@
 				D8D73AAD19F072A800E6955C /* Lightening_V01.00018.png in Resources */,
 				D8D73AA019F072A800E6955C /* Lightening_V01.00005.png in Resources */,
 				D8D73A7019F072A800E6955C /* Firework_v01.00009.png in Resources */,
-				DB2A496B19DF45D500CB687B /* VWebContentViewController.xib in Resources */,
-				A75FAF1D19E8AC1E00EB87C1 /* Discover.storyboard in Resources */,
+				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				D8D73ADF19F072A800E6955C /* WATERBALLOON_V01.00023.png in Resources */,
 				D8D73AD019F072A800E6955C /* WATERBALLOON_V01.00008.png in Resources */,
 				D8D73A6F19F072A800E6955C /* Firework_v01.00008.png in Resources */,
 				D8D73A8219F072A800E6955C /* GLITTER_V01.00006.png in Resources */,
 				D8D73AB819F072A800E6955C /* LOL_v02.00009.png in Resources */,
+				0390088619F3A76200FD7EDF /* VStreamDirectoryItemCell.xib in Resources */,
 				D8D73A8719F072A800E6955C /* GLITTER_V01.00011.png in Resources */,
+				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
+				0390087219F3A08100FD7EDF /* VMarqueeTableViewCell.xib in Resources */,
 				D8D73A9A19F072A800E6955C /* GLITTER_V01.00030.png in Resources */,
-				DB2A494B19DF450300CB687B /* VInviteFriendTableViewCell.xib in Resources */,
 				D8D73AC719F072A800E6955C /* LOL_v02.00024.png in Resources */,
 				D8D73A7119F072A800E6955C /* Firework_v01.00010.png in Resources */,
 			);
@@ -3794,20 +3773,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		DB34CCC919E4CF64008158C9 /* Generate Localized XIBs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Localized XIBs";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "../build-scripts/import-xib-strings.sh";
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4218,6 +4183,42 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		0390084819F37B1E00FD7EDF /* Camera.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0390084719F37B1E00FD7EDF /* Base */,
+				0390084A19F37B2800FD7EDF /* es */,
+			);
+			name = Camera.storyboard;
+			sourceTree = "<group>";
+		};
+		0390085619F38BC600FD7EDF /* ActionSheet.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0390085519F38BC600FD7EDF /* Base */,
+				0390085819F38BC800FD7EDF /* es */,
+			);
+			name = ActionSheet.storyboard;
+			sourceTree = "<group>";
+		};
+		0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0390085E19F38D5C00FD7EDF /* Base */,
+				0390086119F38D5F00FD7EDF /* es */,
+			);
+			name = VKeyboardInputAccessoryView.xib;
+			sourceTree = "<group>";
+		};
+		0390086419F38FD700FD7EDF /* Discover.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0390086319F38FD700FD7EDF /* Base */,
+				0390086619F38FDB00FD7EDF /* es */,
+			);
+			name = Discover.storyboard;
+			sourceTree = "<group>";
+		};
 		BE171DA11868BE64004E5202 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4229,8 +4230,8 @@
 		DB2A48F919DF2D1000CB687B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A48F819DF2D1000CB687B /* en */,
 				DB2A48FA19DF2D9D00CB687B /* es */,
+				0390084B19F386E200FD7EDF /* Base */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -4238,8 +4239,8 @@
 		DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A48FC19DF3F3100CB687B /* en */,
-				DB2A48FE19DF3F4800CB687B /* es */,
+				0390087B19F3A31400FD7EDF /* Base */,
+				0390087C19F3A31E00FD7EDF /* es */,
 			);
 			name = VideoRemix.storyboard;
 			sourceTree = "<group>";
@@ -4247,26 +4248,17 @@
 		DB2A490119DF429700CB687B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A490019DF429700CB687B /* en */,
-				DB2A490219DF429D00CB687B /* es */,
+				0390086719F39DFD00FD7EDF /* Base */,
+				0390086819F39E0B00FD7EDF /* es */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		DB2A490519DF42DA00CB687B /* Camera.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A490419DF42DA00CB687B /* en */,
-				DB2A490619DF42DF00CB687B /* es */,
-			);
-			name = Camera.storyboard;
 			sourceTree = "<group>";
 		};
 		DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A490819DF42F300CB687B /* en */,
-				DB2A490A19DF42F800CB687B /* es */,
+				0390084C19F3893900FD7EDF /* Base */,
+				0390084D19F3894700FD7EDF /* es */,
 			);
 			name = VCVideoPlayerToolbarView.xib;
 			sourceTree = "<group>";
@@ -4274,8 +4266,8 @@
 		DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A490C19DF430D00CB687B /* en */,
-				DB2A490E19DF431200CB687B /* es */,
+				0390084E19F389E100FD7EDF /* Base */,
+				0390084F19F389EC00FD7EDF /* es */,
 			);
 			name = VMediaPreviewViewController.xib;
 			sourceTree = "<group>";
@@ -4283,26 +4275,17 @@
 		DB2A491119DF432F00CB687B /* VPublishShareView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A491019DF432F00CB687B /* en */,
-				DB2A491219DF433500CB687B /* es */,
+				0390085019F38A9900FD7EDF /* Base */,
+				0390085119F38AA000FD7EDF /* es */,
 			);
 			name = VPublishShareView.xib;
-			sourceTree = "<group>";
-		};
-		DB2A491519DF434D00CB687B /* VCommentCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A491419DF434D00CB687B /* en */,
-				DB2A491619DF435200CB687B /* es */,
-			);
-			name = VCommentCell.xib;
 			sourceTree = "<group>";
 		};
 		DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A491819DF436E00CB687B /* en */,
-				DB2A491A19DF437400CB687B /* es */,
+				0390085919F38C1200FD7EDF /* Base */,
+				0390085A19F38C2700FD7EDF /* es */,
 			);
 			name = VNavigationHeaderView.xib;
 			sourceTree = "<group>";
@@ -4310,8 +4293,8 @@
 		DB2A491D19DF437D00CB687B /* VNoContentView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A491C19DF437D00CB687B /* en */,
-				DB2A491E19DF438200CB687B /* es */,
+				0390085B19F38C9500FD7EDF /* Base */,
+				0390085C19F38C9F00FD7EDF /* es */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -4319,71 +4302,17 @@
 		DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A492019DF43F900CB687B /* en */,
-				DB2A492219DF43FE00CB687B /* es */,
+				0390086919F39EB700FD7EDF /* Base */,
+				0390086A19F39EC200FD7EDF /* es */,
 			);
 			name = VForceUpgradeViewController.xib;
-			sourceTree = "<group>";
-		};
-		DB2A492519DF441100CB687B /* VNotificationCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A492419DF441100CB687B /* en */,
-				DB2A492619DF441600CB687B /* es */,
-			);
-			name = VNotificationCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A492919DF442700CB687B /* VConversationCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A492819DF442700CB687B /* en */,
-				DB2A492A19DF442C00CB687B /* es */,
-			);
-			name = VConversationCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A492D19DF443900CB687B /* VMessageCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A492C19DF443900CB687B /* en */,
-				DB2A492E19DF443F00CB687B /* es */,
-			);
-			name = VMessageCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A493119DF445C00CB687B /* VMarqueeTableViewCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A493019DF445C00CB687B /* en */,
-				DB2A493219DF446200CB687B /* es */,
-			);
-			name = VMarqueeTableViewCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A493519DF446F00CB687B /* VMarqueeStreamItemCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A493419DF446F00CB687B /* en */,
-				DB2A493619DF447600CB687B /* es */,
-			);
-			name = VMarqueeStreamItemCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A493919DF448800CB687B /* followerCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A493819DF448800CB687B /* en */,
-				DB2A493A19DF448C00CB687B /* es */,
-			);
-			name = followerCell.xib;
 			sourceTree = "<group>";
 		};
 		DB2A493D19DF449400CB687B /* Profile.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A493C19DF449400CB687B /* en */,
-				DB2A493E19DF449A00CB687B /* es */,
+				0390087719F3A14500FD7EDF /* Base */,
+				0390087819F3A14E00FD7EDF /* es */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -4391,8 +4320,8 @@
 		DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A494019DF44A500CB687B /* en */,
-				DB2A494219DF44AA00CB687B /* es */,
+				0390087919F3A2A000FD7EDF /* Base */,
+				0390087A19F3A2AA00FD7EDF /* es */,
 			);
 			name = VUserProfileHeaderView.xib;
 			sourceTree = "<group>";
@@ -4400,8 +4329,8 @@
 		DB2A494519DF44CF00CB687B /* settings.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A494419DF44CF00CB687B /* en */,
-				DB2A494619DF44D500CB687B /* es */,
+				0390087D19F3A4A900FD7EDF /* Base */,
+				0390087E19F3A4B400FD7EDF /* es */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";
@@ -4409,91 +4338,28 @@
 		DB2A494919DF44EE00CB687B /* login.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A494819DF44EE00CB687B /* en */,
-				DB2A494A19DF44F400CB687B /* es */,
+				0390087F19F3A53C00FD7EDF /* Base */,
+				0390088019F3A54A00FD7EDF /* es */,
 			);
 			name = login.storyboard;
-			sourceTree = "<group>";
-		};
-		DB2A494D19DF450300CB687B /* VInviteFriendTableViewCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A494C19DF450300CB687B /* en */,
-				DB2A494E19DF450A00CB687B /* es */,
-			);
-			name = VInviteFriendTableViewCell.xib;
 			sourceTree = "<group>";
 		};
 		DB2A495119DF451600CB687B /* FindFriendsTableView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A495019DF451600CB687B /* en */,
-				DB2A495219DF451C00CB687B /* es */,
+				0390088319F3A63C00FD7EDF /* Base */,
+				0390088419F3A64600FD7EDF /* es */,
 			);
 			name = FindFriendsTableView.xib;
-			sourceTree = "<group>";
-		};
-		DB2A495519DF453900CB687B /* VStreamDirectoryItemCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A495419DF453900CB687B /* en */,
-				DB2A495619DF454C00CB687B /* es */,
-			);
-			name = VStreamDirectoryItemCell.xib;
 			sourceTree = "<group>";
 		};
 		DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DB2A495819DF455D00CB687B /* en */,
-				DB2A495A19DF456300CB687B /* es */,
+				0390088F19F3A99100FD7EDF /* Base */,
+				03F28F4919F4459D008BB3F7 /* es */,
 			);
 			name = VEphemeralTimerView.xib;
-			sourceTree = "<group>";
-		};
-		DB2A495D19DF457500CB687B /* VStreamViewCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A495C19DF457500CB687B /* en */,
-				DB2A495E19DF457900CB687B /* es */,
-			);
-			name = VStreamViewCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A496119DF458000CB687B /* VStreamVideoCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A496019DF458000CB687B /* en */,
-				DB2A496219DF458900CB687B /* es */,
-			);
-			name = VStreamVideoCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A496519DF459000CB687B /* VStreamPollCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A496419DF459000CB687B /* en */,
-				DB2A496619DF459700CB687B /* es */,
-			);
-			name = VStreamPollCell.xib;
-			sourceTree = "<group>";
-		};
-		DB2A496919DF45A200CB687B /* VStreamCellHeaderView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A496819DF45A200CB687B /* en */,
-				DB2A496A19DF45A700CB687B /* es */,
-			);
-			name = VStreamCellHeaderView.xib;
-			sourceTree = "<group>";
-		};
-		DB2A496D19DF45D500CB687B /* VWebContentViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB2A496C19DF45D500CB687B /* en */,
-				DB2A496E19DF45DB00CB687B /* es */,
-			);
-			name = VWebContentViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
