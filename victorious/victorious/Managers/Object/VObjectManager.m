@@ -26,6 +26,7 @@
 #import "VSequence+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VConversation+RestKit.h"
+#import "VTracking+RestKit.h"
 #import "VImageSearchResult.h"
 #import "VPollResult+RestKit.h"
 #import "VMessage+RestKit.h"
