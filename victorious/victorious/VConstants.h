@@ -140,6 +140,7 @@ static NSString * const   kTemporaryContentStatus = @"temp";
 
 static NSString * const   kUserStatusComplete = @"complete";
 static NSString * const   kUserStatusIncomplete = @"incomplete";
+static NSString * const   kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
 
 #pragma mark - Access Levels
 

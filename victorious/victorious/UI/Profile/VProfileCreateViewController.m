@@ -94,7 +94,10 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.usernameTextField.text = self.profile.name;
+    if (![self.profile.name isEqualToString:kNoUserName])
+    {
+        self.usernameTextField.text = self.profile.name;
+    }
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
@@ -512,7 +515,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || self.profile.pictureUrl || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
+                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
