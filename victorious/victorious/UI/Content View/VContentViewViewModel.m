@@ -8,6 +8,9 @@
 
 #import "VContentViewViewModel.h"
 
+// Experiments
+#import "VSettingManager.h"
+
 // Models
 #import "VComment.h"
 #import "VUser.h"
@@ -136,7 +139,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (void)fetchHistogramData
 {
-    if (![self.sequence isVideo])
+    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsHistogramEnabled])
     {
         return;
     }

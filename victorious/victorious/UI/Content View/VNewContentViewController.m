@@ -767,6 +767,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return CGSizeZero;
             }
+            if (!self.viewModel.histogramDataSource)
+            {
+                return CGSizeZero;
+            }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
