@@ -101,17 +101,39 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams
 {
+    VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
+
+    streamColllection.allStreams = allStreams;
+    
+    NSMutableArray *titles = [[NSMutableArray alloc] initWithCapacity:allStreams.count];
+    for (VStream *stream in allStreams)
+    {
+        [titles addObject:stream.name];
+    }
+    
+    [streamColllection addNewNavHeaderWithTitles:titles];
+    
+    return streamColllection;
+}
+
++ (instancetype)streamViewControllerForStream:(VStream *)stream
+{
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamCollectionViewController *streamColllection = (VStreamCollectionViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamCollectionStoryboardId];
     
     streamColllection.defaultStream = stream;
     streamColllection.currentStream = stream;
-    streamColllection.allStreams = allStreams;
     
     return streamColllection;
 }
 
 #pragma mark - View Heirarchy
+
+- (void)dealloc
+{
+    self.marquee.delegate = nil;
+    self.streamDataSource.delegate = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -132,8 +154,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
     
-//    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
-//    self.navHeaderView.navSelector.currentIndex = selectedStream;
+    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
+    self.navHeaderView.navSelector.currentIndex = selectedStream;
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;

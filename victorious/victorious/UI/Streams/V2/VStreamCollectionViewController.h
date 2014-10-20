@@ -22,5 +22,6 @@
 + (instancetype)ownerStreamCollection;
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams;
++ (instancetype)streamViewControllerForStream:(VStream *)stream;
 
 @end

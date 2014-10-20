@@ -31,6 +31,7 @@
 #import "VDirectoryViewController.h"
 
 #import "VStreamCollectionViewController.h"
+#import "VStreamPageViewController.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -138,7 +139,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         {
             case VMenuRowHome:
             {
-                navigationController.viewControllers = @[[VStreamCollectionViewController homeStreamCollection]];
+                VStreamPageViewController *homeContainer = [VStreamPageViewController homeStream];
+                navigationController.viewControllers = @[homeContainer];
                 [self.sideMenuViewController hideMenuViewController];
             }
             break;
