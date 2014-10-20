@@ -146,9 +146,7 @@
         return nil;
     }
     
-    NSString *output = [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
-    
-    return output;
+    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
 }
 
 - (void)sendRequestWithUrlString:(NSString *)url
