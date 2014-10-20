@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -18,7 +18,6 @@
                             <outlet property="delegate" destination="Tfk-WC-tkh" id="S3f-CR-oVf"/>
                         </connections>
                     </tableView>
-                    <size key="freeformSize" width="320" height="568"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="FVl-PH-sR7">
                         <autoresizingMask key="autoresizingMask"/>
                         <attributedString key="attributedTitle">
@@ -57,7 +56,7 @@
             </objects>
             <point key="canvasLocation" x="-4716" y="-228"/>
         </scene>
-        <!--Message Container View Controller - Mensajes-->
+        <!--Mensajes-->
         <scene sceneID="WQQ-cx-Z9d">
             <objects>
                 <viewController storyboardIdentifier="messagecontainer" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="acE-Yl-HFc" customClass="VMessageContainerViewController" sceneMemberID="viewController">
@@ -178,7 +177,7 @@
             </objects>
             <point key="canvasLocation" x="-4154" y="-942"/>
         </scene>
-        <!--Message View Controller - Mensajes-->
+        <!--Mensajes-->
         <scene sceneID="IH3-Pz-KdZ">
             <objects>
                 <tableViewController storyboardIdentifier="messages" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
@@ -933,7 +932,6 @@
                                     <constraint firstAttribute="centerX" secondItem="2TL-Vb-eja" secondAttribute="centerX" id="sSk-Bg-cpf"/>
                                     <constraint firstItem="IQa-Xx-665" firstAttribute="leading" secondItem="aAT-JQ-9wh" secondAttribute="leading" constant="-1" id="tKz-Xk-3s2"/>
                                 </constraints>
-                                <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-Lq-Sbm" userLabel="Bar Container View">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
@@ -1345,7 +1343,7 @@
             </objects>
             <point key="canvasLocation" x="-1271" y="-2413"/>
         </scene>
-        <!--Create Poll View Controller - Nueva encuesta-->
+        <!--Nueva encuesta-->
         <scene sceneID="7Hk-3c-K7f">
             <objects>
                 <viewController storyboardIdentifier="VCreatePollViewController" id="ZDA-K5-K60" customClass="VCreatePollViewController" sceneMemberID="viewController">
@@ -1812,7 +1810,6 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6y-Vg-Xrc" userLabel="selected containment view">
-                                <rect key="frame" x="193" y="-12" width="0.0" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mzz-F2-4Qi" userLabel="selectedAnswerView">
@@ -2180,7 +2177,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rAp-Md-bdw" userLabel="Progress Bar View">
-                                <rect key="frame" x="0.0" y="81" width="0.0" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -2398,7 +2394,7 @@
             </objects>
             <point key="canvasLocation" x="-1763" y="-1495"/>
         </scene>
-        <!--Hash Tag Stream View Controller - Hash Tags-->
+        <!--Hash Tags-->
         <scene sceneID="zTD-dT-a5A">
             <objects>
                 <tableViewController storyboardIdentifier="hashtagstream" id="bg3-8c-wEs" customClass="VHashTagStreamViewController" sceneMemberID="viewController">
@@ -2556,6 +2552,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0HE-10-iyL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3296" y="-228"/>
+        </scene>
+        <!--Stream Page View Controller-->
+        <scene sceneID="RMd-R0-9SA">
+            <objects>
+                <pageViewController storyboardIdentifier="kStreamPager" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="S59-hV-JZh" customClass="VStreamPageViewController" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NWc-bQ-DV8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2470" y="-222"/>
         </scene>
         <!--Stream Table View Controller-->
         <scene sceneID="2i2-Db-QEj">
@@ -2784,6 +2788,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7lk-PV-RSP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4708" y="-1691"/>
+        </scene>
+        <!--Stream Collection View Controller-->
+        <scene sceneID="7Ch-yy-s1C">
+            <objects>
+                <viewController storyboardIdentifier="kStreamCollection" id="0lV-IO-icq" customClass="VStreamCollectionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="O0N-Xy-Vbh"/>
+                        <viewControllerLayoutGuide type="bottom" id="8tD-c4-4Te"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vc8-dv-v8J">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3gV-4r-uQR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WGs-Ki-NjK">
+                                    <size key="itemSize" width="154" height="199"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="0lV-IO-icq" id="vx3-w0-ivY"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="3gV-4r-uQR" id="FLq-6U-GNB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dyH-3f-cPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2880" y="-222"/>
         </scene>
     </scenes>
     <resources>

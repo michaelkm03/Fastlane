@@ -100,7 +100,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return ownerStream;
 }
 
-
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
@@ -134,8 +133,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
     
-    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
-    self.navHeaderView.navSelector.currentIndex = selectedStream;
+//    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
+//    self.navHeaderView.navSelector.currentIndex = selectedStream;
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;

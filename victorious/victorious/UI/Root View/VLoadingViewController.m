@@ -22,6 +22,9 @@
 
 #import "MBProgressHUD.h"
 
+#warning
+#import "VStreamPageViewController.h"
+
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
 
@@ -170,23 +173,16 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoading = NO;
             _appInitLoaded = YES;
             
-            VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
-            homeContainer.shouldShowHeaderLogo = YES;
-            
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 // Load a user's following and followers
                 [self loadFollowersAndFollowing:user];
                 
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
-                self.navigationController.viewControllers = @[homeContainer];
+                [self goToHomeScreen];
             }
                                                                         onError:^(NSError *error)
             {
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                VStreamCollectionViewController *homeContainer = [VStreamCollectionViewController homeStreamCollection];
-                self.navigationController.viewControllers = @[homeContainer];
+                [self goToHomeScreen];
             }];
         }
                                                       failBlock:^(NSOperation *operation, NSError *error)
@@ -197,6 +193,14 @@ static const NSUInteger kRetryAttempts = 5;
             [self scheduleRetry];
         }];
     }
+}
+
+- (void)goToHomeScreen
+{
+    
+    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+    VStreamPageViewController *homeContainer = [VStreamPageViewController homeStream];
+    self.navigationController.viewControllers = @[homeContainer];
 }
 
 - (void)scheduleRetry

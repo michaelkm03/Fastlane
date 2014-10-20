@@ -60,31 +60,22 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    NSMutableArray *titles = [[NSMutableArray alloc] init];
-    for (VStream *stream in self.allStreams)
-    {
-        [titles addObject:stream.name];
-    }
-    [self addNewNavHeaderWithTitles:titles];
-    self.navHeaderView.delegate = self;
-    self.navHeaderView.showHeaderLogoImage = self.shouldShowHeaderLogo;
-    
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    
-    if (self.hasAddAction)
-    {
-        UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
-        [self.navHeaderView setRightButtonImage:image
-                                     withAction:@selector(createButtonAction:)
-                                       onTarget:self];
-    }
-    else if (self.hasFindFriendsAction)
-    {
-        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
-                                     withAction:@selector(findFriendsAction:)
-                                       onTarget:self];
-    }
-    
+//    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+//    
+//    if (self.hasAddAction)
+//    {
+//        UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
+//        [self.navHeaderView setRightButtonImage:image
+//                                     withAction:@selector(createButtonAction:)
+//                                       onTarget:self];
+//    }
+//    else if (self.hasFindFriendsAction)
+//    {
+//        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
+//                                     withAction:@selector(findFriendsAction:)
+//                                       onTarget:self];
+//    }
+//    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
                   forControlEvents:UIControlEventValueChanged];
@@ -92,21 +83,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     
-    UIEdgeInsets insets = self.collectionView.contentInset;
-    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-
-    self.collectionView.contentInset = insets;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-        : UIStatusBarStyleDefault;
+//    UIEdgeInsets insets = self.collectionView.contentInset;
+//    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+//
+//    self.collectionView.contentInset = insets;
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -250,7 +230,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
     
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    
     if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))
     {
         [UIView animateWithDuration:.2f animations:^
@@ -264,6 +243,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
          {
              [self showHeader];
          }];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 

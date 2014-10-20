@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lsc-qm-Ib8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lsc-qm-Ib8">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -166,7 +166,7 @@
             </objects>
             <point key="canvasLocation" x="161" y="9"/>
         </scene>
-        <!--Login With Email View Controller - Iniciar sesión con E-mail-->
+        <!--Iniciar sesión con E-mail-->
         <scene sceneID="I88-g1-RQV">
             <objects>
                 <viewController storyboardIdentifier="loginWithEmail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iZ7-hd-8dA" customClass="VLoginWithEmailViewController" sceneMemberID="viewController">

@@ -16,11 +16,14 @@
 #import "VContentViewController.h"
 #import "VNavigationHeaderView.h"
 #import "UIViewController+VSideMenuViewController.h"
+#import "UIViewController+VNavMenu.h"
 #import "MBProgressHUD.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
+
+#import "VSettingManager.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
@@ -58,8 +61,21 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
+
+    [self addNewNavHeaderWithTitles:nil];
     
     [self refresh:self.refreshControl];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
 }
 
 #pragma mark - CollectionViewDelegate
