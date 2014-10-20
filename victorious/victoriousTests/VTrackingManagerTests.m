@@ -23,9 +23,9 @@
 
 
 @interface VTrackingManagerTests : XCTestCase
-{
-    VTrackingManager *_analyticsManager;
-}
+
+@property(nonatomic, strong) VTrackingManager *analyticsManager;
+
 
 @end
 
@@ -35,9 +35,9 @@
 {
     [super setUp];
     
-    _analyticsManager = [[VTrackingManager alloc] init];
-    XCTAssertNotNil( _analyticsManager.registeredMacros );
-    XCTAssertNotEqual( _analyticsManager.registeredMacros.count, (NSUInteger)0 );
+    self.analyticsManager = [[VTrackingManager alloc] init];
+    XCTAssertNotNil( self.analyticsManager.registeredMacros );
+    XCTAssertNotEqual( self.analyticsManager.registeredMacros.count, (NSUInteger)0 );
 }
 
 - (void)tearDown
@@ -48,30 +48,30 @@
 - (void)testTrackEvents
 {
     NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:urls andParameters:nil], 0 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:urls andParameters:nil], 0 );
     
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:nil andParameters:nil], -1 );
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:@[] andParameters:nil], -1 );
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:nil andParameters:nil], -1 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:@[] andParameters:nil], -1 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
     
     urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:urls andParameters:nil], 1 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:urls andParameters:nil], 1 );
     
     urls = @[ [NSNull null], [NSNull null] ];
-    XCTAssertEqual( [_analyticsManager trackEventWithUrls:urls andParameters:nil], 2 );
+    XCTAssertEqual( [self.analyticsManager trackEventWithUrls:urls andParameters:nil], 2 );
 }
 
 - (void)testTrackEvent
 {
-    XCTAssert( [_analyticsManager trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
-    XCTAssert( [_analyticsManager trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
 }
 
 - (void)testTrackEventNoValuesInvalid
 {
-    XCTAssertFalse( [_analyticsManager trackEventWithUrl:@"" andParameters:nil] );
-    XCTAssertFalse( [_analyticsManager trackEventWithUrl:nil andParameters:nil] );
-    XCTAssertFalse( [_analyticsManager trackEventWithUrl:(NSString *)[NSObject new] andParameters:nil] );
+    XCTAssertFalse( [self.analyticsManager trackEventWithUrl:@"" andParameters:nil] );
+    XCTAssertFalse( [self.analyticsManager trackEventWithUrl:nil andParameters:nil] );
+    XCTAssertFalse( [self.analyticsManager trackEventWithUrl:(NSString *)[NSObject new] andParameters:nil] );
 }
 
 - (void)testTrackEventValues
@@ -81,7 +81,7 @@
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [_analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testTrackEventValuesInvalid
@@ -93,22 +93,22 @@
     NSDictionary *parameters;
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [_analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @3 , macro2 : @6 };
-    XCTAssert( [_analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : [NSDate date] , macro2 : [NSDate date] };
-    XCTAssert( [_analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @5.0f , macro2 : @10.0f };
-    XCTAssert( [_analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.analyticsManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testMacroReplacement
 {
-    NSString *macro1 = _analyticsManager.registeredMacros[0];
-    NSString *macro2 = _analyticsManager.registeredMacros[1];
+    NSString *macro1 = self.analyticsManager.registeredMacros[0];
+    NSString *macro2 = self.analyticsManager.registeredMacros[1];
     NSString *macro3 = @"unregistered_macro";
     NSString *string = [NSString stringWithFormat:@"%@/%@/%@", macro1, macro2, macro3 ];
     
@@ -117,7 +117,7 @@
     NSDictionary *parameters;
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2", macro3 : @"value3" };
-    output = [_analyticsManager stringByReplacingMacros:_analyticsManager.registeredMacros inString:string withCorrspondingParameters:parameters];
+    output = [self.analyticsManager stringByReplacingMacros:self.analyticsManager.registeredMacros inString:string withCorrspondingParameters:parameters];
     expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ macro1 ]];
     expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:parameters[ macro2 ]];
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced." );
@@ -135,24 +135,24 @@
     NSString *output;
     NSString *expected;
     
-    output = [_analyticsManager stringFromString:url byReplacingString:macro withValue:stringValue];
+    output = [self.analyticsManager stringFromString:url byReplacingString:macro withValue:stringValue];
     expected = [url stringByReplacingOccurrencesOfString:macro
                                               withString:stringValue];
     XCTAssertEqualObjects( output, expected );
     
-    output = [_analyticsManager stringFromString:url byReplacingString:macro withValue:integerValue];
+    output = [self.analyticsManager stringFromString:url byReplacingString:macro withValue:integerValue];
     expected = [url stringByReplacingOccurrencesOfString:macro
                                               withString:[NSString stringWithFormat:@"%@", integerValue]];
     XCTAssertEqualObjects( output, expected );
     
-    output = [_analyticsManager stringFromString:url byReplacingString:macro withValue:floatValue];
+    output = [self.analyticsManager stringFromString:url byReplacingString:macro withValue:floatValue];
     expected = [url stringByReplacingOccurrencesOfString:macro
                                               withString:[NSString stringWithFormat:@"%@", floatValue]];
     XCTAssertEqualObjects( output, expected );
     
-    output = [_analyticsManager stringFromString:url byReplacingString:macro withValue:dateValue];
+    output = [self.analyticsManager stringFromString:url byReplacingString:macro withValue:dateValue];
     expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[_analyticsManager.dateFormatter stringFromDate:dateValue ]];
+                                              withString:[self.analyticsManager.dateFormatter stringFromDate:dateValue ]];
     XCTAssertEqualObjects( output, expected );
 }
 
@@ -163,15 +163,15 @@
     NSString *output;
 
     url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [_analyticsManager stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
+    output = [self.analyticsManager stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
     XCTAssertEqualObjects( output, url, @"Attempting to replace a macro not present in URL shoudl leave URL unchanged." );
     
     url = @"http://www.example.com/";
-    output = [_analyticsManager stringFromString:url byReplacingString:macro withValue:@"valid_value"];
+    output = [self.analyticsManager stringFromString:url byReplacingString:macro withValue:@"valid_value"];
     XCTAssertEqualObjects( output, url, @"Attempting to replace a macro in a URL without macros should leave URL unchanged." );
     
     url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [_analyticsManager stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
+    output = [self.analyticsManager stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
     XCTAssertEqualObjects( output, url, @"Attempting to replace a macro in a URL with the wrong macro should leave URL unchanged." );
 }
 
@@ -180,13 +180,13 @@
     NSString *macro = @"__macro__";
     NSString *urlWithMacro = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     
-    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
-    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
-    XCTAssertNil( [_analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
+    XCTAssertNil( [self.analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
+    XCTAssertNil( [self.analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
+    XCTAssertNil( [self.analyticsManager stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
     
-    XCTAssertThrows( [_analyticsManager stringFromString:@"" byReplacingString:macro withValue:@"valid_value"] );
-    XCTAssertThrows( [_analyticsManager stringFromString:(NSString *)[NSObject new] byReplacingString:macro withValue:@"valid_value"] );
-    XCTAssertThrows( [_analyticsManager stringFromString:nil byReplacingString:macro withValue:@"valid_value"] );
+    XCTAssertThrows( [self.analyticsManager stringFromString:@"" byReplacingString:macro withValue:@"valid_value"] );
+    XCTAssertThrows( [self.analyticsManager stringFromString:(NSString *)[NSObject new] byReplacingString:macro withValue:@"valid_value"] );
+    XCTAssertThrows( [self.analyticsManager stringFromString:nil byReplacingString:macro withValue:@"valid_value"] );
 }
 
 @end

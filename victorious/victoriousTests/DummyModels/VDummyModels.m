@@ -9,6 +9,7 @@
 #import "VDummyModels.h"
 #import "VObjectManager.h"
 #import "RKManagedObjectStore.h"
+#import "VUser.h"
 
 static NSManagedObjectContext *context = nil;
 
@@ -16,7 +17,7 @@ static NSManagedObjectContext *context = nil;
 
 + (NSManagedObjectContext *)context
 {
-    if ( context == nil )
+    if ( !context )
     {
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
         NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];

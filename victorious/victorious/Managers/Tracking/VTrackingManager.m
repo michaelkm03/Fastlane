@@ -41,12 +41,13 @@
 {
     static NSDateFormatter *dateFormatter;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    });
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      dateFormatter = [[NSDateFormatter alloc] init];
+                      dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                      dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+                      dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+                  });
     return dateFormatter;
 }
 
@@ -59,7 +60,8 @@
     }
     
     __block NSUInteger numFailures = 0;
-    [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop) {
+    [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
+    {
         if ( ![self trackEventWithUrl:url andParameters:parameters] )
         {
             numFailures++;
@@ -80,7 +82,7 @@
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.registeredMacros
                                                            inString:url
                                          withCorrspondingParameters:parameters];
-    if ( urlWithMacrosReplaced == nil )
+    if ( !urlWithMacrosReplaced )
     {
         return NO;
     }
@@ -93,15 +95,15 @@
 - (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
 {
     // Optimization
-    if ( parameters == nil || parameters.allKeys.count == 0 )
+    if ( !parameters|| parameters.allKeys.count == 0 )
     {
         return originalString;
     }
     
     __block NSString *output = originalString;
     
-    [macros enumerateObjectsUsingBlock:^(NSString *macro, NSUInteger idx, BOOL *stop) {
-        
+    [macros enumerateObjectsUsingBlock:^(NSString *macro, NSUInteger idx, BOOL *stop)
+    {
         // For each macro, find a value in the parameters dictionary
         id value = parameters[ macro ];
         if ( value != nil )
@@ -137,7 +139,7 @@
         replacementValue = value;
     }
     
-    if ( replacementValue == nil )
+    if ( !replacementValue )
     {
         return nil;
     }
@@ -149,9 +151,10 @@
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                               VLog( @"Tracking request sent. Error: %@", [connectionError localizedDescription] );
-                           }];
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+     {
+         VLog( @"Tracking request sent. Error: %@", [connectionError localizedDescription] );
+     }];
 }
 
 @end
