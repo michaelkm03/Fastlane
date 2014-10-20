@@ -30,6 +30,8 @@
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
 #import "VContentPollCell.h"
+#import "VContentPollQuestionCell.h"
+#import "VContentPollBallotCell.h"
 //#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
@@ -333,6 +335,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
                  forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -598,12 +604,21 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
-                
+                pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+                pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
                 return pollCell;
             }
         }
         case VContentViewSectionHistogram:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+                questionCell.question = self.viewModel.sequence.name;
+                return questionCell;
+            }
+            
             if (self.histogramCell)
             {
                 return self.histogramCell;
@@ -618,6 +633,16 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         }
         case VContentViewSectionExperienceEnhancers:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                VContentPollBallotCell *ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
+                                                                                               forIndexPath:indexPath];
+                ballotCell.answerA = self.viewModel.answerA;
+                ballotCell.answerB = self.viewModel.answerB;
+                
+                return ballotCell;
+            }
+            
             if (self.experienceEnhancerCell)
             {
                 return self.experienceEnhancerCell;
@@ -767,12 +792,20 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             }
         }
         case VContentViewSectionHistogram:
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
             if (self.viewModel.type == VContentViewTypeVideo)
             {
                 return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
             return CGSizeZero;
         case VContentViewSectionExperienceEnhancers:
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
             if (self.viewModel.type == VContentViewTypePoll)
             {
                 return CGSizeZero;

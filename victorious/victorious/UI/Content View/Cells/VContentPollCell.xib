@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
@@ -14,29 +14,58 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KbT-8J-Bx0" userLabel="Poll Image View A">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KbT-8J-Bx0" userLabel="Poll Image View A">
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
+                    <button hidden="YES" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Od3-Kk-qNW" userLabel="Poll A Play Button">
+                        <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
+                        <state key="normal" image="Play">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
                         <rect key="frame" x="161" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Xk-MbI" userLabel="Poll B Play Button">
+                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
+                        <state key="normal" image="Play">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstItem="bJW-Xk-MbI" firstAttribute="top" secondItem="36J-hZ-MxW" secondAttribute="top" id="4Mc-CJ-Kmn"/>
+                <constraint firstItem="bJW-Xk-MbI" firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="63x-2j-6tr"/>
                 <constraint firstItem="KbT-8J-Bx0" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="8MO-Fd-OEQ"/>
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="9dR-pp-XHe"/>
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="width" secondItem="KbT-8J-Bx0" secondAttribute="width" id="B4f-sS-VlI"/>
+                <constraint firstItem="Od3-Kk-qNW" firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="Dai-K0-d7n"/>
+                <constraint firstItem="bJW-Xk-MbI" firstAttribute="leading" secondItem="36J-hZ-MxW" secondAttribute="leading" id="F86-cz-Ur5"/>
                 <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="FBs-qC-yll"/>
                 <constraint firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="G2s-Dy-440"/>
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="trailing" constant="2" id="NHH-Qc-izN"/>
+                <constraint firstItem="Od3-Kk-qNW" firstAttribute="top" secondItem="KbT-8J-Bx0" secondAttribute="top" id="Svi-vN-n3g"/>
                 <constraint firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="T2W-Yv-sbY"/>
                 <constraint firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="UsZ-qL-enn"/>
+                <constraint firstItem="Od3-Kk-qNW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="leading" id="WmD-oN-7Vh"/>
+                <constraint firstItem="bJW-Xk-MbI" firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="ksq-It-Nv8"/>
+                <constraint firstItem="Od3-Kk-qNW" firstAttribute="trailing" secondItem="KbT-8J-Bx0" secondAttribute="trailing" id="qFP-1d-X6Z"/>
             </constraints>
             <size key="customSize" width="250" height="223"/>
-            <point key="canvasLocation" x="431" y="487.5"/>
+            <connections>
+                <outlet property="answerAPlayButton" destination="Od3-Kk-qNW" id="NWs-Ef-nki"/>
+                <outlet property="answerAThumbnail" destination="KbT-8J-Bx0" id="IjK-e0-MRh"/>
+                <outlet property="answerBPlayButton" destination="bJW-Xk-MbI" id="Sge-tG-dVR"/>
+                <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
+            </connections>
+            <point key="canvasLocation" x="431" y="487"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="Play" width="33" height="33"/>
+    </resources>
 </document>

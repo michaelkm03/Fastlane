@@ -13,4 +13,9 @@
  */
 @interface VContentPollCell : VBaseCollectionViewCell
 
+@property (nonatomic, copy) NSURL *answerAThumbnailMediaURL;
+@property (nonatomic, assign) BOOL answerAIsVideo;
+@property (nonatomic, copy) NSURL *answerBThumbnailMediaURL;
+@property (nonatomic, assign) BOOL answerBIsVideo;
+
 @end

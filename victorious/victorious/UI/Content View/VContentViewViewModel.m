@@ -12,6 +12,7 @@
 #import "VComment.h"
 #import "VUser.h"
 #import "VAsset.h"
+#import "VAnswer.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -446,6 +447,26 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
     }
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
+}
+
+- (NSString *)answerA
+{
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).label;
+}
+
+- (NSString *)answerB
+{
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).label;
+}
+
+- (NSURL *)answerAThumbnailMediaURL
+{
+    return [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).mediaUrl];
+}
+
+- (NSURL *)answerBThumbnailMediaURL
+{
+    return [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).mediaUrl];
 }
 
 @end

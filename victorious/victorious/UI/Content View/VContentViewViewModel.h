@@ -12,6 +12,7 @@
 
 #import "VExperienceEnhancerController.h"
 
+
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
@@ -212,5 +213,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return Whether or not the media for the comment is a video.
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+
+@property (nonatomic, readonly) NSString *answerA;
+@property (nonatomic, readonly) NSString *answerB;
+@property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
+@property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
 
 @end
