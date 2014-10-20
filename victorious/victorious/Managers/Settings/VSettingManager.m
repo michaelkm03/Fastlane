@@ -96,7 +96,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
                                             usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
                       {
-                          return [v1.display_order compare:v2.display_order];
+                          return [v1.displayOrder compare:v2.displayOrder];
                       }];
     
     [self cacheVoteTypeImagesWithFileCache:self.fileCache];
@@ -111,13 +111,15 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
      {
-#warning Testing only
-         // TODO: Make these required by CoreData so taht they fail earlier than here
-         // TODO: Get the backend to suppor this stuff
-         v.isBallistic = @YES;
-         v.iconImage = v.iconImage ? v.iconImage : ((NSArray *)v.images)[0];
-         v.flightImage = v.flightImage ? v.flightImage : ((NSArray *)v.images)[0];
-         
+#if DEBUG
+#warning This keeps the app working until the backend updates the missinng 'icon' field and adds the actual emotive ballstics
+         if ( v.iconImage == nil )
+         {
+             v.iconImage = ((NSArray *)v.images).firstObject;
+             v.flightDuration = @( 0.5f );
+             v.animationDuration = @( 0.5f );
+         }
+#endif
          [fileCache cacheImagesForVoteType:v];
      }];
 }

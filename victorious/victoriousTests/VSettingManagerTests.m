@@ -81,7 +81,7 @@
         if ( i > 0 )
         {
             VVoteType *previousVoteType = [self.settingsManager.voteTypes objectAtIndex:i-1];
-            XCTAssert( voteType.display_order.integerValue >= previousVoteType.display_order.integerValue );
+            XCTAssert( voteType.displayOrder.integerValue >= previousVoteType.displayOrder.integerValue );
         }
     }];
 }

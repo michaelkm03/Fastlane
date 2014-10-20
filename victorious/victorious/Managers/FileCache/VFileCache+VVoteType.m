@@ -12,7 +12,6 @@
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
 NSString * const VVoteTypeIconName           = @"icon.png";
-NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
 
 @implementation VFileCache (VVoteType)
 
@@ -74,9 +73,6 @@ NSString * const VVoteTypeFlightImageName    = @"flight_image.png";
     
     NSString *iconKeyPath = [self keyPathForImage:VVoteTypeIconName forVote:voteType];
     [self cacheFileAtUrl:voteType.iconImage withKeyPath:iconKeyPath];
-    
-    NSString *flightImageKeyPath = [self keyPathForImage:VVoteTypeFlightImageName forVote:voteType];
-    [self cacheFileAtUrl:voteType.iconImage withKeyPath:flightImageKeyPath];
     
     NSArray *spriteImages = (NSArray *)voteType.images;
     NSArray *spriteKeyPaths = [self keyPathsForVoteTypeSprites:voteType];

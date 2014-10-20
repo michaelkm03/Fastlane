@@ -55,7 +55,7 @@ static NSManagedObjectContext *context = nil;
         VVoteType *voteType = (VVoteType *)[self objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
         voteType.name = [NSString stringWithFormat:@"voteType_%lu", (unsigned long)i];
         voteType.remoteId = @(i+1);
-        voteType.display_order = @(i+1);
+        voteType.displayOrder = @(i+1);
         voteType.images = @[ @"http://www.domain.com/image.png", @"http://www.domain.com/image.png", @"http://www.domain.com/image.png" ];
         [models addObject:voteType];
     }

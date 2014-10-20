@@ -22,7 +22,7 @@
 
 @end
 
-static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamatoself.PNG45.png";
+static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/logo11w.png";
 
 @interface VoteTypeTests : XCTestCase
 
@@ -59,9 +59,8 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamatoself.PN
 
 - (void)resetVoteType
 {
-    self.voteType.name = @"voteself.typeself.testself.name";
+    self.voteType.name = @"vote_type_test_name";
     self.voteType.iconImage = kTestImageUrl;
-    self.voteType.flightImage = kTestImageUrl;
     self.voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
 }
 
@@ -72,10 +71,6 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamatoself.PN
     
     keyPath = [self.fileCache keyPathForImage:VVoteTypeIconName forVote:self.voteType];
     expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:VVoteTypeIconName];
-    XCTAssertEqualObjects( expectedKeyPath, keyPath );
-    
-    keyPath = [self.fileCache keyPathForImage:VVoteTypeFlightImageName forVote:self.voteType];
-    expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:VVoteTypeFlightImageName];
     XCTAssertEqualObjects( expectedKeyPath, keyPath );
 }
 
@@ -129,9 +124,6 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamatoself.PN
         NSString *iconPath = [self.fileCache keyPathForImage:VVoteTypeIconName forVote:self.voteType];
         BOOL iconExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:iconPath];
         
-        NSString *flightImagePath = [self.fileCache keyPathForImage:VVoteTypeFlightImageName forVote:self.voteType];
-        BOOL flightImageExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:flightImagePath];
-        
         // Make sure the sprite image swere saved
         __block BOOL spritesExist = YES;
         [((NSArray *)self.voteType.images) enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -143,7 +135,7 @@ static NSString * const kTestImageUrl = @"http://pngimg.com/upload/tamatoself.PN
             }
         }];
         
-        return iconExists && flightImageExists && spritesExist;
+        return iconExists && spritesExist;
     }];
 }
 

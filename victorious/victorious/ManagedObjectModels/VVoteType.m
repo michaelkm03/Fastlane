@@ -11,14 +11,14 @@
 
 @implementation VVoteType
 
-@dynamic display_order;
+@dynamic displayOrder;
 @dynamic name;
 @dynamic remoteId;
 @dynamic images;
+@dynamic imageCount;
+@dynamic imageFormat;
 @dynamic iconImage;
-@dynamic flightImage;
 @dynamic animationDuration;
 @dynamic flightDuration;
-@dynamic isBallistic;
 
 @end

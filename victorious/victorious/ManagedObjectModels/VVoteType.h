@@ -15,14 +15,14 @@
  */
 @interface VVoteType : NSManagedObject
 
-@property (nonatomic, retain) NSNumber *display_order;
+@property (nonatomic, retain) NSNumber *displayOrder;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *remoteId;
 @property (nonatomic, retain) id images;
 @property (nonatomic, retain) NSString *iconImage;
-@property (nonatomic, retain) NSString *flightImage;
+@property (nonatomic, retain) NSString *imageFormat;
+@property (nonatomic, retain) NSNumber *imageCount;
 @property (nonatomic, retain) NSNumber *flightDuration;
 @property (nonatomic, retain) NSNumber *animationDuration;
-@property (nonatomic, retain) NSNumber *isBallistic;
 
 @end

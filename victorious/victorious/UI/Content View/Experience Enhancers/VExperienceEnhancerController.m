@@ -71,30 +71,43 @@
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
     {
-        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
-        enhancer.labelText = voteType.name;
-        enhancer.ballistic = voteType.isBallistic.floatValue;
-        enhancer.flightDuration = voteType.flightDuration.floatValue;
-        enhancer.animationDuration = voteType.animationDuration.floatValue;
-        
-        // Load the images synchronously from disk
-        enhancer.animationSequence = [self.fileCache getSpriteImagesForVoteType:voteType];
-        enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
-        enhancer.flightImage = [self.fileCache getImageWithName:VVoteTypeFlightImageName forVoteType:voteType];
-        
-        if ( enhancer.hasRequiredImages )
+        VExperienceEnhancer *enhancer = [self experienceEnhancerFromVoteType:voteType];
+        if ( enhancer != nil )
         {
             [experienceEnhanders addObject:enhancer];
         }
-        else
-        {
-            // Start an asychronous task in the background to download missing images
-            // If the images can download successfully, i.e. there is no other legitimate network error,
-            // they will be available next time the content view is presented
-            [self.fileCache cacheImagesForVoteType:voteType];
-        }
     }];
     return [NSArray arrayWithArray:experienceEnhanders];
+}
+
+- (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
+{
+    VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
+    enhancer.labelText = voteType.name;
+    enhancer.flightDuration = voteType.flightDuration.floatValue;
+    enhancer.animationDuration = voteType.animationDuration.floatValue;
+    
+    // Load the images synchronously from disk
+    enhancer.animationSequence = [self.fileCache getSpriteImagesForVoteType:voteType];
+    enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
+    
+    if ( enhancer.animationSequence.count > 0 )
+    {
+        enhancer.flightImage = enhancer.animationSequence.firstObject;
+        enhancer.ballistic = enhancer.flightImage != nil && voteType.flightDuration.floatValue > 0.0;
+    }
+    
+    // A final check to make sure the enhancer can be displayed
+    if ( enhancer.hasRequiredImages )
+    {
+        return enhancer;
+    }
+    
+    // Start an asychronous task in the background to download missing images
+    // If the images can download successfully, i.e. there is no other legitimate network error,
+    // they will be available next time the content view is presented
+    [self.fileCache cacheImagesForVoteType:voteType];
+    return nil;
 }
 
 - (BOOL)validateExperienceEnhancer:(VExperienceEnhancer *)enhancer
