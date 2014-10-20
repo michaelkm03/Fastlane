@@ -10,13 +10,26 @@
 #import "VObjectManager.h"
 #import "RKManagedObjectStore.h"
 
+static NSManagedObjectContext *context = nil;
+
 @implementation VDummyModels
+
++ (NSManagedObjectContext *)context
+{
+    if ( context == nil )
+    {
+        NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
+        NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+        NSPersistentStoreCoordinator *storeCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+        context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [context setPersistentStoreCoordinator:storeCoordinator];
+    }
+    return context;
+}
 
 + (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
-    [VObjectManager setupObjectManager];
-    
-    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+    NSManagedObjectContext *context = [VDummyModels context];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
     return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
     

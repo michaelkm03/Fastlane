@@ -40,9 +40,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL wasPlayingBeforeDissappeared;
 @property (nonatomic) BOOL hasCalculatedItemSize;
 
+@property (nonatomic, readwrite) CMTime previousTime;
 @property (nonatomic, readwrite) CMTime currentTime;
 
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
+@property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong) VTracking *trackingItem;
 
@@ -400,7 +402,17 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;
     
+    self.previousTime = self.currentTime;
     self.currentTime = time;
+    
+    if ( [self didSkipFromPreviousTime:self.previousTime toCurrentTime:self.currentTime] )
+    {
+        VLog( @"Video did skip from: %.2f to %.2f", CMTimeGetSeconds( self.previousTime ), CMTimeGetSeconds( self.currentTime ) );
+        if ( self.isTrackingEnabled )
+        {
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoSkip andParameters:self.trackingParametersForSkipEvent];
+        }
+    }
 
     if (!self.sliderTouchActive)
     {
@@ -485,6 +497,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self.player pause];
         }
     }
+}
+
+- (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime
+{
+    NSTimeInterval difference = CMTimeGetSeconds(self.currentTime) - CMTimeGetSeconds(self.previousTime);
+    NSTimeInterval limit = 1.0f;
+    
+    return abs( difference ) > limit;
 }
 
 - (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem
@@ -814,15 +834,19 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             CMTime time = self.currentTime;
             CMTime duration = self.currentTime;
             BOOL isAtEnd = time.value == duration.value;
-            if ( !isAtEnd && self.isTrackingEnabled )
+            if ( !isAtEnd )
             {
-                [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+                VLog( @"Video did skip from: %.2f to %.2f", CMTimeGetSeconds( self.previousTime ), CMTimeGetSeconds( self.currentTime ) );
+                if ( self.isTrackingEnabled )
+                {
+                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+                }
             }
         }
     }
     else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackLikelyToKeepUp"])
     {
-        // Do nothing for now
+        // This is where playback resumes after having been stalled.  Do nothing for now
     }
     
 }
@@ -843,6 +867,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Tracking
 
+- (NSDictionary *)trackingParametersForSkipEvent
+{
+    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.currentTime ) ),
+              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.previousTime ) ) };
+}
+
 - (NSDictionary *)trackingParameters
 {
     return @{ kTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ) };
@@ -855,7 +885,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
 {
-    NSParameterAssert( trackingItem != nil );
+    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
     
     self.trackingItem = trackingItem;
     self.trackingManager = [[VTrackingManager alloc] init];
