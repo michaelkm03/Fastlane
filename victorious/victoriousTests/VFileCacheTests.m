@@ -75,46 +75,46 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 /**
  Writes a file synchronously to prevent many nested asynchronous blocks for testing.
  */
-- (void)writeFileSynchronousWithKeyPath:(NSString *)keyPath
+- (void)writeFileSynchronousWithSavePath:(NSString *)savePath
 {
-    NSString *fullPath = [self.fileCache getCachesDirectoryPathForPath:keyPath];
+    NSString *fullPath = [self.fileCache getCachesDirectoryPathForPath:savePath];
     [self.fileCache createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent]];
     XCTAssert( [self.fileCache saveFile:kTestingFileUrl toPath:fullPath shouldOverwrite:YES] );
 }
 
 - (void)testSaveFile
 {
-    NSString *keyPath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
-    XCTAssert( [self.fileCache cacheFileAtUrl:kTestingFileUrl withKeyPath:keyPath shouldOverwrite:YES] );
+    NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
+    XCTAssert( [self.fileCache cacheFileAtUrl:kTestingFileUrl withSavePath:savePath shouldOverwrite:YES] );
     
     [self.asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
-        return [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:keyPath];
+        return [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:savePath];
     }];
 }
 
 - (void)testSaveFileInvalid
 {
-    NSString *aKeyPath = @"keyPath";
-    XCTAssertFalse( [self.fileCache cacheFileAtUrl:kTestingFileUrl withKeyPath:nil] );
-    XCTAssertFalse( [self.fileCache cacheFileAtUrl:kTestingFileUrl withKeyPath:@""] );
-    XCTAssertFalse( [self.fileCache cacheFileAtUrl:nil withKeyPath:aKeyPath] );
-    XCTAssertFalse( [self.fileCache cacheFileAtUrl:@"" withKeyPath:aKeyPath] );
+    NSString *aSavePath = @"savePath";
+    XCTAssertFalse( [self.fileCache cacheFileAtUrl:kTestingFileUrl withSavePath:nil] );
+    XCTAssertFalse( [self.fileCache cacheFileAtUrl:kTestingFileUrl withSavePath:@""] );
+    XCTAssertFalse( [self.fileCache cacheFileAtUrl:nil withSavePath:aSavePath] );
+    XCTAssertFalse( [self.fileCache cacheFileAtUrl:@"" withSavePath:aSavePath] );
 }
 
 - (void)testSaveMultipleFiles
 {
     NSString *localPath = [NSString stringWithFormat:@"%@/testself.files", kTestingPathRoot];
-    NSMutableArray *keyPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *savePaths = [[NSMutableArray alloc] init];
     NSMutableArray *urls = [[NSMutableArray alloc] init];
     NSUInteger testFilesCount = 10;
     for ( NSUInteger i = 0; i < testFilesCount; i++ )
     {
-        NSString *keyPath = [NSString stringWithFormat:@"%@/multiself.fileself.%lu.html", localPath, (unsigned long)i];
-        [keyPaths addObject:keyPath];
+        NSString *savePath = [NSString stringWithFormat:@"%@/multiself.fileself.%lu.html", localPath, (unsigned long)i];
+        [savePaths addObject:savePath];
         [urls addObject: kTestingFileUrl];
     }
     
-    XCTAssert( [self.fileCache cacheFilesAtUrls:urls withKeyPaths:keyPaths shouldOverwrite:YES] );
+    XCTAssert( [self.fileCache cacheFilesAtUrls:urls withSavePaths:savePaths shouldOverwrite:YES] );
     
     // If this fails occasionally, check your network settings or adjust the wait duration
     [self.asyncHelper waitForSignal:20.0f withSignalBlock:^BOOL{
@@ -125,28 +125,28 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 - (void)testGetFileSynchronous
 {
     // Synchronously save the file using exposed private methods
-    NSString *keyPath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
-    [self writeFileSynchronousWithKeyPath:keyPath];
+    NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
+    [self writeFileSynchronousWithSavePath:savePath];
     
-    NSData *fileLoaded = [self.fileCache getCachedFileForKeyPath:keyPath];
+    NSData *fileLoaded = [self.fileCache getCachedFileForSavePath:savePath];
     XCTAssertNotNil( fileLoaded );
     XCTAssert( [fileLoaded isKindOfClass:[NSData class]] );
 }
 
 - (void)testGetFileSynchronousInvalidInput
 {
-    XCTAssertNil( [self.fileCache getCachedFileForKeyPath:nil] );
-    XCTAssertNil( [self.fileCache getCachedFileForKeyPath:@""] );
+    XCTAssertNil( [self.fileCache getCachedFileForSavePath:nil] );
+    XCTAssertNil( [self.fileCache getCachedFileForSavePath:@""] );
 }
 
 - (void)testGetFileAsynchronous
 {
     // Synchronously save the file using exposed private methods
-    NSString *keyPath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
-    [self writeFileSynchronousWithKeyPath:keyPath];
+    NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
+    [self writeFileSynchronousWithSavePath:savePath];
     
     __block NSData *fileData = nil;
-    BOOL result = [self.fileCache getCachedFileForKeyPath:keyPath completeCallback:^(NSData *data) {
+    BOOL result = [self.fileCache getCachedFileForSavePath:savePath completeCallback:^(NSData *data) {
         fileData = data;
     }];
     XCTAssert( result );
@@ -164,9 +164,9 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 
 - (void)testGetFileAsynchronousInvalidInput
 {
-    XCTAssertFalse( [self.fileCache getCachedFileForKeyPath:@"someself.keyself.path" completeCallback:nil] );
-    XCTAssertFalse( [self.fileCache getCachedFileForKeyPath:@"" completeCallback:nil] );
-    XCTAssertFalse( [self.fileCache getCachedFileForKeyPath:nil completeCallback:^(NSData *data) {}]);
+    XCTAssertFalse( [self.fileCache getCachedFileForSavePath:@"someself.keyself.path" completeCallback:nil] );
+    XCTAssertFalse( [self.fileCache getCachedFileForSavePath:@"" completeCallback:nil] );
+    XCTAssertFalse( [self.fileCache getCachedFileForSavePath:nil completeCallback:^(NSData *data) {}]);
 }
 
 - (void)testCoderBlocks
@@ -184,12 +184,12 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     };
     
     // Synchronously save the file using exposed private methods
-    NSString *keyPath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
-    [self writeFileSynchronousWithKeyPath:keyPath];
+    NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
+    [self writeFileSynchronousWithSavePath:savePath];
     XCTAssert( encoderWasCalled );
     
     // Synchronously load the file we just saved
-    XCTAssertNotNil( [self.fileCache getCachedFileForKeyPath:keyPath] );
+    XCTAssertNotNil( [self.fileCache getCachedFileForSavePath:savePath] );
     XCTAssert( decoderWasCalled );
 }
 
@@ -197,8 +197,8 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 {
     VFileCacheSubclass *fcs = (VFileCacheSubclass *)self.fileCache;
     
-    NSString *keyPath = [NSString stringWithFormat:@"%@/testself.files/fileself.overwrite.html", kTestingPathRoot];
-    NSString *fullPath = [self.fileCache getCachesDirectoryPathForPath:keyPath];
+    NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/fileself.overwrite.html", kTestingPathRoot];
+    NSString *fullPath = [self.fileCache getCachesDirectoryPathForPath:savePath];
     [fcs createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent]];
     
     fcs.downloadAndWriteWasCalled = NO;

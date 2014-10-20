@@ -27,43 +27,43 @@ extern const NSUInteger VFileCacheMaximumSaveFileRetries;
 /**
  Save a singlefile to disk asychronously.  Overwrites any existing files.
  */
-- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withKeyPath:(NSString *)keyPath;
+- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withSavePath:(NSString *)savePath;
 
 /**
  Save a single file to disk asychronously.
  @param shouldOverwrite Determines whether or not to overwrite an existing file
  */
-- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withKeyPath:(NSString *)keyPath shouldOverwrite:(BOOL)shouldOverwrite;
+- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withSavePath:(NSString *)savePath shouldOverwrite:(BOOL)shouldOverwrite;
 
 /**
  Save multiple files to disk asychronously.  Overwrites any existing files.
  */
-- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withKeyPaths:(NSArray *)keyPaths;
+- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withSavePaths:(NSArray *)savePaths;
 
 /**
  Save multiple files to disk asychronously.
  @param shouldOverwrite Determines whether or not to overwrite an existing file
  */
-- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withKeyPaths:(NSArray *)keyPaths shouldOverwrite:(BOOL)shouldOverwrite;
+- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withSavePaths:(NSArray *)savePaths shouldOverwrite:(BOOL)shouldOverwrite;
 
 /**
- Load a single file synchrononusly by keyPath.
+ Load a single file synchrononusly by savePath.
  */
-- (NSData *)getCachedFileForKeyPath:(NSString *)keyPath;
+- (NSData *)getCachedFileForSavePath:(NSString *)savePath;
 
 /**
  Loads multiple files by a keypath array asynchronously
  */
-- (NSArray *)getCachedFilesForKeyPaths:(NSArray *)keyPaths;
+- (NSArray *)getCachedFilesForSavePaths:(NSArray *)savePaths;
 
 /**
- Load a single file asynchrononusly by keyPath.
+ Load a single file asynchrononusly by savePath.
  */
-- (BOOL)getCachedFileForKeyPath:(NSString *)keyPath completeCallback:(void(^)(NSData *))completeCallback;
+- (BOOL)getCachedFileForSavePath:(NSString *)savePath completeCallback:(void(^)(NSData *))completeCallback;
 
 /**
- Load a single file asynchrononusly by keyPath.
+ Load a single file asynchrononusly by savePath.
  */
-- (BOOL)getCachedFilesForKeyPaths:(NSArray *)keyPaths completeCallback:(void(^)(NSArray *))completeCallback;
+- (BOOL)getCachedFilesForSavePaths:(NSArray *)savePaths completeCallback:(void(^)(NSArray *))completeCallback;
 
 @end

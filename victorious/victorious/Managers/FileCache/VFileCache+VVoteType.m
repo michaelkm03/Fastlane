@@ -45,12 +45,12 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setEncoder];
     
-    NSString *iconKeyPath = [self keyPathForImage:VVoteTypeIconName forVote:voteType];
-    [self cacheFileAtUrl:voteType.iconImage withKeyPath:iconKeyPath];
+    NSString *iconSavePath = [self savePathForImage:VVoteTypeIconName forVote:voteType];
+    [self cacheFileAtUrl:voteType.iconImage withSavePath:iconSavePath];
     
     NSArray *spriteImages = (NSArray *)voteType.images;
-    NSArray *spriteKeyPaths = [self keyPathsForVoteTypeSprites:voteType];
-    [self cacheFilesAtUrls:spriteImages withKeyPaths:spriteKeyPaths];
+    NSArray *spriteSavePaths = [self savePathsForVoteTypeSprites:voteType];
+    [self cacheFilesAtUrls:spriteImages withSavePaths:spriteSavePaths];
     
     return YES;
 }
@@ -66,8 +66,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    NSString *iconKeyPath = [self keyPathForImage:imageName forVote:voteType];
-    return [self getCachedFileForKeyPath:iconKeyPath completeCallback:^(NSData *data)
+    NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
+    return [self getCachedFileForSavePath:iconSavePath completeCallback:^(NSData *data)
             {
                 callback( (UIImage *)data );
             }];
@@ -82,8 +82,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    NSString *iconKeyPath = [self keyPathForImage:imageName forVote:voteType];
-    return (UIImage *)[self getCachedFileForKeyPath:iconKeyPath];
+    NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
+    return (UIImage *)[self getCachedFileForSavePath:iconSavePath];
 }
 
 - (NSArray *)getSpriteImagesForVoteType:(VVoteType *)voteType
@@ -95,7 +95,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    return [self getCachedFilesForKeyPaths:[self keyPathsForVoteTypeSprites:voteType]];
+    return [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
 }
 
 - (void)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback
@@ -107,34 +107,34 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    [self getCachedFilesForKeyPaths:[self keyPathsForVoteTypeSprites:voteType] completeCallback:callback];
+    [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:callback];
 }
 
 #pragma mark - Build Key Paths
 
-- (NSString *)keyPathForImage:(NSString *)imageName forVote:(VVoteType *)voteType
+- (NSString *)savePathForImage:(NSString *)imageName forVote:(VVoteType *)voteType
 {
     NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
     return [localRootPath stringByAppendingPathComponent:imageName];
 }
 
-- (NSString *)keyPathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index
+- (NSString *)savePathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index
 {
     NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
     NSString *fileName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, (unsigned long)index];
     return [localRootPath stringByAppendingPathComponent:fileName];
 }
 
-- (NSArray *)keyPathsForVoteTypeSprites:(VVoteType *)voteType
+- (NSArray *)savePathsForVoteTypeSprites:(VVoteType *)voteType
 {
     __block NSMutableArray *containerArray = [[NSMutableArray alloc] init];
     NSArray *spriteImages = (NSArray *)voteType.images;
     [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)
      {
-         NSString *spriteKeyPath = [self keyPathForVoteTypeSprite:voteType atFrameIndex:i];
-         if ( spriteKeyPath != nil )
+         NSString *spriteSavePath = [self savePathForVoteTypeSprite:voteType atFrameIndex:i];
+         if ( spriteSavePath != nil )
          {
-             [containerArray addObject:spriteKeyPath];
+             [containerArray addObject:spriteSavePath];
          }
          else
          {

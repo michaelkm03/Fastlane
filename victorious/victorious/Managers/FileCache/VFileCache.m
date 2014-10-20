@@ -35,15 +35,15 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 
 #pragma mark - Caching file(s) to disk
 
-- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withKeyPath:(NSString *)keyPath
+- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withSavePath:(NSString *)savePath
 {
-    return [self cacheFileAtUrl:fileUrl withKeyPath:keyPath shouldOverwrite:NO];
+    return [self cacheFileAtUrl:fileUrl withSavePath:savePath shouldOverwrite:NO];
 }
 
-- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withKeyPath:(NSString *)keyPath shouldOverwrite:(BOOL)shouldOverwrite
+- (BOOL)cacheFileAtUrl:(NSString *)fileUrl withSavePath:(NSString *)savePath shouldOverwrite:(BOOL)shouldOverwrite
 {
     // Error checking
-    if ( fileUrl == nil || fileUrl.length == 0 || keyPath == nil || keyPath.length == 0 )
+    if ( fileUrl == nil || fileUrl.length == 0 || savePath == nil || savePath.length == 0 )
     {
         return NO;
     }
@@ -52,44 +52,44 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
                            {
                                
                                // Creates directory (if it doesn't exist already)
-                               NSString *localDirectoryPath = [keyPath stringByDeletingLastPathComponent];
+                               NSString *localDirectoryPath = [savePath stringByDeletingLastPathComponent];
                                [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
                                
-                               NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
+                               NSString *fullPath = [self getCachesDirectoryPathForPath:savePath];
                                [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
                            });
     
     return YES;
 }
 
-- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withKeyPaths:(NSArray *)keyPaths
+- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withSavePaths:(NSArray *)savePaths
 {
-    return [self cacheFilesAtUrls:fileUrls withKeyPaths:keyPaths shouldOverwrite:NO];
+    return [self cacheFilesAtUrls:fileUrls withSavePaths:savePaths shouldOverwrite:NO];
 }
 
-- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withKeyPaths:(NSArray *)keyPaths shouldOverwrite:(BOOL)shouldOverwrite
+- (BOOL)cacheFilesAtUrls:(NSArray *)fileUrls withSavePaths:(NSArray *)savePaths shouldOverwrite:(BOOL)shouldOverwrite
 {
-    if ( fileUrls == nil || fileUrls.count == 0 || keyPaths == nil || keyPaths.count == 0 )
+    if ( fileUrls == nil || fileUrls.count == 0 || savePaths == nil || savePaths.count == 0 )
     {
         return NO;
     }
-    if ( fileUrls.count != keyPaths.count )
+    if ( fileUrls.count != savePaths.count )
     {
         return NO;
     }
     
     // Creates directory (if it doesn't exist already)
-    NSString *localDirectoryPath = [keyPaths[0] stringByDeletingLastPathComponent];
+    NSString *localDirectoryPath = [savePaths[0] stringByDeletingLastPathComponent];
     [self createDirectoryAtPath:[self getCachesDirectoryPathForPath:localDirectoryPath]];
     
-    for ( NSUInteger i = 0; i < keyPaths.count; i++ )
+    for ( NSUInteger i = 0; i < savePaths.count; i++ )
     {
-        NSString *keyPath = keyPaths[i];
+        NSString *savePath = savePaths[i];
         NSString *fileUrl = fileUrls[i];
         
         dispatch_barrier_async( self.dispatchQueue, ^void
                                {
-                                   NSString *fullPath = [self getCachesDirectoryPathForPath:keyPath];
+                                   NSString *fullPath = [self getCachesDirectoryPathForPath:savePath];
                                    [self saveFile:fileUrl toPath:fullPath shouldOverwrite:shouldOverwrite withNumRetries:5];
                                });
     }
@@ -99,28 +99,28 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 
 #pragma mark - Synchronous reads
 
-- (NSData *)getCachedFileForKeyPath:(NSString *)keyPath
+- (NSData *)getCachedFileForSavePath:(NSString *)savePath
 {
-    if ( keyPath == nil || keyPath.length == 0 )
+    if ( savePath == nil || savePath.length == 0 )
     {
         return nil;
     }
     
-    return [self readFileForKeyPath:keyPath];
+    return [self readFileForSavePath:savePath];
 }
 
-- (NSArray *)getCachedFilesForKeyPaths:(NSArray *)keyPaths
+- (NSArray *)getCachedFilesForSavePaths:(NSArray *)savePaths
 {
-    if ( keyPaths == nil || keyPaths.count == 0 )
+    if ( savePaths == nil || savePaths.count == 0 )
     {
         return nil;
     }
     
     NSMutableArray *fileDataContainer = [[NSMutableArray alloc] init];
-    [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger idx, BOOL *stop)
+    [savePaths enumerateObjectsUsingBlock:^(NSString *savePath, NSUInteger idx, BOOL *stop)
      {
          // Load the data on this queue using synchronous method
-         NSData *fileData = [self readFileForKeyPath:keyPath];
+         NSData *fileData = [self readFileForSavePath:savePath];
          if ( fileData != nil )
          {
              [fileDataContainer addObject:fileData];
@@ -138,9 +138,9 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 
 #pragma mark - Asynchronous reads
 
-- (BOOL)getCachedFileForKeyPath:(NSString *)keyPath completeCallback:(void(^)(NSData *))completeCallback
+- (BOOL)getCachedFileForSavePath:(NSString *)savePath completeCallback:(void(^)(NSData *))completeCallback
 {
-    if ( keyPath == nil || keyPath.length == 0 || completeCallback == nil )
+    if ( savePath == nil || savePath.length == 0 || completeCallback == nil )
     {
         return NO;
     }
@@ -148,7 +148,7 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
     dispatch_async( self.dispatchQueue, ^void
                    {
                        // Load the data on this queue using synchronous method
-                       NSData *fileData = [self readFileForKeyPath:keyPath];
+                       NSData *fileData = [self readFileForSavePath:savePath];
                        
                        // Response on the main queue
                        dispatch_async( dispatch_get_main_queue(), ^void
@@ -160,7 +160,7 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
     return YES;
 }
 
-- (BOOL)getCachedFilesForKeyPaths:(NSArray *)keyPaths completeCallback:(void(^)(NSArray *))completeCallback
+- (BOOL)getCachedFilesForSavePaths:(NSArray *)savePaths completeCallback:(void(^)(NSArray *))completeCallback
 {
     if ( completeCallback == nil )
     {
@@ -170,7 +170,7 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
     dispatch_async( self.dispatchQueue, ^void
                    {
                        // Load the data on this queue using synchronous method
-                       NSArray *fileDataArray = [self getCachedFilesForKeyPaths:keyPaths];
+                       NSArray *fileDataArray = [self getCachedFilesForSavePaths:savePaths];
                        
                        // Response on the main queue
                        dispatch_async( dispatch_get_main_queue(), ^void
@@ -184,9 +184,9 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
 
 #pragma mark - Private methods
 
-- (NSData *)readFileForKeyPath:(NSString *)keyPath
+- (NSData *)readFileForSavePath:(NSString *)savePath
 {
-    NSString *filepath = [self getCachesDirectoryPathForPath:keyPath];
+    NSString *filepath = [self getCachesDirectoryPathForPath:savePath];
     
     // Load the image from disk
     NSError *error;

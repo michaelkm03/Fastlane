@@ -16,9 +16,9 @@
 
 @interface VFileCache ( UnitTest)
 
-- (NSString *)keyPathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index;
-- (NSString *)keyPathForImage:(NSString *)imageName forVote:(VVoteType *)voteType;
-- (NSArray *)keyPathsForVoteTypeSprites:(VVoteType *)voteType;
+- (NSString *)savePathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index;
+- (NSString *)savePathForImage:(NSString *)imageName forVote:(VVoteType *)voteType;
+- (NSArray *)savePathsForVoteTypeSprites:(VVoteType *)voteType;
 - (BOOL)validateVoteType:(VVoteType *)voteType;
 
 @end
@@ -66,35 +66,35 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     self.voteType.imageCount = @( 10 );
 }
 
-- (void)testKeyPathConstructionIcon
+- (void)testSavePathConstructionIcon
 {
-    NSString *keyPath;
-    NSString *expectedKeyPath;
+    NSString *savePath;
+    NSString *expectedSavePath;
     
-    keyPath = [self.fileCache keyPathForImage:VVoteTypeIconName forVote:self.voteType];
-    expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:VVoteTypeIconName];
-    XCTAssertEqualObjects( expectedKeyPath, keyPath );
+    savePath = [self.fileCache savePathForImage:VVoteTypeIconName forVote:self.voteType];
+    expectedSavePath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:VVoteTypeIconName];
+    XCTAssertEqualObjects( expectedSavePath, savePath );
 }
 
-- (void)testSpriteKeyPathConstruction
+- (void)testSpriteSavePathConstruction
 {
     for ( NSUInteger i = 0; i < 20; i++ )
     {
-        NSString *spriteKeyPath = [self.fileCache keyPathForVoteTypeSprite:self.voteType atFrameIndex:i];
+        NSString *spriteSavePath = [self.fileCache savePathForVoteTypeSprite:self.voteType atFrameIndex:i];
         NSString *spriteName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, i];
-        NSString *expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:spriteName];
-        XCTAssertEqualObjects( expectedKeyPath, spriteKeyPath );
+        NSString *expectedSavePath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:spriteName];
+        XCTAssertEqualObjects( expectedSavePath, spriteSavePath );
     }
 }
 
-- (void)testSpriteKeyPathConstructionArray
+- (void)testSpriteSavePathConstructionArray
 {
-    NSArray *keyPaths = [self.fileCache keyPathsForVoteTypeSprites:self.voteType];
+    NSArray *savePaths = [self.fileCache savePathsForVoteTypeSprites:self.voteType];
     
-    [keyPaths enumerateObjectsUsingBlock:^(NSString *keyPath, NSUInteger i, BOOL *stop) {
+    [savePaths enumerateObjectsUsingBlock:^(NSString *savePath, NSUInteger i, BOOL *stop) {
         NSString *spriteName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, i];
-        NSString *expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:spriteName];
-        XCTAssertEqualObjects( expectedKeyPath, keyPath );
+        NSString *expectedSavePath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:spriteName];
+        XCTAssertEqualObjects( expectedSavePath, savePath );
     }];
 }
 
@@ -104,14 +104,14 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     
     [self.asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
         
-        NSString *iconPath = [self.fileCache keyPathForImage:VVoteTypeIconName forVote:self.voteType];
+        NSString *iconPath = [self.fileCache savePathForImage:VVoteTypeIconName forVote:self.voteType];
         BOOL iconExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:iconPath];
         
         // Make sure the sprite image swere saved
         __block BOOL spritesExist = YES;
         NSArray *images = self.voteType.images;
         [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *spritePath = [self.fileCache keyPathForVoteTypeSprite:self.voteType atFrameIndex:idx];
+            NSString *spritePath = [self.fileCache savePathForVoteTypeSprite:self.voteType atFrameIndex:idx];
             if ( ![VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:spritePath] )
             {
                 spritesExist = NO;
