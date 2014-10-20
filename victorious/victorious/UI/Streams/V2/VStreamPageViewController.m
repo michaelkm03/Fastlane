@@ -106,7 +106,6 @@
     self.navHeaderView.navSelector.currentIndex = selectedStream;
     
     self.allStreams = self.allStreams;
-    [self hideHeader];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -141,6 +140,36 @@
     
     NSArray *initialVC = @[self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]]];
     [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+#pragma mark - VNavigationHeaderDelegate
+
+- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index
+{
+    if (self.allStreams.count <= (NSUInteger)index)
+    {
+        return NO;
+    }
+    
+    NSInteger lastIndex = self.navHeaderView.lastSelectedControl;
+    
+    VStream *stream = self.allStreams[index];
+    if ([stream.apiPath containsString:VStreamFollowerStreamPath] && ![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return NO;
+    }
+    else
+    {
+        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
+        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+        [self setViewControllers:@[streamCollection]
+                       direction:direction
+                        animated:YES
+                      completion:nil];
+        
+        return YES;
+    }
 }
 
 #pragma mark - UIScrollViewdelegate

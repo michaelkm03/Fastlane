@@ -13,6 +13,8 @@
 extern NSString * const VStreamFilterTypeRecent;
 extern NSString * const VStreamFilterTypePopular;
 
+extern NSString * const VStreamFollowerStreamPath;
+
 @interface VStream (Fetcher)
 
 - (BOOL)onlyContainsSequences;///<Returns True if the stream only contains sequences.  Else false.

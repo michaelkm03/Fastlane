@@ -165,7 +165,10 @@ static CGFloat const kVIndicatorViewHeight = 3;
             closestButton = button;
         }
     }
-    self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+    if ((unsigned)self.currentIndex != [self.titleButtons indexOfObject:closestButton])
+    {
+        self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+    }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView

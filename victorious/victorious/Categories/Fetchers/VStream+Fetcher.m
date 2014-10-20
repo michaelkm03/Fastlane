@@ -16,6 +16,8 @@
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentType = @"stream";
 
+NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream/";
+
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
 
