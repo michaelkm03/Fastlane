@@ -14,7 +14,6 @@
 @dynamic displayOrder;
 @dynamic name;
 @dynamic remoteId;
-@dynamic images;
 @dynamic imageCount;
 @dynamic imageFormat;
 @dynamic iconImage;

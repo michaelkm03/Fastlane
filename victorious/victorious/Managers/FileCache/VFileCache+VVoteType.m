@@ -8,39 +8,13 @@
 
 #import "VVoteType.h"
 #import "VFileCache.h"
+#import "VVoteType+ImageSerialization.h"
 
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
 NSString * const VVoteTypeIconName           = @"icon.png";
 
 @implementation VFileCache (VVoteType)
-
-- (BOOL)validateVoteType:(VVoteType *)voteType
-{
-    // TODO: Once all values are expected from the server, let CoreData and RestKit validate models
-    BOOL isObjectValid = voteType != nil
-        && [voteType isKindOfClass:[VVoteType class]]
-        && voteType.name != nil
-        && voteType.name.length > 0;
-    
-    if ( !isObjectValid )
-    {
-        return NO;
-    }
-    
-    NSArray *spriteImages = (NSArray *)voteType.images;
-    __block BOOL areImagesValid = spriteImages.count > 0;
-    [spriteImages enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger i, BOOL *stop)
-     {
-         if ( imageUrl.length == 0 || ![imageUrl isKindOfClass:[NSString class]] )
-         {
-             areImagesValid = NO;
-             *stop = YES;
-         }
-     }];
-    
-    return areImagesValid;
-}
 
 #pragma mark - Coders
 
@@ -64,7 +38,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (BOOL)cacheImagesForVoteType:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] )
+    if ( !voteType.containsRequiredData )
     {
         return NO;
     }
@@ -85,7 +59,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (BOOL)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback
 {
-    if ( ![self validateVoteType:voteType] || imageName == nil || imageName.length == 0 )
+    if ( !voteType.containsRequiredData || imageName == nil || imageName.length == 0 )
     {
         return NO;
     }
@@ -101,7 +75,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (UIImage *)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] || imageName == nil || imageName.length == 0 )
+    if ( !voteType.containsRequiredData || imageName == nil || imageName.length == 0 )
     {
         return nil;
     }
@@ -114,7 +88,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (NSArray *)getSpriteImagesForVoteType:(VVoteType *)voteType
 {
-    if ( ![self validateVoteType:voteType] )
+    if ( !voteType.containsRequiredData )
     {
         return nil;
     }
@@ -126,7 +100,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (void)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback
 {
-    if ( ![self validateVoteType:voteType] )
+    if ( !voteType.containsRequiredData )
     {
         return;
     }

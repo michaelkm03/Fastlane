@@ -256,12 +256,14 @@
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A714A5F619F19AA600027210 /* VFileCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */; };
-		A714A5F719F19AA600027210 /* VFileCache+VoteTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */; };
 		A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
 		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7A7D62A19DE451300B18AB7 /* VTappableHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */; };
+		A7AB4FE719F5A50800BFFE35 /* VVoteType+ImageSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */; };
+		A7AB4FE919F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE819F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m */; };
+		A7AB4FEA19F5AA6F00BFFE35 /* VFileCache+VoteTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */; };
 		A7DE61B019F1BA36007DF2CD /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A7DE61C419F1C223007DF2CD /* VHashTagsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */; };
 		A7DE61C519F1C223007DF2CD /* VTappableHashTagsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62B19DE52DE00B18AB7 /* VTappableHashTagsTests.m */; };
@@ -958,6 +960,9 @@
 		A7A7D62819DE451300B18AB7 /* VTappableHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTappableHashTags.h; sourceTree = "<group>"; };
 		A7A7D62919DE451300B18AB7 /* VTappableHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableHashTags.m; sourceTree = "<group>"; };
 		A7A7D62B19DE52DE00B18AB7 /* VTappableHashTagsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableHashTagsTests.m; sourceTree = "<group>"; };
+		A7AB4FE519F5A50800BFFE35 /* VVoteType+ImageSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+ImageSerialization.h"; sourceTree = "<group>"; };
+		A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+ImageSerialization.m"; sourceTree = "<group>"; };
+		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeImageSerializationTests.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7F6CF9819EEDA0B003F164C /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
@@ -2438,6 +2443,7 @@
 				A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */,
 				A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */,
 				A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */,
+				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2515,6 +2521,8 @@
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
 				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
 				D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */,
+				A7AB4FE519F5A50800BFFE35 /* VVoteType+ImageSerialization.h */,
+				A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3532,6 +3540,7 @@
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				0314D4EE19B46B5E00FA363C /* VLoginViewController.m in Sources */,
+				A7AB4FE719F5A50800BFFE35 /* VVoteType+ImageSerialization.m in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				0314D4CA19B46B5E00FA363C /* VRemixSliderRight.m in Sources */,
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
@@ -3558,14 +3567,15 @@
 				A7DE61D619F1C223007DF2CD /* VChangePasswordTests.m in Sources */,
 				A7DE61D319F1C223007DF2CD /* VSettingManagerTests.m in Sources */,
 				A7DE61C819F1C223007DF2CD /* VLargeNumberFormatterTests.m in Sources */,
-				A714A5F719F19AA600027210 /* VFileCache+VoteTypeTests.m in Sources */,
 				A7DE61CD19F1C223007DF2CD /* VUIAlertView+VBlocksTests.m in Sources */,
 				A7FE8C5619EE058400B91EF2 /* VFileSystemTestHelpers.m in Sources */,
+				A7AB4FEA19F5AA6F00BFFE35 /* VFileCache+VoteTypeTests.m in Sources */,
 				A7DE61C619F1C223007DF2CD /* VAuthorizationViewControllerFactoryTests.m in Sources */,
 				A7DE61D119F1C223007DF2CD /* VUploadTaskInformationTests.m in Sources */,
 				A7DE61C419F1C223007DF2CD /* VHashTagsTest.m in Sources */,
 				A7DE61C719F1C223007DF2CD /* VElapsedTimeFormatterTests.m in Sources */,
 				A7DE61CA19F1C223007DF2CD /* VMultipartFormDataWriterTests.m in Sources */,
+				A7AB4FE919F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m in Sources */,
 				03D94C2E19DE155400BFAA27 /* NSObject+VMethodSwizzling.m in Sources */,
 				A75FAEFF19E8AB2C00EB87C1 /* VDummyModels.m in Sources */,
 				A7DE61D519F1C223007DF2CD /* NSDate+timeSinceTests.m in Sources */,

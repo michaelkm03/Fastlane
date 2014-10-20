@@ -23,7 +23,6 @@
                                   @"display_order"      : VSelectorName(displayOrder),
                                   @"name"               : VSelectorName(name),
                                   @"id"                 : VSelectorName(remoteId),
-                                  @"images"             : VSelectorName(images),
                                   @"frames"             : VSelectorName(imageCount),
                                   @"image"              : VSelectorName(imageFormat),
                                   @"icon_image"         : VSelectorName(iconImage),

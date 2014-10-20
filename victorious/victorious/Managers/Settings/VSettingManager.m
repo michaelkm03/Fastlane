@@ -15,6 +15,7 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
+#import "VVoteType+ImageSerialization.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";

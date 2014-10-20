@@ -12,6 +12,7 @@
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
+#import "VVoteType+ImageSerialization.h"
 
 @interface VFileCache ( UnitTest)
 
@@ -61,7 +62,8 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 {
     self.voteType.name = @"vote_type_test_name";
     self.voteType.iconImage = kTestImageUrl;
-    self.voteType.images = @[ kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl, kTestImageUrl ];
+    self.voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/votetypes/6/heart_XXXXX.png";
+    self.voteType.imageCount = @( 10 );
 }
 
 - (void)testKeyPathConstructionIcon
@@ -83,25 +85,6 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
         NSString *expectedKeyPath = [[NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name] stringByAppendingPathComponent:spriteName];
         XCTAssertEqualObjects( expectedKeyPath, spriteKeyPath );
     }
-}
-
-- (void)testValidateVoteType
-{
-    XCTAssertFalse( [self.fileCache validateVoteType:nil] );
-    
-    XCTAssertFalse( [self.fileCache validateVoteType:(VVoteType *)[NSObject new]] );
-    
-    [self resetVoteType];
-    self.voteType.name = @"";
-    XCTAssertFalse( [self.fileCache validateVoteType:self.voteType] );
-    
-    [self resetVoteType];
-    self.voteType.name = nil;
-    XCTAssertFalse( [self.fileCache validateVoteType:self.voteType] );
-    
-    [self resetVoteType];
-    self.voteType.images = @[ kTestImageUrl, kTestImageUrl, @"", kTestImageUrl, kTestImageUrl ];
-    XCTAssertFalse( [self.fileCache cacheImagesForVoteType:self.voteType], @"Cannot have empty URLs in image array.");
 }
 
 - (void)testSpriteKeyPathConstructionArray
@@ -126,7 +109,8 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
         
         // Make sure the sprite image swere saved
         __block BOOL spritesExist = YES;
-        [((NSArray *)self.voteType.images) enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSArray *images = self.voteType.images;
+        [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *spritePath = [self.fileCache keyPathForVoteTypeSprite:self.voteType atFrameIndex:idx];
             if ( ![VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:spritePath] )
             {
@@ -156,7 +140,7 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     XCTAssertNotNil( flightImage );
     
     NSArray *spriteImages = [self.fileCache getSpriteImagesForVoteType:self.voteType];
-    XCTAssertEqual( spriteImages.count, ((NSArray *)self.voteType.images).count );
+    XCTAssertEqual( spriteImages.count, self.voteType.images.count );
     [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[UIImage class]] );
     }];
