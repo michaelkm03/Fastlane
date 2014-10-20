@@ -12,6 +12,7 @@
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
+static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
 
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
@@ -509,10 +510,17 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime
 {
-    NSTimeInterval difference = CMTimeGetSeconds(self.currentTime) - CMTimeGetSeconds(self.previousTime);
-    NSTimeInterval limit = 1.0f;
+    NSTimeInterval current = CMTimeGetSeconds( currentTime );
+    NSTimeInterval previous = CMTimeGetSeconds( previousTime );
     
-    return abs( difference ) > limit;
+    // Testing against NaN
+    if ( current != current || previous != previous )
+    {
+        return NO;
+    }
+    
+    NSTimeInterval difference = current - previous;
+    return previous > current || difference > kTimeDifferenceLimitForSkipEvent;
 }
 
 - (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem

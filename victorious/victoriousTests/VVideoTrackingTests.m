@@ -19,6 +19,8 @@
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
 
+- (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime;
+
 @end
 
 @interface VVideoTrackingTests : XCTestCase
@@ -82,6 +84,37 @@
     
     XCTAssertNotNil( params[ kTrackingKeyTimeTo ] );
     XCTAssert( [params[ kTrackingKeyTimeTo ] isKindOfClass:[NSNumber class]] );
+}
+
+- (void)testDetectSkip
+{
+    CMTime current;
+    CMTime previous;
+    int32_t scale = 1;
+    
+    XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
+    
+    for ( int64_t i = 0; i < 10; i++ )
+    {
+        current = CMTimeMake( i+1, scale );
+        previous = CMTimeMake( i, scale );
+        XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
+        
+        current = CMTimeMake( i, scale );
+        previous = CMTimeMake( i, scale );
+        XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
+    }
+    
+    for ( int64_t i = 0; i < 10; i++ )
+    {
+        current = CMTimeMake( i+2, scale );
+        previous = CMTimeMake( 0, scale );
+        XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
+    }
+    
+    current = CMTimeMake( 0, scale );
+    previous = CMTimeMake( 1, scale );
+    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
 }
 
 @end
