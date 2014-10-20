@@ -326,6 +326,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                             options:UIViewAnimationOptionCurveLinear
                          animations:^(void)
         {
+            if (self.animateWithPlayControls)
+            {
+                self.animateWithPlayControls(NO);
+            }
             self.toolbarView.alpha = 1.0f;
             self.overlayView.alpha = 1.0f;
         }
@@ -343,6 +347,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                             options:UIViewAnimationOptionCurveLinear
                          animations:^(void)
          {
+             if (self.animateWithPlayControls)
+             {
+                 self.animateWithPlayControls(YES);
+             }
              self.toolbarView.alpha = 0;
              self.overlayView.alpha = 0;
          }

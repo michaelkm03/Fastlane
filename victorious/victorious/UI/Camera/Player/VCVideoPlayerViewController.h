@@ -77,4 +77,7 @@
 
 - (CMTime)playerItemDuration;
 
+/// Use this to animate with the same curve that animates the play controls.
+@property (nonatomic, copy) void (^animateWithPlayControls)(BOOL playControlsHidden);
+
 @end
