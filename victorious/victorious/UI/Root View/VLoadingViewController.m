@@ -22,7 +22,7 @@
 
 #import "MBProgressHUD.h"
 
-#warning
+#import "VSettingManager.h"
 #import "VStreamPageViewController.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
@@ -197,10 +197,11 @@ static const NSUInteger kRetryAttempts = 5;
 
 - (void)goToHomeScreen
 {
-    
     [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-    VStreamPageViewController *homeContainer = [VStreamPageViewController homeStream];
-    self.navigationController.viewControllers = @[homeContainer];
+    
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIViewController *homeVC = isTemplateC ? [VStreamPageViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    self.navigationController.viewControllers = @[homeVC];
 }
 
 - (void)scheduleRetry

@@ -53,6 +53,14 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.collectionView.delegate == self)
+    {
+        self.collectionView.delegate = nil;
+    }
+}
+
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;

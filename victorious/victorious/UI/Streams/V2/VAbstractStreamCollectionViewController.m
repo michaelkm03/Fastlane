@@ -52,6 +52,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)dealloc
 {
     self.collectionView.dataSource = nil;
+    self.collectionView.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -83,10 +84,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     
-//    UIEdgeInsets insets = self.collectionView.contentInset;
-//    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-//
-//    self.collectionView.contentInset = insets;
+    UIEdgeInsets insets = self.collectionView.contentInset;
+    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+
+    self.collectionView.contentInset = insets;
 }
 
 - (void)setCurrentStream:(VStream *)currentStream

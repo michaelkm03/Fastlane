@@ -125,7 +125,7 @@
     
     for (VStream *stream in allStreams)
     {
-        VStreamCollectionViewController *streamVC = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream]];
+        VStreamCollectionViewController *streamVC = [VStreamCollectionViewController streamViewControllerForStream:stream];
         streamVC.delegate = self;
         UIEdgeInsets insets = streamVC.collectionView.contentInset;
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
@@ -137,7 +137,6 @@
             streamVC.shouldDisplayMarquee = self.shouldDisplayMarquee;
         }
         
-        VLog(@"%@", NSStringFromUIEdgeInsets(insets));
         [self.streamVCs addObject:streamVC];
     }
     
