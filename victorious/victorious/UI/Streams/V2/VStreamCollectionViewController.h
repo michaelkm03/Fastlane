@@ -21,7 +21,7 @@
 + (instancetype)communityStreamCollection;
 + (instancetype)ownerStreamCollection;
 
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams;
++ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title;
 + (instancetype)streamViewControllerForStream:(VStream *)stream;
 
 @end

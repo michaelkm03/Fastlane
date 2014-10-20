@@ -67,8 +67,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
-    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream]];
-    homeStream.title = NSLocalizedString(@"Home", nil);
+    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     homeStream.shouldShowHeaderLogo = YES;
     homeStream.shouldDisplayMarquee = YES;
     homeStream.hasAddAction = YES;
@@ -81,8 +80,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
-    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
-    communityStream.title = NSLocalizedString(@"Community", nil);
+    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
     communityStream.hasAddAction = YES;
     
     return communityStream;
@@ -93,13 +91,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
     
-    VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream]];
-    ownerStream.title = NSLocalizedString(@"Owner", nil);
+    VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Owner", nil)];
     
     return ownerStream;
 }
 
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams
++ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString*)title
 {
     VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
 
@@ -111,7 +108,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
         [titles addObject:stream.name];
     }
     
+    streamColllection.title = title;
     [streamColllection addNewNavHeaderWithTitles:titles];
+    streamColllection.navHeaderView.delegate = streamColllection;
+    NSInteger selectedStream = [allStreams indexOfObject:stream];
+    streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
     
     return streamColllection;
 }
@@ -153,9 +154,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
-    
-    NSInteger selectedStream = [self.allStreams indexOfObject:self.currentStream];
-    self.navHeaderView.navSelector.currentIndex = selectedStream;
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -233,6 +231,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     [super setCurrentStream:currentStream];
+}
+
+- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
+{
+    _shouldDisplayMarquee = shouldDisplayMarquee;
+    if (self.currentStream == self.defaultStream)
+    {
+        self.streamDataSource.shouldDisplayMarquee = shouldDisplayMarquee;
+    }
 }
 
 #pragma mark - VMarqueeDelegate

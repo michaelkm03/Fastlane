@@ -49,7 +49,7 @@ static const char kNavHeaderYConstraintKey;
 
 - (void)addNewNavHeaderWithTitles:(NSArray *)titles
 {
-    if (self.navigationController.viewControllers.count == 1)
+    if (self.navigationController.viewControllers.count <= 1)
     {
         self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
     }
