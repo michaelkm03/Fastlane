@@ -61,7 +61,7 @@
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
-    if (!titles.count)
+    if (titles.count <= 1)
     {
         [self removeConstraint:self.ratioConstraint];
         self.ratioConstraint = [NSLayoutConstraint constraintWithItem:self

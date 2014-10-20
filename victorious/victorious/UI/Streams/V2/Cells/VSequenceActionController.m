@@ -17,7 +17,11 @@
 #pragma mark - Controllers
 #import "VRemixSelectViewController.h"
 #import "VCameraPublishViewController.h"
+#import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+
+#pragma mark-  Views
+#import "VNoContentView.h"
 
 #pragma mark - Managers
 #import "VObjectManager+Login.h"
@@ -97,27 +101,20 @@
                                       }
                                   }, nil];
     
-    [viewController dismissViewControllerAnimated:YES
-                                       completion:^
-     {
-         [actionSheet showInView:viewController.view];
-     }];
+    [actionSheet showInView:viewController.view];
 }
 
-//- (void)showRemixStreamFromViewController:(UIViewController *)viewController
-//{
-//    
-//    [viewController dismissViewControllerAnimated:YES
-//                             completion:^
-//     {
-//         VStream *stream = [VStream remixStreamForSequence:self.sequence];
-//         VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-//         streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-//         streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-//         streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-//         [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
-//         
-//     }];
-//}
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController
+{
+    
+    VStream *stream = [VStream remixStreamForSequence:self.sequence];
+    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
+    
+    VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+    noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
+    noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
+    noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+    [viewController.navigationController pushViewController:streamCollection animated:YES];
+}
 
 @end

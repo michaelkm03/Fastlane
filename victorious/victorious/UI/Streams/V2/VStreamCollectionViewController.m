@@ -440,9 +440,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.lastSelectedIndexPath = [self.collectionView indexPathForCell:cell];
     
-    [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
-    //TODO: probly need to hide this
-    //    [self.delegate streamWillDisappear];
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
+    }
     
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = sequenceObject;

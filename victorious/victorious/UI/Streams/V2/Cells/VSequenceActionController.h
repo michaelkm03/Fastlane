@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+@class VSequence, VAsset, VNode;
 
 @interface VSequenceActionController : NSObject
 
 @property (nonatomic, strong) VSequence *sequence;
+
+- (void)remixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node;
+- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage;
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController;
 
 @end
