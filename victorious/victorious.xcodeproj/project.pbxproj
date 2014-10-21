@@ -330,8 +330,6 @@
 		A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
-		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
-		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
 		A767A20019F6EF2C00C5B501 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
@@ -1211,10 +1209,6 @@
 		A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
 		A75FAF1519E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCollectionViewController.h; sourceTree = "<group>"; };
 		A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCollectionViewController.m; sourceTree = "<group>"; };
-		A75FAF2319E8BF2400EB87C1 /* VVoteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteAction.h; sourceTree = "<group>"; };
-		A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteAction.m; sourceTree = "<group>"; };
-		A75FAF2619E8C03C00EB87C1 /* VVoteAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteAction+RestKit.h"; sourceTree = "<group>"; };
-		A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteAction+RestKit.m"; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VChangePasswordTests.m; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
@@ -3008,8 +3002,6 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
-				A75FAF2619E8C03C00EB87C1 /* VVoteAction+RestKit.h */,
-				A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */,
 				A70564C519E7820A004A8387 /* VHashtag+RestKit.h */,
 				A70564C619E7820A004A8387 /* VHashtag+RestKit.m */,
 				A709642219F0A13800CE6633 /* VTracking+RestKit.h */,
@@ -3097,8 +3089,6 @@
 				A7D8532319F6F3B100EDBFF8 /* VTracking.m */,
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
-				A75FAF2319E8BF2400EB87C1 /* VVoteAction.h */,
-				A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
@@ -4072,7 +4062,6 @@
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
-				A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
@@ -4239,7 +4228,6 @@
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */,
-				A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,

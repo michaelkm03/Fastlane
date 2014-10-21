@@ -34,7 +34,6 @@
 #import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
-#import "VVoteAction+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -127,8 +126,7 @@
                                              [VUnreadConversation descriptor],
                                              [VVoteType descriptor],
                                              [VTracking descriptor],
-                                             [VImageSearchResult descriptor],
-                                             [VVoteAction descriptor]
+                                             [VImageSearchResult descriptor]
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];

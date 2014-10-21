@@ -150,7 +150,6 @@
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="sequence" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
-        <relationship name="voteActions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteAction" inverseName="sequence" inverseEntity="VoteAction" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
@@ -202,11 +201,6 @@
         <relationship name="repostedSequences" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
-    <entity name="VoteAction" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteActions" inverseEntity="Sequence" syncable="YES"/>
-    </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -255,7 +249,6 @@
         <element name="Tracking" positionX="702" positionY="-459" width="128" height="283"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
-        <element name="VoteAction" positionX="702" positionY="-459" width="128" height="88"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="178"/>
         <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>

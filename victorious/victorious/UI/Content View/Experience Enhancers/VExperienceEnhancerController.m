@@ -10,7 +10,6 @@
 #import "VExperienceEnhancer.h"
 #import "VSequence.h"
 #import "VVoteType.h"
-#import "VVoteAction+RestKit.h"
 #import "VSettingManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
@@ -145,18 +144,6 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
 
 - (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer
 {
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    VVoteAction *action = [objectManager objectWithEntityName:[VVoteAction entityName] subclass:[VVoteAction class]];
-    action.date = [NSDate date];
-    action.sequence = self.sequence;
-    [[VObjectManager sharedManager] voteSingle:action successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         
-     }];
 }
 
 @end

@@ -14,7 +14,6 @@
 #import "VAnswer.h"
 #import "VAsset.h"
 #import "VPollResult.h"
-#import "VVoteAction.h"
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
@@ -149,28 +148,6 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     return [self POST:@"/api/sequence/vote"
                object:nil
            parameters:parameters
-         successBlock:success
-            failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)voteSingle:(VVoteAction *)voteAction
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/sequence/vote"
-               object:voteAction
-           parameters:nil
-         successBlock:success
-            failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)voteCollected:(NSArray *)voteActions
-                                           successBlock:(VSuccessBlock)success
-                                              failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/sequence/vote"
-               object:voteActions
-           parameters:nil
          successBlock:success
             failBlock:fail];
 }
