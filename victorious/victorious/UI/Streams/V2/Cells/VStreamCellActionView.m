@@ -50,9 +50,9 @@ static CGFloat const kVActionButtonBuffer = 15;
         else
         {
             //Count up all the available space (minus buttons and the buffers)
-            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * (self.actionButtons.count - 1) -kVActionButtonBuffer * 2;
+            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kVActionButtonBuffer * 2;
             //Left overs per button. 
-            CGFloat leftoversPerButton = leftOvers / self.actionButtons.count;
+            CGFloat leftoversPerButton = leftOvers / (self.actionButtons.count - 1);
             
             frame.origin.x = kVActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
         }
