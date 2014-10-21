@@ -333,6 +333,7 @@
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
 		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
+		A767A20019F6EF2C00C5B501 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AB4FE719F5A50800BFFE35 /* VVoteType+ImageSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */; };
@@ -3612,6 +3613,7 @@
 				D8D73A6E19F072A800E6955C /* Firework_v01.00007.png in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
+				A767A20019F6EF2C00C5B501 /* Images.xcassets in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
