@@ -24,7 +24,7 @@
 #import "VSettingManager.h"
 
 static const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
-static const CGFloat kPollCellHeightRatioC = 1.15625; //from spec, 214 height for 320 width
+static const CGFloat kPollCellHeightRatioC = 1.016; //from spec, 307 height for 302 width
 static const CGFloat kPollCellWidthRatioC = 0.94375;
 
 @interface VStreamCollectionCellPoll ()
