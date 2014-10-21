@@ -521,6 +521,11 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     return [[self answerB].mediaUrl v_hasVideoExtension];
 }
 
+- (BOOL)answerAIsFavored
+{
+    return ([self answerAPercentage] >= 0.5f) ? YES : NO;
+}
+
 - (CGFloat)answerAPercentage
 {
     return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];

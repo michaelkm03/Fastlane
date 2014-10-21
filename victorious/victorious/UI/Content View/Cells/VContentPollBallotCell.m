@@ -8,19 +8,26 @@
 
 #import "VContentPollBallotCell.h"
 
+// Theme
+#import "VThemeManager.h"
+
 @interface VContentPollBallotCell ()
 
 @property (weak, nonatomic) IBOutlet UIButton *answerAButton;
-@property (weak, nonatomic) IBOutlet UIButton *anserBButton;
+@property (weak, nonatomic) IBOutlet UIButton *answerBButton;
 
 @end
 
 @implementation VContentPollBallotCell
 
+#pragma mark - VSharedCollectionReusableViewMethods
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), 60);
 }
+
+#pragma mark - Property Accessors
 
 - (void)setAnswerA:(NSString *)answerA
 {
@@ -32,8 +39,19 @@
 - (void)setAnswerB:(NSString *)answerB
 {
     _answerB = [answerB copy];
-    [self.anserBButton setTitle:_answerB
+    [self.answerBButton setTitle:_answerB
                        forState:UIControlStateNormal];
+}
+
+#pragma mark - Public Methods
+
+- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
+{
+    self.answerAButton.enabled = NO;
+    self.answerBButton.enabled = NO;
+    
+    self.answerAButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.answerBButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 @end

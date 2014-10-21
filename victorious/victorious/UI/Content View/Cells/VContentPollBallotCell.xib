@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -48,8 +47,8 @@
                 <constraint firstAttribute="bottom" secondItem="3EP-fw-qmv" secondAttribute="bottom" id="rIm-zI-aqG"/>
             </constraints>
             <connections>
-                <outlet property="anserBButton" destination="3EP-fw-qmv" id="o6M-n1-ENp"/>
                 <outlet property="answerAButton" destination="RLX-ox-fAJ" id="rSj-bE-9CU"/>
+                <outlet property="answerBButton" destination="3EP-fw-qmv" id="IMm-LP-De3"/>
             </connections>
             <point key="canvasLocation" x="-265" y="27"/>
         </collectionViewCell>

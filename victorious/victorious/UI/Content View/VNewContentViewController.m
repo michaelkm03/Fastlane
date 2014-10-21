@@ -667,6 +667,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 ballotCell.answerA = self.viewModel.answerALabelText;
                 ballotCell.answerB = self.viewModel.answerBLabelText;
                 
+                [ballotCell setVotingDisabledWithAnswerAFavored:self.viewModel.answerAIsFavored];
+                
                 return ballotCell;
             }
             
