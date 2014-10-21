@@ -156,7 +156,7 @@
     NSInteger lastIndex = self.navHeaderView.lastSelectedControl;
     
     VStream *stream = self.allStreams[index];
-    if ([stream.apiPath containsString:VStreamFollowerStreamPath] && ![VObjectManager sharedManager].mainUser)
+    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location == NSNotFound && ![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
