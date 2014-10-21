@@ -24,7 +24,7 @@
 @interface VHistogramBarView : UIView
 
 /**
- *  This value must be between 0 and 1 (inclusive).
+ *  This value must be between 0 and 1 (inclusive). If not the setter will force progress to 0 if less than 0 and 1 if greater than 0.
  */
 @property (nonatomic, assign) CGFloat progress;
 
@@ -33,12 +33,12 @@
 /**
  *  In points. Defaults to 2.
  */
-@property (nonatomic, assign, readonly) CGFloat tickWidth;
+@property (nonatomic, readonly) CGFloat tickWidth;
 
 /**
  *  In points.
  */
-@property (nonatomic, assign, readonly) CGFloat tickSpacing;
+@property (nonatomic, readonly) CGFloat tickSpacing;
 
 /**
  *  Prompts a query of the data source.

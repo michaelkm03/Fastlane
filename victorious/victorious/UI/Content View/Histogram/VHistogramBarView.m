@@ -71,7 +71,7 @@ static const CGFloat kColorAlpha = 0.6f;
 
 - (void)setProgress:(CGFloat)progress
 {
-    _progress = progress;
+    _progress = fminf(fmaxf(progress, 0.0f), 1.0f);
     
     [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *coloredLayer, NSUInteger idx, BOOL *stop)
     {
