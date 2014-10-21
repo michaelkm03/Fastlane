@@ -88,9 +88,23 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     }
     
     // Check that only objects of type VVoteType are accepted
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
-                                  return [evaluatedObject isMemberOfClass:[VVoteType class]];
+                                  if ( ![voteType isMemberOfClass:[VVoteType class]] )
+                                  {
+                                      return NO;
+                                  }
+                                  
+#if DEBUG
+#warning This keeps the app working until the backend updates the missinng 'icon' field and adds the actual emotive ballstics
+                                  if ( voteType.iconImage == nil )
+                                  {
+                                      voteType.iconImage = voteType.images.firstObject;
+                                      voteType.flightDuration = @( 0.5f );
+                                      voteType.animationDuration = @( 0.5f );
+                                  }
+#endif
+                                  return voteType.containsRequiredData;
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
@@ -113,15 +127,6 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
      {
-#if DEBUG
-#warning This keeps the app working until the backend updates the missinng 'icon' field and adds the actual emotive ballstics
-         if ( v.iconImage == nil )
-         {
-             v.iconImage = ((NSArray *)v.images).firstObject;
-             v.flightDuration = @( 0.5f );
-             v.animationDuration = @( 0.5f );
-         }
-#endif
          [fileCache cacheImagesForVoteType:v];
      }];
 }

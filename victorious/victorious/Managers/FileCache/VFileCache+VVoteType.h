@@ -42,4 +42,14 @@ extern NSString * const VVoteTypeIconName;
  */
 - (BOOL)getImageWithName:(NSString *)imageName forVoteType:(VVoteType *)voteType completionCallback:(void(^)(UIImage *))callback;
 
+/**
+ Check if an image is saved to disk.
+ */
+- (BOOL)isImageCached:(NSString *)imageName forVoteType:(VVoteType *)voteType;
+
+/**
+ Check if all required sprite images in an animation sequence are saved to disk.
+ */
+- (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType;
+
 @end

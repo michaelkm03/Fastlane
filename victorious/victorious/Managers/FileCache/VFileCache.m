@@ -233,9 +233,7 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
     }
     
     // Check if file already exists
-    BOOL doesFileExist = [[NSFileManager defaultManager] fileExistsAtPath:filepath];
-    BOOL isValidFile = [self fileSizeAtPath:filepath];
-    if ( !shouldOverwrite && (isValidFile && doesFileExist) )
+    if ( !shouldOverwrite && [self fileExistsAtPath:filepath] )
     {
         return YES;
     }
@@ -243,6 +241,13 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
     {
         return [self downloadAndWriteFile:fileUrl toPath:filepath];
     }
+}
+
+- (BOOL)fileExistsAtPath:(NSString *)filepath
+{
+    BOOL doesFileExist = [[NSFileManager defaultManager] fileExistsAtPath:filepath];
+    BOOL isValidFile = [self fileSizeAtPath:filepath];
+    return isValidFile && doesFileExist;
 }
 
 - (BOOL)downloadAndWriteFile:(NSString *)urlString toPath:(NSString *)filepath
