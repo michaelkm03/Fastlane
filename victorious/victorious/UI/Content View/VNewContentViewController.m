@@ -59,6 +59,7 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
+#import "NSURL+MediaType.h"
 
 // Simple Models
 #import "VExperienceEnhancer.h"
@@ -620,7 +621,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+                pollCell.answerAIsVideo = [self.viewModel.answerAThumbnailMediaURL v_hasVideoExtension];
                 pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
+                pollCell.answerBIsVideo = [self.viewModel.answerAThumbnailMediaURL v_hasVideoExtension];
+                
                 return pollCell;
             }
         }
