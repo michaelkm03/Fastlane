@@ -43,6 +43,8 @@
 
 //+ (VContentViewController *)sharedInstance;
 
++ (VContentViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
+
 /**
  Returns the distance, in points, between
  the top of the receiver's view and the

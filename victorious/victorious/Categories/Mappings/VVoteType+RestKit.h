@@ -13,4 +13,6 @@
 
 + (RKResponseDescriptor *)descriptor;
 
++ (RKEntityMapping *)entityMapping;
+
 @end
