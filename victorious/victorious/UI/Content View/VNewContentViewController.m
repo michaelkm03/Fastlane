@@ -59,7 +59,6 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
-#import "NSURL+MediaType.h"
 
 // Simple Models
 #import "VExperienceEnhancer.h"
@@ -621,9 +620,9 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-                pollCell.answerAIsVideo = [self.viewModel.answerAThumbnailMediaURL v_hasVideoExtension];
+                pollCell.answerAIsVideo = self.viewModel.answerAIsVideo;
                 pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-                pollCell.answerBIsVideo = [self.viewModel.answerAThumbnailMediaURL v_hasVideoExtension];
+                pollCell.answerBIsVideo = self.viewModel.answerBIsVideo;
                 
                 return pollCell;
             }
@@ -656,8 +655,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 VContentPollBallotCell *ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                                forIndexPath:indexPath];
-                ballotCell.answerA = self.viewModel.answerA;
-                ballotCell.answerB = self.viewModel.answerB;
+                ballotCell.answerA = self.viewModel.answerALabelText;
+                ballotCell.answerB = self.viewModel.answerBLabelText;
                 
                 return ballotCell;
             }

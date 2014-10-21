@@ -37,6 +37,8 @@
 // Media
 #import "NSURL+MediaType.h"
 
+#import "NSURL+MediaType.h"
+
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 
@@ -478,24 +480,44 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
 }
 
-- (NSString *)answerA
+- (VAnswer *)answerA
 {
-    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).label;
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]);
 }
 
-- (NSString *)answerB
+- (VAnswer *)answerB
 {
-    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).label;
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]);
+}
+
+- (NSString *)answerALabelText
+{
+    return [self answerA].label;
+}
+
+- (NSString *)answerBLabelText
+{
+    return [self answerB].label;
 }
 
 - (NSURL *)answerAThumbnailMediaURL
 {
-    return [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).mediaUrl];
+    return [self answerAIsVideo] ? [NSURL URLWithString:[self answerA].thumbnailUrl] : [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).mediaUrl];
 }
 
 - (NSURL *)answerBThumbnailMediaURL
 {
-    return [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).mediaUrl];
+    return [self answerBIsVideo] ? [NSURL URLWithString:[self answerB].thumbnailUrl] : [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).mediaUrl];
+}
+
+- (BOOL)answerAIsVideo
+{
+    return [[self answerA].mediaUrl v_hasVideoExtension];
+}
+
+- (BOOL)answerBIsVideo
+{
+    return [[self answerB].mediaUrl v_hasVideoExtension];
 }
 
 @end

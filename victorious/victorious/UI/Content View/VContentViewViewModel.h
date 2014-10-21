@@ -220,10 +220,12 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
 
-@property (nonatomic, readonly) NSString *answerA;
-@property (nonatomic, readonly) NSString *answerB;
+@property (nonatomic, readonly) NSString *answerALabelText;
+@property (nonatomic, readonly) NSString *answerBLabelText;
 @property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+@property (nonatomic, readonly) BOOL answerAIsVideo;
+@property (nonatomic, readonly) BOOL answerBIsVideo;
 
 /** This will be nil if no histogram data is available.
  */
