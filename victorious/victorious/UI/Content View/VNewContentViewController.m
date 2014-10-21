@@ -667,10 +667,35 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 ballotCell.answerA = self.viewModel.answerALabelText;
                 ballotCell.answerB = self.viewModel.answerBLabelText;
                 
-                if (self.viewModel.votingEnabled)
+                if (!self.viewModel.votingEnabled)
                 {
+#warning Uncomment Me!
                     [ballotCell setVotingDisabledWithAnswerAFavored:self.viewModel.answerAIsFavored];
                 }
+
+                __weak typeof(ballotCell) weakBallotCell = ballotCell;
+                ballotCell.answerASelectionHandler = ^(void)
+                {
+                    [self.viewModel answerPollWithAnswer:VPollAnswerA
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [weakBallotCell setVotingDisabledWithAnswerAFavored:NO
+                                                                   animated:YES];
+                        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                                   animated:YES];
+                    }];
+                };
+                ballotCell.answerBSelectionHandler = ^(void)
+                {
+                    [self.viewModel answerPollWithAnswer:VPollAnswerB
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [weakBallotCell setVotingDisabledWithAnswerAFavored:NO
+                                                                   animated:YES];
+                        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                                   animated:YES];
+                    }];
+                };
                 
                 return ballotCell;
             }

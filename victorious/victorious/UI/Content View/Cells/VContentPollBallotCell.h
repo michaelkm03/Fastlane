@@ -10,6 +10,9 @@
 
 @interface VContentPollBallotCell : VBaseCollectionViewCell
 
+- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
+                                   animated:(BOOL)animated;
+
 - (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored;
 
 @property (nonatomic, copy) NSString *answerA;

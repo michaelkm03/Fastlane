@@ -46,12 +46,48 @@
 #pragma mark - Public Methods
 
 - (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
+                                   animated:(BOOL)animated
+{
+    if (animated)
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+        {
+            [self setVotingDisabledWithAnswerAFavored:answerAFavored];
+        }
+                         completion:nil];
+    }
+}
+
+- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
 {
     self.answerAButton.enabled = NO;
     self.answerBButton.enabled = NO;
     
     self.answerAButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.answerBButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)selectedAnswerA:(id)sender
+{
+    if (self.answerASelectionHandler)
+    {
+        self.answerASelectionHandler();
+    }
+}
+
+- (IBAction)selectedAnswerB:(id)sender
+{
+    if (self.answerBSelectionHandler)
+    {
+        self.answerBSelectionHandler();
+    }
 }
 
 @end

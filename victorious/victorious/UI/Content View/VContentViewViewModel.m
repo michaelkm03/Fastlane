@@ -532,10 +532,10 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     {
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
-            return YES;
+            return NO;
         }
     }
-    return NO;
+    return YES;
 }
 
 - (CGFloat)answerAPercentage
@@ -545,12 +545,12 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (CGFloat)answerBPercentage
 {
-    return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+    return (CGFloat) [self answerBResult].count.doubleValue / [self totalVotes];
 }
 
 - (VPollResult *)answerAResult
 {
-    for (VPollResult *result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerA].remoteId])
         {
@@ -562,7 +562,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (VPollResult *)answerBResult
 {
-    for (VPollResult *result in self.sequence.pollResults)
+    for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerB].remoteId])
         {
@@ -574,12 +574,29 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (NSInteger)totalVotes
 {
-    NSInteger totalVotes = 0;
-    for (VPollResult *result in self.sequence.pollResults)
-    {
-        totalVotes+= result.count.integerValue;
-    }
+    NSInteger totalVotes = (NSInteger) self.sequence.pollResults.count;
+//    for (VPollResult *result in self.sequence.pollResults)
+//    {
+//        totalVotes+= result.count.integerValue;
+//    }
     return totalVotes?:1;
+}
+
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion
+{
+    [[VObjectManager sharedManager] answerPoll:self.sequence
+                                    withAnswer:(selectedAnswer == VPollAnswerA) ? [self answerA] : [self answerB]
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         //
+         completion(YES, nil);
+     }
+                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         //
+         completion(NO, error);
+     }];
 }
 
 @end
