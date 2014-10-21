@@ -59,27 +59,27 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
 
 - (void)testBadData
 {
-    XCTAssertThrows( [[VHistogramDataSource alloc] initWithDataPoints:@[]]);
-    XCTAssertThrows( [[VHistogramDataSource alloc] initWithDataPoints:@[@"badString"]] );
+    XCTAssertThrows( [VHistogramDataSource histogramDataSourceWithDataPoints:@[]]);
+    XCTAssertThrows( [VHistogramDataSource histogramDataSourceWithDataPoints:@[@"badString"]] );
     NSArray *input = @[@-3];
-    XCTAssertThrows( [[VHistogramDataSource alloc] initWithDataPoints:input] );
+    XCTAssertThrows( [VHistogramDataSource histogramDataSourceWithDataPoints:input] );
 }
 
 - (void)testGoodData
 {
     NSArray *goodData = @[@0, @1, @2, @3, @4, @5, @6, @7, @8, @9];
-    XCTAssertNoThrow( [[VHistogramDataSource alloc] initWithDataPoints:goodData] );
+    XCTAssertNoThrow( [VHistogramDataSource histogramDataSourceWithDataPoints:goodData] );
 }
 
 - (void)testOneDataPoint
 {
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1]];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@1]];
     CGFloat oneHundredPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                               forBarIndex:0
                                                                                 totalBars:1];
     XCTAssert( (oneHundredPercentHeight == 1.0f), @"%f should be 1.0f", oneHundredPercentHeight);
     
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@999]];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@999]];
     oneHundredPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                       forBarIndex:0
                                                                         totalBars:1];
@@ -88,7 +88,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
 
 - (void)testTwoDataPoints
 {
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2]];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@1, @2]];
     CGFloat fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                          forBarIndex:0
                                                                            totalBars:2];
@@ -103,7 +103,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
 {
     CGFloat fiftyPercentHeight;
     CGFloat oneHunderPercentHeight;
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2]];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@1, @2]];
     fiftyPercentHeight = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                  forBarIndex:0
                                                                    totalBars:4];
@@ -166,7 +166,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
                                                                        totalBars:5];
     XCTAssert( (oneHunderPercentHeight == 1.0f) );
     
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:@[@1, @2, @3, @2, @1]];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@1, @2, @3, @2, @1]];
     CGFloat beginningPoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                      forBarIndex:0
                                                                        totalBars:10];
@@ -190,7 +190,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
 {
     // Hitogram data source should average data sources if we have more data points than bars
     NSArray *dataPoints = @[@1, @2, @3];
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     CGFloat average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                               forBarIndex:0
                                                                 totalBars:1];
@@ -199,7 +199,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
                 withAccuracy:kHistogramDataSourceAccuracy], @"%f should equal 0.66f", average );
     
     dataPoints = @[@1, @1, @2, @2];
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:0
                                                         totalBars:2];
@@ -216,14 +216,14 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     
     
     dataPoints = @[@0, @100,@1,@1];
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:0
                                                         totalBars:2];
     XCTAssert( average == 0.5f );
     
     dataPoints = @[@0, @0, @100, @0, @0, @0, @0, @0, @0];
-    self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:0
                                                         totalBars:3];
