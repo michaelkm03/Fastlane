@@ -79,6 +79,12 @@
     }
 }
 
+- (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate
+{
+    _delegate = delegate;
+    self.navSelector.delegate = delegate;
+}
+
 - (void)setHeaderText:(NSString *)headerText
 {
     _headerText = headerText;
@@ -112,23 +118,6 @@
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.headerLabel.text = self.headerText;
-}
-
-- (void)navSelector:(UIView<VNavigationSelectorProtocol> *)selector selectedIndex:(NSInteger)index
-{
-    BOOL shouldChange = YES;
-    if ([self.delegate respondsToSelector:@selector(navHeaderView:changedToIndex:)])
-    {
-        shouldChange = [self.delegate navHeaderView:self changedToIndex:index];
-    }
-    if (!shouldChange)
-    {
-        self.navSelector.currentIndex = self.lastSelectedControl;
-    }
-    else
-    {
-        self.lastSelectedControl = index;
-    }
 }
 
 - (IBAction)pressedBack:(id)sender

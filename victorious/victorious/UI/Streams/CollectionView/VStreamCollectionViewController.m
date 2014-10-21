@@ -15,11 +15,13 @@
 
 //Controllers
 #import "VCommentsContainerViewController.h"
-#import "VContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
+
+#import "VContentViewController.h"
+#import "VNewContentViewController.h"
 
 //Views
 #import "VNavigationHeaderView.h"
@@ -33,6 +35,7 @@
 
 //Managers
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Login.h"
 #import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
@@ -45,7 +48,6 @@
 #import "VConstants.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
-static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kTemplateCLineSpacing = 8;
 
 @interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
@@ -154,7 +156,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
-    self.collectionView.backgroundColor = [self preferredBackgroundColor];
+    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
@@ -175,6 +177,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super viewDidAppear:animated];
     [self.collectionView flashScrollIndicators];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -203,18 +206,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 }
 
 #pragma mark - Properties
-
-- (UIColor *)preferredBackgroundColor
-{
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
-    }
-    else
-    {
-        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
-}
 
 - (NSCache *)preloadImageCache
 {
@@ -291,53 +282,35 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
-    
     UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    
     VSequence *sequence;
+    UIImageView *previewImageView;
     
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
         sequence = ((VStreamCollectionCell *)cell).sequence;
+        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
     }
     else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
     {
         sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
+        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
+    
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.placeholderImage = previewImageView.image;
+    
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav
+                       animated:YES
+                     completion:nil];
 
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
                                          successBlock:nil
                                             failBlock:nil];
-    
-    [self setBackgroundImageWithURL:[[sequence initialImageURLs] firstObject]];
-    
-    VContentViewController *contentViewController = [[VContentViewController alloc] init];
-    contentViewController.sequence = sequence;
-    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
-    
-    if (collectionView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
-    {
-        [self.navigationController pushViewController:contentViewController animated:YES];
-    }
-    else
-    {
-        collectionView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-             usingSpringWithDamping:1.0f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-         {
-             [collectionView setContentOffset:CGPointMake(collectionView.contentOffset.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
-         }
-                         completion:^(BOOL finished)
-         {
-             collectionView.userInteractionEnabled = YES;
-             [self.navigationController pushViewController:contentViewController animated:YES];
-         }];
-    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -426,10 +399,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - VNavigationHeaderDelegate
 
-- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index
+- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
     
-    if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
+    if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
@@ -442,7 +415,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.currentStream = self.allStreams[index];
     
-    if (!self.currentStream.streamItems.count)
+    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading)
     {
         [self refresh:self.refreshControl];
     }
@@ -546,7 +519,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         noContentUpdates = ^void(void)
         {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[self preferredBackgroundColor]];
+            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] preferredBackgroundColor]];
             self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
         };
     }

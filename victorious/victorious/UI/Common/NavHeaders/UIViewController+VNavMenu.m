@@ -85,7 +85,7 @@ static const char kNavHeaderYConstraintKey;
         return;
     }
     
-    self.navHeaderYConstraint.constant = -self.navHeaderView.frame.size.height;
+    self.navHeaderYConstraint.constant = -CGRectGetHeight(self.navHeaderView.frame);
     [self.view layoutIfNeeded];
     [self setNeedsStatusBarAppearanceUpdate];
 }

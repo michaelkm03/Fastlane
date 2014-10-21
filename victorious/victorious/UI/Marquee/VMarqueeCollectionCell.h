@@ -15,6 +15,7 @@
 
 @interface VMarqueeCollectionCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
+@property (nonatomic, readonly) UIImageView *currentPreviewImageView;
 @property (nonatomic, readonly) VStreamItem *currentItem;
 @property (nonatomic, strong) VMarqueeController *marquee;
 

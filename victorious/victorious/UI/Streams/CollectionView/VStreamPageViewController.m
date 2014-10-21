@@ -14,7 +14,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
-#import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 
 #import "VNode.h"
 #import "VSequence+Fetcher.h"
@@ -24,6 +24,7 @@
 #import "VStreamCollectionCell.h"
 
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 
 @interface VStreamPageViewController () <VSequenceActionsDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
 
@@ -99,7 +100,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.allStreams = self.allStreams;
     
     NSMutableArray *titles = [[NSMutableArray alloc] init];
     for (VStream *stream in self.allStreams)
@@ -107,11 +109,11 @@
         [titles addObject:stream.name];
     }
     [self addNewNavHeaderWithTitles:titles];
-    self.navHeaderView.delegate = self;
     NSInteger selectedStream = [self.allStreams indexOfObject:self.defaultStream];
     self.navHeaderView.navSelector.currentIndex = selectedStream;
-    
-    self.allStreams = self.allStreams;
+    self.navHeaderView.delegate = self;
+
+    self.view. = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -136,6 +138,11 @@
 {
     _allStreams = allStreams;
     
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
+    
     [self.streamVCs removeAllObjects];
     
     for (VStream *stream in allStreams)
@@ -155,8 +162,8 @@
         
         [self.streamVCs addObject:streamVC];
     }
-    
-    NSArray *initialVC = @[self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]]];
+    VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
+    NSArray *initialVC = @[defaultStreamVC];
     [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
@@ -201,7 +208,7 @@
 
 #pragma mark - VNavigationHeaderDelegate
 
-- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index
+- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
     if (self.allStreams.count <= (NSUInteger)index)
     {
@@ -211,7 +218,8 @@
     NSInteger lastIndex = self.navHeaderView.lastSelectedControl;
     
     VStream *stream = self.allStreams[index];
-    if ([stream.apiPath containsString:VStreamFollowerStreamPath] && ![VObjectManager sharedManager].mainUser)
+    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
+        && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
