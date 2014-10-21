@@ -65,32 +65,40 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
 
 - (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
 {
-    VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
+    __block VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
     enhancer.labelText = voteType.name;
     enhancer.flightDuration = voteType.flightDuration.floatValue;
     enhancer.animationDuration = voteType.animationDuration.floatValue;
     
-    // Load the images synchronously from disk
-    enhancer.animationSequence = [self.fileCache getSpriteImagesForVoteType:voteType];
-    enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
-    
-    if ( enhancer.animationSequence.count > 0 )
+    BOOL areSpriteImagesCached = [self.fileCache areSpriteImagesCachedForVoteType:voteType];
+    if ( areSpriteImagesCached )
     {
-        enhancer.flightImage = enhancer.animationSequence.firstObject;
-        enhancer.ballistic = enhancer.flightImage != nil && voteType.flightDuration.floatValue > 0.0;
+        [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images) {
+            enhancer.animationSequence = images;
+            enhancer.flightImage = enhancer.animationSequence.firstObject;
+            enhancer.ballistic = enhancer.flightImage != nil && voteType.flightDuration.floatValue > 0.0;
+        }];
     }
     
-    // A final check to make sure the enhancer can be displayed
-    if ( enhancer.hasRequiredImages )
+    BOOL isIconImageCached = [self.fileCache isImageCached:VVoteTypeIconName forVoteType:voteType];
+    if ( isIconImageCached )
     {
-        return enhancer;
+        [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage) {
+            enhancer.iconImage = iconImage;
+        }];
     }
     
-    // Start an asychronous task in the background to download missing images
-    // If the images can download successfully, i.e. there is no other legitimate network error,
-    // they will be available next time the content view is presented
-    [self.fileCache cacheImagesForVoteType:voteType];
-    return nil;
+    if ( !isIconImageCached || !areSpriteImagesCached )
+    {
+        // Start an asychronous task in the background to download missing images
+        // If the images can download successfully, i.e. there is no other legitimate network error,
+        // they will be available next time the content view is presented
+        [self.fileCache cacheImagesForVoteType:voteType];
+        
+        return nil;
+    }
+    
+    return enhancer;
 }
 
 - (BOOL)validateExperienceEnhancer:(VExperienceEnhancer *)enhancer

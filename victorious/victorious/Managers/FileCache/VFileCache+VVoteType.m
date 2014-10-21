@@ -86,6 +86,11 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     return (UIImage *)[self getCachedFileForSavePath:iconSavePath];
 }
 
+- (BOOL)isImageCached:(NSString *)imageName forVoteType:(VVoteType *)voteType
+{
+    return [self fileExistsAtPath:[self getCachesDirectoryPathForPath:[self savePathForImage:imageName forVote:voteType]]];
+}
+
 - (NSArray *)getSpriteImagesForVoteType:(VVoteType *)voteType
 {
     if ( !voteType.containsRequiredData )
@@ -96,6 +101,21 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     [self setDecoder];
     
     return [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
+}
+
+- (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType
+{
+    __block BOOL allFilesExist = YES;
+    NSArray *filePaths = [self savePathsForVoteTypeSprites:voteType];
+    [filePaths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop)
+    {
+        if ( ![self fileExistsAtPath:[self getCachesDirectoryPathForPath:path]] )
+        {
+            allFilesExist = NO;
+            *stop = YES;
+        }
+    }];
+    return allFilesExist;
 }
 
 - (void)getSpriteImagesForVoteType:(VVoteType *)voteType completionCallback:(void(^)(NSArray *))callback

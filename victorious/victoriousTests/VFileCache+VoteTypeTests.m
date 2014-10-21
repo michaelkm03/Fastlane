@@ -136,14 +136,27 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     UIImage *iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
     XCTAssertNotNil( iconImage );
     
-    UIImage *flightImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
-    XCTAssertNotNil( flightImage );
-    
     NSArray *spriteImages = [self.fileCache getSpriteImagesForVoteType:self.voteType];
     XCTAssertEqual( spriteImages.count, self.voteType.images.count );
     [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[UIImage class]] );
     }];
+}
+
+- (void)testFilesDoNotExist
+{
+    // Dont load files first
+    XCTAssertFalse( [self.fileCache isImageCached:VVoteTypeIconName forVoteType:self.voteType] );
+    XCTAssertFalse( [self.fileCache areSpriteImagesCachedForVoteType:self.voteType] );
+}
+
+- (void)testFilesExist
+{
+    // Run this test again to save theimages
+    [self testCacheVoteTypeImages];
+    
+    XCTAssert( [self.fileCache isImageCached:VVoteTypeIconName forVoteType:self.voteType] );
+    XCTAssert( [self.fileCache areSpriteImagesCachedForVoteType:self.voteType] );
 }
 
 @end

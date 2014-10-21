@@ -66,4 +66,14 @@ extern const NSUInteger VFileCacheMaximumSaveFileRetries;
  */
 - (BOOL)getCachedFilesForSavePaths:(NSArray *)savePaths completeCallback:(void(^)(NSArray *))completeCallback;
 
+/**
+ Checks if file exists at path.
+ */
+- (BOOL)fileExistsAtPath:(NSString *)filepath;
+
+/**
+ Creates an absolute path to the caches directory by prepending to the provided local path.
+ */
+- (NSString *)getCachesDirectoryPathForPath:(NSString *)path;
+
 @end
