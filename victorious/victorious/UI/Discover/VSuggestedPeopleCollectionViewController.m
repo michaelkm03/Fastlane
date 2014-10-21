@@ -64,11 +64,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
              [self followingDidLoad];
          } failBlock:nil];
     }
-    else
-    {
-        [self updateFollowingInUsers:self.suggestedUsers];
-        [self.collectionView reloadData];
-    }
+    
+    [self updateFollowingInUsers:self.suggestedUsers];
+    [self.collectionView reloadData];
 }
 
 - (void)followingDidLoad
