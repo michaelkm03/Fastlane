@@ -27,7 +27,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    self.histogramDataSource = [[VHistogramDataSource alloc] init];
+    self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:@[@1]];
     self.histogramBarView = [[VHistogramBarView alloc] initWithFrame:CGRectZero];
 }
 
@@ -37,21 +37,9 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     [super tearDown];
 }
 
-// This isn't a perfect comparison function but will do for our purposes.
-- (BOOL)compare:(CGFloat)firstPoint
-  toSecondPoint:(CGFloat)secondPoint
-   withAccuracy:(CGFloat)accuracy
-{
-    if (fabsf(firstPoint - secondPoint) < accuracy)
-    {
-        return YES;
-    }
-    return NO;
-}
-
 - (void)testProtocolConformance
 {
-    XCTAssert([[[VHistogramDataSource alloc] init] conformsToProtocol:@protocol(VHistogramBarViewDataSource)], @"Pass");
+    XCTAssert([[VHistogramDataSource histogramDataSourceWithDataPoints:@[@1]] conformsToProtocol:@protocol(VHistogramBarViewDataSource)], @"Pass");
     XCTAssertNoThrow([self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                              forBarIndex:0
                                                                totalBars:1]);
@@ -170,9 +158,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     CGFloat beginningPoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                      forBarIndex:0
                                                                        totalBars:10];
-    XCTAssert( [self compare:beginningPoint
-               toSecondPoint:0.33
-                withAccuracy:kHistogramDataSourceAccuracy] );
+    XCTAssertEqualWithAccuracy(beginningPoint, 0.33, kHistogramDataSourceAccuracy);
     CGFloat middlePoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                   forBarIndex:5
                                                                     totalBars:10];
@@ -180,9 +166,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     CGFloat endPoint = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                                forBarIndex:9
                                                                  totalBars:10];
-    XCTAssert( [self compare:endPoint
-               toSecondPoint:0.33
-                withAccuracy:kHistogramDataSourceAccuracy] );
+    XCTAssertEqualWithAccuracy(endPoint, 0.33, kHistogramDataSourceAccuracy);
     
 }
 
@@ -194,27 +178,20 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     CGFloat average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                               forBarIndex:0
                                                                 totalBars:1];
-    XCTAssert( [self compare:average
-               toSecondPoint:0.66
-                withAccuracy:kHistogramDataSourceAccuracy], @"%f should equal 0.66f", average );
-    
+    XCTAssertEqualWithAccuracy(average, 0.66, kHistogramDataSourceAccuracy);
+
     dataPoints = @[@1, @1, @2, @2];
     self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:0
                                                         totalBars:2];
-    XCTAssert( [self compare:average
-               toSecondPoint:0.5f
-                withAccuracy:kHistogramDataSourceAccuracy], @"%f should equal 0.5f", average );
+    XCTAssertEqualWithAccuracy(average, 0.5f, kHistogramDataSourceAccuracy);
     
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:1
                                                         totalBars:2];
-    XCTAssert( [self compare:average
-               toSecondPoint:1.0f
-                withAccuracy:kHistogramDataSourceAccuracy], @"%f should equal 1.0f", average );
-    
-    
+    XCTAssertEqualWithAccuracy(average, 1.0f, kHistogramDataSourceAccuracy);
+
     dataPoints = @[@0, @100,@1,@1];
     self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:dataPoints];
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
@@ -227,9 +204,7 @@ static const CGFloat kHistogramDataSourceAccuracy = 0.01f;
     average = [self.histogramDataSource histogramPercentageHeight:self.histogramBarView
                                                       forBarIndex:0
                                                         totalBars:3];
-    XCTAssert( [self compare:average
-               toSecondPoint:0.33f
-                withAccuracy:kHistogramDataSourceAccuracy]);
+    XCTAssertEqualWithAccuracy(average, 0.33f, kHistogramDataSourceAccuracy);
 }
 
 @end
