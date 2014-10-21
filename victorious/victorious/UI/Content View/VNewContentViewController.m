@@ -589,6 +589,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
+                [videoCell.videoPlayerViewController enableTrackingWithTrackingItem:self.viewModel.sequence.tracking];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
                 self.videoCell = videoCell;

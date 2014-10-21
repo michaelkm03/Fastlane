@@ -42,6 +42,11 @@
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
+- (void)dealloc
+{
+    [self.videoPlayerViewController disableTracking];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setVideoURL:(NSURL *)videoURL

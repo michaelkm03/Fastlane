@@ -316,7 +316,7 @@
     
     self.lastSelectedIndexPath = indexPath;
     
-    self.contentViewController = [[VContentViewController alloc] init];
+    self.contentViewController = [VContentViewController instantiateFromStoryboard:@"Main"];
     
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     if ([sequence.expiresAt timeIntervalSinceNow] < 0)
