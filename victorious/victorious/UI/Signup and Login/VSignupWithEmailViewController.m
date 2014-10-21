@@ -246,10 +246,9 @@
                                                                       label:nil
                                                                       value:nil];
         
-        
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
-                                                 userName:self.registrationModel.email
+                                                 userName:kNoUserName
                                              onCompletion:^(VUser *user, BOOL created)
          {
              [self didSignUpWithUser:user];
