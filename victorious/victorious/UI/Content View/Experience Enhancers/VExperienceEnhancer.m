@@ -10,7 +10,6 @@
 
 @implementation VExperienceEnhancer
 
-<<<<<<< HEAD
 - (BOOL)hasRequiredImages
 {
     if ( self.isBallistic )
@@ -21,8 +20,9 @@
     {
         return self.iconImage != nil && self.animationSequence != nil && self.animationSequence.count > 0;
     }
-=======
-+ (instancetype)experienceEnhancerWithIcon:(UIImage *)icon
+}
+
++ (instancetype)experienceEnhancerWithIconImage:(UIImage *)iconImage
                                  labelText:(NSString *)labelText
                          animationSequence:(NSArray *)animationSequence
                          animationDuration:(NSTimeInterval)animationDuration
@@ -33,7 +33,7 @@
 {
     VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
     
-    enhancer.icon = icon;
+    enhancer.iconImage = iconImage;
     enhancer.labelText = labelText;
     enhancer.animationSequence = animationSequence;
     enhancer.animationDuration = animationDuration;
@@ -43,7 +43,6 @@
     enhancer.flightImage = flightImage;
     
     return enhancer;
->>>>>>> 76e0e4c4c7a9ab1883da9d82867e0f9f3629d26c
 }
 
 @end

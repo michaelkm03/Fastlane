@@ -40,13 +40,6 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
 
 @implementation VExperienceEnhancerController
 
-#pragma mark - Factory Methods
-
-+ (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence
-{
-    return [[VExperienceEnhancerController alloc] initWithSequence:sequence];
-}
-
 #pragma mark - Initialization
 
 - (instancetype)initWithSequence:(VSequence *)sequence
@@ -62,7 +55,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         self.testEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
 #else
-        self.testEnhancers = [self createTestingExperienceEnhancers];
+        self.testEnhancers = [VExperienceEnhancerController experuebce:sequence];
 #endif
     }
     return self;
@@ -93,7 +86,6 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     enhancer.animationSequence = [self.fileCache getSpriteImagesForVoteType:voteType];
     enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
     
-<<<<<<< HEAD
     if ( enhancer.animationSequence.count > 0 )
     {
         enhancer.flightImage = enhancer.animationSequence.firstObject;
@@ -125,24 +117,20 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     }
 }
 
-- (NSArray *)createTestingExperienceEnhancers
++ (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence
 {
-    VExperienceEnhancer *lisaEnhancer = [[VExperienceEnhancer alloc] init];
-    lisaEnhancer.iconImage = [UIImage imageNamed:@"eb_bacon"];
-    lisaEnhancer.labelText = @"123";
-    lisaEnhancer.animationDuration = 0.5f;
-    NSMutableArray *animationImages = [NSMutableArray new];
-    for (int i = 1; i <= 6; i++)
-=======
-
+    VExperienceEnhancerController *experienceEnhancerControllerForSequence = [[VExperienceEnhancerController alloc] init];
+    
+    experienceEnhancerControllerForSequence.sequence = sequence;
+    
+    
     NSMutableArray *fireworkAnimationImages = [NSMutableArray new];
     for (int i = 5; i <= 20; i++)
->>>>>>> 76e0e4c4c7a9ab1883da9d82867e0f9f3629d26c
     {
         NSString *imageName = [NSString stringWithFormat:@"Firework_v01.%05d.png", i];
         [fireworkAnimationImages addObject:[UIImage imageNamed:imageName]];
     }
-    VExperienceEnhancer *fireworkEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_firework"]
+    VExperienceEnhancer *fireworkEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_firework"]
                                                                                   labelText:@"1.77K"
                                                                           animationSequence:fireworkAnimationImages
                                                                           animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -151,37 +139,13 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
                                                                              flightDuration:0.35
                                                                                 flightImage:[UIImage imageNamed:@"Firework_v01.00000.png"]];
     
-<<<<<<< HEAD
-    VExperienceEnhancer *fireworkEnhancer = [[VExperienceEnhancer alloc] init];
-    fireworkEnhancer.iconImage = [UIImage imageNamed:@"eb_firework"];
-    fireworkEnhancer.labelText = @"143";
-    
-    VExperienceEnhancer *thumbsUpEnhancer = [[VExperienceEnhancer alloc] init];
-    thumbsUpEnhancer.iconImage = [UIImage imageNamed:@"eb_thumbsup"];
-    thumbsUpEnhancer.labelText = @"321";
-    
-    VExperienceEnhancer *tongueEnhancer = [[VExperienceEnhancer alloc] init];
-    tongueEnhancer.iconImage = [UIImage imageNamed:@"eb_tongueout"];
-    tongueEnhancer.labelText = @"555";
-    
-    VExperienceEnhancer *tomatoEnhancer = [[VExperienceEnhancer alloc] init];
-    tomatoEnhancer.ballistic = YES;
-    tomatoEnhancer.flightImage = [UIImage imageNamed:@"Tomato0"];
-    tomatoEnhancer.flightDuration = 0.5f;
-    
-    tomatoEnhancer.animationDuration = 0.75f;
-    tomatoEnhancer.iconImage = [UIImage imageNamed:@"Tomato"];
-    tomatoEnhancer.labelText = @"🍹";
-    NSMutableArray *tomatoSequence = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < 17; i++)
-=======
     NSMutableArray *lolAnimationImages = [NSMutableArray new];
     for (int i = 0; i <= 24; i++)
     {
         NSString *imageName = [NSString stringWithFormat:@"LOL_v02.%05d.png", i];
         [lolAnimationImages addObject:[UIImage imageNamed:imageName]];
     }
-    VExperienceEnhancer *lolEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_lol"]
+    VExperienceEnhancer *lolEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_lol"]
                                                                              labelText:@"2K"
                                                                      animationSequence:lolAnimationImages
                                                                      animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -196,7 +160,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
         NSString *imageName = [NSString stringWithFormat:@"GLITTER_V01.%05d.png", i];
         [glitterImages addObject:[UIImage imageNamed:imageName]];
     }
-    VExperienceEnhancer *glitterEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_glitter"]
+    VExperienceEnhancer *glitterEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_glitter"]
                                                                                  labelText:@"19K"
                                                                          animationSequence:glitterImages
                                                                          animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -206,26 +170,12 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
                                                                                flightImage:nil];
     NSMutableArray *lightningImages = [NSMutableArray new];
     for (int i = 0; i <= 19; i++)
->>>>>>> 76e0e4c4c7a9ab1883da9d82867e0f9f3629d26c
     {
         NSString *imageName = [NSString stringWithFormat:@"Lightening_V01.%05d.png", i];
         [lightningImages addObject:[UIImage imageNamed:imageName]];
     }
-<<<<<<< HEAD
-    tomatoEnhancer.animationSequence = tomatoSequence;
     
-    return @[ lisaEnhancer,
-              tomatoEnhancer,
-              fireworkEnhancer,
-              thumbsUpEnhancer,
-              tongueEnhancer,
-              lisaEnhancer,
-              tomatoEnhancer,
-              lisaEnhancer,
-              tomatoEnhancer ];
-=======
-    
-    VExperienceEnhancer *lightningEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_lightning"]
+    VExperienceEnhancer *lightningEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_lightning"]
                                                                                    labelText:@"99M"
                                                                            animationSequence:lightningImages
                                                                            animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -233,14 +183,14 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
                                                                              shouldLetterBox:NO
                                                                               flightDuration:0.0f
                                                                                  flightImage:nil];
-
+    
     NSMutableArray *waterBalloonAnimation = [NSMutableArray new];
     for (int i = 0; i <= 26; i++)
     {
         NSString *imageName = [NSString stringWithFormat:@"WATERBALLOON_V01.%05d.png", i];
         [waterBalloonAnimation addObject:[UIImage imageNamed:imageName]];
     }
-    VExperienceEnhancer *waterBaloonEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_waterballoon"]
+    VExperienceEnhancer *waterBaloonEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_waterballoon"]
                                                                                      labelText:@"5B"
                                                                              animationSequence:waterBalloonAnimation
                                                                              animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -255,7 +205,7 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
         NSString *imageName = [NSString stringWithFormat:@"tumblr_mkyb94qEFr1s5jjtzo1_400-%i", i];
         [lisaAnimation addObject:[UIImage imageNamed:imageName]];
     }
-    VExperienceEnhancer *lisaEnhancer = [VExperienceEnhancer experienceEnhancerWithIcon:[UIImage imageNamed:@"eb_bacon"]
+    VExperienceEnhancer *lisaEnhancer = [VExperienceEnhancer experienceEnhancerWithIconImage:[UIImage imageNamed:@"eb_bacon"]
                                                                               labelText:@"742"
                                                                       animationSequence:lisaAnimation
                                                                       animationDuration:kDefaultExperienceEnhancerAnimationDuration
@@ -266,7 +216,6 @@ static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
     
     experienceEnhancerControllerForSequence.testEnhancers = @[fireworkEnhancer, lolEnhancer, glitterEnhancer, lightningEnhancer, waterBaloonEnhancer, lisaEnhancer];
     return experienceEnhancerControllerForSequence;
->>>>>>> 76e0e4c4c7a9ab1883da9d82867e0f9f3629d26c
 }
 
 #pragma mark - Property Accessors
