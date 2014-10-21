@@ -189,9 +189,9 @@
     [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
 }
 
-- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
+- (BOOL)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
+    return [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
 }
 
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view

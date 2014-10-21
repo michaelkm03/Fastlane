@@ -162,18 +162,19 @@
 
 #pragma mark - Repost
 
-- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
+- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
+        return NO;
     }
     
     [[VObjectManager sharedManager] repostNode:node
                                       withName:nil
                                   successBlock:nil
                                      failBlock:nil];
+    return YES;
 }
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence

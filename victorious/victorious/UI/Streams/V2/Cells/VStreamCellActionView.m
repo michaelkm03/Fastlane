@@ -105,12 +105,16 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)repostAction:(id)sender
 {
+    BOOL canRepost = YES;
     if ([self.delegate respondsToSelector:@selector(willRepostSequence:fromView:)])
     {
-        [self.delegate willRepostSequence:self.sequence fromView:self];
+        canRepost = [self.delegate willRepostSequence:self.sequence fromView:self];
     }
-    ((UIButton *)sender).userInteractionEnabled = NO;
-    ((UIButton *)sender).tintColor = [((UIButton *)sender).tintColor colorWithAlphaComponent:.5f];
+    
+    if (canRepost)
+    {
+        ((UIButton *)sender).enabled = NO;
+    }
 }
 
 - (void)addFlagButton
@@ -129,7 +133,7 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (UIButton *)addButtonWithImage:(UIImage *)image
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     button.frame = CGRectMake(0, 0, CGRectGetHeight(self.bounds), CGRectGetHeight(self.bounds));
     button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
