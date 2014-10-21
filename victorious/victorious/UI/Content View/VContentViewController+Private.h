@@ -24,6 +24,7 @@
 
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
+#import "VTrackingManager.h"
 
 @import MediaPlayer;
 
@@ -86,6 +87,9 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 
 @property (nonatomic) BOOL appearing; ///< YES if this view is the topmost view of the application window. NO if not.
 @property (nonatomic) BOOL isRotating; ///< YES only if we are trying to force rotation, not if the rotation is natural
+
+@property (nonatomic, readonly) VTrackingManager *trackingManager;
+@property (nonatomic, readonly) NSDictionary *trackingParameters;
 
 - (void)updateActionBar;
 - (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion; ///< Animate back to portrait mode.
