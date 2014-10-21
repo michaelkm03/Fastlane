@@ -61,6 +61,12 @@
     return self;
 }
 
+- (id)init
+{
+    NSAssert(NO, @"Use the factory method +histogramDataSourceWithDataPoints:");
+    return nil;
+}
+
 #pragma mark - VHistogramDataSource
 
 - (CGFloat)histogramPercentageHeight:(VHistogramBarView *)histogramView
