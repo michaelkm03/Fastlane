@@ -22,7 +22,6 @@
 		0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07A19B4688E00FA363C /* Default-568h@2x.png */; };
 		0314D08319B4688E00FA363C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07B19B4688E00FA363C /* Default@2x.png */; };
 		0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07C19B4688E00FA363C /* defaultSettings.plist */; };
-		0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
 		0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D08019B4688E00FA363C /* Icon-60@2x.png */; };
@@ -234,7 +233,6 @@
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
-		03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
@@ -583,6 +581,23 @@
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
+		DBAD88E919F5AB4600D678A0 /* VMonetizationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD88E819F5AB4600D678A0 /* VMonetizationManagerViewController.m */; };
+		DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */; };
+		DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */; };
+		DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */; };
+		DBAD890219F5BA5B00D678A0 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */; };
+		DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890319F5BAC500D678A0 /* CoreText.framework */; };
+		DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890519F5BB9000D678A0 /* MapKit.framework */; };
+		DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */; };
+		DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */; };
+		DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC45CD319F4C4C1003079C4 /* libLiveRail.a */; };
+		DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */; };
+		DBD02A7719F574D900E0AC95 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
+		DBD02A7819F574D900E0AC95 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
+		DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7919F5860A00E0AC95 /* AdSupport.framework */; };
+		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
+		DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */; };
+		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1573,6 +1588,38 @@
 		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
+		DBAD88E719F5AB4600D678A0 /* VMonetizationManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMonetizationManagerViewController.h; sourceTree = "<group>"; };
+		DBAD88E819F5AB4600D678A0 /* VMonetizationManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMonetizationManagerViewController.m; sourceTree = "<group>"; };
+		DBAD88ED19F5B83A00D678A0 /* OpenXMSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenXMSDK.h; sourceTree = "<group>"; };
+		DBAD88EE19F5B83A00D678A0 /* OXMAdBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBanner.h; sourceTree = "<group>"; };
+		DBAD88EF19F5B83A00D678A0 /* OXMAdBannerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBannerController.h; sourceTree = "<group>"; };
+		DBAD88F019F5B83A00D678A0 /* OXMAdBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBannerView.h; sourceTree = "<group>"; };
+		DBAD88F119F5B83A00D678A0 /* OXMAdInterstitialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdInterstitialController.h; sourceTree = "<group>"; };
+		DBAD88F219F5B83A00D678A0 /* OXMAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdRequest.h; sourceTree = "<group>"; };
+		DBAD88F319F5B83A00D678A0 /* OXMConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMConsole.h; sourceTree = "<group>"; };
+		DBAD88F419F5B83A00D678A0 /* OXMErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMErrors.h; sourceTree = "<group>"; };
+		DBAD88F519F5B83A00D678A0 /* OXMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMFunctions.h; sourceTree = "<group>"; };
+		DBAD88F619F5B83A00D678A0 /* OXMMediaPlaybackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMMediaPlaybackView.h; sourceTree = "<group>"; };
+		DBAD88F719F5B83A00D678A0 /* OXMNativeAdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAdData.h; sourceTree = "<group>"; };
+		DBAD88F819F5B83A00D678A0 /* OXMNativeAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAdRequest.h; sourceTree = "<group>"; };
+		DBAD88F919F5B83A00D678A0 /* OXMNativeAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAds.h; sourceTree = "<group>"; };
+		DBAD88FA19F5B83A00D678A0 /* OXMVideoAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMVideoAdManager.h; sourceTree = "<group>"; };
+		DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOpenXMSDK.a; sourceTree = "<group>"; };
+		DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = OpenXMSDKResources.bundle; sourceTree = "<group>"; };
+		DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		DBAD890319F5BAC500D678A0 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		DBAD890519F5BB9000D678A0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DBC45CD319F4C4C1003079C4 /* libLiveRail.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libLiveRail.a; sourceTree = "<group>"; };
+		DBC45CD419F4C4C1003079C4 /* LiveRailAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRailAdManager.h; sourceTree = "<group>"; };
+		DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdVideoPlayerViewController.h; sourceTree = "<group>"; };
+		DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdVideoPlayerViewController.m; sourceTree = "<group>"; };
+		DBD02A7919F5860A00E0AC95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -1584,8 +1631,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */,
+				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
+				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
+				DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */,
+				DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */,
 				038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */,
+				DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */,
+				DBAD890219F5BA5B00D678A0 /* EventKitUI.framework in Frameworks */,
+				038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */,
+				DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */,
+				DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */,
+				DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */,
+				DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */,
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */,
 				03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */,
@@ -1595,7 +1652,9 @@
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */,
 				03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */,
+				DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
+				DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */,
 				9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2370,6 +2429,8 @@
 		039ED28D19C908F400305987 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */,
+				DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */,
 				039ED28E19C908F400305987 /* VCVideoPlayerToolbarSlider.h */,
 				039ED28F19C908F400305987 /* VCVideoPlayerToolbarSlider.m */,
 				039ED29019C908F400305987 /* VCVideoPlayerToolbarView.h */,
@@ -2458,6 +2519,7 @@
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
+				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
 				03C1859619B42D3000E27D05 /* FacebookSDK.framework */,
@@ -2699,9 +2761,17 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBD02A7919F5860A00E0AC95 /* AdSupport.framework */,
+				DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */,
+				DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */,
 				BE171D7F1868BE64004E5202 /* CoreData.framework */,
 				BE171D7B1868BE64004E5202 /* CoreGraphics.framework */,
+				DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */,
+				DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */,
 				038B7F9619DB8EB300F739DF /* CoreTelephony.framework */,
+				DBAD890319F5BAC500D678A0 /* CoreText.framework */,
+				DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */,
+				DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */,
 				BE171D791868BE64004E5202 /* Foundation.framework */,
 				B528D1A8913A051BDDC4FE37 /* libPods-test.a */,
 				C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */,
@@ -2709,6 +2779,8 @@
 				662F0867152745B2B2F08301 /* libPods.a */,
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
 				038B7F9819DB8EBC00F739DF /* libz.dylib */,
+				DBAD890519F5BB9000D678A0 /* MapKit.framework */,
+				DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */,
 				03610589194154F40069D49E /* SystemConfiguration.framework */,
 				BE171D7D1868BE64004E5202 /* UIKit.framework */,
 				BE171D971868BE64004E5202 /* XCTest.framework */,
@@ -2941,6 +3013,7 @@
 				A781499919E3483E00D89B90 /* Followers */,
 				DB8D3A10198039BD005DD36D /* HashTags */,
 				0314D08D19B4694600FA363C /* Interaction */,
+				DBAD88E619F5AAE600D678A0 /* Monetization */,
 				0314D09119B4698800FA363C /* Object */,
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
@@ -3405,6 +3478,64 @@
 			path = HashTags;
 			sourceTree = "<group>";
 		};
+		DBAD88E619F5AAE600D678A0 /* Monetization */ = {
+			isa = PBXGroup;
+			children = (
+				DBAD88E719F5AB4600D678A0 /* VMonetizationManagerViewController.h */,
+				DBAD88E819F5AB4600D678A0 /* VMonetizationManagerViewController.m */,
+			);
+			path = Monetization;
+			sourceTree = "<group>";
+		};
+		DBAD88EA19F5B7F200D678A0 /* Ad Networks */ = {
+			isa = PBXGroup;
+			children = (
+				DBC45CD219F4C496003079C4 /* LiveRail */,
+				DBAD88EB19F5B83A00D678A0 /* OpenXMSDK */,
+			);
+			path = "Ad Networks";
+			sourceTree = "<group>";
+		};
+		DBAD88EB19F5B83A00D678A0 /* OpenXMSDK */ = {
+			isa = PBXGroup;
+			children = (
+				DBAD88EC19F5B83A00D678A0 /* Headers */,
+				DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */,
+				DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */,
+			);
+			path = OpenXMSDK;
+			sourceTree = "<group>";
+		};
+		DBAD88EC19F5B83A00D678A0 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				DBAD88ED19F5B83A00D678A0 /* OpenXMSDK.h */,
+				DBAD88EE19F5B83A00D678A0 /* OXMAdBanner.h */,
+				DBAD88EF19F5B83A00D678A0 /* OXMAdBannerController.h */,
+				DBAD88F019F5B83A00D678A0 /* OXMAdBannerView.h */,
+				DBAD88F119F5B83A00D678A0 /* OXMAdInterstitialController.h */,
+				DBAD88F219F5B83A00D678A0 /* OXMAdRequest.h */,
+				DBAD88F319F5B83A00D678A0 /* OXMConsole.h */,
+				DBAD88F419F5B83A00D678A0 /* OXMErrors.h */,
+				DBAD88F519F5B83A00D678A0 /* OXMFunctions.h */,
+				DBAD88F619F5B83A00D678A0 /* OXMMediaPlaybackView.h */,
+				DBAD88F719F5B83A00D678A0 /* OXMNativeAdData.h */,
+				DBAD88F819F5B83A00D678A0 /* OXMNativeAdRequest.h */,
+				DBAD88F919F5B83A00D678A0 /* OXMNativeAds.h */,
+				DBAD88FA19F5B83A00D678A0 /* OXMVideoAdManager.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		DBC45CD219F4C496003079C4 /* LiveRail */ = {
+			isa = PBXGroup;
+			children = (
+				DBC45CD319F4C4C1003079C4 /* libLiveRail.a */,
+				DBC45CD419F4C4C1003079C4 /* LiveRailAdManager.h */,
+			);
+			path = LiveRail;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3458,7 +3589,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
@@ -3546,6 +3677,7 @@
 				D8D73A6A19F072A800E6955C /* Firework_v01.00003.png in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
+				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				D8D73A6B19F072A800E6955C /* Firework_v01.00004.png in Resources */,
 				D8D73AA819F072A800E6955C /* Lightening_V01.00013.png in Resources */,
 				D8D73AB519F072A800E6955C /* LOL_v02.00006.png in Resources */,
@@ -3585,7 +3717,7 @@
 				D8D73AC119F072A800E6955C /* LOL_v02.00018.png in Resources */,
 				D8D73A6D19F072A800E6955C /* Firework_v01.00006.png in Resources */,
 				DB2A491319DF434D00CB687B /* VCommentCell.xib in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
+				DBD02A7819F574D900E0AC95 /* defaultTheme.plist in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A490319DF42DA00CB687B /* Camera.storyboard in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
@@ -3599,7 +3731,7 @@
 				D8D73AE219F072A800E6955C /* WATERBALLOON_V01.00026.png in Resources */,
 				D8D73A7A19F072A800E6955C /* Firework_v01.00019.png in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
+				DBD02A7719F574D900E0AC95 /* VUploadProgressView.xib in Resources */,
 				DB2A496719DF45A200CB687B /* VStreamCellHeaderView.xib in Resources */,
 				D8D73ABE19F072A800E6955C /* LOL_v02.00015.png in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
@@ -3608,16 +3740,13 @@
 				D8D73AAE19F072A800E6955C /* Lightening_V01.00019.png in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73AA719F072A800E6955C /* Lightening_V01.00012.png in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73A8B19F072A800E6955C /* GLITTER_V01.00015.png in Resources */,
 				D8D73AA219F072A800E6955C /* Lightening_V01.00007.png in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8D73A8D19F072A800E6955C /* GLITTER_V01.00017.png in Resources */,
 				D8D73A7519F072A800E6955C /* Firework_v01.00014.png in Resources */,
 				D8D73AA419F072A800E6955C /* Lightening_V01.00009.png in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				D8D73A6919F072A800E6955C /* Firework_v01.00002.png in Resources */,
 				D8D73AD819F072A800E6955C /* WATERBALLOON_V01.00016.png in Resources */,
@@ -3909,6 +4038,7 @@
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
+				DBAD88E919F5AB4600D678A0 /* VMonetizationManagerViewController.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				0314D46119B46B5E00FA363C /* VMediaPreviewViewController.m in Sources */,
@@ -4025,6 +4155,7 @@
 				0314D49E19B46B5E00FA363C /* VEmotiveBallisticsBarViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
+				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				BE11F26519CCADD200DEC776 /* VStreamItem+Fetcher.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
@@ -4567,6 +4698,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -4727,6 +4860,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -4755,6 +4890,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -4891,6 +5028,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

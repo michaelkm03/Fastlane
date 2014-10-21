@@ -9,10 +9,12 @@
 #import "VContentVideoCell.h"
 
 #import "VCVideoPlayerViewController.h"
+#import "VAdVideoPlayerViewController.h"
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong) VAdVideoPlayerViewController *adPlayerViewController;
 
 @end
 
@@ -55,7 +57,7 @@
 
 - (void)play
 {
-    [self.videoPlayerViewController.player play];
+    //[self.videoPlayerViewController.player play];
 }
 
 #pragma mark - VCVideoPlayerDelegate

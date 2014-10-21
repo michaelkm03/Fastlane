@@ -29,6 +29,10 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
     VCaptionTypeQuote
 };
 
+#pragma mark - Monetization Constants
+
+static NSString * const kLiveRailPublisherId            = @"68957";
+
 #pragma mark - UI constants
 
 #define UI_IS_IOS8_AND_HIGHER   ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0)
