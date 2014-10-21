@@ -28,5 +28,6 @@
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///<Stream item to display
 @property (nonatomic, weak) id<VMarqueeCellDelegate> delegate;
+@property (nonatomic, readonly) UIImageView *previewImageView;
 
 @end
