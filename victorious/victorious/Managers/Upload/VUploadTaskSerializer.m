@@ -26,15 +26,7 @@
     NSMutableArray *uploadTasks = nil;
     @try
     {
-        NSArray *unfilteredUploadTasks = [NSKeyedUnarchiver unarchiveObjectWithFile:self.fileURL.path];
-        uploadTasks = [[NSMutableArray alloc] initWithCapacity:unfilteredUploadTasks.count];
-        for (VUploadTaskInformation *uploadTask in unfilteredUploadTasks)
-        {
-            if ([uploadTask isKindOfClass:[VUploadTaskInformation class]] && [[NSFileManager defaultManager] fileExistsAtPath:uploadTask.bodyFileURL.path])
-            {
-                [uploadTasks addObject:uploadTask];
-            }
-        }
+        uploadTasks = [NSKeyedUnarchiver unarchiveObjectWithFile:self.fileURL.path];
     }
     @catch (NSException *exception)
     {

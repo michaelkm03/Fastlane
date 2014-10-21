@@ -12,6 +12,7 @@
 #import "VUser.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
+#import "VAsset.h"
 #import "VPollResult.h"
 #import "VVoteAction.h"
 
@@ -334,6 +335,29 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                 {
                     completion(nil, error);
                 }
+            }];
+}
+
+#pragma mark - Realtime
+
+- (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
+                                                         withAsset:(VAsset *)asset
+                                                    withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion
+{
+    return [self GET:[NSString stringWithFormat:@"api/realtime/all_by_asset_filtered/%@", asset.remoteId]
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+            {
+                NSArray *buckets = result[@"payload"][@"buckets"];
+                if ([buckets isKindOfClass:[NSArray class]])
+                {
+                    completion (buckets, nil);
+                }
+            }
+           failBlock:^(NSOperation *operation, NSError *error)
+            {
+                completion(nil, error);
             }];
 }
 

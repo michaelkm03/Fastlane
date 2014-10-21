@@ -29,6 +29,7 @@ NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
+NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 
 //URLs
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";

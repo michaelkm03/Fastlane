@@ -183,10 +183,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             
             case VMenuRowProfile:
-                // Editing profile only required log in, not full authorization (profile complete)
-                if (![VObjectManager sharedManager].mainUserLoggedIn)
+                if (![VObjectManager sharedManager].authorized)
                 {
-                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
                     [self.sideMenuViewController hideMenuViewController];
                 }
                 else

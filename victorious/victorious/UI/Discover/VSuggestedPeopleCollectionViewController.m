@@ -64,11 +64,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
              [self followingDidLoad];
          } failBlock:nil];
     }
-    else
-    {
-        [self updateFollowingInUsers:self.suggestedUsers];
-        [self.collectionView reloadData];
-    }
+    
+    [self updateFollowingInUsers:self.suggestedUsers];
+    [self.collectionView reloadData];
 }
 
 - (void)followingDidLoad
@@ -178,7 +176,10 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     if ([VObjectManager sharedManager].authorized)
     {
-        [[VObjectManager sharedManager] unfollowUser:user successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+            user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
+            [self.collectionView reloadData];
+        } failBlock:nil];
     }
     else if ( self.delegate != nil )
     {
@@ -190,7 +191,10 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     if ([VObjectManager sharedManager].authorized)
     {
-        [[VObjectManager sharedManager] followUser:user successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+            user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
+            [self.collectionView reloadData];
+        } failBlock:nil];
     }
     else if ( self.delegate != nil )
     {

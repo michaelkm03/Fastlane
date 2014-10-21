@@ -12,7 +12,7 @@
 
 extern NSString * const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VVoteType, VVoteAction;
+@class VAnswer, VSequence, VVoteType, VVoteAction, VAsset;
 
 @interface VObjectManager (Sequence)
 
@@ -64,7 +64,6 @@ extern NSString * const kPollResultsLoaded;
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
 
-#pragma mark - Voting
 
 
 - (RKManagedObjectRequestOperation *)voteSingle:(VVoteAction *)voteAction
@@ -74,5 +73,9 @@ extern NSString * const kPollResultsLoaded;
 - (RKManagedObjectRequestOperation *)voteCollected:(NSArray *)voteActions
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
+                                                         withAsset:(VAsset *)asset
+                                                    withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion;
 
 @end
