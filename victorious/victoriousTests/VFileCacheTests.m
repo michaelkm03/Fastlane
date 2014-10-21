@@ -49,9 +49,9 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 
 @interface VFileCacheTests : XCTestCase
 
-@property(nonatomic, strong) VFileCache *fileCache;
-@property(nonatomic, strong) VAsyncTestHelper *asyncHelper;
-@property(nonatomic, assign) IMP originalImplementation;
+@property (nonatomic, strong) VFileCache *fileCache;
+@property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
+@property (nonatomic, assign) IMP originalImplementation;
 
 @end
 

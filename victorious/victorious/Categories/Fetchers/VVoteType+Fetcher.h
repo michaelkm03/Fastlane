@@ -13,6 +13,4 @@
 + (VVoteType *)likeVote;
 + (VVoteType *)dislikeVote;
 
-- (NSArray *)imageURLs;
-
 @end

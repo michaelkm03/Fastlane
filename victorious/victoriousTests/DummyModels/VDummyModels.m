@@ -75,7 +75,7 @@ static NSManagedObjectContext *context = nil;
     return [NSArray arrayWithArray:models];
 }
 
-/*+ (NSArray *)createHashtags:(NSInteger)count
++ (NSArray *)createHashtags:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
@@ -85,5 +85,6 @@ static NSManagedObjectContext *context = nil;
         [models addObject:hashtag];
     }
     return [NSArray arrayWithArray:models];
-}*/
+}
+
 @end
