@@ -23,4 +23,13 @@
                           bundle:nil];
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+/// When targeting iOS7 and building with Xcode 6 content view's resizing mask is not correct.
+    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+// End bug fix
+}
+
 @end

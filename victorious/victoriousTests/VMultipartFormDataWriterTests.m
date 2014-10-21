@@ -132,7 +132,7 @@
                     @"Content-Disposition: form-data; name=\"j\"; filename=\"sample.jpg\"\r\n"
                     @"Content-Type: image/jpeg\r\n"
                     @"\r\n";
-    NSURL *sampleFile = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleMultipartUpload" withExtension:@"jpg"];
+    NSURL *sampleFile = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"jpg"];
     NSString *post = @"\r\n--boundary--";
     
     NSMutableData *expectedOutput = [[NSMutableData alloc] init];
