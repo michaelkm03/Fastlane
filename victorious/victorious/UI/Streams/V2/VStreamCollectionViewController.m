@@ -344,12 +344,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
-    else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
+    
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
              &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         return [VStreamCollectionCellPoll actualSizeWithCollectionVIewBounds:self.collectionView.bounds sequence:sequence];
