@@ -44,6 +44,9 @@
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptionBufferConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
+
 @property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
 
@@ -88,45 +91,56 @@ static const CGFloat kTemplateCXRatio = 0.94375;
 
 - (void)setDescriptionText:(NSString *)text
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-    
-    //TODO: Remvoe this hardcoded font size
-    NSDictionary *attributes = @{
-             NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-             NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
-             };
-    
-    NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                              attributes:attributes];
-    self.hashTagRanges = [VHashTags detectHashTags:text];
-    
-    if ([self.hashTagRanges count] > 0)
+    if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
-        [VHashTags formatHashTagsInString:newAttributedCellText
-                            withTagRanges:self.hashTagRanges
-                               attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
-    }
-    
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.maximumLineHeight = 25;
-    paragraphStyle.minimumLineHeight = 25;
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
-                                  value:paragraphStyle
-                                  range:NSMakeRange(0, newAttributedCellText.length)];
-    if (!isTemplateC)
-    {
-        NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:4.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
-        [shadow setShadowOffset:CGSizeMake(0, 0)];
-        [newAttributedCellText addAttribute:NSShadowAttributeName
-                                      value:shadow
+        BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+        NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+        
+        //TODO: Remvoe this hardcoded font size
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
+                                     NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
+                                     };
+        
+        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
+                                                                                                  attributes:attributes];
+        self.hashTagRanges = [VHashTags detectHashTags:text];
+        
+        if ([self.hashTagRanges count] > 0)
+        {
+            [VHashTags formatHashTagsInString:newAttributedCellText
+                                withTagRanges:self.hashTagRanges
+                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
+        }
+        
+        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+        paragraphStyle.maximumLineHeight = 25;
+        paragraphStyle.minimumLineHeight = 25;
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
+                                      value:paragraphStyle
                                       range:NSMakeRange(0, newAttributedCellText.length)];
+        if (!isTemplateC)
+        {
+            NSShadow *shadow = [NSShadow new];
+            [shadow setShadowBlurRadius:4.0f];
+            [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+            [shadow setShadowOffset:CGSizeMake(0, 0)];
+            [newAttributedCellText addAttribute:NSShadowAttributeName
+                                          value:shadow
+                                          range:NSMakeRange(0, newAttributedCellText.length)];
+        }
+        
+        self.descriptionLabel.attributedText = newAttributedCellText;
+        
+        self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
-    
-    self.descriptionLabel.attributedText = newAttributedCellText;
+    else
+    {
+        self.descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        
+        self.descriptionBufferConstraint.constant = 0;
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -148,10 +162,7 @@ static const CGFloat kTemplateCXRatio = 0.94375;
         [self.streamCellHeaderView setIsFromProfile:YES];
     }
     
-    if (!self.sequence.nameEmbeddedInContent.boolValue)
-    {
-        [self setDescriptionText:self.sequence.name];
-    }
+    [self setDescriptionText:self.sequence.name];
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     

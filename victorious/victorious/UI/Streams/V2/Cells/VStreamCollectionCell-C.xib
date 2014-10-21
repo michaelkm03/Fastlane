@@ -111,6 +111,8 @@
             <size key="customSize" width="543" height="313"/>
             <connections>
                 <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
+                <outlet property="actionViewBufferConstraint" destination="5fJ-Le-Zj4" id="JXn-7b-d1Z"/>
+                <outlet property="descriptionBufferConstraint" destination="PCx-3x-1ra" id="edx-vY-7bw"/>
                 <outlet property="descriptionLabel" destination="9rP-b8-aiM" id="hzt-WA-Hu6"/>
                 <outlet property="lowerGradientView" destination="Cqz-ud-Eay" id="R8Q-Z7-7hI"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
