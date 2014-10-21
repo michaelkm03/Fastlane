@@ -17,26 +17,46 @@
 
 @implementation VHistogramDataSource
 
++ (instancetype)histogramDataSourceWithDataPoints:(NSArray *)dataPoints
+{
+    BOOL hasEnoughData = dataPoints.count > 0;
+    NSParameterAssert(hasEnoughData);
+    if (!hasEnoughData)
+    {
+        return nil;
+    }
+    
+    for (id obj in dataPoints)
+    {
+        BOOL isEachDataPointAnNSNumber = [obj isKindOfClass:[NSNumber class]];
+        NSParameterAssert(isEachDataPointAnNSNumber);
+        if (!isEachDataPointAnNSNumber)
+        {
+            return nil;
+        }
+        NSNumber *point = (NSNumber *)obj;
+        BOOL isEachDataPointGreatThanOrEqualToZero = [point integerValue] >= 0;
+        NSParameterAssert(isEachDataPointGreatThanOrEqualToZero);
+        if (!isEachDataPointGreatThanOrEqualToZero)
+        {
+            return nil;
+        }
+    };
+    
+    return [[VHistogramDataSource alloc] initWithDataPoints:dataPoints];
+}
+
 - (instancetype)initWithDataPoints:(NSArray *)dataPoints
 {
     self = [super init];
     if (self)
     {
-        // Check values
-        NSParameterAssert(dataPoints.count > 0);
-        [dataPoints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-        {
-            NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
-            NSNumber *point = (NSNumber *)obj;
-            NSParameterAssert([point integerValue] >= 0);
-        }];
-        
         _dataPoints = dataPoints;
         _largestPoint = [[dataPoints firstObject] integerValue];
         [dataPoints enumerateObjectsUsingBlock:^(NSNumber *dataPoint, NSUInteger idx, BOOL *stop)
-        {
-            _largestPoint = ([dataPoint integerValue] > _largestPoint) ? [dataPoint integerValue] : _largestPoint;
-        }];
+         {
+             _largestPoint = ([dataPoint integerValue] > _largestPoint) ? [dataPoint integerValue] : _largestPoint;
+         }];
     }
     return self;
 }

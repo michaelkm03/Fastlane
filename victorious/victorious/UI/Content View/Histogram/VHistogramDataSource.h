@@ -11,13 +11,7 @@
 
 @interface VHistogramDataSource : NSObject <VHistogramBarViewDataSource>
 
-/**
- Initializes a new VHistogramDataSource.
- 
- @param dataPoints An array of NSValue wrapped NSIntegers.
- 
- @return an initialized VHistogramDataSource.
- */
-- (instancetype)initWithDataPoints:(NSArray *)dataPoints;
+// Returns nil if bad data
++ (instancetype)histogramDataSourceWithDataPoints:(NSArray *)dataPoints;
 
 @end

@@ -150,7 +150,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
      {
          if (histogramData)
          {
-             self.histogramDataSource = [[VHistogramDataSource alloc] initWithDataPoints:histogramData];
+             self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
              [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateHistogramDataNotification
                                                                  object:self];
          }
