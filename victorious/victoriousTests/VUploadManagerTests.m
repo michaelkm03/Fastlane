@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSURL *bodyFileURL;
 @property (nonatomic, strong) NSURL *inProgressTaskSaveFileURL;
 @property (nonatomic, strong) NSURL *pendingTaskSaveFileURL;
+@property (nonatomic, strong) VUploadTaskSerializer *pendingTaskSerializer;
 @property (nonatomic, strong) VUploadTaskInformation *uploadTask;
 @property (nonatomic, strong) NSData *body;
 @property (nonatomic, strong) NSData *response;
@@ -51,10 +52,13 @@
     
     taskSaveFilename = [[NSUUID UUID] UUIDString];
     self.pendingTaskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];
-    self.uploadManager.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.pendingTaskSaveFileURL];
+    self.pendingTaskSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:self.pendingTaskSaveFileURL];
+    self.uploadManager.tasksPendingSerializer = self.pendingTaskSerializer;
     
-    NSString *bodyFilename = [[NSUUID UUID] UUIDString];
-    self.bodyFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
+    self.bodyFileURL = [self.uploadManager urlForNewUploadBodyFile];
+    NSURL *bodyFileDirectoryURL = [self.bodyFileURL URLByDeletingLastPathComponent];
+    [[NSFileManager defaultManager] createDirectoryAtURL:bodyFileDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
+    
     self.body = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
     [self.body writeToURL:self.bodyFileURL atomically:YES];
     
@@ -64,8 +68,8 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:self.bodyFileURL description:nil];
-        
+    self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFilename:[self.bodyFileURL lastPathComponent] description:nil];
+    
     [[LSNocilla sharedInstance] start];
 }
 
@@ -105,14 +109,13 @@
 
 - (void)testQueueingMultipleUploads
 {
-    NSString *bodyFilename = [[NSUUID UUID] UUIDString];
-    NSURL *bodyFileURL2 = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:bodyFilename]];
+    NSURL *bodyFileURL2 = [self.uploadManager urlForNewUploadBodyFile];
     NSData *body2 = [@"hello world" dataUsingEncoding:NSUTF8StringEncoding];
     [body2 writeToURL:bodyFileURL2 atomically:YES];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example2.com/"]];
     [request setHTTPMethod:@"POST"];
-    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:bodyFileURL2 description:nil];
+    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFilename:[bodyFileURL2 lastPathComponent] description:nil];
 
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
 
@@ -138,7 +141,7 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example2.com/"]];
     [request setHTTPMethod:@"POST"];
-    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:bodyFileURL2 description:nil];
+    VUploadTaskInformation *upload2 = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFilename:[bodyFileURL2 lastPathComponent] description:nil];
     
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
     
@@ -413,7 +416,7 @@
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFileURL:self.bodyFileURL description:nil];
+    VUploadTaskInformation *task = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:nil bodyFilename:[self.bodyFileURL lastPathComponent] description:nil];
     
     stubRequest(@"POST", url.absoluteString).andReturn(200);
     
@@ -442,6 +445,46 @@
         [async signal];
     }];
     [async waitForSignal:5.0];
+}
+
+- (void)testSavedTasksWithoutValidBodyFilesAreRejected
+{
+    NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.request1.com/"]];
+    NSURLRequest *request2 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.request2.com/"]];
+    NSURL *bodyFileURL1 = [self.uploadManager urlForNewUploadBodyFile];
+    NSURL *bodyFileURL2 = [self.uploadManager urlForNewUploadBodyFile];
+    NSString *description1 = @"fileDescription1";
+    NSString *description2 = @"fileDescription2";
+    VUploadTaskInformation *uploadTask1 = [[VUploadTaskInformation alloc] initWithRequest:request1 previewImage:nil bodyFilename:[bodyFileURL1 lastPathComponent] description:description1];
+    VUploadTaskInformation *uploadTask2 = [[VUploadTaskInformation alloc] initWithRequest:request2 previewImage:nil bodyFilename:[bodyFileURL2 lastPathComponent] description:description2];
+    
+    NSURL *bodyFileDirectory = [bodyFileURL2 URLByDeletingLastPathComponent];
+    [[NSFileManager defaultManager] createDirectoryAtURL:bodyFileDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    uint8_t bytes[] = { 0, 1, 2 };
+    NSData *bodyData = [NSData dataWithBytes:bytes length:3];
+    [bodyData writeToURL:bodyFileURL2 atomically:YES];
+    
+    if (![self.pendingTaskSerializer saveUploadTasks:@[uploadTask1, uploadTask2]])
+    {
+        XCTFail(@"failed to save uploads");
+        return;
+    }
+    
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+    {
+        XCTAssertEqual(tasks.count, 1u);
+        XCTAssertEqualObjects([(VUploadTaskInformation *)tasks[0] request], request2);
+        XCTAssertEqualObjects([(VUploadTaskInformation *)tasks[0] bodyFilename], [bodyFileURL2 lastPathComponent]);
+        XCTAssertEqualObjects([(VUploadTaskInformation *)tasks[0] uploadDescription], description2);
+        XCTAssertEqualObjects([(VUploadTaskInformation *)tasks[0] identifier], uploadTask2.identifier);
+        
+        [async signal];
+    }];
+    
+    [async waitForSignal:5];
+    [[NSFileManager defaultManager] removeItemAtURL:bodyFileURL2 error:nil];
 }
 
 @end
