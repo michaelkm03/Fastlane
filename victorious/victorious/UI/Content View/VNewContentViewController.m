@@ -49,6 +49,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -686,6 +687,15 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [self presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
                     [self.viewModel answerPollWithAnswer:VPollAnswerA
                                               completion:^(BOOL succeeded, NSError *error)
                     {
@@ -695,6 +705,15 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [self presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
                     [self.viewModel answerPollWithAnswer:VPollAnswerB
                                               completion:^(BOOL succeeded, NSError *error)
                     {
