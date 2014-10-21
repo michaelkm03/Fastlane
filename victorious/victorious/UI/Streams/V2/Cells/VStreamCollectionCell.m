@@ -233,7 +233,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
     return CGSizeMake(width, width * yRatio);
 }
 
-+ (CGSize)actualSizeWithCollectionVIewBounds:(CGRect)bounds sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])

@@ -353,7 +353,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
              &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        return [VStreamCollectionCellPoll actualSizeWithCollectionVIewBounds:self.collectionView.bounds sequence:sequence];
+        return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
     else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
     {
@@ -361,7 +361,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        return [VStreamCollectionCell actualSizeWithCollectionVIewBounds:self.collectionView.bounds sequence:sequence];
+        return [VStreamCollectionCell actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
     return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }

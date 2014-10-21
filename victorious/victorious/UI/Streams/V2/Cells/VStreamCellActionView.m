@@ -111,10 +111,7 @@ static CGFloat const kVActionButtonBuffer = 15;
         canRepost = [self.delegate willRepostSequence:self.sequence fromView:self];
     }
     
-    if (canRepost)
-    {
-        ((UIButton *)sender).enabled = NO;
-    }
+    ((UIButton *)sender).enabled = canRepost;
 }
 
 - (void)addFlagButton

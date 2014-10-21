@@ -29,6 +29,6 @@
 
 - (void)hideOverlays;
 - (void)showOverlays;
-+ (CGSize)actualSizeWithCollectionVIewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
 
 @end
