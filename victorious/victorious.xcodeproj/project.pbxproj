@@ -338,7 +338,6 @@
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
 		BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171D8B1868BE64004E5202 /* VAppDelegate.m */; };
-		BE171D911868BE64004E5202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		BE171D981868BE64004E5202 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D971868BE64004E5202 /* XCTest.framework */; };
 		BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -3647,7 +3646,6 @@
 				D8D73AB719F072A800E6955C /* LOL_v02.00008.png in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
-				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				D8E39BDE19CB7C80007FD86A /* VContentVideoCell.xib in Resources */,
 				A75FAF1A19E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				A75FAF1819E8AC1E00EB87C1 /* VSuggestedPeopleCell.xib in Resources */,
@@ -3660,7 +3658,6 @@
 				D8D73ACC19F072A800E6955C /* WATERBALLOON_V01.00004.png in Resources */,
 				D8D73ADB19F072A800E6955C /* WATERBALLOON_V01.00019.png in Resources */,
 				D8D73ACF19F072A800E6955C /* WATERBALLOON_V01.00007.png in Resources */,
-				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
 				D8D73ADD19F072A800E6955C /* WATERBALLOON_V01.00021.png in Resources */,
 				D8D73A7D19F072A800E6955C /* GLITTER_V01.00001.png in Resources */,
