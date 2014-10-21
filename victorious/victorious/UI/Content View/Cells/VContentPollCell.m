@@ -8,23 +8,48 @@
 
 #import "VContentPollCell.h"
 
+// Subviews
+#import "VResultView.h"
+
+// Theme
+#import "VThemeManager.h"
+
 static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *answerAThumbnail;
-@property (weak, nonatomic) IBOutlet UIButton *answerAPlayButton;
-@property (weak, nonatomic) IBOutlet UIImageView *answerBThumbnail;
-@property (weak, nonatomic) IBOutlet UIButton *answerBPlayButton;
+@property (nonatomic, weak) IBOutlet UIImageView *answerAThumbnail;
+@property (nonatomic, weak) IBOutlet UIButton *answerAPlayButton;
+@property (nonatomic, weak) IBOutlet UIImageView *answerBThumbnail;
+@property (nonatomic, weak) IBOutlet UIButton *answerBPlayButton;
+@property (nonatomic, weak) IBOutlet VResultView *answerAResultView;
+@property (nonatomic, weak) IBOutlet VResultView *answerBResultView;
 
 @end
 
 @implementation VContentPollCell
 
+#pragma mark - VSharedCollectionReusableViewMethods
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), kDesiredPollCellHeight);
 }
+
+#pragma mark - NSOBject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self.answerAResultView setProgress:0.0f animated:NO];
+    [self.answerBResultView setProgress:0.0f animated:NO];
+    
+    [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+    [self.answerBResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+}
+
+#pragma mark - Property Accessors
 
 - (void)setAnswerAThumbnailMediaURL:(NSURL *)answerAThumbnailMediaURL
 {
@@ -48,6 +73,30 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 {
     _answerBIsVideo = answerBIsVideo;
     self.answerBPlayButton.hidden = !answerBIsVideo;
+}
+
+#pragma mark - Public Methods
+
+- (void)setAnswerAPercentage:(CGFloat)answerAPercentage
+                    animated:(BOOL)animated
+{
+    if (answerAPercentage >= 0.5f)
+    {
+        [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    }
+    [self.answerAResultView setProgress:answerAPercentage
+                               animated:animated];
+}
+
+- (void)setAnswerBPercentage:(CGFloat)answerBPercentage
+                    animated:(BOOL)animated
+{
+    if (answerBPercentage >= 0.5f)
+    {
+        [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    }
+    [self.answerBResultView setProgress:answerBPercentage
+                               animated:animated];
 }
 
 @end

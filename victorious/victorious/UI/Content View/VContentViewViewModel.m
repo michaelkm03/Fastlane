@@ -16,6 +16,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 #import "VAnswer.h"
+#import "VPollResult.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -520,4 +521,67 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     return [[self answerB].mediaUrl v_hasVideoExtension];
 }
 
+- (CGFloat)answerAPercentage
+{
+    return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+}
+
+- (CGFloat)answerBPercentage
+{
+    return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+}
+
+- (VPollResult *)answerAResult
+{
+    for (VPollResult *result in self.sequence.pollResults)
+    {
+        if ([result.answerId isEqualToNumber:[self answerA].remoteId])
+        {
+            return result;
+        }
+    }
+    return nil;
+}
+
+- (VPollResult *)answerBResult
+{
+    for (VPollResult *result in self.sequence.pollResults)
+    {
+        if ([result.answerId isEqualToNumber:[self answerB].remoteId])
+        {
+            return result;
+        }
+    }
+    return nil;
+}
+
+- (NSInteger)totalVotes
+{
+    NSInteger totalVotes = 0;
+    for (VPollResult *result in self.sequence.pollResults)
+    {
+        totalVotes+= result.count.integerValue;
+    }
+    return totalVotes?:1;
+}
+
 @end
+
+//for (VPollResult *result in self.sequence.pollResults)
+//{
+//    VResultView *resultView = [self resultViewForAnswerId:result.answerId];
+//    
+//    CGFloat progress = result.count.doubleValue / totalVotes;
+//    
+//    VLog(@"Result :%@", result);
+//    if ([result.answerId isEqualToNumber:answerId])
+//    {
+//        resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+//    }
+//    else
+//    {
+//        resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+//    }
+//    
+//    [resultView setProgress:progress animated:YES];
+//}

@@ -85,6 +85,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VHistogramCell *histogramCell;
+@property (nonatomic, weak) VContentPollCell *pollCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -398,6 +399,14 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
+    
+    if (self.viewModel.type == VContentViewTypePoll)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -623,7 +632,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 pollCell.answerAIsVideo = self.viewModel.answerAIsVideo;
                 pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
                 pollCell.answerBIsVideo = self.viewModel.answerBIsVideo;
-                
+                self.pollCell = pollCell;
                 return pollCell;
             }
         }

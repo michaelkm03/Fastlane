@@ -42,6 +42,16 @@
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        _isVertical = YES;
+    }
+    return self;
+}
+
 - (void)setIsVertical:(BOOL)isVertical
 {
     _isVertical = isVertical;
@@ -120,10 +130,16 @@
 {
     if (animated)
     {
-        [UIView animateWithDuration:.5f animations:
-        ^{
+        [UIView animateWithDuration:0.75f
+                              delay:0.0f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+        {
             self.progress = progress;
-        }];
+        }
+                         completion:nil];
     }
     else
     {

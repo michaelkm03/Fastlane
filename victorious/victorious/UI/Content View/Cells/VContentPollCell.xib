@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -23,6 +24,13 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r7x-ug-XeL" customClass="VResultView">
+                        <rect key="frame" x="0.0" y="0.0" width="36" height="320"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="36" id="B7U-8F-blB"/>
+                        </constraints>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
                         <rect key="frame" x="161" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,10 +41,18 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2c-vu-8qs" customClass="VResultView">
+                        <rect key="frame" x="284" y="0.0" width="36" height="320"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="36" id="7Ah-pl-Ug7"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="r7x-ug-XeL" secondAttribute="bottom" id="3tg-Fr-F7y"/>
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="top" secondItem="36J-hZ-MxW" secondAttribute="top" id="4Mc-CJ-Kmn"/>
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="63x-2j-6tr"/>
                 <constraint firstItem="KbT-8J-Bx0" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="8MO-Fd-OEQ"/>
@@ -46,22 +62,29 @@
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="leading" secondItem="36J-hZ-MxW" secondAttribute="leading" id="F86-cz-Ur5"/>
                 <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="FBs-qC-yll"/>
                 <constraint firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="G2s-Dy-440"/>
+                <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="GZ3-gt-KyP"/>
+                <constraint firstItem="r7x-ug-XeL" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="HES-Pm-0So"/>
+                <constraint firstItem="j2c-vu-8qs" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="LZK-xR-zeL"/>
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="trailing" constant="2" id="NHH-Qc-izN"/>
+                <constraint firstAttribute="bottom" secondItem="j2c-vu-8qs" secondAttribute="bottom" id="RdZ-CZ-Srn"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="top" secondItem="KbT-8J-Bx0" secondAttribute="top" id="Svi-vN-n3g"/>
                 <constraint firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="T2W-Yv-sbY"/>
                 <constraint firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="UsZ-qL-enn"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="leading" id="WmD-oN-7Vh"/>
+                <constraint firstItem="r7x-ug-XeL" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="bnD-KI-QNe"/>
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="ksq-It-Nv8"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="trailing" secondItem="KbT-8J-Bx0" secondAttribute="trailing" id="qFP-1d-X6Z"/>
             </constraints>
             <size key="customSize" width="250" height="223"/>
             <connections>
                 <outlet property="answerAPlayButton" destination="Od3-Kk-qNW" id="NWs-Ef-nki"/>
+                <outlet property="answerAResultView" destination="r7x-ug-XeL" id="IpX-yF-H13"/>
                 <outlet property="answerAThumbnail" destination="KbT-8J-Bx0" id="IjK-e0-MRh"/>
                 <outlet property="answerBPlayButton" destination="bJW-Xk-MbI" id="Sge-tG-dVR"/>
+                <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
             </connections>
-            <point key="canvasLocation" x="431" y="487"/>
+            <point key="canvasLocation" x="588" y="535"/>
         </collectionViewCell>
     </objects>
     <resources>
