@@ -86,6 +86,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VHistogramCell *histogramCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
+@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -403,14 +404,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
-    
-    if (self.viewModel.type == VContentViewTypePoll)
-    {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -494,10 +487,19 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (void)pollDataDidUpdate:(NSNotification *)notification
 {
-    [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                               animated:YES];
-    [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                               animated:YES];
+
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+    }
 }
 
 #pragma mark - IBActions
@@ -674,42 +676,34 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                VContentPollBallotCell *ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
-                                                                                               forIndexPath:indexPath];
-                ballotCell.answerA = self.viewModel.answerALabelText;
-                ballotCell.answerB = self.viewModel.answerBLabelText;
-                
-                if (!self.viewModel.votingEnabled)
+                if (!self.ballotCell)
                 {
-#warning Uncomment Me!
-                    [ballotCell setVotingDisabledWithAnswerAFavored:self.viewModel.answerAIsFavored];
+                    self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
+                                                                                forIndexPath:indexPath];
                 }
-
-                __weak typeof(ballotCell) weakBallotCell = ballotCell;
-                ballotCell.answerASelectionHandler = ^(void)
+                self.ballotCell.answerA = self.viewModel.answerALabelText;
+                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+                
+                self.ballotCell.answerASelectionHandler = ^(void)
                 {
                     [self.viewModel answerPollWithAnswer:VPollAnswerA
                                               completion:^(BOOL succeeded, NSError *error)
                     {
-                        [weakBallotCell setVotingDisabledWithAnswerAFavored:NO
-                                                                   animated:YES];
                         [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
                                                    animated:YES];
                     }];
                 };
-                ballotCell.answerBSelectionHandler = ^(void)
+                self.ballotCell.answerBSelectionHandler = ^(void)
                 {
                     [self.viewModel answerPollWithAnswer:VPollAnswerB
                                               completion:^(BOOL succeeded, NSError *error)
                     {
-                        [weakBallotCell setVotingDisabledWithAnswerAFavored:NO
-                                                                   animated:YES];
                         [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
                                                    animated:YES];
                     }];
                 };
                 
-                return ballotCell;
+                return self.ballotCell;
             }
             
             if (self.experienceEnhancerCell)

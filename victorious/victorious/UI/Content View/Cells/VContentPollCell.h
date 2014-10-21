@@ -18,6 +18,9 @@
 @property (nonatomic, assign) BOOL answerBIsVideo;
 @property (nonatomic, assign) BOOL answerAIsVideo;
 
+@property (nonatomic, assign) BOOL answerAIsFavored;
+@property (nonatomic, assign) BOOL answerBIsFavored;
+
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage
                     animated:(BOOL)animated;
 

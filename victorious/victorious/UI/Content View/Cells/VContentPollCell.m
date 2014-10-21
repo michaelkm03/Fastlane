@@ -75,15 +75,23 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     self.answerBPlayButton.hidden = !answerBIsVideo;
 }
 
+- (void)setAnswerAIsFavored:(BOOL)answerAIsFavored
+{
+    _answerAIsFavored = answerAIsFavored;
+    [self.answerAResultView setColor:answerAIsFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+}
+
+- (void)setAnswerBIsFavored:(BOOL)answerBIsFavored
+{
+    _answerBIsFavored = answerBIsFavored;
+    [self.answerBResultView setColor:answerBIsFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+}
+
 #pragma mark - Public Methods
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage
                     animated:(BOOL)animated
 {
-    if (answerAPercentage >= 0.5f)
-    {
-        [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
-    }
     [self.answerAResultView setProgress:answerAPercentage
                                animated:animated];
 }
@@ -91,10 +99,6 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerBPercentage:(CGFloat)answerBPercentage
                     animated:(BOOL)animated
 {
-    if (answerBPercentage >= 0.5f)
-    {
-        [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
-    }
     [self.answerBResultView setProgress:answerBPercentage
                                animated:animated];
 }

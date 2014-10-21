@@ -59,8 +59,8 @@
 
 #pragma mark - Public Methods
 
-- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
-                                   animated:(BOOL)animated
+- (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
+                                  animated:(BOOL)animated
 {
     if (animated)
     {
@@ -71,13 +71,17 @@
                             options:kNilOptions
                          animations:^
         {
-            [self setVotingDisabledWithAnswerAFavored:answerAFavored];
+            [self setVotingDisabledWithFavoredBallot:ballot];
         }
                          completion:nil];
     }
+    else
+    {
+        [self setVotingDisabledWithFavoredBallot:ballot];
+    }
 }
 
-- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
+- (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
 {
     self.answerAButton.enabled = NO;
     self.answerBButton.enabled = NO;
@@ -85,8 +89,8 @@
     UIColor *selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     UIColor *unselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.answerAButton.backgroundColor = answerAFavored ? selectedColor : unselectedColor;
-    self.answerBButton.backgroundColor = answerAFavored ? unselectedColor : selectedColor;
+    self.answerAButton.backgroundColor = (ballot == VBallotA) ? selectedColor : unselectedColor;
+    self.answerBButton.backgroundColor = (ballot == VBallotB) ? selectedColor : unselectedColor;
 }
 
 #pragma mark - IBActions

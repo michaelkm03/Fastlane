@@ -176,7 +176,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
          [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
                                                              object:self];
      }
-                                                 failBlock:^(NSOperation *operation, NSError *error)];
+                                                 failBlock:nil];
 }
 
 #pragma mark - Property Accessors
@@ -539,18 +539,13 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     return [[self answerB].mediaUrl v_hasVideoExtension];
 }
 
-- (BOOL)answerAIsFavored
-{
-    return ([self answerAPercentage] >= 0.5f) ? YES : NO;
-}
-
 - (BOOL)votingEnabled
 {
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
     {
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
-//            return NO;
+            return NO;
         }
     }
     return YES;
@@ -609,6 +604,18 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     return totalVotes;
 }
 
+- (VPollAnswer)favoredAnswer
+{
+    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
+        {
+            return [result isEqual:[self answerA]] ? VPollAnswerA : VPollAnswerB;
+        }
+    }
+    return VPollAnswerInvalid;
+}
+
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion
 {
@@ -617,6 +624,8 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          //
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
+                                                             object:self];
          completion(YES, nil);
      }
                                      failBlock:^(NSOperation *operation, NSError *error)

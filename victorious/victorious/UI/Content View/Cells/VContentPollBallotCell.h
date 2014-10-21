@@ -8,12 +8,16 @@
 
 #import "VBaseCollectionViewCell.h"
 
+typedef NS_ENUM(NSInteger, VBallot)
+{
+    VBallotA,
+    VBallotB
+};
+
 @interface VContentPollBallotCell : VBaseCollectionViewCell
 
-- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored
-                                   animated:(BOOL)animated;
-
-- (void)setVotingDisabledWithAnswerAFavored:(BOOL)answerAFavored;
+- (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
+                                  animated:(BOOL)animated;
 
 @property (nonatomic, copy) NSString *answerA;
 @property (nonatomic, copy) NSString *answerB;
