@@ -44,7 +44,6 @@
 - (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence
 {
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
-    NSAssert(![sequence isVideo], @"Called video remix action on a non-video sequence.");
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -176,6 +175,10 @@
                                                                       value:nil];
         [viewController reloadInputViews];
     };
+    
+    [viewController presentViewController:activityViewController
+                                 animated:YES
+                               completion:nil];
 }
 
 #pragma mark - Flag
@@ -187,7 +190,7 @@
                                                        onCancelButton:nil
                                                destructiveButtonTitle:nil
                                                   onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
                                   {
                                       [self flagActionForSequence:sequence];
                                   }, nil];

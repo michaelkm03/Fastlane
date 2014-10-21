@@ -80,6 +80,12 @@ static const CGFloat kTemplateCXRatio = 0.94375;
     self.streamCellHeaderView.delegate = self;
 }
 
+- (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
+{
+    _delegate = delegate;
+    self.actionView.delegate = delegate;
+}
+
 - (void)setDescriptionText:(NSString *)text
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
@@ -127,6 +133,8 @@ static const CGFloat kTemplateCXRatio = 0.94375;
 {
     _sequence = sequence;
     
+    self.actionView.sequence = sequence;
+    
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
     
@@ -160,7 +168,7 @@ static const CGFloat kTemplateCXRatio = 0.94375;
     {
         [self.actionView addRemixButton];
     }
-    [self.actionView addRepostButton];  
+    [self.actionView addRepostButton];
     [self.actionView addFlagButton];
     [self.actionView layoutIfNeeded];
 }

@@ -14,6 +14,7 @@
 
 @interface VStreamCellActionView : UIView
 
+@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
 - (void)clearButtons;

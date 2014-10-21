@@ -19,6 +19,7 @@
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VSequenceActionController.h"
 
 //Views
 #import "VNavigationHeaderView.h"
@@ -28,6 +29,7 @@
 //Data models
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
 
 //Managers
 #import "VObjectManager+Sequence.h"
@@ -52,6 +54,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
+
+@property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
@@ -141,6 +145,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [super viewDidLoad];
 
     self.hasRefreshed = NO;
+    self.sequenceActionController = [[VSequenceActionController alloc] init];
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
@@ -381,8 +386,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
-    cell.sequence = sequence;
     cell.delegate = self;
+    cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -468,6 +473,35 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
     [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    if ([sequence isVideo])
+    {
+        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
+    }
+    else
+    {
+        NSIndexPath *path = [self.streamDataSource indexPathForItem:sequence];
+        VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamDataSource.delegate dataSource:self.streamDataSource cellForIndexPath:path];
+        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:cell.previewImageView.image sequence: sequence];
+    }
+}
+
+- (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
+}
+
+- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
+}
+
+- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
 }
 
 #pragma mark - Actions

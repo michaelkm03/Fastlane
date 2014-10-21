@@ -9,6 +9,7 @@
 #import "VStreamCellActionView.h"
 
 #import "VSequence+Fetcher.h"
+#import "VThemeManager.h"
 
 static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kVActionButtonBuffer = 15;
@@ -70,41 +71,72 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)addShareButton
 {
-    [self addButtonWithImage:[UIImage imageNamed:@"shareIcon-C"]
-                      action:@selector(willShareSequence:fromView:)];
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"shareIcon-C"]];
+    [button addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)shareAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(willShareSequence:fromView:)])
+    {
+        [self.delegate willShareSequence:self.sequence fromView:self];
+    }
 }
 
 - (void)addRemixButton
 {
-    [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]
-                      action:@selector(willRemixSequence:fromView:)];
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]];
+    [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)remixAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(willRemixSequence:fromView:)])
+    {
+        [self.delegate willRemixSequence:self.sequence fromView:self];
+    }
 }
 
 - (void)addRepostButton
 {
-    [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]
-                       action:@selector(willRepostSequence:fromView:)];
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
+    [button addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)repostAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(willRepostSequence:fromView:)])
+    {
+        [self.delegate willRepostSequence:self.sequence fromView:self];
+    }
+    ((UIButton *)sender).userInteractionEnabled = NO;
+    ((UIButton *)sender).tintColor = [((UIButton *)sender).tintColor colorWithAlphaComponent:.5f];
 }
 
 - (void)addFlagButton
 {
-    [self addButtonWithImage:[UIImage imageNamed:@"overflowBtn-C"]
-                      action:@selector(willFlagSequence:fromView:)];
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"overflowBtn-C"]];
+    [button addTarget:self action:@selector(flagAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)addButtonWithImage:(UIImage *)image action:(SEL)action
+- (void)flagAction:(id)sender
 {
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:image forState:UIControlStateNormal];
-    button.frame = CGRectMake(0, 0, CGRectGetHeight(self.bounds), CGRectGetHeight(self.bounds));
-    if ([self.delegate respondsToSelector:action])
+    if ([self.delegate respondsToSelector:@selector(willFlagSequence:fromView:)])
     {
-        [button addTarget:self.delegate action:action forControlEvents:UIControlEventTouchUpInside];
+        [self.delegate willFlagSequence:self.sequence fromView:self];
     }
+}
+
+- (UIButton *)addButtonWithImage:(UIImage *)image
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    button.frame = CGRectMake(0, 0, CGRectGetHeight(self.bounds), CGRectGetHeight(self.bounds));
+    button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     [self addSubview:button];
     [self.actionButtons addObject:button];
     [self setNeedsLayout];
+    return button;
 }
 
 @end
