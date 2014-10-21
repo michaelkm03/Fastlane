@@ -47,6 +47,12 @@ typedef NS_ENUM(NSInteger, VContentViewType)
     VContentViewTypePoll
 };
 
+typedef NS_ENUM(NSInteger, VPollAnswer)
+{
+    VPollAnswerA,
+    VPollAnswerB,
+};
+
 /**
  * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
  * 
@@ -230,6 +236,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL votingEnabled;
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
 
 /** This will be nil if no histogram data is available.
  */
