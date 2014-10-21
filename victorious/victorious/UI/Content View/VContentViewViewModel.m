@@ -530,9 +530,10 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 {
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
     {
+        NSLog(@"%@", result);
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
-            return NO;
+//            return NO;
         }
     }
     return YES;
@@ -540,12 +541,20 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (CGFloat)answerAPercentage
 {
-    return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+    if ([self totalVotes] > 0)
+    {
+        return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+    }
+    return 0.0f;
 }
 
 - (CGFloat)answerBPercentage
 {
-    return (CGFloat) [self answerBResult].count.doubleValue / [self totalVotes];
+    if ([self totalVotes] > 0)
+    {
+        return (CGFloat) [self answerBResult].count.doubleValue / [self totalVotes];
+    }
+    return 0.0f;
 }
 
 - (VPollResult *)answerAResult
@@ -574,12 +583,13 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (NSInteger)totalVotes
 {
-    NSInteger totalVotes = (NSInteger) self.sequence.pollResults.count;
-//    for (VPollResult *result in self.sequence.pollResults)
-//    {
-//        totalVotes+= result.count.integerValue;
-//    }
-    return totalVotes?:1;
+    NSInteger totalVotes = 0;
+    for (VPollResult *pollResult in self.sequence.pollResults)
+    {
+        totalVotes = totalVotes + [pollResult.count integerValue];
+    }
+
+    return totalVotes;
 }
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer

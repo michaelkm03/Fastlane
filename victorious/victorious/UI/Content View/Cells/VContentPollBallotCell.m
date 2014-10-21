@@ -8,6 +8,8 @@
 
 #import "VContentPollBallotCell.h"
 
+#import "UIImage+ImageCreation.h"
+
 // Theme
 #import "VThemeManager.h"
 
@@ -25,6 +27,18 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), 60);
+}
+
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    UIColor *unselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.answerAButton.backgroundColor = unselectedColor;
+    self.answerBButton.backgroundColor = unselectedColor;
 }
 
 #pragma mark - Property Accessors
@@ -68,8 +82,11 @@
     self.answerAButton.enabled = NO;
     self.answerBButton.enabled = NO;
     
-    self.answerAButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.answerBButton.backgroundColor = answerAFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIColor *selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIColor *unselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.answerAButton.backgroundColor = answerAFavored ? selectedColor : unselectedColor;
+    self.answerBButton.backgroundColor = answerAFavored ? unselectedColor : selectedColor;
 }
 
 #pragma mark - IBActions
