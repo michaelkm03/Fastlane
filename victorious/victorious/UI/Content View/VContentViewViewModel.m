@@ -610,7 +610,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     {
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
-            return [result isEqual:[self answerA]] ? VPollAnswerA : VPollAnswerB;
+            return [result.answerId isEqualToNumber:[self answerA].remoteId] ? VPollAnswerA : VPollAnswerB;
         }
     }
     return VPollAnswerInvalid;
