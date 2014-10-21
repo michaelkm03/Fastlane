@@ -104,7 +104,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
                                       voteType.animationDuration = @( 0.5f );
                                   }
 #endif
-                                  return voteType.containsRequiredData;
+                                  return voteType.containsRequiredData && voteType.hasValidTrackingData;
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     

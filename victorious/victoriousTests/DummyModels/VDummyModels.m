@@ -10,6 +10,8 @@
 #import "VObjectManager.h"
 #import "RKManagedObjectStore.h"
 #import "VUser.h"
+#import "VTracking.h"
+#import "VTrackingConstants.h"
 
 static NSManagedObjectContext *context = nil;
 
@@ -60,6 +62,11 @@ static NSManagedObjectContext *context = nil;
         voteType.imageFormat = @"https://www.google.com/images/icons/product/XXXXX.png";
         voteType.imageCount = @(5);
         voteType.displayOrder = @(i+1);
+        
+        NSString *trackingUrl = [NSString stringWithFormat:@"http://www.tracking.com/%@", kTrackingKeyBallisticsCount];
+        voteType.tracking = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
+        voteType.tracking.ballisticCount = @[ trackingUrl, trackingUrl, trackingUrl ];
+        
         [models addObject:voteType];
     }
     return [NSArray arrayWithArray:models];

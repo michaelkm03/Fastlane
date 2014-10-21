@@ -7,6 +7,7 @@
 //
 
 #import "VVoteType+ImageSerialization.h"
+#import "VTracking+RestKit.h"
 
 NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
@@ -14,7 +15,21 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
 - (BOOL)containsRequiredData
 {
-    return self.canCreateImages && self.name != nil && self.name.length > 0 && self.iconImage != nil && self.iconImage.length != 0;
+    return  self.canCreateImages &&
+            self.name != nil &&
+            self.name.length > 0 &&
+            self.iconImage != nil &&
+            self.iconImage.length != 0;
+}
+
+- (BOOL)hasValidTrackingData
+{
+    if ( self.tracking == nil || self.tracking.ballisticCount == nil )
+    {
+        return NO;
+    }
+    
+    return [VTracking urlsAreValid:self.tracking.ballisticCount];
 }
 
 - (BOOL)canCreateImages

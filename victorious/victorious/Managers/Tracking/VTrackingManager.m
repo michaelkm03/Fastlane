@@ -31,6 +31,7 @@
                                kTrackingKeyPageLabel,
                                kTrackingKeyStreamId,
                                kTrackingKeySequenceId,
+                               kTrackingKeyBallisticsCount,
                                kTrackingKeyPositionX,
                                kTrackingKeyPositionY,
                                kTrackingKeyNavigiationFrom,
