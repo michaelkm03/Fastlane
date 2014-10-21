@@ -22,7 +22,6 @@
 		0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07A19B4688E00FA363C /* Default-568h@2x.png */; };
 		0314D08319B4688E00FA363C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07B19B4688E00FA363C /* Default@2x.png */; };
 		0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07C19B4688E00FA363C /* defaultSettings.plist */; };
-		0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
 		0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D08019B4688E00FA363C /* Icon-60@2x.png */; };
@@ -190,6 +189,8 @@
 		035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 035C2D821940F1B40023FC05 /* VAnalyticsRecorder.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
+		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */; };
 		036AA36519F32C0500FE6B9D /* VPhotoLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
@@ -254,7 +255,6 @@
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
-		03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
@@ -3481,7 +3481,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
@@ -3606,7 +3606,7 @@
 				D8D73ACB19F072A800E6955C /* WATERBALLOON_V01.00003.png in Resources */,
 				D8D73AC119F072A800E6955C /* LOL_v02.00018.png in Resources */,
 				D8D73A6D19F072A800E6955C /* Firework_v01.00006.png in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
+				0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				D8D73AE019F072A800E6955C /* WATERBALLOON_V01.00024.png in Resources */,
@@ -3619,7 +3619,7 @@
 				D8D73AE219F072A800E6955C /* WATERBALLOON_V01.00026.png in Resources */,
 				D8D73A7A19F072A800E6955C /* Firework_v01.00019.png in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
+				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
 				D8D73ABE19F072A800E6955C /* LOL_v02.00015.png in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8D73AC419F072A800E6955C /* LOL_v02.00021.png in Resources */,
@@ -3627,16 +3627,13 @@
 				D8D73AAE19F072A800E6955C /* Lightening_V01.00019.png in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73AA719F072A800E6955C /* Lightening_V01.00012.png in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73A8B19F072A800E6955C /* GLITTER_V01.00015.png in Resources */,
 				D8D73AA219F072A800E6955C /* Lightening_V01.00007.png in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8D73A8D19F072A800E6955C /* GLITTER_V01.00017.png in Resources */,
 				D8D73A7519F072A800E6955C /* Firework_v01.00014.png in Resources */,
 				D8D73AA419F072A800E6955C /* Lightening_V01.00009.png in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				D8D73A6919F072A800E6955C /* Firework_v01.00002.png in Resources */,
 				D8D73AD819F072A800E6955C /* WATERBALLOON_V01.00016.png in Resources */,
