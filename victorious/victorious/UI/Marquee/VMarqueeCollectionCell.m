@@ -87,7 +87,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     return self.marquee.currentStreamItem;
 }
 
-- (UIImageView*)currentPreviewImageView
+- (UIImageView *)currentPreviewImageView
 {
     NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
