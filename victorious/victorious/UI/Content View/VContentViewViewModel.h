@@ -12,10 +12,17 @@
 
 #import "VExperienceEnhancerController.h"
 
+#import "VHistogramDataSource.h"
+
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
 extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+
+/**
+ *  Posted whenever new histogram data is made available.
+ */
+extern NSString *const VContentViewViewModelDidUpdateHistogramDataNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -202,6 +209,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
 
+- (VUser *)userForCommentIndex:(NSInteger)commentIndex;
+
 /**
  *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
  *
@@ -210,5 +219,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return Whether or not the media for the comment is a video.
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+
+/** This will be nil if no histogram data is available.
+ */
+@property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
 
 @end

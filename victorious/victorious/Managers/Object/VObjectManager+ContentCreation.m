@@ -172,7 +172,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         NSString *loopParam = [self stringForLoopType:loopType];
         speed = speed ?: 1;
         
-        parameters[@"speed"] = @(speed);
+        parameters[@"speed"] = [NSString stringWithFormat:@"%.0f", speed];
         parameters[@"playback"] = loopParam;
     }
     

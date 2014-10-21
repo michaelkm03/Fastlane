@@ -29,6 +29,8 @@
 #import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
+#import "VStreamContainerViewController.h"
+
 // Views
 #import "VNoContentView.h"
 
@@ -54,7 +56,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate, VNewContentViewControllerDelegate>
 
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
@@ -293,22 +295,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    if (![[self.tableDataSource sequenceAtIndexPath:indexPath] isPoll])
+    {
+        VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+        contentViewController.delegate = self;
+        VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+        
+        UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+        contentNav.navigationBarHidden = YES;
+        [self presentViewController:contentNav
+                           animated:YES
+                         completion:nil];
+        
+        [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
+                                             successBlock:nil
+                                                failBlock:nil];
+        
+        return;
+    }
     
-    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
-	return;
-
     self.lastSelectedIndexPath = indexPath;
     
-    self.contentViewController = [[VContentViewController alloc] init];
+    self.contentViewController = [VContentViewController instantiateFromStoryboard:@"Main"];
     
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     if ([sequence.expiresAt timeIntervalSinceNow] < 0)
@@ -370,6 +380,12 @@
         }];
 
     }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setNeedsLayout];
+    [cell setNeedsDisplay];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -669,6 +685,27 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
+- (void)hashTagButtonTappedInStreamViewCell:(VStreamViewCell *)streamViewCell withTag:(NSString *)tag
+{
+    // Error checking
+    if ( tag == nil || tag.length == 0 )
+    {
+        return;
+    }
+    
+    // Prevent another stream view for the current tag from being pushed
+    if ( [[self.hashTag lowercaseString] isEqualToString:[tag lowercaseString]] )
+    {
+        return;
+    }
+    
+    // Instanitate and push to stack
+    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
+    container.shouldShowHeaderLogo = NO;
+    container.hashTag = tag;
+    [self.navigationController pushViewController:container animated:YES];
+}
+
 #pragma mark - Notifications
 
 - (void)dataSourceDidChange:(NSNotification *)notification
@@ -825,6 +862,21 @@
     {
         [self.delegate scrollViewDidScroll:scrollView];
     }
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self refreshWithCompletion:nil];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 @end

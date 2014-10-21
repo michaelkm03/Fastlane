@@ -60,6 +60,10 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversation" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
         <attribute name="nodeId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
@@ -132,6 +136,7 @@
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="nameEmbeddedInContent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="permissions" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remixCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -143,8 +148,22 @@
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
+        <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="parentEntity" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
+    </entity>
+    <entity name="Tracking" representedClassName="VTracking" syncable="YES">
+        <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoComplete100" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoError" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoSkip" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="videoStart" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="parentEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="tracking" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -154,8 +173,10 @@
         <attribute name="accessLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isFollowing" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfFollowers" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
@@ -205,6 +226,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="313"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
+        <element name="Hashtag" positionX="702" positionY="-459" width="128" height="73"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
@@ -213,9 +235,10 @@
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="358"/>
+        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="390"/>
+        <element name="Tracking" positionX="702" positionY="-459" width="128" height="210"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="420"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
         <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>

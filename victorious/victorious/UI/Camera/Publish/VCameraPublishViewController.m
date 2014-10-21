@@ -13,7 +13,9 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
+
 // Managers
+#import "VPhotoLibraryManager.h"
 #import "VSettingManager.h"
 #import "VTwitterManager.h"
 #import "VFacebookManager.h"
@@ -40,6 +42,8 @@
 #import "VFacebookPublishShareController.h"
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
+
+@import AssetsLibrary;
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
@@ -793,24 +797,31 @@ static const CGFloat kShareMargin = 34.0f;
                                                                   label:finalText
                                                                   value:nil];
     
-    if (self.saveToCameraController.selected && !self.didSelectAssetFromLibrary)
+    NSURL *mediaURL = self.mediaURL;
+    void (^cleanup)() = ^(void)
     {
-        if ([self.mediaURL v_hasVideoExtension])
+        [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
+    };
+    
+    if (self.saveToCameraController.selected &&
+        !self.didSelectAssetFromLibrary &&
+        [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized)
+    {
+        VPhotoLibraryManager *photoLibrary = [[VPhotoLibraryManager alloc] init];
+        [photoLibrary saveMediaAtURL:mediaURL toPhotoLibraryWithCompletion:^(NSError *error)
         {
-            UISaveVideoAtPathToSavedPhotosAlbum([self.mediaURL path], nil, nil, nil);
-        }
-        else if ([self.mediaURL v_hasImageExtension])
-        {
-            UIImage    *photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
-            UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
-        }
+            cleanup();
+        }];
+    }
+    else
+    {
+        cleanup();
     }
     
     if (self.completion)
     {
         self.completion(YES);
     }
-    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
 }
 
 #pragma mark - UITextViewDelegate

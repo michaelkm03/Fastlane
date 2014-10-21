@@ -13,7 +13,7 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 // View Categories
 #import "UIView+VShadows.h"
@@ -29,9 +29,10 @@
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
-#import "VTickerCell.h"
+//#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
+#import "VExperienceEnhancerBarCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -44,6 +45,7 @@
 #import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VUserProfileViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -58,12 +60,10 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
-static const CGFloat kExperienceEnhancerShadowRadius = 1.5f;
-static const CGFloat kExperienceEnhancerShadowOffsetY = -1.5f;
-static const CGFloat kExperienceEnhancerShadowWidthOverdraw = 5.0f;
-static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
+static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
+static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -74,24 +74,27 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
 @property (nonatomic, weak) VContentVideoCell *videoCell;
-@property (nonatomic, weak) VTickerCell *tickerCell;
+@property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VHistogramCell *histogramCell;
 
-// Experience Enhancers
-@property (nonatomic, weak) VExperienceEnhancerBar *experienceEnhancerBar;
+// Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
-
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
+
+@property (nonatomic, assign) CGAffineTransform targetTransform;
+@property (nonatomic, assign) CGRect oldRect;
+@property (nonatomic, assign) CGAffineTransform videoTransform;
 
 @end
 
@@ -134,10 +137,121 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 }
 
 #pragma mark - UIViewController
+#pragma mark Rotation
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
+    return shouldRotate;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    CGAffineTransform transform = [coordinator targetTransform];
+    if (CGAffineTransformIsIdentity(transform))
+    {
+        return;
+    }
+    UIInterfaceOrientation oldOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        {
+            if (UIInterfaceOrientationIsLandscape(oldOrientation))
+            {
+                [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
+                [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+                [self.view bringSubviewToFront:self.videoCell.videoPlayerViewController.view];
+
+                return;
+            }
+            [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            
+            self.videoCell.videoPlayerViewController.view.transform = [coordinator targetTransform];
+            self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.videoCell.videoPlayerViewController.view.center = self.view.center;
+            [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+            self.landscapeMaskOverlay.alpha = 1.0f;
+        }
+        else
+        {
+            [coordinator containerView].transform = CGAffineTransformIdentity;
+            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.view.transform = CGAffineTransformIdentity;
+            self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
+        }
+    }
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+    {
+        [self animateVideoPlayerToPortrait];
+    }];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    UIView *rootView = self.navigationController.view;
+    CGAffineTransform oldTransform = rootView.transform;
+
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        rootView.transform = CGAffineTransformIdentity;
+        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
+        self.view.transform = CGAffineTransformIdentity;
+        self.view.bounds = rootView.bounds;
+
+        self.videoCell.videoPlayerViewController.view.transform = oldTransform;
+        self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        self.videoCell.videoPlayerViewController.view.center = rootView.center;
+        [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+        self.landscapeMaskOverlay.alpha = 1.0f;
+    }
+    else
+    {
+        self.view.transform = CGAffineTransformIdentity;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self animateVideoPlayerToPortrait];
+}
+
+- (void)animateVideoPlayerToPortrait
+{
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        [UIView animateWithDuration:kRotationCompletionAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kRotationCompletionAnimationDamping
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^
+         {
+
+             self.videoCell.videoPlayerViewController.view.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
+             self.videoCell.videoPlayerViewController.view.transform = self.videoCell.transform;
+             self.videoCell.videoPlayerViewController.view.center = self.videoCell.contentView.center;
+             
+             self.landscapeMaskOverlay.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+             {
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
+                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+             }
+         }];
+    }
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidLoad
@@ -145,6 +259,8 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     [super viewDidLoad];
 
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
+    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                       forState:UIControlStateNormal];
@@ -190,121 +306,17 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                                                                                  multiplier:1.0f
                                                                                    constant:0.0f];
     self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-    [self.view addSubview:inputAccessoryView];
+    [self.view insertSubview:inputAccessoryView
+                belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
-    
-    VExperienceEnhancerBar *experienceEnhancerBar = [VExperienceEnhancerBar experienceEnhancerBar];
-    experienceEnhancerBar.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
-                                                                         attribute:NSLayoutAttributeLeading
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeLeading
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f];
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0f
-                                                                         constant:VExperienceEnhancerDesiredMinimumHeight];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:experienceEnhancerBar
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.view
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    self.bottomExperienceEnhancerBarToContainerConstraint = bottomConstraint;
-    [self.view addSubview:experienceEnhancerBar];
-    [self.view addConstraints:@[leadingConstraint, trailingConstraint, heightConstraint, bottomConstraint]];
-    inputAccessoryView.maximumAllowedSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 70.0f); // This is somewhat arbitrary to prevent the input accessory view from growing too much.
-    
-    self.experienceEnhancerBar = experienceEnhancerBar;
-    self.experienceEnhancerBar.pressedTextEntryHandler = ^void()
-    {
-        [self.textEntryView startEditing];
-    };
-    self.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
-    {
-        if (selectedEnhancer.isBallistic)
-        {
-            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height)];
-            animationImageView.contentMode = UIViewContentModeScaleAspectFit;
-            
-            CGPoint convertedCenterForAnimation = [experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
-            animationImageView.center = convertedCenterForAnimation;
-            animationImageView.image = selectedEnhancer.flightImage;
-            [self.view addSubview:animationImageView];
-            
-            [UIView animateWithDuration:selectedEnhancer.flightDuration
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^
-            {
-                CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(self.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(self.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
-                CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(self.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(self.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
-                
-                CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
-                                                       fromView:self.contentCell];
-                animationImageView.center = contentCenter;
-
-            }
-                             completion:^(BOOL finished)
-            {
-                animationImageView.animationDuration = selectedEnhancer.animationDuration;
-                animationImageView.animationImages = selectedEnhancer.animationSequence;
-                animationImageView.animationRepeatCount = 1;
-                animationImageView.image = nil;
-                [animationImageView startAnimating];
-                
-
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                {
-                    [animationImageView removeFromSuperview];
-                });
-            }];
-        }
-        else // full overlay
-        {
-            UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
-            animationImageView.animationDuration = selectedEnhancer.animationDuration;
-            animationImageView.animationImages = selectedEnhancer.animationSequence;
-            animationImageView.animationRepeatCount = 1;
-            
-            [self.contentCell.contentView addSubview:animationImageView];
-            [animationImageView startAnimating];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [animationImageView removeFromSuperview];
-            });
-        }
-    };
-    
-    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, 0);
-    self.experienceEnhancerBar.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.experienceEnhancerBar.layer.shadowRadius = kExperienceEnhancerShadowRadius;
-    self.experienceEnhancerBar.layer.shadowOpacity = kExperienceEnhancerShadowAlpha;
-    self.experienceEnhancerBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.experienceEnhancerBar.bounds, -kExperienceEnhancerShadowWidthOverdraw, 0)].CGPath;
-    
-    self.viewModel.experienceEnhancerController.enhancerBar = experienceEnhancerBar;
-    
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    layout.allCommentsHandleBottomInset = CGRectGetHeight(self.experienceEnhancerBar.bounds);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
                                                object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -316,12 +328,12 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VTickerCell  nibForCell]
-                 forCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
                  forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
+                 forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -355,11 +367,8 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     
     [self.viewModel fetchComments];
     
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds), 0);
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight,
-                                                                        0,
-                                                                        CGRectGetHeight(self.textEntryView.bounds), 0);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
     [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
                                                   placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
@@ -434,7 +443,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     {
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
-        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? -layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds) : newBottomInset;
+        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? (CGRectGetHeight(self.textEntryView.bounds)) : newBottomInset;
         self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
         self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
@@ -451,12 +460,21 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
     }
 }
 
+- (void)hitogramDataDidUpdate:(NSNotification *)notification
+{
+    if (!self.viewModel.histogramDataSource)
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - Private Mehods
@@ -512,6 +530,11 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                            animated:YES
                          completion:nil];
     };
+    commentCell.onUserProfileTapped = ^(void)
+    {
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[self.viewModel userForCommentIndex:index]];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    };
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -526,7 +549,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             return 1;
         case VContentViewSectionHistogram:
             return 1;
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
             return self.viewModel.commentCount;
@@ -571,10 +594,16 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
                 
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
+                [videoCell.videoPlayerViewController enableTrackingWithTrackingItem:self.viewModel.sequence.tracking];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
+                self.videoCell.videoPlayerViewController.animateWithPlayControls = ^void(BOOL playControlsHidden)
+                {
+                    self.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                    self.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                };
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -590,21 +619,82 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             
-            self.histogramCell.histogramView.dataSource = self;
+            self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
             [self.histogramCell.histogramView reloadData];
             
             return self.histogramCell;
         }
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
         {
-            if (self.tickerCell)
+            if (self.experienceEnhancerCell)
             {
-                return self.tickerCell;
+                return self.experienceEnhancerCell;
             }
             
-            self.tickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VTickerCell suggestedReuseIdentifier]
-                                                                                 forIndexPath:indexPath];
-            return self.tickerCell;
+            self.experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]
+                                                                                    forIndexPath:indexPath];
+            self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
+            
+            __weak typeof(self) welf = self;
+            self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
+            {
+                if (selectedEnhancer.isBallistic)
+                {
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
+                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
+                    animationImageView.contentMode = UIViewContentModeScaleAspectFit;
+                    
+                    CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
+                    animationImageView.center = convertedCenterForAnimation;
+                    animationImageView.image = selectedEnhancer.flightImage;
+                    [welf.view addSubview:animationImageView];
+                    
+                    [UIView animateWithDuration:selectedEnhancer.flightDuration
+                                          delay:0.0f
+                                        options:UIViewAnimationOptionCurveLinear
+                                     animations:^
+                     {
+                         CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(welf.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(welf.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
+                         CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(welf.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(welf.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
+                         
+                         CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
+                                                                fromView:welf.contentCell];
+                         animationImageView.center = contentCenter;
+                         
+                     }
+                                     completion:^(BOOL finished)
+                     {
+                         animationImageView.animationDuration = selectedEnhancer.animationDuration;
+                         animationImageView.animationImages = selectedEnhancer.animationSequence;
+                         animationImageView.animationRepeatCount = 1;
+                         animationImageView.image = nil;
+                         [animationImageView startAnimating];
+                         
+                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                        {
+                                            [animationImageView removeFromSuperview];
+                                        });
+                     }];
+                }
+                else // full overlay
+                {
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:welf.contentCell.bounds];
+                    animationImageView.animationDuration = selectedEnhancer.animationDuration;
+                    animationImageView.animationImages = selectedEnhancer.animationSequence;
+                    animationImageView.animationRepeatCount = 1;
+                    animationImageView.contentMode = selectedEnhancer.shouldLetterBox ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+                    
+                    [welf.contentCell.contentView addSubview:animationImageView];
+                    [animationImageView startAnimating];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                   {
+                                       [animationImageView removeFromSuperview];
+                                   });
+                }
+            };
+            
+            return self.experienceEnhancerCell;
         }
         case VContentViewSectionAllComments:
         {
@@ -637,7 +727,7 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             
         case VContentViewSectionHistogram:
             return nil;
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
             return nil;
         case VContentViewSectionAllComments:
         {
@@ -659,14 +749,6 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
 
 #pragma mark - UICollectionViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    
-    self.bottomExperienceEnhancerBarToContainerConstraint.constant = layout.percentToShowBottomBar * CGRectGetHeight(self.experienceEnhancerBar.bounds);
-    self.experienceEnhancerBar.layer.shadowOffset = CGSizeMake(0, -kExperienceEnhancerShadowOffsetY * (layout.percentToShowBottomBar));
-}
-
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -683,13 +765,17 @@ static const CGFloat kExperienceEnhancerShadowAlpha = 0.2f;
             return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionHistogram:
+            if (self.viewModel.type == VContentViewTypeImage)
+            {
+                return CGSizeZero;
+            }
+            if (!self.viewModel.histogramDataSource)
+            {
+                return CGSizeZero;
+            }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-        case VContentViewSectionTicker:
-        {
-            return CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds),
-                              50.0f);
-            
-        }
+        case VContentViewSectionExperienceEnhancers:
+            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
@@ -713,7 +799,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionHistogram:
             return CGSizeZero;
-        case VContentViewSectionTicker:
+        case VContentViewSectionExperienceEnhancers:
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
@@ -805,8 +891,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [UIView animateWithDuration:0.0f
                           animations:^
           {
-              [welf.contentCollectionView reloadData];
-              [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+              [welf commentsDidUpdate:nil];
           }];
      }];
     
@@ -847,15 +932,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-#pragma mark - VHistogramDataSource
-
-- (CGFloat)histogram:(VHistogramView *)histogramView
- heightForSliceIndex:(NSInteger)sliceIndex
-         totalSlices:(NSInteger)totalSlices
-{
-    return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }
 
 @end

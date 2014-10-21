@@ -96,11 +96,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @implementation VContentViewController
 
-- (id)init
-{
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    self = (VContentViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+@dynamic trackingParameters;
 
++ (VContentViewController *)instantiateFromStoryboard:(NSString *)storyboardName
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
+    return (VContentViewController *)[storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+    }
     return self;
 }
 

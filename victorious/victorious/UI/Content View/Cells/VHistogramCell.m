@@ -12,7 +12,7 @@ static const CGFloat kHistogramDesiredHeight = 19.0f;
 
 @interface VHistogramCell ()
 
-@property (nonatomic, weak, readwrite) IBOutlet VHistogramView *histogramView;
+@property (nonatomic, weak, readwrite) IBOutlet VHistogramBarView *histogramView;
 
 @end
 

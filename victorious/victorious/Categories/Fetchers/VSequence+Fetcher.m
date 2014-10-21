@@ -16,6 +16,13 @@
 #import "VAnswer.h"
 #import "VUser.h"
 
+typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
+{
+    VSequencePermissionOptionsNone      = 0,
+    VSequencePermissionOptionsDelete    = 1 << 0,
+    VSequencePermissionOptionsRemix     = 1 << 1,
+};
+
 @implementation VSequence (Fetcher)
 
 - (BOOL)isPoll
@@ -148,6 +155,26 @@
         }
     }
     return @(0);
+}
+
+- (BOOL)canDelete
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsDelete);
+    }
+    return NO;
+}
+
+- (BOOL)canRemix
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsRemix);
+    }
+    return YES;
 }
 
 @end

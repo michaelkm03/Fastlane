@@ -23,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2</string>
+	<string>1.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -71,6 +71,7 @@
 		<string>MuseoSans-500.otf</string>
 		<string>PTSans-Narrow.ttf</string>
 		<string>Impact.ttf</string>
+		<string>HelveticaNeueLightItalic.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
@@ -92,6 +93,8 @@
 	</array>
 	<key>VictoriousAppID</key>
 	<integer>1</integer>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

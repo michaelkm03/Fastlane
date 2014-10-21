@@ -12,9 +12,13 @@
 
 extern NSString * const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VVoteType;
+@class VAnswer, VSequence, VVoteType, VAsset;
 
 @interface VObjectManager (Sequence)
+
+- (RKManagedObjectRequestOperation *)removeSequenceWithSequenceID:(NSInteger)sequenceId
+                                                     successBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                           successBlock:(VSuccessBlock)success
@@ -59,5 +63,11 @@ extern NSString * const kPollResultsLoaded;
 
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
+
+#pragma mark - Realtime
+
+- (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
+                                                         withAsset:(VAsset *)asset
+                                                    withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion;
 
 @end

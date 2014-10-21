@@ -92,6 +92,8 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     [super prepareForReuse];
     
+    self.onUserProfileTapped = nil;
+    
     [self prepareContentAndMediaView];
 }
 
@@ -102,6 +104,14 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     if (self.onMediaTapped && self.commentAndMediaView.mediaThumbnailView.image)
     {
         self.onMediaTapped();
+    }
+}
+
+- (IBAction)tappedOnProfileImage:(id)sender
+{
+    if (self.onUserProfileTapped)
+    {
+        self.onUserProfileTapped();
     }
 }
 

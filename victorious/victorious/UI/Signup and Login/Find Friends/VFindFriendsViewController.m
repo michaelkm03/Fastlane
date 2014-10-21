@@ -28,7 +28,6 @@
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
 @property (nonatomic, weak)   IBOutlet UIButton *backButton;
 @property (nonatomic, weak)   IBOutlet UIButton *inviteButton;
-@property (nonatomic, weak)   IBOutlet UIButton *doneButton;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
@@ -61,6 +60,7 @@
     [super viewDidLoad];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
     
     [self addChildViewController:self.tabBarViewController];
     self.tabBarViewController.view.frame = self.containerView.bounds;
@@ -79,9 +79,6 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-    self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
-    self.backButton.hidden = self.inviteButton.hidden;
-    self.doneButton.hidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -120,8 +117,11 @@
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.contactsInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.facebookInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.twitterInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
     
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),

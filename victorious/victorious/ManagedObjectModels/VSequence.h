@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 9/23/14.
+//  Created by Michael Sena on 10/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
-@class VComment, VNode, VPollResult, VUser, VVoteResult;
+@class VTracking, VComment, VNode, VPollResult, VUser, VVoteResult;
 
 @interface VSequence : VStreamItem
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * isComplete;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
+@property (nonatomic, retain) NSNumber * permissions;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * remixCount;
 @property (nonatomic, retain) NSNumber * repostCount;
@@ -35,6 +36,7 @@
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) VTracking *tracking;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFindFriendsViewController.h"
 #import "VMenuController.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -29,6 +28,7 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
+#import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
 #import "VStreamPageViewController.h"
@@ -38,9 +38,9 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
     VMenuRowHome                =   0,
     VMenuRowOwnerChannel        =   1,
     VMenuRowCommunityChannel    =   2,
+    VMenuRowDiscover            =   3,
     VMenuRowInbox               =   0,
     VMenuRowProfile             =   1,
-    VMenuRowFindFriends         =   5,  // PUT THIS NUMBER TO CORRECT VALUE ONCE WE RE-INTRODUCE THE FIND FRIENDS FEATURE
     VMenuRowSettings            =   2
 };
 
@@ -170,6 +170,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
                 break;
                 
+            case VMenuRowDiscover:
+            {
+                VDiscoverContainerViewController *discoverViewController = [VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"];
+                navigationController.viewControllers = @[ discoverViewController ];
+                [self.sideMenuViewController hideMenuViewController];
+            }
+            break;
+                
             default:
                 break;
         }
@@ -192,20 +200,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
             
             case VMenuRowProfile:
-                // Editing profile only required log in, not full authorization (profile complete)
-                if (![VObjectManager sharedManager].mainUserLoggedIn)
-                {
-                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-                else
-                {
-                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-            break;
-            
-            case VMenuRowFindFriends:
                 if (![VObjectManager sharedManager].authorized)
                 {
                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
@@ -213,12 +207,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-                    [ffvc setShouldAutoselectNewFriends:NO];
-                    [self presentViewController:ffvc animated:YES completion:^(void)
-                    {
-                        [self.sideMenuViewController hideMenuViewController];
-                    }];
+                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
+                    [self.sideMenuViewController hideMenuViewController];
                 }
             break;
                 

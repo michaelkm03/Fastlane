@@ -34,17 +34,22 @@
 
 #import "UIImageView+VLoadingAnimations.h"
 
+#import "VTappableTextManager.h"
+
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
-
-@property (nonatomic, weak) IBOutlet UILabel        *descriptionLabel;
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VSequenceActionsDelegate, VTappableTextManagerDelegate>
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
 
 @property (nonatomic, strong) VEphemeralTimerView   *ephemeralTimerView;
+
 @property (nonatomic, strong) NSArray               *hashTagRanges;
+@property (nonatomic, strong) NSTextStorage         *textStorage;
+@property (nonatomic, strong) NSLayoutManager       *containerLayoutManager;
+@property (nonatomic, strong) NSTextContainer       *textContainer;
+@property (nonatomic, strong) VTappableTextManager     *tappableTextManager;
 
 @end
 
@@ -54,22 +59,55 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     [super awakeFromNib];
     
-    
     self.originalHeight = self.frame.size.height;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    // Setup the layoutmanager, text container, and text storage
+    self.containerLayoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
+    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.heightTracksTextView = YES;
+    [self.containerLayoutManager addTextContainer:self.textContainer];
+    self.textStorage = [[NSTextStorage alloc] init];
+    [self.textStorage addLayoutManager:self.containerLayoutManager];
+    
+    NSError *error = nil;
+    self.tappableTextManager = [[VTappableTextManager alloc] init];
+    if ( ![self.tappableTextManager setDelegate:self error:&error] )
+    {
+        VLog( @"Error setting delegate: %@", error.domain );
+    }
+    
+    // Create text view and customize any further
+    self.descriptionTextView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
+    [self.overlayView addSubview:self.descriptionTextView ];
+    
+    NSDictionary *views = @{ @"textView" : self.descriptionTextView };
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
+    self.descriptionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
     self.ephemeralTimerView.center = self.center;
     [self addSubview:self.ephemeralTimerView];
+    
  
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"VStreamCellHeaderView" owner:self options:nil] objectAtIndex:0];
+    self.streamCellHeaderView.delegate = self;
     [self addSubview:self.streamCellHeaderView];
     
     [self addSubview:self.commentHitboxButton];
+}
+
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInStreamViewCell:withTag:)])
+    {
+        [self.delegate hashTagButtonTappedInStreamViewCell:self withTag:text];
+    }
 }
 
 - (void)contentExpired
@@ -129,10 +167,12 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[self attributesForCellText]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
+        self.tappableTextManager.tappableTextRanges = self.hashTagRanges;
+        
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.maximumLineHeight = 25;
         paragraphStyle.minimumLineHeight = 25;
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
         NSShadow *shadow = [NSShadow new];
         [shadow setShadowBlurRadius:4.0f];
@@ -152,10 +192,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                                       value:shadow
                                       range:NSMakeRange(0, newAttributedCellText.length)];
         
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        self.descriptionTextView.attributedText = newAttributedCellText;
     }
     
-    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.descriptionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     
     if (_sequence.expiresAt)
@@ -171,6 +211,42 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
     }
+    
+    [self applyConstraintsWithTextView:self.descriptionTextView];
+}
+
+- (BOOL)applyConstraintsWithTextView:(UITextView *)textView
+{
+    if ( textView.superview == nil )
+    {
+        return NO;
+    }
+    
+    CGFloat width = CGRectGetWidth( textView.frame );
+    CGFloat height = [textView sizeThatFits:CGSizeMake( width, CGRectGetHeight( textView.superview.bounds ) * 0.5f )].height;
+    NSDictionary *metrics = @{ @"height" : [NSNumber numberWithFloat:height] };
+    NSDictionary *views = @{ @"textView" : textView };
+    
+    NSLayoutConstraint *heightConstraint = nil;
+    for ( NSLayoutConstraint *c in textView.constraints )
+    {
+        if ( c.firstItem == textView && c.firstAttribute == NSLayoutAttributeHeight && c.relation == NSLayoutRelationEqual )
+        {
+            heightConstraint = c;
+            break;
+        }
+    }
+    
+    if ( heightConstraint != nil )
+    {
+        heightConstraint.constant = height;
+    }
+    else
+    {
+        [textView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView(height)]" options:0 metrics:metrics views:views]];
+    }
+    
+    return YES;
 }
 
 - (void)setHeight:(CGFloat)height
@@ -187,7 +263,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     return YES;
 }
 
-- (IBAction)commentButtonAction:(id)sender
+- (void)commentsPressedOnHeader:(VStreamCellHeaderView *)header
 {
     if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:inStreamViewCell:)])
     {

@@ -8,6 +8,9 @@
 
 #import "VObjectManager.h"
 
+extern NSString *const VMainUserDidChangeFollowingUserNotification;
+extern NSString *const VMainUserDidChangeFollowingUserKeyUser;
+
 typedef NS_ENUM(NSUInteger, VSocialSelector)
 {
     kVFacebookSocialSelector,
@@ -22,8 +25,8 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
-                              withSuccessBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail;
+                               withSuccessBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate

@@ -94,7 +94,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    if (self.loginType != kVLoginTypeEmail)
+    if (![self.profile.name isEqualToString:kNoUserName])
     {
         self.usernameTextField.text = self.profile.name;
     }
@@ -118,6 +118,10 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+        {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     }
     
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
@@ -511,7 +515,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || self.profile.pictureUrl || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
+                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -537,7 +541,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }

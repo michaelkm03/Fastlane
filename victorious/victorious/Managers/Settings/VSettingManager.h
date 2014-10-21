@@ -18,6 +18,7 @@ extern NSString * const VSettingsMarqueeEnabled;
 extern NSString * const VSettingsTemplateCEnabled;
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
+extern NSString * const VExperimentsHistogramEnabled;
 //URLs
 extern NSString * const kVTermsOfServiceURL;
 extern NSString * const kVPrivacyUrl;

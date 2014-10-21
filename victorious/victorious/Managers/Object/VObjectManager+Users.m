@@ -28,6 +28,9 @@
 
 @end
 
+NSString *const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
+NSString *const VMainUserDidChangeFollowingUserKeyUser       = @"VMainUserDidChangeFollowingUserKeyUser";
+
 static NSString * const kVAPIParamMessage = @"message";
 static NSString * const kVAPIParamContext = @"context";
 static NSString * const kVAPIParamSearch = @"search";
@@ -41,20 +44,20 @@ static NSString * const kVAPIParamSearch = @"search";
     __block VUser *user = nil;
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     [context performBlockAndWait:^(void)
-    {
-        user = (VUser *)[self objectForID:userId
-                                   idKey:kRemoteIdKey
-                              entityName:[VUser entityName]
-                    managedObjectContext:context];
-    }];
+     {
+         user = (VUser *)[self objectForID:userId
+                                     idKey:kRemoteIdKey
+                                entityName:[VUser entityName]
+                      managedObjectContext:context];
+     }];
     if (user)
     {
         if (success)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                success(nil, nil, @[user]);
-            });
+                           {
+                               success(nil, nil, @[user]);
+                           });
         }
         
         return nil;
@@ -82,12 +85,12 @@ static NSString * const kVAPIParamSearch = @"search";
         __block VUser *user = nil;
         NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
         [context performBlockAndWait:^(void)
-        {
-            user = (VUser *)[self objectForID:userID
-                                       idKey:kRemoteIdKey
-                                  entityName:[VUser entityName]
-                        managedObjectContext:context];
-        }];
+         {
+             user = (VUser *)[self objectForID:userID
+                                         idKey:kRemoteIdKey
+                                    entityName:[VUser entityName]
+                          managedObjectContext:context];
+         }];
         if (user)
         {
             [loadedUsers addObject:user];
@@ -101,9 +104,9 @@ static NSString * const kVAPIParamSearch = @"search";
     if (![unloadedUserIDs count])
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            success(nil, nil, loadedUsers);
-        });
+                       {
+                           success(nil, nil, loadedUsers);
+                       });
         return nil;
     }
     
@@ -135,7 +138,7 @@ static NSString * const kVAPIParamSearch = @"search";
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
-                                                  forceAccountUpdate:(BOOL)forceAccountUpdate
+                                                   forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
@@ -226,6 +229,9 @@ static NSString * const kVAPIParamSearch = @"search";
         {
             success(operation, fullResponse, resultObjects);
         }
+        
+        [self.mainUser addFollowingObject:user];
+        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/add"
@@ -247,6 +253,9 @@ static NSString * const kVAPIParamSearch = @"search";
         {
             success(operation, fullResponse, resultObjects);
         }
+        
+        [self.mainUser removeFollowingObject:user];
+        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/remove"
@@ -272,12 +281,12 @@ static NSString * const kVAPIParamSearch = @"search";
             }
         }
     };
-
+    
     return [self GET:[NSString stringWithFormat:@"/api/follow/counts/%d", [user.remoteId intValue]]
-               object:nil
-           parameters:nil
-         successBlock:fullSuccess
-            failBlock:fail];
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)isUser:(VUser *)follower
@@ -374,7 +383,7 @@ static NSString * const kVAPIParamSearch = @"search";
         }
     };
     
-
+    
     NSMutableDictionary *params = [@{ kVAPIParamSearch : search_string } mutableCopy];
     
     if (context.length)
@@ -396,7 +405,7 @@ static NSString * const kVAPIParamSearch = @"search";
                                                failBlock:(VFailBlock)fail
 {
     NSString       *path;
-
+    
     switch (selector)
     {
         case kVFacebookSocialSelector:
@@ -437,10 +446,10 @@ static NSString * const kVAPIParamSearch = @"search";
     };
     
     return [self GET:path
-               object:nil
-           parameters:nil
-         successBlock:fullSuccess
-            failBlock:fail];
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)followUsers:(NSArray *)users
@@ -467,9 +476,9 @@ static NSString * const kVAPIParamSearch = @"search";
 #pragma mark - helpers
 
 - (NSArray *)objectsForEntity:(NSString *)entityName
-                   userIdKey:(NSString *)idKey
-                      userId:(NSNumber *)userId
-                   inContext:(NSManagedObjectContext *)context
+                    userIdKey:(NSString *)idKey
+                       userId:(NSNumber *)userId
+                    inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
@@ -486,6 +495,11 @@ static NSString * const kVAPIParamSearch = @"search";
     }];
     
     return results;
+}
+
+- (void)notifyIsFollowingUpdated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:nil];
 }
 
 @end

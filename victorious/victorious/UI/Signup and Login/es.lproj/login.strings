@@ -1,0 +1,99 @@
+
+/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "3e0-qS-x7b"; */
+"3e0-qS-x7b.normalTitle" = "Cancelar";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "3pO-cP-eTE"; */
+"3pO-cP-eTE.placeholder" = "Contraseña";
+
+/* Class = "IBUILabel"; text = "Log in With Twitter"; ObjectID = "3q4-yP-lYm"; */
+"3q4-yP-lYm.text" = "Iniciar sesión con Twitter";
+
+/* Class = "IBUIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
+"5AW-ID-rMK.normalTitle" = "Iniciar sesión";
+
+/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "7P1-3N-TQ4"; */
+"7P1-3N-TQ4.normalTitle" = "Cancelar";
+
+/* Class = "IBUIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
+"9Wi-As-OwD.normalTitle" = "Hecho";
+
+/* Class = "IBUITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
+"A3z-ra-4Af.placeholder" = "E-mail";
+
+/* Class = "IBUILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
+"A8K-lD-yg5.text" = "Crear perfil";
+
+/* Class = "IBUIButton"; normalTitle = "Invite"; ObjectID = "AQr-df-rJr"; */
+"AQr-df-rJr.normalTitle" = "Invitar";
+
+/* Class = "IBUILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
+"CGW-Kx-wFZ.text" = "INGRESAR CÓDIGO";
+
+/* Class = "IBUILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "EGg-eb-7Dm"; */
+"EGg-eb-7Dm.text" = "Tengo al menos 13 años y acepto los Términos del Servicio";
+
+/* Class = "IBUITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
+"Jbh-n4-soS.placeholder" = "E-mail";
+
+/* Class = "IBUIButton"; normalTitle = "Sign Up"; ObjectID = "KC8-6n-wgW"; */
+"KC8-6n-wgW.normalTitle" = "Registrar";
+
+/* Class = "IBUILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
+"Lji-XP-yck.text" = "¡Gracias!";
+
+/* Class = "IBUILabel"; text = "E-mail"; ObjectID = "PBd-jN-jOQ"; */
+"PBd-jN-jOQ.text" = "E-mail";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
+"UDE-m8-fBQ.placeholder" = "Contraseña";
+
+/* Class = "IBUIButton"; normalTitle = "Forgot password?"; ObjectID = "URc-Hp-jLm"; */
+"URc-Hp-jLm.normalTitle" = "¿Olvidaste la contraseña?";
+
+/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "aDr-Jw-10s"; */
+"aDr-Jw-10s.placeholder" = "Nueva contraseña";
+
+/* Class = "IBUINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
+"d29-FA-lll.title" = "Iniciar sesión con E-mail";
+
+/* Class = "IBUILabel"; text = "Password"; ObjectID = "dbc-B9-jGE"; */
+"dbc-B9-jGE.text" = "Contraseña";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "g23-E6-rHp"; */
+"g23-E6-rHp.placeholder" = "Confirmar contraseña";
+
+/* Class = "IBUILabel"; text = "Terms of Service"; ObjectID = "jg3-Xt-dBE"; */
+"jg3-Xt-dBE.text" = "Términos del Servicio";
+
+/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
+"jhx-0Z-CyE.normalTitle" = "Cancelar";
+
+/* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
+"kzi-75-z6l.text" = "Dinos algo acerca de ti...";
+
+/* Class = "IBUILabel"; text = "Find Friends"; ObjectID = "nNU-ow-QSQ"; */
+"nNU-ow-QSQ.text" = "Encontrar amigos";
+
+/* Class = "IBUITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
+"pDv-b6-X4m.placeholder" = "Ubicación";
+
+/* Class = "IBUIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
+"pg3-qh-eDX.normalTitle" = "Actualizar";
+
+/* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
+"qGa-ti-Owy.placeholder" = "Nombre";
+
+/* Class = "IBUIButton"; normalTitle = "Resend Email"; ObjectID = "ssT-3o-lsn"; */
+"ssT-3o-lsn.normalTitle" = "Reenviar E-mail";
+
+/* Class = "IBUILabel"; text = "An email was sent to this address containing a code to verify your account"; ObjectID = "sxb-gV-KJX"; */
+"sxb-gV-KJX.text" = "Se envió un email a esta dirección con el código para verificar tu cuenta";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "tdl-Dc-Ep6"; */
+"tdl-Dc-Ep6.placeholder" = "Confirmar contraseña";
+
+/* Class = "IBUILabel"; text = "Log in With Facebook"; ObjectID = "tgS-Dw-MLG"; */
+"tgS-Dw-MLG.text" = "Iniciar sesión con Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "Sign up with your email"; ObjectID = "yeM-Dh-LIB"; */
+"yeM-Dh-LIB.normalTitle" = "Registrarte con tu email";

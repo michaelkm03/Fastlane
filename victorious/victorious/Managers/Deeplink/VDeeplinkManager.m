@@ -118,7 +118,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VContentViewController *contentView = [[VContentViewController alloc] init];
+         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
          VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
@@ -212,7 +212,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
-         VContentViewController *contentView = [[VContentViewController alloc] init];
+         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
          VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
          
