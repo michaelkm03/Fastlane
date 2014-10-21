@@ -68,7 +68,9 @@
     
     CGFloat dataPointsPerBar = (float) self.dataPoints.count / totalBars;
     NSInteger total = 0;
-    for (NSUInteger dataPointIndex = (barIndex *dataPointsPerBar); dataPointIndex < ((barIndex *dataPointsPerBar) + dataPointsPerBar); dataPointIndex++)
+    NSUInteger dataPointStartingIndex = (barIndex *dataPointsPerBar);
+    NSUInteger dataPointLastIndex = ((barIndex *dataPointsPerBar) + dataPointsPerBar);
+    for (NSUInteger dataPointIndex = dataPointStartingIndex; dataPointIndex < dataPointLastIndex; dataPointIndex++)
     {
         if (dataPointIndex  >= self.dataPoints.count)
         {
