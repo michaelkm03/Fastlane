@@ -8,6 +8,8 @@
 
 #import "VThemeManager.h"
 
+#import "VSettingManager.h"
+
 #pragma mark - new theme constants
 
 NSString * const   kVChannelName                       =   @"channel.name";
@@ -54,6 +56,8 @@ NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
 #pragma mark - Feedback Support
 
 NSString * const   kVChannelURLSupport                 =   @"email.support";
+
+static CGFloat const kGreyBackgroundColor = 0.94509803921;
 
 @implementation VThemeManager
 
@@ -214,6 +218,18 @@ NSString * const   kVChannelURLSupport                 =   @"email.support";
 }
 
 #pragma mark - Other
+
+- (UIColor *)preferredBackgroundColor
+{
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
+    }
+    else
+    {
+        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    }
+}
 
 - (UIImage *)themedBackgroundImageForDevice
 {

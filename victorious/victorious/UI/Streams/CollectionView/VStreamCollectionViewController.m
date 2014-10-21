@@ -46,7 +46,6 @@
 #import "VConstants.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
-static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kTemplateCLineSpacing = 8;
 
 @interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
@@ -152,7 +151,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
-    self.collectionView.backgroundColor = [self preferredBackgroundColor];
+    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
@@ -200,18 +199,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 }
 
 #pragma mark - Properties
-
-- (UIColor *)preferredBackgroundColor
-{
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
-    }
-    else
-    {
-        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
-}
 
 - (NSCache *)preloadImageCache
 {
@@ -504,7 +491,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         noContentUpdates = ^void(void)
         {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[self preferredBackgroundColor]];
+            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] preferredBackgroundColor]];
             self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
         };
     }

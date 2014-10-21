@@ -19,6 +19,7 @@
 #import "UIViewController+VNavMenu.h"
 
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 
 @interface VStreamPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
 
@@ -103,6 +104,8 @@
     NSInteger selectedStream = [self.allStreams indexOfObject:self.defaultStream];
     self.navHeaderView.navSelector.currentIndex = selectedStream;
     self.navHeaderView.delegate = self;
+
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -150,8 +153,8 @@
         
         [self.streamVCs addObject:streamVC];
     }
-    
-    NSArray *initialVC = @[self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]]];
+    VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
+    NSArray *initialVC = @[defaultStreamVC];
     [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
