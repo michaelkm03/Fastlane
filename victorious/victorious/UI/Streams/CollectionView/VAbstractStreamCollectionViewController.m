@@ -76,10 +76,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     
-    UIEdgeInsets insets = self.collectionView.contentInset;
-    insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-
-    self.collectionView.contentInset = insets;
+    if (self.navHeaderView)
+    {
+        UIEdgeInsets insets = self.collectionView.contentInset;
+        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+        
+        self.collectionView.contentInset = insets;
+    }
+    else
+    {
+        self.collectionView.contentInset = self.contentInset;
+    }
 }
 
 - (BOOL)prefersStatusBarHidden

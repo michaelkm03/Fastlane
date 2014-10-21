@@ -70,9 +70,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
-    homeStream.shouldShowHeaderLogo = YES;
     homeStream.shouldDisplayMarquee = YES;
     [homeStream addCreateSequenceButton];
+    
     
     return homeStream;
 }

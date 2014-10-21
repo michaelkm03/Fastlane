@@ -148,8 +148,8 @@
         streamVC.delegate = self;
         UIEdgeInsets insets = streamVC.collectionView.contentInset;
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
-        streamVC.collectionView.contentInset = insets;
-        streamVC.collectionView.contentOffset = CGPointMake(streamVC.collectionView.contentOffset.x, insets.top);
+        streamVC.contentInset = insets;
+//        streamVC.collectionView.contentOffset = CGPointMake(streamVC.collectionView.contentOffset.x, insets.top);
         
         if (stream == self.defaultStream)
         {
