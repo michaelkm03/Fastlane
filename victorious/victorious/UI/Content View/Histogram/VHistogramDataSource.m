@@ -23,12 +23,12 @@
     if (self)
     {
         // Check values
-        NSAssert((dataPoints.count > 0), @"Must pass in at lest 1 data point");
+        NSParameterAssert(dataPoints.count > 0);
         [dataPoints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
         {
-            NSAssert([obj isKindOfClass:[NSNumber class]], @"Must pass in an array of NSValue wrapped NSIntegers");
+            NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
             NSNumber *point = (NSNumber *)obj;
-            NSAssert(([point integerValue] >= 0), @"Must pass in positive values, passed in: %li", (long)[point integerValue]);
+            NSParameterAssert([point integerValue] >= 0);
         }];
         
         _dataPoints = dataPoints;
