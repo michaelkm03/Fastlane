@@ -8,6 +8,9 @@
 
 #import "VContentViewViewModel.h"
 
+// Experiments
+#import "VSettingManager.h"
+
 // Models
 #import "VComment.h"
 #import "VUser.h"
@@ -34,6 +37,7 @@
 #import "NSURL+MediaType.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
+NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 
 @interface VContentViewViewModel ()
 
@@ -45,6 +49,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
+@property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 
 @end
 
@@ -84,6 +89,7 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
         _currentAsset = [_currentNode.assets firstObject];
         
         [self fetchUserinfo];
+        [self fetchHistogramData];
     }
     return self;
 }
@@ -125,6 +131,29 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
                                                       withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
      {
          self.hasReposted = userInteractions.hasReposted;
+     }];
+    
+
+
+}
+
+- (void)fetchHistogramData
+{
+    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsHistogramEnabled])
+    {
+        return;
+    }
+
+    [[VObjectManager sharedManager] fetchHistogramDataForSequence:self.sequence
+                                                        withAsset:self.currentAsset
+                                                   withCompletion:^(NSArray *histogramData, NSError *error)
+     {
+         if (histogramData)
+         {
+             self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateHistogramDataNotification
+                                                                 object:self];
+         }
      }];
 }
 
