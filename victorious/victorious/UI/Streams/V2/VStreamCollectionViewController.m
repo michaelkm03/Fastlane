@@ -399,7 +399,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
-    cell.delegate = self;
+    cell.delegate = self.actionDelegate ? self.actionDelegate : self;
     cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
@@ -454,38 +454,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(VStreamCollectionCell *)streamCollectionCell
 {
-    VStreamCollectionCell *cell = streamCollectionCell;
-    
-    self.lastSelectedIndexPath = [self.collectionView indexPathForCell:cell];
-    
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        [self setBackgroundImageWithURL:[[sequenceObject initialImageURLs] firstObject]];
-    }
-    
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = sequenceObject;
-    [self.navigationController pushViewController:commentsTable animated:YES];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
 {
-    //If this cell is from the profile we should disable going to the profile
-    BOOL fromProfile = NO;
-    for (UIViewController *vc in self.parentViewController.navigationController.viewControllers)
-    {
-        if ([vc isKindOfClass:[VUserProfileViewController class]])
-        {
-            fromProfile = YES;
-        }
-    }
-    if (fromProfile)
-    {
-        return;
-    }
-    
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -521,6 +495,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
 {
+    //Don't set the background image for template c
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return;
+    }
+    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];

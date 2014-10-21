@@ -21,6 +21,8 @@
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VUserProfileViewController.h"
+#import "VCommentsContainerViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -38,6 +40,37 @@
 #import "UIActionSheet+VBlocks.h"
 
 @implementation VSequenceActionController
+
+#pragma mark - Comments
+
+- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+{
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = sequence;
+    [viewController.navigationController pushViewController:commentsTable animated:YES];
+}
+
+#pragma mark - User
+
+- (void)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+{
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController *vc in viewController.parentViewController.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+        {
+            fromProfile = YES;
+        }
+    }
+    if (fromProfile)
+    {
+        return;
+    }
+    
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
+    [viewController.navigationController pushViewController:profileViewController animated:YES];
+}
 
 #pragma mark - Remix
 
