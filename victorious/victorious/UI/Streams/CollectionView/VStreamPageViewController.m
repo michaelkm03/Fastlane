@@ -100,9 +100,9 @@
         [titles addObject:stream.name];
     }
     [self addNewNavHeaderWithTitles:titles];
-    self.navHeaderView.delegate = self;
     NSInteger selectedStream = [self.allStreams indexOfObject:self.defaultStream];
     self.navHeaderView.navSelector.currentIndex = selectedStream;
+    self.navHeaderView.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
