@@ -130,9 +130,10 @@
 {
     if (animated)
     {
+        NSTimeInterval randomDelay = (double) arc4random_uniform(100) / 1000;
         [UIView animateWithDuration:0.75f
-                              delay:0.0f
-             usingSpringWithDamping:0.9f
+                              delay:randomDelay
+             usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
                             options:kNilOptions
                          animations:^
