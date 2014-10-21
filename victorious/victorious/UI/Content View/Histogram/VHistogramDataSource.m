@@ -49,7 +49,7 @@
 {
     NSNumber *dataPointForBarIndex = [self dataPointForBarIndex:barIndex
                                                   WithTotalBars:totalBars];
-    CGFloat barHeightPercentage = (float)[dataPointForBarIndex integerValue] / self.largestPoint;
+    CGFloat barHeightPercentage = (CGFloat)[dataPointForBarIndex integerValue] / self.largestPoint;
     return barHeightPercentage;
 }
 
