@@ -82,6 +82,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.collectionView.contentInset = insets;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
+}
+
 - (void)setCurrentStream:(VStream *)currentStream
 {
     _currentStream = currentStream;

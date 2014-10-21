@@ -72,7 +72,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     homeStream.shouldShowHeaderLogo = YES;
     homeStream.shouldDisplayMarquee = YES;
-    homeStream.hasAddAction = YES;
+    [homeStream addCreateSequenceButton];
     
     return homeStream;
 }
@@ -83,7 +83,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
     VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
-    communityStream.hasAddAction = YES;
+    [communityStream addCreateSequenceButton];
     
     return communityStream;
 }
