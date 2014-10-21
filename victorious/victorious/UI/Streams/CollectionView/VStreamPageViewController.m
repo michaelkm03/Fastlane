@@ -38,15 +38,13 @@
     VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
-    
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamPageViewController *homeStream = (VStreamPageViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"kStreamPager"];
-    homeStream.defaultStream = recentStream;
-    homeStream.allStreams = @[hotStream, recentStream, followingStream];
-    homeStream.title = NSLocalizedString(@"Home", nil);
-    homeStream.shouldDisplayMarquee = YES;
-    
-    return homeStream;
+    VStreamPageViewController *streamPager = [self streamPageVCForDefaultStream:recentStream
+                                                                  andAllStreams: @[hotStream, recentStream, followingStream]
+                                                                          title:NSLocalizedString(@"Home", nil)];
+    streamPager.shouldDisplayMarquee = YES;
+    [streamPager addCreateSequenceButton];
+
+    return streamPager;
 }
 
 + (instancetype)communityStream
@@ -54,15 +52,13 @@
     VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
+    VStreamPageViewController *streamPager = [self streamPageVCForDefaultStream:recentStream
+                                                                  andAllStreams:@[hotStream, recentStream]
+                                                                          title:NSLocalizedString(@"Community", nil)];
+    streamPager.navHeaderView.showHeaderLogoImage = YES;
+    [streamPager addCreateSequenceButton];
     
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamPageViewController *communityStream =  (VStreamPageViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"kStreamPager"];
-    communityStream.defaultStream = recentStream;
-    communityStream.allStreams = @[hotStream, recentStream];
-    communityStream.title = NSLocalizedString(@"Community", nil);
-    communityStream.navHeaderView.showHeaderLogoImage = YES;
-    
-    return communityStream;
+    return streamPager;
 }
 
 + (instancetype)ownerStream
@@ -70,15 +66,33 @@
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
     
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamPageViewController *ownerStream = (VStreamPageViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"kStreamPager"];
-    ownerStream.defaultStream = recentStream;
-    ownerStream.allStreams = @[hotStream, recentStream];
-    
-    ownerStream.title = NSLocalizedString(@"Owner", nil);
-    
+    VStreamPageViewController *ownerStream = [self streamPageVCForDefaultStream:recentStream
+                                                                  andAllStreams:@[hotStream, recentStream]
+                                                                          title:NSLocalizedString(@"Owner", nil)];
     return ownerStream;
 }
+
++ (instancetype)streamPageVCForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
+{
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamPageViewController *streamPager =  (VStreamPageViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"kStreamPager"];
+    streamPager.title = title;
+    streamPager.defaultStream = stream;
+    streamPager.allStreams = allStreams;
+    
+    NSMutableArray *titles = [[NSMutableArray alloc] init];
+    for (VStream *stream in allStreams)
+    {
+        [titles addObject:stream.name];
+    }
+    [streamPager addNewNavHeaderWithTitles:titles];
+    NSInteger selectedStream = [allStreams indexOfObject:streamPager.defaultStream];
+    streamPager.navHeaderView.navSelector.currentIndex = selectedStream;
+    streamPager.navHeaderView.delegate = streamPager;
+    
+    return streamPager;
+}
+
 
 - (void)awakeFromNib
 {
@@ -95,15 +109,6 @@
 
     self.allStreams = self.allStreams;
     
-    NSMutableArray *titles = [[NSMutableArray alloc] init];
-    for (VStream *stream in self.allStreams)
-    {
-        [titles addObject:stream.name];
-    }
-    [self addNewNavHeaderWithTitles:titles];
-    NSInteger selectedStream = [self.allStreams indexOfObject:self.defaultStream];
-    self.navHeaderView.navSelector.currentIndex = selectedStream;
-    self.navHeaderView.delegate = self;
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
 }
@@ -156,6 +161,14 @@
     VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
     NSArray *initialVC = @[defaultStreamVC];
     [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
+{
+    _shouldDisplayMarquee = shouldDisplayMarquee;
+    
+    VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
+    defaultStreamVC.shouldDisplayMarquee = shouldDisplayMarquee;
 }
 
 #pragma mark - VNavigationHeaderDelegate

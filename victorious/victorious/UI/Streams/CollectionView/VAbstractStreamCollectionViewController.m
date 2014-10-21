@@ -61,14 +61,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-//    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-//    
-//    if (self.hasAddAction)
-//    {
-//        UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
-//        [self.navHeaderView setRightButtonImage:image
-//                                     withAction:@selector(createButtonAction:)
-//                                       onTarget:self];
 //    }
 //    else if (self.hasFindFriendsAction)
 //    {
@@ -111,69 +103,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
     [ffvc setShouldAutoselectNewFriends:NO];
     [self.navigationController pushViewController:ffvc animated:YES];
-}
-
-- (IBAction)createButtonAction:(id)sender
-{
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:
-                                  NSLocalizedString(@"Create a Video Post", @""), ^(void)
-                                  {
-                                      [self presentCameraViewController:[VCameraViewController cameraViewController]];
-                                  },
-                                  NSLocalizedString(@"Create an Image Post", @""), ^(void)
-                                  {
-                                      [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
-                                  },
-                                  NSLocalizedString(@"Create a Poll", @""), ^(void)
-                                  {
-                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
-                                      [self.navigationController pushViewController:createViewController animated:YES];
-                                  }, nil];
-    [actionSheet showInView:self.view];
-}
-
-- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
-{
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController *__weak weakNav = navigationController;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (!finished || !capturedMediaURL)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-            publishViewController.previewImage = previewImage;
-            publishViewController.mediaURL = capturedMediaURL;
-            publishViewController.completion = ^(BOOL complete)
-            {
-                if (complete)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                {
-                    [weakNav popViewControllerAnimated:YES];
-                }
-            };
-            [weakNav pushViewController:publishViewController animated:YES];
-        }
-    };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Refresh

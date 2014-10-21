@@ -34,4 +34,8 @@
  */
 - (void)showHeader;
 
+/**
+ *  Adds a create new sequence button to the nav menu
+ */
+- (void)addCreateSequenceButton;
 @end
