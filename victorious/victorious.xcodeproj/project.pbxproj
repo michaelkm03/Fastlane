@@ -22,7 +22,6 @@
 		0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07A19B4688E00FA363C /* Default-568h@2x.png */; };
 		0314D08319B4688E00FA363C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07B19B4688E00FA363C /* Default@2x.png */; };
 		0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07C19B4688E00FA363C /* defaultSettings.plist */; };
-		0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
 		0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D08019B4688E00FA363C /* Icon-60@2x.png */; };
@@ -190,6 +189,8 @@
 		035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 035C2D821940F1B40023FC05 /* VAnalyticsRecorder.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
+		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */; };
 		036AA36519F32C0500FE6B9D /* VPhotoLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
@@ -254,7 +255,6 @@
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
-		03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
@@ -417,6 +417,9 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84562C119CFBBB0000E9BC5 /* VContentViewImageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
+		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
+		D89AC2BF19F1FEA700921131 /* VHistogramDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */; };
 		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
@@ -425,7 +428,6 @@
 		D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C7CF5E19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib */; };
 		D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C7CF6019DCD23D00BA33E5 /* VExperienceEnhancerBar.xib */; };
 		D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C9CF2E19E4F417007B461E /* VHistogramCell.m */; };
-		D8C9CF3219E5AE92007B461E /* VHistogramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C9CF3119E5AE92007B461E /* VHistogramView.m */; };
 		D8C9CF3419E5B30E007B461E /* VHistogramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */; };
 		D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */; };
 		D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */; };
@@ -1400,6 +1402,11 @@
 		D84562C019CFBBB0000E9BC5 /* VContentViewImageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewImageLayout.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramDataSource.h; sourceTree = "<group>"; };
+		D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSource.m; sourceTree = "<group>"; };
+		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
+		D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramBarView.m; sourceTree = "<group>"; };
+		D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSourceTests.m; sourceTree = "<group>"; };
 		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
 		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
 		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
@@ -1414,8 +1421,6 @@
 		D8C7CF6019DCD23D00BA33E5 /* VExperienceEnhancerBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBar.xib; sourceTree = "<group>"; };
 		D8C9CF2D19E4F417007B461E /* VHistogramCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramCell.h; sourceTree = "<group>"; };
 		D8C9CF2E19E4F417007B461E /* VHistogramCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramCell.m; sourceTree = "<group>"; };
-		D8C9CF3019E5AE92007B461E /* VHistogramView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramView.h; sourceTree = "<group>"; };
-		D8C9CF3119E5AE92007B461E /* VHistogramView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramView.m; sourceTree = "<group>"; };
 		D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHistogramCell.xib; sourceTree = "<group>"; };
 		D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetViewController.h; sourceTree = "<group>"; };
 		D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionSheetViewController.m; sourceTree = "<group>"; };
@@ -1895,6 +1900,7 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				D89AC2B719F1FD6B00921131 /* Histogram */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				0314D36519B46B5E00FA363C /* Content Info */,
@@ -1922,8 +1928,6 @@
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
-				D8C9CF3019E5AE92007B461E /* VHistogramView.h */,
-				D8C9CF3119E5AE92007B461E /* VHistogramView.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2796,6 +2800,7 @@
 				BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */,
 				BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */,
 				A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */,
+				D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */,
 				BE9674F819E335060072E87A /* VLargeNumberFormatterTests.m */,
 				BE9674F919E335060072E87A /* VMarqueeControllerTests.m */,
 				BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */,
@@ -3190,6 +3195,17 @@
 			path = UICollectionView;
 			sourceTree = "<group>";
 		};
+		D89AC2B719F1FD6B00921131 /* Histogram */ = {
+			isa = PBXGroup;
+			children = (
+				D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */,
+				D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */,
+				D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */,
+				D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */,
+			);
+			path = Histogram;
+			sourceTree = "<group>";
+		};
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -3500,7 +3516,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
@@ -3627,7 +3643,7 @@
 				D8D73ACB19F072A800E6955C /* WATERBALLOON_V01.00003.png in Resources */,
 				D8D73AC119F072A800E6955C /* LOL_v02.00018.png in Resources */,
 				D8D73A6D19F072A800E6955C /* Firework_v01.00006.png in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
+				0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				D8D73AE019F072A800E6955C /* WATERBALLOON_V01.00024.png in Resources */,
@@ -3640,7 +3656,7 @@
 				D8D73AE219F072A800E6955C /* WATERBALLOON_V01.00026.png in Resources */,
 				D8D73A7A19F072A800E6955C /* Firework_v01.00019.png in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
+				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
 				D8D73ABE19F072A800E6955C /* LOL_v02.00015.png in Resources */,
 				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8D73AC419F072A800E6955C /* LOL_v02.00021.png in Resources */,
@@ -3648,16 +3664,13 @@
 				D8D73AAE19F072A800E6955C /* Lightening_V01.00019.png in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73AA719F072A800E6955C /* Lightening_V01.00012.png in Resources */,
-				0314D08519B4688E00FA363C /* defaultTheme.plist in Resources */,
 				D8D73A8B19F072A800E6955C /* GLITTER_V01.00015.png in Resources */,
 				D8D73AA219F072A800E6955C /* Lightening_V01.00007.png in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8D73A8D19F072A800E6955C /* GLITTER_V01.00017.png in Resources */,
 				D8D73A7519F072A800E6955C /* Firework_v01.00014.png in Resources */,
 				D8D73AA419F072A800E6955C /* Lightening_V01.00009.png in Resources */,
-				03B83B5F19E0992400DC04E4 /* VUploadProgressView.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				D8D73A6919F072A800E6955C /* Firework_v01.00002.png in Resources */,
 				D8D73AD819F072A800E6955C /* WATERBALLOON_V01.00016.png in Resources */,
@@ -3988,6 +4001,7 @@
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				0314D50519B46B5E00FA363C /* VStreamTableViewController.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
+				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
@@ -4007,7 +4021,6 @@
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */,
-				D8C9CF3219E5AE92007B461E /* VHistogramView.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
 				0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */,
@@ -4163,6 +4176,7 @@
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
+				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
 				BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */,
 				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,
@@ -4222,6 +4236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D89AC2BF19F1FEA700921131 /* VHistogramDataSourceTests.m in Sources */,
 				A7AB4FE319F57D5000BFFE35 /* VDiscoverViewControllerTests.m in Sources */,
 				A709641819F073DD00CE6633 /* VTrackingManagerTests.m in Sources */,
 				A73AFB7C19F573AB0005A9EA /* VVideoTrackingTests.m in Sources */,

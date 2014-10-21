@@ -12,11 +12,17 @@
 
 #import "VExperienceEnhancerController.h"
 
+#import "VHistogramDataSource.h"
 
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
 extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+
+/**
+ *  Posted whenever new histogram data is made available.
+ */
+extern NSString *const VContentViewViewModelDidUpdateHistogramDataNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -218,5 +224,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *answerB;
 @property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+
+/** This will be nil if no histogram data is available.
+ */
+@property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
 
 @end

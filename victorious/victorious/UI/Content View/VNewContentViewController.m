@@ -13,7 +13,7 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 // View Categories
 #import "UIView+VShadows.h"
@@ -66,7 +66,7 @@
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VHistogramDataSource>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -144,7 +144,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay));
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
     return shouldRotate;
 }
 
@@ -317,6 +317,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(commentsDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateCommentsNotification
                                                object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -463,6 +467,16 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         
         self.handleView.numberOfComments = self.viewModel.commentCount;
     }
+}
+
+- (void)hitogramDataDidUpdate:(NSNotification *)notification
+{
+    if (!self.viewModel.histogramDataSource)
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 #pragma mark - IBActions
@@ -627,7 +641,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
                                                                                      forIndexPath:indexPath];
             
-            self.histogramCell.histogramView.dataSource = self;
+            self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
             [self.histogramCell.histogramView reloadData];
             
             return self.histogramCell;
@@ -797,11 +811,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
-            if (self.viewModel.type == VContentViewTypeVideo)
+            if (!self.viewModel.histogramDataSource)
             {
-                return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                return CGSizeZero;
             }
-            return CGSizeZero;
+            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
             if (self.viewModel.type == VContentViewTypePoll)
             {
@@ -967,15 +981,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-#pragma mark - VHistogramDataSource
-
-- (CGFloat)histogram:(VHistogramView *)histogramView
- heightForSliceIndex:(NSInteger)sliceIndex
-         totalSlices:(NSInteger)totalSlices
-{
-    return arc4random_uniform(CGRectGetHeight(histogramView.bounds));
 }
 
 @end

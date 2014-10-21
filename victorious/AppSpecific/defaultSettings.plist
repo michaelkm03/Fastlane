@@ -16,6 +16,8 @@
 	<string>/api/tos</string>
 	<key>require_profile_image</key>
 	<true/>
+	<key>histogram_enabled</key>
+	<false/>
 	<key>channelsEnabled</key>
 	<false/>
 	<key>marqueeEnabled</key>

@@ -22,10 +22,11 @@
 @property (nonatomic, readonly) NSURLRequest *request;
 
 /**
- A URL to a file that will be used as the body of 
- the POST
+ The name of the file that will be used as the body of
+ the POST. The file should be stored in the directory
+ returned by a call to -[VUploadManager urlForNewUploadBodyFile].
  */
-@property (nonatomic, readonly) NSURL *bodyFileURL;
+@property (nonatomic, readonly) NSString *bodyFilename;
 
 /**
  A preview of the data being uploaded
@@ -46,6 +47,6 @@
 /**
  Creates a new instance of VUploadTaskInformation with the specified properties.
  */
-- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFileURL:(NSURL *)bodyFileURL description:(NSString *)uploadDescription;
+- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription;
 
 @end

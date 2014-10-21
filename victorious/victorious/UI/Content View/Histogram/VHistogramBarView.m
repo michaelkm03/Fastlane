@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 #import "VThemeManager.h"
 
@@ -23,14 +23,14 @@ static const CGFloat kDefaultSpacing = 1.5f;
 static const CGFloat kDarkeningAlpha = 0.3f;
 static const CGFloat kColorAlpha = 0.6f;
 
-@interface VHistogramView ()
+@interface VHistogramBarView ()
 
 @property (nonatomic, strong) NSMutableArray *coloredSlices;
 @property (nonatomic, strong) NSMutableArray *sliceViews;
 
 @end
 
-@implementation VHistogramView
+@implementation VHistogramBarView
 
 #pragma mark - Initializers
 
@@ -71,13 +71,19 @@ static const CGFloat kColorAlpha = 0.6f;
 
 - (void)setProgress:(CGFloat)progress
 {
-    _progress = progress;
+    _progress = fminf(fmaxf(progress, 0.0f), 1.0f);
     
     [self.coloredSlices enumerateObjectsUsingBlock:^(CALayer *coloredLayer, NSUInteger idx, BOOL *stop)
     {
         CGFloat layerProgress = CGRectGetMidX(coloredLayer.superlayer.frame) / CGRectGetWidth(self.bounds);
         coloredLayer.opacity = (layerProgress > self.progress) ? 0.0f : 1.0f;
     }];
+}
+
+- (void)setDataSource:(id<VHistogramBarViewDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    [self reloadData];
 }
 
 - (NSInteger)totalSlices
@@ -108,11 +114,11 @@ static const CGFloat kColorAlpha = 0.6f;
     
     for (NSInteger sliceIndex = 0; sliceIndex < [self totalSlices]; sliceIndex++)
     {
-        CGFloat heightForSlice = [self.dataSource histogram:self
-                                        heightForSliceIndex:sliceIndex
-                                                totalSlices:[self totalSlices]];
+        CGFloat heightForSlice = [self.dataSource histogramPercentageHeight:self
+                                                                forBarIndex:sliceIndex
+                                                                  totalBars:[self totalSlices]];
         
-        heightForSlice = fminf(fmaxf(heightForSlice, kMinimumTickHeight), kMaximumTickHeight);
+        heightForSlice = fminf(fmaxf(heightForSlice * CGRectGetHeight(self.bounds), kMinimumTickHeight), kMaximumTickHeight);
         
         UIView *sliceForIndex = [[UIView alloc] initWithFrame:CGRectMake((self.tickWidth + self.tickSpacing)* sliceIndex + self.tickSpacing, 0, self.tickWidth, CGRectGetHeight(self.bounds))];
         [self.sliceViews addObject:sliceForIndex];
