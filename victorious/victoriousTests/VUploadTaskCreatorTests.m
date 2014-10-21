@@ -58,7 +58,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com"]];
     NSString *description = @"my description";
     
-    NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleMultipartUpload" withExtension:@"jpg"];
+    NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"jpg"];
     UIImage *previewImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:previewImageFileURL]];
     
     self.uploadTaskCreator.request = request;

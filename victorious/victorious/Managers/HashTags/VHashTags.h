@@ -32,4 +32,22 @@
  */
 + (NSArray *)detectHashTags:(NSString *)fieldText;
 
+/**
+ Creates a copy of the input string with a hash mark (#) prepending, if it is not already prepending.
+ @param string The string with which to copy and prepend the hash mark.
+ */
++ (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string;
+
+/**
+ *  Find all hash tags within a given string and return the text of each one in an array.
+ *
+ *  @param fieldText The string to detect hash tags in.
+ *
+ *  @return An arry of NSStrings wrapped in NSValues.
+ */
++ (NSArray *)getHashTags:(NSString *)fieldText includeHashMark:(BOOL)includeHashMark;
+
+
++ (NSArray *)getHashTags:(NSString *)fieldText;
+
 @end

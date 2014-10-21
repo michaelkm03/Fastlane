@@ -159,4 +159,31 @@
     XCTAssertFalse( [VHashTags formatHashTagsInString:attributedString withTagRanges:hashTags attributes:@{}] );
 }
 
+- (void)testPrependHashmark
+{
+    NSString *string = @"test";
+    NSString *expected = [NSString stringWithFormat:@"#%@", string];
+    
+    XCTAssert( [[VHashTags stringWithPrependedHashmarkFromString:string] isEqualToString:expected] );
+}
+
+- (void)testPrependHashmarkWithHashAlreadyPresent
+{
+    NSString *string = @"#test";
+    XCTAssert( [[VHashTags stringWithPrependedHashmarkFromString:string] isEqualToString:string] );
+}
+
+- (void)testPrependHashmarkInvalidInput
+{
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:@"with space"] );
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:@"with some spaces"] );
+    
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:@"with-dash"] );
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:@"with-many-dashes"] );
+    
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:@""] );
+    
+    XCTAssertNil( [VHashTags stringWithPrependedHashmarkFromString:nil] );
+}
+
 @end
