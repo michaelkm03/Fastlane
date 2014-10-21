@@ -19,11 +19,13 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @interface VContentPollCell ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *answerAThumbnail;
-@property (nonatomic, weak) IBOutlet UIButton *answerAPlayButton;
+@property (nonatomic, weak) IBOutlet UIButton *answerAButton;
 @property (nonatomic, weak) IBOutlet UIImageView *answerBThumbnail;
-@property (nonatomic, weak) IBOutlet UIButton *answerBPlayButton;
+@property (nonatomic, weak) IBOutlet UIButton *answerBButton;
 @property (nonatomic, weak) IBOutlet VResultView *answerAResultView;
 @property (nonatomic, weak) IBOutlet VResultView *answerBResultView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *equalWidthsConstraint;
 
 @end
 
@@ -60,7 +62,10 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerAIsVideo:(BOOL)answerAIsVideo
 {
     _answerAIsVideo = answerAIsVideo;
-    self.answerAPlayButton.hidden = !answerAIsVideo;
+    if (answerAIsVideo)
+    {
+        [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setAnswerBThumbnailMediaURL:(NSURL *)answerBThumbnailMediaURL
@@ -72,7 +77,10 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerBIsVideo:(BOOL)answerBIsVideo
 {
     _answerBIsVideo = answerBIsVideo;
-    self.answerBPlayButton.hidden = !answerBIsVideo;
+    if (answerBIsVideo)
+    {
+        [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored
@@ -101,6 +109,44 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 {
     [self.answerBResultView setProgress:answerBPercentage
                                animated:animated];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedAnswerAButton:(id)sender
+{
+    [self shareAnimationCurveWithAnimations:^
+    {
+        self.equalWidthsConstraint.constant = (self.equalWidthsConstraint.constant == -CGRectGetWidth(self.contentView.bounds)) ? -2 : -CGRectGetWidth(self.contentView.bounds);
+        [self.contentView layoutIfNeeded];
+    }];
+}
+
+- (IBAction)pressedAnswerBButton:(id)sender
+{
+    [self shareAnimationCurveWithAnimations:^
+    {
+        self.equalWidthsConstraint.constant = (self.equalWidthsConstraint.constant == CGRectGetWidth(self.contentView.bounds)) ? 2 : CGRectGetWidth(self.contentView.bounds) ;
+        [self.contentView layoutIfNeeded];
+    }];
+}
+
+- (void)shareAnimationCurveWithAnimations:(void (^)(void))animations
+{
+    [self.contentView layoutIfNeeded];
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+     {
+         if (animations)
+         {
+             animations();
+         }
+     }
+                     completion:nil];
 }
 
 @end

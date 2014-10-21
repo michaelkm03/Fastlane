@@ -18,11 +18,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <button hidden="YES" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Od3-Kk-qNW" userLabel="Poll A Play Button">
+                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Od3-Kk-qNW" userLabel="Answer A Button">
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
-                        <state key="normal" image="Play">
+                        <state key="normal">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="pressedAnswerAButton:" destination="vZY-Jm-za8" eventType="touchUpInside" id="i1a-8q-dmG"/>
+                        </connections>
+                    </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
+                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Xk-MbI" userLabel="Answer B Button">
+                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="pressedAnswerBButton:" destination="vZY-Jm-za8" eventType="touchUpInside" id="Zxe-3D-o6Q"/>
+                        </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r7x-ug-XeL" userLabel="Result View A" customClass="VResultView">
                         <rect key="frame" x="0.0" y="60" width="36" height="260"/>
@@ -31,16 +47,6 @@
                             <constraint firstAttribute="width" constant="36" id="B7U-8F-blB"/>
                         </constraints>
                     </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="36J-hZ-MxW" userLabel="Poll Image VIew B">
-                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Xk-MbI" userLabel="Poll B Play Button">
-                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
-                        <state key="normal" image="Play">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2c-vu-8qs" userLabel="Result View B" customClass="VResultView">
                         <rect key="frame" x="284" y="60" width="36" height="260"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -77,17 +83,15 @@
             </constraints>
             <size key="customSize" width="250" height="223"/>
             <connections>
-                <outlet property="answerAPlayButton" destination="Od3-Kk-qNW" id="NWs-Ef-nki"/>
+                <outlet property="answerAButton" destination="Od3-Kk-qNW" id="akl-D5-0SY"/>
                 <outlet property="answerAResultView" destination="r7x-ug-XeL" id="IpX-yF-H13"/>
                 <outlet property="answerAThumbnail" destination="KbT-8J-Bx0" id="IjK-e0-MRh"/>
-                <outlet property="answerBPlayButton" destination="bJW-Xk-MbI" id="Sge-tG-dVR"/>
+                <outlet property="answerBButton" destination="bJW-Xk-MbI" id="gow-be-bcf"/>
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
+                <outlet property="equalWidthsConstraint" destination="B4f-sS-VlI" id="4Kc-ik-kr7"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="Play" width="33" height="33"/>
-    </resources>
 </document>
