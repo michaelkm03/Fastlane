@@ -14,30 +14,20 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLX-ox-fAJ">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLX-ox-fAJ">
                         <rect key="frame" x="0.0" y="0.0" width="115" height="60"/>
                         <state key="normal" title="Button">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZGp-qB-Ukb" userLabel="AnswerA Label">
-                        <rect key="frame" x="0.0" y="0.0" width="115" height="60"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-fw-qmv">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-fw-qmv">
                         <rect key="frame" x="205" y="0.0" width="115" height="60"/>
                         <state key="normal" title="Button">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OkR-jF-N4o" userLabel="AnswerB Label">
-                        <rect key="frame" x="205" y="0.0" width="115" height="60"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
                         <rect key="frame" x="123" y="0.0" width="74" height="60"/>
                     </imageView>
@@ -45,19 +35,9 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="ZGp-qB-Ukb" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="AF4-gY-G39"/>
-                <constraint firstItem="OkR-jF-N4o" firstAttribute="width" secondItem="ZGp-qB-Ukb" secondAttribute="width" id="AHF-88-CCe"/>
-                <constraint firstAttribute="bottom" secondItem="ZGp-qB-Ukb" secondAttribute="bottom" id="FGX-yH-eyW"/>
-                <constraint firstItem="ZGp-qB-Ukb" firstAttribute="leading" secondItem="0fh-FU-bx7" secondAttribute="leading" id="RKu-bq-oVO"/>
-                <constraint firstAttribute="bottom" secondItem="OkR-jF-N4o" secondAttribute="bottom" id="aTf-gB-ueF"/>
-                <constraint firstAttribute="trailing" secondItem="OkR-jF-N4o" secondAttribute="trailing" id="bqk-PS-213"/>
-                <constraint firstItem="OkR-jF-N4o" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="huI-NP-j04"/>
-                <constraint firstItem="OkR-jF-N4o" firstAttribute="leading" secondItem="ZGp-qB-Ukb" secondAttribute="trailing" constant="90" id="oST-5q-RIM"/>
-            </constraints>
             <connections>
-                <outlet property="answerALabel" destination="ZGp-qB-Ukb" id="7Qc-Il-V9L"/>
-                <outlet property="answerBLabel" destination="OkR-jF-N4o" id="db1-cE-5ZZ"/>
+                <outlet property="anserBButton" destination="3EP-fw-qmv" id="o6M-n1-ENp"/>
+                <outlet property="answerAButton" destination="RLX-ox-fAJ" id="rSj-bE-9CU"/>
             </connections>
             <point key="canvasLocation" x="479" y="604"/>
         </collectionViewCell>

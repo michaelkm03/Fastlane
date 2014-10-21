@@ -32,7 +32,7 @@
             <connections>
                 <outlet property="questionLabel" destination="7VU-lt-tuj" id="TnH-Mh-me5"/>
             </connections>
-            <point key="canvasLocation" x="-76" y="49"/>
+            <point key="canvasLocation" x="39" y="15"/>
         </collectionViewCell>
     </objects>
 </document>

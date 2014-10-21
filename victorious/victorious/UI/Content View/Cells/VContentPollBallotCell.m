@@ -10,8 +10,8 @@
 
 @interface VContentPollBallotCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *answerALabel;
-@property (weak, nonatomic) IBOutlet UILabel *answerBLabel;
+@property (weak, nonatomic) IBOutlet UIButton *answerAButton;
+@property (weak, nonatomic) IBOutlet UIButton *anserBButton;
 
 @end
 
@@ -25,13 +25,15 @@
 - (void)setAnswerA:(NSString *)answerA
 {
     _answerA = [answerA copy];
-    self.answerALabel.text = _answerA;
+    [self.answerAButton setTitle:_answerA
+                        forState:UIControlStateNormal];
 }
 
 - (void)setAnswerB:(NSString *)answerB
 {
     _answerB = [answerB copy];
-    self.answerBLabel.text = _answerB;
+    [self.anserBButton setTitle:_answerB
+                       forState:UIControlStateNormal];
 }
 
 @end
