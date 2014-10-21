@@ -165,6 +165,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.collectionView = self.collectionView;
     self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
     self.collectionView.dataSource = self.streamDataSource;
+//    CGSize estimatedSize = [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+//    ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).estimatedItemSize = estimatedSize;
     
     [self refresh:self.refreshControl];
 }
@@ -342,15 +344,25 @@ static CGFloat const kTemplateCLineSpacing = 8;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
     {
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
+    else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
+             &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [VStreamCollectionCellPoll actualSizeWithCollectionVIewBounds:self.collectionView.bounds sequence:sequence];
+    }
     else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
     {
-        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.view.bounds];
+        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     }
-    return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+    else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [VStreamCollectionCell actualSizeWithCollectionVIewBounds:self.collectionView.bounds sequence:sequence];
+    }
+    return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section

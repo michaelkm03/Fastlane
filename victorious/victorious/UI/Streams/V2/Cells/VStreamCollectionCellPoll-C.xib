@@ -62,7 +62,7 @@
                         <rect key="frame" x="118" y="149" width="65" height="72"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
-                        <rect key="frame" x="-1" y="300" width="304" height="40"/>
+                        <rect key="frame" x="-1" y="303" width="304" height="41"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="5hj-dg-nbn" secondAttribute="height" multiplier="151:20" id="ym8-Bc-ALk"/>
@@ -79,7 +79,7 @@
                 <constraint firstAttribute="trailing" secondItem="5hj-dg-nbn" secondAttribute="trailing" constant="-1" id="Ar6-ig-o3d"/>
                 <constraint firstAttribute="trailing" secondItem="VUD-I2-add" secondAttribute="trailing" id="BOK-ih-62S"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="15" id="IIm-FA-DAc"/>
-                <constraint firstItem="5hj-dg-nbn" firstAttribute="top" secondItem="9Jy-3d-OTo" secondAttribute="bottom" constant="12" id="J6s-iW-3NL"/>
+                <constraint firstItem="5hj-dg-nbn" firstAttribute="top" secondItem="9Jy-3d-OTo" secondAttribute="bottom" constant="15" id="J6s-iW-3NL"/>
                 <constraint firstAttribute="trailing" secondItem="9Jy-3d-OTo" secondAttribute="trailing" constant="15" id="KuS-AX-Yu2"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="T1v-SY-KUV"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="bottom" secondItem="cHq-pN-LVg" secondAttribute="bottom" id="aF8-bM-Bqy"/>

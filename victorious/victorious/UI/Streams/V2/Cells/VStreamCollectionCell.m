@@ -33,6 +33,8 @@
 #import "VStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
+#import "NSString+VParseHelp.h"
+
 #import "VSettingManager.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate>
@@ -54,8 +56,9 @@
 
 @end
 
-static const CGFloat kTemplateCYRatio = 1.49375;
+static const CGFloat kTemplateCYRatio = 1.34768211921; //407/302
 static const CGFloat kTemplateCXRatio = 0.94375;
+static const CGFloat kDescriptionBuffer = 15.0;
 
 @implementation VStreamCollectionCell
 
@@ -93,17 +96,8 @@ static const CGFloat kTemplateCXRatio = 0.94375;
 {
     if (!self.sequence.nameEmbeddedInContent.boolValue)
     {
-        BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-        NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-        
-        //TODO: Remvoe this hardcoded font size
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-                                     NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
-                                     };
-        
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:attributes];
+                                                                                                  attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
         
         if ([self.hashTagRanges count] > 0)
@@ -111,24 +105,6 @@ static const CGFloat kTemplateCXRatio = 0.94375;
             [VHashTags formatHashTagsInString:newAttributedCellText
                                 withTagRanges:self.hashTagRanges
                                    attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
-        }
-        
-        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-        paragraphStyle.maximumLineHeight = 25;
-        paragraphStyle.minimumLineHeight = 25;
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-        [newAttributedCellText addAttribute:NSParagraphStyleAttributeName
-                                      value:paragraphStyle
-                                      range:NSMakeRange(0, newAttributedCellText.length)];
-        if (!isTemplateC)
-        {
-            NSShadow *shadow = [NSShadow new];
-            [shadow setShadowBlurRadius:4.0f];
-            [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
-            [shadow setShadowOffset:CGSizeMake(0, 0)];
-            [newAttributedCellText addAttribute:NSShadowAttributeName
-                                          value:shadow
-                                          range:NSMakeRange(0, newAttributedCellText.length)];
         }
         
         self.descriptionLabel.attributedText = newAttributedCellText;
@@ -216,7 +192,6 @@ static const CGFloat kTemplateCXRatio = 0.94375;
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    
     if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
         [self.delegate willCommentOnSequence:self.sequence fromView:self];
@@ -225,7 +200,6 @@ static const CGFloat kTemplateCXRatio = 0.94375;
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    
     if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
     {
         [self.delegate selectedUserOnSequence:self.sequence fromView:self];
@@ -257,6 +231,52 @@ static const CGFloat kTemplateCXRatio = 0.94375;
     CGFloat xRatio = isTemplateC ? kTemplateCXRatio : 1;
     CGFloat width = CGRectGetWidth(bounds) * xRatio;
     return CGSizeMake(width, width * yRatio);
+}
+
++ (CGSize)actualSizeWithCollectionVIewBounds:(CGRect)bounds sequence:(VSequence *)sequence
+{
+    CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return actual;
+    }
+    
+    if (!sequence.nameEmbeddedInContent.boolValue)
+    {
+        CGSize textSize = [sequence.name frameSizeForWidth:actual.width - kDescriptionBuffer * 2
+                                             andAttributes:[self sequenceDescriptionAttributes]];
+        actual.height = actual.height + textSize.height + kDescriptionBuffer;
+    }
+    
+    return actual;
+}
+
++ (NSDictionary *)sequenceDescriptionAttributes
+{
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    
+    //TODO: Remvoe this hardcoded font size
+    NSMutableDictionary *attributes = [@{
+                                         NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
+                                         NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
+                                         } mutableCopy];
+    
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.maximumLineHeight = 25;
+    paragraphStyle.minimumLineHeight = 25;
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
+    
+    if (!isTemplateC)
+    {
+        NSShadow *shadow = [NSShadow new];
+        [shadow setShadowBlurRadius:4.0f];
+        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+        [shadow setShadowOffset:CGSizeMake(0, 0)];
+        attributes[NSShadowAttributeName] = shadow;
+    }
+    return [attributes copy];
 }
 
 @end
