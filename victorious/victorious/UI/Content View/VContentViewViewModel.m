@@ -526,6 +526,18 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     return ([self answerAPercentage] >= 0.5f) ? YES : NO;
 }
 
+- (BOOL)votingEnabled
+{
+    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (CGFloat)answerAPercentage
 {
     return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
@@ -571,22 +583,3 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 }
 
 @end
-
-//for (VPollResult *result in self.sequence.pollResults)
-//{
-//    VResultView *resultView = [self resultViewForAnswerId:result.answerId];
-//    
-//    CGFloat progress = result.count.doubleValue / totalVotes;
-//    
-//    VLog(@"Result :%@", result);
-//    if ([result.answerId isEqualToNumber:answerId])
-//    {
-//        resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-//    }
-//    else
-//    {
-//        resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-//    }
-//    
-//    [resultView setProgress:progress animated:YES];
-//}
