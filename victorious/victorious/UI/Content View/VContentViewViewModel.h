@@ -220,8 +220,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
 
-/// This will be nil if no histogram data is available.
-//TODO: should test that this objcect is populated
+/** This will be nil if no histogram data is available.
+ */
 @property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
 
 @end

@@ -11,7 +11,8 @@
 
 @interface VHistogramDataSource : NSObject <VHistogramBarViewDataSource>
 
-// Returns nil if bad data
+/** Returns nil if bad data.
+ */
 + (instancetype)histogramDataSourceWithDataPoints:(NSArray *)dataPoints;
 
 @end
