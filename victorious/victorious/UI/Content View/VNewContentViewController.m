@@ -322,6 +322,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(hitogramDataDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateHistogramDataNotification
                                                object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -486,6 +490,14 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
     self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)pollDataDidUpdate:(NSNotification *)notification
+{
+    [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                               animated:YES];
+    [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                               animated:YES];
 }
 
 #pragma mark - IBActions

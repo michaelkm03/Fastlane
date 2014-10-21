@@ -22,7 +22,9 @@ extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 /**
  *  Posted whenever new histogram data is made available.
  */
-extern NSString *const VContentViewViewModelDidUpdateHistogramDataNotification;
+extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+
+extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.

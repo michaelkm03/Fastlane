@@ -41,7 +41,8 @@
 #import "NSURL+MediaType.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
-NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
+NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
+NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 
 @interface VContentViewViewModel ()
 
@@ -94,6 +95,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
         
         [self fetchUserinfo];
         [self fetchHistogramData];
+        [self fetchPollData];
     }
     return self;
 }
@@ -159,6 +161,22 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
                                                                  object:self];
          }
      }];
+}
+
+- (void)fetchPollData
+{
+    if (![self.sequence isPoll])
+    {
+        return;
+    }
+    
+    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
+                                                             object:self];
+     }
+                                                 failBlock:^(NSOperation *operation, NSError *error)];
 }
 
 #pragma mark - Property Accessors
@@ -530,7 +548,6 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 {
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
     {
-        NSLog(@"%@", result);
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
 //            return NO;
