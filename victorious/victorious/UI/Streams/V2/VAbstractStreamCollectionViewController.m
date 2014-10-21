@@ -185,6 +185,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
 {
+    if (self.streamDataSource.isFilterLoading)
+    {
+        return;
+    }
+    
     [self.streamDataSource refreshWithSuccess:^(void)
      {
          [self.refreshControl endRefreshing];
@@ -209,6 +214,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)loadNextPageAction
 {
+    if (self.streamDataSource.isFilterLoading)
+    {
+        return;
+    }
+    
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
      }

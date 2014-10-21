@@ -33,6 +33,7 @@
 
 //Managers
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Login.h"
 #import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
@@ -170,6 +171,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super viewDidAppear:animated];
     [self.collectionView flashScrollIndicators];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -395,7 +397,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index
 {
     
-    if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].mainUser)
+    if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
@@ -408,7 +410,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.currentStream = self.allStreams[index];
     
-    if (!self.currentStream.streamItems.count)
+    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading)
     {
         [self refresh:self.refreshControl];
     }

@@ -13,7 +13,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
-#import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 
 #import "VStream+Fetcher.h"
 #import "UIViewController+VNavMenu.h"
@@ -91,7 +91,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.allStreams = self.allStreams;
     
     NSMutableArray *titles = [[NSMutableArray alloc] init];
     for (VStream *stream in self.allStreams)
@@ -102,8 +103,13 @@
     self.navHeaderView.delegate = self;
     NSInteger selectedStream = [self.allStreams indexOfObject:self.defaultStream];
     self.navHeaderView.navSelector.currentIndex = selectedStream;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
-    self.allStreams = self.allStreams;
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -120,6 +126,11 @@
 - (void)setAllStreams:(NSArray *)allStreams
 {
     _allStreams = allStreams;
+    
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
     
     [self.streamVCs removeAllObjects];
     
@@ -156,7 +167,8 @@
     NSInteger lastIndex = self.navHeaderView.lastSelectedControl;
     
     VStream *stream = self.allStreams[index];
-    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location == NSNotFound && ![VObjectManager sharedManager].mainUser)
+    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location == NSNotFound
+        && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
