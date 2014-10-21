@@ -8,18 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VNavigationSelectorDelegate;
+@protocol VNavigationHeaderDelegate;
 
 @protocol VNavigationSelectorProtocol <NSObject>
 
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic) NSInteger currentIndex;
-@property (nonatomic, weak) IBOutlet id<VNavigationSelectorDelegate> delegate;
-
-@end
-
-@protocol VNavigationSelectorDelegate <NSObject>
-
-- (void)navSelector:(UIView<VNavigationSelectorProtocol> *)selector selectedIndex:(NSInteger)index;
+@property (nonatomic, strong) NSArray *titles;///<An array of NSStrings used to populate the selector
+@property (nonatomic) NSInteger currentIndex;///<The current index of the selector
+@property (nonatomic) NSInteger lastIndex;///<The index selected before the current index.
+@property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;///<The delegate of the selector.
 
 @end

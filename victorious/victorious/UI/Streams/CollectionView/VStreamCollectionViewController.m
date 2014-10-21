@@ -394,7 +394,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - VNavigationHeaderDelegate
 
-- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index
+- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
     
     if (index == VStreamFilterFollowing && ![VObjectManager sharedManager].authorized)

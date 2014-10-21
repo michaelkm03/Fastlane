@@ -10,8 +10,11 @@
 
 #import "VThemeManager.h"
 
+#import "VNavigationHeaderView.h"
+
 @implementation VSegmentedNavSelector
 
+@synthesize lastIndex = _lastIndex;
 @synthesize titles = _titles;
 @synthesize delegate = _delegate;
 @synthesize currentIndex = _currentIndex;
@@ -69,9 +72,15 @@
 
 - (void)valueChanged
 {
-    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
+    BOOL shouldChange = YES;
+    if ([self.delegate respondsToSelector:@selector(navSelector:changedToIndex:)])
     {
-        [self.delegate navSelector:self selectedIndex:self.segmentedControl.selectedSegmentIndex];
+        shouldChange = [self.delegate navSelector:self changedToIndex:self.segmentedControl.selectedSegmentIndex];
+    }
+    
+    if (!shouldChange)
+    {
+        self.currentIndex = self.lastIndex;
     }
 }
 
@@ -87,8 +96,9 @@
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
+    self.lastIndex = _currentIndex;
     _currentIndex = currentIndex;
-    [self.segmentedControl setSelectedSegmentIndex:self.currentIndex];
+    [self.segmentedControl setSelectedSegmentIndex:currentIndex];
 }
 
 @end

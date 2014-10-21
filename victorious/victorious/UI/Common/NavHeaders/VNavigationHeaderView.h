@@ -37,7 +37,7 @@
  *
  *  @return Return YES if the index is valid, return NO if the index cannot currently be selected (e.g. User needs to log in first)
  */
-- (BOOL)navHeaderView:(VNavigationHeaderView *)navHeaderView changedToIndex:(NSInteger)index;
+- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index;
 
 @end
 

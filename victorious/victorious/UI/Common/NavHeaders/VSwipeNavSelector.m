@@ -10,6 +10,8 @@
 
 #import "VThemeManager.h"
 
+#import "VNavigationHeaderView.h"
+
 static CGFloat const kVIndicatorViewHeight = 3;
 
 @interface VSwipeNavSelector() <UIScrollViewDelegate>
@@ -24,6 +26,7 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 @implementation VSwipeNavSelector
 
+@synthesize lastIndex = _lastIndex;
 @synthesize titles = _titles;
 @synthesize delegate = _delegate;
 @synthesize currentIndex = _currentIndex;
@@ -116,11 +119,19 @@ static CGFloat const kVIndicatorViewHeight = 3;
         return;
     }
     
+    self.lastIndex = _currentIndex;
     _currentIndex = currentIndex;
     
-    if ([self.delegate respondsToSelector:@selector(navSelector:selectedIndex:)])
+    BOOL shouldChange = YES;
+    if ([self.delegate respondsToSelector:@selector(navSelector:changedToIndex:)])
     {
-        [self.delegate navSelector:self selectedIndex:currentIndex];
+        shouldChange = [self.delegate navSelector:self changedToIndex:currentIndex];
+    }
+    
+    if (!shouldChange)
+    {
+        _currentIndex = self.lastIndex;
+        return;
     }
     
     UIButton *button = self.titleButtons[currentIndex];
