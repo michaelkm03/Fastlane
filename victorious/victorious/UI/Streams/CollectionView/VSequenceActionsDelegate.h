@@ -17,6 +17,7 @@
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view;
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view;
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
-- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view;
+- (BOOL)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view;///<Return YES if the user can repost, NO if they cannot.
+- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 @end

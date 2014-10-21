@@ -10,23 +10,30 @@
 
 #import "VConstants.h"
 
+#import "VSequenceActionController.h"
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 
 #import "VObjectManager+Login.h"
 
+#import "VNode.h"
+#import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "UIViewController+VNavMenu.h"
+
+#import "VStreamCollectionCell.h"
 
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 
-@interface VStreamPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
+@interface VStreamPageViewController () <VSequenceActionsDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, strong) NSArray *allStreams;
 @property (nonatomic, strong) VStream *defaultStream;
 
 @property (nonatomic, strong) NSMutableArray *streamVCs;
+
+@property (nonatomic, strong) VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -87,6 +94,7 @@
     self.dataSource = self;
     self.delegate = self;
     self.streamVCs = [[NSMutableArray alloc] init];
+    self.sequenceActionController = [[VSequenceActionController alloc] init];
 }
 
 - (void)viewDidLoad
@@ -145,6 +153,7 @@
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
         streamVC.collectionView.contentInset = insets;
         streamVC.collectionView.contentOffset = CGPointMake(streamVC.collectionView.contentOffset.x, insets.top);
+        streamVC.actionDelegate = self;
         
         if (stream == self.defaultStream)
         {
@@ -156,6 +165,45 @@
     VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
     NSArray *initialVC = @[defaultStreamVC];
     [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+#pragma mark - VSequenceActionsDelegate
+
+- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)streamCollectionCell
+{
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+}
+
+- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)streamCollectionCell
+{
+    [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
+}
+
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    if ([sequence isVideo])
+    {
+        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
+    }
+    else
+    {
+        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:nil sequence: sequence];
+    }
+}
+
+- (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
+}
+
+- (BOOL)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    return [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
+}
+
+- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
 }
 
 #pragma mark - VNavigationHeaderDelegate

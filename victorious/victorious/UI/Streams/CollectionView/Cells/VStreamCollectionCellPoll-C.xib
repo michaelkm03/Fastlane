@@ -61,6 +61,13 @@
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
                         <rect key="frame" x="118" y="149" width="65" height="72"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
+                        <rect key="frame" x="-1" y="303" width="304" height="41"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="5hj-dg-nbn" secondAttribute="height" multiplier="151:20" id="ym8-Bc-ALk"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -69,8 +76,10 @@
                 <constraint firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="1p8-b6-av1"/>
                 <constraint firstItem="JTX-77-BzI" firstAttribute="height" secondItem="cHq-pN-LVg" secondAttribute="height" id="48X-Hk-w1A"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="top" secondItem="VUD-I2-add" secondAttribute="bottom" id="5lP-9N-Bkv"/>
+                <constraint firstAttribute="trailing" secondItem="5hj-dg-nbn" secondAttribute="trailing" constant="-1" id="Ar6-ig-o3d"/>
                 <constraint firstAttribute="trailing" secondItem="VUD-I2-add" secondAttribute="trailing" id="BOK-ih-62S"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="15" id="IIm-FA-DAc"/>
+                <constraint firstItem="5hj-dg-nbn" firstAttribute="top" secondItem="9Jy-3d-OTo" secondAttribute="bottom" constant="15" id="J6s-iW-3NL"/>
                 <constraint firstAttribute="trailing" secondItem="9Jy-3d-OTo" secondAttribute="trailing" constant="15" id="KuS-AX-Yu2"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="T1v-SY-KUV"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="bottom" secondItem="cHq-pN-LVg" secondAttribute="bottom" id="aF8-bM-Bqy"/>
@@ -78,6 +87,7 @@
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="eJI-ME-VVG"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="oN6-yP-4Io"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="trailing" secondItem="Wcp-yr-gTs" secondAttribute="centerX" id="q9c-4Z-9cc"/>
+                <constraint firstItem="5hj-dg-nbn" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="-1" id="rUy-er-NXV"/>
                 <constraint firstItem="JTX-77-BzI" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="uHJ-sR-Uvs"/>
                 <constraint firstItem="VUD-I2-add" firstAttribute="top" secondItem="Wcp-yr-gTs" secondAttribute="top" id="wOc-hf-Z4A"/>
                 <constraint firstItem="9Jy-3d-OTo" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="15" id="ww1-Vf-Dtf"/>
@@ -86,6 +96,7 @@
             </constraints>
             <size key="customSize" width="267" height="161"/>
             <connections>
+                <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
                 <outlet property="descriptionLabel" destination="9Jy-3d-OTo" id="edw-gV-rDA"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
@@ -93,6 +104,7 @@
                 <outlet property="shadeView" destination="WFR-h6-Ez8" id="J70-XR-y9X"/>
                 <outlet property="streamCellHeaderView" destination="VUD-I2-add" id="gb8-iF-LkR"/>
             </connections>
+            <point key="canvasLocation" x="406" y="184"/>
         </collectionViewCell>
     </objects>
     <resources>

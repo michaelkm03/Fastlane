@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "plus_btn.png"
+      "filename" : "overflow_btn.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "plus_btn@2x.png"
+      "filename" : "overflow_btn@2x.png"
     },
     {
       "idiom" : "universal",

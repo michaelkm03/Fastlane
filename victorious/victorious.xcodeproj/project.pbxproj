@@ -386,6 +386,8 @@
 		BE6AA54E19F70A96007CC36E /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6AA54519F70A96007CC36E /* VNavigationHeaderView.xib */; };
 		BE6AA54F19F70A96007CC36E /* VSegmentedNavSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6AA54819F70A96007CC36E /* VSegmentedNavSelector.m */; };
 		BE6AA55019F70A96007CC36E /* VSwipeNavSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6AA54A19F70A96007CC36E /* VSwipeNavSelector.m */; };
+		BE6AA55519F7201A007CC36E /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6AA55219F7201A007CC36E /* VSequenceActionController.m */; };
+		BE6AA55619F7201A007CC36E /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6AA55419F7201A007CC36E /* VStreamCellActionView.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B8B19C8A7C20023CE88 /* VAsset.m */; };
 		BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B8E19C8A91C0023CE88 /* VInteraction.m */; };
@@ -1323,6 +1325,10 @@
 		BE6AA54819F70A96007CC36E /* VSegmentedNavSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSegmentedNavSelector.m; sourceTree = "<group>"; };
 		BE6AA54919F70A96007CC36E /* VSwipeNavSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeNavSelector.h; sourceTree = "<group>"; };
 		BE6AA54A19F70A96007CC36E /* VSwipeNavSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeNavSelector.m; sourceTree = "<group>"; };
+		BE6AA55119F7201A007CC36E /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
+		BE6AA55219F7201A007CC36E /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
+		BE6AA55319F7201A007CC36E /* VStreamCellActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellActionView.h; sourceTree = "<group>"; };
+		BE6AA55419F7201A007CC36E /* VStreamCellActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellActionView.m; sourceTree = "<group>"; };
 		BE6C15231880A31A00469BA8 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
 		BE6C15241880A31A00469BA8 /* VAnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswerAction.m; sourceTree = "<group>"; };
 		BE799B8A19C8A7C20023CE88 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -3120,6 +3126,10 @@
 		BE6AA52119F70A6B007CC36E /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				BE6AA55119F7201A007CC36E /* VSequenceActionController.h */,
+				BE6AA55219F7201A007CC36E /* VSequenceActionController.m */,
+				BE6AA55319F7201A007CC36E /* VStreamCellActionView.h */,
+				BE6AA55419F7201A007CC36E /* VStreamCellActionView.m */,
 				BE6AA52219F70A6B007CC36E /* VStreamCollectionCell-C.xib */,
 				BE6AA52319F70A6B007CC36E /* VStreamCollectionCell.h */,
 				BE6AA52419F70A6B007CC36E /* VStreamCollectionCell.m */,
@@ -4122,6 +4132,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
+				BE6AA55519F7201A007CC36E /* VSequenceActionController.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
@@ -4291,6 +4302,7 @@
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
+				BE6AA55619F7201A007CC36E /* VStreamCellActionView.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
