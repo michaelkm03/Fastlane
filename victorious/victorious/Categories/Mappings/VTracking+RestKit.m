@@ -28,7 +28,10 @@
                                   @"view-stall"         :   VSelectorName(videoStall),
                                   @"view-skip"          :   VSelectorName(videoSkip),
                                   @"cell-view"          :   VSelectorName(cellView),
-                                  @"cell-click"         :   VSelectorName(cellClick)
+                                  @"cell-click"         :   VSelectorName(cellClick),
+                                  @"init"               :   VSelectorName(launch),
+                                  @"start"              :   VSelectorName(enterForeground),
+                                  @"stop"               :   VSelectorName(enterBackground),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -38,6 +41,15 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
+}
+
++ (RKResponseDescriptor *)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/init"
+                                                       keyPath:@"payload.tracking"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end

@@ -126,6 +126,7 @@
                                              [VPollResult byUserDescriptor],
                                              [VUnreadConversation descriptor],
                                              [VVoteType descriptor],
+                                             [VTracking descriptor],
                                              [VImageSearchResult descriptor],
                                              [VVoteAction descriptor]
                                              ]];

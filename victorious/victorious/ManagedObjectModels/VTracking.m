@@ -2,26 +2,31 @@
 //  VTracking.m
 //  victorious
 //
-//  Created by Patrick Lynch on 10/16/14.
+//  Created by Patrick Lynch on 10/21/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VTracking.h"
 #import "VSequence.h"
-
+#import "VVoteType.h"
 
 @implementation VTracking
 
-@dynamic cellView;
 @dynamic cellClick;
-@dynamic videoStart;
-@dynamic videoError;
-@dynamic videoStall;
-@dynamic videoSkip;
+@dynamic cellView;
 @dynamic videoComplete25;
 @dynamic videoComplete50;
 @dynamic videoComplete75;
 @dynamic videoComplete100;
-@dynamic parentEntity;
+@dynamic videoError;
+@dynamic videoSkip;
+@dynamic videoStall;
+@dynamic videoStart;
+@dynamic ballisticCount;
+@dynamic enterForeground;
+@dynamic launch;
+@dynamic enterBackground;
+@dynamic sequence;
+@dynamic voteType;
 
 @end

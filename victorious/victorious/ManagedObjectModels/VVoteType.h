@@ -9,10 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-/**
- A configuration setting received from the server indicating which
- vote actions (VVoteAction) can be made while viewing a sequence.
- */
+@class VTracking;
+
 @interface VVoteType : NSManagedObject
 
 @property (nonatomic, retain) NSNumber *displayOrder;
@@ -23,5 +21,6 @@
 @property (nonatomic, retain) NSNumber *imageCount;
 @property (nonatomic, retain) NSNumber *flightDuration;
 @property (nonatomic, retain) NSNumber *animationDuration;
+@property (nonatomic, retain) VTracking *tracking;
 
 @end

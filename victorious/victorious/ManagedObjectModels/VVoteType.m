@@ -19,5 +19,6 @@
 @dynamic iconImage;
 @dynamic animationDuration;
 @dynamic flightDuration;
+@dynamic tracking;
 
 @end
