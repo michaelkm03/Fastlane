@@ -18,5 +18,6 @@
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view;
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view;
+- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 @end

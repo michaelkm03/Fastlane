@@ -12,10 +12,17 @@
 
 @interface VSequenceActionController : NSObject
 
-@property (nonatomic, strong) VSequence *sequence;
+- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence;
+- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence;
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
-- (void)remixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node;
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage;
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController;
+
+- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;
+- (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+
+- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node;
+
+- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+- (void)flagActionForSequence:(VSequence *)sequence;
 
 @end

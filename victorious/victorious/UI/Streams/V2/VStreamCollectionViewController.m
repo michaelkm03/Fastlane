@@ -96,7 +96,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return ownerStream;
 }
 
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString*)title
++ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
 {
     VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
 

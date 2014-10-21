@@ -30,6 +30,7 @@
 #import "VConstants.h"
 
 #import "VCommentCell.h"
+#import "VStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "VSettingManager.h"
@@ -40,6 +41,8 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
 @property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
@@ -145,6 +148,21 @@ static const CGFloat kTemplateCXRatio = 0.94375;
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
+    
+    [self setupActionBar];
+}
+
+- (void)setupActionBar
+{
+    [self.actionView clearButtons];
+    [self.actionView addShareButton];
+    if (![self.sequence isPoll])
+    {
+        [self.actionView addRemixButton];
+    }
+    [self.actionView addRepostButton];  
+    [self.actionView addFlagButton];
+    [self.actionView layoutIfNeeded];
 }
 
 - (void)setHeight:(CGFloat)height

@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VSequenceActionsDelegate.h"
+
+@class VSequence;
+
 @interface VStreamCellActionView : UIView
+
+@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
+
+- (void)clearButtons;
+- (void)addShareButton;
+- (void)addRemixButton;
+- (void)addRepostButton;
+- (void)addFlagButton;
 
 @end

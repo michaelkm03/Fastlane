@@ -41,8 +41,10 @@
 
 #pragma mark - Remix
 
-- (void)remixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node
+- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence
 {
+    NSAssert(![sequence isPoll], @"You cannot remix polls.");
+    NSAssert(![sequence isVideo], @"Called video remix action on a non-video sequence.");
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -50,14 +52,15 @@
     }
 
     UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
-                                                                            sequenceID:[self.sequence.remoteId integerValue]
+                                                                            sequenceID:[sequence.remoteId integerValue]
                                                                                 nodeID:node.remoteId.integerValue];
     
     [viewController presentViewController:remixVC  animated:YES completion:nil];
 }
 
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage
+- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence
 {
+    NSAssert(![sequence isPoll], @"You cannot remix polls.");
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -65,7 +68,7 @@
     }
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.parentID = [self.sequence.remoteId integerValue];
+    publishViewController.parentID = [sequence.remoteId integerValue];
     publishViewController.previewImage = previewImage;
     publishViewController.completion = ^(BOOL complete)
     {
@@ -113,10 +116,9 @@
     [actionSheet showInView:viewController.view];
 }
 
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    
-    VStream *stream = [VStream remixStreamForSequence:self.sequence];
+    VStream *stream = [VStream remixStreamForSequence:sequence];
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
     
     VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
@@ -142,22 +144,23 @@
                                      failBlock:nil];
 }
 
-- (void)showRepostersFromViewController:(UIViewController *)viewController
+- (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
     VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
-    vc.sequence = self.sequence;
+    vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Share
-- (void)shareFromViewController:(UIViewController *)viewController node:(VNode *)node
+
+- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node
 {
     //Remove the styling for the mail view.
     [[VThemeManager sharedThemeManager] removeStyling];
     
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence ?: [NSNull null],
-                                                                                                                 [self shareText],
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
+                                                                                                                 [self shareTextForSequence:sequence],
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]
                                                                                          applicationActivities:@[fbActivity]];
     
@@ -167,7 +170,7 @@
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
         [[VThemeManager sharedThemeManager] applyStyling];
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.sequence.category, activityType]
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", sequence.category, activityType]
                                                                      action:nil
                                                                       label:nil
                                                                       value:nil];
@@ -175,48 +178,25 @@
     };
 }
 
-//TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
-- (NSString *)shareText
+#pragma mark - Flag
+
+- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    NSString *shareText = @"";
-    
-    if ([self.sequence.user isOwner])
-    {
-        if ([self.sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
-        }
-        else if ([self.sequence isVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
-        }
-    }
-    else
-    {
-        if ([self.sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), self.sequence.user.name];
-        }
-        else if ([self.sequence isVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), self.sequence.user.name];
-        }
-    }
-    
-    return shareText;
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:nil
+                                                  onDestructiveButton:nil
+                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+                                  {
+                                      [self flagActionForSequence:sequence];
+                                  }, nil];
+    [actionSheet showInView:viewController.view];
 }
 
-- (void)flagFromViewController:(UIViewController *)viewController
+- (void)flagActionForSequence:(VSequence *)sequence
 {
-    [[VObjectManager sharedManager] flagSequence:self.sequence
+    [[VObjectManager sharedManager] flagSequence:sequence
                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
@@ -229,7 +209,7 @@
      }
                                        failBlock:^(NSOperation *operation, NSError *error)
      {
-         VLog(@"Failed to flag sequence %@", self.sequence);
+         VLog(@"Failed to flag sequence %@", sequence);
          
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                 message:NSLocalizedString(@"ErrorOccured", @"")
@@ -238,6 +218,47 @@
                                                       otherButtonTitles:nil];
          [alert show];
      }];
+}
+
+#pragma mark - Helpers
+
+//TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
+- (NSString *)shareTextForSequence:(VSequence *)sequence
+{
+    NSString *shareText = @"";
+    
+    if ([sequence.user isOwner])
+    {
+        if ([sequence isPoll])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), sequence.user.name];
+        }
+        else if ([sequence isVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), sequence.user.name];
+        }
+    }
+    else
+    {
+        if ([sequence isPoll])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
+        }
+        else if ([sequence isVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
+        }
+    }
+    
+    return shareText;
 }
 
 @end

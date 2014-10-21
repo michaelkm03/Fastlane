@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -77,12 +78,17 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="IRG-lN-Zwl">
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDv-jo-7gZ" customClass="VStreamCellActionView">
+                        <rect key="frame" x="-1" y="403" width="304" height="40"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="W6W-Ju-9kU" secondAttribute="trailing" id="3VU-4t-DFQ"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="top" secondItem="4JO-Ba-PyN" secondAttribute="top" id="44L-21-rKG"/>
+                <constraint firstItem="LDv-jo-7gZ" firstAttribute="top" secondItem="9rP-b8-aiM" secondAttribute="bottom" constant="15" id="5fJ-Le-Zj4"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="leading" secondItem="De6-Pn-uJH" secondAttribute="leading" id="GHQ-xD-hRB"/>
                 <constraint firstItem="9rP-b8-aiM" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="15" id="Gee-Et-fdL"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="KTO-uV-zm5"/>
@@ -91,6 +97,8 @@
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="De6-Pn-uJH" secondAttribute="centerY" id="Qin-Ad-Vkb"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="top" id="VvG-Cj-4QJ"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="EYB-Sg-RQg" secondAttribute="centerY" id="XRg-Wl-KJB"/>
+                <constraint firstItem="LDv-jo-7gZ" firstAttribute="width" secondItem="LDv-jo-7gZ" secondAttribute="height" multiplier="151:20" id="Xd4-5Y-hym"/>
+                <constraint firstAttribute="trailing" secondItem="LDv-jo-7gZ" secondAttribute="trailing" constant="-1" id="ZDr-57-4pX"/>
                 <constraint firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="bOq-Lr-Ite"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="EYB-Sg-RQg" secondAttribute="centerX" id="dSC-bY-AJd"/>
                 <constraint firstItem="De6-Pn-uJH" firstAttribute="top" secondItem="W6W-Ju-9kU" secondAttribute="bottom" id="gXd-xy-YS1"/>
@@ -98,9 +106,11 @@
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="io7-oH-DPa"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="bottom" secondItem="De6-Pn-uJH" secondAttribute="bottom" id="j3d-Xp-Sld"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="De6-Pn-uJH" secondAttribute="centerX" id="qdd-bK-q4S"/>
+                <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="xX7-p3-fHv"/>
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
+                <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
                 <outlet property="descriptionLabel" destination="9rP-b8-aiM" id="hzt-WA-Hu6"/>
                 <outlet property="lowerGradientView" destination="Cqz-ud-Eay" id="R8Q-Z7-7hI"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
@@ -117,4 +127,9 @@
         <image name="PlayTriangle" width="52" height="52"/>
         <image name="topGradient" width="320" height="52"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
