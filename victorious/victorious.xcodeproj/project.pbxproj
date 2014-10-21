@@ -1042,7 +1042,6 @@
 		BE74836819F1D23B0037F7B5 /* VMarqueeCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeCollectionCell.h; sourceTree = "<group>"; };
 		BE74836919F1D23B0037F7B5 /* VMarqueeCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeCollectionCell.m; sourceTree = "<group>"; };
 		BE74836A19F1D23B0037F7B5 /* VMarqueeCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMarqueeCollectionCell.xib; sourceTree = "<group>"; };
-		BE74836E19F1DC100037F7B5 /* UIViewController_VNavMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewController_VNavMenu.h; path = NavHeaders/UIViewController_VNavMenu.h; sourceTree = "<group>"; };
 		BE74836F19F1DC100037F7B5 /* UIViewController+VNavMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+VNavMenu.h"; path = "NavHeaders/UIViewController+VNavMenu.h"; sourceTree = "<group>"; };
 		BE74837019F1DC100037F7B5 /* UIViewController+VNavMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+VNavMenu.m"; path = "NavHeaders/UIViewController+VNavMenu.m"; sourceTree = "<group>"; };
 		BE74837119F1DC100037F7B5 /* VNavigationHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "VNavigationHeaderView-C.xib"; path = "NavHeaders/VNavigationHeaderView-C.xib"; sourceTree = "<group>"; };
@@ -2677,7 +2676,6 @@
 		BE74836D19F1D33F0037F7B5 /* NavHeader */ = {
 			isa = PBXGroup;
 			children = (
-				BE74836E19F1DC100037F7B5 /* UIViewController_VNavMenu.h */,
 				BE74836F19F1DC100037F7B5 /* UIViewController+VNavMenu.h */,
 				BE74837019F1DC100037F7B5 /* UIViewController+VNavMenu.m */,
 				BE74837119F1DC100037F7B5 /* VNavigationHeaderView-C.xib */,
