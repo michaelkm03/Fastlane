@@ -541,7 +541,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
