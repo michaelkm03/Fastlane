@@ -72,12 +72,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         UIEdgeInsets insets = self.collectionView.contentInset;
         insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-        
-        self.collectionView.contentInset = insets;
-    }
-    else
-    {
-        self.collectionView.contentInset = self.contentInset;
+        self.contentInset = insets;
     }
 }
 
