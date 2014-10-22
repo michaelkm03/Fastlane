@@ -775,7 +775,14 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
-            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        {
+            CGSize size = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            if ( self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers == 0 )
+            {
+                size.height = 0.0f;
+            }
+            return size;
+        }
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
