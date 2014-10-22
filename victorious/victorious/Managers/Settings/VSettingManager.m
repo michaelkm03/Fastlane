@@ -90,19 +90,9 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     // Check that only objects of type VVoteType are accepted
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
-                                  if ( ![voteType isMemberOfClass:[VVoteType class]] )
-                                  {
-                                      return NO;
-                                  }
-#if DEBUG
-                                  if ( voteType.iconImage == nil )
-                                  {
-                                      voteType.iconImage = voteType.images.firstObject;
-                                      voteType.flightDuration = @( 0.5f );
-                                      voteType.animationDuration = @( 0.5f );
-                                  }
-#endif
-                                  return voteType.containsRequiredData && voteType.hasValidTrackingData;
+                                  return [voteType isMemberOfClass:[VVoteType class]] &&
+                                        voteType.containsRequiredData &&
+                                        voteType.hasValidTrackingData;
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     

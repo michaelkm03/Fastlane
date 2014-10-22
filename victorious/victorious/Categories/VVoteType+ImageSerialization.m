@@ -60,12 +60,6 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
     formatter.paddingCharacter = @"0";
     formatter.paddingPosition = NSNumberFormatterPadBeforePrefix;
     formatter.maximumIntegerDigits = formatter.minimumIntegerDigits = VVoteTypeImageIndexReplacementMacro.length;
-    
-#if DEBUG
-#warning This is only until the backend is updated
-    formatter.maximumIntegerDigits = formatter.minimumIntegerDigits = 2;
-#endif
-    
     NSMutableArray *output = [[NSMutableArray alloc] init];
     
     for ( NSUInteger i = 0; i < self.imageCount.unsignedIntegerValue; i++ )

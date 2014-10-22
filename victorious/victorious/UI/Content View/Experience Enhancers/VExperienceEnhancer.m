@@ -14,12 +14,13 @@
 - (instancetype)initWithVoteType:(VVoteType *)voteType
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _voteType = voteType;
         
         self.labelText = voteType.name;
-        self.flightDuration = voteType.flightDuration.floatValue;
-        self.animationDuration = voteType.animationDuration.floatValue;
+        self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
+        self.animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
     }
     return self;
 }
