@@ -287,7 +287,6 @@
 		A70963F919F038EB00CE6633 /* VTappableTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70963F819F038EB00CE6633 /* VTappableTextManager.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
 		A709643319F0A47B00CE6633 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = A709643219F0A47B00CE6633 /* VSequence.m */; };
-		A709643619F0A47B00CE6633 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A709643519F0A47B00CE6633 /* VTracking.m */; };
 		A70E8C9A19F1DE6E00D20717 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70E8C9919F1DE6E00D20717 /* VTrackingManager.m */; };
 		A719CD5C19F6D6410019E866 /* VFileSystemTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */; };
 		A719CD5D19F6D6410019E866 /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
@@ -334,12 +333,14 @@
 		A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
+		A767A20019F6EF2C00C5B501 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */; };
 		A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */; };
 		A7696A5319F7287F003017E6 /* VSuggestedPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AB4FE719F5A50800BFFE35 /* VVoteType+ImageSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */; };
+		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
 		A7F6CF9D19EEDA0B003F164C /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9B19EEDA0B003F164C /* VFileCache.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
@@ -1186,8 +1187,6 @@
 		A709642319F0A13800CE6633 /* VTracking+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VTracking+RestKit.m"; sourceTree = "<group>"; };
 		A709643119F0A47B00CE6633 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		A709643219F0A47B00CE6633 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		A709643419F0A47B00CE6633 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
-		A709643519F0A47B00CE6633 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A70E8C9819F1DE6E00D20717 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A70E8C9919F1DE6E00D20717 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
 		A70E8C9B19F1DECC00D20717 /* VTrackingConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingConstants.h; sourceTree = "<group>"; };
@@ -1233,6 +1232,8 @@
 		A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+ImageSerialization.m"; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeImageSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeImageSerializationTests.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
+		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7F6CF9819EEDA0B003F164C /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
 		A7F6CF9A19EEDA0B003F164C /* VFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileCache.h; sourceTree = "<group>"; };
@@ -3022,8 +3023,6 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
-				A75FAF2619E8C03C00EB87C1 /* VVoteAction+RestKit.h */,
-				A75FAF2719E8C03D00EB87C1 /* VVoteAction+RestKit.m */,
 				A70564C519E7820A004A8387 /* VHashtag+RestKit.h */,
 				A70564C619E7820A004A8387 /* VHashtag+RestKit.m */,
 				A709642219F0A13800CE6633 /* VTracking+RestKit.h */,
@@ -3060,8 +3059,6 @@
 		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
-				A709643419F0A47B00CE6633 /* VTracking.h */,
-				A709643519F0A47B00CE6633 /* VTracking.m */,
 				A709643119F0A47B00CE6633 /* VSequence.h */,
 				A709643219F0A47B00CE6633 /* VSequence.m */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
@@ -3109,10 +3106,10 @@
 				BE8AB6E619DB75C30048A6C0 /* VUser.m */,
 				BE7D2E8F18EB762A009E488E /* VVoteResult.h */,
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
+				A7D8532219F6F3B100EDBFF8 /* VTracking.h */,
+				A7D8532319F6F3B100EDBFF8 /* VTracking.m */,
 				BEDF0FC418DBC93B00750EF6 /* VVoteType.h */,
 				BEDF0FC518DBC93B00750EF6 /* VVoteType.m */,
-				A75FAF2319E8BF2400EB87C1 /* VVoteAction.h */,
-				A75FAF2419E8BF2400EB87C1 /* VVoteAction.m */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
@@ -3635,6 +3632,7 @@
 				D8D73A6E19F072A800E6955C /* Firework_v01.00007.png in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
+				A767A20019F6EF2C00C5B501 /* Images.xcassets in Resources */,
 				037A643219F765430001C90B /* Images.xcassets in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
@@ -3977,7 +3975,6 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
-				A709643619F0A47B00CE6633 /* VTracking.m in Sources */,
 				0314D4F219B46B5E00FA363C /* VSignupTransitionAnimator.m in Sources */,
 				A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
@@ -4098,7 +4095,6 @@
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
-				A75FAF2519E8BF2400EB87C1 /* VVoteAction.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
@@ -4167,6 +4163,7 @@
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */,
+				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,
@@ -4264,7 +4261,6 @@
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				0314D50219B46B5E00FA363C /* VStreamContainerViewController.m in Sources */,
-				A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
@@ -4633,6 +4629,7 @@
 			baseConfigurationReference = 910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4821,6 +4818,7 @@
 			baseConfigurationReference = 8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4850,6 +4848,7 @@
 			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4957,6 +4956,7 @@
 			baseConfigurationReference = E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

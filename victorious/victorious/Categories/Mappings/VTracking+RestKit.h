@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "VTracking.h"
 
+@class RKResponseDescriptor;
+
 @interface VTracking (RestKit)
+
++ (RKResponseDescriptor *)descriptor;
+
++ (BOOL)urlsAreValid:(id)property;
 
 @end

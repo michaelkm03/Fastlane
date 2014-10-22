@@ -8,30 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+@class VVoteType;
+
 @interface VExperienceEnhancer : NSObject
 
-+ (instancetype)experienceEnhancerWithIconImage:(UIImage *)iconImage
-                                      labelText:(NSString *)labelText
-                              animationSequence:(NSArray *)animationSequence
-                              animationDuration:(NSTimeInterval)animationDuration
-                                    isBallistic:(BOOL)ballistic
-                                shouldLetterBox:(BOOL)shouldLetterBox
-                                 flightDuration:(NSTimeInterval)flightDuration
-                                    flightImage:(UIImage *)flightImage;
+- (instancetype)initWithVoteType:(VVoteType *)voteType;
 
 @property (nonatomic, strong) UIImage *iconImage;
-
-@property (nonatomic, copy) NSString *labelText;
-
-//TODO: Lazily load these
+@property (nonatomic, strong) NSString *labelText;
 @property (nonatomic, strong) NSArray *animationSequence;
 @property (nonatomic, assign) NSTimeInterval animationDuration;
-
-@property (nonatomic, assign, getter = isBallistic) BOOL ballistic;
-@property (nonatomic, assign) BOOL shouldLetterBox;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
 @property (nonatomic, strong) UIImage *flightImage;
+@property (nonatomic, assign) BOOL shouldLetterBox;
 
+@property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL hasRequiredImages;
+@property (nonatomic, readonly) BOOL isBallistic;
 
 @end

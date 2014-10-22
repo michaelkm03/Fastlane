@@ -12,7 +12,7 @@
 
 extern NSString * const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VVoteType, VVoteAction, VAsset;
+@class VAnswer, VSequence, VVoteType, VAsset;
 
 @interface VObjectManager (Sequence)
 
@@ -63,16 +63,6 @@ extern NSString * const kPollResultsLoaded;
 
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
-
-
-
-- (RKManagedObjectRequestOperation *)voteSingle:(VVoteAction *)voteAction
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)voteCollected:(NSArray *)voteActions
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
                                                          withAsset:(VAsset *)asset

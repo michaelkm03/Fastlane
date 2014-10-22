@@ -16,5 +16,6 @@ extern NSString * const VVoteTypeImageIndexReplacementMacro;
 @property (nonatomic, readonly) NSArray *images;
 @property (nonatomic, readonly) BOOL canCreateImages;
 @property (nonatomic, readonly) BOOL containsRequiredData;
+@property (nonatomic, readonly) BOOL hasValidTrackingData;
 
 @end

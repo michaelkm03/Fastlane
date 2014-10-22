@@ -28,7 +28,11 @@
                                   @"view-stall"         :   VSelectorName(videoStall),
                                   @"view-skip"          :   VSelectorName(videoSkip),
                                   @"cell-view"          :   VSelectorName(cellView),
-                                  @"cell-click"         :   VSelectorName(cellClick)
+                                  @"cell-click"         :   VSelectorName(cellClick),
+                                  @"init"               :   VSelectorName(launch),
+                                  @"start"              :   VSelectorName(enterForeground),
+                                  @"stop"               :   VSelectorName(enterBackground),
+                                  @"ballistic_count"    :   VSelectorName(ballisticCount),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -38,6 +42,40 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
+}
+
++ (RKResponseDescriptor *)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/init"
+                                                       keyPath:@"payload.tracking"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
++ (BOOL)urlsAreValid:(id)property
+{
+    if ( ![property isKindOfClass:[NSArray class]] )
+    {
+        return NO;
+    }
+    
+    NSArray *urls = (NSArray *)property;
+    if ( urls.count == 0 )
+    {
+        return NO;
+    }
+    
+    __block BOOL containsValidUrls = YES;
+    [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop) {
+        if ( url == nil || ![url isKindOfClass:[NSString class]] || url.length == 0 )
+        {
+            containsValidUrls = NO;
+            *stop = YES;
+        }
+    }];
+    
+    return containsValidUrls;
 }
 
 @end

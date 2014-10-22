@@ -19,3 +19,4 @@ static NSString * const kTrackingKeyNavigiationFrom        = @"%%NAV_FROM%%";
 static NSString * const kTrackingKeyNavigiationTo          = @"%%NAV_TO%%";
 static NSString * const kTrackingKeyStreamId               = @"%%STREAM_ID%%";
 static NSString * const kTrackingKeySequenceId             = @"%%SEQUENCE_ID%%";
+static NSString * const kTrackingKeyBallisticsCount        = @"%%COUNT%%";

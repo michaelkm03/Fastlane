@@ -7,8 +7,8 @@
 //
 
 #import "VVoteType+RestKit.h"
-
 #import "VAsset+RestKit.h"
+#import "VTracking+RestKit.h"
 
 @implementation VVoteType (RestKit)
 
@@ -35,6 +35,11 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+                                                                                          toKeyPath:VSelectorName(tracking)
+                                                                                        withMapping:[VTracking entityMapping]];
+    [mapping addPropertyMapping:trackingMapping];
     
     return mapping;
 }

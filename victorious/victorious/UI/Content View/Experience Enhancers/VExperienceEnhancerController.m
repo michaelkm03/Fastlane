@@ -10,20 +10,19 @@
 #import "VExperienceEnhancer.h"
 #import "VSequence.h"
 #import "VVoteType.h"
-#import "VVoteAction+RestKit.h"
 #import "VSettingManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
 #import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
+#import "VTrackingManager.h"
 
 @interface VExperienceEnhancerController ()
 
 @property (nonatomic, strong) VFileCache *fileCache;
-
+@property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
-
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 
 @end
@@ -41,6 +40,8 @@
         
         self.fileCache = [[VFileCache alloc] init];
         
+        self.trackingManager = [[VTrackingManager alloc] init];
+        
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
     }
@@ -52,63 +53,31 @@
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
     {
-        VExperienceEnhancer *enhancer = [self experienceEnhancerFromVoteType:voteType];
-        if ( enhancer != nil )
+        BOOL areSpriteImagesCached = [self.fileCache areSpriteImagesCachedForVoteType:voteType];
+        BOOL isIconImageCached = [self.fileCache isImageCached:VVoteTypeIconName forVoteType:voteType];
+        if ( !isIconImageCached || !areSpriteImagesCached )
         {
+            // Start an asychronous task in the background to download missing images
+            // If the images can download successfully, i.e. there is no other legitimate network error,
+            // they will be available next time the content view is presented
+            [self.fileCache cacheImagesForVoteType:voteType];
+        }
+        else
+        {
+            VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType];
+            [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
+			{
+                enhancer.animationSequence = images;
+                enhancer.flightImage = enhancer.animationSequence.firstObject;
+            }];
+            [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
+			{
+                enhancer.iconImage = iconImage;
+            }];
             [experienceEnhanders addObject:enhancer];
         }
     }];
     return [NSArray arrayWithArray:experienceEnhanders];
-}
-
-- (VExperienceEnhancer *)experienceEnhancerFromVoteType:(VVoteType *)voteType
-{
-    __block VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
-    enhancer.labelText = voteType.name;
-    enhancer.flightDuration = voteType.flightDuration.floatValue;
-    enhancer.animationDuration = voteType.animationDuration.floatValue;
-    
-    BOOL areSpriteImagesCached = [self.fileCache areSpriteImagesCachedForVoteType:voteType];
-    if ( areSpriteImagesCached )
-    {
-        [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images) {
-            enhancer.animationSequence = images;
-            enhancer.flightImage = enhancer.animationSequence.firstObject;
-            enhancer.ballistic = enhancer.flightImage != nil && voteType.flightDuration.floatValue > 0.0;
-        }];
-    }
-    
-    BOOL isIconImageCached = [self.fileCache isImageCached:VVoteTypeIconName forVoteType:voteType];
-    if ( isIconImageCached )
-    {
-        [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage) {
-            enhancer.iconImage = iconImage;
-        }];
-    }
-    
-    if ( !isIconImageCached || !areSpriteImagesCached )
-    {
-        // Start an asychronous task in the background to download missing images
-        // If the images can download successfully, i.e. there is no other legitimate network error,
-        // they will be available next time the content view is presented
-        [self.fileCache cacheImagesForVoteType:voteType];
-        
-        return nil;
-    }
-    
-    return enhancer;
-}
-
-- (BOOL)validateExperienceEnhancer:(VExperienceEnhancer *)enhancer
-{
-    if ( enhancer.isBallistic )
-    {
-        return enhancer.flightImage != nil;
-    }
-    else
-    {
-        return enhancer.iconImage != nil && enhancer.animationSequence != nil && enhancer.animationSequence.count > 0;
-    }
 }
 
 #pragma mark - Property Accessors
@@ -143,18 +112,10 @@
 
 - (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer
 {
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    VVoteAction *action = [objectManager objectWithEntityName:[VVoteAction entityName] subclass:[VVoteAction class]];
-    action.date = [NSDate date];
-    action.sequence = self.sequence;
-    [[VObjectManager sharedManager] voteSingle:action successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         
-     }];
+    NSDictionary *params = @{ kTrackingKeyBallisticsCount : @(1),
+                              kTrackingKeySequenceId : self.sequence.remoteId
+                              };
+    [self.trackingManager trackEventWithUrls:experienceEnhancer.voteType.tracking.ballisticCount andParameters:params];
 }
 
 @end
