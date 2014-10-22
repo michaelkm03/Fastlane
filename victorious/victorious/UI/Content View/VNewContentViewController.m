@@ -746,7 +746,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 if (selectedEnhancer.isBallistic)
                 {
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
-                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
