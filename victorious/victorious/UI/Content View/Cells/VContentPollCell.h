@@ -15,8 +15,6 @@
 
 @property (nonatomic, copy) NSURL *answerAThumbnailMediaURL;
 @property (nonatomic, copy) NSURL *answerBThumbnailMediaURL;
-@property (nonatomic, assign) BOOL answerBIsVideo;
-@property (nonatomic, assign) BOOL answerAIsVideo;
 
 @property (nonatomic, assign) BOOL answerAIsFavored;
 @property (nonatomic, assign) BOOL answerBIsFavored;
@@ -26,5 +24,9 @@
 
 - (void)setAnswerBPercentage:(CGFloat)answerBPercentage
                     animated:(BOOL)animated;
+
+- (void)setAnswerAIsVideowithVideoURL:(NSURL *)videoURL;
+
+- (void)setAnswerBIsVideowithVideoURL:(NSURL *)videoURL;
 
 @end

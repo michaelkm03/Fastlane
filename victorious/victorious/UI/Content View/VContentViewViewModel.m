@@ -539,6 +539,16 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     return [[self answerB].mediaUrl v_hasVideoExtension];
 }
 
+- (NSURL *)answerAVideoUrl
+{
+    return [NSURL URLWithString:[self answerA].mediaUrl];
+}
+
+- (NSURL *)answerBVideoUrl
+{
+    return [NSURL URLWithString:[self answerB].mediaUrl];
+}
+
 - (BOOL)votingEnabled
 {
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)

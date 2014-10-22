@@ -235,6 +235,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
 @property (nonatomic, readonly) BOOL answerAIsVideo;
 @property (nonatomic, readonly) BOOL answerBIsVideo;
+@property (nonatomic, readonly) NSURL *answerAVideoUrl;
+@property (nonatomic, readonly) NSURL *answerBVideoUrl;
 @property (nonatomic, readonly) BOOL votingEnabled;
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;

@@ -644,9 +644,15 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-                pollCell.answerAIsVideo = self.viewModel.answerAIsVideo;
+                if (self.viewModel.answerAIsVideo)
+                {
+                    [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
+                }
                 pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-                pollCell.answerBIsVideo = self.viewModel.answerBIsVideo;
+                if (self.viewModel.answerBIsVideo)
+                {
+                    [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
+                }
                 self.pollCell = pollCell;
                 return pollCell;
             }

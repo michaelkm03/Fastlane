@@ -48,7 +48,10 @@
 @property (nonatomic, readonly) CMTime currentTime;
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 
+@property (nonatomic, readonly) AVPlayerLayer *videoPlayerLayer;
+
 /**
+ 
  @return Whether tracking is enabled through VTrackingManager as set with
  a tracking item instance of type VTracking.
  */

@@ -18,6 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sb7-g7-6et" userLabel="Answer A Video Player Container">
+                        <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
                     <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Od3-Kk-qNW" userLabel="Answer A Button">
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
                         <state key="normal">
@@ -31,6 +35,10 @@
                         <rect key="frame" x="161" y="0.0" width="159" height="320"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AKp-ON-QNR" userLabel="Answer B Video Player Container">
+                        <rect key="frame" x="161" y="0.0" width="159" height="320"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Xk-MbI" userLabel="Answer B Button">
                         <rect key="frame" x="161" y="0.0" width="159" height="320"/>
                         <state key="normal">
@@ -66,19 +74,27 @@
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="width" secondItem="KbT-8J-Bx0" secondAttribute="width" id="B4f-sS-VlI"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="Dai-K0-d7n"/>
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="leading" secondItem="36J-hZ-MxW" secondAttribute="leading" id="F86-cz-Ur5"/>
+                <constraint firstItem="AKp-ON-QNR" firstAttribute="leading" secondItem="36J-hZ-MxW" secondAttribute="leading" id="FBH-Qz-6JY"/>
                 <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="FBs-qC-yll"/>
                 <constraint firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="G2s-Dy-440"/>
                 <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="GZ3-gt-KyP"/>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="trailing" secondItem="Sb7-g7-6et" secondAttribute="trailing" id="H2K-PA-OSc"/>
                 <constraint firstItem="r7x-ug-XeL" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="HES-Pm-0So"/>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="Sb7-g7-6et" secondAttribute="leading" id="IdP-9R-e2T"/>
                 <constraint firstItem="j2c-vu-8qs" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="LZK-xR-zeL"/>
                 <constraint firstItem="36J-hZ-MxW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="trailing" constant="2" id="NHH-Qc-izN"/>
                 <constraint firstAttribute="bottom" secondItem="j2c-vu-8qs" secondAttribute="bottom" id="RdZ-CZ-Srn"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="top" secondItem="KbT-8J-Bx0" secondAttribute="top" id="Svi-vN-n3g"/>
                 <constraint firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="T2W-Yv-sbY"/>
+                <constraint firstItem="AKp-ON-QNR" firstAttribute="top" secondItem="36J-hZ-MxW" secondAttribute="top" id="TUa-aX-u1t"/>
                 <constraint firstAttribute="bottom" secondItem="KbT-8J-Bx0" secondAttribute="bottom" id="UsZ-qL-enn"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="leading" secondItem="KbT-8J-Bx0" secondAttribute="leading" id="WmD-oN-7Vh"/>
                 <constraint firstItem="r7x-ug-XeL" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="bnD-KI-QNe"/>
+                <constraint firstItem="AKp-ON-QNR" firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="cqj-G1-f3x"/>
+                <constraint firstItem="AKp-ON-QNR" firstAttribute="bottom" secondItem="36J-hZ-MxW" secondAttribute="bottom" id="eqK-nq-sR9"/>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="top" secondItem="Sb7-g7-6et" secondAttribute="top" id="frS-Zb-9n3"/>
                 <constraint firstItem="bJW-Xk-MbI" firstAttribute="trailing" secondItem="36J-hZ-MxW" secondAttribute="trailing" id="ksq-It-Nv8"/>
+                <constraint firstItem="KbT-8J-Bx0" firstAttribute="bottom" secondItem="Sb7-g7-6et" secondAttribute="bottom" id="mnn-pw-SQj"/>
                 <constraint firstItem="Od3-Kk-qNW" firstAttribute="trailing" secondItem="KbT-8J-Bx0" secondAttribute="trailing" id="qFP-1d-X6Z"/>
             </constraints>
             <size key="customSize" width="250" height="223"/>
@@ -86,9 +102,11 @@
                 <outlet property="answerAButton" destination="Od3-Kk-qNW" id="akl-D5-0SY"/>
                 <outlet property="answerAResultView" destination="r7x-ug-XeL" id="IpX-yF-H13"/>
                 <outlet property="answerAThumbnail" destination="KbT-8J-Bx0" id="IjK-e0-MRh"/>
+                <outlet property="answerAVideoPlayerContainer" destination="Sb7-g7-6et" id="cHi-93-dJJ"/>
                 <outlet property="answerBButton" destination="bJW-Xk-MbI" id="gow-be-bcf"/>
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
+                <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
                 <outlet property="equalWidthsConstraint" destination="B4f-sS-VlI" id="4Kc-ik-kr7"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>

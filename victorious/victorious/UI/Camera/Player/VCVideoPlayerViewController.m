@@ -308,6 +308,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                         views:NSDictionaryOfVariableBindings(overlayView)]];
 }
 
+- (AVPlayerLayer *)videoPlayerLayer
+{
+    return self.playerLayer;
+}
+
 #pragma mark - Toolbar
 
 - (void)toggleToolbarHidden
