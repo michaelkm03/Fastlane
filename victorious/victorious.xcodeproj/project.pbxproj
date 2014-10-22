@@ -583,7 +583,6 @@
 		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
 		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
 		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
-		DB2A493719DF448800CB687B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
 		DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */; };
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
@@ -3596,7 +3595,6 @@
 				D8D73AB519F072A800E6955C /* LOL_v02.00006.png in Resources */,
 				D8D73ACE19F072A800E6955C /* WATERBALLOON_V01.00006.png in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
-				DB2A493719DF448800CB687B /* (null) in Resources */,
 				D8D73A7419F072A800E6955C /* Firework_v01.00013.png in Resources */,
 				D8D73AD719F072A800E6955C /* WATERBALLOON_V01.00015.png in Resources */,
 				D8D73AC019F072A800E6955C /* LOL_v02.00017.png in Resources */,
