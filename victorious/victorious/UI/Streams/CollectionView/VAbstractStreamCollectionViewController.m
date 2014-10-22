@@ -61,14 +61,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-//    }
-//    else if (self.hasFindFriendsAction)
-//    {
-//        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
-//                                     withAction:@selector(findFriendsAction:)
-//                                       onTarget:self];
-//    }
-//    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
                   forControlEvents:UIControlEventValueChanged];
