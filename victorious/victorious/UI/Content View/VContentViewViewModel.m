@@ -83,7 +83,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [VExperienceEnhancerController experienceEnhancerControllerForSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];

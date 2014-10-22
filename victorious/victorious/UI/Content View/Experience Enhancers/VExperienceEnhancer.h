@@ -10,16 +10,17 @@
 
 @interface VExperienceEnhancer : NSObject
 
-+ (instancetype)experienceEnhancerWithIcon:(UIImage *)icon
-                                 labelText:(NSString *)labelText
-                         animationSequence:(NSArray *)animationSequence
-                         animationDuration:(NSTimeInterval)animationDuration
-                               isBallistic:(BOOL)ballistic
-                           shouldLetterBox:(BOOL)shouldLetterBox
-                            flightDuration:(NSTimeInterval)flightDuration
-                               flightImage:(UIImage *)flightImage;
++ (instancetype)experienceEnhancerWithIconImage:(UIImage *)iconImage
+                                      labelText:(NSString *)labelText
+                              animationSequence:(NSArray *)animationSequence
+                              animationDuration:(NSTimeInterval)animationDuration
+                                    isBallistic:(BOOL)ballistic
+                                shouldLetterBox:(BOOL)shouldLetterBox
+                                 flightDuration:(NSTimeInterval)flightDuration
+                                    flightImage:(UIImage *)flightImage;
 
-@property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) UIImage *iconImage;
+
 @property (nonatomic, copy) NSString *labelText;
 
 //TODO: Lazily load these
@@ -30,5 +31,7 @@
 @property (nonatomic, assign) BOOL shouldLetterBox;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
 @property (nonatomic, strong) UIImage *flightImage;
+
+@property (nonatomic, readonly) BOOL hasRequiredImages;
 
 @end

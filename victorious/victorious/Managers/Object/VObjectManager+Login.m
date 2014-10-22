@@ -20,6 +20,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VVoteType.h"
 
 @implementation VObjectManager (Login)
 
@@ -62,6 +63,9 @@ static NSString * const kVVideoQualityKey = @"video_quality";
         {
             [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
         }
+        
+        // VSettingManager will only accept VVoteType objects from this array
+        [[VSettingManager sharedManager] updateSettingsWithVoteTypes:resultObjects];
         
         if (success)
         {

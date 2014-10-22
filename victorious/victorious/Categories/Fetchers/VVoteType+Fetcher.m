@@ -8,7 +8,7 @@
 
 #import "VVoteType+Fetcher.h"
 #import "VVoteType+RestKit.h"
-
+#import "VVoteType+ImageSerialization.h"
 #import "VObjectManager.h"
 
 typedef NS_ENUM(NSUInteger, VVoteIDs) {
@@ -50,16 +50,6 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
     }
     
     return [allVoteTypes objectAtIndex:index];
-}
-
-- (NSArray *)imageURLs
-{
-    NSMutableArray *urls = [[NSMutableArray alloc] init];
-    for (NSString *urlString in (NSArray *)self.images)
-    {
-        [urls addObject:[NSURL URLWithString:urlString]];
-    }
-    return urls;
 }
 
 @end
