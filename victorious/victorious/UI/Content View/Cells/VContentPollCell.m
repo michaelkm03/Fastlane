@@ -20,8 +20,8 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *answerAContainer;
-@property (weak, nonatomic) IBOutlet UIView *answerBContainer;
+@property (nonatomic, weak) IBOutlet UIView *answerAContainer;
+@property (nonatomic, weak) IBOutlet UIView *answerBContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *answerAThumbnail;
 @property (nonatomic, weak) IBOutlet UIButton *answerAButton;
@@ -35,8 +35,8 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
 
 @property (nonatomic, assign) BOOL answerBIsVideo;
 @property (nonatomic, assign) BOOL answerAIsVideo;
