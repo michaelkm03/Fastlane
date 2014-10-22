@@ -100,24 +100,17 @@
     return streamPager;
 }
 
-
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
     
     self.dataSource = self;
     self.delegate = self;
     self.streamVCs = [[NSMutableArray alloc] init];
     self.sequenceActionController = [[VSequenceActionController alloc] init];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
+    
     self.allStreams = self.allStreams;
     
-
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
 }
 
@@ -248,13 +241,12 @@
     }
     else
     {
-//        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
-//        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-//        [self setViewControllers:@[streamCollection]
-//                       direction:direction
-//                        animated:YES
-//                      completion:nil];
-//
+        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
+        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+        [self setViewControllers:@[streamCollection]
+                       direction:direction
+                        animated:YES
+                      completion:nil];
     }
             return YES;
 }
@@ -294,8 +286,8 @@
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
-    NSUInteger index = [self.streamVCs indexOfObject:[pendingViewControllers lastObject]];
-    self.navHeaderView.navSelector.currentIndex = index;
+//    NSUInteger index = [self.streamVCs indexOfObject:[pendingViewControllers lastObject]];
+//    self.navHeaderView.navSelector.currentIndex = index;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController

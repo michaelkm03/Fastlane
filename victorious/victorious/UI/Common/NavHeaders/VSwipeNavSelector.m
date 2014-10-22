@@ -207,6 +207,7 @@ static CGFloat const kVIndicatorViewHeight = 3;
 {
     UIButton *closestButton = [self closestButtonForOffset:scrollView.contentOffset];
     self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+    self.scrollView.scrollEnabled = YES;
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
