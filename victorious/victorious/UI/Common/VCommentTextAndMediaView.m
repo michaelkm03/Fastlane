@@ -21,11 +21,11 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, weak) UILabel      *textLabel;
-@property (nonatomic)            BOOL                addedConstraints;
-@property (nonatomic, weak)      UIButton           *mediaButton;
-@property (nonatomic, readwrite) UIImageView        *mediaThumbnailView;
-@property (nonatomic, readwrite) UIImageView        *playIcon;
+@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic) BOOL addedConstraints;
+@property (nonatomic, weak) UIButton *mediaButton;
+@property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
+@property (nonatomic, readwrite) UIImageView *playIcon;
 
 @end
 
@@ -53,12 +53,16 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 - (void)commonInit
 {
-    UILabel *textLabel = [[UILabel alloc] init];
-    textLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    textLabel.backgroundColor = [UIColor clearColor];
-    textLabel.numberOfLines = 0;
-    [self addSubview:textLabel];
-    self.textLabel = textLabel;
+    self.textView = [[UITextView alloc] init];
+    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.textView.backgroundColor = [UIColor clearColor];
+    self.textView.selectable = YES;
+    self.textView.editable = NO;
+    self.textView.scrollEnabled = NO;
+    self.textView.userInteractionEnabled = YES;
+    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 0.0, -5.0);
+    self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self addSubview:self.textView];
     
     UIImageView *mediaThumbnailView = [[UIImageView alloc] init];
     mediaThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -88,28 +92,27 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     [super layoutSubviews];
     if (!self.preferredMaxLayoutWidth)
     {
-        self.textLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bounds);
         [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
     }
 }
 
 - (void)updateConstraints
 {
-    UILabel *textLabel = self.textLabel;
+    UITextView *textView = self.textView;
     UIButton *mediaButton = self.mediaButton;
     UIImageView *mediaThumbnailView = self.mediaThumbnailView;
     UIImageView *playIcon = self.playIcon;
     
     if (!self.addedConstraints)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textLabel]"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]"
                                                                      options:0
                                                                      metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(textLabel)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textLabel]|"
+                                                                       views:NSDictionaryOfVariableBindings(textView)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textView]|"
                                                                      options:0
                                                                      metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(textLabel)]];
+                                                                       views:NSDictionaryOfVariableBindings(textView)]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[mediaButton]|"
                                                                      options:0
                                                                      metrics:nil
@@ -175,15 +178,15 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize labelSize = self.textLabel.intrinsicContentSize;
+    CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( CGRectGetWidth(self.textView.frame), CGFLOAT_MAX)];
     if (self.hasMedia)
     {
-        CGFloat mediaThumbnailSize = MAX(labelSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
-        return CGSizeMake(MAX(labelSize.width, mediaThumbnailSize), labelSize.height + kSpacingBetweenTextAndMedia + mediaThumbnailSize);
+        CGFloat mediaThumbnailSize = MAX(textViewSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
+        return CGSizeMake(MAX(textViewSize.width, mediaThumbnailSize), textViewSize.height + kSpacingBetweenTextAndMedia + mediaThumbnailSize);
     }
     else
     {
-        return labelSize;
+        return textViewSize;
     }
 }
 
@@ -192,20 +195,21 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 - (void)setText:(NSString *)text
 {
     _text = [text copy];
-    self.textLabel.attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes: self.textFont ? [[self class] attributesForTextWithFont:self.textFont] :[[self class] attributesForText]];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes: self.textFont ? [[self class] attributesForTextWithFont:self.textFont] :[[self class] attributesForText]];;
+    self.textView.attributedText = attributedText;
     [self invalidateIntrinsicContentSize];
 }
 
 - (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth
 {
     _preferredMaxLayoutWidth = preferredMaxLayoutWidth;
-    self.textLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     [self invalidateIntrinsicContentSize];
 }
 
 - (void)setHasMedia:(BOOL)hasMedia
 {
     _hasMedia = hasMedia;
+    self.mediaButton.hidden = !hasMedia;
     [self invalidateIntrinsicContentSize];
 }
 
