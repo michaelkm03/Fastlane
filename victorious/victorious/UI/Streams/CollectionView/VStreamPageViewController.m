@@ -148,7 +148,7 @@
         return;
     }
     
-    [self.streamVCs removeAllObjects];
+    [self deleteStreamVCs];
     
     for (VStream *stream in allStreams)
     {
@@ -176,6 +176,17 @@
     
     VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
     defaultStreamVC.shouldDisplayMarquee = shouldDisplayMarquee;
+}
+
+- (void)deleteStreamVCs
+{
+    for (UIViewController *viewController in self.streamVCs)
+    {
+        [viewController willMoveToParentViewController:nil];
+        [viewController.view removeFromSuperview];
+        [viewController removeFromParentViewController];
+    }
+    [self.streamVCs removeAllObjects];
 }
 
 #pragma mark - VSequenceActionsDelegate
@@ -237,15 +248,15 @@
     }
     else
     {
-        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
-        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-        [self setViewControllers:@[streamCollection]
-                       direction:direction
-                        animated:YES
-                      completion:nil];
-        
-        return YES;
+//        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
+//        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+//        [self setViewControllers:@[streamCollection]
+//                       direction:direction
+//                        animated:YES
+//                      completion:nil];
+//
     }
+            return YES;
 }
 
 #pragma mark - UIScrollViewdelegate
