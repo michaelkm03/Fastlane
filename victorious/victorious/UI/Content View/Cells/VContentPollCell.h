@@ -13,6 +13,8 @@
  */
 @interface VContentPollCell : VBaseCollectionViewCell
 
+@property (nonatomic) NSString *numberOfVotersText;
+
 @property (nonatomic, copy) NSURL *answerAThumbnailMediaURL;
 @property (nonatomic, copy) NSURL *answerBThumbnailMediaURL;
 

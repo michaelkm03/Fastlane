@@ -500,6 +500,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                    animated:YES];
         self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
 }
 

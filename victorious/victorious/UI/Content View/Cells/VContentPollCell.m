@@ -33,6 +33,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, weak) IBOutlet UIView *answerBVideoPlayerContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *pollCountContainer;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfVotersLabel;
 
 
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
@@ -71,6 +72,31 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 }
 
 #pragma mark - Property Accessors
+
+- (void)setNumberOfVotersText:(NSString *)numberOfVotersText
+{
+    if (!numberOfVotersText || (numberOfVotersText.length == 0))
+    {
+        return;
+    }
+    
+    self.numberOfVotersLabel.text = numberOfVotersText;
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0
+                        options:kNilOptions
+                     animations:^
+    {
+        self.pollCountContainer.alpha = 1.0f;
+    }
+                     completion:nil];
+}
+
+- (NSString *)numberOfVotersText
+{
+    return self.numberOfVotersLabel.text;
+}
 
 - (void)setAnswerAThumbnailMediaURL:(NSURL *)answerAThumbnailMediaURL
 {

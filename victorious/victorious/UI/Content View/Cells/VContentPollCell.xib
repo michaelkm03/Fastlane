@@ -90,7 +90,7 @@
                             <constraint firstAttribute="trailing" secondItem="AKp-ON-QNR" secondAttribute="trailing" id="vtz-TV-0V5"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH8-gE-tUo" userLabel="Poll Count Container">
+                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH8-gE-tUo" userLabel="Poll Count Container">
                         <rect key="frame" x="109" y="8" width="102" height="23"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="964 Voters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBg-45-xOC">
@@ -155,6 +155,7 @@
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
+                <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>
