@@ -18,15 +18,7 @@
 
 @end
 
-static __weak VAdVideoPlayerViewController *_adVideoPlayer = nil;
-
 @implementation VAdVideoPlayerViewController
-
-+ (VAdVideoPlayerViewController *)adVideoPlayer
-{
-    return _adVideoPlayer;
-    
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,26 +34,138 @@ static __weak VAdVideoPlayerViewController *_adVideoPlayer = nil;
 {
     [super viewDidLoad];
     
-    
-    // Set up ad breaks
-    self.adBreaks = @[[NSValue valueWithCMTime:CMTimeMake(0.0, 1.0)]];
-    
-    // Initialize ad break index
-    self.adBreakIndex = 0;
-    self.nextAdBreak = self.adBreaks[0];
-
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     
+    [self addNotificationObservers];
+    
+    // Initialize an ad
+    [self.liveRailAdManager initAd:@{
+                               @"LR_PUBLISHER_ID": @"68957"
+                             }];
+
+}
+
+#pragma mark - Observers
+
+- (void)addNotificationObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adDidLoad)
+                                                 name:LiveRailEventAdLoaded
+                                               object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adHadImpression)
+                                                 name:LiveRailEventAdImpression
+                                               object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adHadAnError)
+                                                 name:LiveRailEventAdError
+                                               object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adDidFinish)
+                                                 name:LiveRailEventAdStopped
+                                               object:self.liveRailAdManager];
+}
+
+- (void)removeNotificationObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LiveRailEventAdLoaded
+                                                  object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LiveRailEventAdImpression
+                                                  object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LiveRailEventAdError
+                                                  object:self.liveRailAdManager];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LiveRailEventAdStopped
+                                                  object:self.liveRailAdManager];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [self removeNotificationObservers];
+    
+    // Stop the ad if it still exists
+    if (self.liveRailAdManager != nil)
+    {
+        [self.liveRailAdManager stopAd];
+    }
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [super willMoveToParentViewController:parent];
+    
+    // Stop any ad that may be playing
+    [self.liveRailAdManager stopAd];
+    self.liveRailAdManager = nil;
+}
+
+#pragma mark - Ad Methods
+
+- (void)destroyAdInstance
+{
+    self.isAdPlaying = NO;
+    self.liveRailAdManager.hidden = YES;
+}
+
+#pragma mark - Ad Lifecycle Methods
+
+- (void)adDidLoad
+{
+    // Show the LiveRail Ad Manager view and start ad playback
+    self.liveRailAdManager.hidden = NO;
+    [self.liveRailAdManager startAd];
+
+    if ([self.delegate respondsToSelector:@selector(adDidLoadForAdVideoPlayerViewController:)])
+    {
+        [self.delegate adDidLoadForAdVideoPlayerViewController:self];
+    }
+}
+
+- (void)adHadImpression
+{
+    if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
+    {
+        [self.delegate adHadImpressionForAdVideoPlayerViewController:self];
+    }
+}
+
+- (void)adHadAnError
+{
+    [self destroyAdInstance];
+    
+    if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
+    {
+        [self.delegate adHadErrorForAdVideoPlayerViewController:self];
+    }
+}
+
+- (void)adDidFinish
+{
+    [self destroyAdInstance];
+    
+    if ([self.delegate respondsToSelector:@selector(adDidFinishForAdVideoPlayerViewController:)])
+    {
+        [self.delegate adDidFinishForAdVideoPlayerViewController:self];
+    }
 }
 
 @end

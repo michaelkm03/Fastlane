@@ -308,7 +308,7 @@
                      completion:nil];
     
     return;
-
+}
     
     self.lastSelectedIndexPath = indexPath;
     

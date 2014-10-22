@@ -1,18 +1,18 @@
 //
-//  VMonetizationManagerViewController.m
+//  VAdLiveRailVideoPlayerViewController.m
 //  victorious
 //
-//  Created by Lawrence Leach on 10/20/14.
+//  Created by Lawrence Leach on 10/21/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMonetizationManagerViewController.h"
+#import "VAdLiveRailVideoPlayerViewController.h"
 
-@interface VMonetizationManagerViewController ()
+@interface VAdLiveRailVideoPlayerViewController ()
 
 @end
 
-@implementation VMonetizationManagerViewController
+@implementation VAdLiveRailVideoPlayerViewController
 
 - (void)viewDidLoad
 {

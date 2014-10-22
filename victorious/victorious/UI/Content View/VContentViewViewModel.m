@@ -17,6 +17,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VAdBreak.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -214,6 +215,14 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     return request;
+}
+
+- (VAdSystem)adSystem
+{
+    VAdBreak *adBreak = self.sequence.adBreaks;
+    NSNumber *system_type = adBreak.adSystem;
+    VAdSystem ad_system = [system_type intValue];
+    return ad_system;
 }
 
 - (VUser *)user

@@ -111,7 +111,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
 {
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
-    
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];

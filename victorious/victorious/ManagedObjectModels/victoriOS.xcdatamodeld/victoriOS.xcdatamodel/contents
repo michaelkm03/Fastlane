@@ -6,6 +6,13 @@
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
     </entity>
+    <entity name="AdBreak" representedClassName="VAdBreak" syncable="YES">
+        <attribute name="adSystem" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startPosition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeout" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreaks" inverseEntity="Sequence" syncable="YES"/>
+    </entity>
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="isCorrect" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -142,6 +149,7 @@
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
+        <relationship name="adBreaks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
@@ -254,5 +262,6 @@
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="193"/>
         <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>
         <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
+        <element name="AdBreak" positionX="972" positionY="-216" width="128" height="118"/>
     </elements>
 </model>

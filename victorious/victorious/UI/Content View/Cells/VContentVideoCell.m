@@ -11,7 +11,7 @@
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
 
-@interface VContentVideoCell () <VCVideoPlayerDelegate>
+@interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VAdVideoPlayerViewController *adPlayerViewController;
@@ -43,6 +43,15 @@
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
 
     [self.contentView addSubview:self.videoPlayerViewController.view];
+    //[self.videoPlayerViewController.view setHidden:YES];
+    
+    // Ad Video Player
+    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil
+                                                                                 bundle:nil];
+    self.adPlayerViewController.delegate = self;
+    self.adPlayerViewController.view.frame = self.contentView.bounds;
+    self.adPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.contentView addSubview:self.adPlayerViewController.view];
 }
 
 - (void)dealloc
@@ -71,7 +80,7 @@
 
 - (void)play
 {
-    //[self.videoPlayerViewController.player play];
+    [self.videoPlayerViewController.player play];
 }
 
 #pragma mark - VCVideoPlayerDelegate
@@ -102,6 +111,22 @@
     // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
+}
+
+#pragma mark - VAdVideoPlayerViewControllerDelegate
+
+- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    // This is where we will load the content video after the ad video has loaded
+}
+
+- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    self.adPlayerViewController.view.hidden = YES;
+    self.videoPlayerViewController.view.hidden = NO;
+    
+    // Play content Video
+    [self play];
 }
 
 @end

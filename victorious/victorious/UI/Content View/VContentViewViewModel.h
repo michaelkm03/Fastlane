@@ -65,6 +65,23 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
+typedef NS_ENUM(NSUInteger, VAdSystem)
+{
+    /**
+     No ad network specified
+     */
+    VAdSystemNone     =   0,
+    /**
+     OpenX ad network
+     */
+    VAdSystemOpenX    =   1,
+    /**
+     LiveRail ad network
+     */
+    VAdSystemLiveRail =   2
+};
+
+
 /**
  * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
  * 
@@ -104,6 +121,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The type of asset we are currently viewing.
  */
 @property (nonatomic, assign, readonly) VContentViewType type;
+
+/**
+ *  The type of asset we are currently viewing.
+ */
+@property (nonatomic, assign, readonly) VAdSystem adSystem;
 
 /**
  *  A view model for the real time comments for the given sequence.
