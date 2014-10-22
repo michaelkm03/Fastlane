@@ -3429,9 +3429,15 @@
 				D8E39BC819CB7C80007FD86A /* VContentImageCell.h */,
 				D8E39BC919CB7C80007FD86A /* VContentImageCell.m */,
 				D8E39BCA19CB7C80007FD86A /* VContentImageCell.xib */,
+				D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */,
+				D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */,
+				D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */,
 				D8E39BCB19CB7C80007FD86A /* VContentPollCell.h */,
 				D8E39BCC19CB7C80007FD86A /* VContentPollCell.m */,
 				6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */,
+				D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */,
+				D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */,
+				D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */,
 				D8E39BCD19CB7C80007FD86A /* VContentVideoCell.h */,
 				D8E39BCE19CB7C80007FD86A /* VContentVideoCell.m */,
 				D8E39BCF19CB7C80007FD86A /* VContentVideoCell.xib */,
@@ -3447,12 +3453,6 @@
 				D8E39BD319CB7C80007FD86A /* VTickerCell.h */,
 				D8E39BD419CB7C80007FD86A /* VTickerCell.m */,
 				D8E39BD519CB7C80007FD86A /* VTickerCell.xib */,
-				D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */,
-				D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */,
-				D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */,
-				D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */,
-				D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */,
-				D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
