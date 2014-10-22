@@ -32,6 +32,9 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, weak) IBOutlet UIView *answerAVideoPlayerContainer;
 @property (nonatomic, weak) IBOutlet UIView *answerBVideoPlayerContainer;
 
+@property (weak, nonatomic) IBOutlet UIView *pollCountContainer;
+
+
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
 
@@ -63,6 +66,8 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     
     [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
     [self.answerBResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+    
+    self.pollCountContainer.layer.cornerRadius = CGRectGetHeight(self.pollCountContainer.bounds) * 0.5f;
 }
 
 #pragma mark - Property Accessors
@@ -210,6 +215,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 {
     [self.contentView bringSubviewToFront:self.answerAResultView];
     [self.contentView bringSubviewToFront:self.answerBResultView];
+    [self.contentView bringSubviewToFront:self.pollCountContainer];
     [self.contentView layoutIfNeeded];
     [UIView animateWithDuration:0.5f
                           delay:0.0f

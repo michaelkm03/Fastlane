@@ -90,11 +90,21 @@
                             <constraint firstAttribute="trailing" secondItem="AKp-ON-QNR" secondAttribute="trailing" id="vtz-TV-0V5"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH8-gE-tUo" userLabel="Poll Count View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH8-gE-tUo" userLabel="Poll Count Container">
                         <rect key="frame" x="109" y="8" width="102" height="23"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="964 Voters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBg-45-xOC">
+                                <rect key="frame" x="26" y="4" width="50" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="cBg-45-xOC" secondAttribute="centerX" id="AES-ZC-HVY"/>
                             <constraint firstAttribute="height" constant="23" id="Qjr-wB-kYs"/>
+                            <constraint firstAttribute="bottom" secondItem="cBg-45-xOC" secondAttribute="bottom" constant="7" id="qx1-Hz-Dkm"/>
                             <constraint firstAttribute="width" constant="102" id="rsf-vS-FAp"/>
                         </constraints>
                     </view>
@@ -145,6 +155,7 @@
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
+                <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>
         </collectionViewCell>
