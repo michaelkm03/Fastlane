@@ -1,4 +1,3 @@
-
 /* Class = "IBUINavigationItem"; title = "Edit Profile"; ObjectID = "AIv-0V-2Ca"; */
 "AIv-0V-2Ca.title" = "Editar perfil";
 
@@ -22,3 +21,4 @@
 
 /* Class = "IBUILabel"; text = "Alias"; ObjectID = "uO9-eE-EdR"; */
 "uO9-eE-EdR.text" = "Alias";
+

@@ -194,6 +194,8 @@
 		036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
+		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
+		037A643219F765430001C90B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
 		037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */; };
 		037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74119CFE8B20084BBED /* VUploadManager.m */; };
@@ -586,7 +588,6 @@
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
-		DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */; };
 		DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */; };
 		DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491119DF432F00CB687B /* VPublishShareView.xib */; };
 		DB2A491719DF436E00CB687B /* VNavigationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491919DF436E00CB687B /* VNavigationHeaderView.xib */; };
@@ -982,6 +983,7 @@
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
+		037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
 		037CB73419CFE02C0084BBED /* sampleImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleImage.jpg; sourceTree = "<group>"; };
 		037CB73A19CFE8550084BBED /* VMultipartFormDataWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipartFormDataWriter.h; sourceTree = "<group>"; };
 		037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriter.m; sourceTree = "<group>"; };
@@ -1001,8 +1003,6 @@
 		0390084719F37B1E00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
 		0390084A19F37B2800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Camera.strings; sourceTree = "<group>"; };
 		0390084B19F386E200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0390084C19F3893900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
-		0390084D19F3894700FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCVideoPlayerToolbarView.strings; sourceTree = "<group>"; };
 		0390084E19F389E100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VMediaPreviewViewController.xib; sourceTree = "<group>"; };
 		0390084F19F389EC00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VMediaPreviewViewController.strings; sourceTree = "<group>"; };
 		0390085019F38A9900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VPublishShareView.xib; sourceTree = "<group>"; };
@@ -2417,7 +2417,7 @@
 				039ED28F19C908F400305987 /* VCVideoPlayerToolbarSlider.m */,
 				039ED29019C908F400305987 /* VCVideoPlayerToolbarView.h */,
 				039ED29119C908F400305987 /* VCVideoPlayerToolbarView.m */,
-				DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */,
+				037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */,
 				039ED29319C908F400305987 /* VCVideoPlayerViewController.h */,
 				039ED29419C908F400305987 /* VCVideoPlayerViewController.m */,
 				039ED29519C908F400305987 /* VElapsedTimeFormatter.h */,
@@ -3615,6 +3615,7 @@
 				D8D73A6E19F072A800E6955C /* Firework_v01.00007.png in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
+				037A643219F765430001C90B /* Images.xcassets in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
@@ -3700,13 +3701,13 @@
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
 				D8D73ABE19F072A800E6955C /* LOL_v02.00015.png in Resources */,
-				DB2A490719DF42F300CB687B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8D73AC419F072A800E6955C /* LOL_v02.00021.png in Resources */,
 				D8D73A9619F072A800E6955C /* GLITTER_V01.00026.png in Resources */,
 				D8D73AAE19F072A800E6955C /* Lightening_V01.00019.png in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
 				D8D73AA719F072A800E6955C /* Lightening_V01.00012.png in Resources */,
+				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8D73A8B19F072A800E6955C /* GLITTER_V01.00015.png in Resources */,
 				D8D73AA219F072A800E6955C /* Lightening_V01.00007.png in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
@@ -4424,15 +4425,6 @@
 				0390086819F39E0B00FD7EDF /* es */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		DB2A490919DF42F300CB687B /* VCVideoPlayerToolbarView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0390084C19F3893900FD7EDF /* Base */,
-				0390084D19F3894700FD7EDF /* es */,
-			);
-			name = VCVideoPlayerToolbarView.xib;
 			sourceTree = "<group>";
 		};
 		DB2A490D19DF430D00CB687B /* VMediaPreviewViewController.xib */ = {
