@@ -59,7 +59,6 @@
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache *preloadImageCache;
-//@property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
 @property (strong, nonatomic) VMarqueeController *marquee;
