@@ -14,7 +14,7 @@
 "bcg-p6-c76.placeholder" = "Ubicación";
 
 /* Class = "IBUINavigationItem"; title = "Following"; ObjectID = "lH8-cc-I2G"; */
-"lH8-cc-I2G.title" = "Siguiendo a";
+"lH8-cc-I2G.title" = "Siguiendo";
 
 /* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "lvT-v5-J29"; */
 "lvT-v5-J29.placeholder" = "Nombre";

@@ -100,7 +100,7 @@ static NSMutableDictionary *messageViewControllers;
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                        onCancelButton:nil
                                                destructiveButtonTitle:reportTitle
                                                   onDestructiveButton:^(void)
