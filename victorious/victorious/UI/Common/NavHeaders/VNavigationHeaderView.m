@@ -116,7 +116,9 @@
     [self.menuButton setImage:image forState:UIControlStateNormal];
     
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    
+    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
+    self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
     self.headerLabel.text = self.headerText;
 }
 

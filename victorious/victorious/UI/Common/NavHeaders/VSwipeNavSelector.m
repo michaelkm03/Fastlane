@@ -77,7 +77,7 @@ static CGFloat const kVIndicatorViewHeight = 3;
         [button removeFromSuperview];
     }
     
-    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     NSMutableArray *newTitleButtons = [[NSMutableArray alloc] initWithCapacity:titles.count];
     CGFloat xOffset = 0;
     for (NSUInteger i = 0; i < titles.count; i++)
