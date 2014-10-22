@@ -126,6 +126,7 @@
                                                                 <constraint firstItem="1eU-SV-COV" firstAttribute="leading" secondItem="GHC-ke-dj2" secondAttribute="leading" constant="85" id="Hlp-cY-Yn3"/>
                                                                 <constraint firstAttribute="trailing" secondItem="FZR-U7-hah" secondAttribute="trailing" id="Uey-O7-5SB"/>
                                                                 <constraint firstItem="NCA-G7-lHm" firstAttribute="leading" secondItem="GHC-ke-dj2" secondAttribute="leading" constant="35" id="bup-cF-Km7"/>
+                                                                <constraint firstItem="FZR-U7-hah" firstAttribute="baseline" secondItem="1eU-SV-COV" secondAttribute="baseline" id="dbF-BP-npZ"/>
                                                                 <constraint firstAttribute="trailing" secondItem="xPV-kD-dwH" secondAttribute="trailing" id="h0Y-mz-hJl"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
