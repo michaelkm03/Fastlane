@@ -124,18 +124,12 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (IBAction)pressedCancel:(id)sender
 {
-    if (self.cancelHandler)
-    {
-        self.cancelHandler();
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)pressedTapAwayButton:(id)sender
 {
-    if (self.cancelHandler)
-    {
-        self.cancelHandler();
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)pressedAvatarButton:(id)sender
