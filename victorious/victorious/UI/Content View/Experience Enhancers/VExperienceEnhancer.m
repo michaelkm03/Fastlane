@@ -38,7 +38,7 @@
 
 - (BOOL)isBallistic
 {
-    return self.flightImage != nil && self.flightDuration > 0.0;
+    return self.flightImage && self.flightDuration > 0.0;
 }
 
 @end

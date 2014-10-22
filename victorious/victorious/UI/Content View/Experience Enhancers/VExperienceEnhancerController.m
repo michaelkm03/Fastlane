@@ -65,11 +65,13 @@
         else
         {
             VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType];
-            [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images) {
+            [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
+			{
                 enhancer.animationSequence = images;
                 enhancer.flightImage = enhancer.animationSequence.firstObject;
             }];
-            [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage) {
+            [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
+			{
                 enhancer.iconImage = iconImage;
             }];
             [experienceEnhanders addObject:enhancer];
