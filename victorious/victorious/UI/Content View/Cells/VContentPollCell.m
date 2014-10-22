@@ -20,6 +20,9 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *answerAContainer;
+@property (weak, nonatomic) IBOutlet UIView *answerBContainer;
+
 @property (nonatomic, weak) IBOutlet UIImageView *answerAThumbnail;
 @property (nonatomic, weak) IBOutlet UIButton *answerAButton;
 @property (nonatomic, weak) IBOutlet UIImageView *answerBThumbnail;
@@ -32,10 +35,11 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
+
 @property (nonatomic, assign) BOOL answerBIsVideo;
 @property (nonatomic, assign) BOOL answerAIsVideo;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *equalWidthsConstraint;
 
 @end
 
@@ -149,17 +153,21 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 - (IBAction)pressedAnswerAButton:(id)sender
 {
+    [self.contentView bringSubviewToFront:self.answerAContainer];
     [self shareAnimationCurveWithAnimations:^
      {
-         self.equalWidthsConstraint.constant = (self.equalWidthsConstraint.constant == -CGRectGetWidth(self.contentView.bounds)) ? -2 : -CGRectGetWidth(self.contentView.bounds);
+         self.answerAContainerViewWidth.constant = (self.answerAContainerViewWidth.constant ==  CGRectGetWidth(self.contentView.bounds)) ? (CGRectGetWidth(self.contentView.bounds)/2)-1 : CGRectGetWidth(self.contentView.bounds);
          [self.contentView layoutIfNeeded];
      }
                              withCompletion:^
      {
-         if (self.equalWidthsConstraint.constant == -2)
+         if (self.answerAContainerViewWidth.constant == (CGRectGetWidth(self.contentView.bounds)/2)-1)
          {
              [self.aVideoPlayerViewController.player pause];
-             [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+             if (self.answerAIsVideo)
+             {
+                 [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+             }
          }
          else
          {
@@ -171,17 +179,21 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 - (IBAction)pressedAnswerBButton:(id)sender
 {
+    [self.contentView bringSubviewToFront:self.answerBContainer];
     [self shareAnimationCurveWithAnimations:^
     {
-        self.equalWidthsConstraint.constant = (self.equalWidthsConstraint.constant == CGRectGetWidth(self.contentView.bounds)) ? 2 : CGRectGetWidth(self.contentView.bounds) ;
+         self.answerBContainerViewWidth.constant = (self.answerBContainerViewWidth.constant ==  CGRectGetWidth(self.contentView.bounds)) ? (CGRectGetWidth(self.contentView.bounds)/2)-1 : CGRectGetWidth(self.contentView.bounds);
         [self.contentView layoutIfNeeded];
     }
      withCompletion:^
     {
-        if (self.equalWidthsConstraint.constant == 2)
+        if (self.answerBContainerViewWidth.constant == (CGRectGetWidth(self.contentView.bounds)/2)-1)
         {
             [self.bVideoPlayerViewController.player pause];
-            [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+            if (self.answerBIsVideo)
+            {
+                [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+            }
         }
         else
         {
@@ -194,6 +206,8 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)shareAnimationCurveWithAnimations:(void (^)(void))animations
                            withCompletion:(void (^)(void))completion
 {
+    [self.contentView bringSubviewToFront:self.answerAResultView];
+    [self.contentView bringSubviewToFront:self.answerBResultView];
     [self.contentView layoutIfNeeded];
     [UIView animateWithDuration:0.5f
                           delay:0.0f
@@ -215,6 +229,5 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
          }
      }];
 }
-
 
 @end
