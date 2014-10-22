@@ -50,7 +50,7 @@
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, UICollectionViewDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -300,6 +300,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.placeholderImage = previewImageView.image;
+    contentViewController.delegate = self;
     
     UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
     contentNav.navigationBarHidden = YES;
@@ -493,6 +494,21 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
     self.collectionView.backgroundView = newBackgroundView;
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self refresh:self.refreshControl];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 #pragma mark - Notifications
