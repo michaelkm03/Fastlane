@@ -25,9 +25,7 @@
 
 @property (nonatomic, weak) id<UIScrollViewDelegate> delegate;///<Optional scrollViewDelegate in case this VC is a child VC.
 
-@property (nonatomic, assign) BOOL shouldShowHeaderLogo;
-@property (nonatomic, assign) BOOL hasAddAction;///<If enabled, shows the add action.  Default is to hide the action.  Calling this after viewDidLoad will have no effect.
-@property (nonatomic, assign) BOOL hasFindFriendsAction;///<If enabled, shows the find friends action.  Default is to hide the action.  hasAddAction will override this.  Calling this after viewDidLoad will have no effect.
+@property (nonatomic) UIEdgeInsets contentInset;///<The default content inset that will be used when the view appears.  Will not be used if this VC has a nav header.
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
 

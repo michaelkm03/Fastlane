@@ -114,7 +114,7 @@ static CGFloat const kVIndicatorViewHeight = 3;
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
-    if (_currentIndex == currentIndex || currentIndex > (NSInteger)self.titleButtons.count) //Prevent dem infinite loops
+    if (currentIndex > (NSInteger)self.titleButtons.count) //Prevent dem infinite loops
     {
         return;
     }
@@ -131,12 +131,18 @@ static CGFloat const kVIndicatorViewHeight = 3;
     if (!shouldChange)
     {
         _currentIndex = self.lastIndex;
+        [self scrollToButtonAtIndex:self.lastIndex];
         return;
     }
     
-    UIButton *button = self.titleButtons[currentIndex];
+    [self scrollToButtonAtIndex:currentIndex];
+}
+
+- (void)scrollToButtonAtIndex:(NSInteger)index
+{
+    UIButton *button = self.titleButtons[index];
     CGPoint contentOffset = CGPointMake(CGRectGetMidX(button.frame) - CGRectGetWidth(self.scrollView.frame) / 2,
-                                         self.scrollView.contentOffset.y);
+                                        self.scrollView.contentOffset.y);
     self.scrollView.scrollEnabled = NO;
     [self.scrollView setContentOffset:contentOffset animated:YES];
     
@@ -165,8 +171,26 @@ static CGFloat const kVIndicatorViewHeight = 3;
         return;
     }
     
+    UIButton *closestButton = [self closestButtonForOffset:scrollView.contentOffset];
+    if ((unsigned)self.currentIndex != [self.titleButtons indexOfObject:closestButton])
+    {
+        self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+    {
+        UIButton *closestButton = [self closestButtonForOffset:scrollView.contentOffset];
+        self.currentIndex = [self.titleButtons indexOfObject:closestButton];
+    }
+}
+
+- (UIButton *)closestButtonForOffset:(CGPoint)offset
+{
     UIButton *closestButton;
-    CGFloat xOffset = scrollView.contentOffset.x + CGRectGetWidth(self.scrollView.frame) / 2;
+    CGFloat xOffset = offset.x + CGRectGetWidth(self.scrollView.frame) / 2;
     for (UIButton *button in self.titleButtons)
     {
         CGFloat newButtonDifference = ABS(xOffset - CGRectGetMinX(button.frame));
@@ -176,10 +200,13 @@ static CGFloat const kVIndicatorViewHeight = 3;
             closestButton = button;
         }
     }
-    if ((unsigned)self.currentIndex != [self.titleButtons indexOfObject:closestButton])
-    {
-        self.currentIndex = [self.titleButtons indexOfObject:closestButton];
-    }
+    return closestButton;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    UIButton *closestButton = [self closestButtonForOffset:scrollView.contentOffset];
+    self.currentIndex = [self.titleButtons indexOfObject:closestButton];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
