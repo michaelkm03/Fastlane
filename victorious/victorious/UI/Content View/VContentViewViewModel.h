@@ -24,6 +24,9 @@ extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
  */
 extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
 
+/**
+ * Posted whenever new poll data is made available.
+ */
 extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
 
 /**
