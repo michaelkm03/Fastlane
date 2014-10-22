@@ -43,6 +43,7 @@
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
+NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
 
 @interface VContentViewViewModel ()
 
@@ -55,6 +56,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
 @property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
+@property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
 @end
 
@@ -93,6 +95,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
+        [self fetchSequenceData];
         [self fetchUserinfo];
         [self fetchHistogramData];
         [self fetchPollData];
@@ -116,6 +119,20 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
      }
                                      failBlock:nil];
 
+}
+
+- (void)fetchSequenceData
+{
+    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+#warning Correctly parse the ad system!
+        self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
+                                                                    andAdSystem:VAdSystemNone];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                            object:self];
+    }
+                                            failBlock:nil];
 }
 
 - (void)fetchUserinfo

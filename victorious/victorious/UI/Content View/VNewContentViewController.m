@@ -147,7 +147,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
     return shouldRotate;
 }
 
@@ -315,19 +315,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.view insertSubview:inputAccessoryView
                 belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -361,6 +350,23 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateContentNotification
+                                               object:self.viewModel];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
@@ -463,6 +469,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
         self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
+}
+
+- (void)contentDataDidUpdate:(NSNotification *)notification
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
 - (void)commentsDidUpdate:(NSNotification *)notification
@@ -628,7 +639,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 [videoCell.videoPlayerViewController enableTrackingWithTrackingItem:self.viewModel.sequence.tracking];
-                videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
