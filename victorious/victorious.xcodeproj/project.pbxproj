@@ -328,6 +328,8 @@
 		A7AB4FE319F57D5000BFFE35 /* VDiscoverViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */; };
 		A7AB4FE419F57DB800BFFE35 /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
+		BE0444DA19F72D9A004A3DF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
+		BE0444DC19F72DD5004A3DF9 /* VStreamCellHeaderView-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0444DB19F72DD5004A3DF9 /* VStreamCellHeaderView-C.xib */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
 		BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */; };
@@ -1219,6 +1221,7 @@
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE0444DB19F72DD5004A3DF9 /* VStreamCellHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCellHeaderView-C.xib"; sourceTree = "<group>"; };
 		BE11447719D49AA4006A6D65 /* VMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeStreamItemCell.h; sourceTree = "<group>"; };
 		BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeStreamItemCell.m; sourceTree = "<group>"; };
 		BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+VLoadingAnimations.h"; sourceTree = "<group>"; };
@@ -2321,6 +2324,7 @@
 			children = (
 				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
+				BE0444DB19F72DD5004A3DF9 /* VStreamCellHeaderView-C.xib */,
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 				0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */,
@@ -3630,6 +3634,7 @@
 			files = (
 				D8D73A8E19F072A800E6955C /* GLITTER_V01.00018.png in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
+				BE0444DC19F72DD5004A3DF9 /* VStreamCellHeaderView-C.xib in Resources */,
 				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
 				D8D73A8519F072A800E6955C /* GLITTER_V01.00009.png in Resources */,
 				D8D73AE119F072A800E6955C /* WATERBALLOON_V01.00025.png in Resources */,
@@ -3824,6 +3829,7 @@
 				D8D73AB119F072A800E6955C /* LOL_v02.00002.png in Resources */,
 				DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */,
 				D8D73A8819F072A800E6955C /* GLITTER_V01.00012.png in Resources */,
+				BE0444DA19F72D9A004A3DF9 /* Images.xcassets in Resources */,
 				D8D73AAD19F072A800E6955C /* Lightening_V01.00018.png in Resources */,
 				D8D73AA019F072A800E6955C /* Lightening_V01.00005.png in Resources */,
 				D8D73A7019F072A800E6955C /* Firework_v01.00009.png in Resources */,
