@@ -295,30 +295,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![[self.tableDataSource sequenceAtIndexPath:indexPath] isPoll])
-    {
-        VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
-        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-        contentViewController.delegate = self;
-        VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-        contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
-        
-        UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-        contentNav.navigationBarHidden = YES;
-        [self presentViewController:contentNav
-                           animated:YES
-                         completion:nil];
-        
-        [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
-                                             successBlock:nil
-                                                failBlock:nil];
-        
-        return;
-    }
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.delegate = self;
+    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
+    
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav
+                       animated:YES
+                     completion:nil];
+    
+    return;
+
     
     self.lastSelectedIndexPath = indexPath;
     
-    self.contentViewController = [[VContentViewController alloc] init];
+    self.contentViewController = [VContentViewController instantiateFromStoryboard:@"Main"];
     
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     if ([sequence.expiresAt timeIntervalSinceNow] < 0)

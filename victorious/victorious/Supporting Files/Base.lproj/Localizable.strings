@@ -26,6 +26,8 @@
 "Publish"               =   "Publish";
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
+"Share"                 =   "Share";
+"Discover"              =   "Discover";
 "Discover"              =   "Discover";
 "Share"                 =   "Share";
 
@@ -364,7 +366,9 @@
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
-"SupportEmailSubject"  =   "Feedback on";
+"SupportEmailSubject"   =   "Feedback on";
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
+"Suggested People"      = "Suggested People";
+"Trending Tags"         = "Trending Tags";

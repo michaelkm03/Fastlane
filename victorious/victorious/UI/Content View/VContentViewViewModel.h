@@ -9,13 +9,31 @@
 #import "VSequence.h"
 
 #import "VRealtimeCommentsViewModel.h"
+#import "VVideoCellViewModel.h"
 
 #import "VExperienceEnhancerController.h"
+
+#import "VHistogramDataSource.h"
+
+/**
+ *  Posted whenever the server returns an updated state of this content.
+ */
+extern NSString * const VContentViewViewModelDidUpdateContentNotification;
 
 /**
  *  Posted whenever new comments are made available for a given sequence.
  */
 extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+
+/**
+ *  Posted whenever new histogram data is made available.
+ */
+extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+
+/**
+ * Posted whenever new poll data is made available.
+ */
+extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -38,6 +56,13 @@ typedef NS_ENUM(NSInteger, VContentViewType)
      *  Poll content type.
      */
     VContentViewTypePoll
+};
+
+typedef NS_ENUM(NSInteger, VPollAnswer)
+{
+    VPollAnswerInvalid,
+    VPollAnswerA,
+    VPollAnswerB,
 };
 
 /**
@@ -114,10 +139,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
 @property (nonatomic, readonly) NSURL *shareURL;
 
-/**
- *  For content type video this will be a convenient url for the videoplayer.
- */
-@property (nonatomic, readonly) NSURL *videoURL;
+@property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
 
 /**
  *  If a video content has any real time comments this will be YES.
@@ -212,5 +234,25 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return Whether or not the media for the comment is a video.
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+
+@property (nonatomic, readonly) NSString *answerALabelText;
+@property (nonatomic, readonly) NSString *answerBLabelText;
+@property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
+@property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+@property (nonatomic, readonly) BOOL answerAIsVideo;
+@property (nonatomic, readonly) BOOL answerBIsVideo;
+@property (nonatomic, readonly) NSURL *answerAVideoUrl;
+@property (nonatomic, readonly) NSURL *answerBVideoUrl;
+@property (nonatomic, readonly) BOOL votingEnabled;
+@property (nonatomic, readonly) CGFloat answerAPercentage;
+@property (nonatomic, readonly) CGFloat answerBPercentage;
+
+- (VPollAnswer)favoredAnswer; // By the current user.
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
+
+/** This will be nil if no histogram data is available.
+ */
+@property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
 
 @end

@@ -28,6 +28,7 @@
     dispatch_once(&onceToken, ^(void)
     {
         // platform descriptions courtesy of http://theiphonewiki.com/wiki/Models
+        // alternate source of platform descriptions: https://ipsw.me/all
         platformDescriptions =
         @{
             @"iPhone1,1": @"iPhone 1G",
@@ -70,6 +71,11 @@
             @"iPad4,4":   @"iPad Mini Retina (WiFi)",
             @"iPad4,5":   @"iPad Mini Retina (WiFi + Cellular)",
             @"iPad4,6":   @"iPad Mini Retina",
+            @"iPad4,7":   @"iPad Mini 3 (WiFi)",
+            @"iPad4,8":   @"iPad Mini 3 (WiFi + Cellular)",
+            @"iPad4,9":   @"iPad Mini 3",
+            @"iPad5,3":   @"iPad Air 2 (WiFi)",
+            @"iPad5,4":   @"iPad Air 2 (WiFi + Cellular)",
             @"i386":      @"Simulator",
             @"x86_64":    @"Simulator",
         };

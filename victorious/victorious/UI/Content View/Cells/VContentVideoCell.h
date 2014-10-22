@@ -10,6 +10,9 @@
 
 #import "VCVideoPlayerViewController.h"
 
+// ViewModel
+#import "VVideoCellViewModel.h"
+
 @class VContentVideoCell;
 
 @import AVFoundation;
@@ -38,11 +41,14 @@
  */
 @interface VContentVideoCell : VContentCell
 
-@property (nonatomic, copy) NSURL *videoURL;
+@property (nonatomic, strong) VVideoCellViewModel *viewModel;
 
 @property (nonatomic, strong, readonly) VCVideoPlayerViewController *videoPlayerViewController;
 
 @property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
+
+// KVO off of this to disable any disruptive actions
+@property (nonatomic, readonly) BOOL isPlayingAd;
 
 /**
  *  Instruct the video cell's video player to play.

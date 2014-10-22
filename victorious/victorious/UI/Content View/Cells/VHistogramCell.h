@@ -8,10 +8,10 @@
 
 #import "VBaseCollectionViewCell.h"
 
-#import "VHistogramView.h"
+#import "VHistogramBarView.h"
 
 @interface VHistogramCell : VBaseCollectionViewCell
 
-@property (nonatomic, weak, readonly) VHistogramView *histogramView;
+@property (nonatomic, weak, readonly) VHistogramBarView *histogramView;
 
 @end

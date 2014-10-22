@@ -17,6 +17,7 @@ extern NSString * const VSettingsChannelsEnabled;
 extern NSString * const VSettingsMarqueeEnabled;
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
+extern NSString * const VExperimentsHistogramEnabled;
 //URLs
 extern NSString * const kVTermsOfServiceURL;
 extern NSString * const kVPrivacyUrl;
@@ -36,5 +37,10 @@ extern NSString * const kVChannelURLSupport;
 
 - (NSString *)exportVideoQuality;
 - (NSString *)captureVideoQuality;
+
+- (void)clearVoteTypes;
+- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
+
+@property (nonatomic, readonly) NSArray *voteTypes;
 
 @end

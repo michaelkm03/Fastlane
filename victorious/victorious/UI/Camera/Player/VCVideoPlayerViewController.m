@@ -7,39 +7,53 @@
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
+#import "VTrackingManager.h"
+
+static const CGFloat kToolbarHeight = 41.0f;
+static const NSTimeInterval kToolbarHideDelay =  2.0;
+static const NSTimeInterval kToolbarAnimationDuration =  0.2;
+static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
+
+static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
+static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
+
+static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @interface VCVideoPlayerViewController ()
 
-@property (nonatomic, weak)   VCVideoPlayerToolbarView *toolbarView;
-@property (nonatomic, weak)   UITapGestureRecognizer   *videoFrameTapGesture;
-@property (nonatomic, strong) VElapsedTimeFormatter    *timeFormatter;
-@property (nonatomic)         BOOL                      toolbarAnimating;
-@property (nonatomic)         BOOL                      sliderTouchActive;
-@property (nonatomic, strong) AVPlayerLayer            *playerLayer;
-@property (nonatomic, strong) id                        timeObserver;
-@property (nonatomic)         BOOL                      delegateNotifiedOfReadinessToPlay;
-@property (nonatomic)         CMTime                    startTime;
-@property (nonatomic)         CMTime                    endTime;
-@property (nonatomic)         BOOL                      didPlayToEnd;
-@property (nonatomic, strong) NSTimer                  *toolbarHideTimer;
-@property (nonatomic, strong) NSDate                   *toolbarShowDate;
-@property (nonatomic)         BOOL                      startedVideo;          ///< These BOOLs prevent multiple notifications due to scrubbing of the video past the quarter-points
-@property (nonatomic)         BOOL                      finishedFirstQuartile;
-@property (nonatomic)         BOOL                      finishedMidpoint;
-@property (nonatomic)         BOOL                      finishedThirdQuartile;
-@property (nonatomic)         BOOL                      hasCaculatedItemTime;
-@property (nonatomic)         BOOL                      wasPlayingBeforeDissappeared;
-@property (nonatomic)         BOOL                      hasCalculatedItemSize;
+@property (nonatomic, weak) VCVideoPlayerToolbarView *toolbarView;
+@property (nonatomic, weak) UITapGestureRecognizer *videoFrameTapGesture;
+@property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
+@property (nonatomic) BOOL toolbarAnimating;
+@property (nonatomic) BOOL sliderTouchActive;
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) id timeObserver;
+@property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
+@property (nonatomic) CMTime startTime;
+@property (nonatomic) CMTime endTime;
+@property (nonatomic) BOOL didPlayToEnd;
+@property (nonatomic, strong) NSTimer *toolbarHideTimer;
+@property (nonatomic, strong) NSDate *toolbarShowDate;
 
-@property (nonatomic, readwrite) CMTime                 currentTime;
+// These BOOLs prevent multiple notifications due to scrubbing of the video past the quarter-points
+@property (nonatomic) BOOL startedVideo;
+@property (nonatomic) BOOL finishedFirstQuartile;
+@property (nonatomic) BOOL finishedMidpoint;
+@property (nonatomic) BOOL finishedThirdQuartile;
+@property (nonatomic) BOOL hasCaculatedItemTime;
+@property (nonatomic) BOOL wasPlayingBeforeDissappeared;
+@property (nonatomic) BOOL hasCalculatedItemSize;
+
+@property (nonatomic, readwrite) CMTime previousTime;
+@property (nonatomic, readwrite) CMTime currentTime;
+@property (nonatomic, readonly) BOOL isAtEnd;
+
+@property (nonatomic, readonly) NSDictionary *trackingParameters;
+@property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
+@property (nonatomic, strong) VTrackingManager *trackingManager;
+@property (nonatomic, strong) VTracking *trackingItem;
 
 @end
-
-static const CGFloat        kToolbarHeight            = 41.0f;
-static const NSTimeInterval kToolbarHideDelay         =  2.0;
-static const NSTimeInterval kToolbarAnimationDuration =  0.2;
-
-static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @implementation VCVideoPlayerViewController
 
@@ -80,11 +94,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(currentItem))
                      options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                     context:NULL];
+                     context:nil];
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(rate))
                      options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                     context:NULL];
+                     context:nil];
     
     VCVideoPlayerViewController *__weak weakSelf = self;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
@@ -297,6 +311,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                         views:NSDictionaryOfVariableBindings(overlayView)]];
 }
 
+- (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
+{
+    self.playerLayer.videoGravity = videoPlayerLayerVideoGravity;
+}
+
+- (NSString *)videoPlayerLayerVideoGravity
+{
+    return self.playerLayer.videoGravity;
+}
+
 #pragma mark - Toolbar
 
 - (void)toggleToolbarHidden
@@ -401,7 +425,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;
     
+    self.previousTime = self.currentTime;
     self.currentTime = time;
+    
+    if ( [self didSkipFromPreviousTime:self.previousTime toCurrentTime:self.currentTime] )
+    {
+        if ( self.isTrackingEnabled )
+        {
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoSkip andParameters:self.trackingParametersForSkipEvent];
+        }
+    }
 
     if (!self.sliderTouchActive)
     {
@@ -429,6 +462,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play First Quartile" label:self.titleForAnalytics value:nil];
         }
+        if ( self.isTrackingEnabled )
+        {
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete25 andParameters:self.trackingParameters];
+        }
         self.finishedFirstQuartile = YES;
     }
     if (!self.finishedMidpoint && percentElapsed >= 0.5f)
@@ -441,6 +478,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Halfway" label:self.titleForAnalytics value:nil];
         }
+        if ( self.isTrackingEnabled )
+        {
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete50 andParameters:self.trackingParameters];
+        }
         self.finishedMidpoint = YES;
     }
     if (!self.finishedThirdQuartile && percentElapsed >= 0.75f)
@@ -452,6 +493,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if (self.shouldFireAnalytics)
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Third Quartile" label:self.titleForAnalytics value:nil];
+        }
+        if ( self.isTrackingEnabled )
+        {
+            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete75 andParameters:self.trackingParameters];
         }
         self.finishedThirdQuartile = YES;
     }
@@ -476,10 +521,27 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
+- (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime
+{
+    NSTimeInterval current = CMTimeGetSeconds( currentTime );
+    NSTimeInterval previous = CMTimeGetSeconds( previousTime );
+    
+    // Testing against NaN
+    if ( current != current || previous != previous )
+    {
+        return NO;
+    }
+    
+    NSTimeInterval difference = current - previous;
+    return previous > current || difference > kTimeDifferenceLimitForSkipEvent;
+}
+
 - (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem
 {
     if ([oldItem isKindOfClass:[AVPlayerItem class]])
     {
+        [oldItem removeObserver:self forKeyPath:kPlaybackBufferEmpty];
+        [oldItem removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
@@ -489,12 +551,39 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
         self.hasCaculatedItemTime = NO;
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(duration))         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
+        [currentItem addObserver:self
+                      forKeyPath:kPlaybackBufferEmpty
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:kPlaybackLikelyToKeepUp
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(status))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(tracks))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        [currentItem addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(duration))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:nil];
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemDidPlayToEndTime:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:currentItem];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemFailedToPlayToEndTime:)
+                                                     name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
 }
 
@@ -609,6 +698,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play to End" label:self.titleForAnalytics value:nil];
             }
+            if ( self.isTrackingEnabled )
+            {
+                [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete100 andParameters:self.trackingParameters];
+            }
             self.startedVideo          = NO;
             self.finishedFirstQuartile = NO;
             self.finishedMidpoint      = NO;
@@ -658,6 +751,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if ([self.delegate respondsToSelector:@selector(videoPlayerWillStartPlaying:)])
                 {
                     [self.delegate videoPlayerWillStartPlaying:self];
+                }
+                if ( self.isTrackingEnabled )
+                {
+                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStart andParameters:self.trackingParameters];
                 }
                 self.toolbarView.playButton.selected = YES;
                 [self startToolbarTimer];
@@ -720,6 +817,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     {
                         [self.delegate videoPlayerFailed:self];
                     }
+                    if ( self.isTrackingEnabled )
+                    {
+                        [self.trackingManager trackEventWithUrls:self.trackingItem.videoError andParameters:self.trackingParameters];
+                    }
                     break;
                 }
             }
@@ -757,6 +858,36 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }
     }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackBufferEmpty"])
+    {
+        if ( self.player.currentItem.playbackBufferEmpty )
+        {
+            if ( !self.isAtEnd )
+            {
+                if ( self.isTrackingEnabled )
+                {
+                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+                }
+            }
+        }
+    }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackLikelyToKeepUp"])
+    {
+        // This is where playback resumes after having been stalled.  Do nothing for now
+    }
+    
+}
+
+- (BOOL)isAtEnd
+{
+    CMTime time = self.currentTime;
+    CMTime duration = self.currentTime;
+    return time.value == duration.value;
+}
+
+- (BOOL)isAtStart
+{
+    return CMTimeGetSeconds( self.currentTime ) != 0.0;
 }
 
 #pragma mark - Notifiers
@@ -771,6 +902,38 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             self.delegateNotifiedOfReadinessToPlay = YES;
         }
     }
+}
+
+#pragma mark - Tracking
+
+- (NSDictionary *)trackingParametersForSkipEvent
+{
+    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.previousTime ) ),
+              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.currentTime ) ) };
+}
+
+- (NSDictionary *)trackingParameters
+{
+    return @{ kTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ) };
+}
+
+- (BOOL)isTrackingEnabled
+{
+    return self.trackingItem != nil && self.trackingManager != nil;
+}
+
+- (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
+{
+    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
+    
+    self.trackingItem = trackingItem;
+    self.trackingManager = [[VTrackingManager alloc] init];
+}
+
+- (void)disableTracking
+{
+    self.trackingItem = nil;
+    self.trackingManager = nil;
 }
 
 @end

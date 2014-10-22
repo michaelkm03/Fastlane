@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VAdVideoPlayerViewController *adPlayerViewController;
+@property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 
 @end
 
@@ -44,13 +45,26 @@
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
+- (void)dealloc
+{
+    [self.videoPlayerViewController disableTracking];
+}
+
 #pragma mark - Property Accessors
 
-- (void)setVideoURL:(NSURL *)videoURL
+- (void)setViewModel:(VVideoCellViewModel *)viewModel
 {
-    _videoURL = [videoURL copy];
+    _viewModel = viewModel;
     
-    [self.videoPlayerViewController setItemURL:videoURL];
+    if (viewModel.adSystem == VAdSystemNone)
+    {
+        self.isPlayingAd = NO;
+        self.videoPlayerViewController.itemURL = viewModel.itemURL;
+        return;
+    }
+    self.isPlayingAd = YES;
+    // Setup addVC
+    // Add to Content view
 }
 
 #pragma mark - Public Methods
@@ -77,6 +91,15 @@
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
+    // If videoPlayer is ad video player then swap to item video player and do not forward to our delegate
+//    if (videoPlayer == self.adPlayer)
+//    {
+//        self.isPlayingAd = NO;
+//        //Swap to content Video player
+//        return;
+//    }
+    
+    // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
 }

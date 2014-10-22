@@ -7,30 +7,38 @@
 //
 
 #import "VExperienceEnhancer.h"
+#import "VVoteType.h"
 
 @implementation VExperienceEnhancer
 
-+ (instancetype)experienceEnhancerWithIcon:(UIImage *)icon
-                                 labelText:(NSString *)labelText
-                         animationSequence:(NSArray *)animationSequence
-                         animationDuration:(NSTimeInterval)animationDuration
-                               isBallistic:(BOOL)ballistic
-                           shouldLetterBox:(BOOL)shouldLetterBox
-                            flightDuration:(NSTimeInterval)flightDuration
-                               flightImage:(UIImage *)flightImage
+- (instancetype)initWithVoteType:(VVoteType *)voteType
 {
-    VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] init];
-    
-    enhancer.icon = icon;
-    enhancer.labelText = labelText;
-    enhancer.animationSequence = animationSequence;
-    enhancer.animationDuration = animationDuration;
-    enhancer.ballistic = ballistic;
-    enhancer.shouldLetterBox = shouldLetterBox;
-    enhancer.flightDuration = flightDuration;
-    enhancer.flightImage = flightImage;
-    
-    return enhancer;
+    self = [super init];
+    if (self) {
+        _voteType = voteType;
+        
+        self.labelText = voteType.name;
+        self.flightDuration = voteType.flightDuration.floatValue;
+        self.animationDuration = voteType.animationDuration.floatValue;
+    }
+    return self;
+}
+
+- (BOOL)hasRequiredImages
+{
+    if ( self.isBallistic )
+    {
+        return self.flightImage != nil;
+    }
+    else
+    {
+        return self.iconImage != nil && self.animationSequence != nil && self.animationSequence.count > 0;
+    }
+}
+
+- (BOOL)isBallistic
+{
+    return self.flightImage && self.flightDuration > 0.0;
 }
 
 @end

@@ -63,26 +63,11 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
          {
              [self followingDidLoad];
          } failBlock:nil];
+        
+        self.suggestedUsers = [self usersByRemovingUser:objectManager.mainUser fromUsers:self.suggestedUsers];
     }
-    else
-    {
-        [self updateFollowingInUsers:self.suggestedUsers];
-        [self.collectionView reloadData];
-    }
-}
-
-- (void)followingDidLoad
-{
-    [self updateFollowingInUsers:self.suggestedUsers];
     
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
-                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self followingDidLoad];
-     } failBlock:^(NSOperation *operation, NSError *error) {
-         
-     }];
+    [self updateFollowingInUsers:self.suggestedUsers];
     [self.collectionView reloadData];
 }
 
@@ -163,6 +148,34 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     [self.collectionView reloadData];
 }
 
+- (NSArray *)usersByRemovingUser:(VUser *)user fromUsers:(NSArray *)users
+{
+    if ( ![users containsObject:user] )
+    {
+        return users;
+    }
+    
+    NSMutableArray *usersToKeep = [NSMutableArray arrayWithArray:users];
+    [usersToKeep removeObject:user];
+    return [NSArray arrayWithArray:usersToKeep];
+}
+
+- (void)followingDidLoad
+{
+    [self updateFollowingInUsers:self.suggestedUsers];
+    
+    VObjectManager *objectManager = [VObjectManager sharedManager];
+    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
+                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self followingDidLoad];
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         
+     }];
+    [self.collectionView reloadData];
+}
+
 #pragma mark - VTableViewControllerProtocol
 
 @synthesize hasLoadedOnce;
@@ -178,7 +191,11 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     if ([VObjectManager sharedManager].authorized)
     {
-        [[VObjectManager sharedManager] unfollowUser:user successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
+             [self.collectionView reloadData];
+         } failBlock:nil];
     }
     else if ( self.delegate != nil )
     {
@@ -190,7 +207,11 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     if ([VObjectManager sharedManager].authorized)
     {
-        [[VObjectManager sharedManager] followUser:user successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
+             [self.collectionView reloadData];
+         } failBlock:nil];
     }
     else if ( self.delegate != nil )
     {

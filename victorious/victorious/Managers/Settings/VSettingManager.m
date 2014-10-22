@@ -12,6 +12,10 @@
 
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
+#import "VVoteType.h"
+#import "VFileCache.h"
+#import "VFileCache+VVoteType.h"
+#import "VVoteType+ImageSerialization.h"
 
 //Settings
 NSString * const   kVCaptureVideoQuality               =   @"capture";
@@ -25,11 +29,19 @@ NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
+NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 
 //URLs
 NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
 NSString * const   kVAppStoreURL                       =   @"url.appstore";
 NSString * const   kVPrivacyUrl                        =   @"url.privacy";
+
+@interface VSettingManager()
+
+@property (nonatomic, strong) VFileCache *fileCache;
+@property (nonatomic, readwrite) NSArray *voteTypes;
+
+@end
 
 @implementation VSettingManager
 
@@ -53,9 +65,68 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     {
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
+        
+        self.fileCache = [[VFileCache alloc] init];
+        
+        [self clearVoteTypes];
     }
     
     return self;
+}
+
+- (void)clearVoteTypes
+{
+    self.voteTypes = @[];
+}
+
+- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
+{
+    // Error checking
+    if ( voteTypes == nil || voteTypes.count == 0 )
+    {
+        return;
+    }
+    
+    // Check that only objects of type VVoteType are accepted
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
+                              {
+                                  if ( ![voteType isMemberOfClass:[VVoteType class]] )
+                                  {
+                                      return NO;
+                                  }
+#if DEBUG
+                                  if ( voteType.iconImage == nil )
+                                  {
+                                      voteType.iconImage = voteType.images.firstObject;
+                                      voteType.flightDuration = @( 0.5f );
+                                      voteType.animationDuration = @( 0.5f );
+                                  }
+#endif
+                                  return voteType.containsRequiredData && voteType.hasValidTrackingData;
+                              }];
+    self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
+    
+    // Sort by display order
+    self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
+                                            usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
+                      {
+                          return [v1.displayOrder compare:v2.displayOrder];
+                      }];
+    
+    [self cacheVoteTypeImagesWithFileCache:self.fileCache];
+}
+
+- (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
+{
+    if ( self.voteTypes == nil )
+    {
+        return;
+    }
+    
+    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
+     {
+         [fileCache cacheImagesForVoteType:v];
+     }];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

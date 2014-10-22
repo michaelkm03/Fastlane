@@ -12,9 +12,9 @@
 
 @class VSequence;
 
-@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource>
+@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate>
 
-+ (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence;
+- (instancetype)initWithSequence:(VSequence *)sequence;
 
 @property (nonatomic, strong, readonly) VSequence *sequence;
 
