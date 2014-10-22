@@ -18,8 +18,6 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 
-static const NSTimeInterval kDefaultExperienceEnhancerAnimationDuration = 0.75f;
-
 @interface VExperienceEnhancerController ()
 
 @property (nonatomic, strong) VFileCache *fileCache;

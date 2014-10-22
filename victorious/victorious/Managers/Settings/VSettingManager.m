@@ -94,9 +94,7 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
                                   {
                                       return NO;
                                   }
-                                  
 #if DEBUG
-#warning This keeps the app working until the backend updates the missinng 'icon' field and adds the actual emotive ballstics
                                   if ( voteType.iconImage == nil )
                                   {
                                       voteType.iconImage = voteType.images.firstObject;
