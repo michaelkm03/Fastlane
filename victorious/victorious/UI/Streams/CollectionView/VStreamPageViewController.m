@@ -280,14 +280,22 @@
    previousViewControllers:(NSArray *)previousViewControllers
        transitionCompleted:(BOOL)completed
 {
-    NSUInteger index = [self.streamVCs indexOfObject:[self.viewControllers lastObject]];
-    self.navHeaderView.navSelector.currentIndex = index;
+    if (completed)
+    {
+        NSUInteger index = [self.streamVCs indexOfObject:[self.viewControllers lastObject]];
+        self.navHeaderView.navSelector.currentIndex = index;
+    }
+    else
+    {
+        NSUInteger index = [self.streamVCs indexOfObject:[previousViewControllers lastObject]];
+        self.navHeaderView.navSelector.currentIndex = index;
+    }
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
-//    NSUInteger index = [self.streamVCs indexOfObject:[pendingViewControllers lastObject]];
-//    self.navHeaderView.navSelector.currentIndex = index;
+    NSUInteger index = [self.streamVCs indexOfObject:[pendingViewControllers lastObject]];
+    self.navHeaderView.navSelector.currentIndex = index;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
