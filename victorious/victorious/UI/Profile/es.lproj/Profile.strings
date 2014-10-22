@@ -8,7 +8,7 @@
 "SPx-xO-esM.title" = "Perfil";
 
 /* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "Trt-Yx-Qae"; */
-"Trt-Yx-Qae.text" = "Dinos algo acerca de ti...";
+"Trt-Yx-Qae.text" = "Nos dicen algo acerca de ti...";
 
 /* Class = "IBUITextField"; placeholder = "Location"; ObjectID = "bcg-p6-c76"; */
 "bcg-p6-c76.placeholder" = "Ubicación";

@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "press-and-hold-tooltip.png"
+      "filename" : "tooltip-arrow.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "press-and-hold-tooltip@2x.png"
+      "filename" : "tooltip-arrow@2x.png"
     },
     {
       "idiom" : "universal",
