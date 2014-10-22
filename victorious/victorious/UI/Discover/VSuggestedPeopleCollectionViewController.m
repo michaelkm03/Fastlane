@@ -63,24 +63,11 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
          {
              [self followingDidLoad];
          } failBlock:nil];
+        
+        self.suggestedUsers = [self usersByRemovingUser:objectManager.mainUser fromUsers:self.suggestedUsers];
     }
     
     [self updateFollowingInUsers:self.suggestedUsers];
-    [self.collectionView reloadData];
-}
-
-- (void)followingDidLoad
-{
-    [self updateFollowingInUsers:self.suggestedUsers];
-    
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
-                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self followingDidLoad];
-     } failBlock:^(NSOperation *operation, NSError *error) {
-         
-     }];
     [self.collectionView reloadData];
 }
 
@@ -158,6 +145,33 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 - (void)clearData
 {
     _suggestedUsers = @[];
+    [self.collectionView reloadData];
+}
+
+- (NSArray *)usersByRemovingUser:(VUser *)user fromUsers:(NSArray *)users
+{
+    if ( ![users containsObject:user] )
+    {
+        return users;
+    }
+    
+    NSMutableArray *usersToKeep = [NSMutableArray arrayWithArray:users];
+    [usersToKeep removeObject:user];
+    return [NSArray arrayWithArray:usersToKeep];
+}
+
+- (void)followingDidLoad
+{
+    [self updateFollowingInUsers:self.suggestedUsers];
+    
+    VObjectManager *objectManager = [VObjectManager sharedManager];
+    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
+                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self followingDidLoad];
+     } failBlock:^(NSOperation *operation, NSError *error) {
+         
+     }];
     [self.collectionView reloadData];
 }
 
