@@ -47,8 +47,10 @@
 @property (nonatomic) BOOL shouldFireAnalytics;                         ///< Set to NO to disable analytics. YES by default.
 @property (nonatomic, readonly) CMTime currentTime;
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
+@property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 
 /**
+ 
  @return Whether tracking is enabled through VTrackingManager as set with
  a tracking item instance of type VTracking.
  */

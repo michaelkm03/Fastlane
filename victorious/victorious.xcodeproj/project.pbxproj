@@ -276,6 +276,7 @@
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
+		6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
@@ -418,6 +419,10 @@
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D82C08F719D0C09F00273E0D /* VContentViewVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */; };
 		D82C08FA19D0C11200273E0D /* VContentViewBaseLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C08F919D0C11200273E0D /* VContentViewBaseLayout.m */; };
+		D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */; };
+		D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */; };
+		D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */; };
+		D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */; };
 		D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */; };
 		D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CEF19E3768300D7E260 /* VExperienceEnhancerController.m */; };
 		D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */; };
@@ -1155,6 +1160,7 @@
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
+		6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollCell.xib; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1403,6 +1409,12 @@
 		D82C08F619D0C09F00273E0D /* VContentViewVideoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewVideoLayout.m; sourceTree = "<group>"; };
 		D82C08F819D0C11200273E0D /* VContentViewBaseLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewBaseLayout.h; sourceTree = "<group>"; };
 		D82C08F919D0C11200273E0D /* VContentViewBaseLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewBaseLayout.m; sourceTree = "<group>"; };
+		D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollQuestionCell.h; sourceTree = "<group>"; };
+		D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollQuestionCell.m; sourceTree = "<group>"; };
+		D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollQuestionCell.xib; sourceTree = "<group>"; };
+		D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollBallotCell.h; sourceTree = "<group>"; };
+		D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollBallotCell.m; sourceTree = "<group>"; };
+		D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollBallotCell.xib; sourceTree = "<group>"; };
 		D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNewContentViewController+Actions.h"; sourceTree = "<group>"; };
 		D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNewContentViewController+Actions.m"; sourceTree = "<group>"; };
 		D8360CEE19E3768300D7E260 /* VExperienceEnhancerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerController.h; sourceTree = "<group>"; };
@@ -3465,6 +3477,9 @@
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				D8E39BD019CB7C80007FD86A /* VContentBackgroundSupplementaryView.h */,
+				D8E39BD119CB7C80007FD86A /* VContentBackgroundSupplementaryView.m */,
+				D8E39BD219CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib */,
 				D8E39BC219CB7C80007FD86A /* VContentCell.h */,
 				D8E39BC319CB7C80007FD86A /* VContentCell.m */,
 				D8E39BC519CB7C80007FD86A /* VContentCommentsCell.h */,
@@ -3473,26 +3488,30 @@
 				D8E39BC819CB7C80007FD86A /* VContentImageCell.h */,
 				D8E39BC919CB7C80007FD86A /* VContentImageCell.m */,
 				D8E39BCA19CB7C80007FD86A /* VContentImageCell.xib */,
+				D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */,
+				D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */,
+				D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */,
 				D8E39BCB19CB7C80007FD86A /* VContentPollCell.h */,
 				D8E39BCC19CB7C80007FD86A /* VContentPollCell.m */,
+				6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */,
+				D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */,
+				D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */,
+				D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */,
 				D8E39BCD19CB7C80007FD86A /* VContentVideoCell.h */,
 				D8E39BCE19CB7C80007FD86A /* VContentVideoCell.m */,
 				D8E39BCF19CB7C80007FD86A /* VContentVideoCell.xib */,
-				D8E39BD019CB7C80007FD86A /* VContentBackgroundSupplementaryView.h */,
-				D8E39BD119CB7C80007FD86A /* VContentBackgroundSupplementaryView.m */,
-				D8E39BD219CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib */,
-				D8E39BD319CB7C80007FD86A /* VTickerCell.h */,
-				D8E39BD419CB7C80007FD86A /* VTickerCell.m */,
-				D8E39BD519CB7C80007FD86A /* VTickerCell.xib */,
-				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
-				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
-				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
-				D8C9CF2D19E4F417007B461E /* VHistogramCell.h */,
-				D8C9CF2E19E4F417007B461E /* VHistogramCell.m */,
-				D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */,
 				D8D8958719E88C2100632663 /* VExperienceEnhancerBarCell.h */,
 				D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */,
 				D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */,
+				D8C9CF2D19E4F417007B461E /* VHistogramCell.h */,
+				D8C9CF2E19E4F417007B461E /* VHistogramCell.m */,
+				D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */,
+				D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */,
+				D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */,
+				D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */,
+				D8E39BD319CB7C80007FD86A /* VTickerCell.h */,
+				D8E39BD419CB7C80007FD86A /* VTickerCell.m */,
+				D8E39BD519CB7C80007FD86A /* VTickerCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3601,6 +3620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D73A8E19F072A800E6955C /* GLITTER_V01.00018.png in Resources */,
+				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
 				D8D73A8519F072A800E6955C /* GLITTER_V01.00009.png in Resources */,
@@ -3630,6 +3650,7 @@
 				D8D73A7919F072A800E6955C /* Firework_v01.00018.png in Resources */,
 				DB2A490B19DF430D00CB687B /* VMediaPreviewViewController.xib in Resources */,
 				D8D73A8119F072A800E6955C /* GLITTER_V01.00005.png in Resources */,
+				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				D8D73AA519F072A800E6955C /* Lightening_V01.00010.png in Resources */,
 				D8D73A9419F072A800E6955C /* GLITTER_V01.00024.png in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
@@ -3767,6 +3788,7 @@
 				D8D73A8F19F072A800E6955C /* GLITTER_V01.00019.png in Resources */,
 				D8D73A7219F072A800E6955C /* Firework_v01.00011.png in Resources */,
 				D8D73A8919F072A800E6955C /* GLITTER_V01.00013.png in Resources */,
+				6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */,
 				D8D73A6819F072A800E6955C /* Firework_v01.00001.png in Resources */,
 				D8D73ABB19F072A800E6955C /* LOL_v02.00012.png in Resources */,
 				D8D73A6C19F072A800E6955C /* Firework_v01.00005.png in Resources */,
@@ -4053,6 +4075,7 @@
 				0314D4F819B46B5E00FA363C /* VStreamPollCell.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
+				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
 				0314D4CE19B46B5E00FA363C /* UIViewController+VSideMenuViewController.m in Sources */,
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
@@ -4244,6 +4267,7 @@
 				A75FAF2819E8C03D00EB87C1 /* VVoteAction+RestKit.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
+				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,

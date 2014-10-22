@@ -311,6 +311,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                         views:NSDictionaryOfVariableBindings(overlayView)]];
 }
 
+- (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
+{
+    self.playerLayer.videoGravity = videoPlayerLayerVideoGravity;
+}
+
+- (NSString *)videoPlayerLayerVideoGravity
+{
+    return self.playerLayer.videoGravity;
+}
+
 #pragma mark - Toolbar
 
 - (void)toggleToolbarHidden

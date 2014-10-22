@@ -13,4 +13,20 @@
  */
 @interface VContentPollCell : VBaseCollectionViewCell
 
+@property (nonatomic, copy) NSURL *answerAThumbnailMediaURL;
+@property (nonatomic, copy) NSURL *answerBThumbnailMediaURL;
+
+@property (nonatomic, assign) BOOL answerAIsFavored;
+@property (nonatomic, assign) BOOL answerBIsFavored;
+
+- (void)setAnswerAPercentage:(CGFloat)answerAPercentage
+                    animated:(BOOL)animated;
+
+- (void)setAnswerBPercentage:(CGFloat)answerBPercentage
+                    animated:(BOOL)animated;
+
+- (void)setAnswerAIsVideowithVideoURL:(NSURL *)videoURL;
+
+- (void)setAnswerBIsVideowithVideoURL:(NSURL *)videoURL;
+
 @end

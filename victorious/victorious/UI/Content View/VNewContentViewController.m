@@ -29,6 +29,9 @@
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
+#import "VContentPollCell.h"
+#import "VContentPollQuestionCell.h"
+#import "VContentPollBallotCell.h"
 //#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
@@ -46,6 +49,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -82,6 +86,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VHistogramCell *histogramCell;
+@property (nonatomic, weak) VContentPollCell *pollCell;
+@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -318,6 +324,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(hitogramDataDidUpdate:)
                                                  name:VContentViewViewModelDidUpdateHistogramDataNotification
                                                object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -334,6 +344,12 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                  forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
@@ -468,6 +484,23 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
     self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)pollDataDidUpdate:(NSNotification *)notification
+{
+
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+    }
 }
 
 #pragma mark - IBActions
@@ -607,11 +640,33 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 return videoCell;
             }
             case VContentViewTypePoll:
-                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
+            {
+                VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+                pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+                if (self.viewModel.answerAIsVideo)
+                {
+                    [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
+                }
+                pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
+                if (self.viewModel.answerBIsVideo)
+                {
+                    [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
+                }
+                self.pollCell = pollCell;
+                return pollCell;
+            }
         }
         case VContentViewSectionHistogram:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+                questionCell.question = self.viewModel.sequence.name;
+                return questionCell;
+            }
+            
             if (self.histogramCell)
             {
                 return self.histogramCell;
@@ -626,6 +681,56 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         }
         case VContentViewSectionExperienceEnhancers:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                if (!self.ballotCell)
+                {
+                    self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
+                                                                                forIndexPath:indexPath];
+                }
+                self.ballotCell.answerA = self.viewModel.answerALabelText;
+                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+                
+                self.ballotCell.answerASelectionHandler = ^(void)
+                {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [self presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
+                    [self.viewModel answerPollWithAnswer:VPollAnswerA
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                                   animated:YES];
+                    }];
+                };
+                self.ballotCell.answerBSelectionHandler = ^(void)
+                {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [self presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
+                    [self.viewModel answerPollWithAnswer:VPollAnswerB
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                                   animated:YES];
+                    }];
+                };
+                
+                return self.ballotCell;
+            }
+            
             if (self.experienceEnhancerCell)
             {
                 return self.experienceEnhancerCell;
@@ -762,12 +867,22 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return [self.videoSizeValue CGSizeValue];
             }
-            return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            switch (self.viewModel.type)
+            {
+                case VContentViewTypeInvalid:
+                    return CGSizeZero;
+                case VContentViewTypeImage:
+                    return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypeVideo:
+                    return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypePoll:
+                    return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
         }
         case VContentViewSectionHistogram:
-            if (self.viewModel.type == VContentViewTypeImage)
+            if (self.viewModel.type == VContentViewTypePoll)
             {
-                return CGSizeZero;
+                return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
             if (!self.viewModel.histogramDataSource)
             {
@@ -776,12 +891,19 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
         {
-            CGSize size = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return CGSizeZero;
+            }
             if ( self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers == 0 )
             {
-                size.height = 0.0f;
+                return CGSizeZero;
             }
-            return size;
+            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionAllComments:
         {
@@ -789,7 +911,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
                                                andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
-            
         case VContentViewSectionCount:
             return CGSizeZero;
     }
