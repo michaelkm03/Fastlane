@@ -370,5 +370,5 @@
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
-"Suggested People"      = "Suggested People"
-"Trending Tags"         = "Trending Tags"
+"Suggested People"      = "Suggested People";
+"Trending Tags"         = "Trending Tags";
