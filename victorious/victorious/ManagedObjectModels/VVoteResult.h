@@ -9,12 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+/**
+ A representation of vote statics for a sequence used to show
+ vote activity for a sequence when viewing it.
+ */
 @class VSequence;
 
 @interface VVoteResult : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * count;
-@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber *count;
+@property (nonatomic, retain) NSNumber *remoteId;
 @property (nonatomic, retain) VSequence *sequence;
 
 @end

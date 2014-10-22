@@ -102,7 +102,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
                                                                                                 forIndexPath:indexPath];
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = enhancerForIndexPath.labelText;
-    experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.icon;
+    experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     return experienceEnhancerCell;
 }
 
@@ -125,6 +125,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
                                                                 toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        
+        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath targetPoint:convertedCenter];
+    }
+    else
+    {
+        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath];
     }
 }
 

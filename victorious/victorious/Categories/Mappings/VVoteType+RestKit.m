@@ -20,10 +20,14 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order"  : VSelectorName(display_order),
-                                  @"name"           : VSelectorName(name),
-                                  @"id"             : VSelectorName(remoteId),
-                                  @"images"         : VSelectorName(images)
+                                  @"display_order"      : VSelectorName(displayOrder),
+                                  @"name"               : VSelectorName(name),
+                                  @"id"                 : VSelectorName(remoteId),
+                                  @"frames"             : VSelectorName(imageCount),
+                                  @"image"              : VSelectorName(imageFormat),
+                                  @"icon_image"         : VSelectorName(iconImage),
+                                  @"animation_duration" : VSelectorName(animationDuration),
+                                  @"flight_duration"    : VSelectorName(flightDuration)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

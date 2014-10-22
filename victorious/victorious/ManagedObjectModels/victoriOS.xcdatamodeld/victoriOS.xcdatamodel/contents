@@ -150,6 +150,7 @@
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="parentEntity" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
+        <relationship name="voteActions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteAction" inverseName="sequence" inverseEntity="VoteAction" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
@@ -196,15 +197,24 @@
         <relationship name="repostedSequences" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
+    <entity name="VoteAction" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteActions" inverseEntity="Sequence" syncable="YES"/>
+    </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteResults" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="VoteType" representedClassName="VVoteType" syncable="YES">
-        <attribute name="display_order" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="images" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="animationDuration" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0.5" syncable="YES"/>
+        <attribute name="displayOrder" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="flightDuration" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="iconImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageFormat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="VStream" representedClassName="VStream" parentEntity="VStreamItem" syncable="YES">
@@ -238,9 +248,10 @@
         <element name="Sequence" positionX="1060" positionY="-531" width="128" height="390"/>
         <element name="Tracking" positionX="702" positionY="-459" width="128" height="210"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="420"/>
-        <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
-        <element name="VoteType" positionX="585" positionY="-612" width="128" height="103"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
+        <element name="VoteAction" positionX="702" positionY="-459" width="128" height="88"/>
+        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="VoteType" positionX="585" positionY="-612" width="128" height="165"/>
         <element name="VStream" positionX="855" positionY="-412" width="128" height="103"/>
         <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
     </elements>

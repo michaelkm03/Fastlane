@@ -14,6 +14,9 @@ static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
 
+static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
+static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
+
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @interface VCVideoPlayerViewController ()
@@ -527,6 +530,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     if ([oldItem isKindOfClass:[AVPlayerItem class]])
     {
+        [oldItem removeObserver:self forKeyPath:kPlaybackBufferEmpty];
+        [oldItem removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
@@ -537,11 +542,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         self.hasCaculatedItemTime = NO;
         [currentItem addObserver:self
-                      forKeyPath:@"playbackBufferEmpty"
+                      forKeyPath:kPlaybackBufferEmpty
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                          context:nil];
         [currentItem addObserver:self
-                      forKeyPath:@"playbackLikelyToKeepUp"
+                      forKeyPath:kPlaybackLikelyToKeepUp
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                          context:nil];
         [currentItem addObserver:self
