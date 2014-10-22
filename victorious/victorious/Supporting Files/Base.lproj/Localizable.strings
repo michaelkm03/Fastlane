@@ -18,6 +18,7 @@
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
+"ConfirmButton"         =   "Confirm";
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
@@ -372,3 +373,5 @@
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
 "Suggested People"      = "Suggested People";
 "Trending Tags"         = "Trending Tags";
+
+"AreYouSureYouWantToDelete" = "Are you sure you want to delete?";

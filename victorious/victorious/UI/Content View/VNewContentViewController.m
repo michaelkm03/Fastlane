@@ -15,9 +15,6 @@
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
 
-// View Categories
-#import "UIView+VShadows.h"
-
 // Images
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
@@ -267,16 +264,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                      forState:UIControlStateNormal];
-    self.closeButton.tintColor = [UIColor whiteColor];
-    [self.closeButton v_applyShadowsWithZIndex:2];
-    
-    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                     forState:UIControlStateNormal];
-    self.moreButton.imageView.tintColor = [UIColor whiteColor];
-    [self.moreButton v_applyShadowsWithZIndex:2];
     
     VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
