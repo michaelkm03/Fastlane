@@ -308,9 +308,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                         views:NSDictionaryOfVariableBindings(overlayView)]];
 }
 
-- (AVPlayerLayer *)videoPlayerLayer
+- (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
 {
-    return self.playerLayer;
+    _videoPlayerLayerVideoGravity = [videoPlayerLayerVideoGravity copy];
+    self.playerLayer.videoGravity = _videoPlayerLayerVideoGravity;
 }
 
 #pragma mark - Toolbar
