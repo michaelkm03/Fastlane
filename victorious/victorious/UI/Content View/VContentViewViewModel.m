@@ -26,6 +26,7 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 
@@ -93,9 +94,12 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
-        [self fetchUserinfo];
-        [self fetchHistogramData];
-        [self fetchPollData];
+        [self reloadData];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadData)
+                                                     name:kLoggedInChangedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -104,6 +108,11 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 {
     NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)repost
@@ -115,6 +124,20 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
          self.hasReposted = YES;
      }
                                      failBlock:nil];
+
+}
+
+- (void)reloadData
+{
+    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self fetchUserinfo];
+         [self fetchPollData];
+         [self fetchHistogramData];
+     }
+                                            failBlock:nil];
+    
 
 }
 
@@ -138,9 +161,6 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
      {
          self.hasReposted = userInteractions.hasReposted;
      }];
-    
-
-
 }
 
 - (void)fetchHistogramData
@@ -612,6 +632,11 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     }
 
     return totalVotes;
+}
+
+- (void)reloadPollData
+{
+    [self fetchPollData];
 }
 
 - (VPollAnswer)favoredAnswer

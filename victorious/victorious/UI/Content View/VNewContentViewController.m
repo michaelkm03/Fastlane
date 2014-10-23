@@ -316,19 +316,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -362,6 +349,18 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
