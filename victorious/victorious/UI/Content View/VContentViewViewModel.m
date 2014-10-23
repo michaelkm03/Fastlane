@@ -647,6 +647,10 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 
 - (NSString *)numberOfVotersText
 {
+    if (![self.sequence isVoteCountVisible])
+    {
+        return nil;
+    }
     return [NSString stringWithFormat:@"%i %@", [self totalVotes], NSLocalizedString(@"Voters", @"")];
 }
 
