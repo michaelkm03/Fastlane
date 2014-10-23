@@ -13,7 +13,6 @@
 
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
-#import "VContentViewController.h"
 #import "VNavigationHeaderView.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "MBProgressHUD.h"
