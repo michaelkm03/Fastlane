@@ -1014,7 +1014,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    if (!self.enteringRealTimeComment)
+    {
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    }
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -1053,6 +1056,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
     {
         [self.videoCell.videoPlayerViewController.player play];
+    }
+}
+
+- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    if (inputAccessoryView.composedText.length == 0)
+    {
+        [self clearEditingRealTimeComment];
     }
 }
 
@@ -1097,9 +1108,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         return;
     }
-    
-    self.enteringRealTimeComment = NO;
-    self.realtimeCommentBeganTime = kCMTimeZero;
+    [self clearEditingRealTimeComment];
 }
 
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
@@ -1116,6 +1125,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     self.enteringRealTimeComment = YES;
     self.realtimeCommentBeganTime = self.videoCell.videoPlayerViewController.player.currentTime;
+}
+
+- (void)clearEditingRealTimeComment
+{
+    self.enteringRealTimeComment = NO;
+    self.realtimeCommentBeganTime = kCMTimeZero;
 }
 
 @end

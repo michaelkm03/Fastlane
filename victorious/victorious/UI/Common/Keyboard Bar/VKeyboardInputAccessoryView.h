@@ -60,8 +60,6 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
  */
 - (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
 
-@optional
-
 /**
  *  Notifies the delegate of a return key press ONLY if that return key is not UIReturnKeyDefault
  *
