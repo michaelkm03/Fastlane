@@ -10,6 +10,7 @@
 #import "VObjectManager.h"
 #import "RKManagedObjectStore.h"
 #import "VUser.h"
+#import "VVoteResult.h"
 #import "VTracking.h"
 #import "VTrackingConstants.h"
 
@@ -93,6 +94,19 @@ static NSManagedObjectContext *context = nil;
         VHashtag *hashtag = (VHashtag *)[self objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
         hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
         [models addObject:hashtag];
+    }
+    return [NSArray arrayWithArray:models];
+}
+
++ (NSArray *)createVoteResults:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        VVoteResult *result = (VVoteResult *)[self objectWithEntityName:@"VoteResult" subclass:[VVoteResult class]];
+        result.count = @( arc4random() % 100 );
+        result.remoteId = @(i+1);
+        [models addObject:result];
     }
     return [NSArray arrayWithArray:models];
 }

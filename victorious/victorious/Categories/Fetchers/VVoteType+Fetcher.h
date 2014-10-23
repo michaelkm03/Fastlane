@@ -8,9 +8,14 @@
 
 #import "VVoteType.h"
 
+extern NSString * const VVoteTypeImageIndexReplacementMacro;
+
 @interface VVoteType (Fetcher)
 
-+ (VVoteType *)likeVote;
-+ (VVoteType *)dislikeVote;
+@property (nonatomic, readonly) UIViewContentMode contentMode;
+@property (nonatomic, readonly) NSArray *images;
+@property (nonatomic, readonly) BOOL canCreateImages;
+@property (nonatomic, readonly) BOOL containsRequiredData;
+@property (nonatomic, readonly) BOOL hasValidTrackingData;
 
 @end

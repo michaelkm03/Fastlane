@@ -773,7 +773,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                     animationImageView.animationDuration = selectedEnhancer.animationDuration;
                     animationImageView.animationImages = selectedEnhancer.animationSequence;
                     animationImageView.animationRepeatCount = 1;
-                    animationImageView.contentMode = selectedEnhancer.shouldLetterBox ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+                    animationImageView.contentMode = selectedEnhancer.contentMode;
                     
                     [welf.contentCell.contentView addSubview:animationImageView];
                     [animationImageView startAnimating];

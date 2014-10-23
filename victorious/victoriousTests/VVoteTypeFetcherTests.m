@@ -1,5 +1,5 @@
 //
-//  VVoteTypeImageSerializationTests.m
+//  VVoteTypeFetcherTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/20/14.
@@ -10,16 +10,16 @@
 #import <XCTest/XCTest.h>
 #import "VDummyModels.h"
 #import "VTracking+RestKit.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 #import "VTrackingConstants.h"
 
-@interface VVoteTypeImageSerializationTests : XCTestCase
+@interface VVoteTypeFetcherTests : XCTestCase
 
 @property (nonatomic, strong) VVoteType *voteType;
 
 @end
 
-@implementation VVoteTypeImageSerializationTests
+@implementation VVoteTypeFetcherTests
 
 - (void)setUp
 {
@@ -45,9 +45,7 @@
     [images enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger idx, BOOL *stop) {
         XCTAssert( [imageUrl rangeOfString:VVoteTypeImageIndexReplacementMacro].location == NSNotFound );
 
-#warning This is only until the backend is updated.  Should be 5 digits.
-        NSString *number = [NSString stringWithFormat:@"0%lu", (unsigned long)idx];
-        
+        NSString *number = [NSString stringWithFormat:@"0000%lu", (unsigned long)idx];
         NSString *expectedUrl = [self.voteType.imageFormat stringByReplacingOccurrencesOfString:VVoteTypeImageIndexReplacementMacro withString:number];
         XCTAssertEqualObjects( imageUrl, expectedUrl );
     }];
@@ -101,6 +99,59 @@
     
     self.voteType.tracking = nil;
     XCTAssertFalse( self.voteType.hasValidTrackingData );
+}
+
+- (void)testContentMode
+{
+    VVoteType *voteType = (VVoteType *)[VDummyModels objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
+    
+    voteType.imageContentMode = @"scaleaspectfill";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleAspectFill );
+    
+    voteType.imageContentMode = @"scaletofill";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleToFill );
+    
+    voteType.imageContentMode = @"scaleaspectfit";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleAspectFit );
+    
+    voteType.imageContentMode = @"scaleaspectfill";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleAspectFill );
+    
+    voteType.imageContentMode = @"redraw";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeRedraw );
+    
+    voteType.imageContentMode = @"center";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeCenter );
+    
+    voteType.imageContentMode = @"top";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeTop );
+    
+    voteType.imageContentMode = @"bottom";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeBottom );
+    
+    voteType.imageContentMode = @"left";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeLeft );
+    
+    voteType.imageContentMode = @"right";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeRight );
+    
+    voteType.imageContentMode = @"topleft";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeTopLeft );
+    
+    voteType.imageContentMode = @"topright";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeTopRight );
+    
+    voteType.imageContentMode = @"bottomleft";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeBottomLeft );
+    
+    voteType.imageContentMode = @"bottomright";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeBottomRight );
+    
+    voteType.imageContentMode = nil;
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleAspectFill );
+    
+    voteType.imageContentMode = @"";
+    XCTAssertEqual( voteType.contentMode, UIViewContentModeScaleAspectFill );
 }
 
 @end

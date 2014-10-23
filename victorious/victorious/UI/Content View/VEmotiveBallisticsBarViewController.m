@@ -53,9 +53,6 @@
 {
     [super awakeFromNib];
     
-    self.dislikeVote = [VVoteType dislikeVote];
-    self.likeVote = [VVoteType likeVote];
-    
     self.voteCounts = [[NSMutableDictionary alloc] init];
     self.voteCountsForDisplay = [[NSMutableDictionary alloc] init];
     
