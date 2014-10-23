@@ -46,7 +46,10 @@
         self.trackingManager = [[VTrackingManager alloc] init];
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
-        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
+        self.experienceEnhancers = [self updateExperienceEnhancersFromVoteTypes:voteTypes imageLoadedCallback:^void
+        {
+             [self.enhancerBar reloadData];
+        }];
         [self addResultsFromSequence:self.sequence toExperienceEnhancers:self.experienceEnhancers];
     }
     return self;
@@ -75,7 +78,7 @@
     return YES;
 }
 
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes
+- (NSArray *)updateExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes imageLoadedCallback:(void(^)())callback
 {
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
@@ -96,16 +99,27 @@
 			{
                 enhancer.animationSequence = images;
                 enhancer.flightImage = enhancer.animationSequence.firstObject;
+                if ( callback )
+                {
+                    callback();
+                }
             }];
             [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
 			{
                 enhancer.iconImage = iconImage;
-                [self.enhancerBar reloadData];
+                if ( callback )
+                {
+                    callback();
+                }
             }];
-            [experienceEnhanders addObject:enhancer];
+            if ( ![experienceEnhanders containsObject:enhancer] )
+            {
+                [experienceEnhanders addObject:enhancer];
+            }
         }
     }];
-    return [NSArray arrayWithArray:experienceEnhanders];
+    
+    return [VExperienceEnhancer sortedExperienceEnhancers:experienceEnhanders];
 }
 
 #pragma mark - Property Accessors

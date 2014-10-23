@@ -16,24 +16,6 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 @implementation VFileCache (VVoteType)
 
-#pragma mark - Coders
-
-- (void)setEncoder
-{
-    self.encoderBlock = ^NSData *(NSData *data)
-    {
-        return UIImagePNGRepresentation( [UIImage imageWithData:data] );
-    };
-}
-
-- (void)setDecoder
-{
-    /*self.decoderBlock = ^id (NSData *data)
-    {
-        return [UIImage imageWithData:data];
-    };*/
-}
-
 #pragma mark - Saving images to disk
 
 - (BOOL)cacheImagesForVoteType:(VVoteType *)voteType
@@ -42,8 +24,6 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     {
         return NO;
     }
-    
-    [self setEncoder];
     
     NSString *iconSavePath = [self savePathForImage:VVoteTypeIconName forVote:voteType];
     [self cacheFileAtUrl:voteType.iconImage withSavePath:iconSavePath];

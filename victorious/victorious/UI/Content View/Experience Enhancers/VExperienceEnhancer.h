@@ -12,6 +12,8 @@
 
 @interface VExperienceEnhancer : NSObject
 
++ (NSArray *)sortedExperienceEnhancers:(NSArray *)unsorted;
+
 - (instancetype)initWithVoteType:(VVoteType *)voteType;
 
 @property (nonatomic, strong) UIImage *iconImage;

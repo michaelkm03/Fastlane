@@ -96,13 +96,6 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
-    // Sort by display order
-    self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
-                                            usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
-                      {
-                          return [v1.displayOrder compare:v2.displayOrder];
-                      }];
-    
     [self cacheVoteTypeImagesWithFileCache:self.fileCache];
 }
 

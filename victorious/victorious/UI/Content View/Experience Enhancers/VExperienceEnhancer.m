@@ -11,6 +11,15 @@
 
 @implementation VExperienceEnhancer
 
++ (NSArray *)sortedExperienceEnhancers:(NSArray *)unsorted
+{
+    return [unsorted sortedArrayWithOptions:0
+                            usingComparator:^NSComparisonResult(VExperienceEnhancer *exp1, VExperienceEnhancer *exp2)
+            {
+                return [exp1.voteType.displayOrder compare:exp2.voteType.displayOrder];
+            }];
+}
+
 - (instancetype)initWithVoteType:(VVoteType *)voteType
 {
     self = [super init];
