@@ -43,6 +43,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 @property   (nonatomic, strong) VUser                  *profile;
 
+@property (nonatomic, strong) VUserProfileHeaderView *profileHeaderView;
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property (nonatomic) BOOL                            isMe;
 
@@ -112,22 +113,23 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                                                                               screenHeight - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))];
     headerView.user = self.profile;
     headerView.delegate = self;
-    self.tableView.tableHeaderView = headerView;
-    self.refreshControl.layer.zPosition = self.tableView.tableHeaderView.layer.zPosition + 1;
+    self.profileHeaderView = headerView;
+    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
     
-    if (self.isMe)
-    {
-        [self addFriendsButton];
-    }
-    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
+//    if (self.isMe)
+//    {
+//        [self addFriendsButton];
+//    }
+//    else
+        if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
     }
-    
-    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+
+    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -139,7 +141,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewWillAppear:animated];
     
-    ((VUserProfileHeaderView *)self.tableView.tableHeaderView).user = self.profile;
+    self.profileHeaderView.user = self.profile;
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -158,9 +160,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                            placeholderImage:defaultBackgroundImage
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    self.tableView.backgroundView = self.backgroundImageView;
+    self.collectionView.backgroundView = self.backgroundImageView;
     
-    if (self.tableDataSource.count)
+    if (self.streamDataSource.count)
     {
         [self animateHeaderShrinkingWithDuration:0.0f];
     }
@@ -217,7 +219,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                      following:self.profile
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+             VUserProfileHeaderView *header = self.profileHeaderView;
              header.editProfileButton.selected = [resultObjects[0] boolValue];
              header.user = header.user;
          }
@@ -226,17 +228,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - Actions
-
-- (IBAction)refresh:(UIRefreshControl *)sender
-{
-    [self refreshWithCompletion:^(void)
-    {
-        if (self.tableDataSource.count)
-        {
-            [self animateHeaderShrinkingWithDuration:.5];
-        }
-    }];
-}
+#warning
+//- (IBAction)refresh:(UIRefreshControl *)sender
+//{
+//    [self refreshWithCompletion:^(void)
+//    {
+//        if (self.streamDataSource.count)
+//        {
+//            [self animateHeaderShrinkingWithDuration:.5];
+//        }
+//    }];
+//}
 
 - (IBAction)showMenu:(id)sender
 {
@@ -294,7 +296,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     else
     {
-        VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+        VUserProfileHeaderView *header = self.profileHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -332,6 +334,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
 }
 
+#pragma mark - Navigation
+
 - (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
@@ -341,8 +345,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [self performSegueWithIdentifier:@"toFollowing" sender:self];
 }
-
-#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -363,28 +365,28 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
 }
 
-- (IBAction)createButtonAction:(id)sender
-{
-    [self.currentStream addObserver:self
-                         forKeyPath:@"sequences"
-                            options:NSKeyValueObservingOptionNew
-                            context:VUserProfileViewContext];
-    
-    [super createButtonAction:sender];
-}
+//- (IBAction)createButtonAction:(id)sender
+//{
+//    [self.currentStream addObserver:self
+//                         forKeyPath:@"sequences"
+//                            options:NSKeyValueObservingOptionNew
+//                            context:VUserProfileViewContext];
+//    
+//    [super createButtonAction:sender];
+//}
 
 #pragma mark - Animation
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
-    VUserProfileHeaderView *header = (VUserProfileHeaderView *)self.tableView.tableHeaderView;
+    VUserProfileHeaderView *header = self.profileHeaderView;
 
     if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
     {
-        self.tableView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.view.bounds) - kVSmallUserHeaderHeight);
+        self.collectionView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.view.bounds) - kVSmallUserHeaderHeight);
         header.frame = CGRectMake(0,
                                   -CGRectGetHeight(header.bounds) - kVSmallUserHeaderHeight,
-                                  CGRectGetWidth(self.tableView.bounds),
+                                  CGRectGetWidth(self.collectionView.bounds),
                                   CGRectGetHeight(header.bounds));
     }
 
@@ -397,11 +399,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
      {
          header.frame = CGRectMake(0,
                                    0,
-                                   CGRectGetWidth(self.tableView.bounds),
+                                   CGRectGetWidth(self.collectionView.bounds),
                                    kVSmallUserHeaderHeight);
          [header layoutIfNeeded];
-         self.tableView.tableHeaderView = header;
-         self.tableView.contentOffset = CGPointMake(0,
+         self.profileHeaderView = header;
+         self.collectionView.contentOffset = CGPointMake(0,
                                                     - CGRectGetHeight(self.navigationController.navigationBar.bounds) -
                                                     CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]));
      } completion:^(BOOL finished)
@@ -409,7 +411,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         if (duration == 0.0f)
         {
             // Forcing content offset to be neutral when not animating. Seemed like UITableViewController was setting contentoffset between the animation block and this completion.
-            self.tableView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
+            self.collectionView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
         }
      }];
 }
@@ -428,7 +430,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
-        if (self.tableDataSource.count)
+        if (self.streamDataSource.count)
         {
             [self animateHeaderShrinkingWithDuration:.5];
         }
