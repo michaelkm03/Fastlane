@@ -8,7 +8,7 @@
 
 #import "VVoteType.h"
 #import "VFileCache.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
@@ -28,10 +28,10 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (void)setDecoder
 {
-    self.decoderBlock = ^id (NSData *data)
+    /*self.decoderBlock = ^id (NSData *data)
     {
         return [UIImage imageWithData:data];
-    };
+    };*/
 }
 
 #pragma mark - Saving images to disk
@@ -69,7 +69,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
     return [self getCachedFileForSavePath:iconSavePath completeCallback:^(NSData *data)
             {
-                callback( (UIImage *)data );
+                callback( [UIImage imageWithData:data] );
             }];
 }
 
@@ -83,7 +83,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     [self setDecoder];
     
     NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
-    return (UIImage *)[self getCachedFileForSavePath:iconSavePath];
+    NSData *data = [self getCachedFileForSavePath:iconSavePath];
+    return [UIImage imageWithData:data];
 }
 
 - (BOOL)isImageCached:(NSString *)imageName forVoteType:(VVoteType *)voteType
@@ -100,7 +101,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    return [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
+    NSArray *dataArray = [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
+    return [self imageArrayFromDataArray:dataArray];
 }
 
 - (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType
@@ -127,7 +129,22 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:callback];
+    [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:^(NSArray *dataArray) {
+        callback( [self imageArrayFromDataArray:dataArray] );
+    }];
+}
+
+- (NSArray *)imageArrayFromDataArray:(NSArray *)dataArray
+{
+    NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+    [dataArray enumerateObjectsUsingBlock:^(NSData *data, NSUInteger idx, BOOL *stop) {
+        UIImage *image = [UIImage imageWithData:data];
+        if ( image )
+        {
+            [imageArray addObject:image];
+        }
+    }];
+    return [NSArray arrayWithArray:imageArray];
 }
 
 #pragma mark - Build Key Paths

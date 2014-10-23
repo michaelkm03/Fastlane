@@ -24,8 +24,6 @@
  */
 - (void)addActionItems:(NSArray *)actionItems;
 
-@property (nonatomic, copy) void (^cancelHandler)(void);
-
 @property (nonatomic, readonly) UIView *avatarView;
 
 @property (nonatomic, readonly) CGFloat totalHeight;

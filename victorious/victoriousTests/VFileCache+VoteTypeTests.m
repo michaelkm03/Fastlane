@@ -12,7 +12,7 @@
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 @interface VFileCache ( UnitTest)
 
@@ -62,7 +62,7 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 {
     self.voteType.name = @"vote_type_test_name";
     self.voteType.iconImage = kTestImageUrl;
-    self.voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/votetypes/6/heart_XXXXX.png";
+    self.voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/images/firework_XXXXX.png";
     self.voteType.imageCount = @( 10 );
 }
 
@@ -133,13 +133,17 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     // Run this test again to save theimages
     [self testCacheVoteTypeImages];
     
-    UIImage *iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
-    XCTAssertNotNil( iconImage );
+    UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
+    XCTAssertNotNil( image );
+    XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
     
     NSArray *spriteImages = [self.fileCache getSpriteImagesForVoteType:self.voteType];
     XCTAssertEqual( spriteImages.count, self.voteType.images.count );
     [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[UIImage class]] );
+        UIImage *image = (UIImage *)obj;
+        XCTAssertNotNil( image );
+        XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
     }];
 }
 
