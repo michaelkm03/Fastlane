@@ -369,12 +369,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(keyboardWillChangeFrame:)
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
                                                  name:kLoggedInChangedNotification
@@ -415,7 +413,26 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // We don't care about these notifications anymore but we still care about new user loggedin
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateCommentsNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdatePollDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                                  object:nil];
+    
     
     self.contentCollectionView.delegate = nil;
 }

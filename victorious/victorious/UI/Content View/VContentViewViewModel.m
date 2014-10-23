@@ -124,12 +124,12 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 
 - (void)reloadData
 {
+     [self fetchPollData];
+     [self fetchHistogramData];
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self fetchUserinfo];
-         [self fetchPollData];
-         [self fetchHistogramData];
      }
                                             failBlock:nil];
 }
