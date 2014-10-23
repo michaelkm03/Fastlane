@@ -79,10 +79,8 @@
 		0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D35519B46B5E00FA363C /* VNoContentView.m */; };
 		0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D35819B46B5E00FA363C /* VSelectorViewController.m */; };
 		0314D48D19B46B5E00FA363C /* VTableContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */; };
-		0314D49219B46B5E00FA363C /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D36719B46B5E00FA363C /* VContentInfoViewController.m */; };
 		0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D36919B46B5E00FA363C /* VReposterTableViewController.m */; };
 		0314D49619B46B5E00FA363C /* VResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37019B46B5E00FA363C /* VResultView.m */; };
-		0314D49719B46B5E00FA363C /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37319B46B5E00FA363C /* VRealtimeCommentViewController.m */; };
 		0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */; };
 		0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37719B46B5E00FA363C /* VActionBarViewController.m */; };
 		0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37919B46B5E00FA363C /* VContentTitleTextView.m */; };
@@ -748,14 +746,10 @@
 		0314D35819B46B5E00FA363C /* VSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSelectorViewController.m; sourceTree = "<group>"; };
 		0314D35919B46B5E00FA363C /* VTableContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableContainerViewController.h; sourceTree = "<group>"; };
 		0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableContainerViewController.m; sourceTree = "<group>"; };
-		0314D36619B46B5E00FA363C /* VContentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentInfoViewController.h; sourceTree = "<group>"; };
-		0314D36719B46B5E00FA363C /* VContentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInfoViewController.m; sourceTree = "<group>"; };
 		0314D36819B46B5E00FA363C /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReposterTableViewController.h; sourceTree = "<group>"; };
 		0314D36919B46B5E00FA363C /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReposterTableViewController.m; sourceTree = "<group>"; };
 		0314D36F19B46B5E00FA363C /* VResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VResultView.h; sourceTree = "<group>"; };
 		0314D37019B46B5E00FA363C /* VResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VResultView.m; sourceTree = "<group>"; };
-		0314D37219B46B5E00FA363C /* VRealtimeCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRealtimeCommentViewController.h; sourceTree = "<group>"; };
-		0314D37319B46B5E00FA363C /* VRealtimeCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRealtimeCommentViewController.m; sourceTree = "<group>"; };
 		0314D37419B46B5E00FA363C /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
 		0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
 		0314D37619B46B5E00FA363C /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarViewController.h; sourceTree = "<group>"; };
@@ -1882,12 +1876,12 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				D89AC2B719F1FD6B00921131 /* Histogram */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				0314D36519B46B5E00FA363C /* Content Info */,
 				D8E39BED19CB99A8007FD86A /* ContentView.storyboard */,
 				D8C7CF5319DCCC3000BA33E5 /* Experience Enhancers */,
+				D89AC2B719F1FD6B00921131 /* Histogram */,
 				D82C08F419D0C04200273E0D /* Layouts */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
@@ -1917,8 +1911,6 @@
 		0314D36519B46B5E00FA363C /* Content Info */ = {
 			isa = PBXGroup;
 			children = (
-				0314D36619B46B5E00FA363C /* VContentInfoViewController.h */,
-				0314D36719B46B5E00FA363C /* VContentInfoViewController.m */,
 				0314D36819B46B5E00FA363C /* VReposterTableViewController.h */,
 				0314D36919B46B5E00FA363C /* VReposterTableViewController.m */,
 			);
@@ -1939,8 +1931,6 @@
 			children = (
 				D8E39BBA19CB7C58007FD86A /* VRealtimeCommentsViewModel.h */,
 				D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */,
-				0314D37219B46B5E00FA363C /* VRealtimeCommentViewController.h */,
-				0314D37319B46B5E00FA363C /* VRealtimeCommentViewController.m */,
 				0314D37419B46B5E00FA363C /* VRTCUserPostedAtFormatter.h */,
 				0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */,
 			);
@@ -3182,10 +3172,10 @@
 		D89AC2B719F1FD6B00921131 /* Histogram */ = {
 			isa = PBXGroup;
 			children = (
-				D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */,
-				D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */,
 				D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */,
 				D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */,
+				D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */,
+				D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */,
 			);
 			path = Histogram;
 			sourceTree = "<group>";
@@ -3204,6 +3194,8 @@
 		D8C7CF5319DCCC3000BA33E5 /* Experience Enhancers */ = {
 			isa = PBXGroup;
 			children = (
+				D8360CF119E379C200D7E260 /* VExperienceEnhancer.h */,
+				D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */,
 				D8C7CF5619DCCC6E00BA33E5 /* VExperienceEnhancerBar.h */,
 				D8C7CF5719DCCC6E00BA33E5 /* VExperienceEnhancerBar.m */,
 				D8C7CF6019DCD23D00BA33E5 /* VExperienceEnhancerBar.xib */,
@@ -3212,8 +3204,6 @@
 				D8C7CF5E19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib */,
 				D8360CEE19E3768300D7E260 /* VExperienceEnhancerController.h */,
 				D8360CEF19E3768300D7E260 /* VExperienceEnhancerController.m */,
-				D8360CF119E379C200D7E260 /* VExperienceEnhancer.h */,
-				D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */,
 			);
 			path = "Experience Enhancers";
 			sourceTree = "<group>";
@@ -3914,7 +3904,6 @@
 				BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */,
 				D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */,
 				0314D46419B46B5E00FA363C /* VCameraPublishViewController.m in Sources */,
-				0314D49219B46B5E00FA363C /* VContentInfoViewController.m in Sources */,
 				0314D4F519B46B5E00FA363C /* VStreamToCommentAnimator.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				A70564BF19E781B4004A8387 /* VHashtag.m in Sources */,
@@ -4094,7 +4083,6 @@
 				0314D4E519B46B5E00FA363C /* VFindFriendsViewController.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
-				0314D49719B46B5E00FA363C /* VRealtimeCommentViewController.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
