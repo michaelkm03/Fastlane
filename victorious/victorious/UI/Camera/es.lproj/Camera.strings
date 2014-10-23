@@ -19,6 +19,9 @@
 /* Class = "IBUIBarButtonItem"; title = "RESET"; ObjectID = "U2T-Yz-ShN"; */
 "U2T-Yz-ShN.title" = "RESTABLECER";
 
+/* Class = "IBUILabel"; text = "Press and hold to record"; ObjectID = "VGX-ys-Fd1"; */
+"VGX-ys-Fd1.text" = "Presiona y mantén para grabar";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "Yjk-3f-ltw"; */
 "Yjk-3f-ltw.text" = "Etiqueta";
 
