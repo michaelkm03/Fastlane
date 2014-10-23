@@ -62,9 +62,29 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    NSString *tintColorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVContentTextColor : kVMainTextColor;
-    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    self.addButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+    
+    self.tintColor = tintColor;
+    self.backButton.tintColor = tintColor;
+    self.menuButton.tintColor = tintColor;
+    self.addButton.tintColor = tintColor;
+    
+    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.menuButton setImage:image forState:UIControlStateNormal];
+    
+    image = [self.backButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.backButton setImage:image forState:UIControlStateNormal];
+    
+    self.headerLabel.textColor = tintColor;
+    
+    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
+    self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
+    self.headerLabel.text = self.headerText;
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
@@ -112,22 +132,6 @@
         self.headerImageView.hidden = YES;
         self.headerLabel.text = self.headerText;
     }
-    
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-
-    NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-    
-    self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.menuButton setImage:image forState:UIControlStateNormal];
-    
-    self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    
-    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
-    self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
-    self.headerLabel.text = self.headerText;
 }
 
 - (IBAction)pressedBack:(id)sender

@@ -68,19 +68,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         viewController.title = aUser.name ?: @"Profile";
     }
-    
-    [viewController addNewNavHeaderWithTitles:nil];
-    viewController.navHeaderView.delegate = viewController;
-    
-    //    if (self.isMe)
-    //    {
-    //        [self addFriendsButton];
-    //    }
-    //    else
-    if (!isMe && !aUser.isDirectMessagingDisabled.boolValue)
-    {
-        [viewController.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:viewController];
-    }
 
     return viewController;
 }
@@ -113,6 +100,19 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    
+    //    if (self.isMe)
+    //    {
+    //        [self addFriendsButton];
+    //    }
+    //    else
+    if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
+    {
+        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:self];
+    }
     
     self.profileHeaderView.user = self.profile;
     
