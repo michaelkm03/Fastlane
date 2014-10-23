@@ -106,6 +106,12 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 
 #pragma mark - View Stuff
 
+- (void)dealloc
+{
+    [self deleteStreamVCs];
+    self.navHeaderView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -154,6 +160,7 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     {
         VStreamCollectionViewController *streamVC = [VStreamCollectionViewController streamViewControllerForStream:stream];
         streamVC.delegate = self;
+        streamVC.actionDelegate = self;
         UIEdgeInsets insets = streamVC.collectionView.contentInset;
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
         streamVC.contentInset = insets;
@@ -189,8 +196,10 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 
 - (void)deleteStreamVCs
 {
-    for (UIViewController *viewController in self.streamVCs)
+    for (VStreamCollectionViewController *viewController in self.streamVCs)
     {
+        viewController.delegate = nil;
+        viewController.actionDelegate = nil;
         [viewController willMoveToParentViewController:nil];
         [viewController.view removeFromSuperview];
         [viewController removeFromParentViewController];
