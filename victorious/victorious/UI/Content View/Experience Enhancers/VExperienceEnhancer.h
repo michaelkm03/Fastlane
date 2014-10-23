@@ -12,7 +12,8 @@
 
 @interface VExperienceEnhancer : NSObject
 
-+ (NSArray *)sortedExperienceEnhancers:(NSArray *)unsorted;
++ (NSArray *)experienceEnhancersSortedByDisplayOrder:(NSArray *)enhancers;
++ (NSArray *)experienceEnhancersFilteredByHasRequiredImages:(NSArray *)enhancers;
 
 - (instancetype)initWithVoteType:(VVoteType *)voteType;
 

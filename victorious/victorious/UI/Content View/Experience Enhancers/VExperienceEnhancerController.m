@@ -47,7 +47,7 @@
         self.trackingManager = [[VTrackingManager alloc] init];
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
-        self.experienceEnhancers = [self updateExperienceEnhancersFromVoteTypes:voteTypes imageLoadedCallback:^void
+        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes imageLoadedCallback:^void
         {
             self.validExperienceEnhancers = self.experienceEnhancers;
             [self.enhancerBar reloadData];
@@ -81,7 +81,7 @@
     return YES;
 }
 
-- (NSArray *)updateExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes imageLoadedCallback:(void(^)())callback
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes imageLoadedCallback:(void(^)())callback
 {
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
@@ -124,17 +124,14 @@
         }
     }];
     
-    return [VExperienceEnhancer sortedExperienceEnhancers:experienceEnhanders];
+    return [NSArray arrayWithArray:experienceEnhanders];
 }
 
 - (void)setValidExperienceEnhancers:(NSArray *)validExperienceEnhancers
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
-                                                                   NSDictionary *bindings)
-                              {
-                                  return enhancer.hasRequiredImages;
-                              }];
-    _validExperienceEnhancers = [validExperienceEnhancers filteredArrayUsingPredicate:predicate];
+    NSArray *newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:validExperienceEnhancers];
+    newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
+    _validExperienceEnhancers = newValue;
 }
 
 #pragma mark - Property Accessors

@@ -11,13 +11,23 @@
 
 @implementation VExperienceEnhancer
 
-+ (NSArray *)sortedExperienceEnhancers:(NSArray *)unsorted
++ (NSArray *)experienceEnhancersSortedByDisplayOrder:(NSArray *)enhancers
 {
-    return [unsorted sortedArrayWithOptions:0
+    return [enhancers sortedArrayWithOptions:0
                             usingComparator:^NSComparisonResult(VExperienceEnhancer *exp1, VExperienceEnhancer *exp2)
             {
                 return [exp1.voteType.displayOrder compare:exp2.voteType.displayOrder];
             }];
+}
+
++ (NSArray *)experienceEnhancersFilteredByHasRequiredImages:(NSArray *)enhancers
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
+                                                                   NSDictionary *bindings)
+                              {
+                                  return enhancer.hasRequiredImages;
+                              }];
+    return [enhancers filteredArrayUsingPredicate:predicate];
 }
 
 - (instancetype)initWithVoteType:(VVoteType *)voteType

@@ -64,28 +64,6 @@
     XCTAssertEqual( self.settingsManager.voteTypes.count, voteTypes.count );
 }
 
-- (void)testVoteTypesSortedByDisplayOrder
-{
-    [self swizzleCacheVotesMethod];
-    
-    NSArray *voteTypes = [VDummyModels createVoteTypes:5];
-    voteTypes = @[ voteTypes[4],
-                   voteTypes[3],
-                   voteTypes[1],
-                   voteTypes[0],
-                   voteTypes[2] ];
-    [self.settingsManager updateSettingsWithVoteTypes:voteTypes];
-    XCTAssertEqual( self.settingsManager.voteTypes.count, voteTypes.count );
-    
-    [self.settingsManager.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger i, BOOL *stop) {
-        if ( i > 0 )
-        {
-            VVoteType *previousVoteType = [self.settingsManager.voteTypes objectAtIndex:i-1];
-            XCTAssert( voteType.displayOrder.integerValue >= previousVoteType.displayOrder.integerValue );
-        }
-    }];
-}
-
 - (void)testVoteTypesFiltered
 {
     [self swizzleCacheVotesMethod];
