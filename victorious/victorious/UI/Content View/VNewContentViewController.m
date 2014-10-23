@@ -1109,7 +1109,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         return;
     }
     
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVieoWhenCommenting])
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
     {
         [self.videoCell.videoPlayerViewController.player pause];
     }
