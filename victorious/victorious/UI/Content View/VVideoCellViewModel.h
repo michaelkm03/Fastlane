@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, VAdSystem)
+typedef NS_ENUM(NSInteger, VMonetizationPartner)
 {
-    VAdSystemNone = 0,
-    VAdSystemOpenX = 1,
-    VAdSystemLiveRail = 2,
+    VMonetizationPartnerNone     = 0,
+    VMonetizationPartnerLiveRail = 1,
+    VMonetizationPartnerOpenX    = 2,
 };
 
 @interface VVideoCellViewModel : NSObject
 
-+ (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL andAdSystem:(VAdSystem)adSystem;
++ (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL andAdSystem:(VMonetizationPartner)monetizationPartner;
 
 @property (nonatomic, readonly) NSURL *itemURL;
-@property (nonatomic, readonly) VAdSystem adSystem;
+@property (nonatomic, readonly) VMonetizationPartner monetizationPartner;
 
 @end

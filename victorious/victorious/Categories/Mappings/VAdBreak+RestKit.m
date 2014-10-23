@@ -7,6 +7,7 @@
 //
 
 #import "VAdBreak+RestKit.h"
+#import "VAdBreakFallback+RestKit.h"
 #import "VSequence+RestKit.h"
 
 @implementation VAdBreak (RestKit)
@@ -20,9 +21,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"start_pos" : VSelectorName(startPosition),
-                                  @"fallback.ad_system" : VSelectorName(adSystem),
-                                  @"fallback.ad_tag" : VSelectorName(adTag),
-                                  @"fallback.timeout" : VSelectorName(timeout),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -31,6 +29,11 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
+    RKRelationshipMapping *fallbacksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"fallback"
+                                                                                         toKeyPath:VSelectorName(fallbacks)
+                                                                                       withMapping:[VAdBreakFallback entityMapping]];
+    [mapping addPropertyMapping:fallbacksMapping];
+
     return mapping;
 }
 

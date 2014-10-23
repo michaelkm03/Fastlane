@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Lawrence Leach on 10/21/14.
+//  Created by Lawrence Leach on 10/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
-@class VAdBreak, VTracking, VComment, VNode, VPollResult, VUser, VVoteResult;
+@class VAdBreak, VComment, VNode, VPollResult, VTracking, VUser, VVoteResult;
 
 @interface VSequence : VStreamItem
 
@@ -28,19 +28,24 @@
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSSet *adBreaks;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) NSOrderedSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
 @property (nonatomic, retain) NSSet *reposters;
+@property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) VTracking *tracking;
-@property (nonatomic, retain) VAdBreak *adBreaks;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
+
+- (void)addAdBreaksObject:(VAdBreak *)value;
+- (void)removeAdBreaksObject:(VAdBreak *)value;
+- (void)addAdBreaks:(NSSet *)values;
+- (void)removeAdBreaks:(NSSet *)values;
 
 - (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;

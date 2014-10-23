@@ -39,7 +39,9 @@
 // Media
 #import "NSURL+MediaType.h"
 
-#import "NSURL+MediaType.h"
+// Monetization
+#import "VAdBreak.h"
+#import "VAdBreakFallback.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
@@ -58,6 +60,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
 @property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
+
+@property (nonatomic, strong) NSMutableDictionary *adChain;
+@property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
+@property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 
 @end
 
@@ -96,6 +102,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
+        // Set the default ad chain index
+        self.currentAdChainIndex = 0;
+        
+        // Go get the data
         [self fetchSequenceData];
         [self fetchUserinfo];
         [self fetchHistogramData];
@@ -119,19 +129,73 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
          self.hasReposted = YES;
      }
                                      failBlock:nil];
-
 }
+
+#pragma mark - Create the ad chain
+
+- (void)createAdChainWithCompletion:(void(^)(void))completionBlock
+{
+    self.adChain = [[NSMutableDictionary alloc] init];
+    NSSet *adBreakSet = self.sequence.adBreaks;
+    
+    for (VAdBreak *ad in adBreakSet)
+    {
+        NSSet *fallbackSet = ad.fallbacks;
+        NSMutableDictionary *fallbacks = [[NSMutableDictionary alloc] init];
+        
+        for (VAdBreakFallback *item in fallbackSet)
+        {
+            [fallbacks setValue:item.adTag forKey:@"adTag"];
+            [fallbacks setValue:item.adSystem forKey:@"adSystem"];
+            [fallbacks setValue:item.timeout forKey:@"timeout"];
+            
+        }
+        [self.adChain setValue:fallbacks forKey:[NSString stringWithFormat:@"%@", ad.startPosition]];
+    }
+    
+    // Grab the preroll
+    NSDictionary *breakItems = [self.adChain valueForKey:[NSString stringWithFormat:@"%ld", (long)self.currentAdChainIndex]];
+    int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
+    
+    switch (adSystemPartner)
+    {
+        case 0:
+            self.monetizationPartner = VMonetizationPartnerNone;
+            break;
+            
+        case 1:
+            self.monetizationPartner = VMonetizationPartnerOpenX;
+            break;
+            
+        case 2:
+            self.monetizationPartner = VMonetizationPartnerLiveRail;
+            break;
+            
+        default:
+            self.monetizationPartner = VMonetizationPartnerNone;
+            break;
+    }
+    
+    if (completionBlock)
+    {
+        completionBlock();
+    }
+}
+
+#pragma mark - Sequence data fetching methods
 
 - (void)fetchSequenceData
 {
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
     {
-#warning Correctly parse the ad system!
-        self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
-                                                                    andAdSystem:VAdSystemNone];
-        [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                            object:self];
+        // Sets up the monetization chain
+        [self createAdChainWithCompletion:^(void){
+            self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
+                                                                        andAdSystem:self.monetizationPartner];
+            [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                object:self];
+        }];
     }
                                             failBlock:nil];
 }
@@ -217,6 +281,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return request;
 }
 
+/*
 - (VAdSystem)adSystem
 {
     VAdBreak *adBreak = self.sequence.adBreaks;
@@ -224,6 +289,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     VAdSystem ad_system = [system_type intValue];
     return ad_system;
 }
+*/
 
 - (VUser *)user
 {

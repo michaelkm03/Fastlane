@@ -11,14 +11,14 @@
 @interface VVideoCellViewModel ()
 
 @property (nonatomic, strong, readwrite) NSURL *itemURL;
-@property (nonatomic, assign, readwrite) VAdSystem adSystem;
+@property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 
 @end
 
 @implementation VVideoCellViewModel
 
 + (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL
-                                 andAdSystem:(VAdSystem)adSystem
+                                 andAdSystem:(VMonetizationPartner)monetizationPartner
 {
     if (![itemURL isKindOfClass:[NSURL class]])
     {
@@ -27,7 +27,7 @@
     
     VVideoCellViewModel *videoCellViewModel = [[VVideoCellViewModel alloc] init];
     videoCellViewModel.itemURL = itemURL;
-    videoCellViewModel.adSystem = adSystem;
+    videoCellViewModel.monetizationPartner = monetizationPartner;
     
     return videoCellViewModel;
 }

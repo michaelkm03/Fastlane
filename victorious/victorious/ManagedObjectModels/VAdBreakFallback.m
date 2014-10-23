@@ -1,20 +1,20 @@
 //
-//  VAdBreak.m
+//  VAdBreakFallback.m
 //  victorious
 //
 //  Created by Lawrence Leach on 10/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAdBreak.h"
 #import "VAdBreakFallback.h"
-#import "VSequence.h"
+#import "VAdBreak.h"
 
 
-@implementation VAdBreak
+@implementation VAdBreakFallback
 
-@dynamic startPosition;
-@dynamic sequence;
-@dynamic fallbacks;
+@dynamic adSystem;
+@dynamic adTag;
+@dynamic timeout;
+@dynamic adbreak;
 
 @end

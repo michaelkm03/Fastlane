@@ -16,6 +16,7 @@
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VAdVideoPlayerViewController *adPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
+@property (nonatomic, strong) NSURL *contentURL;
 
 @end
 
@@ -43,15 +44,6 @@
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
 
     [self.contentView addSubview:self.videoPlayerViewController.view];
-    //[self.videoPlayerViewController.view setHidden:YES];
-    
-    // Ad Video Player
-    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil
-                                                                                 bundle:nil];
-    self.adPlayerViewController.delegate = self;
-    self.adPlayerViewController.view.frame = self.contentView.bounds;
-    self.adPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.contentView addSubview:self.adPlayerViewController.view];
 }
 
 - (void)dealloc
@@ -65,15 +57,33 @@
 {
     _viewModel = viewModel;
     
-    if (viewModel.adSystem == VAdSystemNone)
+    self.contentURL = viewModel.itemURL;
+    
+    if (viewModel.monetizationPartner == VMonetizationPartnerNone)
     {
         self.isPlayingAd = NO;
-        self.videoPlayerViewController.itemURL = viewModel.itemURL;
+        self.videoPlayerViewController.itemURL = self.contentURL;
         return;
     }
+    
+    [self showPreRollWithPartner:viewModel.monetizationPartner];
+}
+
+#pragma mark - Ad Video Player
+
+- (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner
+{
+    
     self.isPlayingAd = YES;
-    // Setup addVC
-    // Add to Content view
+    
+    // Ad Video Player
+    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil
+                                                                                 bundle:nil];
+    self.adPlayerViewController.delegate = self;
+    self.adPlayerViewController.view.frame = self.contentView.bounds;
+    self.adPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.adPlayerViewController.view setBackgroundColor:[UIColor yellowColor]];
+    [self.contentView addSubview:self.adPlayerViewController.view];
 }
 
 #pragma mark - Public Methods
@@ -118,13 +128,17 @@
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     // This is where we will load the content video after the ad video has loaded
+    NSLog(@"Ad loaded!");
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     self.adPlayerViewController.view.hidden = YES;
     self.videoPlayerViewController.view.hidden = NO;
-    
+
+    self.isPlayingAd = NO;
+    self.videoPlayerViewController.itemURL = self.contentURL;
+
     // Play content Video
     [self play];
 }

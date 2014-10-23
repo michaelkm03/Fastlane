@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LiveRailAdManager.h"
+#import "VContentViewViewModel.h"
 
 @import AVFoundation;
 
@@ -32,7 +33,16 @@
 
 @property (nonatomic, readonly, getter = isAdPlaying) BOOL playing; ///< YES if ad video is playing
 
+/**
+ Ad video player delegate object
+ */
 @property (nonatomic, strong) id<VAdVideoPlayerViewControllerDelegate>delegate;
+
+/**
+ Enum value to check which ad manager to load
+ */
+@property (nonatomic, assign) VMonetizationPartner monetizationPartner;
+
 /**
  Ad player UIView
  */
