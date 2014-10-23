@@ -384,3 +384,7 @@
 "FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
 "IncorrectOldPassword" = "La contraseña actual no es correcta.";
 "comments" = "comentarios";
+
+"Suggested People" = "Personas sugeridas";
+"Trending Tags" = "Etiquetas de tendencia";
+"Voters" = "Votantes";
