@@ -43,6 +43,21 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
                          wantsSize:(CGSize)size;
 
+/**
+ *  Called when the text is cleared.
+ */
+- (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
+/**
+ *  Called when editing begins.
+ */
+- (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
+/**
+ *  Called when editing ends.
+ */
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
 @optional
 
 /**

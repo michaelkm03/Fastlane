@@ -82,6 +82,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 
 

@@ -61,6 +61,9 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
+// Experiments
+#import "VSettingManager.h"
+
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
@@ -98,6 +101,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, assign) CGAffineTransform targetTransform;
 @property (nonatomic, assign) CGRect oldRect;
 @property (nonatomic, assign) CGAffineTransform videoTransform;
+
+// RTC
+@property (nonatomic, assign) BOOL enteringRealTimeComment;
+@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @end
 
@@ -968,7 +975,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    if (!self.enteringRealTimeComment)
+    {
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    }
+
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
@@ -1025,6 +1036,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
                               mediaURL:self.mediaURL
+     realTime:self.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
          [welf.viewModel fetchComments];
@@ -1037,6 +1049,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     [inputAccessoryView clearTextAndResign];
     self.mediaURL = nil;
+    
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVieoWhenCommenting])
+    {
+        [self.videoCell.videoPlayerViewController.player play];
+    }
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
@@ -1072,6 +1089,38 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    if (self.viewModel.type != VContentViewTypeVideo)
+    {
+        return;
+    }
+    
+    self.enteringRealTimeComment = NO;
+    self.realtimeCommentBeganTime = kCMTimeZero;
+}
+
+- (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    if (self.viewModel.type != VContentViewTypeVideo)
+    {
+        return;
+    }
+    
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVieoWhenCommenting])
+    {
+        [self.videoCell.videoPlayerViewController.player pause];
+    }
+    
+    self.enteringRealTimeComment = YES;
+    self.realtimeCommentBeganTime = self.videoCell.videoPlayerViewController.player.currentTime;
+}
+
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    //
 }
 
 @end
