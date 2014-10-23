@@ -114,49 +114,21 @@
                  }
                  else
                  {
-                     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-                     publishViewController.previewImage = contentViewController.placeholderImage;
-                     publishViewController.parentID = [contentViewController.viewModel.sequence.remoteId integerValue];
-                     publishViewController.completion = ^(BOOL complete)
+                     NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
+                     NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                     NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                     
+                     if ([filteredImageData writeToURL:tempFile atomically:NO])
                      {
-                         [actionSheetViewController dismissViewControllerAnimated:YES
-                                                  completion:nil];
-                     };
-                     UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-                     
-                     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                                        onCancelButton:nil
-                                                                destructiveButtonTitle:nil
-                                                                   onDestructiveButton:nil
-                                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
-                                                   {
-                                                       publishViewController.captionType = VCaptionTypeMeme;
-                                                       
-                                                       NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-                                                       NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                                       NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                                       if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                                       {
-                                                           publishViewController.mediaURL = tempFile;
-                                                           [contentViewController.navigationController pushViewController:publishViewController animated:YES];
-                                                       }
-                                                   },
-                                                   NSLocalizedString(@"Quote", nil),  ^(void)
-                                                   {
-                                                       publishViewController.captionType = VCaptionTypeQuote;
-                                                       
-                                                       NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-                                                       NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                                       NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                                       if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                                       {
-                                                           publishViewController.mediaURL = tempFile;
-                                                           [contentViewController.navigationController pushViewController:remixNav animated:YES];
-                                                       }
-                                                   }, nil];
-                     
-                     [actionSheet showInView:contentViewController.view];
+                         VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+                         publishViewController.previewImage = self.placeholderImage;
+                         publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+                         publishViewController.completion = nil;
+                         publishViewController.mediaURL = tempFile;
+                         
+                         UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+                         [self presentViewController:remixNav animated:YES completion:nil];
+                     }
                  }
              }];
         };

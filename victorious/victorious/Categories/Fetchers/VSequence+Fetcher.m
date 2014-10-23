@@ -169,11 +169,17 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canRemix
 {
+    if ( [self isPoll] )
+    {
+        return NO;
+    }
+    
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsRemix);
     }
+    
     return YES;
 }
 
