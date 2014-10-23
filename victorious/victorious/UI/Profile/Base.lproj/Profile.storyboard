@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Followers-->
+        <!--Follower Table View Controller - Followers-->
         <scene sceneID="aW5-Gl-D2H">
             <objects>
                 <tableViewController id="BFj-Qd-5qN" customClass="VFollowerTableViewController" sceneMemberID="viewController">
@@ -31,7 +30,7 @@
             </objects>
             <point key="canvasLocation" x="19" y="841"/>
         </scene>
-        <!--Edit Profile-->
+        <!--Profile Edit View Controller - Edit Profile-->
         <scene sceneID="IFO-fM-Zee">
             <objects>
                 <tableViewController storyboardIdentifier="editProfile" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VKu-9O-01w" customClass="VProfileEditViewController" sceneMemberID="viewController">
@@ -113,7 +112,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwh-pj-t1S">
-                                                    <rect key="frame" x="15" y="1" width="280" height="99"/>
+                                                    <rect key="frame" x="15" y="0.0" width="280" height="99"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -159,7 +158,7 @@
             </objects>
             <point key="canvasLocation" x="738" y="155"/>
         </scene>
-        <!--Following-->
+        <!--Following Table View Controller - Following-->
         <scene sceneID="HVG-hQ-7jJ">
             <objects>
                 <tableViewController id="lpI-le-Hn9" customClass="VFollowingTableViewController" sceneMemberID="viewController">

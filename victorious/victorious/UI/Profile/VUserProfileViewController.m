@@ -34,12 +34,14 @@
 
 #import "VAuthorizationViewControllerFactory.h"
 
+#import "UIViewController+VNavMenu.h"
+
 static const CGFloat kVNavigationBarHeight   =  44.0f;
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, VNavigationHeaderDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
 
@@ -51,42 +53,35 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithSelf
-{
-    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
-                                                                                       style:UIBarButtonItemStylePlain
-                                                                                      target:viewController
-                                                                                      action:@selector(showMenu:)];
-    viewController.profile = [VObjectManager sharedManager].mainUser;
-    
-    return viewController;
-}
-
 + (instancetype)userProfileWithUser:(VUser *)aUser
 {
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                                       style:UIBarButtonItemStylePlain
-                                                                                      target:viewController
-                                                                                      action:@selector(close:)];
-    viewController.profile = aUser;
-
-    return viewController;
-}
-
-+ (instancetype)userProfileWithFollowerOrFollowing:(VUser *)aUser
-{
-    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                                       style:UIBarButtonItemStyleBordered
-                                                                                      target:viewController
-                                                                                      action:@selector(goBack:)];
     viewController.profile = aUser;
     
+    BOOL isMe = (aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+    
+    if (isMe)
+    {
+        viewController.title = NSLocalizedString(@"me", "");
+    }
+    else
+    {
+        viewController.title = aUser.name ?: @"Profile";
+    }
+    
+    [viewController addNewNavHeaderWithTitles:nil];
+    viewController.navHeaderView.delegate = viewController;
+    
+    //    if (self.isMe)
+    //    {
+    //        [self addFriendsButton];
+    //    }
+    //    else
+    if (!isMe && !aUser.isDirectMessagingDisabled.boolValue)
+    {
+        [viewController.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:viewController];
+    }
+
     return viewController;
 }
 
@@ -94,19 +89,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    if (self.isMe)
-    {
-        self.navigationItem.title = NSLocalizedString(@"me", "");
-    }
-    else
-    {
-        self.navigationItem.title = self.profile.name ?: @"Profile";
-    }
-    
-    [super viewDidLoad];
-   
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
@@ -115,21 +101,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     headerView.delegate = self;
     self.profileHeaderView = headerView;
     self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
-    
-//    if (self.isMe)
-//    {
-//        [self addFriendsButton];
-//    }
-//    else
-        if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(composeMessage:)];
-    }
 
-    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.collectionView.backgroundColor = [UIColor clearColor];// [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -143,7 +116,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     self.profileHeaderView.user = self.profile;
     
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
  
     UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
@@ -155,12 +128,13 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     }
     
+    [self.backgroundImageView removeFromSuperview];
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                            placeholderImage:defaultBackgroundImage
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    self.collectionView.backgroundView = self.backgroundImageView;
+    [self.view insertSubview:self.backgroundImageView belowSubview:self.collectionView];
     
     if (self.streamDataSource.count)
     {
@@ -185,11 +159,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return NO;
 }
 
 #pragma mark - Accessors
@@ -228,6 +197,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - Actions
+
 #warning
 //- (IBAction)refresh:(UIRefreshControl *)sender
 //{
@@ -240,21 +210,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 //    }];
 //}
 
-- (IBAction)showMenu:(id)sender
-{
-    [self.sideMenuViewController presentMenuViewController];
-}
-
-- (IBAction)close:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (IBAction)composeMessage:(id)sender
 {
     if (![VObjectManager sharedManager].authorized)
@@ -264,11 +219,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                          completion:NULL];
         return;
     }
-    
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"")
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:nil
-                                                                            action:nil];
 
     VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
     
@@ -364,16 +314,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         controller.profile = self.profile;
     }
 }
-
-//- (IBAction)createButtonAction:(id)sender
-//{
-//    [self.currentStream addObserver:self
-//                         forKeyPath:@"sequences"
-//                            options:NSKeyValueObservingOptionNew
-//                            context:VUserProfileViewContext];
-//    
-//    [super createButtonAction:sender];
-//}
 
 #pragma mark - Animation
 

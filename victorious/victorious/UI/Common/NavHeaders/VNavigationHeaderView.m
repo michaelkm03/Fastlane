@@ -59,6 +59,14 @@
     }
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    NSString *tintColorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVContentTextColor : kVMainTextColor;
+    self.menuButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+    self.addButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+}
+
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
     if (titles.count <= 1)
@@ -141,7 +149,7 @@
 - (void)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !image;
-    [self.addButton setImage:image forState:UIControlStateNormal];
+    [self.addButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
