@@ -15,9 +15,6 @@
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
 
-// View Categories
-#import "UIView+VShadows.h"
-
 // Images
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
@@ -268,16 +265,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                      forState:UIControlStateNormal];
-    self.closeButton.tintColor = [UIColor whiteColor];
-    [self.closeButton v_applyShadowsWithZIndex:2];
-    
-    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                     forState:UIControlStateNormal];
-    self.moreButton.imageView.tintColor = [UIColor whiteColor];
-    [self.moreButton v_applyShadowsWithZIndex:2];
-    
     VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
     inputAccessoryView.returnKeyType = UIReturnKeyDone;
@@ -316,19 +303,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -363,6 +337,18 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -370,10 +356,13 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(keyboardWillChangeFrame:)
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadData)
+                                                 name:kLoggedInChangedNotification
                                                object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
@@ -411,7 +400,26 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // We don't care about these notifications anymore but we still care about new user loggedin
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateCommentsNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdatePollDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                                  object:nil];
+    
     
     self.contentCollectionView.delegate = nil;
 }
@@ -500,7 +508,13 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                    animated:YES];
         self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
+}
+
+- (void)reloadData
+{
+    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions
@@ -746,7 +760,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 if (selectedEnhancer.isBallistic)
                 {
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
-                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
@@ -956,9 +969,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
-    
+    self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell

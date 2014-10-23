@@ -8,7 +8,7 @@
 "Fsz-Xd-hVx.text" = "Agrega una descripción...\ny no olvides los #hashtags";
 
 /* Class = "IBUIButton"; normalTitle = "Caption"; ObjectID = "H0I-mP-7db"; */
-"H0I-mP-7db.normalTitle" = "Leyenda";
+"H0I-mP-7db.normalTitle" = "Subtítulo";
 
 /* Class = "IBUIButton"; normalTitle = "On"; ObjectID = "KGh-61-oX4"; */
 "KGh-61-oX4.normalTitle" = "Encendido";
@@ -18,6 +18,9 @@
 
 /* Class = "IBUIBarButtonItem"; title = "RESET"; ObjectID = "U2T-Yz-ShN"; */
 "U2T-Yz-ShN.title" = "RESTABLECER";
+
+/* Class = "IBUILabel"; text = "Press and hold to record"; ObjectID = "VGX-ys-Fd1"; */
+"VGX-ys-Fd1.text" = "Presiona y mantén para grabar";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "Yjk-3f-ltw"; */
 "Yjk-3f-ltw.text" = "Etiqueta";

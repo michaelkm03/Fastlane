@@ -27,6 +27,7 @@
 
 #import "VConstants.h"
 
+#import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
 @import AVFoundation;
@@ -44,6 +45,8 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     {
         return YES;
     }
+    
+    [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA

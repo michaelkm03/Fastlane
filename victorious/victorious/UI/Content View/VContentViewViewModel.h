@@ -78,6 +78,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithSequence:(VSequence *)sequence;
 
+- (void)reloadData;
+
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
                 completion:(void (^)(BOOL succeeded))completion;
@@ -243,6 +245,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL votingEnabled;
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
+@property (nonatomic, readonly) NSString *numberOfVotersText;
 
 - (VPollAnswer)favoredAnswer; // By the current user.
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer

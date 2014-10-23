@@ -103,6 +103,14 @@
     }
 
     [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
+    
+    [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
+}
+
+- (void)tapped:(UITapGestureRecognizer *)tap
+{
+    // This clears any selectected text in a message cell when the background is tapped
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

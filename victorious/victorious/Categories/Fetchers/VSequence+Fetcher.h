@@ -24,6 +24,7 @@
 
 - (BOOL)canDelete;
 - (BOOL)canRemix;
+- (BOOL)isVoteCountVisible;
 
 - (VNode *)firstNode;
 

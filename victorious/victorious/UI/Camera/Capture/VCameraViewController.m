@@ -41,7 +41,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIView *recordButton;
-@property (nonatomic, weak) IBOutlet UIImageView *toolTipImageView;
+@property (nonatomic, weak) IBOutlet UIView *toolTipView;
 @property (nonatomic, weak) IBOutlet UIButton *capturePhotoButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraModeButton;
 
@@ -488,7 +488,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     [UIView animateWithDuration:kAnimationDuration animations:^(void)
     {
-        self.toolTipImageView.alpha = 1.0;
+        self.toolTipView.alpha = 1.0;
     }];
 }
 
@@ -496,7 +496,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     [UIView animateWithDuration:kAnimationDuration animations:^(void)
     {
-        self.toolTipImageView.alpha = 0.0;
+        self.toolTipView.alpha = 0.0;
     }];
 
     if (gesture.state == UIGestureRecognizerStateBegan)
@@ -696,7 +696,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         self.capturePhotoButton.alpha = 0.0;
         self.recordButton.alpha = 1.0;
-        self.toolTipImageView.alpha = 0.0;
+        self.toolTipView.alpha = 0.0;
         self.flashButton.alpha = 0.0f;
         self.progressView.alpha = 1.0f;
 
@@ -747,7 +747,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         self.capturePhotoButton.alpha = 1.0f;
         self.recordButton.alpha = 0.0f;
-        self.toolTipImageView.alpha = 0.0f;
+        self.toolTipView.alpha = 0.0f;
         self.nextButton.alpha = 0.0f;
         self.progressView.alpha = 0.0f;
         [self configureFlashButton];
