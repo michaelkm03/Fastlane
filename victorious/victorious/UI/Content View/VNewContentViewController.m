@@ -15,9 +15,6 @@
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
 
-// View Categories
-#import "UIView+VShadows.h"
-
 // Images
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
@@ -267,16 +264,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                      forState:UIControlStateNormal];
-    self.closeButton.tintColor = [UIColor whiteColor];
-    [self.closeButton v_applyShadowsWithZIndex:2];
-    
-    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                     forState:UIControlStateNormal];
-    self.moreButton.imageView.tintColor = [UIColor whiteColor];
-    [self.moreButton v_applyShadowsWithZIndex:2];
     
     VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -746,7 +733,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 if (selectedEnhancer.isBallistic)
                 {
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
-                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
@@ -956,9 +942,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
-    
+    self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell

@@ -15,7 +15,6 @@
 #import "VMarqueeStreamItemCell.h"
 
 #import "VDirectoryViewController.h"
-#import "VContentViewController.h"
 #import "VMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"

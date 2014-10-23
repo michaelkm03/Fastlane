@@ -13,6 +13,7 @@
 
 // View Categories
 #import "UIActionSheet+VBlocks.h"
+#import "UIActionSheet+VBlocks.h"
 
 //TODO: abstract this out of VC
 #import "VStream.h"
@@ -129,7 +130,7 @@
                      UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
                      
                      UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                                         onCancelButton:nil
                                                                 destructiveButtonTitle:nil
                                                                    onDestructiveButton:nil
@@ -263,6 +264,40 @@
     shareItem.detailSelectionHandler = shareHandler;
     [actionItems addObject:shareItem];
     
+    if ([self.viewModel.sequence canDelete])
+    {
+        VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
+                                                               actionIcon:nil
+                                                               detailText:nil];
+        
+        deleteItem.selectionHandler = ^(void)
+        {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 UIActionSheet *confirmDeleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
+                                                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                                                 onCancelButton:nil
+                                                                         destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                                            onDestructiveButton:^
+                                                            {
+                                                                [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                                 {
+                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                 }
+                                                                                                                   failBlock:^(NSOperation *operation, NSError *error)
+                                                                 {
+                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                 }];
+                                                            }
+                                                                     otherButtonTitlesAndBlocks:nil, nil];
+                 [confirmDeleteActionSheet showInView:self.view];
+             }];
+        };
+        [actionItems addObject:deleteItem];
+    }
+    
     if (![[[VObjectManager sharedManager] mainUser] isOwner])
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
@@ -302,36 +337,7 @@
         [actionItems addObject:flagItem];
     }
     
-    if ([self.viewModel.sequence canDelete])
-    {
-        VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
-                                                               actionIcon:nil
-                                                               detailText:nil];
-        
-        deleteItem.selectionHandler = ^(void)
-        {
-            [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-             {
-                 [self dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      [self.delegate newContentViewControllerDidDeleteContent:self];
-                  }];
-             }
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 [self dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      [self.delegate newContentViewControllerDidDeleteContent:self];
-                  }];
-             }];
-            
-            
-        };
-        [actionItems addObject:deleteItem];
-    }
+
     
     [actionSheetViewController addActionItems:actionItems];
     
