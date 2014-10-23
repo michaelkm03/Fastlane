@@ -420,6 +420,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -528,16 +529,17 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
-    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
-    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
-    commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
-    commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
+    __weak typeof(self) welf = self;
+    commentCell.commentBody = [welf.viewModel commentBodyForCommentIndex:index];
+    commentCell.commenterName = [welf.viewModel commenterNameForCommentIndex:index];
+    commentCell.URLForCommenterAvatar = [welf.viewModel commenterAvatarURLForCommentIndex:index];
+    commentCell.timestampText = [welf.viewModel commentTimeAgoTextForCommentIndex:index];
+    commentCell.realTimeCommentText = [welf.viewModel commentRealTimeCommentTextForCommentIndex:index];
     if ([self.viewModel commentHasMediaForCommentIndex:index])
     {
         commentCell.hasMedia = YES;
-        commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
-        commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
+        commentCell.mediaPreviewURL = [welf.viewModel commentMediaPreviewUrlForCommentIndex:index];
+        commentCell.mediaIsVideo = [welf.viewModel commentMediaIsVideoForCommentIndex:index];
     }
     
     __weak typeof(commentCell) wCommentCell = commentCell;
@@ -548,7 +550,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         if (wCommentCell.mediaIsVideo)
         {
             lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
-                                                                         videoURL:[self.viewModel mediaURLForCommentIndex:index]];
+                                                                         videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
             
             ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
             ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
@@ -560,17 +562,16 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         
         lightbox.onCloseButtonTapped = ^(void)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [welf dismissViewControllerAnimated:YES completion:nil];
         };
         
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
                                                                           referenceView:wCommentCell.previewView];
         
-        [self presentViewController:lightbox
+        [welf presentViewController:lightbox
                            animated:YES
                          completion:nil];
     };
-    __weak typeof(self) welf = self;
     commentCell.onUserProfileTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[welf.viewModel userForCommentIndex:index]];
