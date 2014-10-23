@@ -1,32 +1,34 @@
 //
-//  VStreamPageViewController.m
+//  VMultipleStreamViewController.m
 //  victorious
 //
-//  Created by Will Long on 10/17/14.
+//  Created by Will Long on 10/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamPageViewController.h"
+#import "VMultipleStreamViewController.h"
+
+#import "UIViewController+VNavMenu.h"
+#import "VNavigationSelectorProtocol.h"
+
+#import "VStream+Fetcher.h"
+#import "VSequence+Fetcher.h"
+#import "VNode.h"
+
+#import "VStreamCollectionViewController.h"
+
+#import "VSequenceActionController.h"
+#import "VSequenceActionsDelegate.h"
 
 #import "VConstants.h"
 
-#import "VSequenceActionController.h"
-#import "VStreamCollectionViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
-
-#import "VObjectManager+Login.h"
-
-#import "VNode.h"
-#import "VSequence+Fetcher.h"
-#import "VStream+Fetcher.h"
-#import "UIViewController+VNavMenu.h"
-
-#import "VStreamCollectionCell.h"
-
 #import "VSettingManager.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Login.h"
+#import "VAuthorizationViewControllerFactory.h"
 
-@interface VStreamPageViewController () <VSequenceActionsDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
+
+@interface VMultipleStreamViewController () <VSequenceActionsDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, strong) NSArray *allStreams;
 @property (nonatomic, strong) VStream *defaultStream;
@@ -37,7 +39,9 @@
 
 @end
 
-@implementation VStreamPageViewController
+static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
+
+@implementation VMultipleStreamViewController
 
 + (instancetype)homeStream
 {
@@ -45,12 +49,12 @@
     VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
-    VStreamPageViewController *streamPager = [self streamPageVCForDefaultStream:recentStream
+    VMultipleStreamViewController *streamPager = [self multiStreamVCForDefaultStream:recentStream
                                                                   andAllStreams: @[hotStream, recentStream, followingStream]
                                                                           title:NSLocalizedString(@"Home", nil)];
     streamPager.shouldDisplayMarquee = YES;
     [streamPager addCreateSequenceButton];
-
+    
     return streamPager;
 }
 
@@ -59,7 +63,7 @@
     VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
-    VStreamPageViewController *streamPager = [self streamPageVCForDefaultStream:recentStream
+    VMultipleStreamViewController *streamPager = [self multiStreamVCForDefaultStream:recentStream
                                                                   andAllStreams:@[hotStream, recentStream]
                                                                           title:NSLocalizedString(@"Community", nil)];
     streamPager.navHeaderView.showHeaderLogoImage = YES;
@@ -73,16 +77,16 @@
     VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
     VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
     
-    VStreamPageViewController *ownerStream = [self streamPageVCForDefaultStream:recentStream
+    VMultipleStreamViewController *ownerStream = [self multiStreamVCForDefaultStream:recentStream
                                                                   andAllStreams:@[hotStream, recentStream]
                                                                           title:NSLocalizedString(@"Owner", nil)];
     return ownerStream;
 }
 
-+ (instancetype)streamPageVCForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
++ (instancetype)multiStreamVCForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamPageViewController *streamPager =  (VStreamPageViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"kStreamPager"];
+    VMultipleStreamViewController *streamPager =  (VMultipleStreamViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kVMultiStreamStoryboardID];
     streamPager.title = title;
     streamPager.defaultStream = stream;
     streamPager.allStreams = allStreams;
@@ -100,12 +104,14 @@
     return streamPager;
 }
 
+#pragma mark - View Stuff
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.dataSource = self;
-    self.delegate = self;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
     self.streamVCs = [[NSMutableArray alloc] init];
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     
@@ -143,6 +149,7 @@
     
     [self deleteStreamVCs];
     
+    CGFloat xOffset = CGRectGetMinX(self.scrollView.frame);
     for (VStream *stream in allStreams)
     {
         VStreamCollectionViewController *streamVC = [VStreamCollectionViewController streamViewControllerForStream:stream];
@@ -151,16 +158,21 @@
         insets.top = CGRectGetHeight(self.navHeaderView.frame);
         streamVC.contentInset = insets;
         
+        streamVC.view.frame = CGRectMake(xOffset, CGRectGetMinY(self.scrollView.frame),
+                                         CGRectGetWidth(streamVC.view.bounds), CGRectGetHeight(streamVC.view.bounds));
+        xOffset += CGRectGetWidth(streamVC.view.bounds);
+        
         if (stream == self.defaultStream)
         {
             streamVC.shouldDisplayMarquee = self.shouldDisplayMarquee;
         }
         
+        [streamVC willMoveToParentViewController:self];
+        [self.scrollView addSubview:streamVC.view];
+        [self addChildViewController:streamVC];
         [self.streamVCs addObject:streamVC];
     }
-    VStreamCollectionViewController *defaultStreamVC = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
-    NSArray *initialVC = @[defaultStreamVC];
-    [self setViewControllers:initialVC direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    self.scrollView.contentSize = CGSizeMake(xOffset, CGRectGetHeight(self.scrollView.bounds));
 }
 
 - (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
@@ -225,33 +237,37 @@
 
 - (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
+    BOOL shouldChange = YES;
+    NSInteger finalIndex = index;
+    
     if (self.allStreams.count <= (NSUInteger)index)
     {
-        return NO;
+        finalIndex = self.navHeaderView.navSelector.lastIndex;
+        shouldChange = NO;
     }
-    
-    NSInteger lastIndex = self.navHeaderView.lastSelectedControl;
-    
+
     VStream *stream = self.allStreams[index];
     if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
         && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
+        finalIndex = self.navHeaderView.navSelector.lastIndex;
+        shouldChange = NO;
     }
-    else
-    {
-        VStreamCollectionViewController *streamCollection = self.streamVCs[index];
-        UIPageViewControllerNavigationDirection direction = lastIndex < index ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-        [self setViewControllers:@[streamCollection]
-                       direction:direction
-                        animated:YES
-                      completion:nil];
-    }
-            return YES;
+    
+    VStreamCollectionViewController *streamCollection = self.streamVCs[finalIndex];
+    [self.scrollView setContentOffset:CGPointMake(CGRectGetMinX(streamCollection.view.frame), self.scrollView.contentOffset.y) animated:YES];
+    
+    return shouldChange;
 }
 
 #pragma mark - UIScrollViewdelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSInteger index = (NSInteger)(scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame));
+    self.navHeaderView.navSelector.currentIndex = index;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -270,65 +286,6 @@
          {
              [self showHeader];
          }];
-    }
-}
-
-#pragma mark - UIPageViewDelegate
-
-- (void)pageViewController:(UIPageViewController *)pageViewController
-        didFinishAnimating:(BOOL)finished
-   previousViewControllers:(NSArray *)previousViewControllers
-       transitionCompleted:(BOOL)completed
-{
-    if (completed)
-    {
-        NSUInteger index = [self.streamVCs indexOfObject:[self.viewControllers lastObject]];
-        self.navHeaderView.navSelector.currentIndex = index;
-    }
-    else
-    {
-        NSUInteger index = [self.streamVCs indexOfObject:[previousViewControllers lastObject]];
-        self.navHeaderView.navSelector.currentIndex = index;
-    }
-}
-
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
-{
-    NSUInteger index = [self.streamVCs indexOfObject:[pendingViewControllers lastObject]];
-    self.navHeaderView.navSelector.currentIndex = index;
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-       viewControllerAfterViewController:(UIViewController *)viewController
-{
-    NSAssert(pageViewController == self, @"");
-    
-    NSUInteger index = [self.streamVCs indexOfObject:viewController];
-    
-    if (index == self.streamVCs.count - 1)
-    {
-        return nil;
-    }
-    else
-    {
-        return self.streamVCs[index+1];
-    }
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-      viewControllerBeforeViewController:(UIViewController *)viewController
-{
-    NSAssert(pageViewController == self, @"");
-    
-    NSUInteger index = [self.streamVCs indexOfObject:viewController];
-    
-    if (index == 0)
-    {
-        return nil;
-    }
-    else
-    {
-        return self.streamVCs[index-1];
     }
 }
 

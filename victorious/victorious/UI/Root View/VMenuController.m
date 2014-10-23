@@ -31,7 +31,7 @@
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
-#import "VStreamPageViewController.h"
+#import "VMultipleStreamViewController.h"
 
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
@@ -140,7 +140,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowHome:
             {
                 BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                UIViewController *homeVC = isTemplateC ? [VStreamPageViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+                UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
                 navigationController.viewControllers = @[homeVC];
                 [self.sideMenuViewController hideMenuViewController];
             }
@@ -154,7 +154,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 else
                 {
                     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                    UIViewController *ownerVC = isTemplateC ? [VStreamPageViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
+                    UIViewController *ownerVC = isTemplateC ? [VMultipleStreamViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
                     navigationController.viewControllers = @[ownerVC];
                 }
                 [self.sideMenuViewController hideMenuViewController];
@@ -164,7 +164,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             case VMenuRowCommunityChannel:
             {
                 BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                UIViewController *communityVC = isTemplateC ? [VStreamPageViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
+                UIViewController *communityVC = isTemplateC ? [VMultipleStreamViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
                 navigationController.viewControllers = @[communityVC];
                 [self.sideMenuViewController hideMenuViewController];
             }

@@ -23,7 +23,8 @@
 #import "MBProgressHUD.h"
 
 #import "VSettingManager.h"
-#import "VStreamPageViewController.h"
+
+#import "VMultipleStreamViewController.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
@@ -198,7 +199,7 @@ static const NSUInteger kRetryAttempts = 5;
     [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VStreamPageViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
     self.navigationController.viewControllers = @[homeVC];
 }
 

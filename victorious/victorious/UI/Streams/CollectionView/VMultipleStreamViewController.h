@@ -1,15 +1,16 @@
 //
-//  VStreamPageViewController.h
+//  VMultipleStreamViewController.h
 //  victorious
 //
-//  Created by Will Long on 10/17/14.
+//  Created by Will Long on 10/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface VStreamPageViewController : UIPageViewController
+@interface VMultipleStreamViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) BOOL shouldDisplayMarquee;
 
 + (instancetype)homeStream;
