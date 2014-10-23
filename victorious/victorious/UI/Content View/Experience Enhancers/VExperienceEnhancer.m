@@ -14,7 +14,8 @@
 - (instancetype)initWithVoteType:(VVoteType *)voteType
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _voteType = voteType;
         
         self.labelText = voteType.name;

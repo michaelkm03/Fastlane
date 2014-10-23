@@ -8,6 +8,6 @@
 
 #import "VNewContentViewController.h"
 
-@interface VNewContentViewController (Actions)
+@interface VNewContentViewController (Actions) <UIActionSheetDelegate>
 
 @end

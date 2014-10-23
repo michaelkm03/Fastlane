@@ -45,8 +45,8 @@
 {
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
-    __block VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
-    __block VNewContentViewController *contentViewController = self;
+    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    VNewContentViewController *contentViewController = self;
     
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
