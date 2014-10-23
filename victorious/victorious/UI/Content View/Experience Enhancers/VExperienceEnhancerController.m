@@ -17,6 +17,9 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VTrackingManager.h"
+#import "VVoteType.h"
+#import "VVoteResult.h"
+#import "VLargeNumberFormatter.h"
 
 @interface VExperienceEnhancerController ()
 
@@ -44,8 +47,32 @@
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes];
+        [self addResultsFromSequence:self.sequence toExperienceEnhancers:self.experienceEnhancers];
     }
     return self;
+}
+
+- (BOOL)addResultsFromSequence:(VSequence *)sequence toExperienceEnhancers:(NSArray *)experienceEnhancers
+{
+    if ( sequence.voteResults == nil || sequence.voteResults.count == 0 || experienceEnhancers.count == 0 )
+    {
+        return NO;
+    }
+    
+    VLargeNumberFormatter *formatter = [[VLargeNumberFormatter alloc] init];
+    
+    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+    {
+        [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
+        {
+            if ( experienceEnhancer.voteType.remoteId.integerValue == result.remoteId.integerValue )
+            {
+                experienceEnhancer.labelText = [formatter stringForInteger:result.count.integerValue];
+            }
+        }];
+    }];
+    
+    return YES;
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes

@@ -339,6 +339,7 @@
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AB4FE719F5A50800BFFE35 /* VVoteType+ImageSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE619F5A50800BFFE35 /* VVoteType+ImageSerialization.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
+		A7EF97BC19F889F800972E74 /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
 		A7F6CF9D19EEDA0B003F164C /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9B19EEDA0B003F164C /* VFileCache.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
@@ -1228,6 +1229,7 @@
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
+		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F6CF9819EEDA0B003F164C /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
 		A7F6CF9A19EEDA0B003F164C /* VFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileCache.h; sourceTree = "<group>"; };
@@ -2870,6 +2872,7 @@
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
 				A709640419F0738200CE6633 /* VTrackingManagerTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
+				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -4297,6 +4300,7 @@
 				A719CD6919F6D6410019E866 /* VPhotoLibraryManagerTests.m in Sources */,
 				A719CD6219F6D6410019E866 /* VHashTagsTest.m in Sources */,
 				A719CD7B19F6D6410019E866 /* VVideoTrackingTests.m in Sources */,
+				A7EF97BC19F889F800972E74 /* VExperienceEnhancerTests.m in Sources */,
 				A719CD5E19F6D6410019E866 /* NSObject+VMethodSwizzling.m in Sources */,
 				A719CD6019F6D6410019E866 /* VAuthorizationViewControllerFactoryTests.m in Sources */,
 				A719CD7219F6D6410019E866 /* VFileCacheTests.m in Sources */,

@@ -37,4 +37,6 @@
 
 + (NSArray *)createVoteTypes:(NSInteger)count;
 
++ (NSArray *)createVoteResults:(NSInteger)count;
+
 @end
