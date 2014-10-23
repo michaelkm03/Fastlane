@@ -11,13 +11,15 @@
 
 #import "VConstants.h"
 
+#import "UIViewController+VNavMenu.h"
+
 typedef enum {
     vFilterBy_Messages = 0,
     vFilterBy_Notifications = 1
 
 } vFilterBy;
 
-@interface VInboxContainerViewController ()
+@interface VInboxContainerViewController () <VNavigationHeaderDelegate>
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
@@ -37,13 +39,16 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
+    self.title = NSLocalizedString(@"Inbox", nil);
     [self.filterControls setSelectedSegmentIndex:vFilterBy_Messages];
+    self.headerView.hidden = YES;
+    
+    [self addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
 }
 
 - (IBAction)changedFilterControls:(id)sender
 {
-    
     [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
     
 }
