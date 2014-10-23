@@ -1050,7 +1050,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     [inputAccessoryView clearTextAndResign];
     self.mediaURL = nil;
     
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVieoWhenCommenting])
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
     {
         [self.videoCell.videoPlayerViewController.player play];
     }
