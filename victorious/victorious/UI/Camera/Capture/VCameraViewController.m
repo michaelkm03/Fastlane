@@ -42,7 +42,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIView *recordButton;
 @property (nonatomic, weak) IBOutlet UIView *toolTipView;
-@property (nonatomic, weak) IBOutlet UIImageView *toolTipBackgroundImage;
 @property (nonatomic, weak) IBOutlet UIButton *capturePhotoButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraModeButton;
 
@@ -127,9 +126,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.toolTipBackgroundImage.image = [[UIImage imageNamed:@"cameraToolTipBackground"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 0.0f, 4.0f, 0.0f) resizingMode:UIImageResizingModeStretch];
-    self.toolTipView.backgroundColor = [UIColor clearColor];
     
     self.captureController = [[VCameraCaptureController alloc] init];
     [self.captureController setSessionPreset:self.initialCaptureMode completion:nil];
