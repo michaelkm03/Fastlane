@@ -56,7 +56,7 @@
                             <constraint firstItem="Cqz-ud-Eay" firstAttribute="leading" secondItem="qnr-LZ-FqW" secondAttribute="leading" id="zeD-9j-4YQ"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="272" translatesAutoresizingMaskIntoConstraints="NO" id="9rP-b8-aiM" userLabel="Description">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="272" translatesAutoresizingMaskIntoConstraints="NO" id="9rP-b8-aiM" userLabel="Description">
                         <rect key="frame" x="15" y="367" width="272" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" placeholder="YES" id="fDo-GP-az3"/>
@@ -79,7 +79,7 @@
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDv-jo-7gZ" customClass="VStreamCellActionView">
-                        <rect key="frame" x="-1" y="403" width="304" height="40"/>
+                        <rect key="frame" x="-1" y="403" width="304" height="40.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
