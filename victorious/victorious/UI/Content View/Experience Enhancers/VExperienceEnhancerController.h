@@ -16,6 +16,8 @@
 
 - (instancetype)initWithSequence:(VSequence *)sequence;
 
+- (void)sendTrackingEvents;
+
 @property (nonatomic, strong, readonly) VSequence *sequence;
 
 @property (nonatomic, weak) VExperienceEnhancerBar *enhancerBar;

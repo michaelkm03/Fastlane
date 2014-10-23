@@ -61,4 +61,14 @@
     return self.flightDuration > 0.0;
 }
 
+- (void)vote
+{
+    _voteCount++;
+}
+
+- (void)resetVoteCount
+{
+    _voteCount = 0;
+}
+
 @end

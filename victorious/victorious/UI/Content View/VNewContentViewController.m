@@ -121,6 +121,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (void)dealloc
 {
+    [self.viewModel.experienceEnhancerController sendTrackingEvents];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -419,6 +420,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
+    
+    [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
     
     self.contentCollectionView.delegate = nil;

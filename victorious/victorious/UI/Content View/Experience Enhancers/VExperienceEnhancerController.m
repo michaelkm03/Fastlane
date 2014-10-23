@@ -28,6 +28,7 @@
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
+@property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 
 @end
 
@@ -134,6 +135,21 @@
     _validExperienceEnhancers = newValue;
 }
 
+- (void)sendTrackingEvents
+{
+    [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop) {
+        
+        NSUInteger voteCount = enhancer.voteCount;
+        if ( voteCount > 0 )
+        {
+            NSDictionary *params = @{ kTrackingKeyBallisticsCount : @( voteCount ),
+                                      kTrackingKeySequenceId : self.sequence.remoteId };
+            [self.trackingManager trackEventWithUrls:enhancer.voteType.tracking.ballisticCount andParameters:params];
+            [enhancer resetVoteCount];
+        }
+    }];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setEnhancerBar:(VExperienceEnhancerBar *)enhancerBar
@@ -166,10 +182,7 @@
 
 - (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer
 {
-    NSDictionary *params = @{ kTrackingKeyBallisticsCount : @(1),
-                              kTrackingKeySequenceId : self.sequence.remoteId
-                              };
-    [self.trackingManager trackEventWithUrls:experienceEnhancer.voteType.tracking.ballisticCount andParameters:params];
+    [experienceEnhancer vote];
 }
 
 @end
