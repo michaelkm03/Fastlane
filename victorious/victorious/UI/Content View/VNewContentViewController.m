@@ -375,6 +375,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadData)
+                                                 name:kLoggedInChangedNotification
+                                               object:nil];
+    
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
@@ -501,6 +506,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
         self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
+}
+
+- (void)reloadData
+{
+    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions

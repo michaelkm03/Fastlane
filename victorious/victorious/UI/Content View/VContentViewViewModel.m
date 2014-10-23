@@ -95,11 +95,6 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
         _currentAsset = [_currentNode.assets firstObject];
         
         [self reloadData];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadData)
-                                                     name:kLoggedInChangedNotification
-                                                   object:nil];
     }
     return self;
 }
@@ -137,8 +132,6 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
          [self fetchHistogramData];
      }
                                             failBlock:nil];
-    
-
 }
 
 - (void)fetchUserinfo
