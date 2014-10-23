@@ -1619,73 +1619,6 @@
             </objects>
             <point key="canvasLocation" x="-974" y="-1303"/>
         </scene>
-        <!--Emotive Ballistics Bar View Controller-->
-        <scene sceneID="U5e-sD-f9l">
-            <objects>
-                <viewController storyboardIdentifier="emotiveballistics" autoresizesArchivedViewToFullSize="NO" id="fx3-Ym-Kt1" customClass="VEmotiveBallisticsBarViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="oVf-qG-T3z"/>
-                        <viewControllerLayoutGuide type="bottom" id="6lz-Aw-KWC"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="IWk-7d-MDp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMO-OU-gVH" userLabel="Positive Emotive">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="Heart">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pressedPostiveEmotive:" destination="fx3-Ym-Kt1" eventType="touchUpInside" id="Q5J-Tf-9AZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dp-HB-SPd" userLabel="Negative Emotive">
-                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="Tomato">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pressedNegativeEmotive:" destination="fx3-Ym-Kt1" eventType="touchUpInside" id="EPI-Ma-XaL"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOq-WJ-Ibw" userLabel="Left Label">
-                                <rect key="frame" x="103" y="24" width="29" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-mD-Ekf" userLabel="Right Label">
-                                <rect key="frame" x="262" y="24" width="29" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="6lz-Aw-KWC" firstAttribute="top" secondItem="AjL-mD-Ekf" secondAttribute="bottom" constant="15" id="2fj-zO-QrB"/>
-                            <constraint firstItem="QOq-WJ-Ibw" firstAttribute="left" secondItem="IWk-7d-MDp" secondAttribute="left" constant="103" id="SGa-69-yEt"/>
-                            <constraint firstItem="6lz-Aw-KWC" firstAttribute="top" secondItem="QOq-WJ-Ibw" secondAttribute="bottom" constant="15" id="fFd-kq-y8l"/>
-                            <constraint firstItem="AjL-mD-Ekf" firstAttribute="left" secondItem="IWk-7d-MDp" secondAttribute="left" constant="262" id="sL8-Yz-sZp"/>
-                        </constraints>
-                    </view>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="60"/>
-                    <connections>
-                        <outlet property="leftButton" destination="lMO-OU-gVH" id="KAR-pG-Gf5"/>
-                        <outlet property="leftLabel" destination="QOq-WJ-Ibw" id="nfW-3v-Dde"/>
-                        <outlet property="rightButton" destination="1dp-HB-SPd" id="OYe-27-tef"/>
-                        <outlet property="rightLabel" destination="AjL-mD-Ekf" id="Gvu-jM-SDh"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2314" y="-614"/>
-        </scene>
         <!--Poll Answer Bar View Controller-->
         <scene sceneID="bVi-Yh-R1f">
             <objects>
@@ -2353,7 +2286,6 @@
         <image name="Close" width="17" height="17"/>
         <image name="Comment" width="26" height="26"/>
         <image name="FlipIcon" width="23" height="20"/>
-        <image name="Heart" width="160" height="60"/>
         <image name="Menu" width="27" height="27"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="More" width="22" height="6"/>
@@ -2367,7 +2299,6 @@
         <image name="PostDelete" width="30" height="30"/>
         <image name="SearchIcon" width="30" height="31"/>
         <image name="SearchIconSmall" width="20" height="20"/>
-        <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="contentViewCollapse" width="40" height="40"/>
         <image name="createContentButton" width="27" height="27"/>
