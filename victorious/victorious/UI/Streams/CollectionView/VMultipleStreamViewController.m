@@ -173,6 +173,10 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
         [self.streamVCs addObject:streamVC];
     }
     self.scrollView.contentSize = CGSizeMake(xOffset, CGRectGetHeight(self.scrollView.bounds));
+    
+    
+    VStreamCollectionViewController *streamCollection = self.streamVCs[[self.allStreams indexOfObject:self.defaultStream]];
+    [self.scrollView setContentOffset:CGPointMake(CGRectGetMinX(streamCollection.view.frame), self.scrollView.contentOffset.y) animated:YES];
 }
 
 - (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee

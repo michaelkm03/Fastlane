@@ -78,7 +78,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
         self.backgroundColor = [UIColor whiteColor];
     }
     
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.descriptionLabel.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
