@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber *flightDuration;
 @property (nonatomic, retain) NSNumber *animationDuration;
 @property (nonatomic, retain) NSNumber *settingsIndex;
+@property (nonatomic, retain) NSString *imageContentMode;
 @property (nonatomic, retain) VTracking *tracking;
 
 @end

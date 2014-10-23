@@ -7,7 +7,7 @@
 //
 
 #import "VExperienceEnhancer.h"
-#import "VVoteType.h"
+#import "VVoteType+Fetcher.h"
 
 @implementation VExperienceEnhancer
 
@@ -19,6 +19,7 @@
         _voteType = voteType;
         
         self.labelText = voteType.name;
+        self.contentMode = voteType.contentMode;
         self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         self.animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
     }

@@ -27,7 +27,8 @@
                                   @"image_macro"        : VSelectorName(imageFormat),
                                   @"icon_image"         : VSelectorName(iconImage),
                                   @"animation_duration" : VSelectorName(animationDuration),
-                                  @"flight_duration"    : VSelectorName(flightDuration)
+                                  @"flight_duration"    : VSelectorName(flightDuration),
+                                  @"view_content_mode"  : VSelectorName(imageContentMode)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

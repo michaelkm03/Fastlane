@@ -12,7 +12,7 @@
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 @interface VFileCache ( UnitTest)
 

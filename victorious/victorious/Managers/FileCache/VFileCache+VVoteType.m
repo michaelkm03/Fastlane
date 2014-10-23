@@ -8,7 +8,7 @@
 
 #import "VVoteType.h"
 #import "VFileCache.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
