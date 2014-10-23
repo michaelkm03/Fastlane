@@ -97,7 +97,7 @@ static NSMutableDictionary *messageViewControllers;
 
 - (IBAction)flagConversation:(id)sender
 {
-    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
+    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")

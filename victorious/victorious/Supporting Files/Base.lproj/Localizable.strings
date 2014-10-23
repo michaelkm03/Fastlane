@@ -19,6 +19,7 @@
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
 "ConfirmButton"         =   "Confirm";
+"Reply"                 =   "Reply";
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
