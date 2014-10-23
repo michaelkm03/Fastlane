@@ -18,23 +18,24 @@
 #import "VVoteType+Fetcher.h"
 
 //Settings
-NSString * const   kVCaptureVideoQuality               =   @"capture";
-NSString * const   kVExportVideoQuality                =   @"remix";
+NSString * const kVCaptureVideoQuality =   @"capture";
+NSString * const kVExportVideoQuality =   @"remix";
 
-NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
-NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
+NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
+NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
-NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
-NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
+NSString * const VSettingsChannelsEnabled = @"channelsEnabled";
+NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
+NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
 
 //URLs
-NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
-NSString * const   kVAppStoreURL                       =   @"url.appstore";
-NSString * const   kVPrivacyUrl                        =   @"url.privacy";
+NSString * const kVTermsOfServiceURL = @"url.tos";
+NSString * const kVAppStoreURL = @"url.appstore";
+NSString * const kVPrivacyUrl = @"url.privacy";
 
 @interface VSettingManager()
 
