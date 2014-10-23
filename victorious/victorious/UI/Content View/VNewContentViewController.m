@@ -416,13 +416,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     self.contentCollectionView.delegate = nil;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-}
-
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
                      animated:(BOOL)flag
                    completion:(void (^)(void))completion
