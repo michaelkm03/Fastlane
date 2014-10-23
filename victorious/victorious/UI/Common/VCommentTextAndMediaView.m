@@ -61,6 +61,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
     self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 0.0, -5.0);
+    self.textView.dataDetectorTypes = UIDataDetectorTypeAll;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self addSubview:self.textView];
     
