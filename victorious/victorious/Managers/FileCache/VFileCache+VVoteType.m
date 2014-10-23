@@ -83,7 +83,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     [self setDecoder];
     
     NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
-    return (UIImage *)[self getCachedFileForSavePath:iconSavePath];
+    NSData *data = [self getCachedFileForSavePath:iconSavePath];
+    return [UIImage imageWithData:data];
 }
 
 - (BOOL)isImageCached:(NSString *)imageName forVoteType:(VVoteType *)voteType
@@ -100,7 +101,8 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    return [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
+    NSArray *dataArray = [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType]];
+    return [self imageArrayFromDataArray:dataArray];
 }
 
 - (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType
@@ -128,16 +130,21 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     [self setDecoder];
     
     [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:^(NSArray *dataArray) {
-        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
-        [dataArray enumerateObjectsUsingBlock:^(NSData *data, NSUInteger idx, BOOL *stop) {
-            UIImage *image = [UIImage imageWithData:data];
-            if ( image )
-            {
-                [imageArray addObject:image];
-            }
-        }];
-        callback( [NSArray arrayWithArray:imageArray] );
+        callback( [self imageArrayFromDataArray:dataArray] );
     }];
+}
+
+- (NSArray *)imageArrayFromDataArray:(NSArray *)dataArray
+{
+    NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+    [dataArray enumerateObjectsUsingBlock:^(NSData *data, NSUInteger idx, BOOL *stop) {
+        UIImage *image = [UIImage imageWithData:data];
+        if ( image )
+        {
+            [imageArray addObject:image];
+        }
+    }];
+    return [NSArray arrayWithArray:imageArray];
 }
 
 #pragma mark - Build Key Paths
