@@ -20,7 +20,7 @@
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
 @property (nonatomic, strong) UIImage *flightImage;
-@property (nonatomic, assign) BOOL shouldLetterBox;
+@property (nonatomic, assign) UIViewContentMode contentMode;
 
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL hasRequiredImages;

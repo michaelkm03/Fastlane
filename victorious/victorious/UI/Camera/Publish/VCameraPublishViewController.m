@@ -524,6 +524,11 @@ static const CGFloat kShareMargin = 34.0f;
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
+    
+    if ( self.navigationController == nil || self.navigationController.viewControllers.count == 1 )
+    {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Actions
@@ -540,10 +545,8 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                                    action:@"Camera Publish Cancelled"
                                                                                                     label:nil
                                                                                                     value:nil];
-                                      if (self.completion)
-                                      {
-                                          self.completion(YES);
-                                      }
+                                      [self.view endEditing:YES];
+                                      [self didComplete];
                                   }
                                            otherButtonTitlesAndBlocks:nil];
     [actionSheet showInView:self.view];
@@ -603,20 +606,34 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                                        action:@"Camera Publish Back"
                                                                                                         label:nil
                                                                                                         value:nil];
-                                          if (self.completion)
-                                          {
-                                              self.completion(NO);
-                                          }
+                                          [self.view endEditing:YES];
+                                          [self didConfirmGoBack];
                                       }
                                                otherButtonTitlesAndBlocks:nil];
         [actionSheet showInView:self.view];
     }
     else
     {
-        if (self.completion)
+        [self didConfirmGoBack];
+    }
+}
+
+- (void)didConfirmGoBack
+{
+    if ( self.navigationController != nil )
+    {
+        if ( self.navigationController.viewControllers.count == 1 )
         {
-            self.completion(NO);
+            [self didComplete];
         }
+        else if ( self.navigationController.viewControllers.count > 1 )
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    else
+    {
+        [self didComplete];
     }
 }
 
@@ -818,9 +835,22 @@ static const CGFloat kShareMargin = 34.0f;
         cleanup();
     }
     
+    [self didComplete];
+}
+
+- (void)didComplete
+{
     if (self.completion)
     {
         self.completion(YES);
+    }
+    else if ( self.navigationController == nil )
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

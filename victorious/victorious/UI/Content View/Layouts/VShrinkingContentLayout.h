@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VContentViewBaseLayout.h"
-
 typedef NS_ENUM(NSInteger, VContentViewSection)
 {
     VContentViewSectionContent,

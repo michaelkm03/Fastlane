@@ -280,7 +280,7 @@
                                                                   label:nil
                                                                   value:nil];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                        onCancelButton:nil
                                                destructiveButtonTitle:nil
                                                   onDestructiveButton:nil
