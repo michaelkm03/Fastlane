@@ -823,9 +823,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="102" id="jLn-P6-pUV"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
-                                </connections>
                             </containerView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
@@ -2354,10 +2351,14 @@
     </scenes>
     <resources>
         <image name="Close" width="17" height="17"/>
+        <image name="Comment" width="26" height="26"/>
+        <image name="FlipIcon" width="23" height="20"/>
         <image name="Heart" width="160" height="60"/>
         <image name="Menu" width="27" height="27"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="More" width="22" height="6"/>
+        <image name="PlayCircle" width="52" height="52"/>
+        <image name="PlayTriangle" width="52" height="52"/>
         <image name="PollBarOr" width="65" height="72"/>
         <image name="PollCheck" width="65" height="72"/>
         <image name="PollCreateOr" width="48" height="52"/>
@@ -2368,9 +2369,13 @@
         <image name="SearchIconSmall" width="20" height="20"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="contentViewCollapse" width="40" height="40"/>
         <image name="createContentButton" width="27" height="27"/>
         <image name="profileCompose" width="27" height="27"/>
         <image name="refreshIcon" width="13" height="15"/>
+        <image name="remixIcon" width="22" height="18"/>
+        <image name="repostIcon" width="22" height="19"/>
+        <image name="shareIcon" width="18" height="20"/>
         <image name="user-icon" width="51" height="74"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
