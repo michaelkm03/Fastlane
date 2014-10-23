@@ -114,21 +114,12 @@
                  }
                  else
                  {
-                     NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-                     NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                     NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                     
-                     if ([filteredImageData writeToURL:tempFile atomically:NO])
-                     {
-                         VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-                         publishViewController.previewImage = self.placeholderImage;
-                         publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
-                         publishViewController.completion = nil;
-                         publishViewController.mediaURL = tempFile;
-                         
-                         UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-                         [self presentViewController:remixNav animated:YES completion:nil];
-                     }
+                     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                               delegate:self
+                                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                                 destructiveButtonTitle:nil
+                                                                      otherButtonTitles:NSLocalizedString(@"Meme", nil), NSLocalizedString(@"Quote", nil), nil];
+                     [actionSheet showInView:contentViewController.view];
                  }
              }];
         };
@@ -297,6 +288,31 @@
     [actionSheetViewController addActionItems:actionItems];
     
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( buttonIndex != 0 && buttonIndex != 1 )
+    {
+        return;
+    }
+    
+    NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    
+    if ([filteredImageData writeToURL:tempFile atomically:NO])
+    {
+        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+        publishViewController.previewImage = self.placeholderImage;
+        publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+        publishViewController.completion = nil;
+        publishViewController.captionType = buttonIndex == 0 ? VCaptionTypeMeme : VCaptionTypeQuote;
+        publishViewController.mediaURL = tempFile;
+        
+        UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+        [self presentViewController:remixNav animated:YES completion:nil];
+    }
 }
 
 @end
