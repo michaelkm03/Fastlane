@@ -19,6 +19,7 @@
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
 "ConfirmButton"         =   "Confirm";
+"Reply"                 =   "Reply";
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
@@ -374,4 +375,7 @@
 "Suggested People"      = "Suggested People";
 "Trending Tags"         = "Trending Tags";
 
+"Device:"               = "Device:";
+"OS Version:"           = "OS Version:";
+"App Version:"          = "App Version:";
 "AreYouSureYouWantToDelete" = "Are you sure you want to delete?";
