@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
+@property (nonatomic, strong) NSArray *validExperienceEnhancers;
 
 @end
 
@@ -48,7 +49,8 @@
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         self.experienceEnhancers = [self updateExperienceEnhancersFromVoteTypes:voteTypes imageLoadedCallback:^void
         {
-             [self.enhancerBar reloadData];
+            self.validExperienceEnhancers = self.experienceEnhancers;
+            [self.enhancerBar reloadData];
         }];
         [self addResultsFromSequence:self.sequence toExperienceEnhancers:self.experienceEnhancers];
     }
@@ -63,16 +65,17 @@
     }
     
     VLargeNumberFormatter *formatter = [[VLargeNumberFormatter alloc] init];
-    
-    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
-    {
-        [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
-        {
-            if ( experienceEnhancer.voteType.remoteId.integerValue == result.remoteId.integerValue )
-            {
-                experienceEnhancer.labelText = [formatter stringForInteger:result.count.integerValue];
-            }
-        }];
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
+     {
+         __block NSUInteger count = 0;
+         [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+          {
+              if ( [experienceEnhancer.voteType.remoteId isEqual:result.remoteId] )
+              {
+                  count = result.count.integerValue;
+              }
+          }];
+         experienceEnhancer.labelText = [formatter stringForInteger:count];
     }];
     
     return YES;
@@ -85,25 +88,30 @@
     {
         BOOL areSpriteImagesCached = [self.fileCache areSpriteImagesCachedForVoteType:voteType];
         BOOL isIconImageCached = [self.fileCache isImageCached:VVoteTypeIconName forVoteType:voteType];
+        
+        
         if ( !isIconImageCached || !areSpriteImagesCached )
         {
-            // Start an asychronous task in the background to download missing images
-            // If the images can download successfully, i.e. there is no other legitimate network error,
-            // they will be available next time the content view is presented
+            // Files are not downloaded, so start the downloads:
             [self.fileCache cacheImagesForVoteType:voteType];
         }
         else
         {
+            // Files are downloaded
             VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType];
+            
+            // Download animation sequence images
             [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
 			{
                 enhancer.animationSequence = images;
-                enhancer.flightImage = enhancer.animationSequence.firstObject;
+                enhancer.flightImage = images.firstObject;
                 if ( callback )
                 {
                     callback();
                 }
             }];
+            
+            // Download icon image
             [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
 			{
                 enhancer.iconImage = iconImage;
@@ -112,14 +120,21 @@
                     callback();
                 }
             }];
-            if ( ![experienceEnhanders containsObject:enhancer] )
-            {
-                [experienceEnhanders addObject:enhancer];
-            }
+            [experienceEnhanders addObject:enhancer];
         }
     }];
     
     return [VExperienceEnhancer sortedExperienceEnhancers:experienceEnhanders];
+}
+
+- (void)setValidExperienceEnhancers:(NSArray *)validExperienceEnhancers
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
+                                                                   NSDictionary *bindings)
+                              {
+                                  return enhancer.hasRequiredImages;
+                              }];
+    _validExperienceEnhancers = [validExperienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
 #pragma mark - Property Accessors
@@ -136,12 +151,12 @@
 
 - (NSInteger)numberOfExperienceEnhancers
 {
-    return (NSInteger)self.experienceEnhancers.count;
+    return (NSInteger) self.validExperienceEnhancers.count;
 }
 
 - (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index
 {
-    return [self.experienceEnhancers objectAtIndex:(NSUInteger)index];
+    return [self.validExperienceEnhancers objectAtIndex:(NSUInteger)index];
 }
 
 #pragma mark - VExperienceEnhancerDelegate

@@ -18,6 +18,18 @@ extern NSString * const VVoteTypeIconName;
 @interface VFileCache (VVoteType)
 
 /**
+ A block that can be set by calling code to provide any modifications to the data
+ before it is written, e.g. wrapping it in UIImagePNGRepresentation()
+ */
+@property (nonatomic, copy) NSData *(^encoderBlock)(NSData *);
+
+/**
+ A block that can be set by calling code to provide any modifications to the data
+ after it is read.
+ */
+@property (nonatomic, copy) id (^decoderBlock)(NSData *);
+
+/**
  Download and save the files to the cache directory asynchronously
  */
 - (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;

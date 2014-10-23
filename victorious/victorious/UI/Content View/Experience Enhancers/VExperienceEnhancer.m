@@ -27,7 +27,6 @@
     {
         _voteType = voteType;
         
-        self.labelText = voteType.name;
         self.contentMode = voteType.contentMode;
         self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         self.animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
@@ -37,9 +36,9 @@
 
 - (BOOL)hasRequiredImages
 {
-    if ( self.isBallistic )
+    if ( self.isBallistic && self.flightImage == nil )
     {
-        return self.flightImage != nil;
+        return NO;
     }
     else
     {
@@ -49,7 +48,7 @@
 
 - (BOOL)isBallistic
 {
-    return self.flightImage && self.flightDuration > 0.0;
+    return self.flightDuration > 0.0;
 }
 
 @end
