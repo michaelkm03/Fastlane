@@ -77,8 +77,6 @@
 
     UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-    
-    //[self setupProgressObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -114,35 +112,9 @@
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-    
-    // Remove Time Observer
-    //[self.videoPlayerViewController.player removeTimeObserver:self.progressObserver];
 }
 
 #pragma mark - Video Methods
-
-- (void)setupProgressObserver
-{
-    // Set This Controller as the Video Player Delegate
-    self.videoPlayerViewController.delegate = self;
-    
-    // TODO: Remove this line post-launch
-    [self.progressIndicator setHidden:YES];
-    
-    double interval = .1f;
-    double duration = CMTimeGetSeconds([self playerItemDuration]);
-    if (isfinite(duration))
-    {
-        CGFloat width = CGRectGetWidth([self.progressIndicator bounds]);
-        interval = 0.5f * duration / width;
-    }
-    
-    __weak VRemixStitchViewController *weakSelf = self;
-    self.progressObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
-                             {
-                                 [weakSelf syncProgressIndicator];
-                             }];
-}
 
 - (CMTime)playerItemDuration
 {
