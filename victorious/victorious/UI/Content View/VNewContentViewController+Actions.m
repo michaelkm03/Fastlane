@@ -56,7 +56,7 @@
                                                           detailText:self.viewModel.authorCaption];
     userItem.selectionHandler = ^(void)
     {
-        [actionSheetViewController dismissViewControllerAnimated:YES completion:^
+        [contentViewController dismissViewControllerAnimated:YES completion:^
          {
              VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
              [contentViewController.navigationController pushViewController:profileViewController animated:YES];
@@ -70,7 +70,7 @@
                                         VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
                                         container.shouldShowHeaderLogo = NO;
                                         
-                                        [actionSheetViewController dismissViewControllerAnimated:YES
+                                        [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
                                              [contentViewController.navigationController pushViewController:container
@@ -89,7 +89,7 @@
         {
             if (![VObjectManager sharedManager].mainUser)
             {
-                [actionSheetViewController dismissViewControllerAnimated:YES
+                [contentViewController dismissViewControllerAnimated:YES
                                          completion:^
                  {
                      [contentViewController presentViewController:[VLoginViewController loginViewController]
@@ -100,7 +100,7 @@
                 return;
             }
             
-            [actionSheetViewController dismissViewControllerAnimated:YES
+            [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
                  NSString *label = [contentViewController.viewModel.sequence.remoteId stringByAppendingPathComponent:contentViewController.viewModel.sequence.name];
@@ -126,7 +126,7 @@
         };
         remixItem.detailSelectionHandler = ^(void)
         {
-            [actionSheetViewController dismissViewControllerAnimated:YES
+            [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
                  VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
@@ -148,7 +148,7 @@
                                                               enabled:self.viewModel.hasReposted ? NO : YES];
     repostItem.selectionHandler = ^(void)
     {
-        [actionSheetViewController dismissViewControllerAnimated:YES
+        [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
              if (![VObjectManager sharedManager].mainUser)
@@ -204,7 +204,7 @@
             [self reloadInputViews];
         };
         
-        [actionSheetViewController dismissViewControllerAnimated:YES
+        [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
              [contentViewController presentViewController:activityViewController
@@ -260,7 +260,7 @@
             [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
-                 [actionSheetViewController dismissViewControllerAnimated:YES
+                 [contentViewController dismissViewControllerAnimated:YES
                                           completion:^
                   {
                       UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
@@ -273,7 +273,7 @@
              }
                                                failBlock:^(NSOperation *operation, NSError *error)
              {
-                 [actionSheetViewController dismissViewControllerAnimated:YES
+                 [contentViewController dismissViewControllerAnimated:YES
                                           completion:^
                   {
                       UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
