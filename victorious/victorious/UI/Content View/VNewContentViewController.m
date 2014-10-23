@@ -942,9 +942,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         totalTime:(CMTime)totalTime
 {
     self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
-    
+    self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
