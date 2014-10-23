@@ -1118,9 +1118,4 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.realtimeCommentBeganTime = self.videoCell.videoPlayerViewController.player.currentTime;
 }
 
-- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-{
-    //
-}
-
 @end
