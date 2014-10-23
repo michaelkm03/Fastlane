@@ -100,6 +100,7 @@
             [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
 			{
                 enhancer.iconImage = iconImage;
+                [self.enhancerBar reloadData];
             }];
             [experienceEnhanders addObject:enhancer];
         }

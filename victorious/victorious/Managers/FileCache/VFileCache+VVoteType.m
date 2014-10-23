@@ -28,10 +28,10 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 - (void)setDecoder
 {
-    self.decoderBlock = ^id (NSData *data)
+    /*self.decoderBlock = ^id (NSData *data)
     {
         return [UIImage imageWithData:data];
-    };
+    };*/
 }
 
 #pragma mark - Saving images to disk
@@ -69,7 +69,7 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     NSString *iconSavePath = [self savePathForImage:imageName forVote:voteType];
     return [self getCachedFileForSavePath:iconSavePath completeCallback:^(NSData *data)
             {
-                callback( (UIImage *)data );
+                callback( [UIImage imageWithData:data] );
             }];
 }
 
@@ -127,7 +127,17 @@ NSString * const VVoteTypeIconName           = @"icon.png";
     
     [self setDecoder];
     
-    [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:callback];
+    [self getCachedFilesForSavePaths:[self savePathsForVoteTypeSprites:voteType] completeCallback:^(NSArray *dataArray) {
+        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+        [dataArray enumerateObjectsUsingBlock:^(NSData *data, NSUInteger idx, BOOL *stop) {
+            UIImage *image = [UIImage imageWithData:data];
+            if ( image )
+            {
+                [imageArray addObject:image];
+            }
+        }];
+        callback( [NSArray arrayWithArray:imageArray] );
+    }];
 }
 
 #pragma mark - Build Key Paths

@@ -10,7 +10,7 @@
 
 static const char * const kDispatchQueueLabel = "com.getvictorious.vote_types_dispatch_queue";
 
-const NSUInteger VFileCacheMaximumSaveFileRetries = 5;
+const NSUInteger VFileCacheMaximumSaveFileRetries = 1;
 
 @interface VFileCache()
 

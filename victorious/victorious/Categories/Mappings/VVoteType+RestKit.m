@@ -25,7 +25,7 @@
                                   @"id"                 : VSelectorName(remoteId),
                                   @"frames"             : VSelectorName(imageCount),
                                   @"image_macro"        : VSelectorName(imageFormat),
-                                  @"icon_image"         : VSelectorName(iconImage),
+                                  @"icon"               : VSelectorName(iconImage),
                                   @"animation_duration" : VSelectorName(animationDuration),
                                   @"flight_duration"    : VSelectorName(flightDuration),
                                   @"view_content_mode"  : VSelectorName(imageContentMode)
