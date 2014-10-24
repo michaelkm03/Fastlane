@@ -103,9 +103,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 {
     if (CMSampleBufferDataIsReady(sampleBuffer))
     {
-        Float64 seconds = CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer));
-        VLog("Writing %@ data at time: %f", isVideo?@"video":@"audio", seconds);
-        
         if (self.writer.status == AVAssetWriterStatusUnknown)
         {
             CMTime startTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
@@ -288,10 +285,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
                     CFRelease(adjustedSampleBuffer);
                     return;
                 }
-            }
-            else
-            {
-                VLog(@"I may have just saved you from a blank frame. YOU'RE WELCOME.");
             }
         }
     }
