@@ -1028,7 +1028,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
                               mediaURL:welf.mediaURL
-     realTime:self.realtimeCommentBeganTime
+                              realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
          [welf.viewModel fetchComments];
