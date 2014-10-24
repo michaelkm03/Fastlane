@@ -232,6 +232,16 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     return [NSURL URLWithString:currentAsset.data];
 }
 
+- (float)speed
+{
+    return [self.currentAsset.speed floatValue];
+}
+
+- (BOOL)loop
+{
+    return [self.currentAsset.loop boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];

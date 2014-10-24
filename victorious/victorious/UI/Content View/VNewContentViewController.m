@@ -151,13 +151,13 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
     return shouldRotate;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return (self.videoCell.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size
@@ -177,18 +177,18 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             if (UIInterfaceOrientationIsLandscape(oldOrientation))
             {
                 [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
-                [self.view addSubview:self.videoCell.videoPlayerViewController.view];
-                [self.view bringSubviewToFront:self.videoCell.videoPlayerViewController.view];
+                [self.view addSubview:self.videoCell.videoPlayerContainer];
+                [self.view bringSubviewToFront:self.videoCell.videoPlayerContainer];
 
                 return;
             }
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             
-            self.videoCell.videoPlayerViewController.view.transform = [coordinator targetTransform];
-            self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
-            self.videoCell.videoPlayerViewController.view.center = self.view.center;
-            [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+            self.videoCell.videoPlayerContainer.transform = [coordinator targetTransform];
+            self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.videoCell.videoPlayerContainer.center = self.view.center;
+            [self.view addSubview:self.videoCell.videoPlayerContainer];
             self.landscapeMaskOverlay.alpha = 1.0f;
         }
         else
@@ -196,7 +196,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             [coordinator containerView].transform = CGAffineTransformIdentity;
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.view.transform = CGAffineTransformIdentity;
-            self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
+            self.videoCell.videoPlayerContainer.transform = CGAffineTransformInvert([coordinator targetTransform]);
         }
     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
@@ -217,10 +217,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         self.view.transform = CGAffineTransformIdentity;
         self.view.bounds = rootView.bounds;
 
-        self.videoCell.videoPlayerViewController.view.transform = oldTransform;
-        self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
-        self.videoCell.videoPlayerViewController.view.center = rootView.center;
-        [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+        self.videoCell.videoPlayerContainer.transform = oldTransform;
+        self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        self.videoCell.videoPlayerContainer.center = rootView.center;
+        [self.view addSubview:self.videoCell.videoPlayerContainer];
         self.landscapeMaskOverlay.alpha = 1.0f;
     }
     else
@@ -245,9 +245,9 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-             self.videoCell.videoPlayerViewController.view.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
-             self.videoCell.videoPlayerViewController.view.transform = self.videoCell.transform;
-             self.videoCell.videoPlayerViewController.view.center = self.videoCell.contentView.center;
+             self.videoCell.videoPlayerContainer.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
+             self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
+             self.videoCell.videoPlayerContainer.center = self.videoCell.contentView.center;
              
              self.landscapeMaskOverlay.alpha = 0.0f;
          }
@@ -255,8 +255,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
          {
              if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
              {
-                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
-                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+                 self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
              }
          }];
     }
@@ -389,7 +389,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.currentTime]];
     }
     else
     {
@@ -441,7 +441,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                       completion:completion];
     
     // Pause playback on presentation
-    [self.videoCell.videoPlayerViewController.player pause];
+    [self.videoCell pause];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -655,17 +655,19 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [videoCell.videoPlayerViewController enableTrackingWithTrackingItem:self.viewModel.sequence.tracking];
+                [videoCell setTracking:self.viewModel.sequence.tracking];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
+                videoCell.speed = self.viewModel.speed;
+                videoCell.loop = self.viewModel.loop;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
-                self.videoCell.videoPlayerViewController.animateWithPlayControls = ^void(BOOL playControlsHidden)
+                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
                 {
                     welf.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
                     welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
-                };
+                }];
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -992,7 +994,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     // should we update content size?
-    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
+    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.naturalSizeForVideo, self.videoCell.contentView.bounds).size;
     if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
     {
         if (desiredSizeForVideo.height > desiredSizeForVideo.width)
@@ -1023,6 +1025,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
     }
+}
+
+- (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
+{
+    [self.videoCell play];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -1060,7 +1067,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
     {
-        [self.videoCell.videoPlayerViewController.player play];
+        [self.videoCell play];
     }
 }
 
@@ -1126,11 +1133,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
     {
-        [self.videoCell.videoPlayerViewController.player pause];
+        [self.videoCell pause];
     }
     
     self.enteringRealTimeComment = YES;
-    self.realtimeCommentBeganTime = self.videoCell.videoPlayerViewController.player.currentTime;
+    self.realtimeCommentBeganTime = self.videoCell.currentTime;
 }
 
 - (void)clearEditingRealTimeComment
