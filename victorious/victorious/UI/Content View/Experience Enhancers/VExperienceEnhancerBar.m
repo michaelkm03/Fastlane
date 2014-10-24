@@ -16,6 +16,8 @@ NSString * const VExperienceEnhancerBarDidRequiredLoginNotification = @"VExperie
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
+static const CGFloat kExperienceEnhancerTransitionInDuration = 0.5f;
+static const CGFloat kExperienceEnhancerTransitionInDelay = 0.5f;
 static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.1f;
 static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
@@ -72,7 +74,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     if (self)
     {
         self.alpha = 0.0f;
-        [UIView animateWithDuration:0.4f delay:0.1f options:0 animations:^void
+        [UIView animateWithDuration:kExperienceEnhancerTransitionInDuration
+                              delay:kExperienceEnhancerTransitionInDelay
+                            options:0 animations:^void
          {
              self.alpha = 1.0f;
          }
