@@ -45,13 +45,13 @@
     
     if (toView)
     {
-        [inView insertSubview:toView atIndex:0];
         toView.frame = [transitionContext finalFrameForViewController:toViewController];
+        [inView insertSubview:toView atIndex:0];
+        [inView layoutIfNeeded];
     }
     
     UIView *contentSnapshot = [fromViewController.contentView snapshotViewAfterScreenUpdates:NO];
     contentSnapshot.center = [inView convertPoint:fromViewController.contentView.center fromView:fromViewController.contentSuperview];
-    contentSnapshot.transform = fromViewController.contentSuperview.transform;
     [inView addSubview:contentSnapshot];
     fromViewController.contentView.hidden = YES;
     
@@ -64,7 +64,6 @@
                                 relativeDuration:0.7
                                       animations:^(void)
         {
-            contentSnapshot.transform = CGAffineTransformIdentity;
             CGRect frame = [inView convertRect:self.referenceView.frame fromView:self.referenceView.superview];
             contentSnapshot.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(frame), CGRectGetHeight(frame));
             contentSnapshot.center = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
