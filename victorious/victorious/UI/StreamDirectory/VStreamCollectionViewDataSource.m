@@ -73,7 +73,7 @@ static char KVOContext;
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
-    NSInteger section = self.shouldDisplayMarquee ? 1 : 0;
+    NSInteger section = self.hasHeaderCell ? 1 : 0;
     NSUInteger index = [self.stream.streamItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
@@ -136,7 +136,7 @@ static char KVOContext;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.shouldDisplayMarquee && section == 0)
+    if (self.hasHeaderCell && section == 0)
     {
         return 1;
     }
@@ -151,7 +151,7 @@ static char KVOContext;
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    if (self.shouldDisplayMarquee)
+    if (self.hasHeaderCell)
     {
         return 2;
     }

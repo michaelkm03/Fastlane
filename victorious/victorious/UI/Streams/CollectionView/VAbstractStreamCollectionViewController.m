@@ -67,6 +67,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     if (self.navHeaderView)
     {

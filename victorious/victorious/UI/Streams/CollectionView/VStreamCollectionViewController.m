@@ -165,7 +165,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
-    self.streamDataSource.shouldDisplayMarquee = self.shouldDisplayMarquee;
+    self.streamDataSource.hasHeaderCell = self.shouldDisplayMarquee;
     self.collectionView.dataSource = self.streamDataSource;
 //    CGSize estimatedSize = [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
 //    ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).estimatedItemSize = estimatedSize;
@@ -221,11 +221,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
     {
-        self.streamDataSource.shouldDisplayMarquee =  self.shouldDisplayMarquee;
+        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee;
     }
     else
     {
-        self.streamDataSource.shouldDisplayMarquee = NO;
+        self.streamDataSource.hasHeaderCell = NO;
     }
     
     [super setCurrentStream:currentStream];
@@ -236,7 +236,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        self.streamDataSource.shouldDisplayMarquee = shouldDisplayMarquee;
+        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
     }
 }
 
@@ -246,9 +246,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     NSInteger count = self.marquee.streamDataSource.count;
     
-    if (self.streamDataSource.shouldDisplayMarquee != count)
+    if (self.streamDataSource.hasHeaderCell != count)
     {
-        self.streamDataSource.shouldDisplayMarquee = count;
+        self.streamDataSource.hasHeaderCell = count;
     }
 }
 
@@ -318,7 +318,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
@@ -360,7 +360,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.streamDataSource.shouldDisplayMarquee && indexPath.section == 0)
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         VMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                             forIndexPath:indexPath];

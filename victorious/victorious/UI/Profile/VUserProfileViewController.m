@@ -35,8 +35,8 @@
 #import "VAuthorizationViewControllerFactory.h"
 
 #import "UIViewController+VNavMenu.h"
+#import "VSettingManager.h"
 
-static const CGFloat kVNavigationBarHeight   =  44.0f;
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
@@ -83,13 +83,14 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
-                                                                                              screenHeight - kVNavigationBarHeight - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame))];
+                                                                                              screenHeight - CGRectGetHeight(self.navHeaderView.frame))];
     headerView.user = self.profile;
     headerView.delegate = self;
     self.profileHeaderView = headerView;
     self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
 
-    self.collectionView.backgroundColor = [UIColor clearColor];// [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    self.collectionView.backgroundColor = backgroundColor;
     
     if (![VObjectManager sharedManager].mainUser)
     {
@@ -99,8 +100,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    
     [self addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
@@ -115,6 +114,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     
     self.profileHeaderView.user = self.profile;
+    
+    [super viewWillAppear:animated]; //Call super after the header is set up so the super class will set up the headers properly.
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
  
