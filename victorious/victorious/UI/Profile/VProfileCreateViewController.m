@@ -353,7 +353,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    [self.locationManager  stopMonitoringSignificantLocationChanges];
+    [self.locationManager  startUpdatingLocation];
 
     CLLocation *location = [locations lastObject];
 
@@ -379,6 +379,14 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
         self.registrationModel.locationText = self.locationTextField.text;
     }];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusAuthorizedWhenInUse)
+    {
+        [manager startUpdatingLocation];
+    }
 }
 
 #pragma mark - State
