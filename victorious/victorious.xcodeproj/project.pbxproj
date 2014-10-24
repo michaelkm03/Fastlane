@@ -324,6 +324,7 @@
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7CFC1C019FAFFAD00726772 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CFC1BF19FAFFAD00726772 /* VTrackingEvent.m */; };
+		A7CFC1C219FB039F00726772 /* VTrackingManagerQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CFC1C119FB039F00726772 /* VTrackingManagerQueueTests.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7EF97BC19F889F800972E74 /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
@@ -1059,6 +1060,7 @@
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CFC1BE19FAFFAD00726772 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A7CFC1BF19FAFFAD00726772 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
+		A7CFC1C119FB039F00726772 /* VTrackingManagerQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerQueueTests.m; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
@@ -2540,6 +2542,7 @@
 				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
 				A709640419F0738200CE6633 /* VTrackingManagerTests.m */,
+				A7CFC1C119FB039F00726772 /* VTrackingManagerQueueTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
 			);
@@ -3671,6 +3674,7 @@
 				A719CD6719F6D6410019E866 /* VObjectManagerStringTest.m in Sources */,
 				A719CD6A19F6D6410019E866 /* VTappableTextManagerTests.m in Sources */,
 				A719CD7319F6D6410019E866 /* VFileCache+VoteTypeTests.m in Sources */,
+				A7CFC1C219FB039F00726772 /* VTrackingManagerQueueTests.m in Sources */,
 				A719CD7619F6D6410019E866 /* NSDate+timeSinceTests.m in Sources */,
 				A719CD6819F6D6410019E866 /* VPhotoFilterSerializationTests.m in Sources */,
 				A719CD6E19F6D6410019E866 /* VUploadTaskCreatorTests.m in Sources */,

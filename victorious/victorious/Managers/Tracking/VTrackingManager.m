@@ -38,6 +38,8 @@
                                kTrackingKeyPositionY,
                                kTrackingKeyNavigiationFrom,
                                kTrackingKeyNavigiationTo ];
+        
+        self.queuedTrackingEvents = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -88,7 +90,7 @@
 {
     __block BOOL doesEventExistForKey = NO;
     [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
-        if ( event.key == key )
+        if ( [event.key isEqual:key] )
         {
             doesEventExistForKey = YES;
             *stop = YES;
@@ -202,7 +204,7 @@
         return dictionary;
     }
     
-    NSMutableDictionary* mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
     [mutable setObject:[NSDate date] forKey:kTrackingKeyTimeStamp];
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
