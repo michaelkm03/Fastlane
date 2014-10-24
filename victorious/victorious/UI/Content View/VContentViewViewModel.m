@@ -674,7 +674,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%i %@", [self totalVotes], NSLocalizedString(@"Voters", @"")];
+    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 @end
