@@ -522,21 +522,20 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
-    __weak typeof(self) welf = self;
-    commentCell.commentBody = [welf.viewModel commentBodyForCommentIndex:index];
-    commentCell.commenterName = [welf.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [welf.viewModel commenterAvatarURLForCommentIndex:index];
-    commentCell.timestampText = [welf.viewModel commentTimeAgoTextForCommentIndex:index];
-    commentCell.realTimeCommentText = [welf.viewModel commentRealTimeCommentTextForCommentIndex:index];
+    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
+    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
+    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
+    commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
+    commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
     if ([self.viewModel commentHasMediaForCommentIndex:index])
     {
         commentCell.hasMedia = YES;
-        commentCell.mediaPreviewURL = [welf.viewModel commentMediaPreviewUrlForCommentIndex:index];
-        commentCell.mediaIsVideo = [welf.viewModel commentMediaIsVideoForCommentIndex:index];
+        commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
+        commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
     }
     
     __weak typeof(commentCell) wCommentCell = commentCell;
-
+    __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
         VLightboxViewController *lightbox;
