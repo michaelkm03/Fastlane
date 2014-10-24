@@ -89,7 +89,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
-
+//
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
@@ -742,9 +742,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             
             self.experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]
                                                                                     forIndexPath:indexPath];
-
-//            self.experienceEnhancerCell.experienceEnhancerBar.dataSource = self.viewModel.experienceEnhancerController;
-//            self.experienceEnhancerCell.experienceEnhancerBar.delegate = self.viewModel.experienceEnhancerController;
+            self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
