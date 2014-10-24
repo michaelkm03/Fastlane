@@ -45,10 +45,10 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 
-@interface VContentViewViewModel ()
+@interface VContentViewViewModel ()@property (nonatomic, strong, readwrite) VSequence *sequence;
+
 
 @property (nonatomic, strong) NSArray *comments;
-@property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
@@ -124,11 +124,14 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 
 - (void)reloadData
 {
-     [self fetchPollData];
-     [self fetchHistogramData];
+    [self fetchPollData];
+    [self fetchHistogramData];
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
+         
          [self fetchUserinfo];
      }
                                             failBlock:nil];

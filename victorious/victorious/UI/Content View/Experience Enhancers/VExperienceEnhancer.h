@@ -24,24 +24,29 @@
  */
 + (NSArray *)experienceEnhancersFilteredByHasRequiredImages:(NSArray *)enhancers;
 
-- (instancetype)initWithVoteType:(VVoteType *)voteType;
+- (instancetype)initWithVoteType:(VVoteType *)voteType voteCount:(NSUInteger)voteCount;
 
 /**
  Intended to be called when experience enhancer is interacted with by user.
- Increments the vote count.
+ Increments the sessionVoteCount and totalVoteCount.
  */
 - (void)vote;
 
 /**
  Once voteCount is read and used to track user interactions, this method
- will reset the vote count
+ will reset the sessionVoteCount.
  */
-- (void)resetVoteCount;
+- (void)resetSessionVoteCount;
 
-@property (nonatomic, readonly) NSUInteger voteCount;
+/**
+ Updates the vote base vote count (does not affect session vote count)
+ */
+- (void)resetStartingVoteCount:(NSUInteger)voteCount;
+
+@property (nonatomic, readonly) NSUInteger sessionVoteCount;
+@property (nonatomic, readonly) NSUInteger totalVoteCount;
 
 @property (nonatomic, strong) UIImage *iconImage;
-@property (nonatomic, strong) NSString *labelText;
 @property (nonatomic, strong) NSArray *animationSequence;
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval flightDuration;

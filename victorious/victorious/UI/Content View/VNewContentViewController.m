@@ -64,7 +64,7 @@
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -121,7 +121,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (void)dealloc
 {
-    [self.viewModel.experienceEnhancerController sendTrackingEvents];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -331,6 +330,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
+    
+    self.viewModel.experienceEnhancerController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -388,6 +389,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
+    
+    [self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -422,7 +425,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                   object:nil];
     
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
-    
     
     self.contentCollectionView.delegate = nil;
 }
@@ -1075,6 +1077,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - VExperienceEnhancerControllerDelegate
+
+- (void)experienceEnhancersDidUpdate
+{
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    [self.contentCollectionView reloadData];
 }
 
 @end

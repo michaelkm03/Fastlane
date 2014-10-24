@@ -303,10 +303,6 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
-    
-    [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -21,21 +21,11 @@ const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
 @end
 
-@protocol VExperienceEnhancerBarDelegate <NSObject>
-
-- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer;
-
-- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer targetPoint:(CGPoint)point;
-
-@end
-
 @interface VExperienceEnhancerBar : UIView
 
 + (instancetype)experienceEnhancerBar;
 
 @property (nonatomic, weak) id <VExperienceEnhancerBarDataSource> dataSource;
-
-@property (nonatomic, weak) id <VExperienceEnhancerBarDelegate> delegate;
 
 - (void)reloadData;
 

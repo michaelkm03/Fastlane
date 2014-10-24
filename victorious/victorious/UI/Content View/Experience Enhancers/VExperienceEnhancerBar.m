@@ -7,20 +7,22 @@
 //
 
 #import "VExperienceEnhancerBar.h"
-
 #import "VExperienceEnhancer.h"
 #import "VExperienceEnhancerCell.h"
+#import "VLargeNumberFormatter.h"
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
-static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.15f;
-static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
+static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.1f;
+static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 @interface VExperienceEnhancerBar () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSArray *enhancers;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+@property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 
 @end
 
@@ -49,6 +51,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = NO;
     
+    self.numberFormatter = [[VLargeNumberFormatter alloc] init];
+    
     [self.collectionView registerNib:[VExperienceEnhancerCell nibForCell]
           forCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]];
     
@@ -72,9 +76,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
     
 - (void)reloadData
 {
-    NSMutableArray *enhancers = [[NSMutableArray alloc] init];
-    
     NSInteger enhancerCount = [self.dataSource numberOfExperienceEnhancers];
+    
+    NSMutableArray *enhancers = [[NSMutableArray alloc] init];
     
     for (NSInteger enhancerIndex = 0; enhancerIndex < enhancerCount; enhancerIndex++)
     {
@@ -89,19 +93,17 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
 
 #pragma mark - UICollectionViewDataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView
-     numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.enhancers.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancerCell *experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]
                                                                                                 forIndexPath:indexPath];
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    experienceEnhancerCell.experienceEnhancerTitle = enhancerForIndexPath.labelText;
+    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     return experienceEnhancerCell;
 }
@@ -115,22 +117,20 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.1f;
     return [VExperienceEnhancerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView
-didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    [enhancerForIndexPath vote];
+    
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
+    
     if (self.selectionBlock)
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
                                                                 toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
-        
-        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath targetPoint:convertedCenter];
-    }
-    else
-    {
-        [self.delegate didVoteWithExperienceEnhander:enhancerForIndexPath];
     }
 }
 
@@ -158,7 +158,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          selectedCell.transform = CGAffineTransformIdentity;
      }
                      completion:nil];
-
+    
 }
 
 @end

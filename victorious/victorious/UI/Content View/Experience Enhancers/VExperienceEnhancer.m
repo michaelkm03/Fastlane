@@ -9,6 +9,14 @@
 #import "VExperienceEnhancer.h"
 #import "VVoteType+Fetcher.h"
 
+@interface VExperienceEnhancer()
+
+@property (nonatomic, assign) NSUInteger startingVoteCount;
+@property (nonatomic, readwrite) VVoteType *voteType;
+@property (nonatomic, readwrite) NSUInteger sessionVoteCount;
+
+@end
+
 @implementation VExperienceEnhancer
 
 + (NSArray *)experienceEnhancersSortedByDisplayOrder:(NSArray *)enhancers
@@ -25,17 +33,18 @@
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer,
                                                                    NSDictionary *bindings)
                               {
-                                  return enhancer.hasRequiredImages;
+                                  return enhancer.iconImage != nil;
                               }];
     return [enhancers filteredArrayUsingPredicate:predicate];
 }
 
-- (instancetype)initWithVoteType:(VVoteType *)voteType
+- (instancetype)initWithVoteType:(VVoteType *)voteType voteCount:(NSUInteger)voteCount
 {
     self = [super init];
     if (self)
     {
-        _voteType = voteType;
+        self.voteType = voteType;
+        self.startingVoteCount = voteCount;
         
         self.contentMode = voteType.contentMode;
         self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
@@ -63,12 +72,22 @@
 
 - (void)vote
 {
-    _voteCount++;
+    self.sessionVoteCount++;
 }
 
-- (void)resetVoteCount
+- (NSUInteger)totalVoteCount
 {
-    _voteCount = 0;
+    return self.sessionVoteCount + self.startingVoteCount;
+}
+
+- (void)resetSessionVoteCount
+{
+    self.sessionVoteCount = 0;
+}
+
+- (void)resetStartingVoteCount:(NSUInteger)voteCount
+{
+    self.startingVoteCount = voteCount;
 }
 
 @end

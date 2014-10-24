@@ -19,7 +19,6 @@
 #import "VTrackingManager.h"
 #import "VVoteType.h"
 #import "VVoteResult.h"
-#import "VLargeNumberFormatter.h"
 
 @interface VExperienceEnhancerController ()
 
@@ -48,89 +47,98 @@
         self.trackingManager = [[VTrackingManager alloc] init];
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
-        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes imageLoadedCallback:^void
-        {
+        
+        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence imageLoadedCallback:^void
+                                    {
             self.validExperienceEnhancers = self.experienceEnhancers;
             [self.enhancerBar reloadData];
+            if ( self.delegate )
+            {
+                [self.delegate experienceEnhancersDidUpdate];
+            }
         }];
-        [self addResultsFromSequence:self.sequence toExperienceEnhancers:self.experienceEnhancers];
+        
+        [self.enhancerBar reloadData];
     }
     return self;
 }
 
-- (BOOL)addResultsFromSequence:(VSequence *)sequence toExperienceEnhancers:(NSArray *)experienceEnhancers
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence imageLoadedCallback:(void(^)())callback
+{
+    NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+     {
+         VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
+         NSUInteger existingVoteCount = result.count.integerValue;
+         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
+         
+         [self.fileCache cacheImagesForVoteType:voteType];
+         
+         // Get animation sequence files asynchronously
+         [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
+          {
+              enhancer.animationSequence = images;
+              enhancer.flightImage = images.firstObject;
+              if ( callback )
+              {
+                  callback();
+              }
+          }];
+         
+         // Get icon image synhronously (we need it right away)
+         enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
+         
+         [experienceEnhanders addObject:enhancer];
+    }];
+    
+    return [NSArray arrayWithArray:experienceEnhanders];
+}
+
+- (void)updateData
+{
+    [self updateExperience:self.experienceEnhancers withSequence:self.sequence];
+    [self.enhancerBar reloadData];
+}
+
+- (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence
 {
     if ( sequence.voteResults == nil || sequence.voteResults.count == 0 || experienceEnhancers.count == 0 )
     {
         return NO;
     }
     
-    VLargeNumberFormatter *formatter = [[VLargeNumberFormatter alloc] init];
-    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
+    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
      {
-         __block NSUInteger count = 0;
-         [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
           {
-              if ( [experienceEnhancer.voteType.remoteId isEqual:result.remoteId] )
+              if ( enhancer.voteType.remoteId.integerValue == result.remoteId.integerValue )
               {
-                  count = result.count.integerValue;
+                  [enhancer resetStartingVoteCount:result.count.integerValue];
               }
           }];
-         experienceEnhancer.labelText = [formatter stringForInteger:count];
-    }];
+     }];
     
     return YES;
 }
 
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes imageLoadedCallback:(void(^)())callback
+- (VVoteResult *)resultForVoteType:(VVoteType *)voteType fromSequence:(VSequence *)sequence
 {
-    NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-    {
-        BOOL areSpriteImagesCached = [self.fileCache areSpriteImagesCachedForVoteType:voteType];
-        BOOL isIconImageCached = [self.fileCache isImageCached:VVoteTypeIconName forVoteType:voteType];
-        
-        
-        if ( !isIconImageCached || !areSpriteImagesCached )
-        {
-            // Files are not downloaded, so start the downloads:
-            [self.fileCache cacheImagesForVoteType:voteType];
-        }
-        else
-        {
-            // Files are downloaded
-            VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType];
-            
-            // Download animation sequence images
-            [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
-			{
-                enhancer.animationSequence = images;
-                enhancer.flightImage = images.firstObject;
-                if ( callback )
-                {
-                    callback();
-                }
-            }];
-            
-            // Download icon image
-            [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType completionCallback:^(UIImage *iconImage)
-			{
-                enhancer.iconImage = iconImage;
-                if ( callback )
-                {
-                    callback();
-                }
-            }];
-            [experienceEnhanders addObject:enhancer];
-        }
-    }];
-    
-    return [NSArray arrayWithArray:experienceEnhanders];
+    __block VVoteResult *outputResult = nil;
+    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+     {
+         if ( [result.remoteId isEqual:voteType.remoteId] )
+         {
+             outputResult = result;
+             *stop = YES;
+         }
+     }];
+    return outputResult;
 }
 
 - (void)setValidExperienceEnhancers:(NSArray *)validExperienceEnhancers
 {
-    NSArray *newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:validExperienceEnhancers];
+    NSArray *newValue  = validExperienceEnhancers;
+    newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
 }
@@ -139,13 +147,13 @@
 {
     [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop) {
         
-        NSUInteger voteCount = enhancer.voteCount;
+        NSUInteger voteCount = enhancer.sessionVoteCount;
         if ( voteCount > 0 )
         {
             NSDictionary *params = @{ kTrackingKeyBallisticsCount : @( voteCount ),
                                       kTrackingKeySequenceId : self.sequence.remoteId };
             [self.trackingManager trackEventWithUrls:enhancer.voteType.tracking.ballisticCount andParameters:params];
-            [enhancer resetVoteCount];
+            [enhancer resetSessionVoteCount];
         }
     }];
 }
@@ -157,7 +165,6 @@
     _enhancerBar = enhancerBar;
     
     enhancerBar.dataSource = self;
-    enhancerBar.delegate = self;
 }
 
 #pragma mark - VExperienceEnhancerBarDataSource
@@ -170,19 +177,6 @@
 - (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index
 {
     return [self.validExperienceEnhancers objectAtIndex:(NSUInteger)index];
-}
-
-#pragma mark - VExperienceEnhancerDelegate
-
-- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer targetPoint:(CGPoint)point
-{
-    // TODO: Support x & y points.  Until then:
-    [self didVoteWithExperienceEnhander:experienceEnhancer];
-}
-
-- (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer
-{
-    [experienceEnhancer vote];
 }
 
 @end

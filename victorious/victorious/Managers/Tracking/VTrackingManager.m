@@ -7,9 +7,10 @@
 //
 
 #import "VTrackingManager.h"
+#import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 1
+#define LOG_TRACKING_EVENTS 0
 
 @interface VTrackingManager()
 
@@ -152,7 +153,10 @@
 
 - (void)sendRequestWithUrlString:(NSString *)url
 {
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    [[VObjectManager sharedManager] updateHTTPHeadersInRequest:request];
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
