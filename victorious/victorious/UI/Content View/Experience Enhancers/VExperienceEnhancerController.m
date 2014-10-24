@@ -134,7 +134,6 @@
 
 - (void)didVoteWithExperienceEnhander:(VExperienceEnhancer *)experienceEnhancer targetPoint:(CGPoint)point
 {
-    // TODO: Support x & y points.  Until then:
     [self didVoteWithExperienceEnhander:experienceEnhancer];
 }
 
