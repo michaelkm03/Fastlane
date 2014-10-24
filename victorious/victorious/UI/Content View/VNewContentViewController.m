@@ -67,7 +67,7 @@
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -336,6 +336,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
+    
+    self.viewModel.experienceEnhancerController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -366,6 +368,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(reloadData)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginViewController:)
+                                                 name:VExperienceEnhancerBarDidRequiredLoginNotification
+                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -389,6 +395,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
+    
+    [self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -419,6 +427,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
     
+    [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
     self.contentCollectionView.delegate = nil;
 }
@@ -441,6 +450,17 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 }
 
 #pragma mark - Notification Handlers
+
+- (void)showLoginViewController:(NSNotification *)notification
+{
+    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    if (loginViewController)
+    {
+        [self presentViewController:loginViewController
+                           animated:YES
+                         completion:nil];
+    }
+}
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
@@ -908,10 +928,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return CGSizeZero;
             }
-            if ( self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers == 0 )
-            {
-                return CGSizeZero;
-            }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionAllComments:
@@ -1121,6 +1137,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.enteringRealTimeComment = NO;
     self.realtimeCommentBeganTime = kCMTimeZero;
+}
+
+#pragma mark - VExperienceEnhancerControllerDelegate
+
+- (void)experienceEnhancersDidUpdate
+{
+    // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
 @end

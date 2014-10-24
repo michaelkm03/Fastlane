@@ -97,27 +97,7 @@ NSString * const kVPrivacyUrl = @"url.privacy";
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
-    // Sort by display order
-    self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
-                                            usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
-                      {
-                          return [v1.displayOrder compare:v2.displayOrder];
-                      }];
-    
-    [self cacheVoteTypeImagesWithFileCache:self.fileCache];
-}
-
-- (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
-{
-    if ( self.voteTypes == nil )
-    {
-        return;
-    }
-    
-    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
-     {
-         [fileCache cacheImagesForVoteType:v];
-     }];
+    [self.fileCache cacheImagesForVoteTypes:voteTypes];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

@@ -292,7 +292,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+    VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.delegate = self;
     VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -303,10 +304,6 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
-    
-    [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
