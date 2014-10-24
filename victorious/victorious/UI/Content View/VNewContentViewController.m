@@ -89,7 +89,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
-//
+
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
