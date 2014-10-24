@@ -267,6 +267,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion
 {
     Float64 currentTime = CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime);
@@ -296,7 +297,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
                                                           mediaURL:mediaURL
                                                            toAsset:self.currentAsset
-                                                            atTime:@(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))
+                                                            atTime:@(CMTimeGetSeconds(realTime))
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              if (completion)
