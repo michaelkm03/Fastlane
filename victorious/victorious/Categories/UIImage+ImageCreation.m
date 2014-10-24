@@ -94,19 +94,4 @@ CGFloat RadiansToDegrees(CGFloat radians)
     return output;
 }
 
-- (BOOL)isAspectPortrait
-{
-    return (self.size.width / self.size.height) < 1.0f;
-}
-
-- (BOOL)isAspectLandscape
-{
-    return (self.size.width / self.size.height) > 1.0f;
-}
-
-- (BOOL)isAspectSquare
-{
-    return (self.size.width / self.size.height) == 1.0f;
-}
-
 @end
