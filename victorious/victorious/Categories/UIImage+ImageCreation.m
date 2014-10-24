@@ -8,6 +8,16 @@
 
 #import "UIImage+ImageCreation.h"
 
+CGFloat DegreesToRadians(CGFloat degrees)
+{
+    return degrees * M_PI / 180;
+};
+
+CGFloat RadiansToDegrees(CGFloat radians)
+{
+    return radians * 180 / M_PI;
+};
+
 @implementation UIImage (ImageCreation)
 
 + (UIImage *)resizeableImageWithColor:(UIColor *)color
@@ -59,6 +69,29 @@
     UIGraphicsEndImageContext();
     
     return scaledImage;
+}
+
+- (UIImage *)imageRotatedByRadians:(CGFloat)radians
+{
+    return [self imageRotatedByDegrees:RadiansToDegrees( radians )];
+}
+
+- (UIImage *)imageRotatedByDegrees:(CGFloat)degrees
+{
+    UIView *rotatedView = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, self.size.width, self.size.height )];
+    rotatedView.transform = CGAffineTransformMakeRotation( DegreesToRadians( degrees ) );
+    CGSize outputSize = rotatedView.frame.size;
+    
+    UIGraphicsBeginImageContext( outputSize );
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM( context, outputSize.width * 0.5, outputSize.height * 0.5 );
+    CGContextRotateCTM( context, DegreesToRadians( degrees ) );
+    CGContextScaleCTM( context, 1.0, -1.0 );
+    CGContextDrawImage( context, CGRectMake( -self.size.width * 0.5, -self.size.height * 0.5, self.size.width, self.size.height), [self CGImage] );
+    UIImage *output = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return output;
 }
 
 @end
