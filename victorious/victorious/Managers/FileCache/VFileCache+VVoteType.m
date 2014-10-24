@@ -32,21 +32,33 @@ NSString * const VVoteTypeIconName           = @"icon.png";
 
 #pragma mark - Saving images to disk
 
-- (BOOL)cacheImagesForVoteType:(VVoteType *)voteType
+- (void)cacheImagesForVoteTypes:(NSArray *)voteTypes
 {
-    if ( !voteType.containsRequiredData )
+    if ( voteTypes == nil || voteTypes.count == 0 )
     {
-        return NO;
+        return;
     }
     
-    NSString *iconSavePath = [self savePathForImage:VVoteTypeIconName forVote:voteType];
-    [self cacheFileAtUrl:voteType.iconImage withSavePath:iconSavePath];
+    // Do single images first, they are higher priority
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+     {
+         if ( [voteType isKindOfClass:[VVoteType class]] && voteType.containsRequiredData )
+         {
+             NSString *iconSavePath = [self savePathForImage:VVoteTypeIconName forVote:voteType];
+             [self cacheFileAtUrl:voteType.iconImage withSavePath:iconSavePath];
+         }
+     }];
     
-    NSArray *spriteImages = (NSArray *)voteType.images;
-    NSArray *spriteSavePaths = [self savePathsForVoteTypeSprites:voteType];
-    [self cacheFilesAtUrls:spriteImages withSavePaths:spriteSavePaths];
-    
-    return YES;
+    // Now arrays (animation sequences), lower priority
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+     {
+         if ( [voteType isKindOfClass:[VVoteType class]] && voteType.containsRequiredData )
+         {
+             NSArray *spriteImages = (NSArray *)voteType.images;
+             NSArray *spriteSavePaths = [self savePathsForVoteTypeSprites:voteType];
+             [self cacheFilesAtUrls:spriteImages withSavePaths:spriteSavePaths];
+         }
+     }];
 }
 
 #pragma mark - Retrieve Images

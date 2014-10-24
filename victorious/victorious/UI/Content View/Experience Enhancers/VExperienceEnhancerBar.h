@@ -10,6 +10,8 @@
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight;
 
+extern NSString * const VExperienceEnhancerBarDidRequiredLoginNotification;
+
 @class VExperienceEnhancerBar;
 @class VExperienceEnhancer;
 

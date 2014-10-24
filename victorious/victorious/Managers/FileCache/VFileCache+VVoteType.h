@@ -32,7 +32,7 @@ extern NSString * const VVoteTypeIconName;
 /**
  Download and save the files to the cache directory asynchronously
  */
-- (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;
+- (void)cacheImagesForVoteTypes:(NSArray *)voteTypes;
 
 /**
  Retrieve an image synchronously.

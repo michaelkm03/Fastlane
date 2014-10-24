@@ -60,6 +60,9 @@
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         
+        // Start saving images to disk if not already downloaded
+        [self.fileCache cacheImagesForVoteTypes:voteTypes];
+        
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence imageLoadedCallback:^void
                                     {
             self.validExperienceEnhancers = self.experienceEnhancers;
@@ -86,8 +89,6 @@
          VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
          NSUInteger existingVoteCount = result.count.integerValue;
          VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
-         
-         [self.fileCache cacheImagesForVoteType:voteType];
          
          // Get animation sequence files asynchronously
          [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
@@ -170,7 +171,7 @@
 
 - (void)setValidExperienceEnhancers:(NSArray *)validExperienceEnhancers
 {
-    NSArray *newValue  = validExperienceEnhancers;
+    NSArray *newValue = validExperienceEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
@@ -178,8 +179,8 @@
 
 - (void)sendTrackingEvents
 {
-    [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop) {
-        
+    [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
+    {
         NSUInteger voteCount = enhancer.sessionVoteCount;
         if ( voteCount > 0 )
         {

@@ -10,6 +10,9 @@
 #import "VExperienceEnhancer.h"
 #import "VExperienceEnhancerCell.h"
 #import "VLargeNumberFormatter.h"
+#import "VObjectManager+Login.h"
+
+NSString * const VExperienceEnhancerBarDidRequiredLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
@@ -119,6 +122,13 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequiredLoginNotification object:nil];
+        return;
+    }
+    
+    
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     [enhancerForIndexPath vote];
     

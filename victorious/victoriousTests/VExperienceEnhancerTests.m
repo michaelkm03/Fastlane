@@ -18,18 +18,32 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VLargeNumberFormatter.h"
 #import "VAsyncTestHelper.h"
+#import "VTrackingManager.h"
+#import "OCMock.h"
 
 static const NSUInteger kValidExperienceEnhancerCount = 10;
 static const NSUInteger kExperienceEnhancerCount = 20;
 
+@interface VTrackingManager (UnitTests)
+
+- (void)sendRequestWithUrlString:(NSString *)url;
+
+@end
+
+@interface VExperienceEnhancer (UnitTests)
+
+@property (nonatomic, assign) NSUInteger startingVoteCount;
+
+@end
+
 @interface VExperienceEnhancerController (UnitTests)
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-
-- (BOOL)addResultsFromSequence:(VSequence *)sequence toExperienceEnhancers:(NSArray *)experienceEnhancers;
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes imageLoadedCallback:(void(^)())callback;
-
 @property (nonatomic, strong) VFileCache *fileCache;
+@property (nonatomic, strong) VTrackingManager *trackingManager;
+
+- (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence imageLoadedCallback:(void(^)())callback;
 
 @end
 
@@ -41,7 +55,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, assign) IMP isImageCached;
 @property (nonatomic, assign) IMP areSpriteImagesCached;
-@property (nonatomic, retain) VLargeNumberFormatter *formatter;
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 
 @end
@@ -52,7 +65,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 {
     [super setUp];
     
-    self.formatter = [[VLargeNumberFormatter alloc] init];
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     
     self.isImageCached = [VFileCache v_swizzleMethod:@selector(isImageCached:forVoteType:) withBlock:^BOOL
@@ -68,7 +80,12 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
+    
     self.viewController = [[VExperienceEnhancerController alloc] initWithSequence:self.sequence];
+    VTrackingManager *trackingManager = [[VTrackingManager alloc] init];
+    id myObjectMock = OCMPartialMock( trackingManager  );
+    OCMStub( [myObjectMock sendRequestWithUrlString:[OCMArg any]] );
+    self.viewController.trackingManager = trackingManager;
 }
 
 - (void)tearDown
@@ -81,9 +98,12 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 - (void)testCreateExperienceEnhancers
 {
     __block BOOL isImageCachedCalled = NO;
-    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes imageLoadedCallback:^{
-        isImageCachedCalled = YES;
-    }];
+    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
+                                                                                      sequence:self.sequence
+                                                                           imageLoadedCallback:^
+                                    {
+                                        isImageCachedCalled = YES;
+                                    }];
     XCTAssertEqual( experienceEnhancers.count, self.voteTypes.count );
     [self.asyncHelper waitForSignal:5.0f withSignalBlock:^BOOL{
         return isImageCachedCalled;
@@ -92,8 +112,11 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 - (void)testAddResults
 {
-    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes imageLoadedCallback:nil];
-    [self.viewController addResultsFromSequence:self.sequence toExperienceEnhancers:experienceEnhancers];
+    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
+                                                                                      sequence:self.sequence
+                                                                           imageLoadedCallback:^{}];
+    
+    [self.viewController updateExperience:experienceEnhancers withSequence:self.sequence];
     
     __block NSUInteger matches = 0;
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
@@ -102,7 +125,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
           {
               if ( [result.remoteId isEqual:exp.voteType.remoteId] )
               {
-                  XCTAssertEqualObjects( exp.labelText, [self.formatter stringForInteger:result.count.integerValue] );
+                  XCTAssertEqual( exp.startingVoteCount, result.count.unsignedIntegerValue );
                   matches++;
               }
           }];
@@ -115,7 +138,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 {
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
-        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType];
+        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:0];
         enhancer.voteType.displayOrder = @( arc4random() % self.voteTypes.count );
         if ( idx < kValidExperienceEnhancerCount )
         {
@@ -131,10 +154,23 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 - (void)testFilter
 {
     NSArray *experienceEnhancers = [self createExperienceEnhancers];
+    NSArray *filtered = nil;
     
-    experienceEnhancers = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
     
-    XCTAssertEqual( experienceEnhancers.count, kValidExperienceEnhancerCount );
+    ((VExperienceEnhancer *)experienceEnhancers.firstObject).animationSequence = nil;
+    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
+    
+    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
+    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-1 );
+    
+    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
+    ((VExperienceEnhancer *)experienceEnhancers[1]).iconImage = nil;
+    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-2 );
 }
 
 - (void)testSortByDisplayOrder
@@ -148,6 +184,55 @@ static const NSUInteger kExperienceEnhancerCount = 20;
         VExperienceEnhancer *current = experienceEnhancers[i];
         XCTAssert( prev.voteType.displayOrder.integerValue <= current.voteType.displayOrder.integerValue );
     }
+}
+
+- (void)testVoteCounts
+{
+    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+    
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         NSUInteger start = arc4random() % 200;
+         [exp resetStartingVoteCount:start];
+         
+         NSUInteger count = arc4random() % 200;
+         for ( NSUInteger i = 0; i < count; i++ )
+         {
+             [exp vote];
+         }
+         
+         XCTAssertEqual( exp.totalVoteCount, start + count );
+         
+         [exp resetSessionVoteCount];
+         XCTAssertEqual( exp.totalVoteCount, start );
+         XCTAssertEqual( exp.sessionVoteCount, (NSUInteger)0 );
+         
+     }];
+}
+
+- (void)testTracking
+{
+    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         NSUInteger start = arc4random() % 200;
+         [exp resetStartingVoteCount:start];
+         
+         NSUInteger count = arc4random() % 200;
+         for ( NSUInteger i = 0; i < count; i++ )
+         {
+             [exp vote];
+         }
+     }];
+    
+    self.viewController.experienceEnhancers = experienceEnhancers;
+    [self.viewController sendTrackingEvents];
+    
+    [self.viewController.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         XCTAssertEqual( exp.sessionVoteCount, (NSUInteger)0 );
+         
+     }];
 }
 
 @end

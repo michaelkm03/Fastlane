@@ -97,20 +97,7 @@ NSString * const kVPrivacyUrl = @"url.privacy";
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
-    [self cacheVoteTypeImagesWithFileCache:self.fileCache];
-}
-
-- (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
-{
-    if ( self.voteTypes == nil )
-    {
-        return;
-    }
-    
-    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
-     {
-         [fileCache cacheImagesForVoteType:v];
-     }];
+    [self.fileCache cacheImagesForVoteTypes:voteTypes];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

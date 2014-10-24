@@ -368,6 +368,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(reloadData)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginViewController:)
+                                                 name:VExperienceEnhancerBarDidRequiredLoginNotification
+                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -446,6 +450,17 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 }
 
 #pragma mark - Notification Handlers
+
+- (void)showLoginViewController:(NSNotification *)notification
+{
+    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    if (loginViewController)
+    {
+        [self presentViewController:loginViewController
+                           animated:YES
+                         completion:nil];
+    }
+}
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
