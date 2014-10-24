@@ -43,7 +43,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence imageLoadedCallback:(void(^)())callback;
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
 
 @end
 
@@ -97,24 +97,13 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 - (void)testCreateExperienceEnhancers
 {
-    __block BOOL isImageCachedCalled = NO;
-    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
-                                                                                      sequence:self.sequence
-                                                                           imageLoadedCallback:^
-                                    {
-                                        isImageCachedCalled = YES;
-                                    }];
+    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
     XCTAssertEqual( experienceEnhancers.count, self.voteTypes.count );
-    [self.asyncHelper waitForSignal:5.0f withSignalBlock:^BOOL{
-        return isImageCachedCalled;
-    }];
 }
 
 - (void)testAddResults
 {
-    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
-                                                                                      sequence:self.sequence
-                                                                           imageLoadedCallback:^{}];
+    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
     
     [self.viewController updateExperience:experienceEnhancers withSequence:self.sequence];
     

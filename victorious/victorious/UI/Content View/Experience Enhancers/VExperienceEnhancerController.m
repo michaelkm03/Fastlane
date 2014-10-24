@@ -63,30 +63,16 @@
         // Start saving images to disk if not already downloaded
         [self.fileCache cacheImagesForVoteTypes:voteTypes];
         
-        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence imageLoadedCallback:^void
-                                    {
-            self.validExperienceEnhancers = self.experienceEnhancers;
-            [self.enhancerBar reloadData];
-            if ( self.delegate )
-            {
-                NSUInteger prevValue = self.validExperienceEnhancers.count;
-                self.validExperienceEnhancers = self.experienceEnhancers;
-                if ( self.validExperienceEnhancers > 0 && prevValue == 0 )
-                {
-                    [self.delegate experienceEnhancersDidUpdate];
-                }
-            }
-        }];
+        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
+        self.validExperienceEnhancers = self.experienceEnhancers;
         
         [self.enhancerBar reloadData];
     }
     return self;
 }
 
-- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence imageLoadedCallback:(void(^)())callback
+- (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
 {
-    NSParameterAssert( callback != nil );
-    
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
      {
@@ -106,7 +92,6 @@
                   enhancer.animationSequence = images;
                   enhancer.flightImage = images.firstObject;
               }
-              callback();
               
           }];
          
