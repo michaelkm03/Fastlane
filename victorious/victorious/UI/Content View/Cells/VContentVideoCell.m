@@ -7,14 +7,14 @@
 //
 
 #import "VContentVideoCell.h"
-
+#import "LiveRailAdManager.h"
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
-@property (nonatomic, strong) VAdVideoPlayerViewController *adPlayerViewController;
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, strong) NSURL *contentURL;
 
@@ -42,8 +42,9 @@
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-
     [self.contentView addSubview:self.videoPlayerViewController.view];
+    
+    
 }
 
 - (void)dealloc
@@ -69,24 +70,35 @@
     [self showPreRollWithPartner:viewModel.monetizationPartner];
 }
 
-#pragma mark - Ad Video Player
+#pragma mark - Playback Methods
 
 - (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner
 {
-    
+    // Set visibility
     self.isPlayingAd = YES;
+    self.adPlayerViewController.view.hidden = NO;
+    self.videoPlayerViewController.view.hidden = YES;
     
     // Ad Video Player
-    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil
-                                                                                 bundle:nil];
+    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.frame = self.contentView.bounds;
     self.adPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.adPlayerViewController.view setBackgroundColor:[UIColor yellowColor]];
+    self.adPlayerViewController.liveRailsAdManager.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
     [self.contentView addSubview:self.adPlayerViewController.view];
 }
 
-#pragma mark - Public Methods
+- (void)resumeContentPlayback
+{
+    // Set visibility
+    self.isPlayingAd = NO;
+    self.adPlayerViewController.view.hidden = YES;
+    self.videoPlayerViewController.view.hidden = NO;
+    self.videoPlayerViewController.itemURL = self.contentURL;
+    
+    // Play content Video
+    [self play];
+}
 
 - (void)play
 {
@@ -125,6 +137,11 @@
 
 #pragma mark - VAdVideoPlayerViewControllerDelegate
 
+- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlayback];
+}
+
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     // This is where we will load the content video after the ad video has loaded
@@ -133,14 +150,7 @@
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    self.adPlayerViewController.view.hidden = YES;
-    self.videoPlayerViewController.view.hidden = NO;
-
-    self.isPlayingAd = NO;
-    self.videoPlayerViewController.itemURL = self.contentURL;
-
-    // Play content Video
-    [self play];
+    [self resumeContentPlayback];
 }
 
 @end

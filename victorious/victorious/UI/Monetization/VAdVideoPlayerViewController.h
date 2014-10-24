@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LiveRailAdManager.h"
 #import "VContentViewViewModel.h"
 
 @import AVFoundation;
 
-@class VAdVideoPlayerViewController, VAdPlayerView;
+@class VAdVideoPlayerViewController, VAdPlayerView, LiveRailAdManager;
 
 @protocol VAdVideoPlayerViewControllerDelegate <NSObject>
 
@@ -23,6 +22,7 @@
 
 @optional
 
+- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 - (void)adHadImpressionForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 
@@ -36,7 +36,7 @@
 /**
  Ad video player delegate object
  */
-@property (nonatomic, strong) id<VAdVideoPlayerViewControllerDelegate>delegate;
+@property (nonatomic, weak) id<VAdVideoPlayerViewControllerDelegate>delegate;
 
 /**
  Enum value to check which ad manager to load
@@ -44,13 +44,8 @@
 @property (nonatomic, assign) VMonetizationPartner monetizationPartner;
 
 /**
- Ad player UIView
- */
-@property (nonatomic, strong) VAdPlayerView *adPlayerView;
-
-/**
  Instance of the LiveRail ad manager
  */
-@property (nonatomic, strong) LiveRailAdManager *liveRailAdManager;
+@property (nonatomic, strong) LiveRailAdManager *liveRailsAdManager;
 
 @end
