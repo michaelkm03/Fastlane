@@ -30,4 +30,10 @@
 
 - (UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
 
+@property (nonatomic, assign) BOOL isAspectPortrait;
+
+@property (nonatomic, assign) BOOL isAspectLandscape;
+
+@property (nonatomic, assign) BOOL isAspectSquare;
+
 @end

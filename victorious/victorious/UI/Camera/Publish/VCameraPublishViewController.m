@@ -102,9 +102,6 @@ static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of spa
 @property (nonatomic, strong) VPublishShareController *shareToTwitterController;
 @property (nonatomic, strong) VPublishShareController *shareToFacebookController;
 
-// Ensures image rotation adjustment is not made more than once
-@property (nonatomic, assign) BOOL isPreviewImageRotationCorrected;
-
 @end
 
 static NSString *kQuoteFont = @"PTSans-Narrow";
@@ -169,8 +166,6 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillAppear:animated];
     
-    [self correctPreviewImageRotation];
-    
     self.previewImageView.image = self.previewImage;
     
     self.memeButton.selected = self.captionType == VCaptionTypeMeme;
@@ -232,18 +227,6 @@ static const CGFloat kShareMargin = 34.0f;
     if ([self isViewLoaded])
     {
         [self updateUI];
-    }
-}
-
-- (void)correctPreviewImageRotation
-{
-    if ( !self.isPreviewImageRotationCorrected )
-    {
-        if ( self.didSelectAssetFromLibrary && [self.mediaURL v_hasVideoExtension] )
-        {
-            self.previewImage = [self.previewImage imageRotatedByDegrees:180.0f];
-            self.isPreviewImageRotationCorrected = YES;
-        }
     }
 }
 
