@@ -13,10 +13,6 @@
 
 @interface AVAsset_OrientationTests : XCTestCase
 
-@property (nonatomic, strong) AVAssetTrack *assetTrack;
-@property (nonatomic, strong) id mockAssetTrack;
-@property (nonatomic, strong) AVAsset* mockAsset;
-
 @end
 
 @implementation AVAsset_OrientationTests
@@ -24,18 +20,30 @@
 - (void)setUp
 {
     [super setUp];
-    
-    NSURL *url = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleVideo" withExtension:@"mp4"];
-    AVAsset *asset = [AVAsset assetWithURL:url];
-    self.assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-    
-    self.mockAsset = OCMPartialMock( asset );
 }
 
-- (void)testUnknown
+- (AVAsset *)videoAsset:(NSString *)name
 {
-    OCMStub( [self.mockAsset tracksWithMediaType:[OCMArg any]] ).andReturn( @[] );
-    XCTAssertEqual( self.mockAsset.videoOrientation, UIDeviceOrientationUnknown );
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSURL *url = [bundle URLForResource:name withExtension:@"m4v"];
+    return [AVAsset assetWithURL:url];
+}
+
+- (void)test
+{
+    AVAsset *asset;
+    
+    asset = [self videoAsset:@"landscape_left"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationLandscapeLeft );
+    
+    asset = [self videoAsset:@"landscape_right"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationLandscapeRight );
+    
+    asset = [self videoAsset:@"portrait"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortrait );
+    
+    asset = [self videoAsset:@"portrait_upsidedown"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortraitUpsideDown );
 }
 
 @end
