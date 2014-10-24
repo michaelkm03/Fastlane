@@ -7,15 +7,18 @@
 //
 
 #import "VAdVideoPlayerViewController.h"
+#import "VAdLiveRailsVideoPlayerViewController.h"
 #import "VConstants.h"
 #import "LiveRailAdManager.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
-@interface VAdVideoPlayerViewController ()
+@interface VAdVideoPlayerViewController () <VAdLiveRailsVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+
+@property (nonatomic, strong) VAdLiveRailsVideoPlayerViewController *liveRailsAdManager;
 
 @end
 
@@ -31,163 +34,53 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.liveRailsAdManager = [[LiveRailAdManager alloc] init];
-}
+#pragma mark - Monetization setter
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)setMonetizationPartner:(VMonetizationPartner)monetizationPartner
 {
-    [super viewDidAppear:animated];
+    _monetizationPartner = monetizationPartner;
     
-    if (!self.adViewAppeared)
+    switch (_monetizationPartner)
     {
-        self.adViewAppeared = YES;
-        
-        // Ad manager event observers
-        [self addNotificationObservers];
-
-        // Initialize ad manager
-#if DEBUG && EnableLiveRailsLogging
-        [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
-#warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
-#endif
-        [self.liveRailsAdManager initAd:@{@"LR_PUBLISHER_ID":kLiveRailPublisherId}];
-        [self.view addSubview:self.liveRailsAdManager];
-        
-        self.activityIndicatorView = [[UIActivityIndicatorView alloc] init];
-        self.activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-        self.activityIndicatorView.hidesWhenStopped = YES;
-        self.activityIndicatorView.center = self.view.center;
-        [self.activityIndicatorView startAnimating];
-        [self.view addSubview:self.activityIndicatorView];
+        case VMonetizationPartnerLiveRail:
+            self.liveRailsAdManager = [[VAdLiveRailsVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+            self.liveRailsAdManager.delegate = self;
+            self.liveRailsAdManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.liveRailsAdManager.view.frame = kAdVideoPlayerFrameSize;
+            break;
+            
+        default:
+            break;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)start
 {
-    [super viewWillAppear:animated];
-    
+    [self.view addSubview:self.liveRailsAdManager.view];
 }
 
-#pragma mark - Observers
+#pragma mark - VAdLiveRailsVideoPlayerViewController
 
-- (void)addNotificationObservers
+- (void)adDidLoadForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adDidLoad)
-                                                 name:LiveRailEventAdLoaded
-                                               object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adHadImpression)
-                                                 name:LiveRailEventAdImpression
-                                               object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adHadAnError)
-                                                 name:LiveRailEventAdError
-                                               object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adDidStartPlaying)
-                                                 name:LiveRailEventAdStarted
-                                               object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adDidFinish)
-                                                 name:LiveRailEventAdStopped
-                                               object:self.liveRailsAdManager];
-}
-
-- (void)removeNotificationObservers
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LiveRailEventAdLoaded
-                                                  object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LiveRailEventAdImpression
-                                                  object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LiveRailEventAdError
-                                                  object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LiveRailEventAdStarted
-                                                  object:self.liveRailsAdManager];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LiveRailEventAdStopped
-                                                  object:self.liveRailsAdManager];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc
-{
-    [self removeNotificationObservers];
-    
-    // Stop the ad if it still exists
-    if (self.liveRailsAdManager != nil)
-    {
-        [self.liveRailsAdManager stopAd];
-    }
-    
-    self.activityIndicatorView = nil;
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent
-{
-    [super willMoveToParentViewController:parent];
-    
-    // Stop any ad that may be playing
-    [self.liveRailsAdManager stopAd];
-    self.liveRailsAdManager = nil;
-}
-
-#pragma mark - Ad Methods
-
-- (void)destroyAdInstance
-{
-    self.adViewAppeared = NO;
-    self.liveRailsAdManager.hidden = YES;
-    [self.liveRailsAdManager stopAd];
-    self.liveRailsAdManager = nil;
-    [self.activityIndicatorView stopAnimating];
-}
-
-#pragma mark - Ad Lifecycle Methods
-
-- (void)adDidLoad
-{
-    // Show the LiveRail Ad Manager view and start ad playback
-    self.liveRailsAdManager.hidden = NO;
-    [self.liveRailsAdManager startAd];
-
-    [self.activityIndicatorView stopAnimating];
-    
-    // Report out to the delegate
     [self.delegate adDidLoadForAdVideoPlayerViewController:self];
 }
 
-- (void)adDidStartPlaying
+- (void)adDidFinishForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
 {
-    [self.activityIndicatorView stopAnimating];
-    
-    if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
+    [self.delegate adDidFinishForAdVideoPlayerViewController:self];
+}
+
+// Optional delegate methods
+- (void)adHadErrorForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+{
+    if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {
-        [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
+        [self.delegate adHadErrorForAdVideoPlayerViewController:self];
     }
 }
 
-- (void)adHadImpression
+- (void)adHadImpressionForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
 {
     if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
     {
@@ -195,26 +88,12 @@
     }
 }
 
-- (void)adHadAnError
+- (void)adDidStartPlaybackForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
 {
-    NSLog(@"\n\nAn Error occurred loading ad");
-    
-    [self destroyAdInstance];
-    
-    if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
+    if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
     {
-        [self.delegate adHadErrorForAdVideoPlayerViewController:self];
+        [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
     }
-}
-
-- (void)adDidFinish
-{
-    NSLog(@"\n\nAd playback finished!");
-    
-    [self destroyAdInstance];
-    
-    // Report out to the delegate
-    [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
 @end

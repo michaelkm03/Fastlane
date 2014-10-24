@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VContentViewViewModel.h"
+#import "VVideoCellViewModel.h"
+#import "VAdLiveRailsVideoPlayerViewController.h"
 
-@import AVFoundation;
-
-@class VAdVideoPlayerViewController, VAdPlayerView, LiveRailAdManager;
+@class VAdVideoPlayerViewController;
 
 @protocol VAdVideoPlayerViewControllerDelegate <NSObject>
 
@@ -44,8 +43,8 @@
 @property (nonatomic, assign) VMonetizationPartner monetizationPartner;
 
 /**
- Instance of the LiveRail ad manager
+ Method tha starts the ad manager
  */
-@property (nonatomic, strong) LiveRailAdManager *liveRailsAdManager;
+- (void)start;
 
 @end

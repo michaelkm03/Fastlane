@@ -7,7 +7,7 @@
 //
 
 #import "VContentVideoCell.h"
-#import "LiveRailAdManager.h"
+#import "VConstants.h"
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
 
@@ -81,10 +81,9 @@
     
     // Ad Video Player
     self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    self.adPlayerViewController.monetizationPartner = monetizationPartner;
     self.adPlayerViewController.delegate = self;
-    self.adPlayerViewController.view.frame = self.contentView.bounds;
-    self.adPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.adPlayerViewController.liveRailsAdManager.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
+    [self.adPlayerViewController start];
     [self.contentView addSubview:self.adPlayerViewController.view];
 }
 
@@ -145,7 +144,7 @@
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     // This is where we will load the content video after the ad video has loaded
-    NSLog(@"Ad loaded!");
+    
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController

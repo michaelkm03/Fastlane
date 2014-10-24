@@ -32,6 +32,12 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
 #pragma mark - Monetization Constants
 
 static NSString * const kLiveRailPublisherId            = @"68957";
+static CGRect kAdVideoPlayerFrameSize   =   {
+    .origin.x = 0.0f,
+    .origin.y = 40.0f,
+    .size.width = 320.0f,
+    .size.height = 280.0f
+};
 
 #pragma mark - UI constants
 
