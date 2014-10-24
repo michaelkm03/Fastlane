@@ -46,6 +46,21 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 @optional
 
 /**
+ *  Called when the text is cleared.
+ */
+- (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
+/**
+ *  Called when editing begins.
+ */
+- (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
+/**
+ *  Called when editing ends.
+ */
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
+
+/**
  *  Notifies the delegate of a return key press ONLY if that return key is not UIReturnKeyDefault
  *
  *  @param inputAccessoryView The corresponding input accessory view.

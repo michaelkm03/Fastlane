@@ -155,6 +155,14 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
         [self.delegate keyboardInputAccessoryView:self
                                         wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.intrinsicContentSize.height))];
     }
+    
+    if (textView.text.length == 0)
+    {
+        if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidClearInput:)])
+        {
+            [self.delegate keyboardInputAccessoryViewDidClearInput:self];
+        }
+    }
 }
 
 - (BOOL)textView:(UITextView *)textView
@@ -178,6 +186,22 @@ shouldChangeTextInRange:(NSRange)range
     }
     
     return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidEndEditing:)])
+    {
+        [self.delegate keyboardInputAccessoryViewDidEndEditing:self];
+    }
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidBeginEditing:)])
+    {
+        [self.delegate keyboardInputAccessoryViewDidBeginEditing:self];
+    }
 }
 
 #pragma mark - Convenience
