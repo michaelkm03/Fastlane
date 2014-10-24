@@ -8,14 +8,12 @@
 
 #import "VContentCell.h"
 
-#import "VCVideoPlayerViewController.h"
-
-@class VContentVideoCell;
+@class VContentVideoCell, VTracking;
 
 @import AVFoundation;
 
 /**
- *  Informs delegate of play progress.
+ *  Informs delegate of play progress. Forwards from an internal VCVideoPlayerViewController
  */
 @protocol VContentVideoCellDelgetate <NSObject>
 
@@ -28,8 +26,9 @@
  */
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime;
-
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell;
+
+- (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell;
 
 @end
 
@@ -40,13 +39,36 @@
 
 @property (nonatomic, copy) NSURL *videoURL;
 
-@property (nonatomic, strong, readonly) VCVideoPlayerViewController *videoPlayerViewController;
-
 @property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
 
 /**
- *  Instruct the video cell's video player to play.
+ *  Instruct the video cell's video player to play. Will respect the speed and loop properties.
  */
 - (void)play;
+
+- (void)pause;
+
+/**
+ *  The speed to play the video.
+ */
+@property (nonatomic, assign) float speed;
+
+/**
+ *  Whether or not to loop the video.
+ */
+@property (nonatomic, assign) BOOL loop;
+
+@property (nonatomic, readonly) AVPlayerStatus status;
+
+@property (nonatomic, readonly) UIView *videoPlayerContainer;
+
+@property (nonatomic, readonly) CMTime currentTime;
+
+/// Use this to animate with the same curve that animates the play controls.
+- (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls;
+
+- (void)setTracking:(VTracking *)tracking;
+
+@property (nonatomic, readonly) CGSize naturalSizeForVideo;
 
 @end
