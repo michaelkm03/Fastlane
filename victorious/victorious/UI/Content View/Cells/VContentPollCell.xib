@@ -94,17 +94,17 @@
                         <rect key="frame" x="109" y="8" width="102" height="23"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="964 Voters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBg-45-xOC">
-                                <rect key="frame" x="26" y="4" width="50" height="12"/>
+                                <rect key="frame" x="26" y="6" width="50" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="cBg-45-xOC" secondAttribute="centerX" id="AES-ZC-HVY"/>
                             <constraint firstAttribute="height" constant="23" id="Qjr-wB-kYs"/>
-                            <constraint firstAttribute="bottom" secondItem="cBg-45-xOC" secondAttribute="bottom" constant="7" id="qx1-Hz-Dkm"/>
+                            <constraint firstAttribute="centerY" secondItem="cBg-45-xOC" secondAttribute="centerY" id="fhr-qf-ZR4"/>
                             <constraint firstAttribute="width" constant="102" id="rsf-vS-FAp"/>
                         </constraints>
                     </view>
