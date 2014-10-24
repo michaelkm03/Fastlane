@@ -45,8 +45,9 @@ NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContent
 NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 
-@interface VContentViewViewModel ()@property (nonatomic, strong, readwrite) VSequence *sequence;
+@interface VContentViewViewModel ()
 
+@property (nonatomic, strong, readwrite) VSequence *sequence;
 
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;

@@ -928,10 +928,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return CGSizeZero;
             }
-            if ( self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers == 0 )
-            {
-                return CGSizeZero;
-            }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
         case VContentViewSectionAllComments:
@@ -1147,8 +1143,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)experienceEnhancersDidUpdate
 {
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    [self.contentCollectionView reloadData];
+    // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
 @end

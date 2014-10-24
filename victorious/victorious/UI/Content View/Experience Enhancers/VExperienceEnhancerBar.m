@@ -66,6 +66,21 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [self reloadData];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self)
+    {
+        self.alpha = 0.0f;
+        [UIView animateWithDuration:0.4f delay:0.1f options:0 animations:^void
+         {
+             self.alpha = 1.0f;
+         }
+                         completion:nil];
+    }
+    return self;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setDataSource:(id<VExperienceEnhancerBarDataSource>)dataSource

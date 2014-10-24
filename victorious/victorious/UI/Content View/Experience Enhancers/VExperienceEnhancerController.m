@@ -69,8 +69,12 @@
             [self.enhancerBar reloadData];
             if ( self.delegate )
             {
+                NSUInteger prevValue = self.validExperienceEnhancers.count;
                 self.validExperienceEnhancers = self.experienceEnhancers;
-                [self.delegate experienceEnhancersDidUpdate];
+                if ( self.validExperienceEnhancers > 0 && prevValue == 0 )
+                {
+                    [self.delegate experienceEnhancersDidUpdate];
+                }
             }
         }];
         
@@ -87,7 +91,7 @@
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
      {
          VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
-         NSUInteger existingVoteCount = result.count.integerValue;
+         NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
          VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
          
          // Get animation sequence files asynchronously
