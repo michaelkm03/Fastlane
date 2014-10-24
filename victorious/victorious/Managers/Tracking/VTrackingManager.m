@@ -15,6 +15,7 @@
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
+@property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
 
 @end
 
@@ -39,6 +40,14 @@
                                kTrackingKeyNavigiationTo ];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    if ( !self.shouldIgnoreEventsInQueueOnDealloc )
+    {
+        [self sendQueuedTrackingEvents];
+    }
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -75,6 +84,39 @@
     return numFailures;
 }
 
+- (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key
+{
+    __block BOOL doesEventExistForKey = NO;
+    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
+        if ( event.key == key )
+        {
+            doesEventExistForKey = YES;
+            *stop = YES;
+        }
+    }];
+    
+    if ( doesEventExistForKey )
+    {
+        return NO;
+    }
+    else
+    {
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
+        [self.queuedTrackingEvents addObject:event];
+        return YES;
+    }
+}
+
+- (void)sendQueuedTrackingEvents
+{
+    while ( self.queuedTrackingEvents.count > 0 )
+    {
+        VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
+        [self trackEventWithUrls:event.urls andParameters:event.parameters];
+        [self.queuedTrackingEvents removeObjectAtIndex:0];
+    }
+}
+
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
@@ -83,9 +125,11 @@
         return NO;
     }
     
+    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+    
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.registeredMacros
                                                            inString:url
-                                         withCorrspondingParameters:parameters];
+                                         withCorrspondingParameters:completeParams];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
@@ -149,6 +193,18 @@
     }
     
     return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+}
+
+- (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
+{
+    if ( dictionary[ kTrackingKeyTimeStamp ] )
+    {
+        return dictionary;
+    }
+    
+    NSMutableDictionary* mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    [mutable setObject:[NSDate date] forKey:kTrackingKeyTimeStamp];
+    return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
 - (void)sendRequestWithUrlString:(NSString *)url
