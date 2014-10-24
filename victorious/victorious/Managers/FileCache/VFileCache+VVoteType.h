@@ -64,4 +64,6 @@ extern NSString * const VVoteTypeIconName;
  */
 - (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType;
 
+- (NSString *)savePathForImage:(NSString *)imageName forVote:(VVoteType *)voteType;
+
 @end

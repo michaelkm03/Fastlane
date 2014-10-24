@@ -35,6 +35,18 @@
 
 #pragma mark - Initialization
 
++ (NSCache *)imageMemoryCache
+{
+    static dispatch_once_t onceToken;
+    static NSCache *cache;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      cache = [[NSCache alloc] init];
+                  });
+    
+    return cache;
+}
+
 - (instancetype)initWithSequence:(VSequence *)sequence
 {
     self = [super init];
@@ -54,6 +66,7 @@
             [self.enhancerBar reloadData];
             if ( self.delegate )
             {
+                self.validExperienceEnhancers = self.experienceEnhancers;
                 [self.delegate experienceEnhancersDidUpdate];
             }
         }];
@@ -65,6 +78,8 @@
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence imageLoadedCallback:(void(^)())callback
 {
+    NSParameterAssert( callback != nil );
+    
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
      {
@@ -77,16 +92,34 @@
          // Get animation sequence files asynchronously
          [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
           {
-              enhancer.animationSequence = images;
-              enhancer.flightImage = images.firstObject;
-              if ( callback )
+              if ( images == nil || images.count == 0 )
               {
-                  callback();
+                  enhancer.iconImage = nil; // This effectively marks it as invalid and it will not display
               }
+              else
+              {
+                  enhancer.animationSequence = images;
+                  enhancer.flightImage = images.firstObject;
+              }
+              callback();
+              
           }];
          
          // Get icon image synhronously (we need it right away)
-         enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
+         NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
+         NSString *key = [self.fileCache savePathForImage:VVoteTypeIconName forVote:voteType];
+         if ( [imageMemoryCache objectForKey:key] )
+         {
+             enhancer.iconImage = [imageMemoryCache objectForKey:key];
+         }
+         else
+         {
+             enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
+             if ( enhancer.iconImage != nil )
+             {
+                 [imageMemoryCache setObject:enhancer.iconImage forKey:key];
+             }
+         }
          
          [experienceEnhanders addObject:enhancer];
     }];
