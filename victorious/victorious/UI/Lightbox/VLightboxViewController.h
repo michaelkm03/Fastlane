@@ -22,14 +22,13 @@
 
 /**
  This is the background view that is displayed behind the contentView.
- Normally this is set to a snapshot of the presenting view.
  */
-@property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic, weak, readonly) UIView *backgroundView;
 
 /**
- This view rotates with the device (backgroundView does not)
+ Subviews should add their content view as a subview of this view.
  */
-@property (nonatomic, strong) UIView *contentSuperview;
+@property (nonatomic, weak, readonly) UIView *contentSuperview;
 
 /**
  The content being lightboxed. Subclasses need to provide 
