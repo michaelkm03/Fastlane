@@ -321,8 +321,14 @@
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
 		A7696A5319F7287F003017E6 /* VSuggestedPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */; };
+		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
+		A7976D0919FAE94300B5A145 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
+		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
+		A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B719FAF64700726772 /* landscape_right.m4v */; };
+		A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */; };
+		A7CFC1BD19FAF6BF00726772 /* portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B919FAF64700726772 /* portrait.m4v */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7EF97BC19F889F800972E74 /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
@@ -1051,11 +1057,18 @@
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7814A0B19E61BA900D89B90 /* VChangePasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VChangePasswordTests.m; sourceTree = "<group>"; };
+		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
+		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
+		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7A7D62B19DE52DE00B18AB7 /* VTappableTextManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableTextManagerTests.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7CFC1B619FAF64700726772 /* landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_left.m4v; sourceTree = "<group>"; };
+		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
+		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
+		A7CFC1B919FAF64700726772 /* portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait.m4v; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
@@ -2082,6 +2095,10 @@
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				A7CFC1B619FAF64700726772 /* landscape_left.m4v */,
+				A7CFC1B719FAF64700726772 /* landscape_right.m4v */,
+				A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */,
+				A7CFC1B919FAF64700726772 /* portrait.m4v */,
 				039D2FD5197D93C600DFBE60 /* filters.xml */,
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 			);
@@ -2537,6 +2554,7 @@
 				A709640419F0738200CE6633 /* VTrackingManagerTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
+				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2614,6 +2632,8 @@
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
 				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
 				D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */,
+				A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */,
+				A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3200,8 +3220,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */,
+				A7CFC1BD19FAF6BF00726772 /* portrait.m4v in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
+				A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
+				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3378,6 +3402,7 @@
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
+				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
 				0314D46119B46B5E00FA363C /* VMediaPreviewViewController.m in Sources */,
 				0314D48419B46B5E00FA363C /* VCommentToStreamAnimator.m in Sources */,
 				0314D4E019B46B5E00FA363C /* VFindFriendsTableView.m in Sources */,
@@ -3664,6 +3689,7 @@
 				A719CD7419F6D6410019E866 /* VVoteTypeFetcherTests.m in Sources */,
 				A719CD6719F6D6410019E866 /* VObjectManagerStringTest.m in Sources */,
 				A719CD6A19F6D6410019E866 /* VTappableTextManagerTests.m in Sources */,
+				A7976D0919FAE94300B5A145 /* AVAsset+OrientationTests.m in Sources */,
 				A719CD7319F6D6410019E866 /* VFileCache+VoteTypeTests.m in Sources */,
 				A719CD7619F6D6410019E866 /* NSDate+timeSinceTests.m in Sources */,
 				A719CD6819F6D6410019E866 /* VPhotoFilterSerializationTests.m in Sources */,
