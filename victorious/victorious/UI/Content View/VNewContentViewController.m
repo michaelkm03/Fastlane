@@ -976,16 +976,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
     }
     
-    __weak typeof(self) welf = self;
     [UIView animateWithDuration:0.0f
                      animations:^
      {
-         [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+         [self.contentCollectionView.collectionViewLayout invalidateLayout];
      }completion:^(BOOL finished) {
-         if (!welf.hasAutoPlayed)
+         if (!self.hasAutoPlayed)
          {
-             [welf.videoCell play];
-             welf.hasAutoPlayed = YES;
+             [self.videoCell play];
+             self.hasAutoPlayed = YES;
          }
      }];
 }
