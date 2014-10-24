@@ -353,7 +353,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    [self.locationManager  startUpdatingLocation];
+    [self.locationManager  stopUpdatingLocation];
 
     CLLocation *location = [locations lastObject];
 
