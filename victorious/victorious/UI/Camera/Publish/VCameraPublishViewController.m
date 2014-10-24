@@ -102,7 +102,7 @@ static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of spa
 @property (nonatomic, strong) VPublishShareController *shareToTwitterController;
 @property (nonatomic, strong) VPublishShareController *shareToFacebookController;
 
-// Ensures image rotationa djustment is not made more than once
+// Ensures image rotation adjustment is not made more than once
 @property (nonatomic, assign) BOOL isPreviewImageRotationCorrected;
 
 @end
