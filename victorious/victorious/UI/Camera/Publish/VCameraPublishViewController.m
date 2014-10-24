@@ -242,8 +242,8 @@ static const CGFloat kShareMargin = 34.0f;
         if ( self.didSelectAssetFromLibrary && [self.mediaURL v_hasVideoExtension] )
         {
             self.previewImage = [self.previewImage imageRotatedByDegrees:180.0f];
+            self.isPreviewImageRotationCorrected = YES;
         }
-        self.isPreviewImageRotationCorrected = YES;
     }
 }
 
