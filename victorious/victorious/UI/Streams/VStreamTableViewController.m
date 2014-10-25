@@ -151,6 +151,8 @@
                                                object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
+    
+    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (NSCache *)preloadImageCache

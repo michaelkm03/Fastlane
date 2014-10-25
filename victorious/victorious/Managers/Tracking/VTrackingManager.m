@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 0
+#define LOG_TRACKING_EVENTS 1
 
 @interface VTrackingManager()
 
@@ -68,8 +68,7 @@
 
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
 {
-    BOOL areUrlsValid = urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
-    if ( !areUrlsValid  )
+    if ( ![self validateUrls:urls]  )
     {
         return -1;
     }
@@ -86,12 +85,27 @@
     return numFailures;
 }
 
+- (BOOL)validateUrls:(NSArray *)urls
+{
+    return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
+}
+
 - (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key
 {
+    NSParameterAssert( key != nil );
+    
+    if ( ![self validateUrls:urls] )
+    {
+        return NO;
+    }
+    
     __block BOOL doesEventExistForKey = NO;
     [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
         if ( [event.key isEqual:key] )
         {
+#if LOG_TRACKING_EVENTS
+            VLog( @"\n >>>>>> Event with duplicate key rejected.  Queued: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
+#endif
             doesEventExistForKey = YES;
             *stop = YES;
         }
@@ -105,18 +119,30 @@
     {
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
         [self.queuedTrackingEvents addObject:event];
+#if LOG_TRACKING_EVENTS
+        VLog( @"\n >>>>>> Event queued.  Queued: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
+#endif
         return YES;
     }
 }
 
 - (void)sendQueuedTrackingEvents
 {
+#if LOG_TRACKING_EVENTS
+    VLog( @" \n>>>>>> Sending queued events: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
+#endif
+    
     while ( self.queuedTrackingEvents.count > 0 )
     {
         VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
         [self trackEventWithUrls:event.urls andParameters:event.parameters];
         [self.queuedTrackingEvents removeObjectAtIndex:0];
     }
+}
+
+- (NSUInteger)numberOfQueuedEvents
+{
+    return self.queuedTrackingEvents.count;
 }
 
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
@@ -199,6 +225,11 @@
 
 - (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
 {
+    if ( dictionary == nil )
+    {
+        return nil;
+    }
+    
     if ( dictionary[ kTrackingKeyTimeStamp ] )
     {
         return dictionary;
