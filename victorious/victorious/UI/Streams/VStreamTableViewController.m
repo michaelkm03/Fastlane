@@ -150,6 +150,11 @@
                                                  name:VStreamTableDataSourceDidChangeNotification
                                                object:self.tableDataSource];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamTableDataSourceDidChangeNotification
+                                               object:self.tableDataSource];
+    
     self.clearsSelectionOnViewWillAppear = NO;
     
     self.trackingManager = [[VTrackingManager alloc] init];
@@ -657,6 +662,7 @@
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
+    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 #pragma mark - VAnimation
