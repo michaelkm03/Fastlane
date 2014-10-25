@@ -40,6 +40,8 @@
     self.answerAButton.backgroundColor = unselectedColor;
     self.answerBButton.backgroundColor = unselectedColor;
     
+    self.answerAButton.titleLabel.numberOfLines = 0;
+    self.answerBButton.titleLabel.numberOfLines = 0;
     self.answerAButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.answerBButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
 }
