@@ -12,6 +12,8 @@
 
 #define LOG_TRACKING_EVENTS 1
 
+static NSUInteger const kMaxPopulatedEvents = 100;
+
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
@@ -103,8 +105,9 @@
     [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
         if ( [event.key isEqual:key] )
         {
+            
 #if LOG_TRACKING_EVENTS
-            VLog( @"\n >>>>>> Event with duplicate key rejected.  Queued: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
+            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
 #endif
             doesEventExistForKey = YES;
             *stop = YES;
@@ -119,25 +122,33 @@
     {
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
         [self.queuedTrackingEvents addObject:event];
+        
+        // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
+        
 #if LOG_TRACKING_EVENTS
-        VLog( @"\n >>>>>> Event queued.  Queued: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
+        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
 #endif
         return YES;
     }
 }
 
+- (void)popFrontOfQueue
+{
+    VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
+    [self trackEventWithUrls:event.urls andParameters:event.parameters];
+    [self.queuedTrackingEvents removeObjectAtIndex:0];
+}
+
 - (void)sendQueuedTrackingEvents
 {
-#if LOG_TRACKING_EVENTS
-    VLog( @" \n>>>>>> Sending queued events: %lu <<<<<<", (unsigned long)self.queuedTrackingEvents.count);
-#endif
-    
     while ( self.queuedTrackingEvents.count > 0 )
     {
-        VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
-        [self trackEventWithUrls:event.urls andParameters:event.parameters];
-        [self.queuedTrackingEvents removeObjectAtIndex:0];
+        [self popFrontOfQueue];
     }
+    
+#if LOG_TRACKING_EVENTS
+    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
 }
 
 - (NSUInteger)numberOfQueuedEvents
@@ -252,7 +263,7 @@
 #if LOG_TRACKING_EVENTS
          if ( connectionError )
          {
-             VLog( @"TRACKING :: FAILSURE with URL %@:: error %@", url, [connectionError localizedDescription] );
+             VLog( @"TRACKING :: FAILURE with URL %@:: error %@", url, [connectionError localizedDescription] );
          }
          else
          {

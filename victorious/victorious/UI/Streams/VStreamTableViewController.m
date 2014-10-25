@@ -197,6 +197,8 @@
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
     
     [self.preloadImageCache removeAllObjects];
+    
+    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (BOOL)shouldAutorotate
@@ -266,6 +268,8 @@
     {
         [self refresh:nil];
     }
+    
+    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (void)setCurrentStream:(VStream *)currentStream

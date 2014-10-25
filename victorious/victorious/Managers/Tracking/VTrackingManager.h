@@ -38,7 +38,6 @@
  */
 @property (nonatomic, assign) BOOL shouldIgnoreEventsInQueueOnDealloc;
 
-
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 
 @end
