@@ -31,6 +31,7 @@
 #import "VInboxContainerViewController.h"
 
 #import "VUserProfileHeaderView.h"
+#import "VProfileHeaderCell.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 
@@ -78,6 +79,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewDidLoad];
     
+    self.streamDataSource.hasHeaderCell = YES;
+    
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -96,6 +99,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
+    
+    [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -357,6 +362,29 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
      }];
 }
 
+#pragma mark - VStreamCollectionDataDelegate
+
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    {
+        VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
+        headerCell.headerView = self.profileHeaderView;
+        return headerCell;
+    }
+    return [super dataSource:dataSource cellForIndexPath:indexPath];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    {
+        return self.profileHeaderView.bounds.size;
+    }
+    return [super collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
+}
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
