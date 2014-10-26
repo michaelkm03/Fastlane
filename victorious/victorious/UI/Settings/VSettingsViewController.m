@@ -25,6 +25,8 @@
 
 #import "VObjectManager+Websites.h"
 
+#import "UIViewController+VNavMenu.h"
+
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
@@ -49,9 +51,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @implementation VSettingsViewController
 
-+ (VSettingsViewController *)settingsViewController
++ (UIViewController *)settingsContainer
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    UIViewController *settingsContainer = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    settingsContainer.title = NSLocalizedString(@"Settings", nil);
+    [settingsContainer addNewNavHeaderWithTitles:nil];
+    settingsContainer.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)settingsContainer;
+    return settingsContainer;
 }
 
 - (void)dealloc
@@ -109,7 +115,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     self.showEnvironmentSetting = YES;
 #endif
     
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];

@@ -213,7 +213,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             break;
                 
             case VMenuRowSettings:
-                navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
+                navigationController.viewControllers = @[[VSettingsViewController settingsContainer]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
             

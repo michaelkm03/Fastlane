@@ -9,7 +9,9 @@
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 
-@interface VWebContentViewController ()
+#import "UIViewController+VNavMenu.h"
+
+@interface VWebContentViewController () <VNavigationHeaderDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIWebView *webView;
 @property (nonatomic, strong, readwrite) UIActivityIndicatorView *activitiyIndicator;
@@ -23,6 +25,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
     
     if (!self.activitiyIndicator)
     {
