@@ -11,10 +11,14 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 
-@interface VDiscoverContainerViewController ()
+#import "UIViewController+VNavMenu.h"
+
+@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
+
+@property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 
 @end
 
@@ -44,6 +48,19 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
+                                                                          attribute:NSLayoutAttributeTop
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.navHeaderView
+                                                                          attribute:NSLayoutAttributeBottom
+                                                                         multiplier:1.0
+                                                                           constant:0];
+    [self.view addConstraint:searchTopConstraint];
+    [self.view layoutIfNeeded];
+    
     self.headerLabel.text = NSLocalizedString(@"Discover", nil);
 }
 
