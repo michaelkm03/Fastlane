@@ -65,7 +65,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.refreshControl addTarget:self action:@selector(refresh:)
                   forControlEvents:UIControlEventValueChanged];
     
-    [self.collectionView addSubview:self.refreshControl];
+//    [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
 }
 

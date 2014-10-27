@@ -2139,13 +2139,13 @@
 				0314D3C819B46B5E00FA363C /* VProfileCreateViewController.m */,
 				0314D3C919B46B5E00FA363C /* VProfileEditViewController.h */,
 				0314D3CA19B46B5E00FA363C /* VProfileEditViewController.m */,
+				BEABEE5419FB116E00F81A24 /* VProfileHeaderCell.h */,
+				BEABEE5519FB116E00F81A24 /* VProfileHeaderCell.m */,
 				0314D3CB19B46B5E00FA363C /* VUserProfileHeaderView.h */,
 				0314D3CC19B46B5E00FA363C /* VUserProfileHeaderView.m */,
 				DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */,
 				0314D3CE19B46B5E00FA363C /* VUserProfileViewController.h */,
 				0314D3CF19B46B5E00FA363C /* VUserProfileViewController.m */,
-				BEABEE5419FB116E00F81A24 /* VProfileHeaderCell.h */,
-				BEABEE5519FB116E00F81A24 /* VProfileHeaderCell.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";

@@ -83,13 +83,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
-                                                                                              screenHeight - CGRectGetHeight(self.navHeaderView.frame))];
-    headerView.user = self.profile;
-    headerView.delegate = self;
-    self.profileHeaderView = headerView;
     self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
 
     UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
@@ -112,6 +105,13 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [self addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
+    
+    CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
+    headerView.user = self.profile;
+    headerView.delegate = self;
+    self.profileHeaderView = headerView;
     
     //    if (self.isMe)
     //    {
@@ -215,7 +215,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.streamDataSource.count)
         {
-            [self animateHeaderShrinkingWithDuration:.5];
+//            [self animateHeaderShrinkingWithDuration:.5];
         }
         if (completionBlock)
         {
@@ -339,10 +339,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
     {
         self.collectionView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.view.bounds) - kVSmallUserHeaderHeight);
-        header.frame = CGRectMake(0,
-                                  -CGRectGetHeight(header.bounds) - kVSmallUserHeaderHeight,
+        header.frame = CGRectMake(CGRectGetMinX(header.frame),
+                                  CGRectGetMinY(header.frame),
                                   CGRectGetWidth(self.collectionView.bounds),
-                                  CGRectGetHeight(header.bounds));
+                                  kVSmallUserHeaderHeight);
     }
 
     [UIView animateWithDuration:duration
@@ -352,14 +352,13 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                         options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
-         header.frame = CGRectMake(0,
-                                   0,
+         header.bounds = CGRectMake(CGRectGetMinX(header.frame),
+                                   CGRectGetMinY(header.frame),
                                    CGRectGetWidth(self.collectionView.bounds),
                                    kVSmallUserHeaderHeight);
          [header layoutIfNeeded];
-         self.profileHeaderView = header;
          self.collectionView.contentOffset = CGPointMake(0,
-                                                    - CGRectGetHeight(self.navigationController.navigationBar.bounds) -
+                                                    - CGRectGetHeight(self.navHeaderView.bounds) -
                                                     CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]));
      } completion:^(BOOL finished)
     {
