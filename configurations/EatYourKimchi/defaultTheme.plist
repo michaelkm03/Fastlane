@@ -11,7 +11,7 @@
 	<key>email.support</key>
 	<string>support@victorious.com</string>
 	<key>channel.name</key>
-	<string>GTChannel</string>
+	<string>EatYourKimchi</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -78,11 +78,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>208</integer>
+		<integer>162</integer>
 		<key>green</key>
-		<integer>49</integer>
+		<integer>22</integer>
 		<key>blue</key>
-		<integer>113</integer>
+		<integer>191</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -100,22 +100,22 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>80</integer>
+		<integer>99</integer>
 		<key>green</key>
-		<integer>80</integer>
+		<integer>218</integer>
 		<key>blue</key>
-		<integer>80</integer>
+		<integer>237</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>42</integer>
+		<integer>0</integer>
 		<key>green</key>
-		<integer>42</integer>
+		<integer>143</integer>
 		<key>blue</key>
-		<integer>42</integer>
+		<integer>182</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -164,7 +164,7 @@
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS-Bold</string>
+		<string>TrebuchetMS</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
