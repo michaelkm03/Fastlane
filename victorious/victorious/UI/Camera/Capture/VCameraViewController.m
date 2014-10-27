@@ -416,23 +416,27 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         __typeof(self) __weak weakSelf = self;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
          {
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                [MBProgressHUD hideAllHUDsForView:weakSelf.previewSnapshot animated:NO];
-                                [weakSelf setAllControlsEnabled:YES];
-                                
-                                [UIView animateWithDuration:kAnimationDuration
-                                                 animations:^(void)
-                                 {
-                                     weakSelf.previewSnapshot.alpha = 0.0f;
-                                     weakSelf.previewView.alpha = 1.0f;
-                                     [weakSelf configureFlashButton];
-                                 }
-                                                 completion:^(BOOL finished)
-                                 {
-                                     [weakSelf restoreLivePreview];
-                                 }];
-                            });
+             __typeof(weakSelf) strongSelf = weakSelf;
+             if (strongSelf)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^(void)
+                                {
+                                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
+                                    [strongSelf setAllControlsEnabled:YES];
+                                    
+                                    [UIView animateWithDuration:kAnimationDuration
+                                                     animations:^(void)
+                                     {
+                                         strongSelf.previewSnapshot.alpha = 0.0f;
+                                         strongSelf.previewView.alpha = 1.0f;
+                                         [strongSelf configureFlashButton];
+                                     }
+                                                     completion:^(BOOL finished)
+                                     {
+                                         [strongSelf restoreLivePreview];
+                                     }];
+                                });
+             }
         }];
     }
 }
