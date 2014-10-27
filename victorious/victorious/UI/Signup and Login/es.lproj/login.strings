@@ -68,7 +68,7 @@
 "jhx-0Z-CyE.normalTitle" = "Cancelar";
 
 /* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
-"kzi-75-z6l.text" = "Dinos algo acerca de ti...";
+"kzi-75-z6l.text" = "Nos dicen algo acerca de ti...";
 
 /* Class = "IBUILabel"; text = "Find Friends"; ObjectID = "nNU-ow-QSQ"; */
 "nNU-ow-QSQ.text" = "Encontrar amigos";

@@ -15,26 +15,27 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 //Settings
-NSString * const   kVCaptureVideoQuality               =   @"capture";
-NSString * const   kVExportVideoQuality                =   @"remix";
+NSString * const kVCaptureVideoQuality =   @"capture";
+NSString * const kVExportVideoQuality =   @"remix";
 
-NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
-NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
+NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
+NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
-NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
-NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
+NSString * const VSettingsChannelsEnabled = @"channelsEnabled";
+NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
+NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
 
 //URLs
-NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
-NSString * const   kVAppStoreURL                       =   @"url.appstore";
-NSString * const   kVPrivacyUrl                        =   @"url.privacy";
+NSString * const kVTermsOfServiceURL = @"url.tos";
+NSString * const kVAppStoreURL = @"url.appstore";
+NSString * const kVPrivacyUrl = @"url.privacy";
 
 @interface VSettingManager()
 
@@ -90,43 +91,13 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     // Check that only objects of type VVoteType are accepted
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
-                                  if ( ![voteType isMemberOfClass:[VVoteType class]] )
-                                  {
-                                      return NO;
-                                  }
-#if DEBUG
-                                  if ( voteType.iconImage == nil )
-                                  {
-                                      voteType.iconImage = voteType.images.firstObject;
-                                      voteType.flightDuration = @( 0.5f );
-                                      voteType.animationDuration = @( 0.5f );
-                                  }
-#endif
-                                  return voteType.containsRequiredData && voteType.hasValidTrackingData;
+                                  return [voteType isMemberOfClass:[VVoteType class]] &&
+                                        voteType.containsRequiredData &&
+                                        voteType.hasValidTrackingData;
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
-    // Sort by display order
-    self.voteTypes = [self.voteTypes sortedArrayWithOptions:0
-                                            usingComparator:^NSComparisonResult( VVoteType *v1, VVoteType *v2)
-                      {
-                          return [v1.displayOrder compare:v2.displayOrder];
-                      }];
-    
-    [self cacheVoteTypeImagesWithFileCache:self.fileCache];
-}
-
-- (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache
-{
-    if ( self.voteTypes == nil )
-    {
-        return;
-    }
-    
-    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *v, NSUInteger idx, BOOL *stop)
-     {
-         [fileCache cacheImagesForVoteType:v];
-     }];
+    [self.fileCache cacheImagesForVoteTypes:voteTypes];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

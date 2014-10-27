@@ -20,6 +20,7 @@
 @dynamic animationDuration;
 @dynamic flightDuration;
 @dynamic tracking;
+@dynamic imageContentMode;
 @dynamic settingsIndex;
 
 @end

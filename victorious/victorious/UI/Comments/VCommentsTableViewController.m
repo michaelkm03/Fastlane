@@ -249,11 +249,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
-    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
+    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                        onCancelButton:nil
                                                destructiveButtonTitle:reportTitle
                                                   onDestructiveButton:^(void)

@@ -27,6 +27,7 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 
@@ -50,8 +51,9 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 @interface VContentViewViewModel ()
 
-@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
+
+@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
@@ -110,6 +112,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         [self fetchUserinfo];
         [self fetchHistogramData];
         [self fetchPollData];
+        [self reloadData];
     }
     return self;
 }
@@ -118,6 +121,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 {
     NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)repost
@@ -200,6 +208,21 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                             failBlock:nil];
 }
 
+- (void)reloadData
+{
+    [self fetchPollData];
+    [self fetchHistogramData];
+    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
+         
+         [self fetchUserinfo];
+     }
+                                            failBlock:nil];
+}
+
 - (void)fetchUserinfo
 {
     __weak typeof(self) welf = self;
@@ -220,9 +243,6 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
      {
          self.hasReposted = userInteractions.hasReposted;
      }];
-    
-
-
 }
 
 - (void)fetchHistogramData
@@ -307,6 +327,16 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return [NSURL URLWithString:currentAsset.data];
 }
 
+- (float)speed
+{
+    return [self.currentAsset.speed floatValue];
+}
+
+- (BOOL)loop
+{
+    return [self.currentAsset.loop boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];
@@ -343,6 +373,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion
 {
     Float64 currentTime = CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime);
@@ -372,7 +403,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
                                                           mediaURL:mediaURL
                                                            toAsset:self.currentAsset
-                                                            atTime:@(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))
+                                                            atTime:@(CMTimeGetSeconds(realTime))
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              if (completion)
@@ -706,6 +737,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return totalVotes;
 }
 
+- (void)reloadPollData
+{
+    [self fetchPollData];
+}
+
 - (VPollAnswer)favoredAnswer
 {
     for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
@@ -735,6 +771,15 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
          //
          completion(NO, error);
      }];
+}
+
+- (NSString *)numberOfVotersText
+{
+    if (![self.sequence isVoteCountVisible])
+    {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 @end

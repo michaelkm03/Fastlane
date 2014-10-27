@@ -17,7 +17,7 @@
     self = [super init];
     if (self)
     {
-        self.referenceView = referenceView;
+        _referenceView = referenceView;
     }
     return self;
 }
@@ -31,7 +31,6 @@
 {
     UIView *toView;
     UIView *inView = [transitionContext containerView];
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     VLightboxViewController *toViewController = (VLightboxViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     NSAssert([toViewController isKindOfClass:[VLightboxViewController class]], @"VLightboxDisplayAnimator is designed to be used exclusively with VLightboxViewController");
     
@@ -44,9 +43,6 @@
         toView = toViewController.view;
     }
     
-    UIImage *blurredSnapshot = [self blurredSnapshotOfView:fromViewController.view];
-    toViewController.backgroundView = [[UIImageView alloc] initWithImage:blurredSnapshot];
-    
     if (toView)
     {
         toView.frame = [transitionContext finalFrameForViewController:toViewController];
@@ -56,7 +52,7 @@
     
     CGRect frameForContentView = toViewController.contentView.frame;
     toViewController.backgroundView.alpha = 0;
-    toViewController.contentView.frame = [toViewController.contentSuperview convertRect:self.referenceView.frame fromView:self.referenceView.superview];
+    toViewController.contentView.frame = [self.referenceView.superview convertRect:self.referenceView.frame toView:toViewController.contentSuperview];
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0
@@ -70,20 +66,6 @@
     {
         [transitionContext completeTransition:YES];
     }];
-}
-
-- (void)setReferenceView:(UIView *)referenceView
-{
-    _referenceView = referenceView;
-}
-
-- (UIImage *)blurredSnapshotOfView:(UIView *)view
-{
-    UIGraphicsBeginImageContext(view.bounds.size);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return [image applyDarkEffect];
 }
 
 @end

@@ -17,7 +17,7 @@
 "9lr-kw-Rjm.text" = "No hay conexión a Internet.";
 
 /* Class = "IBUILabel"; text = "Inbox"; ObjectID = "9mf-xA-Y30"; */
-"9mf-xA-Y30.text" = "Bandeja de entrada";
+"9mf-xA-Y30.text" = "Entrada";
 
 /* Class = "IBUINavigationItem"; title = "New Poll"; ObjectID = "18V-Wp-b3G"; */
 "18V-Wp-b3G.title" = "Nueva encuesta";
@@ -44,7 +44,7 @@
 "Fdy-7V-EvU.segmentTitles[1]" = "Reciente";
 
 /* Class = "IBUISegmentedControl"; Fdy-7V-EvU.segmentTitles[2] = "Following"; ObjectID = "Fdy-7V-EvU"; */
-"Fdy-7V-EvU.segmentTitles[2]" = "Siguiendo a";
+"Fdy-7V-EvU.segmentTitles[2]" = "Siguiendo";
 
 /* Class = "IBUITextField"; placeholder = "Search for an image"; ObjectID = "GSS-PO-98I"; */
 "GSS-PO-98I.placeholder" = "Buscar una imagen";
@@ -89,7 +89,7 @@
 "aHa-OF-GOS.text" = "Votar por eso";
 
 /* Class = "IBUILabel"; text = "Inbox"; ObjectID = "ds5-08-fik"; */
-"ds5-08-fik.text" = "Bandeja de entrada";
+"ds5-08-fik.text" = "Entrada";
 
 /* Class = "IBUILabel"; text = "Some really Long answer that hopefully will fit"; ObjectID = "fBr-Do-fCE"; */
 "fBr-Do-fCE.text" = "Algunas respuestas muy largas que tal vez se ajusten";
@@ -116,7 +116,7 @@
 "liW-Wt-Sy1.text" = "Perfil";
 
 /* Class = "IBUIButton"; normalTitle = "  REMIX"; ObjectID = "lkK-8n-fRh"; */
-"lkK-8n-fRh.normalTitle" = " REMIX";
+"lkK-8n-fRh.normalTitle" = "  REMIX";
 
 /* Class = "IBUISegmentedControl"; n7p-by-hQZ.segmentTitles[0] = "Message"; ObjectID = "n7p-by-hQZ"; */
 "n7p-by-hQZ.segmentTitles[0]" = "Mensaje";

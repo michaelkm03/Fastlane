@@ -12,7 +12,7 @@
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
-#import "VVoteType+ImageSerialization.h"
+#import "VVoteType+Fetcher.h"
 
 @interface VFileCache ( UnitTest)
 
@@ -29,6 +29,7 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 
 @property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
+@property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) VVoteType *voteType;
 
 @end
@@ -42,28 +43,27 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCache alloc] init];
     
-    self.voteType = [VDummyModels objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
-    [self resetVoteType];
+    self.voteTypes = [VDummyModels createVoteTypes:10];
+    [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+    {
+        voteType.name = @"vote_type_test_name";
+        voteType.iconImage = kTestImageUrl;
+        voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/images/firework_XXXXX.png";
+        voteType.imageCount = @( 10 );
+        
+        NSString *directoryPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
+        [VFileSystemTestHelpers deleteCachesDirectory:directoryPath];
+    }];
     
-    NSString *directoryPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, self.voteType.name];
-    [VFileSystemTestHelpers deleteCachesDirectory:directoryPath];
+    self.voteType = self.voteTypes.firstObject;
 }
 
 - (void)tearDown
 {
     [super tearDown];
     
-    self.voteType = nil;
-    
+    self.voteTypes = nil;
     self.fileCache = nil;
-}
-
-- (void)resetVoteType
-{
-    self.voteType.name = @"vote_type_test_name";
-    self.voteType.iconImage = kTestImageUrl;
-    self.voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/votetypes/6/heart_XXXXX.png";
-    self.voteType.imageCount = @( 10 );
 }
 
 - (void)testSavePathConstructionIcon
@@ -100,7 +100,7 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 
 - (void)testCacheVoteTypeImages
 {
-    [self.fileCache cacheImagesForVoteType:self.voteType];
+    [self.fileCache cacheImagesForVoteTypes:self.voteTypes];
     
     [self.asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
         
@@ -125,7 +125,9 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 
 - (void)testCacheImagesInvalid
 {
-    XCTAssertFalse( [self.fileCache cacheImagesForVoteType:nil] );
+    XCTAssertNoThrow( [self.fileCache cacheImagesForVoteTypes:@[]] );
+    XCTAssertNoThrow( [self.fileCache cacheImagesForVoteTypes:nil] );
+    XCTAssertNoThrow( [self.fileCache cacheImagesForVoteTypes:(@[ [NSNull null], [NSNull null] ]) ] );
 }
 
 - (void)testLoadFiles
@@ -133,13 +135,17 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     // Run this test again to save theimages
     [self testCacheVoteTypeImages];
     
-    UIImage *iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
-    XCTAssertNotNil( iconImage );
+    UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
+    XCTAssertNotNil( image );
+    XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
     
     NSArray *spriteImages = [self.fileCache getSpriteImagesForVoteType:self.voteType];
     XCTAssertEqual( spriteImages.count, self.voteType.images.count );
     [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[UIImage class]] );
+        UIImage *image = (UIImage *)obj;
+        XCTAssertNotNil( image );
+        XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
     }];
 }
 

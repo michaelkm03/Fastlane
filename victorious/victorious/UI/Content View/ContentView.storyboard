@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <scenes>
         <!--New Content View Controller-->
@@ -46,7 +46,7 @@
                                     <constraint firstAttribute="height" constant="49" id="D1A-bm-TfN"/>
                                     <constraint firstAttribute="width" constant="49" id="O8f-or-iDH"/>
                                 </constraints>
-                                <state key="normal" image="Close">
+                                <state key="normal" image="close-btn">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -61,7 +61,7 @@
                                     <constraint firstAttribute="height" constant="49" id="Gb8-B9-PO2"/>
                                 </constraints>
                                 <inset key="titleEdgeInsets" minX="0.0" minY="-8" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" image="More">
+                                <state key="normal" image="more-btn">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -105,8 +105,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Close" width="17" height="17"/>
-        <image name="More" width="22" height="6"/>
+        <image name="close-btn" width="17" height="18"/>
+        <image name="more-btn" width="22" height="8"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

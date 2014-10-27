@@ -8,6 +8,8 @@
 
 #import "VContentPollQuestionCell.h"
 
+#import "VThemeManager.h"
+
 @interface VContentPollQuestionCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
@@ -19,6 +21,12 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), 90);
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.questionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)setQuestion:(NSString *)question

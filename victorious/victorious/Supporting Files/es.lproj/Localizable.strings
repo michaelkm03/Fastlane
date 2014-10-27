@@ -18,6 +18,8 @@
 "OKButton" = "OK";
 "CancelButton" = "Cancelar";
 "DeleteButton" = "Borrar";
+"ConfirmButton" = "Confirmar";
+"Reply" = "Responder";
 "ResetButton" = "Restablecer";
 "YesButton" = "Sí";
 "NoButton" = "No";
@@ -28,8 +30,6 @@
 "Meme" = "Meme";
 "Share" = "Compartir";
 "Discover" = "Descubrir";
-"Discover" = "Descubrir";
-"Share" = "Compartir";
 
 "TimeSeparator" = ":";
 "InvalidTimePlaceholder" = "-:--";
@@ -256,7 +256,7 @@
 
 "editProfileButton" = "Editar perfil";
 "followers" = "Seguidores";
-"following" = "Siguiendo a";
+"following" = "Siguiendo";
 "follow" = "Seguir";
 
 "ResetPassword" = "Restablecer contraseña";
@@ -369,11 +369,20 @@
 
 "DiscoverSuggestedPeopleError" = "Lo sentimos, no pudimos cargar a las personas sugeridas.";
 "DiscoverTrendingTagsError" = "Lo sentimos, no pudimos cargar las etiquetas de tendencia.";
+"Suggested People" = "Personas sugeridas";
+"Trending Tags" = "Etiquetas de tendencia";
+
+"Device:" = "Dispositivo:";
+"OS Version:" = "Versión de SO:";
+"App Version:" = "Versión de Aplicación:";
+"AreYouSureYouWantToDelete" = "¿Estás seguro de que quieres borrar?";
 
 "CheckOutContent" = "!Checa esta asombrosa publicación!";
 "FacebookDeniedTitle" = "No se puede acceder a tu cuenta de Facebook";
 "FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
 "IncorrectOldPassword" = "La contraseña actual no es correcta.";
 "comments" = "comentarios";
+
 "Suggested People" = "Personas sugeridas";
 "Trending Tags" = "Etiquetas de tendencia";
+"Voters" = "Votantes";

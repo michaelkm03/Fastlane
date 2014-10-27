@@ -18,9 +18,21 @@ extern NSString * const VVoteTypeIconName;
 @interface VFileCache (VVoteType)
 
 /**
+ A block that can be set by calling code to provide any modifications to the data
+ before it is written, e.g. wrapping it in UIImagePNGRepresentation()
+ */
+@property (nonatomic, copy) NSData *(^encoderBlock)(NSData *);
+
+/**
+ A block that can be set by calling code to provide any modifications to the data
+ after it is read.
+ */
+@property (nonatomic, copy) id (^decoderBlock)(NSData *);
+
+/**
  Download and save the files to the cache directory asynchronously
  */
-- (BOOL)cacheImagesForVoteType:(VVoteType *)voteType;
+- (void)cacheImagesForVoteTypes:(NSArray *)voteTypes;
 
 /**
  Retrieve an image synchronously.
@@ -51,5 +63,7 @@ extern NSString * const VVoteTypeIconName;
  Check if all required sprite images in an animation sequence are saved to disk.
  */
 - (BOOL)areSpriteImagesCachedForVoteType:(VVoteType *)voteType;
+
+- (NSString *)savePathForImage:(NSString *)imageName forVote:(VVoteType *)voteType;
 
 @end

@@ -17,9 +17,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamContainerViewController.h"
-#import "VContentViewController.h"
 
-#import "VCommentToContentAnimator.h"
 #import "VCommentToStreamAnimator.h"
 
 #import "VThemeManager.h"
@@ -163,12 +161,6 @@
                                                  toViewController:(UIViewController *)toVC
 {
     if (operation == UINavigationControllerOperationPop
-        && [toVC isKindOfClass:[VContentViewController class]])
-    {
-        VCommentToContentAnimator *animator = [[VCommentToContentAnimator alloc] init];
-        return animator;
-    }
-    else if (operation == UINavigationControllerOperationPop
              && [toVC isKindOfClass:[VStreamContainerViewController class]])
     {
         VCommentToStreamAnimator *animator = [[VCommentToStreamAnimator alloc] init];

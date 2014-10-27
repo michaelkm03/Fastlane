@@ -84,8 +84,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithSequence:(VSequence *)sequence;
 
+- (void)reloadData;
+
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 
 
@@ -145,6 +148,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSURL *shareURL;
 
 @property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
+
+@property (nonatomic, readonly) float speed;
+
+@property (nonatomic, readonly) BOOL loop;
 
 /**
  *  If a video content has any real time comments this will be YES.
@@ -227,7 +234,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
 
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex;
 
@@ -251,6 +258,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL votingEnabled;
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
+@property (nonatomic, readonly) NSString *numberOfVotersText;
 
 - (VPollAnswer)favoredAnswer; // By the current user.
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer

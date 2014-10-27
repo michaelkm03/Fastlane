@@ -15,7 +15,6 @@
 #import "VConstants.h"
 
 #import "VCommentsContainerViewController.h"
-#import "VContentViewController.h"
 #import "VNewContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryViewController.h"
@@ -26,7 +25,6 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
-#import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
 #import "VStreamContainerViewController.h"
@@ -61,7 +59,6 @@
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache *preloadImageCache;
-@property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
 @property (strong, nonatomic) VMarqueeController *marquee;
@@ -295,7 +292,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
+    VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.delegate = self;
     VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -306,7 +304,6 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
-    
     return;
 }
 

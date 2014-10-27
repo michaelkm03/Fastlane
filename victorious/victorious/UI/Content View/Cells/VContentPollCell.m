@@ -32,6 +32,9 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, weak) IBOutlet UIView *answerAVideoPlayerContainer;
 @property (nonatomic, weak) IBOutlet UIView *answerBVideoPlayerContainer;
 
+@property (weak, nonatomic) IBOutlet UIView *pollCountContainer;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfVotersLabel;
+
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
 
@@ -63,9 +66,38 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     
     [self.answerAResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
     [self.answerBResultView setColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+    
+    self.numberOfVotersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    
+    self.pollCountContainer.layer.cornerRadius = CGRectGetHeight(self.pollCountContainer.bounds) * 0.5f;
 }
 
 #pragma mark - Property Accessors
+
+- (void)setNumberOfVotersText:(NSString *)numberOfVotersText
+{
+    if (!numberOfVotersText || (numberOfVotersText.length == 0))
+    {
+        return;
+    }
+    
+    self.numberOfVotersLabel.text = numberOfVotersText;
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0
+                        options:kNilOptions
+                     animations:^
+    {
+        self.pollCountContainer.alpha = 1.0f;
+    }
+                     completion:nil];
+}
+
+- (NSString *)numberOfVotersText
+{
+    return self.numberOfVotersLabel.text;
+}
 
 - (void)setAnswerAThumbnailMediaURL:(NSURL *)answerAThumbnailMediaURL
 {
@@ -210,6 +242,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 {
     [self.contentView bringSubviewToFront:self.answerAResultView];
     [self.contentView bringSubviewToFront:self.answerBResultView];
+    [self.contentView bringSubviewToFront:self.pollCountContainer];
     [self.contentView layoutIfNeeded];
     [UIView animateWithDuration:0.5f
                           delay:0.0f

@@ -90,6 +90,24 @@
                             <constraint firstAttribute="trailing" secondItem="AKp-ON-QNR" secondAttribute="trailing" id="vtz-TV-0V5"/>
                         </constraints>
                     </view>
+                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH8-gE-tUo" userLabel="Poll Count Container">
+                        <rect key="frame" x="109" y="8" width="102" height="23"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="964 Voters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBg-45-xOC">
+                                <rect key="frame" x="26" y="6" width="50" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="cBg-45-xOC" secondAttribute="centerX" id="AES-ZC-HVY"/>
+                            <constraint firstAttribute="height" constant="23" id="Qjr-wB-kYs"/>
+                            <constraint firstAttribute="centerY" secondItem="cBg-45-xOC" secondAttribute="centerY" id="fhr-qf-ZR4"/>
+                            <constraint firstAttribute="width" constant="102" id="rsf-vS-FAp"/>
+                        </constraints>
+                    </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r7x-ug-XeL" userLabel="Result View A" customClass="VResultView">
                         <rect key="frame" x="0.0" y="60" width="36" height="260"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -111,6 +129,7 @@
                 <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="7eD-Qf-RDc"/>
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="7s8-Vf-KN9"/>
                 <constraint firstAttribute="bottom" secondItem="j2c-vu-8qs" secondAttribute="bottom" id="NYg-jB-klJ"/>
+                <constraint firstItem="MH8-gE-tUo" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="8" id="Sp7-lL-iaV"/>
                 <constraint firstAttribute="bottom" secondItem="pJM-g6-c8F" secondAttribute="bottom" id="UpP-Bt-X4s"/>
                 <constraint firstItem="r7x-ug-XeL" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="YaX-wO-hxu"/>
                 <constraint firstItem="j2c-vu-8qs" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="cct-ec-LzR"/>
@@ -118,6 +137,7 @@
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="eoM-Od-01d"/>
                 <constraint firstItem="r7x-ug-XeL" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="gPM-42-jkr"/>
                 <constraint firstAttribute="bottom" secondItem="r7x-ug-XeL" secondAttribute="bottom" id="qRa-JW-OqO"/>
+                <constraint firstAttribute="centerX" secondItem="MH8-gE-tUo" secondAttribute="centerX" id="rSZ-dt-hbT"/>
                 <constraint firstAttribute="bottom" secondItem="pdl-Z7-86h" secondAttribute="bottom" id="wDC-84-wq8"/>
                 <constraint firstItem="pJM-g6-c8F" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="zmd-Hz-ez4"/>
             </constraints>
@@ -135,6 +155,8 @@
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
+                <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
+                <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>
         </collectionViewCell>
