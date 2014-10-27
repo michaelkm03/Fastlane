@@ -215,7 +215,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.streamDataSource.count)
         {
-//            [self animateHeaderShrinkingWithDuration:.5];
+            [self animateHeaderShrinkingWithDuration:.5];
         }
         if (completionBlock)
         {
