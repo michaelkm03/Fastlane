@@ -385,6 +385,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     }
     return [super collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
 }
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

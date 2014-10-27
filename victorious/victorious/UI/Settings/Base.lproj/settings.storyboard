@@ -496,24 +496,6 @@
             </objects>
             <point key="canvasLocation" x="-4092" y="-2165"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="SOF-aq-QPh">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="uQl-jn-xbw" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7aN-F4-Vza"/>
-                        <viewControllerLayoutGuide type="bottom" id="Hlj-ew-rXa"/>
-                    </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Nn0-RX-1Tm">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ONy-i0-b9o" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
     </scenes>
     <resources>
         <image name="Menu" width="27" height="27"/>
