@@ -374,11 +374,14 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)setVideoOrientation:(UIDeviceOrientation)orientation
 {
-    AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
-    if (videoConnection)
-    {
-        [videoConnection v_applyDeviceOrientation:orientation];
-    }
+    dispatch_async(self.sessionQueue, ^(void)
+                   {
+                       AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+                       if (videoConnection)
+                       {
+                           [videoConnection v_applyDeviceOrientation:orientation];
+                       }
+                   });
 }
 
 #pragma mark -
