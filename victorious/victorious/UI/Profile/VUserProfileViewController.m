@@ -367,7 +367,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                                                      newSize.width,
                                                      newSize.height);
          [self.currentProfileCell layoutIfNeeded];
-         self.collectionView.contentOffset = CGPointMake(0, 0);
      }
                      completion:nil];
 }

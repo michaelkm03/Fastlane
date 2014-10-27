@@ -81,6 +81,18 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
 }
 
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    
+//    if (self.navHeaderView)
+//    {
+//        UIEdgeInsets insets = self.collectionView.contentInset;
+//        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
+//        self.contentInset = insets;
+//    }
+//}
+
 - (BOOL)prefersStatusBarHidden
 {
     return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);

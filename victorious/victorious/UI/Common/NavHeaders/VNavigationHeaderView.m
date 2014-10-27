@@ -100,6 +100,10 @@
                                                            multiplier:CGRectGetWidth(self.frame) / CGRectGetMinY(self.navSelector.frame)
                                                              constant:0];
         [self addConstraint:self.ratioConstraint];
+        
+        CGRect frame = self.frame;
+        frame.size.height = CGRectGetMinY(self.navSelector.frame);
+        self.frame = frame;
     }
     else
     {
