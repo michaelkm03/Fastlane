@@ -57,6 +57,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic) BOOL inRecordVideoState;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
+@property (nonatomic, assign) Float64 totalRecorded;
 
 @end
 
@@ -226,6 +227,10 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             });
         }
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [self orientationDidChange:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -270,6 +275,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)orientationDidChange:(NSNotification *)notification
+{
+    self.captureController.currentDeviceOrientation = [[UIDevice currentDevice] orientation];
 }
 
 #pragma mark - Permissions
@@ -925,7 +935,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    CGFloat progress = ABS(totalRecorded / VConstantsMaximumVideoDuration);
+    self.totalRecorded = totalRecorded;
+    
+    CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
                                                                              attribute:NSLayoutAttributeWidth
                                                                              relatedBy:NSLayoutRelationEqual
@@ -941,6 +953,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)clearRecordedVideoAnimated:(BOOL)animated
 {
+    self.totalRecorded = 0.0;
+    
     [self updateProgressForSecond:0];
     
     self.inTrashState = NO;

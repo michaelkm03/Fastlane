@@ -211,7 +211,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 return;
             }
         }
-        [self setVideoOrientation:UIDeviceOrientationPortrait withCompletion:nil];
+        [self setVideoOrientation:self.currentDeviceOrientation withCompletion:nil];
         
         if (!self.audioOutput)
         {
@@ -316,7 +316,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         AVCaptureConnection *videoConnection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
         if (videoConnection)
         {
-            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
+            [videoConnection v_applyDeviceOrientation:self.currentDeviceOrientation];
             [self.imageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
              {
                  if (error)
@@ -378,7 +378,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        [self setVideoOrientation:[[UIDevice currentDevice] orientation] withCompletion:completion];
+        [self setVideoOrientation:self.currentDeviceOrientation withCompletion:completion];
     });
 }
 
@@ -391,7 +391,8 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     }
     if (completion)
     {
-        completion();
+        // This delay prevents the orentiation change 'flash' from being recorded
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), completion);
     }
 }
 

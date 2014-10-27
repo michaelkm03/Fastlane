@@ -330,6 +330,10 @@
 		A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B719FAF64700726772 /* landscape_right.m4v */; };
 		A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */; };
 		A7CFC1BD19FAF6BF00726772 /* portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B919FAF64700726772 /* portrait.m4v */; };
+		A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */; };
+		A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */; };
+		A7CFC1CB19FEE24300726772 /* front_portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */; };
+		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7EF97BC19F889F800972E74 /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
@@ -1071,6 +1075,10 @@
 		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
 		A7CFC1B919FAF64700726772 /* portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait.m4v; sourceTree = "<group>"; };
+		A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_left.m4v; sourceTree = "<group>"; };
+		A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_right.m4v; sourceTree = "<group>"; };
+		A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait_upsidedown.m4v; sourceTree = "<group>"; };
+		A7CFC1C819FEE17B00726772 /* front_portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait.m4v; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
@@ -2098,6 +2106,10 @@
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */,
+				A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */,
+				A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */,
+				A7CFC1C819FEE17B00726772 /* front_portrait.m4v */,
 				A7CFC1B619FAF64700726772 /* landscape_left.m4v */,
 				A7CFC1B719FAF64700726772 /* landscape_right.m4v */,
 				A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */,
@@ -3226,10 +3238,14 @@
 			files = (
 				A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */,
 				A7CFC1BD19FAF6BF00726772 /* portrait.m4v in Resources */,
+				A7CFC1CB19FEE24300726772 /* front_portrait_upsidedown.m4v in Resources */,
+				A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
+				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
+				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

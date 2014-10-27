@@ -96,4 +96,6 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  */
 - (void)stopRunningWithCompletion:(void(^)(void))completion;
 
+@property (nonatomic, assign) UIDeviceOrientation currentDeviceOrientation;
+
 @end
