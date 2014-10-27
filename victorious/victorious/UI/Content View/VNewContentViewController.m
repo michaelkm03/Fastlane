@@ -905,7 +905,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 case VContentViewTypeImage:
                     return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypeVideo:
-                    return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                    return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypePoll:
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
