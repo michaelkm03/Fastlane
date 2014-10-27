@@ -47,6 +47,9 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 @property   (nonatomic, strong) VUser                  *profile;
 
 @property (nonatomic, strong) VUserProfileHeaderView *profileHeaderView;
+@property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
+@property (nonatomic) CGSize currentProfileSize;
+
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property (nonatomic) BOOL                            isMe;
 
@@ -108,6 +111,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
     CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    self.currentProfileSize = CGSizeMake(width, height);
+    
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
     headerView.user = self.profile;
     headerView.delegate = self;
@@ -215,7 +220,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         if (self.streamDataSource.count)
         {
-            [self animateHeaderShrinkingWithDuration:.5];
+            [self animateHeaderShrinkingWithDuration:1.0f];
         }
         if (completionBlock)
         {
@@ -335,38 +340,31 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
     VUserProfileHeaderView *header = self.profileHeaderView;
-
-    if (CGRectGetHeight(header.frame) != kVSmallUserHeaderHeight)
-    {
-        self.collectionView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.view.bounds) - kVSmallUserHeaderHeight);
-        header.frame = CGRectMake(CGRectGetMinX(header.frame),
-                                  CGRectGetMinY(header.frame),
-                                  CGRectGetWidth(self.collectionView.bounds),
-                                  kVSmallUserHeaderHeight);
-    }
-
+    CGSize newSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
+    
     [UIView animateWithDuration:duration
                           delay:0.0f
          usingSpringWithDamping:0.95f
           initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionAllowUserInteraction
+                        options:UIViewAnimationOptionCurveLinear
                      animations:^
      {
-         header.bounds = CGRectMake(CGRectGetMinX(header.frame),
-                                   CGRectGetMinY(header.frame),
-                                   CGRectGetWidth(self.collectionView.bounds),
-                                   kVSmallUserHeaderHeight);
-         [header layoutIfNeeded];
-         self.collectionView.contentOffset = CGPointMake(0,
-                                                    - CGRectGetHeight(self.navHeaderView.bounds) -
-                                                    CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]));
-     } completion:^(BOOL finished)
-    {
-        if (duration == 0.0f)
-        {
-            // Forcing content offset to be neutral when not animating. Seemed like UITableViewController was setting contentoffset between the animation block and this completion.
-            self.collectionView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
-        }
+         self.currentProfileSize = newSize;
+         self.currentProfileCell.bounds = CGRectMake(CGRectGetMinX(header.frame),
+                                                     CGRectGetMinY(header.frame),
+                                                     newSize.width,
+                                                     newSize.height);
+         
+         self.collectionView.contentOffset = CGPointMake(0, 0);
+     }
+                     completion:^(BOOL finished)
+     {
+//         [self.collectionView.collectionViewLayout invalidateLayout];
+         if (duration == 0.0f)
+         {
+             // Forcing content offset to be neutral when not animating. Seemed like UITableViewController was setting contentoffset between the animation block and this completion.
+             self.collectionView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
+         }
      }];
 }
 
@@ -378,6 +376,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
         headerCell.headerView = self.profileHeaderView;
+        self.currentProfileCell = headerCell;
         return headerCell;
     }
     return [super dataSource:dataSource cellForIndexPath:indexPath];
@@ -389,7 +388,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        return self.profileHeaderView.bounds.size;
+        return self.currentProfileSize;
     }
     return [super collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
 }
