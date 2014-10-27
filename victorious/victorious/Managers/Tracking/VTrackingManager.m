@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 1
+#define LOG_TRACKING_EVENTS 0
 
 @interface VTrackingManager()
 
@@ -209,7 +209,6 @@
         if ( value != nil )
         {
             NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
-            stringWithNextMacro = [self percentEncodedUrlString:stringWithNextMacro];
             if ( stringWithNextMacro != nil )
             {
                 output = stringWithNextMacro;
@@ -230,6 +229,7 @@
     if ( [value isKindOfClass:[NSDate class]] )
     {
         replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
+        replacementValue = [self percentEncodedUrlString:replacementValue];
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
