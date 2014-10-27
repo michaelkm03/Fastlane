@@ -57,7 +57,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic) BOOL inRecordVideoState;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
-@property (nonatomic, assign) Float64 totalRecorded;
 
 @end
 
@@ -906,8 +905,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    self.totalRecorded = totalRecorded;
-    
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
                                                                              attribute:NSLayoutAttributeWidth
@@ -924,8 +921,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)clearRecordedVideoAnimated:(BOOL)animated
 {
-    self.totalRecorded = 0.0;
-    
     [self updateProgressForSecond:0];
     
     self.inTrashState = NO;
