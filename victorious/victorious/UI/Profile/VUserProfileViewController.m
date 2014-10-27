@@ -100,6 +100,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
     
+    [self.currentStream addObserver:self
+                         forKeyPath:@"sequences"
+                            options:NSKeyValueObservingOptionNew
+                            context:VUserProfileViewContext];
+    
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
 }
 
@@ -204,17 +209,21 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 #pragma mark - Actions
 
-#warning
-//- (IBAction)refresh:(UIRefreshControl *)sender
-//{
-//    [self refreshWithCompletion:^(void)
-//    {
-//        if (self.streamDataSource.count)
-//        {
-//            [self animateHeaderShrinkingWithDuration:.5];
-//        }
-//    }];
-//}
+- (void)refreshWithCompletion:(void (^)(void))completionBlock
+{
+    void (^fullCompletionBlock)(void) = ^void(void)
+    {
+        if (self.streamDataSource.count)
+        {
+            [self animateHeaderShrinkingWithDuration:.5];
+        }
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    };
+    [super refreshWithCompletion:fullCompletionBlock];
+}
 
 - (IBAction)composeMessage:(id)sender
 {

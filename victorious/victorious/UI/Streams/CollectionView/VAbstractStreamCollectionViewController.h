@@ -28,5 +28,6 @@
 @property (nonatomic) UIEdgeInsets contentInset;///<The default content inset that will be used when the view appears.  Will not be used if this VC has a nav header.
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
+- (void)refreshWithCompletion:(void(^)(void))completionBlock;
 
 @end
