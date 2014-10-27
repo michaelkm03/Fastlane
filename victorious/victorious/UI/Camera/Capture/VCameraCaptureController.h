@@ -77,10 +77,8 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  video input. It is not necessary to call this prior to 
  taking a still image, but it should be called prior to
  recording any video.
- 
- @param completion Will be called on a private queue when the orientation has been updated
  */
-- (void)setVideoOrientationToCurrentDeviceOrientationWithCompletion:(void(^)(void))completion;
+- (void)setVideoOrientation:(UIDeviceOrientation)orientation;
 
 /**
  Captures a still image from the current capture session in JPEG format
@@ -95,7 +93,5 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  @param completion Will be called on a private queue when the camera is fully shut down.
  */
 - (void)stopRunningWithCompletion:(void(^)(void))completion;
-
-@property (nonatomic, assign) UIDeviceOrientation currentDeviceOrientation;
 
 @end
