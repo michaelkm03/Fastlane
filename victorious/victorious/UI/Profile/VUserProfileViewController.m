@@ -128,6 +128,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
+    height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+    
     CGFloat width = CGRectGetWidth(self.collectionView.frame);
     self.currentProfileSize = CGSizeMake(width, height);
     
