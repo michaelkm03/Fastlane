@@ -82,6 +82,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
     self.streamDataSource.hasHeaderCell = YES;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
@@ -111,15 +113,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
-    CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
-    CGFloat width = CGRectGetWidth(self.collectionView.frame);
-    self.currentProfileSize = CGSizeMake(width, height);
-    
-    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
-    headerView.user = self.profile;
-    headerView.delegate = self;
-    self.profileHeaderView = headerView;
-    
     //    if (self.isMe)
     //    {
     //        [self addFriendsButton];
@@ -130,12 +123,19 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:self];
     }
     
-    self.profileHeaderView.user = self.profile;
-    
     [super viewWillAppear:animated]; //Call super after the header is set up so the super class will set up the headers properly.
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
- 
+    
+    CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    self.currentProfileSize = CGSizeMake(width, height);
+    
+    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
+    headerView.user = self.profile;
+    headerView.delegate = self;
+    self.profileHeaderView = headerView;
+
     UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
     {
@@ -152,7 +152,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                            placeholderImage:defaultBackgroundImage
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    [self.view insertSubview:self.backgroundImageView belowSubview:self.collectionView];
+    
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    
+    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        [self.view insertSubview:self.backgroundImageView belowSubview:self.collectionView];
+    }
+    else
+    {
+        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+    }
     
     if (self.streamDataSource.count)
     {
@@ -341,7 +351,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
 {
-    VUserProfileHeaderView *header = self.profileHeaderView;
     CGSize newSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
     
     [UIView animateWithDuration:duration
@@ -353,16 +362,14 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
      {
          self.currentProfileSize = newSize;
 
-         self.currentProfileCell.bounds = CGRectMake(CGRectGetMinX(header.frame),
-                                                     CGRectGetMinY(header.frame),
+         self.currentProfileCell.bounds = CGRectMake(CGRectGetMinX(self.collectionView.frame),
+                                                     CGRectGetMinY(self.collectionView.frame),
                                                      newSize.width,
                                                      newSize.height);
          [self.currentProfileCell layoutIfNeeded];
          self.collectionView.contentOffset = CGPointMake(0, 0);
      }
-                     completion:^(BOOL finished)
-    {
-    }];
+                     completion:nil];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
