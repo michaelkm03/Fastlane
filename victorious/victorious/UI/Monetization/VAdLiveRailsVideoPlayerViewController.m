@@ -29,7 +29,6 @@
         
     }
     return self;
-
 }
 
 - (void)viewDidLoad
@@ -76,6 +75,17 @@
         self.activityIndicatorView.center = self.view.center;
         [self.activityIndicatorView startAnimating];
         [self.view addSubview:self.activityIndicatorView];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.adManager != nil)
+    {
+        [self.adManager stopAd];
+        self.adManager = nil;
     }
 }
 
@@ -146,7 +156,7 @@
     {
         [self.adManager stopAd];
     }
-    
+    self.adManager = nil;
     self.activityIndicatorView = nil;
 }
 

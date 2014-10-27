@@ -150,7 +150,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
     return shouldRotate;
 }
 
