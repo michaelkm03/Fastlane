@@ -170,6 +170,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 //    CGSize estimatedSize = [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
 //    ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).estimatedItemSize = estimatedSize;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamCollectionDataSourceDidChangeNotification
+                                               object:self.streamDataSource];
+    
     [self refresh:self.refreshControl];
 }
 

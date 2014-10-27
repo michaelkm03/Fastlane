@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
+
 @class VAbstractFilter, VStream, VStreamItem, VStreamCollectionViewDataSource;
 
 /**

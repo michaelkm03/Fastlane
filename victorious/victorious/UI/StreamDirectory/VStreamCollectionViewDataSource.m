@@ -20,6 +20,8 @@
 
 static char KVOContext;
 
+NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
+
 @interface VStreamCollectionViewDataSource()
 
 @property (nonatomic) BOOL isLoading;
@@ -170,6 +172,8 @@ static char KVOContext;
     if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         [self.collectionView reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
+                                                            object:self];
     }
 }
 
