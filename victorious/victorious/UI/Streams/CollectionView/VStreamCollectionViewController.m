@@ -168,8 +168,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.collectionView = self.collectionView;
     self.streamDataSource.hasHeaderCell = self.shouldDisplayMarquee;
     self.collectionView.dataSource = self.streamDataSource;
-//    CGSize estimatedSize = [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
-//    ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).estimatedItemSize = estimatedSize;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
@@ -242,7 +240,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        [self marqueeRefreshedContent:self.marquee];
+        self.streamDataSource.hasHeaderCell = YES;
     }
 }
 
@@ -250,12 +248,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)marqueeRefreshedContent:(VMarqueeController *)marquee
 {
-    NSInteger count = self.marquee.streamDataSource.count;
-    
-    if (self.streamDataSource.hasHeaderCell != count)
-    {
-        self.streamDataSource.hasHeaderCell = count;
-    }
+    self.streamDataSource.hasHeaderCell = self.marquee.streamDataSource.count;
 }
 
 - (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
