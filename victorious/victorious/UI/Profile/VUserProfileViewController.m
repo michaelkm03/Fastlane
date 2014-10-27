@@ -96,6 +96,8 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
     
+    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
+    
     [self.currentStream addObserver:self
                          forKeyPath:@"sequences"
                             options:NSKeyValueObservingOptionNew
@@ -350,22 +352,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                      animations:^
      {
          self.currentProfileSize = newSize;
+
          self.currentProfileCell.bounds = CGRectMake(CGRectGetMinX(header.frame),
                                                      CGRectGetMinY(header.frame),
                                                      newSize.width,
                                                      newSize.height);
-         
+         [self.currentProfileCell layoutIfNeeded];
          self.collectionView.contentOffset = CGPointMake(0, 0);
      }
                      completion:^(BOOL finished)
-     {
-//         [self.collectionView.collectionViewLayout invalidateLayout];
-         if (duration == 0.0f)
-         {
-             // Forcing content offset to be neutral when not animating. Seemed like UITableViewController was setting contentoffset between the animation block and this completion.
-             self.collectionView.contentOffset = CGPointMake(0, -[self.topLayoutGuide length]);
-         }
-     }];
+    {
+    }];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

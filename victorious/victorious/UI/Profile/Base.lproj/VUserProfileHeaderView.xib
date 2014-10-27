@@ -19,7 +19,7 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hml-7T-io9" userLabel="Username Label">
-                    <rect key="frame" x="0.0" y="122" width="320" height="20.5"/>
+                    <rect key="frame" x="0.0" y="122" width="320" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -34,7 +34,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="BwN-vC-fs2" userLabel="Tagline Label">
-                    <rect key="frame" x="36" y="180" width="248" height="73.5"/>
+                    <rect key="frame" x="36" y="180" width="248" height="74"/>
                     <string key="text">Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
