@@ -6,9 +6,20 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import "OCMock.h"
 #import "VTrackingManager.h"
+#import "VAsyncTestHelper.h"
+#import "VObjectManager.h"
+#import "NSObject+VMethodSwizzling.h"
+
+#import <Nocilla/Nocilla.h>
+#import <OCMock/OCMock.h>
+#import <XCTest/XCTest.h>
+
+#undef andReturn // to make Nocilla play well with OCMock
+#undef andDo
+
+
+static NSString * const kTestingUrl = @"http://www.example.com";
 
 @interface VTrackingManager (UnitTest)
 
@@ -19,13 +30,18 @@
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
 - (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters;
 - (void)sendRequestWithUrlString:(NSString *)url;
+- (NSURLRequest *)requestWithUrl:(NSString *)url objectManager:(VObjectManager *)objectManager;
+- (NSString *)percentEncodedUrlString:(NSString *)originalUrl;
 
 @end
 
 
 @interface VTrackingManagerTests : XCTestCase
 
+
+@property (nonatomic, strong) VAsyncTestHelper *async;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
+@property (nonatomic, assign) IMP sharedManagerImp;
 
 @end
 
@@ -36,39 +52,129 @@
     [super setUp];
     
     self.trackingManager = [[VTrackingManager alloc] init];
-    id myObjectMock = OCMPartialMock( self.trackingManager  );
-    OCMStub( [myObjectMock sendRequestWithUrlString:[OCMArg any]] );
-    self.trackingManager = (VTrackingManager *)myObjectMock;
+    self.async = [[VAsyncTestHelper alloc] init];
+    
+    self.sharedManagerImp = [VObjectManager v_swizzleClassMethod:@selector(sharedManager) withBlock:(VObjectManager *)^
+                             {
+                                 return [[VObjectManager alloc] init];
+                             }];
     
     XCTAssertNotNil( self.trackingManager.registeredMacros );
     XCTAssertNotEqual( self.trackingManager.registeredMacros.count, (NSUInteger)0 );
+    
+    [[LSNocilla sharedInstance] start];
+    [[LSNocilla sharedInstance] clearStubs];
 }
 
 - (void)tearDown
 {
+    [VObjectManager v_restoreOriginalImplementation:self.sharedManagerImp forClassMethod:@selector(sharedManager)];
+    
+    [[LSNocilla sharedInstance] clearStubs];
+    [[LSNocilla sharedInstance] stop];
     [super tearDown];
 }
 
-- (void)testTrackEvents
+- (void)testATrackEvents
 {
-    NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 0 );
+    __block NSInteger responseCount = 0;
+    NSArray *urls = @[ kTestingUrl, kTestingUrl, kTestingUrl, kTestingUrl ];
     
+    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
+                                                               NSInteger *status,
+                                                               id<LSHTTPBody> __autoreleasing *body)
+                                                             {
+                                                                 XCTAssertEqual( *status, 200 );
+                                                                 if ( ++responseCount == (NSInteger)urls.count )
+                                                                 {
+                                                                     [self.async signal];
+                                                                 }
+                                                             });
+    
+    XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 0 );
+    [self.async waitForSignal:5.0f];
+}
+
+- (void)testTrackEventsInvalid
+{
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:nil andParameters:nil], -1 );
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:@[] andParameters:nil], -1 );
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
     
-    urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 1 );
-    
-    urls = @[ [NSNull null], [NSNull null] ];
+    NSArray *urls = @[ [NSNull null], [NSNull null] ];
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 2 );
+}
+
+- (void)testATrackEventsSomeValid
+{
+    __block NSInteger responseCount = 0;
+    __block NSInteger expected = 0;
+    NSArray *urls = @[ kTestingUrl, kTestingUrl, kTestingUrl, kTestingUrl ];
+    
+    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
+                                                               NSInteger *status,
+                                                               id<LSHTTPBody> __autoreleasing *body)
+                                                             {
+                                                                 XCTAssertEqual( *status, 200 );
+                                                                 if ( ++responseCount == expected )
+                                                                 {
+                                                                     [self.async signal];
+                                                                 }
+                                                             });
+    
+    urls = @[ [NSNull null], kTestingUrl, kTestingUrl, kTestingUrl ];
+    expected = 3;
+    XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 1 );
+    [self.async waitForSignal:5.0f];
+}
+
+- (void)testRequest
+{
+    NSURLRequest *request = [self.trackingManager requestWithUrl:kTestingUrl objectManager:[VObjectManager new]];
+    XCTAssertNotNil( request );
+    XCTAssertEqualObjects( request.URL.absoluteString, kTestingUrl );
+    XCTAssertNotNil( [request valueForHTTPHeaderField:@"Authorization"] );
+    XCTAssertNotNil( [request valueForHTTPHeaderField:@"User-Agent"] );
+    XCTAssertNotNil( [request valueForHTTPHeaderField:@"Date"] );
+    
+    request = [self.trackingManager requestWithUrl:kTestingUrl objectManager:nil];
+    XCTAssertNil( request );
+}
+
+- (void)testPercentEncode
+{
+    NSString *expected = @"2014%2D10%2D27%2019%3A57%3A30";
+    NSString *unencoded = @"2014-10-27 19:57:30";
+    XCTAssertEqualObjects( expected, [self.trackingManager percentEncodedUrlString:unencoded] );
+    
+    XCTAssertNil( [self.trackingManager percentEncodedUrlString:nil] );
 }
 
 - (void)testTrackEvent
 {
-    XCTAssert( [self.trackingManager trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
-    XCTAssert( [self.trackingManager trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
+                                                       NSInteger *status,
+                                                       id<LSHTTPBody> __autoreleasing *body)
+                                                     {
+                                                         XCTAssertEqual( *status, 200 );
+                                                         [self.async signal];
+                                                     });
+    
+    XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:nil] );
+    [self.async waitForSignal:5.0f];
+}
+
+- (void)testATrackEventNoParams
+{
+    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
+                                                               NSInteger *status,
+                                                               id<LSHTTPBody> __autoreleasing *body)
+                                                             {
+                                                                 XCTAssertEqual( *status, 200 );
+                                                                 [self.async signal];
+                                                             });
+    XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:@{}] );
+    [self.async waitForSignal:5.0f];
 }
 
 - (void)testTrackEventNoValuesInvalid
@@ -80,18 +186,19 @@
 
 - (void)testTrackEventValues
 {
-    NSString *macro1 = @"%%macro1%%";
-    NSString *macro2 = @"%%macro2%%";
+    // Any of the registered tracking macros will work for this test
+    NSString *macro1 = kTrackingKeyBallisticsCount;
+    NSString *macro2 = kTrackingKeyNavigiationFrom;
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
     XCTAssert( [self.trackingManager trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
-- (void)testTrackEventValuesInvalid
+- (void)testTrackEventParams
 {
-    NSString *macro1 = @"%%macro1%%";
-    NSString *macro2 = @"%%macro2%%";
+    NSString *macro1 = kTrackingKeyBallisticsCount;
+    NSString *macro2 = kTrackingKeyNavigiationFrom;
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters;
@@ -129,8 +236,9 @@
 
 - (void)testStringFromString
 {
-    NSString *macro = @"%%macro%%";
-    NSString *url = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
+    NSString *macro = kTrackingKeySequenceId;
+    NSString *url = [NSString stringWithFormat:@
+                     "http://www.example.com/%@", macro];
     NSString *stringValue = @"__stringValue__";
     NSNumber *integerValue = @1;
     NSNumber *floatValue = @2.0f;

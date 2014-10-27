@@ -12,8 +12,6 @@
 
 #define LOG_TRACKING_EVENTS 1
 
-static NSUInteger const kMaxPopulatedEvents = 100;
-
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
@@ -68,6 +66,20 @@ static NSUInteger const kMaxPopulatedEvents = 100;
     return dateFormatter;
 }
 
+- (NSString *)percentEncodedUrlString:(NSString *)originalUrl
+{
+    if ( !originalUrl )
+    {
+        return nil;
+    }
+    
+    NSString *output = originalUrl;
+    output = [output stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    output = [output stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    output = [output stringByReplacingOccurrencesOfString:@"-" withString:@"%2D"];
+    return output;
+}
+
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
 {
     if ( ![self validateUrls:urls]  )
@@ -120,7 +132,8 @@ static NSUInteger const kMaxPopulatedEvents = 100;
     }
     else
     {
-        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
+        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:completeParams key:key];
         [self.queuedTrackingEvents addObject:event];
         
         // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
@@ -196,6 +209,7 @@ static NSUInteger const kMaxPopulatedEvents = 100;
         if ( value != nil )
         {
             NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
+            stringWithNextMacro = [self percentEncodedUrlString:stringWithNextMacro];
             if ( stringWithNextMacro != nil )
             {
                 output = stringWithNextMacro;
@@ -253,9 +267,11 @@ static NSUInteger const kMaxPopulatedEvents = 100;
 
 - (void)sendRequestWithUrlString:(NSString *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
-    [[VObjectManager sharedManager] updateHTTPHeadersInRequest:request];
+    NSURLRequest *request = [self requestWithUrl:url objectManager:[VObjectManager sharedManager]];
+    if ( request == nil )
+    {
+        return;
+    }
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
@@ -271,6 +287,24 @@ static NSUInteger const kMaxPopulatedEvents = 100;
          }
 #endif
      }];
+}
+
+- (NSURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
+{
+    if ( objectManager == nil )
+    {
+        return nil;
+    }
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    if ( !url )
+    {
+        return nil;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [objectManager updateHTTPHeadersInRequest:request];
+    return request;
 }
 
 @end

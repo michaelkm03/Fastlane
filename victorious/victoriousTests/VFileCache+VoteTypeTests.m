@@ -13,6 +13,7 @@
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
 #import "VVoteType+Fetcher.h"
+#import <Nocilla/Nocilla.h>
 
 @interface VFileCache ( UnitTest)
 
@@ -56,6 +57,9 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
     }];
     
     self.voteType = self.voteTypes.firstObject;
+    
+    [[LSNocilla sharedInstance] clearStubs];
+    [[LSNocilla sharedInstance] stop];
 }
 
 - (void)tearDown
