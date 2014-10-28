@@ -180,7 +180,7 @@
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     assetGenerator.requestedTimeToleranceBefore = kCMTimeZero;
     assetGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-    CMTime timeToSample = CMTimeMakeWithSeconds(0.5f, asset.duration.timescale);
+    CMTime timeToSample = CMTimeMakeWithSeconds(kVideoPreviewSnapshotInSeconds, asset.duration.timescale);
     CGImageRef imageRef = [assetGenerator copyCGImageAtTime:timeToSample actualTime:NULL error:NULL];
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
