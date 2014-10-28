@@ -274,6 +274,20 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     return shouldChange;
 }
 
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
 #pragma mark - UIScrollViewdelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
