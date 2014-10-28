@@ -18,7 +18,6 @@
 
 #import "VStreamContainerViewController.h"
 #import "VRootViewController.h"
-#import "VContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VInboxContainerViewController.h"
 #import "VMessageContainerViewController.h"
@@ -114,25 +113,25 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
         [self showMissingContentAlert];
         return;
     }
-    
+#warning  Implement with NCV
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
-         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-         homeContainer.shouldShowHeaderLogo = YES;
-         
-         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         contentView.sequence = sequence;
-         
-         VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeContainer]];
-         [homeContainer.navigationController pushViewController:contentView animated:YES];
+//         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
+//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+//         homeContainer.shouldShowHeaderLogo = YES;
+//         
+//         VSequence *sequence = (VSequence *)[resultObjects firstObject];
+//         contentView.sequence = sequence;
+//         
+//         VRootViewController *root = [VRootViewController rootViewController];
+//         [root transitionToNavStack:@[homeContainer]];
+//         [homeContainer.navigationController pushViewController:contentView animated:YES];
      }
                                         failBlock:^(NSOperation *operation, NSError *error)
      {
-         VLog(@"Failed with error: %@", error);
-         [self showMissingContentAlert];
+//         VLog(@"Failed with error: %@", error);
+//         [self showMissingContentAlert];
      }];
 }
 
@@ -203,23 +202,24 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
-         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
-         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-         homeContainer.shouldShowHeaderLogo = YES;
-         
-         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         contentView.sequence = sequence;
-         commentsContainer.sequence = sequence;
-         
-         VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeContainer, contentView]];
-         [contentView.navigationController pushViewController:commentsContainer animated:YES];
+#warning Implement with NCV
+//         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
+//         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
+//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+//         homeContainer.shouldShowHeaderLogo = YES;
+//         
+//         VSequence *sequence = (VSequence *)[resultObjects firstObject];
+//         contentView.sequence = sequence;
+//         commentsContainer.sequence = sequence;
+//         
+//         VRootViewController *root = [VRootViewController rootViewController];
+//         [root transitionToNavStack:@[homeContainer, contentView]];
+//         [contentView.navigationController pushViewController:commentsContainer animated:YES];
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
      {
-         VLog(@"Failed with error: %@", error);
-         [self showMissingContentAlert];
+//         VLog(@"Failed with error: %@", error);
+//         [self showMissingContentAlert];
      }];
 }
 

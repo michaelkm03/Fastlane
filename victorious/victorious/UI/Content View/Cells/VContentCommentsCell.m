@@ -24,6 +24,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 @property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *seperatorImageView;
 @property (weak, nonatomic) IBOutlet VCommentTextAndMediaView *commentAndMediaView;
+@property (weak, nonatomic) IBOutlet UIImageView *clockIconImageView;
 
 @end
 
@@ -121,6 +122,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     _hasMedia = hasMedia;
     self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
+    self.commentAndMediaView.hasMedia = hasMedia;
 }
 
 - (void)setMediaPreviewURL:(NSURL *)mediaPreviewURL
@@ -165,7 +167,9 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 - (void)setRealTimeCommentText:(NSString *)realTimeCommentText
 {
     _realTimeCommentText = [realTimeCommentText copy];
+    
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
+    self.clockIconImageView.hidden = (!realTimeCommentText || (realTimeCommentText.length < 1));
 }
 
 - (UIImage *)previewImage

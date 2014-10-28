@@ -21,6 +21,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     VSequencePermissionOptionsNone      = 0,
     VSequencePermissionOptionsDelete    = 1 << 0,
     VSequencePermissionOptionsRemix     = 1 << 1,
+    VSequencePermissionOptionsVoteCount = 1 << 2,
 };
 
 @implementation VSequence (Fetcher)
@@ -169,12 +170,28 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canRemix
 {
+    if ( [self isPoll] )
+    {
+        return NO;
+    }
+    
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsRemix);
     }
+    
     return YES;
+}
+
+- (BOOL)isVoteCountVisible
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsVoteCount);
+    }
+    return NO;
 }
 
 @end

@@ -15,9 +15,6 @@
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
 
-// View Categories
-#import "UIView+VShadows.h"
-
 // Images
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
@@ -29,6 +26,9 @@
 #import "VContentCell.h"
 #import "VContentVideoCell.h"
 #import "VContentImageCell.h"
+#import "VContentPollCell.h"
+#import "VContentPollQuestionCell.h"
+#import "VContentPollBallotCell.h"
 //#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
@@ -46,6 +46,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -60,10 +61,13 @@
 // Simple Models
 #import "VExperienceEnhancer.h"
 
+// Experiments
+#import "VSettingManager.h"
+
 static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
 static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -82,6 +86,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak) VHistogramCell *histogramCell;
+@property (nonatomic, weak) VContentPollCell *pollCell;
+@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -95,6 +101,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, assign) CGAffineTransform targetTransform;
 @property (nonatomic, assign) CGRect oldRect;
 @property (nonatomic, assign) CGAffineTransform videoTransform;
+
+// RTC
+@property (nonatomic, assign) BOOL enteringRealTimeComment;
+@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @end
 
@@ -141,13 +151,13 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
     return shouldRotate;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return (self.videoCell.videoPlayerViewController.player.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return (self.videoCell.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size
@@ -167,18 +177,18 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             if (UIInterfaceOrientationIsLandscape(oldOrientation))
             {
                 [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
-                [self.view addSubview:self.videoCell.videoPlayerViewController.view];
-                [self.view bringSubviewToFront:self.videoCell.videoPlayerViewController.view];
+                [self.view addSubview:self.videoCell.videoPlayerContainer];
+                [self.view bringSubviewToFront:self.videoCell.videoPlayerContainer];
 
                 return;
             }
             [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             
-            self.videoCell.videoPlayerViewController.view.transform = [coordinator targetTransform];
-            self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
-            self.videoCell.videoPlayerViewController.view.center = self.view.center;
-            [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+            self.videoCell.videoPlayerContainer.transform = [coordinator targetTransform];
+            self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
+            self.videoCell.videoPlayerContainer.center = self.view.center;
+            [self.view addSubview:self.videoCell.videoPlayerContainer];
             self.landscapeMaskOverlay.alpha = 1.0f;
         }
         else
@@ -186,7 +196,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             [coordinator containerView].transform = CGAffineTransformIdentity;
             [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
             self.view.transform = CGAffineTransformIdentity;
-            self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformInvert([coordinator targetTransform]);
+            self.videoCell.videoPlayerContainer.transform = CGAffineTransformInvert([coordinator targetTransform]);
         }
     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
@@ -207,10 +217,10 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         self.view.transform = CGAffineTransformIdentity;
         self.view.bounds = rootView.bounds;
 
-        self.videoCell.videoPlayerViewController.view.transform = oldTransform;
-        self.videoCell.videoPlayerViewController.view.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
-        self.videoCell.videoPlayerViewController.view.center = rootView.center;
-        [self.view addSubview:self.videoCell.videoPlayerViewController.view];
+        self.videoCell.videoPlayerContainer.transform = oldTransform;
+        self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        self.videoCell.videoPlayerContainer.center = rootView.center;
+        [self.view addSubview:self.videoCell.videoPlayerContainer];
         self.landscapeMaskOverlay.alpha = 1.0f;
     }
     else
@@ -235,10 +245,9 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^
          {
-
-             self.videoCell.videoPlayerViewController.view.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
-             self.videoCell.videoPlayerViewController.view.transform = self.videoCell.transform;
-             self.videoCell.videoPlayerViewController.view.center = self.videoCell.contentView.center;
+             self.videoCell.videoPlayerContainer.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
+             self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
+             self.videoCell.videoPlayerContainer.center = self.videoCell.contentView.center;
              
              self.landscapeMaskOverlay.alpha = 0.0f;
          }
@@ -246,8 +255,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
          {
              if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
              {
-                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerViewController.view];
-                 self.videoCell.videoPlayerViewController.view.transform = CGAffineTransformIdentity;
+                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+                 self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
              }
          }];
     }
@@ -261,16 +270,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.closeButton setImage:[self.closeButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                      forState:UIControlStateNormal];
-    self.closeButton.tintColor = [UIColor whiteColor];
-    [self.closeButton v_applyShadowsWithZIndex:2];
-    
-    [self.moreButton setImage:[self.moreButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                     forState:UIControlStateNormal];
-    self.moreButton.imageView.tintColor = [UIColor whiteColor];
-    [self.moreButton v_applyShadowsWithZIndex:2];
     
     VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
     inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -310,15 +309,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     // Register nibs
@@ -334,12 +324,20 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                  forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
                  forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
                         withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
+    
+    self.viewModel.experienceEnhancerController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -347,17 +345,32 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(commentsDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateCommentsNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hitogramDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pollDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdatePollDataNotification
+                                               object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadData)
+                                                 name:kLoggedInChangedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginViewController:)
+                                                 name:VExperienceEnhancerBarDidRequiredLoginNotification
                                                object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
@@ -376,12 +389,14 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.videoPlayerViewController.currentTime]];
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.currentTime]];
     }
     else
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
+    
+    [self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -395,7 +410,24 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // We don't care about these notifications anymore but we still care about new user loggedin
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateCommentsNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VContentViewViewModelDidUpdatePollDataNotification
+                                                  object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VInputAccessoryViewKeyboardFrameDidChangeNotification
+                                                  object:nil];
+    
+    [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
     self.contentCollectionView.delegate = nil;
 }
@@ -409,7 +441,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                       completion:completion];
     
     // Pause playback on presentation
-    [self.videoCell.videoPlayerViewController.player pause];
+    [self.videoCell pause];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -419,9 +451,15 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 #pragma mark - Notification Handlers
 
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
+- (void)showLoginViewController:(NSNotification *)notification
 {
-    
+    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    if (loginViewController)
+    {
+        [self presentViewController:loginViewController
+                           animated:YES
+                         completion:nil];
+    }
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
@@ -470,6 +508,29 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
+- (void)pollDataDidUpdate:(NSNotification *)notification
+{
+
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+    }
+}
+
+- (void)reloadData
+{
+    [self.viewModel reloadData];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
@@ -500,8 +561,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
     }
     
-    __weak typeof(self) welf = self;
     __weak typeof(commentCell) wCommentCell = commentCell;
+    __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
         VLightboxViewController *lightbox;
@@ -532,8 +593,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[self.viewModel userForCommentIndex:index]];
-        [self.navigationController pushViewController:profileViewController animated:YES];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[welf.viewModel userForCommentIndex:index]];
+        [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
 
@@ -591,27 +652,52 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 {
                     return self.videoCell;
                 }
-                
+
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [videoCell.videoPlayerViewController enableTrackingWithTrackingItem:self.viewModel.sequence.tracking];
+                [videoCell setTracking:self.viewModel.sequence.tracking];
                 videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
+                videoCell.speed = self.viewModel.speed;
+                videoCell.loop = self.viewModel.loop;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
-                self.videoCell.videoPlayerViewController.animateWithPlayControls = ^void(BOOL playControlsHidden)
+                __weak typeof(self) welf = self;
+                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
                 {
-                    self.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
-                    self.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
-                };
+                    welf.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                    welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                }];
                 return videoCell;
             }
             case VContentViewTypePoll:
-                return [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
+            {
+                VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+                pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+                if (self.viewModel.answerAIsVideo)
+                {
+                    [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
+                }
+                pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
+                if (self.viewModel.answerBIsVideo)
+                {
+                    [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
+                }
+                self.pollCell = pollCell;
+                return pollCell;
+            }
         }
         case VContentViewSectionHistogram:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
+                                                                 forIndexPath:indexPath];
+                questionCell.question = self.viewModel.sequence.name;
+                return questionCell;
+            }
+            
             if (self.histogramCell)
             {
                 return self.histogramCell;
@@ -626,6 +712,57 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         }
         case VContentViewSectionExperienceEnhancers:
         {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                if (!self.ballotCell)
+                {
+                    self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
+                                                                                forIndexPath:indexPath];
+                }
+                self.ballotCell.answerA = self.viewModel.answerALabelText;
+                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+                
+                __weak typeof(self) welf = self;
+                self.ballotCell.answerASelectionHandler = ^(void)
+                {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [welf presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
+                    [welf.viewModel answerPollWithAnswer:VPollAnswerA
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [welf.pollCell setAnswerAPercentage:welf.viewModel.answerAPercentage
+                                                   animated:YES];
+                    }];
+                };
+                self.ballotCell.answerBSelectionHandler = ^(void)
+                {
+                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+                    if (loginViewController)
+                    {
+                        [welf presentViewController:loginViewController
+                                           animated:YES
+                                         completion:nil];
+                        return;
+                    }
+                    
+                    [welf.viewModel answerPollWithAnswer:VPollAnswerB
+                                              completion:^(BOOL succeeded, NSError *error)
+                    {
+                        [welf.pollCell setAnswerBPercentage:welf.viewModel.answerBPercentage
+                                                   animated:YES];
+                    }];
+                };
+                
+                return self.ballotCell;
+            }
+            
             if (self.experienceEnhancerCell)
             {
                 return self.experienceEnhancerCell;
@@ -641,10 +778,9 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 if (selectedEnhancer.isBallistic)
                 {
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
-                    animationImageView.transform = CGAffineTransformMakeScale(4.0f, 4.0f);
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
-                    CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:self.view];
+                    CGPoint convertedCenterForAnimation = [welf.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:welf.view];
                     animationImageView.center = convertedCenterForAnimation;
                     animationImageView.image = selectedEnhancer.flightImage;
                     [welf.view addSubview:animationImageView];
@@ -657,7 +793,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                          CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(welf.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(welf.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
                          CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(welf.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(welf.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
                          
-                         CGPoint contentCenter = [self.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
+                         CGPoint contentCenter = [welf.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
                                                                 fromView:welf.contentCell];
                          animationImageView.center = contentCenter;
                          
@@ -682,7 +818,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                     animationImageView.animationDuration = selectedEnhancer.animationDuration;
                     animationImageView.animationImages = selectedEnhancer.animationSequence;
                     animationImageView.animationRepeatCount = 1;
-                    animationImageView.contentMode = selectedEnhancer.shouldLetterBox ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+                    animationImageView.contentMode = selectedEnhancer.contentMode;
                     
                     [welf.contentCell.contentView addSubview:animationImageView];
                     [animationImageView startAnimating];
@@ -762,12 +898,22 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             {
                 return [self.videoSizeValue CGSizeValue];
             }
-            return [VContentCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            switch (self.viewModel.type)
+            {
+                case VContentViewTypeInvalid:
+                    return CGSizeZero;
+                case VContentViewTypeImage:
+                    return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypeVideo:
+                    return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypePoll:
+                    return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
         }
         case VContentViewSectionHistogram:
-            if (self.viewModel.type == VContentViewTypeImage)
+            if (self.viewModel.type == VContentViewTypePoll)
             {
-                return CGSizeZero;
+                return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
             if (!self.viewModel.histogramDataSource)
             {
@@ -775,14 +921,23 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
+        {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            }
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return CGSizeZero;
+            }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        }
         case VContentViewSectionAllComments:
         {
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
                                                commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
                                                andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
-            
         case VContentViewSectionCount:
             return CGSizeZero;
     }
@@ -827,16 +982,19 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    
+    if (!self.enteringRealTimeComment)
+    {
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
+    }
+
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
-    
+    self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     // should we update content size?
-    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.videoPlayerViewController.naturalSize, CGRectMake(0, 0, 320, 320)).size;
+    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.naturalSizeForVideo, self.videoCell.contentView.bounds).size;
     if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
     {
         if (desiredSizeForVideo.height > desiredSizeForVideo.width)
@@ -863,7 +1021,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
-    self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    if (!self.enteringRealTimeComment)
+    {
+        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    }
+}
+
+- (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
+{
+    [self.videoCell play];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -884,7 +1050,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:inputAccessoryView.composedText
-                              mediaURL:self.mediaURL
+                              mediaURL:welf.mediaURL
+                              realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
          [welf.viewModel fetchComments];
@@ -897,6 +1064,19 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     
     [inputAccessoryView clearTextAndResign];
     self.mediaURL = nil;
+    
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+    {
+        [self.videoCell play];
+    }
+}
+
+- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    if (inputAccessoryView.composedText.length == 0)
+    {
+        [self clearEditingRealTimeComment];
+    }
 }
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
@@ -908,30 +1088,69 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
     
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
-            self.mediaURL = capturedMediaURL;
-            [self.textEntryView setSelectedThumbnail:previewImage];
+            welf.mediaURL = capturedMediaURL;
+            [welf.textEntryView setSelectedThumbnail:previewImage];
         }
-        [self dismissViewControllerAnimated:YES completion:^
+        [welf dismissViewControllerAnimated:YES completion:^
         {
             if (finished)
             {
-                [self.textEntryView startEditing];
+                [welf.textEntryView startEditing];
             }
             
             [UIView animateWithDuration:0.0f
                              animations:^
              {
-                 [self.contentCollectionView reloadData];
-                 [self.contentCollectionView.collectionViewLayout invalidateLayout];
+                 [welf.contentCollectionView reloadData];
+                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
              }];
         }];
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    if (self.viewModel.type != VContentViewTypeVideo)
+    {
+        return;
+    }
+    [self clearEditingRealTimeComment];
+}
+
+- (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    if (self.viewModel.type != VContentViewTypeVideo)
+    {
+        return;
+    }
+    
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+    {
+        [self.videoCell pause];
+    }
+    
+    self.enteringRealTimeComment = YES;
+    self.realtimeCommentBeganTime = self.videoCell.currentTime;
+}
+
+- (void)clearEditingRealTimeComment
+{
+    self.enteringRealTimeComment = NO;
+    self.realtimeCommentBeganTime = kCMTimeZero;
+}
+
+#pragma mark - VExperienceEnhancerControllerDelegate
+
+- (void)experienceEnhancersDidUpdate
+{
+    // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
 @end

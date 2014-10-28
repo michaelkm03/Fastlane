@@ -7,8 +7,8 @@
 //
 
 #import "VVoteType+RestKit.h"
-
 #import "VAsset+RestKit.h"
+#import "VTracking+RestKit.h"
 
 @implementation VVoteType (RestKit)
 
@@ -20,10 +20,15 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order"  : VSelectorName(display_order),
-                                  @"name"           : VSelectorName(name),
-                                  @"id"             : VSelectorName(remoteId),
-                                  @"images"         : VSelectorName(images)
+                                  @"display_order"      : VSelectorName(displayOrder),
+                                  @"name"               : VSelectorName(name),
+                                  @"id"                 : VSelectorName(remoteId),
+                                  @"frames"             : VSelectorName(imageCount),
+                                  @"image_macro"        : VSelectorName(imageFormat),
+                                  @"icon"               : VSelectorName(iconImage),
+                                  @"animation_duration" : VSelectorName(animationDuration),
+                                  @"flight_duration"    : VSelectorName(flightDuration),
+                                  @"view_content_mode"  : VSelectorName(imageContentMode)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -31,6 +36,11 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+                                                                                          toKeyPath:VSelectorName(tracking)
+                                                                                        withMapping:[VTracking entityMapping]];
+    [mapping addPropertyMapping:trackingMapping];
     
     return mapping;
 }

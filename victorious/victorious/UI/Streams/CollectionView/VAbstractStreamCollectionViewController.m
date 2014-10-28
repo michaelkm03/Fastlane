@@ -20,7 +20,6 @@
 //View Controllers
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
-#import "VContentViewController.h"
 #import "VCameraPublishViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VCameraViewController.h"

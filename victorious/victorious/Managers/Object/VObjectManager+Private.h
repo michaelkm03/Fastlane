@@ -24,6 +24,9 @@
                      entityName:(NSString *)entityName
            managedObjectContext:(NSManagedObjectContext *)context;
 
+- (id)objectWithEntityName:(NSString *)entityName
+                  subclass:(Class)subclass;
+
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
                                   object:(id)object
                               parameters:(NSDictionary *)parameters
@@ -71,5 +74,12 @@
  the results of calling -description are returned.
  */
 - (NSString *)stringFromObject:(id)object;
+
+/**
+ A date formatter configured for the server's format settings.
+ This instance is not shared, so it can be modified freely by calling code.
+ @return Configured NSDateFormatter instance.
+ */
++ (NSDateFormatter *)dateFormatter;
 
 @end

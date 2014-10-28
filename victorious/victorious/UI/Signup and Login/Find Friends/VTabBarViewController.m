@@ -141,13 +141,13 @@ static const CGFloat kButtonMargin           =  0.5f;
                                                                                      attribute:NSLayoutAttributeNotAnAttribute
                                                                                     multiplier:1.0f
                                                                                       constant:0];
+            buttonWidthConstraint.priority = UILayoutPriorityDefaultHigh;
             [self.buttonsSuperview addConstraint:buttonWidthConstraint];
             [buttonWidthConstraints addObject:buttonWidthConstraint];
  
             if (buttons.count == self.viewControllers.count - 1) // last button
             {
                 UIButton *previousButton = [buttons lastObject];
-//                buttonWidthConstraint.priority = UILayoutPriorityDefaultHigh;
                 [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button]|"
                                                                                               options:NSLayoutFormatDirectionLeftToRight
                                                                                               metrics:@{ @"margin": @(kButtonMargin) }

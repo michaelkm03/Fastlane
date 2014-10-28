@@ -28,17 +28,13 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-// iOS 7 bug when built with 6 http://stackoverflow.com/questions/15303100/uicollectionview-cell-subviews-do-not-resize
-    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.contentView.translatesAutoresizingMaskIntoConstraints = YES;
-// End iOS 7 bug when built with 6
+    
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
                                                                                    bundle:nil];
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
@@ -56,11 +52,47 @@
     [self.videoPlayerViewController setItemURL:videoURL];
 }
 
+- (AVPlayerStatus)status
+{
+    return self.videoPlayerViewController.player.status;
+}
+
+- (UIView *)videoPlayerContainer
+{
+    return self.videoPlayerViewController.view;
+}
+
+- (CMTime)currentTime
+{
+    return self.videoPlayerViewController.player.currentTime;
+}
+
+- (CGSize)naturalSizeForVideo
+{
+    return self.videoPlayerViewController.naturalSize;
+}
+
 #pragma mark - Public Methods
 
 - (void)play
 {
-    [self.videoPlayerViewController.player play];
+    self.videoPlayerViewController.shouldLoop = self.loop;
+    self.videoPlayerViewController.player.rate = self.speed;
+}
+
+- (void)pause
+{
+    [self.videoPlayerViewController.player pause];
+}
+
+- (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls
+{
+    self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;
+}
+
+- (void)setTracking:(VTracking *)tracking
+{
+    [self.videoPlayerViewController enableTrackingWithTrackingItem:tracking];
 }
 
 #pragma mark - VCVideoPlayerDelegate
@@ -82,6 +114,11 @@
 {
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
+}
+
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.delegate videoCellWillStartPlaying:self];
 }
 
 @end

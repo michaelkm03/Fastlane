@@ -226,6 +226,7 @@
         noFollowersView.titleLabel.text = [NSLocalizedString(@"NoFriends", @"") uppercaseString];
         noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
         noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        noFollowersView.iconImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.tableView.clearButton.hidden = YES;
         self.tableView.selectAllButton.hidden = YES;

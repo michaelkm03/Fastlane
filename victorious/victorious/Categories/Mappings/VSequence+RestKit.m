@@ -59,10 +59,10 @@
                                                                                          withMapping:[VVoteResult entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];
     
-    RKRelationshipMapping *analyticsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                           toKeyPath:VSelectorName(tracking)
                                                                                         withMapping:[VTracking entityMapping]];
-    [mapping addPropertyMapping:analyticsMapping];
+    [mapping addPropertyMapping:trackingMapping];
     
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];

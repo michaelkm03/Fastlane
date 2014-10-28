@@ -10,6 +10,9 @@
 #import "VObjectManager.h"
 #import "RKManagedObjectStore.h"
 #import "VUser.h"
+#import "VVoteResult.h"
+#import "VTracking.h"
+#import "VTrackingConstants.h"
 
 static NSManagedObjectContext *context = nil;
 
@@ -48,6 +51,28 @@ static NSManagedObjectContext *context = nil;
     return [NSArray arrayWithArray:models];
 }
 
++ (NSArray *)createVoteTypes:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        VVoteType *voteType = (VVoteType *)[self objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
+        voteType.name = [NSString stringWithFormat:@"voteType_%lu", (unsigned long)i];
+        voteType.remoteId = @(i+1);
+        voteType.iconImage = @"https://www.google.com/images/icons/product/chrome-48.png";
+        voteType.imageFormat = @"https://www.google.com/images/icons/product/XXXXX.png";
+        voteType.imageCount = @(5);
+        voteType.displayOrder = @(i+1);
+        
+        NSString *trackingUrl = [NSString stringWithFormat:@"http://www.tracking.com/%@", kTrackingKeyBallisticsCount];
+        voteType.tracking = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
+        voteType.tracking.ballisticCount = @[ trackingUrl, trackingUrl, trackingUrl ];
+        
+        [models addObject:voteType];
+    }
+    return [NSArray arrayWithArray:models];
+}
+
 + (NSArray *)createUsers:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
@@ -69,6 +94,19 @@ static NSManagedObjectContext *context = nil;
         VHashtag *hashtag = (VHashtag *)[self objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
         hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
         [models addObject:hashtag];
+    }
+    return [NSArray arrayWithArray:models];
+}
+
++ (NSArray *)createVoteResults:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        VVoteResult *result = (VVoteResult *)[self objectWithEntityName:@"VoteResult" subclass:[VVoteResult class]];
+        result.count = @( arc4random() % 100 );
+        result.remoteId = @(i+1);
+        [models addObject:result];
     }
     return [NSArray arrayWithArray:models];
 }

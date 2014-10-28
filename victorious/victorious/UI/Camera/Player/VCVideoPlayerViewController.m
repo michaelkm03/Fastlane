@@ -14,6 +14,9 @@ static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
 
+static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
+static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
+
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @interface VCVideoPlayerViewController ()
@@ -25,6 +28,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL sliderTouchActive;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) id timeObserver;
+@property (nonatomic, strong) AVPlayerItem *playerItemBeingObserved;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
 @property (nonatomic) CMTime startTime;
 @property (nonatomic) CMTime endTime;
@@ -108,7 +112,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)dealloc
 {
-    [self removeObserverFromOldPlayerItem:_player.currentItem andAddObserverToPlayerItem:nil];
+    [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:nil];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem))];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate))];
     [_player removeTimeObserver:_timeObserver]; _timeObserver = nil;
@@ -306,6 +310,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(overlayView)]];
+}
+
+- (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
+{
+    self.playerLayer.videoGravity = videoPlayerLayerVideoGravity;
+}
+
+- (NSString *)videoPlayerLayerVideoGravity
+{
+    return self.playerLayer.videoGravity;
 }
 
 #pragma mark - Toolbar
@@ -523,25 +537,29 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     return previous > current || difference > kTimeDifferenceLimitForSkipEvent;
 }
 
-- (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem
+- (void)removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:(AVPlayerItem *)currentItem
 {
-    if ([oldItem isKindOfClass:[AVPlayerItem class]])
+    if ([self.playerItemBeingObserved isKindOfClass:[AVPlayerItem class]])
     {
-        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
-        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
-        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
-        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration))];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackBufferEmpty];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration))];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:self.playerItemBeingObserved];
+        self.playerItemBeingObserved = nil;
     }
     if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
+        self.playerItemBeingObserved = currentItem;
         self.hasCaculatedItemTime = NO;
         [currentItem addObserver:self
-                      forKeyPath:@"playbackBufferEmpty"
+                      forKeyPath:kPlaybackBufferEmpty
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                          context:nil];
         [currentItem addObserver:self
-                      forKeyPath:@"playbackLikelyToKeepUp"
+                      forKeyPath:kPlaybackLikelyToKeepUp
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                          context:nil];
         [currentItem addObserver:self
@@ -560,7 +578,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                       forKeyPath:NSStringFromSelector(@selector(duration))
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                          context:nil];
-        
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(playerItemDidPlayToEndTime:)
@@ -712,9 +729,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.toolbarView.progressIndicator.duration = kCMTimeIndefinite;
         self.toolbarView.progressIndicator.loadedTimeRanges = nil;
         self.delegateNotifiedOfReadinessToPlay = NO;
-        AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
-        [self removeObserverFromOldPlayerItem:oldItem andAddObserverToPlayerItem:newItem];
+        [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:newItem];
         self.startedVideo          = NO;
         self.finishedFirstQuartile = NO;
         self.finishedMidpoint      = NO;
@@ -843,7 +859,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }
     }
-    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackBufferEmpty"])
+    else if (object == self.player.currentItem && [keyPath isEqualToString:kPlaybackBufferEmpty])
     {
         if ( self.player.currentItem.playbackBufferEmpty )
         {
@@ -856,11 +872,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             }
         }
     }
-    else if (object == self.player.currentItem && [keyPath isEqualToString:@"playbackLikelyToKeepUp"])
+    else if (object == self.player.currentItem && [keyPath isEqualToString:kPlaybackLikelyToKeepUp])
     {
         // This is where playback resumes after having been stalled.  Do nothing for now
     }
-    
 }
 
 - (BOOL)isAtEnd
@@ -868,11 +883,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     CMTime time = self.currentTime;
     CMTime duration = self.currentTime;
     return time.value == duration.value;
-}
-
-- (BOOL)isAtStart
-{
-    return CMTimeGetSeconds( self.currentTime ) != 0.0;
 }
 
 #pragma mark - Notifiers

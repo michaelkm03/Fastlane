@@ -15,6 +15,8 @@
 #import "VComment.h"
 #import "VUser.h"
 #import "VAsset.h"
+#import "VAnswer.h"
+#import "VPollResult.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -24,6 +26,7 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 
@@ -36,13 +39,17 @@
 // Media
 #import "NSURL+MediaType.h"
 
+#import "NSURL+MediaType.h"
+
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
-NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
+NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
+NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 
 @interface VContentViewViewModel ()
 
-@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
+
+@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
@@ -83,13 +90,12 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [VExperienceEnhancerController experienceEnhancerControllerForSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
 
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
-        [self fetchUserinfo];
-        [self fetchHistogramData];
+        [self reloadData];
     }
     return self;
 }
@@ -98,6 +104,11 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 {
     NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
     return nil;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)repost
@@ -110,6 +121,21 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
      }
                                      failBlock:nil];
 
+}
+
+- (void)reloadData
+{
+    [self fetchPollData];
+    [self fetchHistogramData];
+    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
+         
+         [self fetchUserinfo];
+     }
+                                            failBlock:nil];
 }
 
 - (void)fetchUserinfo
@@ -132,9 +158,6 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
      {
          self.hasReposted = userInteractions.hasReposted;
      }];
-    
-
-
 }
 
 - (void)fetchHistogramData
@@ -155,6 +178,22 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
                                                                  object:self];
          }
      }];
+}
+
+- (void)fetchPollData
+{
+    if (![self.sequence isPoll])
+    {
+        return;
+    }
+    
+    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
+                                                             object:self];
+     }
+                                                 failBlock:nil];
 }
 
 #pragma mark - Property Accessors
@@ -193,6 +232,16 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     return [NSURL URLWithString:currentAsset.data];
 }
 
+- (float)speed
+{
+    return [self.currentAsset.speed floatValue];
+}
+
+- (BOOL)loop
+{
+    return [self.currentAsset.loop boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];
@@ -229,6 +278,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion
 {
     Float64 currentTime = CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime);
@@ -258,7 +308,7 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
                                                           mediaURL:mediaURL
                                                            toAsset:self.currentAsset
-                                                            atTime:@(CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime))
+                                                            atTime:@(CMTimeGetSeconds(realTime))
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              if (completion)
@@ -475,6 +525,166 @@ NSString *const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCon
     }
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
+}
+
+- (VAnswer *)answerA
+{
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]);
+}
+
+- (VAnswer *)answerB
+{
+    return ((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]);
+}
+
+- (NSString *)answerALabelText
+{
+    return [self answerA].label;
+}
+
+- (NSString *)answerBLabelText
+{
+    return [self answerB].label;
+}
+
+- (NSURL *)answerAThumbnailMediaURL
+{
+    return [self answerAIsVideo] ? [NSURL URLWithString:[self answerA].thumbnailUrl] : [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] firstObject]).mediaUrl];
+}
+
+- (NSURL *)answerBThumbnailMediaURL
+{
+    return [self answerBIsVideo] ? [NSURL URLWithString:[self answerB].thumbnailUrl] : [NSURL URLWithString:((VAnswer *)[[[self.sequence firstNode] firstAnswers] lastObject]).mediaUrl];
+}
+
+- (BOOL)answerAIsVideo
+{
+    return [[self answerA].mediaUrl v_hasVideoExtension];
+}
+
+- (BOOL)answerBIsVideo
+{
+    return [[self answerB].mediaUrl v_hasVideoExtension];
+}
+
+- (NSURL *)answerAVideoUrl
+{
+    return [NSURL URLWithString:[self answerA].mediaUrl];
+}
+
+- (NSURL *)answerBVideoUrl
+{
+    return [NSURL URLWithString:[self answerB].mediaUrl];
+}
+
+- (BOOL)votingEnabled
+{
+    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (CGFloat)answerAPercentage
+{
+    if ([self totalVotes] > 0)
+    {
+        return (CGFloat) [self answerAResult].count.doubleValue / [self totalVotes];
+    }
+    return 0.0f;
+}
+
+- (CGFloat)answerBPercentage
+{
+    if ([self totalVotes] > 0)
+    {
+        return (CGFloat) [self answerBResult].count.doubleValue / [self totalVotes];
+    }
+    return 0.0f;
+}
+
+- (VPollResult *)answerAResult
+{
+    for (VPollResult *result in self.sequence.pollResults.allObjects)
+    {
+        if ([result.answerId isEqualToNumber:[self answerA].remoteId])
+        {
+            return result;
+        }
+    }
+    return nil;
+}
+
+- (VPollResult *)answerBResult
+{
+    for (VPollResult *result in self.sequence.pollResults.allObjects)
+    {
+        if ([result.answerId isEqualToNumber:[self answerB].remoteId])
+        {
+            return result;
+        }
+    }
+    return nil;
+}
+
+- (NSInteger)totalVotes
+{
+    NSInteger totalVotes = 0;
+    for (VPollResult *pollResult in self.sequence.pollResults)
+    {
+        totalVotes = totalVotes + [pollResult.count integerValue];
+    }
+
+    return totalVotes;
+}
+
+- (void)reloadPollData
+{
+    [self fetchPollData];
+}
+
+- (VPollAnswer)favoredAnswer
+{
+    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
+        {
+            return [result.answerId isEqualToNumber:[self answerA].remoteId] ? VPollAnswerA : VPollAnswerB;
+        }
+    }
+    return VPollAnswerInvalid;
+}
+
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion
+{
+    [[VObjectManager sharedManager] answerPoll:self.sequence
+                                    withAnswer:(selectedAnswer == VPollAnswerA) ? [self answerA] : [self answerB]
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         //
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
+                                                             object:self];
+         completion(YES, nil);
+     }
+                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         //
+         completion(NO, error);
+     }];
+}
+
+- (NSString *)numberOfVotersText
+{
+    if (![self.sequence isVoteCountVisible])
+    {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 @end

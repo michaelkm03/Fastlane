@@ -297,7 +297,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     NSString *iosName = [currentDevice systemName];
     
     // Return the Compiled String of Variables
-    return [NSString stringWithFormat:@"\n\n-------------------------\nDevice: %@\nOS Version: %@ %@\nApp Version: %@ (%@)", device, iosName, iosVersion, appVersion, appBuildNumber];
+    NSMutableString *deviceInfo = [[NSMutableString alloc] init];
+    [deviceInfo appendString:@"\n\n-------------------------\n"];
+    [deviceInfo appendFormat:@"%@ %@\n", NSLocalizedString(@"Device:", @""), device];
+    [deviceInfo appendFormat:@"%@ %@ %@\n", NSLocalizedString(@"OS Version:", @""), iosName, iosVersion];
+    [deviceInfo appendFormat:@"%@ %@ (%@)\n", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
+    
+    return deviceInfo;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

@@ -22,7 +22,12 @@ extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
 /**
  *  Posted whenever new histogram data is made available.
  */
-extern NSString *const VContentViewViewModelDidUpdateHistogramDataNotification;
+extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+
+/**
+ * Posted whenever new poll data is made available.
+ */
+extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -47,6 +52,13 @@ typedef NS_ENUM(NSInteger, VContentViewType)
     VContentViewTypePoll
 };
 
+typedef NS_ENUM(NSInteger, VPollAnswer)
+{
+    VPollAnswerInvalid,
+    VPollAnswerA,
+    VPollAnswerB,
+};
+
 /**
  * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
  * 
@@ -66,8 +78,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithSequence:(VSequence *)sequence;
 
+- (void)reloadData;
+
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
+                  realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 
 
@@ -125,6 +140,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  For content type video this will be a convenient url for the videoplayer.
  */
 @property (nonatomic, readonly) NSURL *videoURL;
+
+@property (nonatomic, readonly) float speed;
+
+@property (nonatomic, readonly) BOOL loop;
 
 /**
  *  If a video content has any real time comments this will be YES.
@@ -207,7 +226,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
 
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex;
 
@@ -219,6 +238,23 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  @return Whether or not the media for the comment is a video.
  */
 - (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+
+@property (nonatomic, readonly) NSString *answerALabelText;
+@property (nonatomic, readonly) NSString *answerBLabelText;
+@property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
+@property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+@property (nonatomic, readonly) BOOL answerAIsVideo;
+@property (nonatomic, readonly) BOOL answerBIsVideo;
+@property (nonatomic, readonly) NSURL *answerAVideoUrl;
+@property (nonatomic, readonly) NSURL *answerBVideoUrl;
+@property (nonatomic, readonly) BOOL votingEnabled;
+@property (nonatomic, readonly) CGFloat answerAPercentage;
+@property (nonatomic, readonly) CGFloat answerBPercentage;
+@property (nonatomic, readonly) NSString *numberOfVotersText;
+
+- (VPollAnswer)favoredAnswer; // By the current user.
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
 
 /** This will be nil if no histogram data is available.
  */

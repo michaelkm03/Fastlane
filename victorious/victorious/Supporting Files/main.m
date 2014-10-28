@@ -9,11 +9,8 @@
 
 #import "VAppDelegate.h"
 
-#import <ADEUMInstrumentation/ADEUMInstrumentation.h>
-
 int main(int argc, char *argv[])
 {
-    [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     @autoreleasepool
     {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([VAppDelegate class]));

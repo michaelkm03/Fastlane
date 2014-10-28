@@ -13,6 +13,7 @@
 
 // View Categories
 #import "UIActionSheet+VBlocks.h"
+#import "UIActionSheet+VBlocks.h"
 
 //TODO: abstract this out of VC
 #import "VStream.h"
@@ -46,6 +47,8 @@
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    VNewContentViewController *contentViewController = self;
+    
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
@@ -53,11 +56,10 @@
                                                           detailText:self.viewModel.authorCaption];
     userItem.selectionHandler = ^(void)
     {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
+        [contentViewController dismissViewControllerAnimated:YES completion:^
          {
              VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
-             [self.navigationController pushViewController:profileViewController animated:YES];
+             [contentViewController.navigationController pushViewController:profileViewController animated:YES];
          }];
     };
     [actionItems addObject:userItem];
@@ -68,10 +70,10 @@
                                         VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
                                         container.shouldShowHeaderLogo = NO;
                                         
-                                        [self dismissViewControllerAnimated:YES
+                                        [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
-                                             [self.navigationController pushViewController:container
+                                             [contentViewController.navigationController pushViewController:container
                                                                                   animated:YES];
                                          }];
                                     }];
@@ -87,10 +89,10 @@
         {
             if (![VObjectManager sharedManager].mainUser)
             {
-                [self dismissViewControllerAnimated:YES
+                [contentViewController dismissViewControllerAnimated:YES
                                          completion:^
                  {
-                     [self presentViewController:[VLoginViewController loginViewController]
+                     [contentViewController presentViewController:[VLoginViewController loginViewController]
                                         animated:YES
                                       completion:NULL];
                  }];
@@ -98,82 +100,33 @@
                 return;
             }
             
-            [self dismissViewControllerAnimated:YES
+            [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 NSString *label = [self.viewModel.sequence.remoteId stringByAppendingPathComponent:self.viewModel.sequence.name];
+                 NSString *label = [contentViewController.viewModel.sequence.remoteId stringByAppendingPathComponent:contentViewController.viewModel.sequence.name];
                  [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
                  
-                 if (self.viewModel.type == VContentViewTypeVideo)
+                 if (contentViewController.viewModel.type == VContentViewTypeVideo)
                  {
-                     UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:self.viewModel.sourceURLForCurrentAssetData
-                                                                                             sequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                                                                 nodeID:self.viewModel.nodeID];
-                     [self presentViewController:remixVC
-                                        animated:YES
-                                      completion:
-                      ^{
-                          
-                      }];
+                     UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:contentViewController.viewModel.sourceURLForCurrentAssetData
+                                                                                             sequenceID:[contentViewController.viewModel.sequence.remoteId integerValue]
+                                                                                                 nodeID:contentViewController.viewModel.nodeID];
+                     [self presentViewController:remixVC animated:YES completion:nil];
                  }
                  else
                  {
-                     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-                     publishViewController.previewImage = self.placeholderImage;
-                     publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
-                     publishViewController.completion = ^(BOOL complete)
-                     {
-                         [self dismissViewControllerAnimated:YES
-                                                  completion:nil];
-                     };
-                     UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-                     
                      UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                                        onCancelButton:nil
+                                                                              delegate:self
+                                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                                 destructiveButtonTitle:nil
-                                                                   onDestructiveButton:nil
-                                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
-                                                   {
-                                                       publishViewController.captionType = VCaptionTypeMeme;
-                                                       
-                                                       NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-                                                       NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                                       NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                                       if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                                       {
-                                                           publishViewController.mediaURL = tempFile;
-                                                           [self presentViewController:remixNav
-                                                                              animated:YES
-                                                                            completion:nil];
-                                                       }
-                                                   },
-                                                   NSLocalizedString(@"Quote", nil),  ^(void)
-                                                   {
-                                                       publishViewController.captionType = VCaptionTypeQuote;
-                                                       
-                                                       NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-                                                       NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                                       NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                                       if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                                       {
-                                                           publishViewController.mediaURL = tempFile;
-                                                           [self presentViewController:remixNav
-                                                                              animated:YES
-                                                                            completion:nil];
-                                                       }
-                                                   }, nil];
-                     [self dismissViewControllerAnimated:YES
-                                              completion:^
-                      {
-                          [actionSheet showInView:self.view];
-                      }];
+                                                                     otherButtonTitles:NSLocalizedString(@"Meme", nil), NSLocalizedString(@"Quote", nil), nil];
+                     [actionSheet showInView:contentViewController.view];
                  }
              }];
         };
         remixItem.detailSelectionHandler = ^(void)
         {
-            [self dismissViewControllerAnimated:YES
+            [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
                  VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
@@ -181,7 +134,7 @@
                  streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
                  streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
                  streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-                 [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+                 [contentViewController.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
                  
              }];
         };
@@ -195,20 +148,20 @@
                                                               enabled:self.viewModel.hasReposted ? NO : YES];
     repostItem.selectionHandler = ^(void)
     {
-        [self dismissViewControllerAnimated:YES
+        [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
              if (![VObjectManager sharedManager].mainUser)
              {
-                 [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+                 [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
                  return;
              }
-             if (self.viewModel.hasReposted)
+             if (contentViewController.viewModel.hasReposted)
              {
                  return;
              }
              
-             [self.viewModel repost];
+             [contentViewController.viewModel repost];
          }];
     };
     repostItem.detailSelectionHandler = ^(void)
@@ -251,10 +204,10 @@
             [self reloadInputViews];
         };
         
-        [self dismissViewControllerAnimated:YES
+        [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
-             [self presentViewController:activityViewController
+             [contentViewController presentViewController:activityViewController
                                 animated:YES
                               completion:nil];
          }];
@@ -262,6 +215,40 @@
     shareItem.selectionHandler = shareHandler;
     shareItem.detailSelectionHandler = shareHandler;
     [actionItems addObject:shareItem];
+    
+    if ([self.viewModel.sequence canDelete])
+    {
+        VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
+                                                               actionIcon:nil
+                                                               detailText:nil];
+        
+        deleteItem.selectionHandler = ^(void)
+        {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 UIActionSheet *confirmDeleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
+                                                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                                                 onCancelButton:nil
+                                                                         destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                                            onDestructiveButton:^
+                                                            {
+                                                                [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
+                                                                                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                                 {
+                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                 }
+                                                                                                                   failBlock:^(NSOperation *operation, NSError *error)
+                                                                 {
+                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                 }];
+                                                            }
+                                                                     otherButtonTitlesAndBlocks:nil, nil];
+                 [confirmDeleteActionSheet showInView:self.view];
+             }];
+        };
+        [actionItems addObject:deleteItem];
+    }
     
     if (![[[VObjectManager sharedManager] mainUser] isOwner])
     {
@@ -273,7 +260,7 @@
             [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
-                 [self dismissViewControllerAnimated:YES
+                 [contentViewController dismissViewControllerAnimated:YES
                                           completion:^
                   {
                       UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
@@ -286,7 +273,7 @@
              }
                                                failBlock:^(NSOperation *operation, NSError *error)
              {
-                 [self dismissViewControllerAnimated:YES
+                 [contentViewController dismissViewControllerAnimated:YES
                                           completion:^
                   {
                       UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
@@ -302,48 +289,34 @@
         [actionItems addObject:flagItem];
     }
     
-    if ([self.viewModel.sequence canDelete])
-    {
-        VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
-                                                               actionIcon:nil
-                                                               detailText:nil];
-        
-        deleteItem.selectionHandler = ^(void)
-        {
-            [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-             {
-                 [self dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      [self.delegate newContentViewControllerDidDeleteContent:self];
-                  }];
-             }
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 [self dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      [self.delegate newContentViewControllerDidDeleteContent:self];
-                  }];
-             }];
-            
-            
-        };
-        [actionItems addObject:deleteItem];
-    }
-    
     [actionSheetViewController addActionItems:actionItems];
     
-    actionSheetViewController.cancelHandler = ^void(void)
+    [self presentViewController:actionSheetViewController animated:YES completion:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( buttonIndex != 0 && buttonIndex != 1 )
     {
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
+        return;
+    }
     
-    [self presentViewController:actionSheetViewController
-                       animated:YES
-                     completion:nil];
+    NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    
+    if ([filteredImageData writeToURL:tempFile atomically:NO])
+    {
+        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+        publishViewController.previewImage = self.placeholderImage;
+        publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+        publishViewController.completion = nil;
+        publishViewController.captionType = buttonIndex == 0 ? VCaptionTypeMeme : VCaptionTypeQuote;
+        publishViewController.mediaURL = tempFile;
+        
+        UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+        [self presentViewController:remixNav animated:YES completion:nil];
+    }
 }
 
 @end

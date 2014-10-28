@@ -15,7 +15,6 @@
 #import "VConstants.h"
 
 #import "VCommentsContainerViewController.h"
-#import "VContentViewController.h"
 #import "VNewContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryViewController.h"
@@ -26,7 +25,6 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
-#import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
 #import "VStreamContainerViewController.h"
@@ -61,7 +59,6 @@
 @property (strong, nonatomic, readwrite) VStreamTableDataSource *tableDataSource;
 @property (strong, nonatomic) UIActivityIndicatorView *bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache *preloadImageCache;
-@property (strong, nonatomic) VContentViewController *contentViewController;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 
 @property (strong, nonatomic) VMarqueeController *marquee;
@@ -295,91 +292,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![[self.tableDataSource sequenceAtIndexPath:indexPath] isPoll])
-    {
-        VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:[self.tableDataSource sequenceAtIndexPath:indexPath]];
-        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-        contentViewController.delegate = self;
-        VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-        contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
-        
-        UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-        contentNav.navigationBarHidden = YES;
-        [self presentViewController:contentNav
-                           animated:YES
-                         completion:nil];
-        
-        [[VObjectManager sharedManager] fetchSequenceByID:contentViewModel.sequence.remoteId
-                                             successBlock:nil
-                                                failBlock:nil];
-        
-        return;
-    }
-    
-    self.lastSelectedIndexPath = indexPath;
-    
-    self.contentViewController = [VContentViewController instantiateFromStoryboard:@"Main"];
-    
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    if ([sequence.expiresAt timeIntervalSinceNow] < 0)
-    {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.delegate = self;
+    VStreamViewCell *cellForIndexPath = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    contentViewController.placeholderImage = cellForIndexPath.previewImageView.image;
     
-    self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    VStreamViewCell *cell = (VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
-    //TODO: we'll need to clean this up once they decide on the animation
-    if ([cell isKindOfClass:[VMarqueeTableViewCell class]])
-    {
-        if ([((VMarqueeTableViewCell *)cell).currentItem isKindOfClass:[VSequence class]])
-        {
-            self.contentViewController.sequence = (VSequence *)((VMarqueeTableViewCell *)cell).currentItem;
-            [self.navigationController pushViewController:self.contentViewController animated:YES];
-        }
-        return;
-    }
-    
-    if ([cell isKindOfClass:[VStreamPollCell class]])
-    {
-        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
-        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
-        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
-    }
-    
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequenceByID:cell.sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
-    
-    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
-    [self.delegate streamWillDisappear];
-    
-    CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds sequence:sequence];
-    if (tableView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
-    {
-        [self.navigationController pushViewController:self.contentViewController animated:YES];
-    }
-    else
-    {
-        self.tableView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-             usingSpringWithDamping:1.0f
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-            [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - contentMediaViewOffset) animated:NO];
-        }
-                         completion:^(BOOL finished)
-        {
-            self.tableView.userInteractionEnabled = YES;
-            [self.navigationController pushViewController:self.contentViewController animated:YES];
-        }];
-
-    }
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

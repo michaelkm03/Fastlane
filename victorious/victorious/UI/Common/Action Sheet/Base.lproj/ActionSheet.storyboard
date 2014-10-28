@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <scenes>
         <!--Action Sheet View Controller-->
@@ -126,6 +126,7 @@
                                                                 <constraint firstItem="1eU-SV-COV" firstAttribute="leading" secondItem="GHC-ke-dj2" secondAttribute="leading" constant="85" id="Hlp-cY-Yn3"/>
                                                                 <constraint firstAttribute="trailing" secondItem="FZR-U7-hah" secondAttribute="trailing" id="Uey-O7-5SB"/>
                                                                 <constraint firstItem="NCA-G7-lHm" firstAttribute="leading" secondItem="GHC-ke-dj2" secondAttribute="leading" constant="35" id="bup-cF-Km7"/>
+                                                                <constraint firstItem="FZR-U7-hah" firstAttribute="baseline" secondItem="1eU-SV-COV" secondAttribute="baseline" id="dbF-BP-npZ"/>
                                                                 <constraint firstAttribute="trailing" secondItem="xPV-kD-dwH" secondAttribute="trailing" id="h0Y-mz-hJl"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
@@ -170,13 +171,13 @@
                                             <action selector="pressedCancel:" destination="zy4-f0-yQu" eventType="touchUpInside" id="284-OD-Hu0"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alice Irvine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="ObS-hY-o4S" userLabel="Title Label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Alice Irvine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="ObS-hY-o4S" userLabel="Title Label">
                                         <rect key="frame" x="30" y="42" width="260" height="21"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5.6K Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-7w-LgK" userLabel="Caption Label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="5.6K Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-7w-LgK" userLabel="Caption Label">
                                         <rect key="frame" x="122" y="67" width="77" height="14"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -236,7 +237,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="480"/>
                     <connections>
-                        <outlet property="AvatarImageView" destination="eob-Pq-0le" id="9iz-XL-AVh"/>
+                        <outlet property="AvatarImageView" destination="eob-Pq-0le" id="zYV-ur-tiN"/>
                         <outlet property="actionItemsTableView" destination="dX5-Jj-M61" id="SIw-e4-qbp"/>
                         <outlet property="avatarButton" destination="nGE-Gh-2VM" id="tPl-0O-l0I"/>
                         <outlet property="blurringContainer" destination="fKP-Uj-Ir7" id="40q-wk-3ZO"/>

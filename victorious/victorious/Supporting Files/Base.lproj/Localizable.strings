@@ -18,6 +18,8 @@
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
+"ConfirmButton"         =   "Confirm";
+"Reply"                 =   "Reply";
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
@@ -27,7 +29,6 @@
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
-"Discover"              =   "Discover";
 "Discover"              =   "Discover";
 "Share"                 =   "Share";
 "Settings"              =   "Settings";
@@ -355,7 +356,6 @@
 "Reposted"              =   "Reposted";
 "RepostContentView"     =   " REPOST";
 "RepostedContentView"   =   " REPOSTED";
-"Comments"              =   "COMMENTS";
 "Comment"               =   "Comment";
 
 "repostedFromFormat"      =   "Repost from %@";
@@ -372,7 +372,15 @@
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
-"SupportEmailSubject"  =   "Feedback on";
+"SupportEmailSubject"   =   "Feedback on";
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
+"Suggested People"      = "Suggested People";
+"Trending Tags"         = "Trending Tags";
+"Voters"                = "Voters";
+
+"Device:"               = "Device:";
+"OS Version:"           = "OS Version:";
+"App Version:"          = "App Version:";
+"AreYouSureYouWantToDelete" = "Are you sure you want to delete?";

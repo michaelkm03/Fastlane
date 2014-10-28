@@ -10,14 +10,26 @@
 
 #import "VExperienceEnhancerBar.h"
 
+@protocol VExperienceEnhancerControllerDelegate <NSObject>
+
+- (void)experienceEnhancersDidUpdate;
+
+@end
+
 @class VSequence;
 
 @interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource>
 
-+ (instancetype)experienceEnhancerControllerForSequence:(VSequence *)sequence;
+- (instancetype)initWithSequence:(VSequence *)sequence;
+
+- (void)sendTrackingEvents;
+
+- (void)updateData;
 
 @property (nonatomic, strong, readonly) VSequence *sequence;
 
 @property (nonatomic, weak) VExperienceEnhancerBar *enhancerBar;
+
+@property (nonatomic, weak) id<VExperienceEnhancerControllerDelegate> delegate;
 
 @end

@@ -19,6 +19,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 @property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
+@property (nonatomic, assign) BOOL isUnhighlighting;
 
 @end
 

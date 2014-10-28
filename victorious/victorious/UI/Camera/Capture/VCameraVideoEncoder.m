@@ -18,7 +18,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
 @property (nonatomic, strong) AVAssetWriter *writer;
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
 @property (nonatomic, strong) AVAssetWriterInput *audioInput;
-@property (nonatomic) CMSampleBufferRef firstVideoFrame;
+@property (nonatomic) CMTime firstVideoFrameTime;
 @property (nonatomic) CMTime lastFrameTimeRecorded;
 @property (nonatomic) CMTime frameTimeOffset; ///< the difference between the frame timestamps we're getting from the source, and our output frame timestamps.
 @property (nonatomic, getter = isRecordingPaused) BOOL recordingPaused;
@@ -40,6 +40,7 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         _recording = YES;
         _lastFrameTimeRecorded = kCMTimeInvalid;
         _frameTimeOffset = kCMTimeInvalid;
+        _firstVideoFrameTime = kCMTimeInvalid;
     }
     return self;
 }
@@ -64,14 +65,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
             *error = assetError;
         }
         return nil;
-    }
-}
-
-- (void)dealloc
-{
-    if (_firstVideoFrame)
-    {
-        CFRelease(_firstVideoFrame);
     }
 }
 
@@ -102,20 +95,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         self.recordingPaused = YES;
     }
     _recording = recording;
-}
-
-- (void)setFirstVideoFrame:(CMSampleBufferRef)firstVideoFrame
-{
-    if (_firstVideoFrame)
-    {
-        CFRelease(_firstVideoFrame);
-    }
-    
-    if (firstVideoFrame)
-    {
-        CFRetain(firstVideoFrame);
-    }
-    _firstVideoFrame = firstVideoFrame;
 }
 
 #pragma mark -
@@ -255,12 +234,6 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
         self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioSettings];
         self.audioInput.expectsMediaDataInRealTime = YES;
         [self.writer addInput:self.audioInput];
-        
-        if (self.firstVideoFrame)
-        {
-            [self writeFrame:self.firstVideoFrame isVideo:YES];
-            self.firstVideoFrame = nil;
-        }
     };
     
     if (self.recordingPaused)
@@ -284,30 +257,40 @@ const NSInteger VCameraVideoEncoderErrorCode = 100;
     
     if (self.videoInput && self.audioInput)
     {
-        if (![self writeFrame:adjustedSampleBuffer isVideo:isVideo])
+        if (isVideo || CMTIME_IS_VALID(self.firstVideoFrameTime)) // ensure that video frames are written first
         {
-            [self _setRecording:NO];
-            id<VCameraVideoEncoderDelegate> delegate = self.delegate;
-            if ([delegate respondsToSelector:@selector(videoEncoder:didEncounterError:)])
-            {
-                NSError *error = self.writer.error;
-                if (!error)
+            CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(adjustedSampleBuffer);
+            if (isVideo || CMTIME_COMPARE_INLINE(timestamp, >=, self.firstVideoFrameTime)) // ensure that no audio frames with presentation times prior to the first video frame are written
+            {                                                                              // this prevents the first few frames of video from being black
+                if ([self writeFrame:adjustedSampleBuffer isVideo:isVideo])
                 {
-                    error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain code:VCameraVideoEncoderErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Video frame write failed"}];
+                    if (!CMTIME_IS_VALID(self.firstVideoFrameTime))
+                    {
+                        self.firstVideoFrameTime = timestamp;
+                    }
                 }
-                [delegate videoEncoder:self didEncounterError:error];
+                else
+                {
+                    [self _setRecording:NO];
+                    id<VCameraVideoEncoderDelegate> delegate = self.delegate;
+                    if ([delegate respondsToSelector:@selector(videoEncoder:didEncounterError:)])
+                    {
+                        NSError *error = self.writer.error;
+                        if (!error)
+                        {
+                            error = [NSError errorWithDomain:VCameraVideoEncoderErrorDomain code:VCameraVideoEncoderErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Video frame write failed"}];
+                        }
+                        [delegate videoEncoder:self didEncounterError:error];
+                    }
+                    CFRelease(adjustedSampleBuffer);
+                    return;
+                }
             }
-            CFRelease(adjustedSampleBuffer);
-            return;
         }
-    }
-    else
-    {
-        self.firstVideoFrame = adjustedSampleBuffer;
     }
     CFRelease(adjustedSampleBuffer);
     
-    if (!isVideo)
+    if (isVideo)
     {
         CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         CMTime duration = CMSampleBufferGetDuration(sampleBuffer);

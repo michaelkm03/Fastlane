@@ -12,25 +12,38 @@
 
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
+#import "VVoteType.h"
+#import "VFileCache.h"
+#import "VFileCache+VVoteType.h"
+#import "VVoteType+Fetcher.h"
 
 //Settings
-NSString * const   kVCaptureVideoQuality               =   @"capture";
-NSString * const   kVExportVideoQuality                =   @"remix";
+NSString * const kVCaptureVideoQuality =   @"capture";
+NSString * const kVExportVideoQuality =   @"remix";
 
-NSString * const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
-NSString * const   kVMemeAndQuoteEnabled               =   @"memeAndQuoteEnabled";
+NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
+NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
 NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
 NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
 NSString * const VSettingsTemplateCEnabled = @"template_c_enabled - 2";
+
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
+NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
 
 //URLs
-NSString * const   kVTermsOfServiceURL                 =   @"url.tos";
-NSString * const   kVAppStoreURL                       =   @"url.appstore";
-NSString * const   kVPrivacyUrl                        =   @"url.privacy";
+NSString * const kVTermsOfServiceURL = @"url.tos";
+NSString * const kVAppStoreURL = @"url.appstore";
+NSString * const kVPrivacyUrl = @"url.privacy";
+
+@interface VSettingManager()
+
+@property (nonatomic, strong) VFileCache *fileCache;
+@property (nonatomic, readwrite) NSArray *voteTypes;
+
+@end
 
 @implementation VSettingManager
 
@@ -54,9 +67,38 @@ NSString * const   kVPrivacyUrl                        =   @"url.privacy";
     {
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
+        
+        self.fileCache = [[VFileCache alloc] init];
+        
+        [self clearVoteTypes];
     }
     
     return self;
+}
+
+- (void)clearVoteTypes
+{
+    self.voteTypes = @[];
+}
+
+- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
+{
+    // Error checking
+    if ( voteTypes == nil || voteTypes.count == 0 )
+    {
+        return;
+    }
+    
+    // Check that only objects of type VVoteType are accepted
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
+                              {
+                                  return [voteType isMemberOfClass:[VVoteType class]] &&
+                                        voteType.containsRequiredData &&
+                                        voteType.hasValidTrackingData;
+                              }];
+    self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
+    
+    [self.fileCache cacheImagesForVoteTypes:voteTypes];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

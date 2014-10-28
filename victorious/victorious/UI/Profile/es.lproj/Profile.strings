@@ -1,4 +1,3 @@
-
 /* Class = "IBUINavigationItem"; title = "Edit Profile"; ObjectID = "AIv-0V-2Ca"; */
 "AIv-0V-2Ca.title" = "Editar perfil";
 
@@ -9,16 +8,17 @@
 "SPx-xO-esM.title" = "Perfil";
 
 /* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "Trt-Yx-Qae"; */
-"Trt-Yx-Qae.text" = "Dinos algo acerca de ti...";
+"Trt-Yx-Qae.text" = "Nos dicen algo acerca de ti...";
 
 /* Class = "IBUITextField"; placeholder = "Location"; ObjectID = "bcg-p6-c76"; */
 "bcg-p6-c76.placeholder" = "Ubicación";
 
 /* Class = "IBUINavigationItem"; title = "Following"; ObjectID = "lH8-cc-I2G"; */
-"lH8-cc-I2G.title" = "Siguiendo a";
+"lH8-cc-I2G.title" = "Siguiendo";
 
 /* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "lvT-v5-J29"; */
 "lvT-v5-J29.placeholder" = "Nombre";
 
 /* Class = "IBUILabel"; text = "Alias"; ObjectID = "uO9-eE-EdR"; */
 "uO9-eE-EdR.text" = "Alias";
+

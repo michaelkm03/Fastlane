@@ -20,7 +20,6 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 
-#import "VContentViewController.h"
 #import "VNewContentViewController.h"
 
 //Views

@@ -1,10 +1,10 @@
-/*
- Localizable.strings
- victorious
- 
- Created by Gary Philipp on 12/23/13.
- Copyright (c) 2013 Victorious Inc. All rights reserved.
- */
+/* 
+  Localizable.strings
+  victorious
+
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Victorious Inc. All rights reserved.
+*/
 
 
 
@@ -18,6 +18,8 @@
 "OKButton" = "OK";
 "CancelButton" = "Cancelar";
 "DeleteButton" = "Borrar";
+"ConfirmButton" = "Confirmar";
+"Reply" = "Responder";
 "ResetButton" = "Restablecer";
 "YesButton" = "Sí";
 "NoButton" = "No";
@@ -26,6 +28,8 @@
 "Publish" = "Publicar";
 "Quote" = "Cita";
 "Meme" = "Meme";
+"Share" = "Compartir";
+"Discover" = "Descubrir";
 
 "TimeSeparator" = ":";
 "InvalidTimePlaceholder" = "-:--";
@@ -71,6 +75,8 @@
 
 "NoCommentsTitle" = "¡SE EL PRIMERO EN COMENTAR!";
 "NoCommentsMessage" = "¡Publica comentarios de texto, fotos o videos y ve lo que dicen otros!";
+"LeaveACommentAt" = "Deja un comentario en ";
+"LaveAComment" = "Deja un comentario";
 
 "NoFollowersTitle" = "¡VAYA, VAYA! NADIE TE SIGUE TODAVÍA";
 "NoFollowersMessage" = "Crea tu propio seguimiento compartiendo con la comunidad a través de comentarios, re-mezclando o publicando contenido nuevo.";
@@ -83,6 +89,11 @@
 
 "ProfileNotFollowingTitle" = "¡OH, OH! ESTA PERSONA NO SIGUE A NADIE AÚN";
 "ProfileNotFollowingMessage" = "Crea una comunidad siguiendo a otros usuarios y animándolos a que te sigan.";
+
+"SuggestedFollowersNone" = "Sin seguidores";
+"SuggestedFollowersSing" = "%@ Seguidor";
+"SuggestedFollowersPlur" = "%@ Seguidores";
+"SuggestedFollowersK" = "%@K Seguidores";
 
 "NoRepostersTitle" = "¡SÉ EL 1° EN REPUBLICAR!";
 "NoRepostersMessage" = "¡Comparte este contenido con todos tus seguidores!";
@@ -245,12 +256,21 @@
 
 "editProfileButton" = "Editar perfil";
 "followers" = "Seguidores";
-"following" = "Siguiendo a";
+"following" = "Siguiendo";
 "follow" = "Seguir";
 
 "ResetPassword" = "Restablecer contraseña";
 "ResetPasswordPrompt" = "Por favor ingresa tu dirección de email";
 "ResetPasswordPlaceholder" = "Dirección de email";
+
+"ResetPasswordErrorExpiredTitle" = "Venció el código para restablecer.";
+"ResetPasswordErrorExpiredMessage" = "Venció el código para restablecer.";
+
+"ResetPasswordErrorIncorrectTitle" = "Contraseña actual inválida.";
+"ResetPasswordErrorIncorrectMessage" = "Por favor vuelve a ingresar tu contraseña actual.";
+
+"ResetPasswordErrorFailTitle" = "Error al restablecer la contraseña";
+"ResetPasswordErrorFailMessage" = "No pudimos restablecer tu contraseña en este momento. Por favor vuelve a intentarlo más tarde.";
 
 "EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña";
 "EnterCodeTitle" = "INGRESAR CÓDIGO";
@@ -261,8 +281,6 @@
 "CannotVerify" = "No se puede verificar la cuenta";
 "IncorrectCode" = "El código que se usó para verificar la cuenta no es correcto.";
 
-"IncorrectOldPassword" = "La contraseña actual no es correcta.";
-
 "Search for an image" = "Buscar una imagen";
 "Pull up for more..." = "Jalar más...";
 "No results" = "Sin resultados";
@@ -270,30 +288,31 @@
 "InviteYourFriends" = "¡Invita a tus amigos!";
 "InviteUsingEmail" = "Invita usando un email";
 "InviteUsingSMS" = "Invita usando un SMS";
-"InviteFriendsSubject" = "Checa esta aplicación de";
-"InviteFriendsBody" = "Descargué una nueva aplicación de %@. Es una comunidad para que gente como nosotros interactúen. Descárgala ahora en:";
+"InviteFriendsSubject" = "Checa la nueva aplicación de %@";
+"InviteFriendsBody" = "¡Oye!\n\nDescargué una nueva aplicación de %@. Es una comunidad para que gente como nosotros interactúe.";
 
-"FindContacts" = "Busca e invita a los amigos de tus contactos";
+"FindContacts" = "Busca a los amigos de tus contactos";
 "Access Your Contacts" = "Ten acceso a tus Contactos";
-"ContactsSafety" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.";
+"ContactsSafety" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar tu información de contacto a nuestros servidores usando una conexión segura.";
 
 "AccessMicrophoneDenied" = "Para grabar un video desde tu dispositivo, por favor autoriza el acceso en Configuración -> Privacidad -> Micrófono";
 "AccessMicrophoneRestricted" = "No se pudo tener acceso a tu micrófono debido a restricciones en tu dispositivo.";
 "AccessCameraDenied" = "Para grabar un video desde tu dispositivo, por favor autoriza el acceso en Configuración -> Privacidad";
 "AccessCameraRestricted" = "No se pudo tener acceso a tu cámara debido a restricciones en tu dispositivo.";
+"UnableSelectVideo" = "No es posible seleccionar el video.";
 
 "AccessContactsDenied" = "Para buscar amigos usando tu directorio, por favor autoriza el acceso en Configuración -> Privacidad -> Contactos";
 "AccessContactsRestricted" = "No se puede acceder a tus contactos debido a restricciones en tu dispositivo.";
 
-"FindFBFriends" = "Añade a tus amigos de Facebook conectando tu cuenta";
+"FindFBFriends" = "Encuentra a tus amigos de Facebook";
 "Connect to Facebook" = "Conéctate a Facebook";
 "FBSafety" = "No guardamos tus contraseñas y nunca publicaremos nada sin tu permiso.";
 
-"FindTwitterFriends" = "Añade a tus amigos de Twitter conectando tu cuenta";
+"FindTwitterFriends" = "Encuentra a tus amigos de Twitter";
 "Connect to Twitter" = "Conéctate a Twitter";
 "TwitterSafety" = "No guardamos tus contraseñas y nunca publicaremos nada sin tu permiso.";
 
-"FindInstagramFriends" = "Añade a tus amigos de Instagram";
+"FindInstagramFriends" = "Encuentra a tus amigos de Instagram";
 "Connect to Instagram" = "Conéctate a Instagram";
 
 "Logout" = "Cerrar sesión";
@@ -322,13 +341,15 @@
 "Report/Flag" = "Reporte/Bandera";
 "CreatedBy" = "CREADO POR";
 "remixes" = "re-mezclas";
+"Remix" = "Remix";
 "reposts" = "re-publicaciones";
 "REPOSTS" = "Republicados";
 "REMIXES" = "Remixes";
 "Repost" = "Republicar";
+"Reposted" = "Republicado";
 "RepostContentView" = " REPUBLICAR";
 "RepostedContentView" = " REPUBLICADO";
-"comments" = "comentarios";
+"Comment" = "Comentario";
 
 "repostedFromFormat" = "Republicado de %@";
 "remixedFromFormat" = "Remix de %@";
@@ -346,6 +367,22 @@
 
 "SupportEmailSubject" = "Retroalimentación de";
 
+"DiscoverSuggestedPeopleError" = "Lo sentimos, no pudimos cargar a las personas sugeridas.";
+"DiscoverTrendingTagsError" = "Lo sentimos, no pudimos cargar las etiquetas de tendencia.";
+"Suggested People" = "Personas sugeridas";
+"Trending Tags" = "Etiquetas de tendencia";
+
+"Device:" = "Dispositivo:";
+"OS Version:" = "Versión de SO:";
+"App Version:" = "Versión de Aplicación:";
+"AreYouSureYouWantToDelete" = "¿Estás seguro de que quieres borrar?";
+
 "CheckOutContent" = "!Checa esta asombrosa publicación!";
 "FacebookDeniedTitle" = "No se puede acceder a tu cuenta de Facebook";
 "FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
+"IncorrectOldPassword" = "La contraseña actual no es correcta.";
+"comments" = "comentarios";
+
+"Suggested People" = "Personas sugeridas";
+"Trending Tags" = "Etiquetas de tendencia";
+"Voters" = "Votantes";

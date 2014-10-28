@@ -43,6 +43,15 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 
+#import <Crashlytics/Crashlytics.h>
+
+
+/**
+ This will log some extra data to Crashlytics in an attempt to debug a sporratic
+ crash that occurs in textView:shouldChangeTextInRange:replacementText:
+ */
+#define LOG_TEXT_INPUT_CRASH_DATA 1
+
 @import AssetsLibrary;
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
@@ -524,6 +533,11 @@ static const CGFloat kShareMargin = 34.0f;
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
+    
+    if ( self.navigationController == nil || self.navigationController.viewControllers.count == 1 )
+    {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Actions
@@ -540,10 +554,8 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                                    action:@"Camera Publish Cancelled"
                                                                                                     label:nil
                                                                                                     value:nil];
-                                      if (self.completion)
-                                      {
-                                          self.completion(YES);
-                                      }
+                                      [self.view endEditing:YES];
+                                      [self didComplete];
                                   }
                                            otherButtonTitlesAndBlocks:nil];
     [actionSheet showInView:self.view];
@@ -603,20 +615,34 @@ static const CGFloat kShareMargin = 34.0f;
                                                                                                        action:@"Camera Publish Back"
                                                                                                         label:nil
                                                                                                         value:nil];
-                                          if (self.completion)
-                                          {
-                                              self.completion(NO);
-                                          }
+                                          [self.view endEditing:YES];
+                                          [self didConfirmGoBack];
                                       }
                                                otherButtonTitlesAndBlocks:nil];
         [actionSheet showInView:self.view];
     }
     else
     {
-        if (self.completion)
+        [self didConfirmGoBack];
+    }
+}
+
+- (void)didConfirmGoBack
+{
+    if ( self.navigationController != nil )
+    {
+        if ( self.navigationController.viewControllers.count == 1 )
         {
-            self.completion(NO);
+            [self didComplete];
         }
+        else if ( self.navigationController.viewControllers.count > 1 )
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    else
+    {
+        [self didComplete];
     }
 }
 
@@ -818,9 +844,22 @@ static const CGFloat kShareMargin = 34.0f;
         cleanup();
     }
     
+    [self didComplete];
+}
+
+- (void)didComplete
+{
     if (self.completion)
     {
         self.completion(YES);
+    }
+    else if ( self.navigationController == nil )
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -840,8 +879,40 @@ static const CGFloat kShareMargin = 34.0f;
     [self updateUI];
 }
 
+- (void)__crashLogTextView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *message = [NSString stringWithFormat:@"\n\n>>>> CRASH IMMIMNENT <<<<\ntextView:(text=%@) shouldChangeTextInRange:([%lu,%lu]) replacementText:(%@)\n",
+                         textView.text == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", textView.text],
+                         (unsigned long)range.location,
+                         (unsigned long)range.length,
+                         text == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", text]];
+    
+    if ( range.location > self.userEnteredText.length )
+    {
+        CLS_LOG( @"%@range.location(%lu) >= self.userEnteredText(%@).length(%lu)\n",
+                message,
+                (unsigned long)range.location,
+                self.userEnteredText == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", self.userEnteredText],
+                (unsigned long)self.userEnteredText.length );
+    }
+    
+    else if ( range.location + range.length > self.userEnteredText.length )
+    {
+        CLS_LOG( @"%@range.location(%lu) + range.length(%lu) >= self.userEnteredText(%@).length(%lu)\n\n",
+                message,
+                (unsigned long)range.location,
+                (unsigned long)range.length,
+                self.userEnteredText == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", self.userEnteredText],
+                (unsigned long)self.userEnteredText.length );
+    }
+}
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+#if LOG_TEXT_INPUT_CRASH_DATA
+    [self __crashLogTextView:textView shouldChangeTextInRange:range replacementText:text];
+#endif
+    
     NSString *newString = [self.userEnteredText stringByReplacingCharactersInRange:range
                                                                         withString:text];
     
