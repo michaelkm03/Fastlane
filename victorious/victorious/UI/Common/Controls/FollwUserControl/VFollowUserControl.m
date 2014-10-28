@@ -10,7 +10,7 @@
 
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
-static const CGFloat kHighlightTransformPerspective = 1.0 / -5.0f;
+static const CGFloat kHighlightTransformPerspective = 1.0 / -50.0f;
 
 @interface VFollowUserControl ()
 
@@ -162,7 +162,7 @@ static const CGFloat kHighlightTransformPerspective = 1.0 / -5.0f;
 
 - (CATransform3D)highlightTransform
 {
-    CATransform3D highLightTranform = CATransform3DIdentity;// CATransform3DMakeRotation(kHighlightedTiltRotationAngle, 1, 0, 0);
+    CATransform3D highLightTranform = CATransform3DIdentity;
     
     highLightTranform.m34 = kHighlightTransformPerspective;
     highLightTranform = CATransform3DRotate(highLightTranform, kHighlightedTiltRotationAngle, 1, 0, 0);
