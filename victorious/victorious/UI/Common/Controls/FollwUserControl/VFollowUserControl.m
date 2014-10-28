@@ -8,6 +8,10 @@
 
 #import "VFollowUserControl.h"
 
+static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
+static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
+static const CGFloat kHighlightTransformPerspective = 1.0 / -5.0f;
+
 @interface VFollowUserControl ()
 
 @property (nonatomic, weak) UIImageView *imageView;
@@ -48,8 +52,13 @@
     imageView.frame = self.bounds;
     imageView.contentMode = self.contentMode;
     
+#if TARGET_INTERFACE_BUILDER
     _followImage = [UIImage imageNamed:@"folllowIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
     _followedImage = [UIImage imageNamed:@"folllowedIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+#else
+    _followImage = [UIImage imageNamed:@"folllowIcon"];
+    _followedImage = [UIImage imageNamed:@"folllowedIcon"];
+#endif
     
     imageView.image = self.following ? _followedImage : _followImage;
     [self addSubview:imageView];
@@ -119,7 +128,7 @@
     }
     
     [UIView transitionWithView:self.imageView
-                      duration:0.3
+                      duration:kHighlightAnimationDuration
                        options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
                     animations:animations
                     completion:nil];
@@ -134,6 +143,7 @@
     [self performHighlightAnimations:^
      {
          self.imageView.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
+         
      }];
 }
 
@@ -141,7 +151,7 @@
 
 - (void)performHighlightAnimations:(void (^)(void))animations
 {
-    [UIView animateWithDuration:0.2f
+    [UIView animateWithDuration:kHighlightAnimationDuration
                           delay:0.0f
          usingSpringWithDamping:1.0f
           initialSpringVelocity:0.0f
@@ -152,7 +162,12 @@
 
 - (CATransform3D)highlightTransform
 {
-    return CATransform3DMakeRotation(M_PI/4, 1, 0, 0);
+    CATransform3D highLightTranform = CATransform3DIdentity;// CATransform3DMakeRotation(kHighlightedTiltRotationAngle, 1, 0, 0);
+    
+    highLightTranform.m34 = kHighlightTransformPerspective;
+    highLightTranform = CATransform3DRotate(highLightTranform, kHighlightedTiltRotationAngle, 1, 0, 0);
+    
+    return highLightTranform;
 }
                                            
 #pragma mark - Interface Builder

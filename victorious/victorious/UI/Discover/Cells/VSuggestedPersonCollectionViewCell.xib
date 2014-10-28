@@ -77,7 +77,7 @@
                 <outlet property="profileImageView" destination="rPy-IE-Url" id="4T4-vv-Pjc"/>
                 <outlet property="usernameLabel" destination="LTX-Yq-JGA" id="T4P-61-unn"/>
             </connections>
-            <point key="canvasLocation" x="245.5" y="-60.5"/>
+            <point key="canvasLocation" x="248.5" y="137.5"/>
         </collectionViewCell>
     </objects>
     <resources>
