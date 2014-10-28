@@ -49,7 +49,7 @@
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -76,6 +76,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     homeStream.shouldDisplayMarquee = YES;
     [homeStream addCreateSequenceButton];
     
+    [homeStream addUploadProgressView];
+    homeStream.uploadProgressViewController.delegate = homeStream;
     
     return homeStream;
 }
@@ -437,6 +439,20 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     return YES;
+}
+
+#pragma mark - VUploadProgressViewControllerDelegate methods
+
+- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+{
+    if (uploadCount)
+    {
+        [self showUploads];
+    }
+    else
+    {
+        [self hideUploads];
+    }
 }
 
 #pragma mark - VSequenceActionsDelegate

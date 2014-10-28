@@ -28,7 +28,7 @@
 #import "VAuthorizationViewControllerFactory.h"
 
 
-@interface VMultipleStreamViewController () <VSequenceActionsDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate>
+@interface VMultipleStreamViewController () <VSequenceActionsDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate, VUploadProgressViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *allStreams;
 @property (nonatomic, strong) VStream *defaultStream;
@@ -54,6 +54,8 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
                                                                           title:NSLocalizedString(@"Home", nil)];
     streamPager.shouldDisplayMarquee = YES;
     [streamPager addCreateSequenceButton];
+    [streamPager addUploadProgressView];
+    streamPager.uploadProgressViewController.delegate = streamPager;
     
     return streamPager;
 }
@@ -272,6 +274,21 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     [self.scrollView setContentOffset:CGPointMake(CGRectGetMinX(streamCollection.view.frame), self.scrollView.contentOffset.y) animated:YES];
     
     return shouldChange;
+}
+
+
+#pragma mark - VUploadProgressViewControllerDelegate methods
+
+- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+{
+    if (uploadCount)
+    {
+        [self showUploads];
+    }
+    else
+    {
+        [self hideUploads];
+    }
 }
 
 #pragma mark - UIScrollViewdelegate

@@ -22,16 +22,47 @@
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
+static const char kUploadProgressVCKey;
+static const char kUploadProgressYConstraintKey;
 
 @interface UIViewController (VNavMenuPrivate)
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
 
 @end
 
 @implementation UIViewController (VNavMenu)
 
 #pragma mark - Header
+
+- (void)setUploadProgressViewController:(VUploadProgressViewController *)uploadProgressViewController
+{
+    [self.uploadProgressViewController willMoveToParentViewController:nil];
+    [self.uploadProgressViewController.view removeFromSuperview];
+    [self.uploadProgressViewController removeFromParentViewController];
+    [self addChildViewController:uploadProgressViewController];
+    [self.view addSubview:uploadProgressViewController.view];
+    [uploadProgressViewController didMoveToParentViewController:self];
+    objc_setAssociatedObject(self, &kUploadProgressVCKey, uploadProgressViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VUploadProgressViewController *)uploadProgressViewController
+{
+    VUploadProgressViewController *uploadProgressViewController = objc_getAssociatedObject(self, &kUploadProgressVCKey);
+    return uploadProgressViewController;
+}
+
+- (void)setUploadProgressViewYconstraint:(NSLayoutConstraint *)uploadProgressViewYconstraint
+{
+    objc_setAssociatedObject(self, &kUploadProgressYConstraintKey, uploadProgressViewYconstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSLayoutConstraint *)uploadProgressViewYconstraint
+{
+    NSLayoutConstraint *uploadProgressViewYconstraint = objc_getAssociatedObject(self, &kUploadProgressYConstraintKey);
+    return uploadProgressViewYconstraint;
+}
 
 - (void)setNavHeaderView:(VNavigationHeaderView *)navHeaderView
 {
@@ -126,6 +157,58 @@ static const char kNavHeaderYConstraintKey;
         [self.sideMenuViewController presentMenuViewController];
     }
 }
+
+
+#pragma mark - Upload Progress View
+
+- (void)addUploadProgressView
+{
+    self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    [self addChildViewController:self.uploadProgressViewController];
+    self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view insertSubview:self.uploadProgressViewController.view belowSubview:self.navHeaderView];
+    [self.uploadProgressViewController didMoveToParentViewController:self];
+    
+    UIView *upvc = self.uploadProgressViewController.view;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0f
+                                                           constant:VUploadProgressViewControllerIdealHeight]];
+    
+    self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
+                                                                      attribute:NSLayoutAttributeTop
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.navHeaderView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1.0f
+                                                                       constant:-VUploadProgressViewControllerIdealHeight];
+    [self.view addConstraint:self.uploadProgressViewYconstraint];
+    
+    if (self.uploadProgressViewController.numberOfUploads)
+    {
+        [self showUploads];
+    }
+}
+
+- (void)showUploads
+{
+    self.uploadProgressViewYconstraint.constant = 0;
+}
+
+- (BOOL)isUploadProgressVisible
+{
+    return self.uploadProgressViewController != nil && self.uploadProgressViewYconstraint.constant == 0;
+}
+
+- (void)hideUploads
+{
+    self.uploadProgressViewYconstraint.constant = -VUploadProgressViewControllerIdealHeight;
+}
+
 
 #pragma mark - Create Sequence action
 
