@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,9 +11,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noMessageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ht-CEA">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noMessageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ht-CEA">
                     <rect key="frame" x="123" y="150" width="74" height="53"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="74" id="CQy-ok-3c5"/>
                         <constraint firstAttribute="height" constant="53" id="Cp4-Ap-E1l"/>
@@ -20,7 +20,6 @@
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO MESSAGES YET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-YK-T9j">
                     <rect key="frame" x="30" y="243" width="260" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="260" id="u9b-iG-JH2"/>
                     </constraints>
@@ -30,7 +29,6 @@
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="1Uw-A9-zfF">
                     <rect key="frame" x="50" y="276" width="220" height="102"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="220" id="z4w-NF-c5z"/>
                     </constraints>
@@ -48,6 +46,8 @@
                 <constraint firstItem="hx0-YK-T9j" firstAttribute="centerY" secondItem="IRu-tO-WgG" secondAttribute="centerY" id="nhT-fX-gj8"/>
                 <constraint firstItem="hx0-YK-T9j" firstAttribute="top" secondItem="Vl7-Ht-CEA" secondAttribute="bottom" constant="40" id="r7W-mP-xrF"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="iconImageView" destination="Vl7-Ht-CEA" id="UZY-2b-wHN"/>
                 <outlet property="messageLabel" destination="1Uw-A9-zfF" id="qZx-KZ-9np"/>
@@ -58,4 +58,9 @@
     <resources>
         <image name="noMessageIcon" width="74" height="53"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
