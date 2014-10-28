@@ -365,6 +365,7 @@
 		BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */; };
+		BE49ABFC19FF0E24006B4E48 /* VContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49ABFB19FF0E24006B4E48 /* VContainerViewController.m */; };
 		BE5C736A187E36E800A3340D /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7369187E36E800A3340D /* VRule.m */; };
 		BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7378187E36E800A3340D /* VNodeAction.m */; };
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
@@ -1288,6 +1289,8 @@
 		BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+UnreadMessageCount.h"; sourceTree = "<group>"; };
 		BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VConversation+UnreadMessageCount.m"; sourceTree = "<group>"; };
 		BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSinceTests.m"; sourceTree = "<group>"; };
+		BE49ABFA19FF0E24006B4E48 /* VContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContainerViewController.h; sourceTree = "<group>"; };
+		BE49ABFB19FF0E24006B4E48 /* VContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContainerViewController.m; sourceTree = "<group>"; };
 		BE5C7368187E36E800A3340D /* VRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRule.h; sourceTree = "<group>"; };
 		BE5C7369187E36E800A3340D /* VRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRule.m; sourceTree = "<group>"; };
 		BE5C7377187E36E800A3340D /* VNodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNodeAction.h; sourceTree = "<group>"; };
@@ -1916,6 +1919,8 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D35919B46B5E00FA363C /* VTableContainerViewController.h */,
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
+				BE49ABFA19FF0E24006B4E48 /* VContainerViewController.h */,
+				BE49ABFB19FF0E24006B4E48 /* VContainerViewController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4145,6 +4150,7 @@
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				BE6AA55519F7201A007CC36E /* VSequenceActionController.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,
+				BE49ABFC19FF0E24006B4E48 /* VContainerViewController.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				0314D45C19B46B5E00FA363C /* VPhotoFilter.m in Sources */,

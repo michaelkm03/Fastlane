@@ -12,6 +12,8 @@
 
 @interface VUserProfileViewController : VStreamCollectionViewController
 
+@property   (nonatomic, readonly) VUser                  *profile;
+
 + (instancetype)userProfileWithUser:(VUser *)aUser;
 
 @end

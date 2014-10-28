@@ -32,6 +32,7 @@
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
+#import "VContainerViewController.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 
@@ -335,16 +336,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
         VProfileEditViewController *controller = (VProfileEditViewController *)segue.destinationViewController;
-        controller.profile = self.profile;
-    }
-    else if ([segue.identifier isEqualToString:@"toFollowers"])
-    {
-        VFollowerTableViewController   *controller = (VFollowerTableViewController *)segue.destinationViewController;
-        controller.profile = self.profile;
-    }
-    else if ([segue.identifier isEqualToString:@"toFollowing"])
-    {
-        VFollowingTableViewController   *controller = (VFollowingTableViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
 }

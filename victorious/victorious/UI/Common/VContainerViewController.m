@@ -8,6 +8,27 @@
 
 #import "VContainerViewController.h"
 
+#import "UIViewController+VNavMenu.h"
+
+@interface VContainerViewController() <VNavigationHeaderDelegate>
+
+@end
+
 @implementation VContainerViewController
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.containedViewController = [self.childViewControllers lastObject];
+    
+    [self addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+}
 
 @end

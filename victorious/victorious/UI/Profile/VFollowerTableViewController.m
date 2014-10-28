@@ -17,6 +17,7 @@
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
+#import "UIViewController+VNavMenu.h"
 
 @interface VFollowerTableViewController ()
 
@@ -38,14 +39,23 @@
                                                                             action:@selector(goBack:)];
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
-
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    if (!self.profile)
+    {
+        VUserProfileViewController *userProfile = self.navigationController.viewControllers.firstObject;
+        self.profile = userProfile.profile;
+    }
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
     
     [self refreshFollowersList];
 }
@@ -275,9 +285,12 @@
         }
     };
 
-    [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
-                                               successBlock:followerSuccess
-                                                  failBlock:followerFail];
+    if (self.profile)
+    {
+        [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
+                                                   successBlock:followerSuccess
+                                                      failBlock:followerFail];
+    }
 }
 
 - (void)loadMoreFollowers
