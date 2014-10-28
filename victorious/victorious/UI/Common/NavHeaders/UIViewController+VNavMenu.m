@@ -158,7 +158,6 @@ static const char kUploadProgressYConstraintKey;
     }
 }
 
-
 #pragma mark - Upload Progress View
 
 - (void)addUploadProgressView
@@ -208,7 +207,6 @@ static const char kUploadProgressYConstraintKey;
 {
     self.uploadProgressViewYconstraint.constant = -VUploadProgressViewControllerIdealHeight;
 }
-
 
 #pragma mark - Create Sequence action
 

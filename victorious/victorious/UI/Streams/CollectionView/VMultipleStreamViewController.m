@@ -276,7 +276,6 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     return shouldChange;
 }
 
-
 #pragma mark - VUploadProgressViewControllerDelegate methods
 
 - (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
