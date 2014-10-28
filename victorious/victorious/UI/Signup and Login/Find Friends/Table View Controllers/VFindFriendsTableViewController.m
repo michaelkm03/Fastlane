@@ -293,9 +293,6 @@
             VUser *user = cell.profile;
             [mainUser addFollowingObject:user];
             [moc saveToPersistentStore:nil];
-
-            // Flip the icon
-            [cell flipFollowIconAction:nil];
         }
     };
     [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
@@ -338,7 +335,7 @@
             VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
             if (cell.profile == user)
             {
-                [cell flipFollowIconAction:nil];
+                [cell updateFollowStatus];
                 return;
             }
         }
@@ -354,7 +351,7 @@
                 VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.profile == user)
                 {
-                    [cell flipFollowIconAction:nil];
+                    [cell updateFollowStatus];
                     return;
                 }
             }
@@ -388,7 +385,7 @@
             VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
             if (cell.profile == user)
             {
-                [cell flipFollowIconAction:nil];
+                [cell updateFollowStatus];
                 return;
             }
         }
@@ -411,7 +408,7 @@
                 VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.profile == user)
                 {
-                    [cell flipFollowIconAction:nil];
+                    [cell updateFollowStatus];
                     return;
                 }
             }
@@ -520,7 +517,6 @@
     NSInteger section = indexPath.section;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile;
-    BOOL haveRelationship = NO;
 
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
     if (section == 0)
@@ -532,10 +528,7 @@
         profile = self.usersFollowing[indexPath.row];
     }
     
-    haveRelationship = [mainUser.following containsObject:profile];
-    
     cell.profile = profile;
-    cell.haveRelationship = haveRelationship;
     
     // Tell the button what to do when it's tapped
     cell.followAction = ^(void)

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -48,33 +49,38 @@
                             <constraint firstItem="G5K-7H-rF2" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="r3t-ag-0t8"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCb-d9-tuC" userLabel="Un/Follow Icon">
-                        <rect key="frame" x="261" y="11" width="42" height="27"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2u-S5-LXJ" customClass="VFollowUserControl">
+                        <rect key="frame" x="253" y="11" width="42" height="27"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="42" id="BfH-wQ-w9T"/>
-                            <constraint firstAttribute="height" constant="27" id="QZB-ad-FaX"/>
+                            <constraint firstAttribute="width" constant="42" id="4Ea-1i-tRY"/>
+                            <constraint firstAttribute="height" constant="27" id="YM4-0C-zHI"/>
                         </constraints>
-                    </imageView>
+                        <connections>
+                            <action selector="followUnfollowUser:" destination="afQ-rA-05v" eventType="touchUpInside" id="4mw-in-d7e"/>
+                        </connections>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="centerY" secondItem="DCb-d9-tuC" secondAttribute="centerY" constant="0.5" id="BH0-8t-dJc"/>
                     <constraint firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" constant="-0.5" id="Ken-zi-p3y"/>
+                    <constraint firstItem="I2u-S5-LXJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9g-eu-gf2" secondAttribute="trailing" constant="10" id="LWq-2T-Pd0"/>
+                    <constraint firstAttribute="centerY" secondItem="I2u-S5-LXJ" secondAttribute="centerY" constant="0.5" id="ObB-HG-S5s"/>
                     <constraint firstItem="r9g-eu-gf2" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="65" id="YoW-Fp-ANB"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="I2u-S5-LXJ" secondAttribute="trailing" constant="17" id="ZYQ-Va-xI5"/>
                     <constraint firstAttribute="centerY" secondItem="r9g-eu-gf2" secondAttribute="centerY" id="agg-tJ-5Zv"/>
                     <constraint firstItem="1CM-za-AlC" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="20" id="gcv-0R-Yei"/>
-                    <constraint firstAttribute="trailing" secondItem="DCb-d9-tuC" secondAttribute="trailing" constant="17" id="if8-Dz-nEm"/>
-                    <constraint firstItem="DCb-d9-tuC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9g-eu-gf2" secondAttribute="trailing" constant="10" id="z3y-aq-JY3"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="followIconImageView" destination="DCb-d9-tuC" id="NSq-us-AsJ"/>
+                <outlet property="followUserControl" destination="I2u-S5-LXJ" id="yCS-yK-nXs"/>
                 <outlet property="labelsSuperview" destination="r9g-eu-gf2" id="X5e-lx-RkJ"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
                 <outlet property="profileLocation" destination="G5K-7H-rF2" id="upt-tl-i6O"/>
                 <outlet property="profileName" destination="5fj-5f-CB3" id="W6i-4n-DXK"/>
                 <outlet property="userInfoWidthConstraint" destination="YoW-Fp-ANB" id="58T-in-VLC"/>
             </connections>
+            <point key="canvasLocation" x="-92" y="13.5"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
