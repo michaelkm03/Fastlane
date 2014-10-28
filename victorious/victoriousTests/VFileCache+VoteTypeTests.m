@@ -32,7 +32,6 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 @property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) VVoteType *voteType;
-@property (nonatomic, strong) LSNocilla *nocilla;
 
 @end
 
@@ -42,15 +41,15 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 {
     [super setUp];
     
-    self.nocilla = [LSNocilla sharedInstance];
-    [self.nocilla start];
-    [self.nocilla clearStubs];
+    [[LSNocilla sharedInstance] stop];
+    [[LSNocilla sharedInstance] start];
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCache alloc] init];
     
     NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"jpg"];
     NSData *data = [NSData dataWithContentsOfURL:previewImageFileURL];
+    
     stubRequest( @"GET", kTestImageUrl ).andReturnRawResponse( data );
     
     self.voteTypes = [VDummyModels createVoteTypes:10];
@@ -75,8 +74,7 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 {
     [super tearDown];
     
-    [self.nocilla clearStubs];
-    [self.nocilla stop];
+    [[LSNocilla sharedInstance] stop];
     
     self.voteTypes = nil;
     self.fileCache = nil;

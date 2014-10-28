@@ -237,7 +237,14 @@ static const BOOL kLogTrackingEvents = NO;
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
-        replacementValue = [NSString stringWithFormat:@"%.2f@", ((NSNumber *)value).floatValue];
+        if ( CFNumberIsFloatType( (CFNumberRef)value ) )
+        {
+            replacementValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
+        }
+        else
+        {
+            replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
+        }
     }
     else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
     {
