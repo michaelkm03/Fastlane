@@ -10,7 +10,7 @@
 
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
-static const CGFloat kHighlightTransformPerspective = 1.0 / -50.0f;
+static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 
 @interface VFollowUserControl ()
 
@@ -143,7 +143,7 @@ static const CGFloat kHighlightTransformPerspective = 1.0 / -50.0f;
     [self performHighlightAnimations:^
      {
          self.imageView.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
-         
+         self.imageView.layer.shadowOpacity = 0.01f;
      }];
 }
 
