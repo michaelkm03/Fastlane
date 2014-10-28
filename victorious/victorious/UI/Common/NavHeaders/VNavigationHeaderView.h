@@ -78,4 +78,12 @@
                  withAction:(SEL)action
                    onTarget:(id)target;
 
+/**
+ *  Sets the title for the right button.  If the title is nil, it hides the button.  If its not nil, it unhides the button.
+ *
+ */
+- (void)setRightButtonTitle:(NSString *)title
+                 withAction:(SEL)action
+                   onTarget:(id)target;
+
 @end

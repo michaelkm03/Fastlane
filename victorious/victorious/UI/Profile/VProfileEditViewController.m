@@ -15,6 +15,9 @@
 #import "VObjectManager+Login.h"
 #import "VThemeManager.h"
 
+#import "VUserProfileViewController.h"
+#import "UIViewController+VNavMenu.h"
+
 @interface VProfileEditViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
@@ -27,12 +30,6 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.backBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBack:)];
-
     [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
     self.nameLabel.text = self.profile.name;
     
@@ -43,7 +40,20 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    if (!self.profile)
+    {
+        VUserProfileViewController *userProfile = self.navigationController.viewControllers.firstObject;
+        self.profile = userProfile.profile;
+    }
+    
+    [self.parentViewController.navHeaderView setRightButtonTitle:NSLocalizedString(@"Save", nil)
+                                                      withAction:@selector(done:) onTarget:self];
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
+    
+//    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated

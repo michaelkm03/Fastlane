@@ -331,15 +331,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self performSegueWithIdentifier:@"toFollowing" sender:self];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toEditProfile"])
-    {
-        VProfileEditViewController *controller = (VProfileEditViewController *)segue.destinationViewController;
-        controller.profile = self.profile;
-    }
-}
-
 #pragma mark - Animation
 
 - (void)animateHeaderShrinkingWithDuration:(CGFloat)duration

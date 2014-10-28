@@ -296,6 +296,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
         sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
         previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
+    else //Its an unsupported type so ignore it. i.e User Profile Header.
+    {
+        return;
+    }
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];

@@ -69,8 +69,11 @@
     
     self.tintColor = tintColor;
     self.backButton.tintColor = tintColor;
+    [self.backButton setTitleColor:tintColor forState:UIControlStateNormal];
     self.menuButton.tintColor = tintColor;
+    [self.menuButton setTitleColor:tintColor forState:UIControlStateNormal];
     self.addButton.tintColor = tintColor;
+    [self.addButton setTitleColor:tintColor forState:UIControlStateNormal];
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
@@ -157,7 +160,16 @@
 - (void)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !image;
+    [self.addButton setTitle:@"" forState:UIControlStateNormal];
     [self.addButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setRightButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
+{
+    self.addButton.hidden = !title;
+    [self.addButton setImage:nil forState:UIControlStateNormal];
+    [self.addButton setTitle:title forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
