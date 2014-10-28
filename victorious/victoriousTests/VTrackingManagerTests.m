@@ -53,8 +53,8 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
     [super setUp];
     
     self.nocilla = [LSNocilla sharedInstance];
+    
     [self.nocilla start];
-    [self.nocilla clearStubs];
     
     self.trackingManager = [[VTrackingManager alloc] init];
     self.async = [[VAsyncTestHelper alloc] init];
@@ -73,7 +73,6 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
     [VObjectManager v_restoreOriginalImplementation:self.sharedManagerImp forClassMethod:@selector(sharedManager)];
     
     
-    [self.nocilla clearStubs];
     [self.nocilla stop];
     
     [super tearDown];

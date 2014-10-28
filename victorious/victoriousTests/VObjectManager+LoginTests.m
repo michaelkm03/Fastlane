@@ -8,27 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-
+#import "NSObject+VMethodSwizzling.h"
 #import "VDummyModels.h"
 #import "VSettingManager.h"
 #import "VTracking.h"
 #import "VObjectManager+Login.h"
 #import "VThemeManager.h"
-
-@interface VThemeManager (UnitTests)
-
-@property (strong, nonatomic) NSDictionary *theme;
-
-@end
-
-@implementation VThemeManager (UnitTests)
-
-- (NSDictionary *)theme
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"kVNewTheme"];
-}
-
-@end
 
 @interface VObjectManager (UnitTests)
 
@@ -80,7 +65,26 @@
     XCTAssertEqualObjects( self.settingsManager.applicationTracking, tracking1 );
 }
 
-- (void)testUpdateTrackingInvalid
+- (void)testUpdateVoteTypes
+{
+    NSArray *resultObjects = [VDummyModels createVoteTypes:5];
+    [self.obejctManager updateSettings:self.settingsManager withResultObjects:resultObjects];
+    XCTAssertNotNil( self.settingsManager.voteTypes );
+    XCTAssertEqual( self.settingsManager.voteTypes.count, resultObjects.count );
+}
+
+- (void)testUpdateSettingsFilter
+{
+    NSArray *resultObjects = [VDummyModels createVoteTypes:5];
+    NSArray *nonVoteTypes = @[ [NSString new], [NSNull new], [NSDictionary new] ];
+    resultObjects = [resultObjects arrayByAddingObjectsFromArray:nonVoteTypes];
+    
+    [self.obejctManager updateSettings:self.settingsManager withResultObjects:resultObjects];
+    XCTAssertNotNil( self.settingsManager.voteTypes );
+    XCTAssertEqual( self.settingsManager.voteTypes.count, resultObjects.count - nonVoteTypes.count );
+}
+
+- (void)testUpdateSettingsInvalid
 {
     [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[]];
     XCTAssertNil( self.settingsManager.applicationTracking );
@@ -94,11 +98,21 @@
 
 - (void)testUpdateTheme
 {
-    NSDictionary *payload = @{ @"test_key" : @"test_value" };
+    NSString *value = @"test_value";
+    NSString *key = @"test_key";
+    
+    __block BOOL wasMethodCalled = NO;
+    IMP orig = [VThemeManager v_swizzleMethod:@selector(setTheme:) withBlock:^void (VThemeManager *themeManager, NSDictionary *dictionary)
+                {
+                    wasMethodCalled = YES;
+                    XCTAssertEqualObjects( value, dictionary[ key ] );
+                }];
+    
+    NSDictionary *payload = @{ @"appearance" : @{ key : value } };
     [self.obejctManager updateTheme:self.themeManager withResponsePayload:payload];
-    XCTAssertNotNil( self.themeManager.theme );
-    NSDictionary *theme = self.themeManager.theme;
-    XCTAssertEqualObjects( payload[ @"test_key"  ], theme[ @"test_key" ] );
+    XCTAssert( wasMethodCalled );
+    
+    [VThemeManager v_restoreOriginalImplementation:orig forMethod:@selector(setTheme:)];
 }
 
 - (void)testArrayFilter
