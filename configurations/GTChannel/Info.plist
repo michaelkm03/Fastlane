@@ -11,26 +11,18 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb667571273337355</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}gtchannel</string>
+				<string>fb349020721937013</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>667571273337355</string>
+	<string>349020721937013</string>
 	<key>FacebookDisplayName</key>
 	<string>GTchannel</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>dZbi3v2Du9lQ3hCuX5SrA8MMW</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<string>DQYGdqdShTAUh2sjHYrEuGhX0CgXcjhpd9mhSX9Rf7W48Ba3zs</string>
 	<key>TestflightQAAppToken</key>
 	<string>a2ed7580-e7e7-4bda-9415-61c747a167c4</string>
 	<key>TestflightStagingAppToken</key>
