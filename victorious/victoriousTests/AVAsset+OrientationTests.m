@@ -26,10 +26,12 @@
 {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSURL *url = [bundle URLForResource:name withExtension:@"m4v"];
-    return [AVAsset assetWithURL:url];
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    XCTAssertNotNil( asset );
+    return asset;
 }
 
-- (void)test
+- (void)testBackFacing
 {
     AVAsset *asset;
     
@@ -43,6 +45,23 @@
     XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortrait );
     
     asset = [self videoAsset:@"portrait_upsidedown"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortraitUpsideDown );
+}
+
+- (void)testFrontFacing
+{
+    AVAsset *asset;
+    
+    asset = [self videoAsset:@"front_landscape_left"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationLandscapeRight ); // Note: Flipped because camera is mirrored
+    
+    asset = [self videoAsset:@"front_landscape_right"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationLandscapeLeft ); // Note: Flipped because camera is mirrored
+    
+    asset = [self videoAsset:@"front_portrait"];
+    XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortrait );
+    
+    asset = [self videoAsset:@"front_portrait_upsidedown"];
     XCTAssertEqual( asset.videoOrientation, UIDeviceOrientationPortraitUpsideDown );
 }
 
