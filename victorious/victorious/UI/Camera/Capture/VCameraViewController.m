@@ -640,29 +640,26 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)startRecording
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void)
-                   {
-                       if (!self.captureController.videoEncoder)
-                       {
-                           VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
-                           if (!encoder)
-                           {
-                               MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-                               hud.mode = MBProgressHUDModeText;
-                               hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
-                               [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
-                               return;
-                           }
-                           encoder.delegate = self;
-                           self.captureController.videoEncoder = encoder;
-                       }
-                       else
-                       {
-                           self.captureController.videoEncoder.recording = YES;
-                       }
-                       self.switchCameraButton.enabled = NO;
-                       self.switchCameraModeButton.enabled = NO;
-                   });
+    if (!self.captureController.videoEncoder)
+    {
+        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
+        if (!encoder)
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
+            [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+            return;
+        }
+        encoder.delegate = self;
+        self.captureController.videoEncoder = encoder;
+    }
+    else
+    {
+        self.captureController.videoEncoder.recording = YES;
+    }
+    self.switchCameraButton.enabled = NO;
+    self.switchCameraModeButton.enabled = NO;
 }
 
 - (void)stopRecording
