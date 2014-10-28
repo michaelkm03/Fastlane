@@ -25,12 +25,13 @@
 
 @implementation VObjectManager (Login)
 
-NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
+NSString *kLoggedInChangedNotification          = @"LoggedInChangedNotification";
+NSString *kInitResponseNotification             = @"InitResponseNotification";
 
-static NSString * const kVExperimentsKey = @"experiments";
-static NSString * const kVAppearanceKey = @"appearance";
-static NSString * const kVVideoQualityKey = @"video_quality";
-static NSString * const kVAppTrackingKey = @"video_quality";
+static NSString * const kVExperimentsKey        = @"experiments";
+static NSString * const kVAppearanceKey         = @"appearance";
+static NSString * const kVVideoQualityKey       = @"video_quality";
+static NSString * const kVAppTrackingKey        = @"video_quality";
 
 #pragma mark - Init
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
@@ -76,6 +77,8 @@ static NSString * const kVAppTrackingKey = @"video_quality";
         {
             success(operation, fullResponse, resultObjects);
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kInitResponseNotification object:nil];
     };
     
     return [self GET:@"/api/init"

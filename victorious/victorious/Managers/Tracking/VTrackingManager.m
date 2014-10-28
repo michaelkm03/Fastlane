@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 0
+#define LOG_TRACKING_EVENTS 1
 
 @interface VTrackingManager()
 

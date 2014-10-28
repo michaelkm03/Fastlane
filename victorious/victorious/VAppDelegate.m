@@ -26,6 +26,8 @@
 #import "VDeeplinkManager.h"
 #import "VTrackingManager.h"
 #import "VConstants.h"
+#import "VSettingManager.h"
+#import "VObjectManager.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
@@ -75,6 +77,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
     self.trackingManager = [[VTrackingManager alloc] init];
+    
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
@@ -85,7 +88,22 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
+    
     return YES;
+}
+
+- (void)onInitResponse:(NSNotification *)notification
+{
+    // Must wait until tracking data is avialable on VSettingManager
+    VTracking *tracking = [VSettingManager sharedManager].applicationTracking;
+    if ( tracking != nil )
+    {
+        [self.trackingManager trackEventWithUrls:tracking.appLaunch andParameters:nil];
+    }
+    
+    // Only receive this once
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
 }
 
 - (void)reportFirstInstall
@@ -150,10 +168,13 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    
+    [self.trackingManager trackEventWithUrls:[VSettingManager sharedManager].applicationTracking.appEnterBackground andParameters:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [self.trackingManager trackEventWithUrls:[VSettingManager sharedManager].applicationTracking.appEnterForeground andParameters:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
