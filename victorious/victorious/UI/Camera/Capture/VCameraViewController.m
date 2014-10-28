@@ -436,6 +436,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                                      {
                                          [strongSelf restoreLivePreview];
                                      }];
+                                    [strongSelf updateOrientation];
                                 });
              }
         }];
