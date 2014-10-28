@@ -147,7 +147,7 @@ static const CGFloat kButtonMargin           =  0.5f;
             if (buttons.count == self.viewControllers.count - 1) // last button
             {
                 UIButton *previousButton = [buttons lastObject];
-                buttonWidthConstraint.priority = UILayoutPriorityDefaultHigh;
+//                buttonWidthConstraint.priority = UILayoutPriorityDefaultHigh;
                 [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button]|"
                                                                                               options:NSLayoutFormatDirectionLeftToRight
                                                                                               metrics:@{ @"margin": @(kButtonMargin) }

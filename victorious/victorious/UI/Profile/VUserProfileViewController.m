@@ -35,7 +35,7 @@
 #import "VContainerViewController.h"
 
 #import "VAuthorizationViewControllerFactory.h"
-
+#import "VFindFriendsViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "VSettingManager.h"
 
@@ -114,12 +114,11 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     [self addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
-    //    if (self.isMe)
-    //    {
-    //        [self addFriendsButton];
-    //    }
-    //    else
-    if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
+    if (self.isMe)
+    {
+        [self addFriendsButton];
+    }
+    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
         [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:self];
     }
@@ -190,6 +189,28 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
+#pragma mark - Find Friends
+
+- (void)addFriendsButton
+{
+    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
+                                 withAction:@selector(findFriendsAction:)
+                                   onTarget:self];
+}
+
+- (IBAction)findFriendsAction:(id)sender
+{
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+    [ffvc setShouldAutoselectNewFriends:NO];
+    [self.navigationController pushViewController:ffvc animated:YES];
 }
 
 #pragma mark - Accessors
