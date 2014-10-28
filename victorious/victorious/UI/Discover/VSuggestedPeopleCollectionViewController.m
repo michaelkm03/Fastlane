@@ -20,6 +20,8 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 @interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
+@property (nonatomic, strong) VUser *userToAnimate;
+
 @end
 
 @implementation VSuggestedPeopleCollectionViewController
@@ -194,6 +196,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
         [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
+             self.userToAnimate = user;
              [self.collectionView reloadData];
          } failBlock:nil];
     }
@@ -210,6 +213,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
         [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
+             self.userToAnimate = user;
              [self.collectionView reloadData];
          } failBlock:nil];
     }
@@ -229,7 +233,13 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
-    cell.user = self.suggestedUsers[ indexPath.row ];
+    BOOL animate = (self.suggestedUsers[ indexPath.row ] == self.userToAnimate);
+    [cell setUser:self.suggestedUsers[ indexPath.row ]
+         animated:animate];
+    if (animate)
+    {
+        self.userToAnimate = nil;
+    }
     cell.delegate = self;
     return cell;
 }

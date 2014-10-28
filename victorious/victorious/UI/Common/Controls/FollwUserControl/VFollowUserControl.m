@@ -108,6 +108,8 @@ static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
     
     _following = following;
     
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    
     self.imageView.image = _following ? self.followedImage : self.followImage;
 }
 

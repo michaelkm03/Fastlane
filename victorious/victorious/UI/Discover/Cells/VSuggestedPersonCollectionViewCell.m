@@ -19,8 +19,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
-@property (nonatomic, assign) BOOL shouldAnimateFollowing;
-
 - (IBAction)onFollow:(id)sender;
 
 @end
@@ -57,13 +55,6 @@
     self.profileImageView.layer.cornerRadius = radius;
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    
-    self.shouldAnimateFollowing = NO;
-}
-
 - (void)applyTheme
 {
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
@@ -74,6 +65,20 @@
 {
     _user = user;
     [self populateData];
+    [self updateFollowingAnimated:NO];
+}
+
+- (void)setUser:(VUser *)user
+       animated:(BOOL)animated
+{
+    if (!animated)
+    {
+        self.user = user;
+        return;
+    }
+    _user = user;
+    [self populateData];
+    [self updateFollowingAnimated:animated];
 }
 
 - (void)populateData
@@ -87,19 +92,13 @@
         [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.user.pictureUrl]];
     }
     
-    [self updateFollowing];
-    
     [self applyTheme];
 }
 
-- (void)updateFollowing
+- (void)updateFollowingAnimated:(BOOL)animated
 {
     [self.followButton setFollowing:self.user.isFollowing.boolValue
-                           animated:self.shouldAnimateFollowing];
-    if (self.shouldAnimateFollowing)
-    {
-        self.shouldAnimateFollowing = NO;
-    }
+                           animated:animated];
 }
 
 - (IBAction)onFollow:(id)sender
@@ -117,10 +116,6 @@
     {
         [self.delegate followPerson:self.user];
     }
-    
-    self.shouldAnimateFollowing = YES;
-    
-    [self updateFollowing];
 }
 
 @end
