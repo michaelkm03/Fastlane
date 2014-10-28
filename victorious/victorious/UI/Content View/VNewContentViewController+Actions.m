@@ -67,13 +67,13 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
-                                        container.shouldShowHeaderLogo = NO;
+                                        
+                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
-                                             [contentViewController.navigationController pushViewController:container
+                                             [contentViewController.navigationController pushViewController:stream
                                                                                   animated:YES];
                                          }];
                                     }];

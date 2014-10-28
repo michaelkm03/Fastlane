@@ -66,9 +66,11 @@
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;
 
 /**
- *  Updates the UI of the header view.  Call after the VC's viewDidLoad.
+ *  Updates the UI of the header view.  Call after the VC's viewDidLoad.  This will swap the back / menu buttons to the appropriate state based on the VC's nav stack.
+ *
+ *  @param viewController The view controller that owns the header.
  */
-- (void)updateUI;
+- (void)updateUIForVC:(UIViewController *)viewController;
 
 /**
  *  Sets the image for the right button.  If the image is nil, it hides the button.  If its not nil, it unhides the button.

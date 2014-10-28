@@ -73,9 +73,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
+    
     homeStream.shouldDisplayMarquee = YES;
     [homeStream addCreateSequenceButton];
-    
     [homeStream addUploadProgressView];
     homeStream.uploadProgressViewController.delegate = homeStream;
     
@@ -101,6 +101,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Owner", nil)];
     
     return ownerStream;
+}
+
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
+{
+    VStream *defaultStream = [VStream streamForHashTag:hashtag];
+    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:@[defaultStream] title:[@"#" stringByAppendingString:hashtag]];
+    return communityStream;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
@@ -178,9 +185,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self refresh:self.refreshControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }

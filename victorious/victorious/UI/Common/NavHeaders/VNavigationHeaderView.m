@@ -126,7 +126,7 @@
     self.headerLabel.text = self.headerText;
 }
 
-- (void)updateUI
+- (void)updateUIForVC:(UIViewController *)viewController
 {
     UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
     if (self.showHeaderLogoImage && headerImage)
@@ -138,6 +138,17 @@
     {
         self.headerImageView.hidden = YES;
         self.headerLabel.text = self.headerText;
+    }
+    
+    if (viewController.navigationController.viewControllers.count <= 1)
+    {
+        self.backButton.hidden = YES;
+        self.menuButton.hidden = NO;
+    }
+    else
+    {
+        self.backButton.hidden = NO;
+        self.menuButton.hidden = YES;
     }
 }
 

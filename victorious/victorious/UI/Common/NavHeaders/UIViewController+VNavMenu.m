@@ -99,7 +99,7 @@ static const char kUploadProgressYConstraintKey;
     }
     
     self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
-    [self.navHeaderView updateUI];
+    [self.navHeaderView updateUIForVC:self];
     [self.view addSubview:self.navHeaderView];
     
     self.navHeaderYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
