@@ -1,0 +1,15 @@
+{
+	"error": 0,
+	"message": "",
+	"api_version": "2",
+	"host": "dev.getvictorious.com",
+	"app_id": "1",
+	"user_id": null,
+	"payload": {
+		"tracking": {
+			"init": ["http:\/\/example.com\/app-init\/1", "http:\/\/example.org\/app-init\/1"],
+			"start": ["http:\/\/example.com\/app-start\/1", "http:\/\/example.org\/app-start\/1"],
+			"stop": ["http:\/\/example.com\/app-stop\/1", "http:\/\/example.org\/app-stop\/1"]
+		}
+	}
+}

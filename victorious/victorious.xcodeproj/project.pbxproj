@@ -328,6 +328,9 @@
 		A7CFC1EC19FF28C300726772 /* VSuggestedPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */; };
 		A7CFC1ED19FF28C300726772 /* VVideoTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */; };
 		A7CFC1EE19FF28C300726772 /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
+		A7CFC1F01A00092200726772 /* VTrackingGlobalAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CFC1EF1A00092200726772 /* VTrackingGlobalAppTests.m */; };
+		A7CFC1F21A00111D00726772 /* sample_init_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1F11A00111D00726772 /* sample_init_response.json */; };
+		A7CFC1F41A0015EE00726772 /* VObjectManager+LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CFC1F31A0015EE00726772 /* VObjectManager+LoginTests.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7F6CF9C19EEDA0B003F164C /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9919EEDA0B003F164C /* VFileCache+VVoteType.m */; };
 		A7F6CF9D19EEDA0B003F164C /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CF9B19EEDA0B003F164C /* VFileCache.m */; };
@@ -1063,6 +1066,9 @@
 		A7CFC1BE19FAFFAD00726772 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A7CFC1BF19FAFFAD00726772 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A7CFC1C119FB039F00726772 /* VTrackingManagerQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerQueueTests.m; sourceTree = "<group>"; };
+		A7CFC1EF1A00092200726772 /* VTrackingGlobalAppTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingGlobalAppTests.m; sourceTree = "<group>"; };
+		A7CFC1F11A00111D00726772 /* sample_init_response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_init_response.json; sourceTree = "<group>"; };
+		A7CFC1F31A0015EE00726772 /* VObjectManager+LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+LoginTests.m"; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
@@ -2089,6 +2095,7 @@
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				A7CFC1F11A00111D00726772 /* sample_init_response.json */,
 				039D2FD5197D93C600DFBE60 /* filters.xml */,
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 			);
@@ -2547,6 +2554,8 @@
 				A7CFC1C119FB039F00726772 /* VTrackingManagerQueueTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
+				A7CFC1EF1A00092200726772 /* VTrackingGlobalAppTests.m */,
+				A7CFC1F31A0015EE00726772 /* VObjectManager+LoginTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -3210,6 +3219,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7CFC1F21A00111D00726772 /* sample_init_response.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
@@ -3672,12 +3682,14 @@
 				A7CFC1E519FF28C300726772 /* VFileCacheTests.m in Sources */,
 				A7CFC1DE19FF28C300726772 /* VUIAlertView+VBlocksTests.m in Sources */,
 				A7CFC1D219FF28C300726772 /* NSStringVCryptoTests.m in Sources */,
+				A7CFC1F41A0015EE00726772 /* VObjectManager+LoginTests.m in Sources */,
 				A7CFC1E119FF28C300726772 /* VUploadTaskCreatorTests.m in Sources */,
 				A7CFC1EE19FF28C300726772 /* VExperienceEnhancerTests.m in Sources */,
 				A7CFC1DF19FF28C300726772 /* VUploadManagerTests.m in Sources */,
 				A7CFC1D719FF28C300726772 /* VLargeNumberFormatterTests.m in Sources */,
 				A7CFC1E619FF28C300726772 /* VVoteTypeFetcherTests.m in Sources */,
 				A719CD5D19F6D6410019E866 /* VDummyModels.m in Sources */,
+				A7CFC1F01A00092200726772 /* VTrackingGlobalAppTests.m in Sources */,
 				A7CFC1CF19FF1EDE00726772 /* VFileCache+VoteTypeTests.m in Sources */,
 				A7CFC1E219FF28C300726772 /* VUploadTaskInformationTests.m in Sources */,
 				A7CFC1D519FF28C300726772 /* VHashTagsTest.m in Sources */,

@@ -39,39 +39,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self updateTheme:[VThemeManager sharedThemeManager] withResponsePayload:fullResponse[kVPayloadKey]];
 
-        NSDictionary *payload = fullResponse[kVPayloadKey];
+        [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
         
-        NSDictionary *newTheme = payload[kVAppearanceKey];
-        if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
-        {
-            [[VThemeManager sharedThemeManager] setTheme:newTheme];
-        }
-        
-        NSDictionary *videoQuality = payload[kVVideoQualityKey];
-        if ([videoQuality isKindOfClass:[NSDictionary class]])
-        {
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
-        }
-        
-        NSString *app_store_url = payload[@"app_store_url"];
-        if (app_store_url)
-        {
-            NSDictionary *dict = @{@"url.appstore": app_store_url};
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:dict];
-        }
-
-        NSDictionary *experiments = payload[kVExperimentsKey];
-        if ([experiments isKindOfClass:[NSDictionary class]])
-        {
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
-        }
-        
-        VTracking *tracking = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VTracking class]].firstObject;
-        [[VSettingManager sharedManager] updateSettingsWithAppTracking:tracking];
-        
-        NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
-        [[VSettingManager sharedManager] updateSettingsWithVoteTypes:voteTypes];
+        [self updateSettings:[VSettingManager sharedManager] withResultObjects:resultObjects];
         
         if (success)
         {
@@ -88,13 +60,64 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
            failBlock:failed];
 }
 
+- (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
+{
+    NSDictionary *newTheme = payload[kVAppearanceKey];
+    if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+    {
+        [themeManager setTheme:newTheme];
+    }
+}
+
+- (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
+{
+    NSDictionary *videoQuality = payload[kVVideoQualityKey];
+    if ([videoQuality isKindOfClass:[NSDictionary class]])
+    {
+        [settingsManager updateSettingsWithDictionary:videoQuality];
+    }
+    
+    NSString *app_store_url = payload[@"app_store_url"];
+    if (app_store_url)
+    {
+        NSDictionary *dict = @{@"url.appstore": app_store_url};
+        [settingsManager updateSettingsWithDictionary:dict];
+    }
+    
+    NSDictionary *experiments = payload[kVExperimentsKey];
+    if ([experiments isKindOfClass:[NSDictionary class]])
+    {
+        [settingsManager updateSettingsWithDictionary:experiments];
+    }
+}
+
+- (void)updateSettings:(VSettingManager *)settingsManager withResultObjects:(NSArray *)resultObjects
+{
+    if ( ![resultObjects isKindOfClass:[NSArray class]] || resultObjects == nil || resultObjects.count == 0 )
+    {
+        return;
+    }
+    
+    VTracking *tracking = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VTracking class]].firstObject;
+    [settingsManager updateSettingsWithAppTracking:tracking];
+    
+    NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
+    [settingsManager updateSettingsWithVoteTypes:voteTypes];
+}
+
 - (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
+    NSParameterAssert( class != nil );
+    if ( ![array isKindOfClass:[NSArray class]] || array == nil || array.count == 0 )
+    {
+        return @[];
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bindings)
                               {
-                                  return [voteType isMemberOfClass:class];
+                                  return [obj isKindOfClass:class];
                               }];
-    return [array filteredArrayUsingPredicate:predicate];;
+    return [array filteredArrayUsingPredicate:predicate];
 }
 
 #pragma mark - Login and status

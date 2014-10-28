@@ -76,7 +76,6 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    self.trackingManager = [[VTrackingManager alloc] init];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
     [[VSessionTimer sharedSessionTimer] start];
@@ -88,41 +87,9 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
+    [self initializeTracking];
     
     return YES;
-}
-
-- (void)onInitResponse:(NSNotification *)notification
-{
-    // Must wait until tracking data is avialable on VSettingManager
-    VTracking *tracking = [VSettingManager sharedManager].applicationTracking;
-    if ( tracking != nil )
-    {
-        [self.trackingManager trackEventWithUrls:tracking.appLaunch andParameters:nil];
-    }
-    
-    // Only receive this once
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
-}
-
-- (void)reportFirstInstall
-{
-    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
-    if (![firstInstall boolValue])
-    {
-        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
-        [[VObjectManager sharedManager] addEvents:@[installEvent]
-                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
-         }
-                                        failBlock:^(NSOperation *operation, NSError *error)
-         {
-             NSLog(@"Error reporting install event: %@", [error localizedDescription]);
-         }];
-        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
-    }
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
@@ -195,6 +162,46 @@ static BOOL isRunningTests(void)
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
+}
+
+#pragma mark - VTrackingManager and App Event Tracking
+
+- (void)initializeTracking
+{
+    self.trackingManager = [[VTrackingManager alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
+}
+
+- (void)onInitResponse:(NSNotification *)notification
+{
+    // Must wait until tracking data is avialable on VSettingManager
+    VTracking *tracking = [VSettingManager sharedManager].applicationTracking;
+    if ( tracking != nil )
+    {
+        [self.trackingManager trackEventWithUrls:tracking.appLaunch andParameters:nil];
+    }
+    
+    // Only receive this once
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
+}
+
+- (void)reportFirstInstall
+{
+    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
+    if (![firstInstall boolValue])
+    {
+        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
+        [[VObjectManager sharedManager] addEvents:@[installEvent]
+                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
+         }
+                                        failBlock:^(NSOperation *operation, NSError *error)
+         {
+             NSLog(@"Error reporting install event: %@", [error localizedDescription]);
+         }];
+        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
+    }
 }
 
 @end
