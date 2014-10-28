@@ -30,6 +30,8 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
+#import "Flurry.h"
+
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
@@ -77,6 +79,8 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
+    
+    [Flurry startSession:@"YOUR_API_KEY"];
     
     return YES;
 }
