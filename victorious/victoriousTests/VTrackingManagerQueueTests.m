@@ -28,6 +28,7 @@ static NSString * const kTestingUrl = @"http://www.example.com";
 @property (nonatomic, assign) NSUInteger eventCount;
 @property (nonatomic, strong) VAsyncTestHelper *async;
 @property (nonatomic, assign) IMP sharedManagerImp;
+@property (nonatomic, assign) LSNocilla *nocilla;
 
 @end
 
@@ -37,7 +38,6 @@ static NSString * const kTestingUrl = @"http://www.example.com";
 {
     [super setUp];
     
-    self.trackingManager = [[VTrackingManager alloc] init];
     self.eventCount = 10;
     self.trackingManager = [[VTrackingManager alloc] init];
     self.urls = @[ kTestingUrl, kTestingUrl, kTestingUrl ];
@@ -47,16 +47,17 @@ static NSString * const kTestingUrl = @"http://www.example.com";
                                  return [[VObjectManager alloc] init];
                              }];
     
-    [[LSNocilla sharedInstance] start];
-    [[LSNocilla sharedInstance] clearStubs];
+    self.nocilla = [LSNocilla sharedInstance];
+    [self.nocilla start];
+    [self.nocilla clearStubs];
 }
 
 - (void)tearDown
 {
     [VObjectManager v_restoreOriginalImplementation:self.sharedManagerImp forClassMethod:@selector(sharedManager)];
     
-    [[LSNocilla sharedInstance] clearStubs];
-    [[LSNocilla sharedInstance] stop];
+    [self.nocilla clearStubs];
+    [self.nocilla stop];
     [super tearDown];
 }
 

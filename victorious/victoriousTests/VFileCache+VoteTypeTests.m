@@ -24,7 +24,7 @@
 
 @end
 
-static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/logo11w.png";
+static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png";
 
 @interface VoteTypeTests : XCTestCase
 
@@ -32,6 +32,7 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 @property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) VVoteType *voteType;
+@property (nonatomic, strong) LSNocilla *nocilla;
 
 @end
 
@@ -41,30 +42,41 @@ static NSString * const kTestImageUrl = @"https://www.google.com/images/srpr/log
 {
     [super setUp];
     
+    self.nocilla = [LSNocilla sharedInstance];
+    [self.nocilla start];
+    [self.nocilla clearStubs];
+    
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCache alloc] init];
+    
+    NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"jpg"];
+    NSData *data = [NSData dataWithContentsOfURL:previewImageFileURL];
+    stubRequest( @"GET", kTestImageUrl ).andReturnRawResponse( data );
     
     self.voteTypes = [VDummyModels createVoteTypes:10];
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
     {
         voteType.name = @"vote_type_test_name";
         voteType.iconImage = kTestImageUrl;
-        voteType.imageFormat = @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/images/firework_XXXXX.png";
+        voteType.imageFormat = @"http://www.example.com/image_XXXXX.png";
         voteType.imageCount = @( 10 );
+        
+        NSString *url = [NSString stringWithFormat:@"http://www.example.com/image_0000%lu.png", (unsigned long)idx];
+        stubRequest( @"GET", url ).andReturnRawResponse( data );
         
         NSString *directoryPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
         [VFileSystemTestHelpers deleteCachesDirectory:directoryPath];
     }];
     
     self.voteType = self.voteTypes.firstObject;
-    
-    [[LSNocilla sharedInstance] clearStubs];
-    [[LSNocilla sharedInstance] stop];
 }
 
 - (void)tearDown
 {
     [super tearDown];
+    
+    [self.nocilla clearStubs];
+    [self.nocilla stop];
     
     self.voteTypes = nil;
     self.fileCache = nil;

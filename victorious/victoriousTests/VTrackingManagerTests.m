@@ -19,7 +19,7 @@
 #undef andDo
 
 
-static NSString * const kTestingUrl = @"http://www.example.com";
+static NSString * const kTestingUrl = @"http://www.example.com/";
 
 @interface VTrackingManager (UnitTest)
 
@@ -42,6 +42,7 @@ static NSString * const kTestingUrl = @"http://www.example.com";
 @property (nonatomic, strong) VAsyncTestHelper *async;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, assign) IMP sharedManagerImp;
+@property (nonatomic, strong) LSNocilla *nocilla;
 
 @end
 
@@ -50,6 +51,10 @@ static NSString * const kTestingUrl = @"http://www.example.com";
 - (void)setUp
 {
     [super setUp];
+    
+    self.nocilla = [LSNocilla sharedInstance];
+    [self.nocilla start];
+    [self.nocilla clearStubs];
     
     self.trackingManager = [[VTrackingManager alloc] init];
     self.async = [[VAsyncTestHelper alloc] init];
@@ -61,17 +66,16 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     
     XCTAssertNotNil( self.trackingManager.registeredMacros );
     XCTAssertNotEqual( self.trackingManager.registeredMacros.count, (NSUInteger)0 );
-    
-    [[LSNocilla sharedInstance] start];
-    [[LSNocilla sharedInstance] clearStubs];
 }
 
 - (void)tearDown
 {
     [VObjectManager v_restoreOriginalImplementation:self.sharedManagerImp forClassMethod:@selector(sharedManager)];
     
-    [[LSNocilla sharedInstance] clearStubs];
-    [[LSNocilla sharedInstance] stop];
+    
+    [self.nocilla clearStubs];
+    [self.nocilla stop];
+    
     [super tearDown];
 }
 
@@ -80,16 +84,16 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     __block NSInteger responseCount = 0;
     NSArray *urls = @[ kTestingUrl, kTestingUrl, kTestingUrl, kTestingUrl ];
     
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 XCTAssertEqual( *status, 200 );
-                                                                 if ( ++responseCount == (NSInteger)urls.count )
-                                                                 {
-                                                                     [self.async signal];
-                                                                 }
-                                                             });
+    stubRequest( @"GET", kTestingUrl ).andDo(^(NSDictionary * __autoreleasing *headers,
+                                               NSInteger *status,
+                                               id<LSHTTPBody> __autoreleasing *body)
+                                             {
+                                                 *status = 200;
+                                                 if ( ++responseCount == (NSInteger)urls.count )
+                                                 {
+                                                     [self.async signal];
+                                                 }
+                                             });
     
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 0 );
     [self.async waitForSignal:5.0f];
@@ -115,7 +119,7 @@ static NSString * const kTestingUrl = @"http://www.example.com";
                                                                NSInteger *status,
                                                                id<LSHTTPBody> __autoreleasing *body)
                                                              {
-                                                                 XCTAssertEqual( *status, 200 );
+                                                                 *status = 200;
                                                                  if ( ++responseCount == expected )
                                                                  {
                                                                      [self.async signal];
@@ -155,8 +159,8 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
                                                        NSInteger *status,
                                                        id<LSHTTPBody> __autoreleasing *body)
-                                                     {
-                                                         XCTAssertEqual( *status, 200 );
+                                                             {
+                                                                 *status = 200;
                                                          [self.async signal];
                                                      });
     
@@ -170,7 +174,7 @@ static NSString * const kTestingUrl = @"http://www.example.com";
                                                                NSInteger *status,
                                                                id<LSHTTPBody> __autoreleasing *body)
                                                              {
-                                                                 XCTAssertEqual( *status, 200 );
+                                                                 *status = 200;
                                                                  [self.async signal];
                                                              });
     XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:@{}] );
@@ -263,8 +267,9 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     XCTAssertEqualObjects( output, expected );
     
     output = [self.trackingManager stringFromString:url byReplacingString:macro withValue:dateValue];
+    NSString *dateString = [self.trackingManager percentEncodedUrlString:[self.trackingManager.dateFormatter stringFromDate:dateValue ]];
     expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[self.trackingManager.dateFormatter stringFromDate:dateValue ]];
+                                              withString:dateString];
     XCTAssertEqualObjects( output, expected );
 }
 

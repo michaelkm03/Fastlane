@@ -304,6 +304,8 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [objectManager updateHTTPHeadersInRequest:request];
+    request.HTTPBody = nil;
+    request.HTTPMethod = @"GET";
     return request;
 }
 
