@@ -14,8 +14,7 @@ IB_DESIGNABLE
 
 @property (nonatomic) IBInspectable BOOL following;
 
-@property (nonatomic) IBInspectable UIImage *followImage;
-
-@property (nonatomic) IBInspectable UIImage *unFollowImage;
+- (void)setFollowing:(BOOL)following
+            animated:(BOOL)animated;
 
 @end

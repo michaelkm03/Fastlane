@@ -10,13 +10,16 @@
 #import "VThemeManager.h"
 #import "VDefaultProfileImageView.h"
 #import "VFollowersTextFormatter.h"
+#import "VFollowUserControl.h"
 
 @interface VSuggestedPersonCollectionViewCell()
 
-@property (nonatomic, weak) IBOutlet UIButton *followButton;
+@property (nonatomic, weak) IBOutlet VFollowUserControl *followButton;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+
+@property (nonatomic, assign) BOOL shouldAnimateFollowing;
 
 - (IBAction)onFollow:(id)sender;
 
@@ -52,6 +55,8 @@
     
     CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
     self.profileImageView.layer.cornerRadius = radius;
+    
+    
 }
 
 - (void)applyTheme
@@ -84,13 +89,11 @@
 
 - (void)updateFollowing
 {
-    if ( self.user.isFollowing.boolValue )
+    [self.followButton setFollowing:self.user.isFollowing.boolValue
+                           animated:self.shouldAnimateFollowing];
+    if (self.shouldAnimateFollowing)
     {
-        [self.followButton setImage:[VSuggestedPersonCollectionViewCell followedImage] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.followButton setImage:[VSuggestedPersonCollectionViewCell followImage] forState:UIControlStateNormal];
+        self.shouldAnimateFollowing = NO;
     }
 }
 
@@ -109,6 +112,8 @@
     {
         [self.delegate followPerson:self.user];
     }
+    
+    self.shouldAnimateFollowing = YES;
     
     [self updateFollowing];
 }

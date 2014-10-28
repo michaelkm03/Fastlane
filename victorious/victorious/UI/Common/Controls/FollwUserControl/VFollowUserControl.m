@@ -12,9 +12,15 @@
 
 @property (nonatomic, weak) UIImageView *imageView;
 
+@property (nonatomic) UIImage *followImage;
+@property (nonatomic) UIImage *followedImage;
+@property (nonatomic) UIImage *unFollowImage;
+
 @end
 
 @implementation VFollowUserControl
+
+#pragma mark - Initializer
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
@@ -26,37 +32,134 @@
     return self;
 }
 
-- (void)prepareForInterfaceBuilder
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    [self sharedInit];
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
 }
 
 - (void)sharedInit
 {
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:nil]];
     imageView.frame = self.bounds;
-    imageView.image = self.followImage;
+    imageView.contentMode = self.contentMode;
     
+    _followImage = [UIImage imageNamed:@"folllowIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+    _followedImage = [UIImage imageNamed:@"folllowedIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+    
+    imageView.image = self.following ? _followedImage : _followImage;
     [self addSubview:imageView];
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:imageView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    NSLayoutConstraint *rightContstraint = [NSLayoutConstraint constraintWithItem:imageView
+                                                                        attribute:NSLayoutAttributeRight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self
+                                                                        attribute:NSLayoutAttributeRight
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:imageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:imageView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f];
+    [self addConstraints:@[topConstraint, rightContstraint, bottomConstraint, leftConstraint]];
+    
     _imageView = imageView;
 }
 
-- (void)setFollowImage:(UIImage *)followImage
-{
-    _followImage = followImage;
+#pragma mark - Property Accessors
 
-#if TARGET_INTERFACE_BUILDER
-    [self setNeedsDisplay];
-#endif
+- (void)setFollowing:(BOOL)following
+{
+    if (_following == following)
+    {
+        return;
+    }
+    
+    _following = following;
+    
+    self.imageView.image = _following ? self.followedImage : self.followImage;
 }
 
-- (void)setUnFollowImage:(UIImage *)unFollowImage
+#pragma mark - Public Interface
+
+- (void)setFollowing:(BOOL)following
+            animated:(BOOL)animated
 {
-    _unFollowImage = unFollowImage;
+    void (^animations)() = ^(void)
+    {
+        self.following = following;
+    };
     
-#if TARGET_INTERFACE_BUILDER
-    [self setNeedsDisplay];
-#endif
+    if (!animated)
+    {
+        animations();
+        return;
+    }
+    
+    [UIView transitionWithView:self.imageView
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
+                    animations:animations
+                    completion:nil];
+}
+
+#pragma mark - UIControl
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [self performHighlightAnimations:^
+     {
+         self.imageView.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
+     }];
+}
+
+#pragma mark - Animations
+
+- (void)performHighlightAnimations:(void (^)(void))animations
+{
+    [UIView animateWithDuration:0.2f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:animations
+                     completion:nil];
+}
+
+- (CATransform3D)highlightTransform
+{
+    return CATransform3DMakeRotation(M_PI/4, 1, 0, 0);
+}
+                                           
+#pragma mark - Interface Builder
+
+- (void)prepareForInterfaceBuilder
+{
+    [self sharedInit];
 }
 
 @end

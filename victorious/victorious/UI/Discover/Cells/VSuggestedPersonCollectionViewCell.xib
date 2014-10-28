@@ -40,9 +40,11 @@
                             <constraint firstAttribute="width" constant="42" id="HVU-Z7-g9u"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="NO"/>
-                            <userDefinedRuntimeAttribute type="image" keyPath="followImage" value="folllowIcon"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="onFollow:" destination="S5P-xq-Z0y" eventType="touchUpInside" id="nQL-as-d2A"/>
+                        </connections>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-icon" translatesAutoresizingMaskIntoConstraints="NO" id="rPy-IE-Url" customClass="VDefaultProfileImageView">
                         <rect key="frame" x="7" y="0.0" width="80" height="80"/>
@@ -71,14 +73,14 @@
             <size key="customSize" width="161" height="224"/>
             <connections>
                 <outlet property="descriptionLabel" destination="Qsy-YU-X9X" id="w2D-Ox-1cz"/>
+                <outlet property="followButton" destination="e30-NG-QZb" id="SM0-WB-6sF"/>
                 <outlet property="profileImageView" destination="rPy-IE-Url" id="4T4-vv-Pjc"/>
                 <outlet property="usernameLabel" destination="LTX-Yq-JGA" id="T4P-61-unn"/>
             </connections>
-            <point key="canvasLocation" x="516.5" y="446.5"/>
+            <point key="canvasLocation" x="245.5" y="-60.5"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="folllowIcon" width="42" height="27"/>
         <image name="user-icon" width="51" height="74"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
