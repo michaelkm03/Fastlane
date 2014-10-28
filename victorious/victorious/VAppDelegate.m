@@ -24,7 +24,7 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
-
+#import "VTrackingManager.h"
 #import "VConstants.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
@@ -33,6 +33,12 @@
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
+
+@interface VAppDelegate ()
+
+@property (strong, nonatomic) VTrackingManager *trackingManager;
+
+@end
 
 static BOOL isRunningTests(void) __attribute__((const));
 static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
@@ -68,6 +74,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
+    self.trackingManager = [[VTrackingManager alloc] init];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
@@ -89,13 +96,13 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
         NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
         [[VObjectManager sharedManager] addEvents:@[installEvent]
                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-        {
-            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
-        }
+         {
+             [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
+         }
                                         failBlock:^(NSOperation *operation, NSError *error)
-        {
-            NSLog(@"Error reporting install event: %@", [error localizedDescription]);
-        }];
+         {
+             NSLog(@"Error reporting install event: %@", [error localizedDescription]);
+         }];
         [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
     }
 }

@@ -21,6 +21,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
+#import "VTracking.h"
 
 @implementation VObjectManager (Login)
 
@@ -29,6 +30,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 static NSString * const kVExperimentsKey = @"experiments";
 static NSString * const kVAppearanceKey = @"appearance";
 static NSString * const kVVideoQualityKey = @"video_quality";
+static NSString * const kVAppTrackingKey = @"video_quality";
 
 #pragma mark - Init
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
@@ -64,8 +66,11 @@ static NSString * const kVVideoQualityKey = @"video_quality";
             [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
         }
         
-        // VSettingManager will only accept VVoteType objects from this array
-        [[VSettingManager sharedManager] updateSettingsWithVoteTypes:resultObjects];
+        VTracking *tracking = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VTracking class]].firstObject;
+        [[VSettingManager sharedManager] updateSettingsWithAppTracking:tracking];
+        
+        NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
+        [[VSettingManager sharedManager] updateSettingsWithVoteTypes:voteTypes];
         
         if (success)
         {
@@ -78,6 +83,15 @@ static NSString * const kVVideoQualityKey = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
+}
+
+- (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
+                              {
+                                  return [voteType isMemberOfClass:class];
+                              }];
+    return [array filteredArrayUsingPredicate:predicate];;
 }
 
 #pragma mark - Login and status

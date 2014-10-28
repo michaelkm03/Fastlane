@@ -16,6 +16,7 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VVoteType+Fetcher.h"
+#import "VTracking.h"
 
 //Settings
 NSString * const kVCaptureVideoQuality =   @"capture";
@@ -78,6 +79,11 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 - (void)clearVoteTypes
 {
     self.voteTypes = @[];
+}
+
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking
+{
+    _applicationTracking = tracking;
 }
 
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
