@@ -60,11 +60,11 @@
          }];
     }
     
+    [self refreshFollowingList];
+    
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
     self.tableView.contentInset = insets;
-    
-    [self refreshFollowingList];
 }
 
 - (BOOL)shouldAutorotate
