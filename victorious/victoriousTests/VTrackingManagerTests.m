@@ -48,6 +48,7 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
 
 @property (nonatomic, strong) VAsyncTestHelper *async;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
+@property (nonatomic, assign) IMP objectManagerImp;
 
 @end
 
@@ -68,20 +69,18 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
 
 - (void)tearDown
 {
+    
     [[LSNocilla sharedInstance] stop];
     
     [super tearDown];
 }
 
-- (void)testATrackEvents
+- (void)testTrackEvents
 {
-    __block NSInteger responseCount = 0;
     NSArray *urls = @[ kTestingUrl, kTestingUrl, kTestingUrl, kTestingUrl ];
     
     stubRequest( @"GET", kTestingUrl ).andReturn( 200 );
-    
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 0 );
-    //[self.async waitForSignal:5.0f];
 }
 
 - (void)testTrackEventsInvalid
@@ -94,27 +93,14 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 2 );
 }
 
-- (void)testATrackEventsSomeValid
+- (void)testTrackEventsSomeValid
 {
-    __block NSInteger responseCount = 0;
-    __block NSInteger expected = 0;
     NSArray *urls = @[ kTestingUrl, kTestingUrl, kTestingUrl, kTestingUrl ];
     
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 *status = 200;
-                                                                 if ( ++responseCount == expected )
-                                                                 {
-                                                                     [self.async signal];
-                                                                 }
-                                                             });
+    stubRequest( @"GET", kTestingUrl ).andReturn( 200 );
     
     urls = @[ [NSNull null], kTestingUrl, kTestingUrl, kTestingUrl ];
-    expected = 3;
     XCTAssertEqual( [self.trackingManager trackEventWithUrls:urls andParameters:nil], 1 );
-    //[self.async waitForSignal:5.0f];
 }
 
 - (void)testRequest
@@ -141,29 +127,15 @@ static NSString * const kTestingUrl = @"http://www.example.com/";
 
 - (void)testTrackEvent
 {
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                       NSInteger *status,
-                                                       id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 *status = 200;
-                                                         [self.async signal];
-                                                     });
-    
+    stubRequest( @"GET", kTestingUrl ).andReturn( 200 );
     XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:nil] );
-    //[self.async waitForSignal:5.0f];
+    XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:nil] );
 }
 
-- (void)testATrackEventNoParams
+- (void)testTrackEventNoParams
 {
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 *status = 200;
-                                                                 [self.async signal];
-                                                             });
+    stubRequest( @"GET", kTestingUrl ).andReturn( 200 );
     XCTAssert( [self.trackingManager trackEventWithUrl:kTestingUrl andParameters:@{}] );
-    //[self.async waitForSignal:5.0f];
 }
 
 - (void)testTrackEventNoValuesInvalid
