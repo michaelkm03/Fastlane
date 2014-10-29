@@ -40,8 +40,6 @@
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
-    
-    
 }
 
 - (void)dealloc
@@ -73,13 +71,14 @@
 {
     // Set visibility
     self.isPlayingAd = YES;
-    self.adPlayerViewController.view.hidden = NO;
+    
     self.videoPlayerViewController.view.hidden = YES;
     
     // Ad Video Player
     self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
     self.adPlayerViewController.monetizationPartner = monetizationPartner;
     self.adPlayerViewController.delegate = self;
+    self.adPlayerViewController.view.hidden = NO;
     [self.adPlayerViewController start];
     [self.contentView addSubview:self.adPlayerViewController.view];
 }
@@ -156,17 +155,14 @@
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
-    // If videoPlayer is ad video player then swap to item video player and do not forward to our delegate
-//    if (videoPlayer == self.adPlayer)
-//    {
-//        self.isPlayingAd = NO;
-//        //Swap to content Video player
-//        return;
-//    }
-    
     // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
+}
+
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.delegate videoCellWillStartPlaying:self];
 }
 
 #pragma mark - VAdVideoPlayerViewControllerDelegate
@@ -178,18 +174,17 @@
 
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    // This is where we will load the content video after the ad video has loaded
+    // This is where we can preload the content video after the ad video has loaded
+}
+
+- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
     
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self resumeContentPlayback];
-}
-
-- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
-{
-    [self.delegate videoCellWillStartPlaying:self];
 }
 
 @end
