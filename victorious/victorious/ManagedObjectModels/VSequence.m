@@ -2,15 +2,16 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Michael Sena on 10/8/14.
+//  Created by Lawrence Leach on 10/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VSequence.h"
-#import "VTracking.h"
+#import "VAdBreak.h"
 #import "VComment.h"
 #import "VNode.h"
 #import "VPollResult.h"
+#import "VTracking.h"
 #import "VUser.h"
 #import "VVoteResult.h"
 
@@ -31,14 +32,15 @@
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
+@dynamic adBreaks;
 @dynamic comments;
 @dynamic nodes;
 @dynamic parentUser;
 @dynamic pollResults;
 @dynamic remixers;
 @dynamic reposters;
+@dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
-@dynamic tracking;
 
 @end
