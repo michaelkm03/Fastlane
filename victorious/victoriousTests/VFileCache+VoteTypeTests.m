@@ -9,11 +9,11 @@
 #import <XCTest/XCTest.h>
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "VDummyModels.h"
 #import "VVoteType+Fetcher.h"
 #import <Nocilla/Nocilla.h>
+#import "NSObject+VMethodSwizzling.h"
 
 @interface VFileCache ( UnitTest)
 
@@ -29,10 +29,8 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 @interface VoteTypeTests : XCTestCase
 
 @property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 @property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) VVoteType *voteType;
-@property (nonatomic, strong) LSNocilla *nocilla;
 
 @end
 
@@ -42,15 +40,14 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 {
     [super setUp];
     
-    self.nocilla = [LSNocilla sharedInstance];
-    [self.nocilla start];
-    [self.nocilla clearStubs];
+    [[LSNocilla sharedInstance] stop];
+    [[LSNocilla sharedInstance] start];
     
-    self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCache alloc] init];
     
     NSURL *previewImageFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"jpg"];
     NSData *data = [NSData dataWithContentsOfURL:previewImageFileURL];
+    
     stubRequest( @"GET", kTestImageUrl ).andReturnRawResponse( data );
     
     self.voteTypes = [VDummyModels createVoteTypes:10];
@@ -75,8 +72,7 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 {
     [super tearDown];
     
-    [self.nocilla clearStubs];
-    [self.nocilla stop];
+    [[LSNocilla sharedInstance] stop];
     
     self.voteTypes = nil;
     self.fileCache = nil;
@@ -116,27 +112,38 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
 
 - (void)testCacheVoteTypeImages
 {
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"icon loaded"];
+    __block NSUInteger multiFileCount = 0;
+    IMP files = [VFileCache v_swizzleMethod:@selector(cacheFilesAtUrls:withSavePaths:shouldOverwrite:) withBlock:^BOOL (VFileCache *fileCache, NSArray *urls, NSArray *paths, BOOL shouldOverwrite)
+                 {
+                     if ( ++multiFileCount == self.voteTypes.count )
+                     {
+                         NSLog( @"%i", multiFileCount );
+                         [expectation1 fulfill];
+                     }
+                     return YES;
+    }];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"images loaded"];
+    __block NSUInteger singleFileCount = 0;
+    IMP file = [VFileCache v_swizzleMethod:@selector(cacheFileAtUrl:withSavePath:shouldOverwrite:) withBlock:^BOOL (VFileCache *fileCache, NSString *url, NSString *path, BOOL shouldOverwrite)
+                {
+                    if ( ++singleFileCount == self.voteTypes.count )
+                    {
+                        NSLog( @"%i", singleFileCount );
+                        [expectation2 fulfill];
+                    }
+                    return YES;
+                }];
+    
     [self.fileCache cacheImagesForVoteTypes:self.voteTypes];
     
-    [self.asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
-        
-        NSString *iconPath = [self.fileCache savePathForImage:VVoteTypeIconName forVote:self.voteType];
-        BOOL iconExists = [VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:iconPath];
-        
-        // Make sure the sprite image swere saved
-        __block BOOL spritesExist = YES;
-        NSArray *images = self.voteType.images;
-        [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *spritePath = [self.fileCache savePathForVoteTypeSprite:self.voteType atFrameIndex:idx];
-            if ( ![VFileSystemTestHelpers fileExistsInCachesDirectoryWithLocalPath:spritePath] )
-            {
-                spritesExist = NO;
-                *stop = YES;
-            }
-        }];
-        
-        return iconExists && spritesExist;
+    [self waitForExpectationsWithTimeout:1.0 handler:^(NSError *error) {
+        NSLog( @"waiting..." );
     }];
+    
+    [VFileCache v_restoreOriginalImplementation:files forMethod:@selector(cacheFilesAtUrls:withSavePaths:shouldOverwrite:)];
+    [VFileCache v_restoreOriginalImplementation:file forMethod:@selector(cacheFileAtUrl:withSavePath:shouldOverwrite:)];
 }
 
 - (void)testCacheImagesInvalid
@@ -146,39 +153,11 @@ static NSString * const kTestImageUrl = @"http://www.example.com/icon_image.png"
     XCTAssertNoThrow( [self.fileCache cacheImagesForVoteTypes:(@[ [NSNull null], [NSNull null] ]) ] );
 }
 
-- (void)testLoadFiles
-{
-    // Run this test again to save theimages
-    [self testCacheVoteTypeImages];
-    
-    UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:self.voteType];
-    XCTAssertNotNil( image );
-    XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
-    
-    NSArray *spriteImages = [self.fileCache getSpriteImagesForVoteType:self.voteType];
-    XCTAssertEqual( spriteImages.count, self.voteType.images.count );
-    [spriteImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        XCTAssert( [obj isKindOfClass:[UIImage class]] );
-        UIImage *image = (UIImage *)obj;
-        XCTAssertNotNil( image );
-        XCTAssertNotNil( [[UIImageView alloc] initWithImage:image] );
-    }];
-}
-
 - (void)testFilesDoNotExist
 {
     // Dont load files first
     XCTAssertFalse( [self.fileCache isImageCached:VVoteTypeIconName forVoteType:self.voteType] );
     XCTAssertFalse( [self.fileCache areSpriteImagesCachedForVoteType:self.voteType] );
-}
-
-- (void)testFilesExist
-{
-    // Run this test again to save theimages
-    [self testCacheVoteTypeImages];
-    
-    XCTAssert( [self.fileCache isImageCached:VVoteTypeIconName forVoteType:self.voteType] );
-    XCTAssert( [self.fileCache areSpriteImagesCachedForVoteType:self.voteType] );
 }
 
 @end

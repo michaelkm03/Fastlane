@@ -78,11 +78,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>183</integer>
+		<integer>208</integer>
 		<key>green</key>
-		<integer>107</integer>
+		<integer>49</integer>
 		<key>blue</key>
-		<integer>222</integer>
+		<integer>113</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -100,22 +100,22 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>3</integer>
+		<integer>80</integer>
 		<key>green</key>
-		<integer>30</integer>
+		<integer>80</integer>
 		<key>blue</key>
-		<integer>97</integer>
+		<integer>80</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>3</integer>
+		<integer>42</integer>
 		<key>green</key>
-		<integer>26</integer>
+		<integer>42</integer>
 		<key>blue</key>
-		<integer>83</integer>
+		<integer>42</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>

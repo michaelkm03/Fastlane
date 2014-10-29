@@ -141,6 +141,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) NSURL *videoURL;
 
+@property (nonatomic, readonly) float speed;
+
+@property (nonatomic, readonly) BOOL loop;
+
 /**
  *  If a video content has any real time comments this will be YES.
  */
@@ -222,7 +226,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
 
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex;
 

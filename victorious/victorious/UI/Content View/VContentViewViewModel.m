@@ -232,6 +232,16 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     return [NSURL URLWithString:currentAsset.data];
 }
 
+- (float)speed
+{
+    return [self.currentAsset.speed floatValue];
+}
+
+- (BOOL)loop
+{
+    return [self.currentAsset.loop boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];
@@ -674,7 +684,7 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%i %@", [self totalVotes], NSLocalizedString(@"Voters", @"")];
+    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 @end

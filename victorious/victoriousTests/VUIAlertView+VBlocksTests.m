@@ -86,35 +86,29 @@
 
 - (void)testButtonsSelected
 {
-    __block BOOL wasBlock1Called = NO;
-    __block BOOL wasBlock2Called = NO;
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"button 1 tapped"];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:_titleText message:_messageText cancelButtonTitle:_cancelButtonText onCancelButton:nil otherButtonTitlesAndBlocks:nil];
     
     [alertView addButtonWithTitle:_button1Text block:^{
-        wasBlock1Called = YES;
-    }];
-    
-    [alertView addButtonWithTitle:_button2Text block:^{
-        wasBlock2Called = YES;
+        [expectation1 fulfill];
     }];
     
     [alertView show];
     [alertView dismissWithClickedButtonIndex:1 animated:NO];
     
-    [_asyncHelper waitForSignal:_asyncWaitTime withSignalBlock:^BOOL{
-        return wasBlock1Called;
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"button 2 tapped"];
+    
+    [alertView addButtonWithTitle:_button2Text block:^{
+        [expectation2 fulfill];
     }];
     
     [alertView show];
     [alertView dismissWithClickedButtonIndex:2 animated:NO];
     
-    [_asyncHelper waitForSignal:_asyncWaitTime withSignalBlock:^BOOL{
-        return wasBlock2Called;
-    }];
-    
-    XCTAssert( wasBlock1Called );
-    XCTAssert( wasBlock2Called );
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 }
 
 @end

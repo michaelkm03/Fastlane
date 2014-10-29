@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 1
+static const BOOL kLogTrackingEvents = NO;
 
 @interface VTrackingManager()
 
@@ -118,9 +118,11 @@
         if ( [event.key isEqual:key] )
         {
             
-#if LOG_TRACKING_EVENTS
-            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
+            if ( kLogTrackingEvents )
+            {
+                VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+            }
+            
             doesEventExistForKey = YES;
             *stop = YES;
         }
@@ -138,9 +140,10 @@
         
         // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
         
-#if LOG_TRACKING_EVENTS
-        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
+        if ( kLogTrackingEvents )
+        {
+            VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+        }
         return YES;
     }
 }
@@ -159,9 +162,10 @@
         [self popFrontOfQueue];
     }
     
-#if LOG_TRACKING_EVENTS
-    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
+    if ( kLogTrackingEvents )
+    {
+        VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
+    }
 }
 
 - (NSUInteger)numberOfQueuedEvents
@@ -233,7 +237,14 @@
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
-        replacementValue = [NSString stringWithFormat:@"%@", (NSNumber *)value];
+        if ( CFNumberIsFloatType( (CFNumberRef)value ) )
+        {
+            replacementValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
+        }
+        else
+        {
+            replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
+        }
     }
     else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
     {
@@ -276,16 +287,17 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
-#if LOG_TRACKING_EVENTS
-         if ( connectionError )
+         if ( kLogTrackingEvents )
          {
-             VLog( @"TRACKING :: FAILURE with URL %@:: error %@", url, [connectionError localizedDescription] );
+             if ( connectionError )
+             {
+                 VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
+             }
+             else
+             {
+                 VLog( @"TRACKING :: SUCCESS with URL %@", url );
+             }
          }
-         else
-         {
-             VLog( @"TRACKING :: SUCCESS with URL %@", url );
-         }
-#endif
      }];
 }
 
@@ -293,19 +305,25 @@
 {
     if ( objectManager == nil )
     {
+        if ( kLogTrackingEvents )
+        {
+            VLog( @"TRACKING :: ERROR unable to create request for URL %@ using a nil object manager.", urlString );
+        }
         return nil;
     }
     
     NSURL *url = [NSURL URLWithString:urlString];
     if ( !url )
     {
+        if ( kLogTrackingEvents )
+        {
+            VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
+        }
         return nil;
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [objectManager updateHTTPHeadersInRequest:request];
-    request.HTTPBody = nil;
-    request.HTTPMethod = @"GET";
     return request;
 }
 

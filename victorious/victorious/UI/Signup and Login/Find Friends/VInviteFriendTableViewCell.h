@@ -14,12 +14,8 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 
 @property (nonatomic, strong) VUser *profile;
 @property (nonatomic, copy) void (^followAction)(void);
-@property (nonatomic) BOOL haveRelationship;
+@property (nonatomic, readonly) BOOL haveRelationship;
 
-@property (nonatomic, weak) IBOutlet UIImageView *followIconImageView;
-
-- (void)imageTapAction:(id)sender;
-- (void)disableFollowIcon:(id)sender;
-- (void)flipFollowIconAction:(id)sender;
+- (void)updateFollowStatus;
 
 @end
