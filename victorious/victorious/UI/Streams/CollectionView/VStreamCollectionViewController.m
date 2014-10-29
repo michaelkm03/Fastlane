@@ -49,7 +49,7 @@
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -73,9 +73,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
+    
     homeStream.shouldDisplayMarquee = YES;
     [homeStream addCreateSequenceButton];
-    
+    [homeStream addUploadProgressView];
+    homeStream.uploadProgressViewController.delegate = homeStream;
     
     return homeStream;
 }
@@ -99,6 +101,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Owner", nil)];
     
     return ownerStream;
+}
+
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
+{
+    VStream *defaultStream = [VStream streamForHashTag:hashtag];
+    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:@[defaultStream] title:[@"#" stringByAppendingString:hashtag]];
+    return communityStream;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
@@ -160,7 +169,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
-    [self.marquee refreshWithSuccess:nil failure:nil];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -176,9 +184,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self refresh:self.refreshControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
@@ -295,7 +311,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
         sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
         previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
-    else //Its an unsupported type so ignore it. i.e User Profile Header.
+
+    //If you don't have a valid sequence, you've selected an invalid cell (i.e. profile header) or something went wrong, so bail out
+    if (!sequence)
     {
         return;
     }
@@ -437,6 +455,20 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     return YES;
+}
+
+#pragma mark - VUploadProgressViewControllerDelegate methods
+
+- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+{
+    if (uploadCount)
+    {
+        [self showUploads];
+    }
+    else
+    {
+        [self hideUploads];
+    }
 }
 
 #pragma mark - VSequenceActionsDelegate

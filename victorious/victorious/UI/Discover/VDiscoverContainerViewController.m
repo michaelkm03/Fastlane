@@ -11,6 +11,8 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 
+#import "VSettingManager.h"
+
 #import "UIViewController+VNavMenu.h"
 
 @interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
@@ -43,6 +45,17 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
 }
 
 - (void)viewWillAppear:(BOOL)animated

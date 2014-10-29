@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VNavigationHeaderView.h"
+#import "VUploadProgressViewController.h"
 
 @interface UIViewController (VNavMenu)
 
@@ -38,5 +39,25 @@
  *  Adds a create new sequence button to the nav menu
  */
 - (void)addCreateSequenceButton;
+
+/**
+ *  The upload progress view controller that is added after addUploadProgressView
+ */
+@property (nonatomic, strong) VUploadProgressViewController *uploadProgressViewController;
+
+/**
+ *  Creates a new uploadProgressViewController, and adds the view to self.view with the proper constraints to the header.
+ */
+- (void)addUploadProgressView;
+
+/**
+ *  Shows the upload progress view
+ */
+- (void)showUploads;
+
+/**
+ *  Hides the upload progress view.
+ */
+- (void)hideUploads;
 
 @end

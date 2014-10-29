@@ -13,6 +13,7 @@
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VObjectManager+Discover.h"
 #import "VHashtag.h"
+#import "VStreamCollectionViewController.h"
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VNoContentTableViewCell.h"
@@ -263,10 +264,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashtag.tag]];
-    container.shouldShowHeaderLogo = NO;
-    container.hashTag = hashtag.tag;
-    [self.navigationController pushViewController:container animated:YES];
+    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag.tag];
+    [self.navigationController pushViewController:stream animated:YES];
     
 }
 

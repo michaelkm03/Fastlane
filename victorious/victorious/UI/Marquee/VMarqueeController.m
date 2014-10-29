@@ -58,6 +58,7 @@
     {
         self.collectionView.delegate = nil;
     }
+    [self.autoScrollTimer invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
@@ -83,11 +84,6 @@
 
 - (void)scrolledToPage:(NSInteger)currentPage
 {
-    if ((unsigned)currentPage == self.tabView.currentlySelectedTab)
-    {
-        return;
-    }
-    
     self.tabView.currentlySelectedTab = currentPage;
     self.currentStreamItem = [self.streamDataSource itemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
     [self enableTimer];
@@ -97,6 +93,8 @@
 {
     [self.streamDataSource refreshWithSuccess:
      ^{
+         [self scrolledToPage:0];
+         
          [self.delegate marqueeRefreshedContent:self];
          
          if (successBlock)
