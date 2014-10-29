@@ -23,6 +23,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
+@property (weak, nonatomic) VInboxViewController *inboxViewController;
 
 @end
 
@@ -43,8 +44,13 @@ typedef enum {
     [self.filterControls setSelectedSegmentIndex:vFilterBy_Messages];
     self.headerView.hidden = YES;
     
+    self.inboxViewController = self.childViewControllers.firstObject;
+    
     [self addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
+    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"]
+                                 withAction:@selector(userSearchAction:)
+                                   onTarget:self.inboxViewController];
 }
 
 - (IBAction)changedFilterControls:(id)sender
