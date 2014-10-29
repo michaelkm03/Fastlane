@@ -304,7 +304,6 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
-    return;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

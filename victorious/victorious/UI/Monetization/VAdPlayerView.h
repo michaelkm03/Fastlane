@@ -14,7 +14,18 @@
 
 @property (nonatomic, retain) AVPlayer *player;
 
+/**
+ The AVPlayer to be used by this view to display video
+ 
+ @param player AVPlayer object.
+ */
 - (void)setPlayer:(AVPlayer *)player;
+
+/**
+ Specifies how the video is displayed within a player layer’s bounds.
+ 
+ @param fillMode How the video is displayed: AVLayerVideoGravityResizeAspect is default value.
+ */
 - (void)setVideoFillMode:(NSString *)fillMode;
 
 @end
