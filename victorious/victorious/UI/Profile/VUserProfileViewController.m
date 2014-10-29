@@ -188,6 +188,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)dealloc
 {
+    [self.currentStream removeObserver:self forKeyPath:@"sequences"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 

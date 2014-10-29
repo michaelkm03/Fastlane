@@ -135,6 +135,11 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
