@@ -21,8 +21,6 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
-static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
-
 static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
@@ -43,11 +41,9 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VDirectoryViewController *streamDirectory = (VDirectoryViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
-    
+    VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
+                                                                                           bundle:nil];
     streamDirectory.stream = stream;
-    
     return streamDirectory;
 }
 
@@ -63,7 +59,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     {
         self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:nil];
     }
-    
+    self.navHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     self.navHeaderView.delegate = self;
     
     [self.view addSubview:self.navHeaderView];
@@ -75,6 +71,14 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
                                                                          attribute:NSLayoutAttributeTop
                                                                         multiplier:1.0f
                                                                           constant:0.0f];
+    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:nil
+                                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                                             multiplier:1.0
+                                                                               constant:100.0f];
+    [self.view addConstraint:headerHeightConstraint];
     
     NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
                                                                          attribute:NSLayoutAttributeTop
