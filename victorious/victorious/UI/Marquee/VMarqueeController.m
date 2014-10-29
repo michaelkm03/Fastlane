@@ -58,6 +58,7 @@
     {
         self.collectionView.delegate = nil;
     }
+    [self.autoScrollTimer invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
