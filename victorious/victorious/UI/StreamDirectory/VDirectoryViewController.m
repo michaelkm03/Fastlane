@@ -21,9 +21,8 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
-static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readwrite) VStreamCollectionViewDataSource *directoryDataSource;
@@ -50,6 +49,8 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     if (self.navigationController.viewControllers.count == 1)
     {
@@ -94,6 +95,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     self.directoryDataSource.delegate = self;
     self.directoryDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.directoryDataSource;
+    self.collectionView.delegate = self;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:)
@@ -104,9 +106,6 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     //Register cells
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
-
-    CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
     
     [self refresh:self.refreshControl];
 }
@@ -118,6 +117,8 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     self.navHeaderView.showAddButton = NO;
     self.navHeaderView.headerText = self.stream.name;//Set the title in case there is no logo
     [self.navHeaderView updateUI];
+    
+    [self.view layoutIfNeeded];
 }
 
 - (BOOL)prefersStatusBarHidden
