@@ -49,6 +49,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 {
     [super awakeFromNib];
     
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.collectionView.allowsSelection = YES;
