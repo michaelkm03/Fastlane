@@ -13,6 +13,7 @@
 
 #import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
+#import "VCollectionRefreshControl.h"
 
 #import "UIActionSheet+VBlocks.h"
 #import "VObjectManager+Login.h"
@@ -60,11 +61,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refresh:)
-                  forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = [[VCollectionRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    self.refreshControl.topOffset = CGRectGetHeight(self.refreshControl.frame) / 2;
     
-//    [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
 }
 
@@ -79,18 +80,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
         self.contentInset = insets;
     }
 }
-
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    
-//    if (self.navHeaderView)
-//    {
-//        UIEdgeInsets insets = self.collectionView.contentInset;
-//        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-//        self.contentInset = insets;
-//    }
-//}
 
 - (BOOL)prefersStatusBarHidden
 {

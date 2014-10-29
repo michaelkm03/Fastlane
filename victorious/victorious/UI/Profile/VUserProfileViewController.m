@@ -38,6 +38,7 @@
 #import "VFindFriendsViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "VSettingManager.h"
+#import "VCollectionRefreshControl.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -89,8 +90,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
-
     UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     self.collectionView.backgroundColor = backgroundColor;
     
@@ -98,8 +97,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
-    
-    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
     
     [self.currentStream addObserver:self
                          forKeyPath:@"sequences"
