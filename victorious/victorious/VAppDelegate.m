@@ -72,14 +72,29 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
+    NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
     NSURL  *openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
+    if (pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
     
     return YES;
 }
+
+- (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
+}
+
 
 - (void)reportFirstInstall
 {
