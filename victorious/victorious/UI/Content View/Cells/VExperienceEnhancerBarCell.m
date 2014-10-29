@@ -66,8 +66,16 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
                                                                  attribute:NSLayoutAttributeLeft
                                                                 multiplier:1.0f
                                                                   constant:0.0f]];
-    [self.contentView layoutIfNeeded];
+
     self.experienceEnhancerBar = experienceEnhancerBar;
+}
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
+{
+    [super applyLayoutAttributes:layoutAttributes];
+
+    [self.contentView layoutIfNeeded];
+    [self.experienceEnhancerBar layoutIfNeeded];
 }
 
 @end
