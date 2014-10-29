@@ -16,6 +16,8 @@
 #import "VCameraViewController.h"
 #import "VThemeManager.h"
 
+static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
+
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView             *thumbnail;
