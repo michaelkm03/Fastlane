@@ -10,8 +10,9 @@
 #import "LiveRailAdManager.h"
 #import "VSettingManager.h"
 
-
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
+
+static BOOL kIsAdPlaying = NO;
 
 @interface VLiveRailsAdViewController ()
 
@@ -36,7 +37,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,10 +117,16 @@
     self.adManager = nil;
 }
 
+- (BOOL)isAdPlaying
+{
+    return kIsAdPlaying;
+}
+
 #pragma mark - Ad Methods
 
 - (void)destroyAdInstance
 {
+    kIsAdPlaying = NO;
     self.adViewAppeared = NO;
     self.adManager.hidden = YES;
     [self.adManager stopAd];
@@ -163,8 +169,13 @@
                                                object:self.adManager];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adDidFinish:)
+                                             selector:@selector(adDidStopPlayback:)
                                                  name:LiveRailEventAdStopped
+                                               object:self.adManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adDidFinish:)
+                                                 name:LiveRailEventAdVideoComplete
                                                object:self.adManager];
 }
 
@@ -187,6 +198,10 @@
                                                   object:self.adManager];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LiveRailEventAdVideoComplete
+                                                  object:self.adManager];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:LiveRailEventAdStopped
                                                   object:self.adManager];
 }
@@ -195,8 +210,6 @@
 
 - (void)adDidLoad:(NSNotification *)notification
 {
-    NSLog(@"Ad loaded!");
-    
     // Show the LiveRail Ad Manager view and start ad playback
     self.adManager.hidden = NO;
     [self.adManager startAd];
@@ -209,17 +222,26 @@
 
 - (void)adDidFinish:(NSNotification *)notification
 {
-    NSLog(@"\n\nAd playback finished!");
-    
     [self destroyAdInstance];
     
     // Required delegate method
     [self.delegate adDidFinishForAdViewController:self];
 }
 
+- (void)adDidStopPlayback:(NSNotification *)notification
+{
+    [self destroyAdInstance];
+    
+    if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackInAdViewController:)])
+    {
+        [self.delegate adDidStopPlaybackInAdViewController:self];
+    }
+}
+
 - (void)adDidStartPlayback:(NSNotification *)notification
 {
-    NSLog(@"Ad started playing...");
+    kIsAdPlaying = YES;
+    
     [self.activityIndicatorView stopAnimating];
     
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackInAdViewController:)])
@@ -230,7 +252,6 @@
 
 - (void)adHadImpression:(NSNotification *)notification
 {
-    NSLog(@"Ad had an impression!");
     if ([self.delegate respondsToSelector:@selector(adHadImpressionInAdViewController:)])
     {
         [self.delegate adHadImpressionInAdViewController:self];
@@ -239,12 +260,10 @@
 
 - (void)adHadError:(NSNotification *)notification
 {
-    NSLog(@"\n\nAn Error occurred loading ad");
-    
     [self destroyAdInstance];
-    if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:)])
+    if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
     {
-        [self.delegate adHadErrorInAdViewController:self];
+        [self.delegate adHadErrorInAdViewController:self withError:nil];
     }
 }
 

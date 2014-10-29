@@ -9,10 +9,15 @@
 #import "VOpenXAdViewController.h"
 #import "OpenXMSDK.h"
 #import "VSettingManager.h"
+#import "VAdPlayerView.h"
 
-@interface VOpenXAdViewController ()
+static BOOL kIsAdPlaying = NO;
+
+@interface VOpenXAdViewController () <OXMVideoAdManagerDelegate>
 
 @property (nonatomic, strong) OXMVideoAdManager *adManager;
+@property (nonatomic, strong) IBOutlet VAdPlayerView *playerView;
+@property (nonatomic, strong) NSMutableArray *adBreaks;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
 
@@ -58,7 +63,32 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+}
+
+- (BOOL)isAdPlaying
+{
+    return kIsAdPlaying;
+}
+
+#pragma mark - OXMVideoAdManagerDelegate
+
+- (void)videoAdManagerDidLoad:(OXMVideoAdManager *)adManager
+{
+    kIsAdPlaying = YES;
+    NSLog(@"OpenX Ad loaded!");
     
+    if ([self.delegate respondsToSelector:@selector(adDidLoadForAdViewController:)])
+    {
+        [self.delegate adDidLoadForAdViewController:self];
+    }
+}
+
+- (void)videoAdManager:(OXMVideoAdManager *)adManager didFailToReceiveAdWithError:(NSError *)error
+{
+    if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
+    {
+        [self.delegate adHadErrorInAdViewController:self withError:error];
+    }
 }
 
 @end

@@ -21,8 +21,9 @@
 @optional
 
 - (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController;
+- (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController;
 - (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController;
-- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController;
+- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController withError:(NSError *)error;
 - (void)adDidHitFirstQuartileInAdViewController:(VAdViewController *)adViewController;
 - (void)adDidHitMidpointInAdViewController:(VAdViewController *)adViewController;
 - (void)adDidHitThirdQuartileInAdViewController:(VAdViewController *)adViewController;
@@ -49,7 +50,7 @@
 /**
  Reports if ad is currently playing
  */
-@property (nonatomic, readonly) BOOL adPlaying; ///< YES if ad video is playing
+- (BOOL)isAdPlaying;
 
 /**
  Starts the ad manager

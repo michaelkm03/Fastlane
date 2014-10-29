@@ -182,6 +182,11 @@
     
 }
 
+- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    NSLog(@"\n\nAdVideo was stopped");
+}
+
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self resumeContentPlayback];
