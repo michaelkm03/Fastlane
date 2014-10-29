@@ -233,10 +233,10 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
-    BOOL animate = (self.suggestedUsers[ indexPath.row ] == self.userToAnimate);
+    BOOL animated = (self.suggestedUsers[ indexPath.row ] == self.userToAnimate);
     [cell setUser:self.suggestedUsers[ indexPath.row ]
-         animated:animate];
-    if (animate)
+         animated:animated];
+    if (animated)
     {
         self.userToAnimate = nil;
     }
