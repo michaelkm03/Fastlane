@@ -66,30 +66,15 @@
     [self.view addSubview:self.navHeaderView];
     
     self.headerYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
-                                                                              attribute:NSLayoutAttributeHeight
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:nil
-                                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                                             multiplier:1.0
-                                                                               constant:100.0f];
-    [self.view addConstraint:headerHeightConstraint];
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f];
+
     
-    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.navHeaderView
-                                                                         attribute:NSLayoutAttributeBottom
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    
-    [self.view addConstraints:@[collectionViewTopConstraint, self.headerYConstraint]];
+    [self.view addConstraints:@[self.headerYConstraint]];
     
     self.directoryDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.stream];
     self.directoryDataSource.delegate = self;
@@ -130,6 +115,13 @@
 {
     return UIStatusBarStyleLightContent;
 }
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+#pragma mark - Property Accessors
 
 - (void)setStream:(VStream *)stream
 {
@@ -236,22 +228,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    
-    if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self hideHeader];
-         }];
-    }
-    else if (translation.y > 0)
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self showHeader];
-         }];
-    }
+
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
