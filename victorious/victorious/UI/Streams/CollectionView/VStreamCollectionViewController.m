@@ -169,7 +169,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
-    [self.marquee refreshWithSuccess:nil failure:nil];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -312,7 +311,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
         sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
         previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
-    else //Its an unsupported type so ignore it. i.e User Profile Header.
+
+    //If you don't have a valid sequence, you've selected an invalid cell (i.e. profile header) or something went wrong, so bail out
+    if (!sequence)
     {
         return;
     }

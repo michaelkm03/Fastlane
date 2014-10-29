@@ -61,7 +61,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
     
-    [self.marquee.streamDataSource refreshWithSuccess:^(void)
+    [self.marquee refreshWithSuccess:^(void)
      {
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
          [self.marquee enableTimer];
