@@ -53,7 +53,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VTrackingManager.h"
+#import "VTracking.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate, VNewContentViewControllerDelegate>
 
@@ -156,8 +156,6 @@
                                                object:self.tableDataSource];
     
     self.clearsSelectionOnViewWillAppear = NO;
-    
-    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (NSCache *)preloadImageCache
@@ -203,7 +201,7 @@
     
     [self.preloadImageCache removeAllObjects];
     
-    [self.trackingManager sendQueuedTrackingEvents];
+#warning    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (BOOL)shouldAutorotate
@@ -274,7 +272,7 @@
         [self refresh:nil];
     }
     
-    [self.trackingManager sendQueuedTrackingEvents];
+#warning [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -319,19 +317,21 @@
                        animated:YES
                      completion:nil];
     
-    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
-                              kTrackingKeyStreamId : self.currentStream.remoteId,
-                              kTrackingKeyTimeStamp : [NSDate date] };
-    [self.trackingManager trackEventWithUrls:sequence.tracking.cellClick andParameters:params];
+    NSDictionary *params = @{ VTrackingParamKeySequenceId : sequence.remoteId,
+                              VTrackingParamKeyStreamId : self.currentStream.remoteId,
+                              VTrackingParamKeyTimeStamp : [NSDate date],
+                              VTrackingParamKeyUrls : sequence.tracking.cellClick };
+    [VTrackingManager trackEvent:nil withParameters:params ];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
-                              kTrackingKeyStreamId : self.currentStream.remoteId,
-                              kTrackingKeyTimeStamp : [NSDate date] };
-    [self.trackingManager queueEventWithUrls:sequence.tracking.cellView andParameters:params withKey:sequence.remoteId];
+    NSDictionary *params = @{ VTrackingParamKeySequenceId : sequence.remoteId,
+                              VTrackingParamKeyStreamId : self.currentStream.remoteId,
+                              VTrackingParamKeyTimeStamp : [NSDate date],
+                              VTrackingParamKeyUrls : sequence.tracking.cellView };
+    [VTrackingManager trackEvent:nil withParameters:params];
     
     [cell setNeedsLayout];
     [cell setNeedsDisplay];

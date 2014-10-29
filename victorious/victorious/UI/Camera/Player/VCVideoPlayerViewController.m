@@ -7,7 +7,7 @@
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
-#import "VTrackingManager.h"
+#import "VTracking.h"
 
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
@@ -433,7 +433,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoSkip andParameters:self.trackingParametersForSkipEvent];
+            NSDictionary *params = @{ VTrackingParamKeyTimeFrom : @( CMTimeGetSeconds( self.previousTime ) ),
+                                      VTrackingParamKeyTimeTo : @( CMTimeGetSeconds( self.currentTime ) ),
+                                      VTrackingParamKeyUrls : self.trackingItem.videoSkip };
+            [VTrackingManager trackEvent:nil withParameters:params];
         }
     }
 
@@ -465,7 +468,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete25 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete25 };
+            [VTrackingManager trackEvent:nil withParameters:params];
         }
         self.finishedFirstQuartile = YES;
     }
@@ -481,7 +485,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete50 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete50 };
+            [VTrackingManager trackEvent:nil withParameters:params];
         }
         self.finishedMidpoint = YES;
     }
@@ -497,7 +502,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete75 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete75 };
+            [VTrackingManager trackEvent:nil withParameters:params];
         }
         self.finishedThirdQuartile = YES;
     }
@@ -702,7 +708,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             }
             if ( self.isTrackingEnabled )
             {
-                [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete100 andParameters:self.trackingParameters];
+                NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete100 };
+                [VTrackingManager trackEvent:nil withParameters:params];
             }
             self.startedVideo          = NO;
             self.finishedFirstQuartile = NO;
@@ -755,7 +762,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 }
                 if ( self.isTrackingEnabled )
                 {
-                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStart andParameters:self.trackingParameters];
+                    NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                              VTrackingParamKeyUrls : self.trackingItem.videoStart };
+                    [VTrackingManager trackEvent:nil withParameters:params];
                 }
                 self.toolbarView.playButton.selected = YES;
                 [self startToolbarTimer];
@@ -820,7 +829,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     }
                     if ( self.isTrackingEnabled )
                     {
-                        [self.trackingManager trackEventWithUrls:self.trackingItem.videoError andParameters:self.trackingParameters];
+                        NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingParamKeyUrls : self.trackingItem.videoError };
+                        [VTrackingManager trackEvent:nil withParameters:params];
                     }
                     break;
                 }
@@ -867,7 +878,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 if ( self.isTrackingEnabled )
                 {
-                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+                    NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                              VTrackingParamKeyUrls : self.trackingItem.videoStall };
+                    [VTrackingManager trackEvent:nil withParameters:params];
                 }
             }
         }
@@ -901,20 +914,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Tracking
 
-- (NSDictionary *)trackingParametersForSkipEvent
-{
-    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.previousTime ) ),
-              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.currentTime ) ) };
-}
-
-- (NSDictionary *)trackingParameters
-{
-    return @{ kTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ) };
-}
-
 - (BOOL)isTrackingEnabled
 {
-    return self.trackingItem != nil && self.trackingManager != nil;
+    return self.trackingItem != nil;
 }
 
 - (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
@@ -922,13 +924,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
     
     self.trackingItem = trackingItem;
-    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (void)disableTracking
 {
     self.trackingItem = nil;
-    self.trackingManager = nil;
 }
 
 @end

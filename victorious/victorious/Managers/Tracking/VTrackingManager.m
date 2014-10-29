@@ -2,324 +2,110 @@
 //  VTrackingManager.m
 //  victorious
 //
-//  Created by Patrick Lynch on 10/16/14.
+//  Created by Patrick Lynch on 10/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VTrackingManager.h"
-#import "VObjectManager+Private.h"
-#import <AFNetworking/AFNetworking.h>
 
-static const BOOL kLogTrackingEvents = NO;
+NSString * const VTrackingEventNameSequenceSelected                 = @"com.getvictorious.VTrackingEventNameSequenceSelected";
+NSString * const VTrackingEventNameSequenceDidAppearInStream        = @"com.getvictorious.VTrackingEventNameSequenceDidAppearInStream";
+NSString * const VTrackingEventNameVideoDidComplete25               = @"com.getvictorious.VTrackingEventNameVideoDidComplete25";
+NSString * const VTrackingEventNameVideoDidComplete50               = @"com.getvictorious.VTrackingEventNameVideoDidComplete50";
+NSString * const VTrackingEventNameVideoDidComplete75               = @"com.getvictorious.VTrackingEventNameVideoDidComplete75";
+NSString * const VTrackingEventNameVideoDidComplete100              = @"com.getvictorious.VTrackingEventNameVideoDidComplete100";
+NSString * const VTrackingEventNameVideoDidError                    = @"com.getvictorious.VTrackingEventNameVideoDidError";
+NSString * const VTrackingEventNameVideoDidSkip                     = @"com.getvictorious.VTrackingEventNameVideoDidSkip";
+NSString * const VTrackingEventNameVideoDidStall                    = @"com.getvictorious.VTrackingEventNameVideoDidStall";
+NSString * const VTrackingEventNameVideoDidStart                    = @"com.getvictorious.VTrackingEventNameVideoDidStart";
+NSString * const VTrackingEventNameUserDidVoteSequence              = @"com.getvictorious.VTrackingEventNameUserDidVoteSequence";
+NSString * const VTrackingEventNameApplicationDidEnterForeground    = @"com.getvictorious.VTrackingEventNameApplicationDidEnterForeground";
+NSString * const VTrackingEventNameApplicationDidLaunch             = @"com.getvictorious.VTrackingEventNameApplicationDidLaunch";
+NSString * const VTrackingEventNameApplicationDidEnterBackground    = @"com.getvictorious.VTrackingEventNameApplicationDidEnterBackground";
+NSString * const VTrackingEventNameApplicationFirstInstall          = @"com.getvictorious.VTrackingEventNameApplicationFirstInstall";
+NSString * const VTrackingEventNameUserDidPostComment               = @"com.getvictorious.VTrackingEventNameUserDidPostComment";
+NSString * const VTrackingEventNameRemixSelected                    = @"com.getvictorious.VTrackingEventNameRemixSelected";
+NSString * const VTrackingEventNameRemixCompleted                   = @"com.getvictorious.VTrackingEventNameRemixCompleted";
+NSString * const VTrackingEventNameRemixTrimStarted                 = @"com.getvictorious.VTrackingEventNameRemixTrimStarted";
+NSString * const VTrackingEventNameRemixTrimCompleted               = @"com.getvictorious.VTrackingEventNameRemixTrimCompleted";
 
-@interface VTrackingManager()
+NSString * const VTrackingParamKeyTimeFrom          = @"com.getvictorious.VTrackingParamKeyTimeFrom";
+NSString * const VTrackingParamKeyTimeTo            = @"com.getvictorious.VTrackingParamKeyTimeTo";
+NSString * const VTrackingParamKeyTimeCurrent       = @"com.getvictorious.VTrackingParamKeyTimeCurrent";
+NSString * const VTrackingParamKeyTimeStamp         = @"com.getvictorious.VTrackingParamKeyTimeStamp";
+NSString * const VTrackingParamKeyPageLabel         = @"com.getvictorious.VTrackingParamKeyPageLabel";
+NSString * const VTrackingParamKeyPositionX         = @"com.getvictorious.VTrackingParamKeyPositionX";
+NSString * const VTrackingParamKeyPositionY         = @"com.getvictorious.VTrackingParamKeyPositionY";
+NSString * const VTrackingParamKeyNavigiationFrom   = @"com.getvictorious.VTrackingParamKeyNavigiationFrom";
+NSString * const VTrackingParamKeyNavigiationTo     = @"com.getvictorious.VTrackingParamKeyNavigiationTo";
+NSString * const VTrackingParamKeyStreamId          = @"com.getvictorious.VTrackingParamKeyStreamId";
+NSString * const VTrackingParamKeySequenceId        = @"com.getvictorious.VTrackingParamKeySequenceId";
+NSString * const VTrackingParamKeyVoteCount         = @"com.getvictorious.VTrackingParamKeyVoteCount";
+NSString * const VTrackingParamKeyUrls              = @"com.getvictorious.VTrackingParamKeyUrls";
 
-@property (nonatomic, readonly) NSArray *registeredMacros;
-@property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
+@interface VTrackingManager ()
+
+@property (nonatomic, strong) NSMutableArray *services;
 
 @end
 
+static VTrackingManager *_sharedInstance;
+
 @implementation VTrackingManager
+
++ (VTrackingManager *)sharedInstance
+{
+    if ( _sharedInstance == nil )
+    {
+        _sharedInstance = [[self alloc] init];
+    }
+    return _sharedInstance;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self)
     {
-        _registeredMacros = @[ kTrackingKeyTimeFrom,
-                               kTrackingKeyTimeTo,
-                               kTrackingKeyTimeCurrent,
-                               kTrackingKeyTimeStamp,
-                               kTrackingKeyPageLabel,
-                               kTrackingKeyStreamId,
-                               kTrackingKeySequenceId,
-                               kTrackingKeyBallisticsCount,
-                               kTrackingKeyPositionX,
-                               kTrackingKeyPositionY,
-                               kTrackingKeyNavigiationFrom,
-                               kTrackingKeyNavigiationTo ];
-        
-        self.queuedTrackingEvents = [[NSMutableArray alloc] init];
+        _services = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
-- (void)dealloc
++ (void)trackEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
-    if ( !self.shouldIgnoreEventsInQueueOnDealloc )
-    {
-        [self sendQueuedTrackingEvents];
-    }
-}
-
-- (NSDateFormatter *)dateFormatter
-{
-    static NSDateFormatter *dateFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      dateFormatter = [[NSDateFormatter alloc] init];
-                      dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-                      dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-                      dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-                  });
-    return dateFormatter;
-}
-
-- (NSString *)percentEncodedUrlString:(NSString *)originalUrl
-{
-    if ( !originalUrl )
-    {
-        return nil;
-    }
+    NSParameterAssert( eventName != nil );
     
-    NSString *output = originalUrl;
-    output = [output stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    output = [output stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
-    output = [output stringByReplacingOccurrencesOfString:@"-" withString:@"%2D"];
-    return output;
-}
-
-- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
-{
-    if ( ![self validateUrls:urls]  )
+    [[self sharedInstance].services enumerateObjectsUsingBlock:^(id<VTrackingService> service, NSUInteger idx, BOOL *stop)
     {
-        return -1;
-    }
-    
-    __block NSUInteger numFailures = 0;
-    [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
-    {
-        if ( ![self trackEventWithUrl:url andParameters:parameters] )
-        {
-            numFailures++;
-        }
+        [service trackEventWithName:eventName withParameters:parameters];
     }];
-    
-    return numFailures;
 }
 
-- (BOOL)validateUrls:(NSArray *)urls
++ (void)addService:(id<VTrackingService>)service
 {
-    return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
+    [[self sharedInstance].services addObject:service];
 }
 
-- (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key
++ (void)removeService:(id<VTrackingService>)service
 {
-    NSParameterAssert( key != nil );
+    [[self sharedInstance].services removeObject:service];
     
-    if ( ![self validateUrls:urls] )
+    if ( [self sharedInstance].services.count == 0 )
     {
-        return NO;
-    }
-    
-    __block BOOL doesEventExistForKey = NO;
-    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
-        if ( [event.key isEqual:key] )
-        {
-            
-            if ( kLogTrackingEvents )
-            {
-                VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-            }
-            
-            doesEventExistForKey = YES;
-            *stop = YES;
-        }
-    }];
-    
-    if ( doesEventExistForKey )
-    {
-        return NO;
-    }
-    else
-    {
-        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:completeParams key:key];
-        [self.queuedTrackingEvents addObject:event];
-        
-        // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
-        
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-        }
-        return YES;
+        [self deallocateSharedInstance];
     }
 }
 
-- (void)popFrontOfQueue
++ (void)removeAllServices
 {
-    VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
-    [self trackEventWithUrls:event.urls andParameters:event.parameters];
-    [self.queuedTrackingEvents removeObjectAtIndex:0];
+    [[self sharedInstance].services removeAllObjects];
+    [self deallocateSharedInstance];
 }
 
-- (void)sendQueuedTrackingEvents
++ (void)deallocateSharedInstance
 {
-    while ( self.queuedTrackingEvents.count > 0 )
-    {
-        [self popFrontOfQueue];
-    }
-    
-    if ( kLogTrackingEvents )
-    {
-        VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
-    }
-}
-
-- (NSUInteger)numberOfQueuedEvents
-{
-    return self.queuedTrackingEvents.count;
-}
-
-- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
-{
-    BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
-    if ( !isUrlValid )
-    {
-        return NO;
-    }
-    
-    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-    
-    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.registeredMacros
-                                                           inString:url
-                                         withCorrspondingParameters:completeParams];
-    if ( !urlWithMacrosReplaced )
-    {
-        return NO;
-    }
-    
-    [self sendRequestWithUrlString:urlWithMacrosReplaced];
-    
-    return YES;
-}
-
-- (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
-{
-    // Optimization
-    if ( !parameters|| parameters.allKeys.count == 0 )
-    {
-        return originalString;
-    }
-    
-    __block NSString *output = originalString;
-    
-    [macros enumerateObjectsUsingBlock:^(NSString *macro, NSUInteger idx, BOOL *stop)
-    {
-        // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macro ];
-        if ( value != nil )
-        {
-            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
-            if ( stringWithNextMacro != nil )
-            {
-                output = stringWithNextMacro;
-            }
-        }
-    }];
-    
-    return output;
-}
-
-- (NSString *)stringFromString:(NSString *)originalString byReplacingString:(NSString *)stringToReplace withValue:(id)value
-{
-    NSParameterAssert( originalString && originalString.length > 0 );
-    NSParameterAssert( stringToReplace && stringToReplace.length > 0 );
-    
-    NSString *replacementValue = nil;
-    
-    if ( [value isKindOfClass:[NSDate class]] )
-    {
-        replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
-        replacementValue = [self percentEncodedUrlString:replacementValue];
-    }
-    else if ( [value isKindOfClass:[NSNumber class]] )
-    {
-        replacementValue = [NSString stringWithFormat:@"%.2f@", ((NSNumber *)value).floatValue];
-    }
-    else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
-    {
-        replacementValue = value;
-    }
-    
-    if ( !replacementValue )
-    {
-        return nil;
-    }
-    
-    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
-}
-
-- (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
-{
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
-    
-    if ( dictionary[ kTrackingKeyTimeStamp ] )
-    {
-        return dictionary;
-    }
-    
-    NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-    [mutable setObject:[NSDate date] forKey:kTrackingKeyTimeStamp];
-    return [NSDictionary dictionaryWithDictionary:mutable];
-}
-
-- (void)sendRequestWithUrlString:(NSString *)url
-{
-    NSURLRequest *request = [self requestWithUrl:url objectManager:[VObjectManager sharedManager]];
-    if ( request == nil )
-    {
-        return;
-    }
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-     {
-         if ( kLogTrackingEvents )
-         {
-             if ( connectionError )
-             {
-                 VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
-             }
-             else
-             {
-                 VLog( @"TRACKING :: SUCCESS with URL %@", url );
-             }
-         }
-     }];
-}
-
-- (NSURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
-{
-    if ( objectManager == nil )
-    {
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"TRACKING :: ERROR unable to create request for URL %@ using a nil object manager.", urlString );
-        }
-        return nil;
-    }
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    if ( !url )
-    {
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
-        }
-        return nil;
-    }
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [objectManager updateHTTPHeadersInRequest:request];
-    request.HTTPBody = nil;
-    request.HTTPMethod = @"GET";
-    return request;
+    _sharedInstance = nil;
 }
 
 @end

@@ -18,7 +18,6 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VLargeNumberFormatter.h"
 #import "VAsyncTestHelper.h"
-#import "VTrackingManager.h"
 #import "OCMock.h"
 
 static const NSUInteger kValidExperienceEnhancerCount = 10;

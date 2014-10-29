@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VTrackingEvent: NSObject
+@interface VTrackingEvent : NSObject
 
 - (instancetype)initWithUrls:(NSArray *)urls parameters:(NSDictionary *)parameters key:(id)key;
 

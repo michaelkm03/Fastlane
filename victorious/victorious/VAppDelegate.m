@@ -11,9 +11,7 @@
 #import "VThemeManager.h"
 #import "VReachability.h"
 
-#import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
-#import "VObjectManager+Analytics.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -30,14 +28,14 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "Flurry.h"
+#import "VApplicationTracking.h"
+#import "VFlurryTracking.h"
 
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
 
 static BOOL isRunningTests(void) __attribute__((const));
-static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VAppDelegate
 
@@ -69,39 +67,20 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
-    [[VSessionTimer sharedSessionTimer] start];
-    [self reportFirstInstall];
     
-    NSURL  *openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    [VTrackingManager addService:[[VApplicationTracking alloc] init]];
+    [VTrackingManager addService:[[VFlurryTracking alloc] init]];
+    
+    NSDictionary *installEvent = @{ VTrackingParamKeyTimeStamp : [NSDate date] };
+    [VTrackingManager trackEvent:VTrackingEventNameApplicationFirstInstall withParameters:installEvent];
+    
+    NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
-    [Flurry startSession:@"YOUR_API_KEY"];
-    
     return YES;
-}
-
-- (void)reportFirstInstall
-{
-    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
-    if (![firstInstall boolValue])
-    {
-        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
-        [[VObjectManager sharedManager] addEvents:@[installEvent]
-                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-        {
-            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
-        }
-                                        failBlock:^(NSOperation *operation, NSError *error)
-        {
-            NSLog(@"Error reporting install event: %@", [error localizedDescription]);
-        }];
-        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
-    }
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
