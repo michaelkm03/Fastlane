@@ -37,7 +37,6 @@
 {
     [super setUp];
     
-    [[LSNocilla sharedInstance] stop];
     [[LSNocilla sharedInstance] start];
     
     self.videoPlayer = [[VCVideoPlayerViewController alloc] init];

@@ -72,6 +72,7 @@
         if ( signalBlock != nil && signalBlock() )
         {
             [self signal];
+            return YES;
         }
         
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
