@@ -12,13 +12,12 @@
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
-static BOOL kIsAdPlaying = NO;
-
 @interface VLiveRailsAdViewController ()
 
 @property (nonatomic, strong) LiveRailAdManager *adManager;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
+@property (nonatomic, assign) BOOL adPlaying;
 
 @end
 
@@ -55,9 +54,18 @@ static BOOL kIsAdPlaying = NO;
         [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
 #warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
+        
         // Initialize ad manager and push it onto view stack
         VSettingManager *settingsManager = [VSettingManager sharedManager];
         NSString *pubID = [settingsManager fetchMonetizationItemByKey:kLiveRailPublisherId];
+        
+        // Check if the publisher id is blank or nil
+        if ([pubID isEqualToString:@""] || [pubID isKindOfClass:[NSNull class]] || pubID == nil)
+        {
+            [self adDidFinish:nil];
+            return;
+        }
+        
         self.adManager.frame = self.view.bounds;
         [self.adManager initAd:@{@"LR_PUBLISHER_ID":pubID}];
         [self.view addSubview:self.adManager];
@@ -119,14 +127,14 @@ static BOOL kIsAdPlaying = NO;
 
 - (BOOL)isAdPlaying
 {
-    return kIsAdPlaying;
+    return self.adPlaying;
 }
 
 #pragma mark - Ad Methods
 
 - (void)destroyAdInstance
 {
-    kIsAdPlaying = NO;
+    self.adPlaying = NO;
     self.adViewAppeared = NO;
     self.adManager.hidden = YES;
     [self.adManager stopAd];
@@ -138,10 +146,12 @@ static BOOL kIsAdPlaying = NO;
 
 - (void)startAdManager
 {
-    self.adManager = [[LiveRailAdManager alloc] init];
-    self.adManager.frame = self.view.superview.bounds; //< VERY important that this called before attmpting to instantiate
+    if (self.adManager != nil)
+    {
+        return;
+    }
 
-    [self.view.superview addSubview:self.view];
+    self.adManager = [[LiveRailAdManager alloc] init];
 }
 
 #pragma mark - Observers
@@ -240,7 +250,7 @@ static BOOL kIsAdPlaying = NO;
 
 - (void)adDidStartPlayback:(NSNotification *)notification
 {
-    kIsAdPlaying = YES;
+    self.adPlaying = YES;
     
     [self.activityIndicatorView stopAnimating];
     
