@@ -188,14 +188,14 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self hideHeader];
+             [self v_hideHeader];
          }];
     }
     else if (translation.y > 0)
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self showHeader];
+             [self v_showHeader];
          }];
     }
     

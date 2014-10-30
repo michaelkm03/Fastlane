@@ -46,7 +46,7 @@ typedef enum {
     
     self.inboxViewController = self.childViewControllers.firstObject;
     
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"]
                                  withAction:@selector(userSearchAction:)

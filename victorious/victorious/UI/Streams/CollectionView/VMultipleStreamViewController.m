@@ -53,8 +53,8 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
                                                                   andAllStreams: @[hotStream, recentStream, followingStream]
                                                                           title:NSLocalizedString(@"Home", nil)];
     streamPager.shouldDisplayMarquee = YES;
-    [streamPager addCreateSequenceButton];
-    [streamPager addUploadProgressView];
+    [streamPager v_addCreateSequenceButton];
+    [streamPager v_addUploadProgressView];
     streamPager.uploadProgressViewController.delegate = streamPager;
     
     return streamPager;
@@ -69,7 +69,7 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
                                                                   andAllStreams:@[hotStream, recentStream]
                                                                           title:NSLocalizedString(@"Community", nil)];
     streamPager.navHeaderView.showHeaderLogoImage = YES;
-    [streamPager addCreateSequenceButton];
+    [streamPager v_addCreateSequenceButton];
     
     return streamPager;
 }
@@ -98,7 +98,7 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     {
         [titles addObject:stream.name];
     }
-    [streamPager addNewNavHeaderWithTitles:titles];
+    [streamPager v_addNewNavHeaderWithTitles:titles];
     NSInteger selectedStream = [allStreams indexOfObject:streamPager.defaultStream];
     streamPager.navHeaderView.navSelector.currentIndex = selectedStream;
     streamPager.navHeaderView.delegate = streamPager;
@@ -287,11 +287,11 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 {
     if (uploadCount)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
     else
     {
-        [self hideUploads];
+        [self v_hideUploads];
     }
 }
 
@@ -311,14 +311,14 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self hideHeader];
+             [self v_hideHeader];
          }];
     }
     else if (translation.y > 0)
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self showHeader];
+             [self v_showHeader];
          }];
     }
 }

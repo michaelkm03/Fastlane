@@ -55,7 +55,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     UIViewController *settingsContainer = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
     settingsContainer.title = NSLocalizedString(@"Settings", nil);
-    [settingsContainer addNewNavHeaderWithTitles:nil];
+    [settingsContainer v_addNewNavHeaderWithTitles:nil];
     settingsContainer.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)settingsContainer;
     settingsContainer.automaticallyAdjustsScrollViewInsets = NO;
     return settingsContainer;

@@ -111,7 +111,7 @@ const CGFloat VTableContainerViewControllerStandardHeaderHeight = 100.0f;
     return VTableContainerViewControllerStandardHeaderHeight;
 }
 
-- (void)hideHeader
+- (void)v_hideHeader
 {
     if (![self isHeaderVisible])
     {
@@ -122,7 +122,7 @@ const CGFloat VTableContainerViewControllerStandardHeaderHeight = 100.0f;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)showHeader
+- (void)v_showHeader
 {
     if ([self isHeaderVisible])
     {
@@ -150,7 +150,7 @@ const CGFloat VTableContainerViewControllerStandardHeaderHeight = 100.0f;
 {
     [UIView animateWithDuration:.2f
                      animations:^{
-                         [self hideHeader];
+                         [self v_hideHeader];
                      }];
 }
 
@@ -162,14 +162,14 @@ const CGFloat VTableContainerViewControllerStandardHeaderHeight = 100.0f;
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self hideHeader];
+             [self v_hideHeader];
          }];
     }
     else if (translation.y > 0)
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self showHeader];
+             [self v_showHeader];
          }];
     }
 }

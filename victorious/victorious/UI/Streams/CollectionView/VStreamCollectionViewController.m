@@ -75,8 +75,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     
     homeStream.shouldDisplayMarquee = YES;
-    [homeStream addCreateSequenceButton];
-    [homeStream addUploadProgressView];
+    [homeStream v_addCreateSequenceButton];
+    [homeStream v_addUploadProgressView];
     homeStream.uploadProgressViewController.delegate = homeStream;
     
     return homeStream;
@@ -88,7 +88,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
     VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
-    [communityStream addCreateSequenceButton];
+    [communityStream v_addCreateSequenceButton];
     
     return communityStream;
 }
@@ -123,7 +123,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     streamColllection.title = title;
-    [streamColllection addNewNavHeaderWithTitles:titles];
+    [streamColllection v_addNewNavHeaderWithTitles:titles];
     streamColllection.navHeaderView.delegate = streamColllection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
     streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
@@ -464,11 +464,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if (uploadCount)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
     else
     {
-        [self hideUploads];
+        [self v_hideUploads];
     }
 }
 

@@ -107,7 +107,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
     if (self.isMe)

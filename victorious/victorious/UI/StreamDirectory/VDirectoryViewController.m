@@ -61,7 +61,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
 
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     
     [self refresh:self.refreshControl];
 }

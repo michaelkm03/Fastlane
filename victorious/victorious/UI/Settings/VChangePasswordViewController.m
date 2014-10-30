@@ -32,7 +32,7 @@
 {
     [super viewDidLoad];
     
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
 
     self.oldPasswordTextField.delegate =   self;
