@@ -12,8 +12,6 @@
 
 #define LOG_TRACKING_EVENTS 1
 
-static NSUInteger const kMaxPopulatedEvents = 100;
-
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
@@ -66,6 +64,20 @@ static NSUInteger const kMaxPopulatedEvents = 100;
                       dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
                   });
     return dateFormatter;
+}
+
+- (NSString *)percentEncodedUrlString:(NSString *)originalUrl
+{
+    if ( !originalUrl )
+    {
+        return nil;
+    }
+    
+    NSString *output = originalUrl;
+    output = [output stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    output = [output stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    output = [output stringByReplacingOccurrencesOfString:@"-" withString:@"%2D"];
+    return output;
 }
 
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
@@ -216,6 +228,7 @@ static NSUInteger const kMaxPopulatedEvents = 100;
     if ( [value isKindOfClass:[NSDate class]] )
     {
         replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
+        replacementValue = [self percentEncodedUrlString:replacementValue];
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {

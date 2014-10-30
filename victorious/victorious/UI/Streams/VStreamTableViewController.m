@@ -662,7 +662,6 @@
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
-    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 #pragma mark - VAnimation
