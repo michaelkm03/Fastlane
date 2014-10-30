@@ -17,6 +17,9 @@
 
 NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
+static const CGFloat kDirectoryItemBaseHeight = 223.0f;
+static const CGFloat kDirectoryItemStackHeight = 8.0f;
+
 @interface VDirectoryItemCell()
 
 @property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
@@ -28,12 +31,25 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
 @implementation VDirectoryItemCell
 
+#pragma mark - Sizing Methods
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds) * .453; //from spec, 290 width on 640
-    CGFloat height = width * 1.372;//from spec, 398 height for 290 width
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, kDirectoryItemBaseHeight);
 }
+
++ (CGFloat)desiredStreamOfStreamsHeight
+{
+    return kDirectoryItemBaseHeight + kDirectoryItemStackHeight;
+}
+
++ (CGFloat)desiredStreamOfContentHeight
+{
+    return kDirectoryItemBaseHeight;
+}
+
+#pragma mark - NSObject
 
 - (void)awakeFromNib
 {
@@ -44,6 +60,8 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
+
+#pragma mark - Property Accessors
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
@@ -56,6 +74,8 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
 }
+
+#pragma mark - UICollectionReusableView
 
 - (void)prepareForReuse
 {

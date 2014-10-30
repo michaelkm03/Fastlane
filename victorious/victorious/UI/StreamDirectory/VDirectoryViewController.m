@@ -87,6 +87,7 @@
              forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0);
     
     //Register cells
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
@@ -223,7 +224,23 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VDirectoryItemCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    
+    CGFloat width = CGRectGetWidth(collectionView.bounds);
+    width = width - flowLayout.sectionInset.left - flowLayout.sectionInset.right - flowLayout.minimumInteritemSpacing;
+    width = floorf(width * 0.5f);
+    
+    BOOL isStreamOfStreamsRow = [[self.directoryDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]];
+    
+    if (((indexPath.row % 2) == 1) && !isStreamOfStreamsRow)
+    {
+        NSIndexPath *previousIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+        isStreamOfStreamsRow = [[self.directoryDataSource itemAtIndexPath:previousIndexPath] isKindOfClass:[VStream class]];
+    }
+    
+    CGFloat height = isStreamOfStreamsRow ? [VDirectoryItemCell desiredStreamOfStreamsHeight] : [VDirectoryItemCell desiredStreamOfContentHeight];
+    
+    return CGSizeMake(width, height);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
