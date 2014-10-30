@@ -12,7 +12,6 @@
 #import "VTrackingManager.h"
 #import "VDummyModels.h"
 #import "VCVideoPlayerViewController.h"
-#import <Nocilla/Nocilla.h>
 
 @interface VCVideoPlayerViewController (UnitTest)
 
@@ -37,16 +36,12 @@
 {
     [super setUp];
     
-    [[LSNocilla sharedInstance] start];
-    
     self.videoPlayer = [[VCVideoPlayerViewController alloc] init];
     self.trackingItem = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
 }
 
 - (void)tearDown
 {
-    [[LSNocilla sharedInstance] stop];
-    
     [super tearDown];
 }
 
