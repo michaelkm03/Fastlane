@@ -156,7 +156,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        [self.view insertSubview:self.backgroundImageView belowSubview:self.collectionView];
+        self.collectionView.backgroundView = self.backgroundImageView;
     }
     else
     {
