@@ -211,7 +211,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 return;
             }
         }
-        [self setVideoOrientation:UIDeviceOrientationPortrait withCompletion:nil];
         
         if (!self.audioOutput)
         {
@@ -316,7 +315,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         AVCaptureConnection *videoConnection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
         if (videoConnection)
         {
-            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
             [self.imageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
              {
                  if (error)
@@ -374,25 +372,16 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     });
 }
 
-- (void)setVideoOrientationToCurrentDeviceOrientationWithCompletion:(void (^)(void))completion
+- (void)setVideoOrientation:(UIDeviceOrientation)orientation
 {
     dispatch_async(self.sessionQueue, ^(void)
-    {
-        [self setVideoOrientation:[[UIDevice currentDevice] orientation] withCompletion:completion];
-    });
-}
-
-- (void)setVideoOrientation:(UIDeviceOrientation)orientation withCompletion:(void (^)(void))completion
-{
-    AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
-    if (videoConnection)
-    {
-        [videoConnection v_applyDeviceOrientation:orientation];
-    }
-    if (completion)
-    {
-        completion();
-    }
+                   {
+                       AVCaptureConnection *videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
+                       if (videoConnection)
+                       {
+                           [videoConnection v_applyDeviceOrientation:orientation];
+                       }
+                   });
 }
 
 #pragma mark -

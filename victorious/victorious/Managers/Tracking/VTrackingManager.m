@@ -12,6 +12,10 @@
 
 #define LOG_TRACKING_EVENTS 1
 
+#if DEBUG && LOG_TRACKING_EVENTS
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
+
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;

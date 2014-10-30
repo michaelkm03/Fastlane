@@ -9,10 +9,16 @@
 #import "VSequence.h"
 
 #import "VRealtimeCommentsViewModel.h"
+#import "VVideoCellViewModel.h"
 
 #import "VExperienceEnhancerController.h"
 
 #import "VHistogramDataSource.h"
+
+/**
+ *  Posted whenever the server returns an updated state of this content.
+ */
+extern NSString * const VContentViewViewModelDidUpdateContentNotification;
 
 /**
  *  Posted whenever new comments are made available for a given sequence.
@@ -103,6 +109,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, assign, readonly) VContentViewType type;
 
 /**
+ *  The type of asset we are currently viewing.
+ */
+@property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
+
+/**
  *  A view model for the real time comments for the given sequence.
  */
 @property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
@@ -136,10 +147,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
 @property (nonatomic, readonly) NSURL *shareURL;
 
-/**
- *  For content type video this will be a convenient url for the videoplayer.
- */
-@property (nonatomic, readonly) NSURL *videoURL;
+@property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
+
+@property (nonatomic, readonly) float speed;
+
+@property (nonatomic, readonly) BOOL loop;
 
 /**
  *  If a video content has any real time comments this will be YES.
@@ -222,7 +234,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
 
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex;
+- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex;
 

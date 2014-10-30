@@ -210,6 +210,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                                 {
                                     [self notifyUserOfFailedMicPermission];
                                 }
+                                [self updateOrientation];
                             }
                         });
                     }];
@@ -226,6 +227,10 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             });
         }
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [self updateOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -270,6 +275,19 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)orientationDidChange:(NSNotification *)notification
+{
+    [self updateOrientation];
+}
+
+- (void)updateOrientation
+{
+    if ( !self.captureController.videoEncoder.recording )
+    {
+        [self.captureController setVideoOrientation:[[UIDevice currentDevice] orientation]];
+    }
 }
 
 #pragma mark - Permissions
@@ -398,39 +416,29 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
         __typeof(self) __weak weakSelf = self;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
-        {
-            __typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf)
-            {
-                void (^c)(void) = ^(void)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^(void)
-                    {
-                        [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
-                        [strongSelf setAllControlsEnabled:YES];
-                        
-                        [UIView animateWithDuration:kAnimationDuration
-                                         animations:^(void)
-                         {
-                             strongSelf.previewSnapshot.alpha = 0.0f;
-                             strongSelf.previewView.alpha = 1.0f;
-                             [strongSelf configureFlashButton];
-                         }
-                                         completion:^(BOOL finished)
-                         {
-                             [strongSelf restoreLivePreview];
-                         }];
-                    });
-                };
-                if (strongSelf.captureController.captureSession.sessionPreset == AVCaptureSessionPresetPhoto)
-                {
-                    c();
-                }
-                else
-                {
-                    [strongSelf.captureController setVideoOrientationToCurrentDeviceOrientationWithCompletion:c];
-                }
-            }
+         {
+             __typeof(weakSelf) strongSelf = weakSelf;
+             if (strongSelf)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^(void)
+                                {
+                                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
+                                    [strongSelf setAllControlsEnabled:YES];
+                                    
+                                    [UIView animateWithDuration:kAnimationDuration
+                                                     animations:^(void)
+                                     {
+                                         strongSelf.previewSnapshot.alpha = 0.0f;
+                                         strongSelf.previewView.alpha = 1.0f;
+                                         [strongSelf configureFlashButton];
+                                     }
+                                                     completion:^(BOOL finished)
+                                     {
+                                         [strongSelf restoreLivePreview];
+                                     }];
+                                    [strongSelf updateOrientation];
+                                });
+             }
         }];
     }
 }
@@ -581,36 +589,20 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
     typeof(self) __weak weakSelf = self;
     [self.captureController setSessionPreset:newSessionPreset completion:^(BOOL wasSet)
-    {
-        typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf)
-        {
-            void (^c)(void) = ^(void)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [strongSelf setAllControlsEnabled:YES];
-                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewView animated:YES];
-                    if (wasSet)
-                    {
-                        completion();
-                    }
-                    else
-                    {
-                        showSwitchingError();
-                    }
-                });
-            };
-            
-            if (newSessionPreset == AVCaptureSessionPresetPhoto)
-            {
-                c();
-            }
-            else
-            {
-                [strongSelf.captureController setVideoOrientationToCurrentDeviceOrientationWithCompletion:c];
-            }
-        }
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [weakSelf setAllControlsEnabled:YES];
+                            [MBProgressHUD hideAllHUDsForView:weakSelf.previewView animated:YES];
+                            if (wasSet)
+                            {
+                                completion();
+                            }
+                            else
+                            {
+                                showSwitchingError();
+                            }
+                        });
     }];
 }
 
@@ -650,37 +642,26 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)startRecording
 {
-    typeof(self) __weak weakSelf = self;
-    [self.captureController setVideoOrientationToCurrentDeviceOrientationWithCompletion:^(void)
+    if (!self.captureController.videoEncoder)
     {
-        typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf)
+        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[self temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
+        if (!encoder)
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                if (!strongSelf.captureController.videoEncoder)
-                {
-                    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[strongSelf temporaryFileURLWithExtension:VConstantMediaExtensionMP4] videoSize:kVideoSize error:nil];
-                    if (!encoder)
-                    {
-                        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:strongSelf.previewView animated:YES];
-                        hud.mode = MBProgressHUDModeText;
-                        hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
-                        [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
-                        return;
-                    }
-                    encoder.delegate = strongSelf;
-                    strongSelf.captureController.videoEncoder = encoder;
-                }
-                else
-                {
-                    strongSelf.captureController.videoEncoder.recording = YES;
-                }
-                strongSelf.switchCameraButton.enabled = NO;
-                strongSelf.switchCameraModeButton.enabled = NO;
-            });
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"VideoCaptureFailed", @"");
+            [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+            return;
         }
-    }];
+        encoder.delegate = self;
+        self.captureController.videoEncoder = encoder;
+    }
+    else
+    {
+        self.captureController.videoEncoder.recording = YES;
+    }
+    self.switchCameraButton.enabled = NO;
+    self.switchCameraModeButton.enabled = NO;
 }
 
 - (void)stopRecording
@@ -688,6 +669,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
     self.switchCameraModeButton.enabled = YES;
+    
+    [self updateOrientation];
 }
 
 - (void)configureUIforVideoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
@@ -925,7 +908,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    CGFloat progress = ABS(totalRecorded / VConstantsMaximumVideoDuration);
+    CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
                                                                              attribute:NSLayoutAttributeWidth
                                                                              relatedBy:NSLayoutRelationEqual

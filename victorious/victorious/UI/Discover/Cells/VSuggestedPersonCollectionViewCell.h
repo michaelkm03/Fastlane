@@ -21,6 +21,9 @@
 
 @property (nonatomic, strong) VUser *user;
 
+- (void)setUser:(VUser *)user
+       animated:(BOOL)animated;
+
 + (UIImage *)followedImage;
 + (UIImage *)followImage;
 
