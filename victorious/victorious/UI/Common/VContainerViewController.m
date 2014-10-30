@@ -32,6 +32,11 @@
     self.navHeaderView.delegate = self;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);

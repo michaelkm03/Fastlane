@@ -52,7 +52,6 @@
      }];
 }
 
-
 - (BOOL)prefersStatusBarHidden
 {
     return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
