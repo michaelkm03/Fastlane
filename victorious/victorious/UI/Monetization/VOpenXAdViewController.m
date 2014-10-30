@@ -11,8 +11,6 @@
 #import "VSettingManager.h"
 #import "VAdPlayerView.h"
 
-static BOOL kIsAdPlaying = NO;
-
 @interface VOpenXAdViewController () <OXMVideoAdManagerDelegate>
 
 @property (nonatomic, strong) OXMVideoAdManager *adManager;
@@ -20,6 +18,7 @@ static BOOL kIsAdPlaying = NO;
 @property (nonatomic, strong) NSMutableArray *adBreaks;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
+@property (nonatomic, assign) BOOL adPlaying;
 
 @end
 
@@ -67,14 +66,14 @@ static BOOL kIsAdPlaying = NO;
 
 - (BOOL)isAdPlaying
 {
-    return kIsAdPlaying;
+    return self.adPlaying;
 }
 
 #pragma mark - OXMVideoAdManagerDelegate
 
 - (void)videoAdManagerDidLoad:(OXMVideoAdManager *)adManager
 {
-    kIsAdPlaying = YES;
+    self.adPlaying = YES;
     NSLog(@"OpenX Ad loaded!");
     
     if ([self.delegate respondsToSelector:@selector(adDidLoadForAdViewController:)])

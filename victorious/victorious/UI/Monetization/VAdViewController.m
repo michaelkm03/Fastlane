@@ -10,8 +10,6 @@
 #import "VLiveRailsAdViewController.h"
 #import "VConstants.h"
 
-static BOOL kIsAdPlaying = NO;  //< Default flag for ad playback
-
 @interface VAdViewController ()
 
 @end
@@ -30,7 +28,7 @@ static BOOL kIsAdPlaying = NO;  //< Default flag for ad playback
 
 - (BOOL)isAdPlaying
 {
-    return kIsAdPlaying;
+    return NO;
 }
 
 - (void)startAdManager
