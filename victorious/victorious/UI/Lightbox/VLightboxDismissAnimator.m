@@ -9,6 +9,8 @@
 #import "VLightboxDismissAnimator.h"
 #import "VLightboxViewController.h"
 
+@import UIKit;
+
 @implementation VLightboxDismissAnimator
 
 - (instancetype)initWithReferenceView:(UIView *)referenceView
