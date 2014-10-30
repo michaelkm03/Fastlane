@@ -26,6 +26,11 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return [self.streamContentType isEqualToString:kVSequenceContentType];
 }
 
+- (BOOL)isStreamOfStreams
+{
+    return [self.streamContentType isEqual:kVStreamContentType];
+}
+
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
     NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
@@ -73,6 +78,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 + (VStream *)streamForChannelsDirectory
 {
+    return [self streamForHashTag:@"BLah"];
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
     VStream *directory =  [self streamForRemoteId:@"directory"

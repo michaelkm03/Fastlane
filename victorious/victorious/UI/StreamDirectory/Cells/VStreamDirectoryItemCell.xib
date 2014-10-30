@@ -15,7 +15,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="145" height="231"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sik-LB-7bi" userLabel="Stream Item Container">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sik-LB-7bi" userLabel="Stream Item Container (TopStackItem)">
                         <rect key="frame" x="0.0" y="0.0" width="145" height="223"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gXM-go-fxe">
@@ -24,8 +24,8 @@
                                     <constraint firstAttribute="width" secondItem="gXM-go-fxe" secondAttribute="height" multiplier="1:1" id="iWz-Zy-3Pc"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e">
-                                <rect key="frame" x="11" y="99" width="123" height="26"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e">
+                                <rect key="frame" x="11" y="156" width="123" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -33,15 +33,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="deE-HG-45e" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="11" id="085-OR-GTI"/>
+                            <constraint firstAttribute="trailing" secondItem="deE-HG-45e" secondAttribute="trailing" constant="11" id="f3i-ta-lO7"/>
                             <constraint firstAttribute="trailing" secondItem="gXM-go-fxe" secondAttribute="trailing" id="h6U-wK-t9o"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="deE-HG-45e" secondAttribute="bottom" id="ovT-gD-gEJ"/>
                             <constraint firstItem="gXM-go-fxe" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="sJp-cj-nVB"/>
                             <constraint firstItem="gXM-go-fxe" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="w5L-tK-KzP"/>
+                            <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="gXM-go-fxe" secondAttribute="bottom" constant="11" id="xN7-uB-MMC"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Sik-LB-7bi" firstAttribute="top" secondItem="I6G-G0-y8J" secondAttribute="top" id="8Ah-4B-mc6"/>
                 <constraint firstItem="Sik-LB-7bi" firstAttribute="leading" secondItem="I6G-G0-y8J" secondAttribute="leading" id="DcR-oy-GPM"/>
@@ -52,6 +56,7 @@
             <connections>
                 <outlet property="nameLabel" destination="deE-HG-45e" id="5gl-bA-Unx"/>
                 <outlet property="previewImageView" destination="gXM-go-fxe" id="bUL-M1-ixG"/>
+                <outlet property="streamItemContainerOrTopStackItem" destination="Sik-LB-7bi" id="BfN-Ve-t3G"/>
             </connections>
         </collectionViewCell>
     </objects>

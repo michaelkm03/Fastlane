@@ -8,21 +8,28 @@
 
 #import "VDirectoryViewController.h"
 
+// Data Source
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
 
+// ViewControllers
+#import "VNewContentViewController.h"
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
-#import "VNavigationHeaderView.h"
+
+// Menu
 #import "UIViewController+VSideMenuViewController.h"
+
+// Views
+#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
+#import "VDirectoryItemCell.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readwrite) VStreamCollectionViewDataSource *directoryDataSource;
@@ -266,12 +273,13 @@
 //        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
 //        [self.navigationController pushViewController:sos animated:YES];
 //    }
-//    else if ([item isKindOfClass:[VSequence class]])
-//    {
-//        VContentViewController *contentViewController = [[VContentViewController alloc] init];
-//        contentViewController.sequence = (VSequence *)item;
-//        [self.navigationController pushViewController:contentViewController animated:YES];
-//    }
+    else if ([item isKindOfClass:[VSequence class]])
+    {
+        VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel];
+        contentViewController.delegate = self;
+        [self.navigationController pushViewController:contentViewController animated:YES];
+    }
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -286,6 +294,21 @@
     
     return cell;
 
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    contentViewController.delegate = nil;
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    [self refresh:self.refreshControl];
+    contentViewController.delegate = nil;
 }
 
 @end
