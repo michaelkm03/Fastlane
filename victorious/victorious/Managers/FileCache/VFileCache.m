@@ -263,11 +263,9 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 1;
     }
 
     // Download the image data
-    NSError *downloadError;
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] options:9 error:&downloadError];
+    NSData *data = [self synchronousDataFromUrl:urlString];
     if ( data == nil )
     {
-        VLog( @"Error downloading image from URL:\n%@\n%@", urlString, [downloadError localizedDescription] );
         return NO;
     }
     
@@ -295,6 +293,19 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 1;
     }
     
     return didSucceed;
+}
+
+- (NSData *)synchronousDataFromUrl:(NSString *)urlString
+{
+    NSError *downloadError;
+    NSURLResponse *response;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&downloadError];
+    if ( data == nil )
+    {
+        VLog( @"Error downloading image from URL:\n%@\n%@", urlString, [downloadError localizedDescription] );
+    }
+    return data;
 }
 
 - (NSUInteger)fileSizeAtPath:(NSString *)path
