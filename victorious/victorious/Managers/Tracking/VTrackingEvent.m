@@ -8,6 +8,12 @@
 
 #import "VTrackingEvent.h"
 
+@interface VTrackingEvent ()
+
+@property (nonatomic, readwrite) NSArray *urls;
+
+@end
+
 @implementation VTrackingEvent
 
 - (instancetype)initWithUrls:(NSArray *)urls parameters:(NSDictionary *)parameters key:(id)key
@@ -20,6 +26,11 @@
         _urls = urls;
     }
     return self;
+}
+
+- (void)clearUrls
+{
+    self.urls = nil;
 }
 
 @end
