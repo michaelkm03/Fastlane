@@ -78,7 +78,6 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 + (VStream *)streamForChannelsDirectory
 {
-    return [self streamForHashTag:@"BLah"];
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
     VStream *directory =  [self streamForRemoteId:@"directory"
