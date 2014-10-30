@@ -88,7 +88,6 @@
     : UIStatusBarStyleDefault;
 }
 
-
 #pragma mark - UIWebViewDelegate
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

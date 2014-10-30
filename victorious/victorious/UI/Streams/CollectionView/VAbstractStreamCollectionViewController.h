@@ -14,7 +14,7 @@
 
 @interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate>
 
-@property (nonatomic, strong) VCollectionRefreshControl *refreshControl;///<Refresh control for the collectionview
+@property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
 @property (nonatomic, strong) VStream *defaultStream;///<The default stream
 @property (nonatomic, strong) NSArray *allStreams;///<All streams that can display

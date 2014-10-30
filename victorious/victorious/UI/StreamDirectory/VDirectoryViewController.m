@@ -17,7 +17,6 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "MBProgressHUD.h"
-#import "VCollectionRefreshControl.h"
 
 //Data Models
 #import "VStream+Fetcher.h"

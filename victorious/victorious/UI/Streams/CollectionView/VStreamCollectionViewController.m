@@ -26,7 +26,6 @@
 #import "VNavigationHeaderView.h"
 #import "VNoContentView.h"
 #import "MBProgressHUD.h"
-#import "VCollectionRefreshControl.h"
 
 //Data models
 #import "VStream+Fetcher.h"

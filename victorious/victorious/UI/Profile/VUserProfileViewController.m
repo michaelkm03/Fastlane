@@ -38,7 +38,6 @@
 #import "VFindFriendsViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "VSettingManager.h"
-#import "VCollectionRefreshControl.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
