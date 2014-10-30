@@ -170,9 +170,9 @@
         NSUInteger voteCount = enhancer.sessionVoteCount;
         if ( voteCount > 0 )
         {
-            NSDictionary *params = @{ VTrackingParamKeyVoteCount : @( voteCount ),
-                                      VTrackingParamKeySequenceId : self.sequence.remoteId,
-                                      VTrackingParamKeyUrls : enhancer.voteType.tracking.ballisticCount };
+            NSDictionary *params = @{ VTrackingKeyVoteCount : @( voteCount ),
+                                      VTrackingKeySequenceId : self.sequence.remoteId,
+                                      VTrackingKeyUrls : enhancer.voteType.tracking.ballisticCount };
             [VTrackingManager trackEvent:nil withParameters:params];
             [enhancer resetSessionVoteCount];
         }

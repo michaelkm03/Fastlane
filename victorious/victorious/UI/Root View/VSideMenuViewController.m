@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -159,7 +159,8 @@
     }
     
     [self showMenuViewController];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Side Menu" label:nil value:nil];
+    
+    [VTrackingManager trackEvent:VTrackingEventUserDidSelectMainMenu];
 }
 
 - (void)showMenuViewController

@@ -16,7 +16,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "MBProgressHUD.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
@@ -84,10 +84,7 @@
 {
     [super viewDidAppear:animated];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Started signup via email"
-                                                                 action:nil
-                                                                  label:nil
-                                                                  value:nil];
+    [VTrackingManager trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     
     [self.emailTextField becomeFirstResponder];
     self.navigationController.delegate = self;
@@ -241,16 +238,14 @@
         self.registrationModel.email = self.emailTextField.text;
         self.registrationModel.password = self.passwordTextField.text;
         
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Submitted email and password"
-                                                                     action:nil
-                                                                      label:nil
-                                                                      value:nil];
+        [VTrackingManager trackEvent:VTrackingEventUserDidSubmitSignupInfo];
         
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
                                                  userName:kNoUserName
                                              onCompletion:^(VUser *user, BOOL created)
          {
+             [VTrackingManager trackEvent:VTrackingEventSignupWithEmailDidSucceed];
              [self didSignUpWithUser:user];
          }
                                                   onError:^(NSError *error)

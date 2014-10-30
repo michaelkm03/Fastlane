@@ -8,7 +8,7 @@
 
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
 #import "VThemeManager.h"
@@ -93,13 +93,13 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Preview"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Camera Preview"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark -
@@ -137,7 +137,8 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 
 - (IBAction)deleteTapped:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventCameraUserDidSelectDelete];
+    
     CGRect deleteButtonBounds = self.deleteButton.bounds;
     CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
     self.deleteConfirmationButton.bounds = deleteButtonBounds;
@@ -165,13 +166,15 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 
 - (IBAction)deleteConfirmationTapped:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventCameraUserDidSelectDelete];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)backTapped:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pressed Back" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventCameraUserDidGoBack];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -182,7 +185,8 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
         return;
     }
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Canceled" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventCameraUserDidCancelDelete];
+    
     CGRect deleteButtonBounds = self.deleteButton.bounds;
     CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
     self.deleteButton.bounds = deleteConfirmationBounds;
@@ -216,7 +220,8 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
                                                destructiveButtonTitle:NSLocalizedString(@"Close", @"")
                                                   onDestructiveButton:^(void)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Media Capture" label:nil value:nil];
+        [VTrackingManager trackEvent:VTrackingEventCameraUserCancelMediaCapture];
+
         if (self.completionBlock)
         {
             self.completionBlock(NO, nil, nil);

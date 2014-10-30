@@ -42,18 +42,18 @@ static const BOOL kLogTrackingEvents = NO;
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingParamKeyTimeFrom           : kMacroTimeFrom,
-                                    VTrackingParamKeyTimeTo             : kMacroTimeTo,
-                                    VTrackingParamKeyTimeCurrent        : kMacroTimeCurrent,
-                                    VTrackingParamKeyTimeStamp          : kMacroTimeStamp,
-                                    VTrackingParamKeyPageLabel          : kMacroPageLabel,
-                                    VTrackingParamKeyStreamId           : kMacroStreamId,
-                                    VTrackingParamKeySequenceId         : kMacroSequenceId,
-                                    VTrackingParamKeyVoteCount    : kMacroBallisticsCount,
-                                    VTrackingParamKeyPositionX          : kMacroPositionX,
-                                    VTrackingParamKeyPositionY          : kMacroPositionY,
-                                    VTrackingParamKeyNavigiationFrom    : kMacroNavigiationFrom,
-                                    VTrackingParamKeyNavigiationTo      : kMacroNavigiationTo };
+        _parameterMacroMapping = @{ VTrackingKeyTimeFrom           : kMacroTimeFrom,
+                                    VTrackingKeyTimeTo             : kMacroTimeTo,
+                                    VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
+                                    VTrackingKeyTimeStamp          : kMacroTimeStamp,
+                                    VTrackingKeyPageLabel          : kMacroPageLabel,
+                                    VTrackingKeyStreamId           : kMacroStreamId,
+                                    VTrackingKeySequenceId         : kMacroSequenceId,
+                                    VTrackingKeyVoteCount    : kMacroBallisticsCount,
+                                    VTrackingKeyPositionX          : kMacroPositionX,
+                                    VTrackingKeyPositionY          : kMacroPositionY,
+                                    VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
+                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo };
         
         self.queuedTrackingEvents = [[NSMutableArray alloc] init];
     }
@@ -67,33 +67,6 @@ static const BOOL kLogTrackingEvents = NO;
         [self sendQueuedTrackingEvents];
     }
 }
-
-#pragma mark - VTrackingService protocol
-
-- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
-{
-    NSArray *urls = parameters[ VTrackingParamKeyUrls ];
-    
-    NSParameterAssert( urls != nil );
-    NSParameterAssert( [urls isKindOfClass:[NSArray class]] );
-    NSParameterAssert( urls.count > 0 );
-    
-    NSMutableDictionary *paramsWithMacrosAsKeys = [[NSMutableDictionary alloc] init];
-    [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop)
-    {
-        if ( [key isKindOfClass:[NSString class]] )
-        {
-            NSString *macroKey = self.parameterMacroMapping[ key ];
-            if ( macroKey )
-            {
-                paramsWithMacrosAsKeys[ macroKey ] = value;
-            }
-        }
-    }];
-    [self trackEventWithUrls:urls andParameters:[NSDictionary dictionaryWithDictionary:paramsWithMacrosAsKeys]];
-}
-
-#pragma mark -
 
 - (NSDateFormatter *)dateFormatter
 {
@@ -364,5 +337,6 @@ static const BOOL kLogTrackingEvents = NO;
     request.HTTPMethod = @"GET";
     return request;
 }
+
 
 @end

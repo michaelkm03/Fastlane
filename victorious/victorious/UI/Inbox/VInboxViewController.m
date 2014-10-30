@@ -7,7 +7,7 @@
 //
 
 #import "MBProgressHUD.h"
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VInboxViewController.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
@@ -67,13 +67,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Inbox"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Inbox"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark - Segmented Control

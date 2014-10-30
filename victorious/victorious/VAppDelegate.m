@@ -18,7 +18,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
-#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -30,6 +29,7 @@
 
 #import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
+#import "VGoogleAnalyticsTracking.h"
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -70,9 +70,10 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     [VTrackingManager addService:[[VApplicationTracking alloc] init]];
     [VTrackingManager addService:[[VFlurryTracking alloc] init]];
+    [VTrackingManager addService:[[VGoogleAnalyticsTracking alloc] init]];
     
-    NSDictionary *installEvent = @{ VTrackingParamKeyTimeStamp : [NSDate date] };
-    [VTrackingManager trackEvent:VTrackingEventNameApplicationFirstInstall withParameters:installEvent];
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date] };
+    [VTrackingManager trackEvent:VTrackingEventApplicationFirstInstall withParameters:params];
     
     NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)

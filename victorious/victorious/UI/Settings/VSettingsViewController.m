@@ -8,7 +8,7 @@
 
 @import MessageUI;
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -118,13 +118,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Settings"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Settings"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -164,7 +164,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Log Out" label:nil value:nil];
+        [VTrackingManager trackEvent:VTrackingEventUserDidLogOut];
+        
         [[VUserManager sharedInstance] logout];
         [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
         [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

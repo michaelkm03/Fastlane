@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixSelectViewController.h"
 #import "VRemixTrimViewController.h"
@@ -91,13 +91,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Select"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Remix Select"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark - Actions

@@ -8,40 +8,91 @@
 
 #import "VTrackingManager.h"
 
-NSString * const VTrackingEventNameSequenceSelected                 = @"com.getvictorious.VTrackingEventNameSequenceSelected";
-NSString * const VTrackingEventNameSequenceDidAppearInStream        = @"com.getvictorious.VTrackingEventNameSequenceDidAppearInStream";
-NSString * const VTrackingEventNameVideoDidComplete25               = @"com.getvictorious.VTrackingEventNameVideoDidComplete25";
-NSString * const VTrackingEventNameVideoDidComplete50               = @"com.getvictorious.VTrackingEventNameVideoDidComplete50";
-NSString * const VTrackingEventNameVideoDidComplete75               = @"com.getvictorious.VTrackingEventNameVideoDidComplete75";
-NSString * const VTrackingEventNameVideoDidComplete100              = @"com.getvictorious.VTrackingEventNameVideoDidComplete100";
-NSString * const VTrackingEventNameVideoDidError                    = @"com.getvictorious.VTrackingEventNameVideoDidError";
-NSString * const VTrackingEventNameVideoDidSkip                     = @"com.getvictorious.VTrackingEventNameVideoDidSkip";
-NSString * const VTrackingEventNameVideoDidStall                    = @"com.getvictorious.VTrackingEventNameVideoDidStall";
-NSString * const VTrackingEventNameVideoDidStart                    = @"com.getvictorious.VTrackingEventNameVideoDidStart";
-NSString * const VTrackingEventNameUserDidVoteSequence              = @"com.getvictorious.VTrackingEventNameUserDidVoteSequence";
-NSString * const VTrackingEventNameApplicationDidEnterForeground    = @"com.getvictorious.VTrackingEventNameApplicationDidEnterForeground";
-NSString * const VTrackingEventNameApplicationDidLaunch             = @"com.getvictorious.VTrackingEventNameApplicationDidLaunch";
-NSString * const VTrackingEventNameApplicationDidEnterBackground    = @"com.getvictorious.VTrackingEventNameApplicationDidEnterBackground";
-NSString * const VTrackingEventNameApplicationFirstInstall          = @"com.getvictorious.VTrackingEventNameApplicationFirstInstall";
-NSString * const VTrackingEventNameUserDidPostComment               = @"com.getvictorious.VTrackingEventNameUserDidPostComment";
-NSString * const VTrackingEventNameRemixSelected                    = @"com.getvictorious.VTrackingEventNameRemixSelected";
-NSString * const VTrackingEventNameRemixCompleted                   = @"com.getvictorious.VTrackingEventNameRemixCompleted";
-NSString * const VTrackingEventNameRemixTrimStarted                 = @"com.getvictorious.VTrackingEventNameRemixTrimStarted";
-NSString * const VTrackingEventNameRemixTrimCompleted               = @"com.getvictorious.VTrackingEventNameRemixTrimCompleted";
+NSString * const VTrackingEventSequenceSelected                     = @"SequenceSelected";
+NSString * const VTrackingEventSequenceDidAppearInStream            = @"SequenceDidAppearInStream";
+NSString * const VTrackingEventVideoDidComplete25                   = @"VideoDidComplete25";
+NSString * const VTrackingEventVideoDidComplete50                   = @"VideoDidComplete50";
+NSString * const VTrackingEventVideoDidComplete75                   = @"VideoDidComplete75";
+NSString * const VTrackingEventVideoDidComplete100                  = @"VideoDidComplete100";
+NSString * const VTrackingEventVideoDidError                        = @"VideoDidError";
+NSString * const VTrackingEventVideoDidSkip                         = @"VideoDidSkip";
+NSString * const VTrackingEventVideoDidStall                        = @"VideoDidStall";
+NSString * const VTrackingEventVideoDidStart                        = @"VideoDidStart";
+NSString * const VTrackingEventUserDidVoteSequence                  = @"UserDidVoteSequence";
+NSString * const VTrackingEventApplicationDidEnterForeground        = @"ApplicationDidEnterForeground";
+NSString * const VTrackingEventApplicationDidLaunch                 = @"ApplicationDidLaunch";
+NSString * const VTrackingEventApplicationDidEnterBackground        = @"ApplicationDidEnterBackground";
 
-NSString * const VTrackingParamKeyTimeFrom          = @"com.getvictorious.VTrackingParamKeyTimeFrom";
-NSString * const VTrackingParamKeyTimeTo            = @"com.getvictorious.VTrackingParamKeyTimeTo";
-NSString * const VTrackingParamKeyTimeCurrent       = @"com.getvictorious.VTrackingParamKeyTimeCurrent";
-NSString * const VTrackingParamKeyTimeStamp         = @"com.getvictorious.VTrackingParamKeyTimeStamp";
-NSString * const VTrackingParamKeyPageLabel         = @"com.getvictorious.VTrackingParamKeyPageLabel";
-NSString * const VTrackingParamKeyPositionX         = @"com.getvictorious.VTrackingParamKeyPositionX";
-NSString * const VTrackingParamKeyPositionY         = @"com.getvictorious.VTrackingParamKeyPositionY";
-NSString * const VTrackingParamKeyNavigiationFrom   = @"com.getvictorious.VTrackingParamKeyNavigiationFrom";
-NSString * const VTrackingParamKeyNavigiationTo     = @"com.getvictorious.VTrackingParamKeyNavigiationTo";
-NSString * const VTrackingParamKeyStreamId          = @"com.getvictorious.VTrackingParamKeyStreamId";
-NSString * const VTrackingParamKeySequenceId        = @"com.getvictorious.VTrackingParamKeySequenceId";
-NSString * const VTrackingParamKeyVoteCount         = @"com.getvictorious.VTrackingParamKeyVoteCount";
-NSString * const VTrackingParamKeyUrls              = @"com.getvictorious.VTrackingParamKeyUrls";
+NSString * const VTrackingEventApplicationFirstInstall              = @"ApplicationFirstInstall";;
+NSString * const VTrackingEventCreatePollSelected                   = @"CreatePollSelected";
+NSString * const VTrackingEventCreateImagePostSelected              = @"CreateImagePostSelected";
+NSString * const VTrackingEventCreateVideoPostSelected              = @"CreateVideoPostSelected";
+NSString * const VTrackingEventRemixSelected                        = @"RemixSelected";
+NSString * const VTrackingEventUserDidSelectMainMenu                = @"UserDidSelectMainMenu";
+NSString * const VTrackingEventUserDidSelectStream                  = @"UserDidSelectStream";
+NSString * const VTrackingEventUserDidSelectCreatePost              = @"UserDidSelectCreatePost";
+
+NSString * const VTrackingEventCameraPublishDidCancel               = @"CameraPublishDidCancel";
+NSString * const VTrackingEventCameraPublishDidGoBack               = @"CameraPublishDidGoBack";
+NSString * const VTrackingEventUserDidPublishContent                = @"UserDidPublishContent";
+NSString * const VTrackingEventUserDidPublishImageWithTwitter       = @"UserDidPublishImageWithTwitter";
+NSString * const VTrackingEventUserDidPublishImageWithFacebook      = @"UserDidPublishImageWithFacebook";
+NSString * const VTrackingEventUserDidPublishVideoWithTwitter       = @"UserDidPublishVideoWithTwitter";
+NSString * const VTrackingEventUserDidPublishVideoWithFacebook      = @"UserDidPublishVideoWithFacebook";
+
+NSString * const VTrackingEventCameraDidCaptureVideo                = @"CameraDidCaptureVideo";
+NSString * const VTrackingEventCameraDidCapturePhoto                = @"CameraDidCapturePhoto";
+NSString * const VTrackingEventCameraDidSwitchToVideoCapture        = @"CameraDidSwitchToVideoCapture";
+NSString * const VTrackingEventCameraDidSwitchToPhotoCapture        = @"CameraDidSwitchToPhotoCapture";
+NSString * const VTrackingEventCameraUserDidSelectDelete            = @"CameraUserDidSelectDelete";
+NSString * const VTrackingEventCameraUserDidConfirmtDelete          = @"CameraUserDidConfirmtDelete";
+NSString * const VTrackingEventCameraUserDidPickImageFromLibrary    = @"CameraUserDidPickImageFromLibrary";
+NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary    = @"CameraUserDidPickVideoFromLibrary";
+NSString * const VTrackingEventCameraUserDidGoBack                  = @"CameraUserDidGoBack";
+NSString * const VTrackingEventCameraUserDidCancelDelete            = @"CameraUserDidCancelDelete";
+NSString * const VTrackingEventCameraUserCancelMediaCapture         = @"CameraUserCancelMediaCapture";
+
+NSString * const VTrackingEventUserDidPostComment                   = @"UserDidPostComment";
+NSString * const VTrackingEventUserDidShare                         = @"UserDidShare";
+
+NSString * const VTrackingEventLoginWithFacebookSelected            = @"LoginWithFacebookSelected";
+NSString * const VTrackingEventLoginWithFacebookDidSucceed          = @"LoginWithFacebookDidSucceed";
+NSString * const VTrackingEventLoginWithFacebookDidFail             = @"LoginWithFacebookDidFail";
+NSString * const VTrackingEventLoginWithTwitterSelected             = @"LoginWithTwitterSelected";
+NSString * const VTrackingEventLoginWithTwitterDidSucceed           = @"LoginWithTwitterDidSucceed";
+NSString * const VTrackingEventLoginWithTwitterDidFailDenied        = @"LoginWithTwitterDidFailDenied";
+NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts    = @"LoginWithTwitterDidFailNoAccounts";
+NSString * const VTrackingEventLoginWithTwitterDidFailUnknown       = @"LoginWithTwitterDidFailUnknown";
+NSString * const VTrackingEventUserDidCancelLogin                   = @"UserDidCancelLogin";
+NSString * const VTrackingEventLoginWithEmailDidSucceed             = @"LoginWithEmailDidSucceed";
+NSString * const VTrackingEventLoginWithEmailDidFail                = @"LoginWithEmailDidFail";
+NSString * const VTrackingEventSignupWithEmailDidSucceed            = @"SignupWithEmailDidSucceed";
+NSString * const VTrackingEventSignupWithFacebookDidSucceed         = @"SignupWithFacebookDidSucceed";
+NSString * const VTrackingEventSignupWithWitterDidSucceed           = @"SignupWithWitterDidSucceed";
+NSString * const VTrackingEventCreateProfileDidSucceed              = @"CreateProfileDidSucceed";
+NSString * const VTrackingEventProfileDidUpdated                    = @"ProfileDidUpdated";
+NSString * const VTrackingEventUserDidLogOut                        = @"UserDidLogOut";
+NSString * const VTrackingEventUserDidSelectSignupWithEmail         = @"UserDidSelectSignupWithEmail";
+NSString * const VTrackingEventUserDidSubmitSignupInfo              = @"UserDidSubmitSignupInfo";
+
+NSString * const VTrackingKeyTimeFrom              = @"TimeFrom";
+NSString * const VTrackingKeyTimeTo                = @"TimeTo";
+NSString * const VTrackingKeyTimeCurrent           = @"TimeCurrent";
+NSString * const VTrackingKeyTimeStamp             = @"TimeStamp";
+NSString * const VTrackingKeyPageLabel             = @"PageLabel";
+NSString * const VTrackingKeyPositionX             = @"PositionX";
+NSString * const VTrackingKeyPositionY             = @"PositionY";
+NSString * const VTrackingKeyNavigiationFrom       = @"NavigiationFrom";
+NSString * const VTrackingKeyNavigiationTo         = @"NavigiationTo";
+NSString * const VTrackingKeyStreamId              = @"StreamId";
+NSString * const VTrackingKeySequenceId            = @"SequenceId";
+NSString * const VTrackingKeySequenceName          = @"SequenceName";
+NSString * const VTrackingKeyVoteCount             = @"VoteCount";
+NSString * const VTrackingKeyUrls                  = @"Urls";
+NSString * const VTrackingKeyCaptionType           = @"CaptionType";
+NSString * const VTrackingKeyActivityType          = @"ActivityType";
+NSString * const VTrackingKeySequenceCategory      = @"SequenceCategory";
+NSString * const VTrackingKeyStreamName            = @"StreamName";
 
 @interface VTrackingManager ()
 
@@ -74,12 +125,15 @@ static VTrackingManager *_sharedInstance;
 
 + (void)trackEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
-    NSParameterAssert( eventName != nil );
-    
     [[self sharedInstance].services enumerateObjectsUsingBlock:^(id<VTrackingService> service, NSUInteger idx, BOOL *stop)
-    {
-        [service trackEventWithName:eventName withParameters:parameters];
-    }];
+     {
+         [service trackEventWithName:eventName withParameters:parameters];
+     }];
+}
+
++ (void)trackEvent:(NSString *)eventName
+{
+    [self trackEvent:eventName withParameters:nil];
 }
 
 + (void)addService:(id<VTrackingService>)service

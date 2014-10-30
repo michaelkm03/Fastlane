@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
@@ -67,7 +67,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Comments"];
     [self.tableView reloadData];
     
     if (self.needsRefresh)
@@ -298,7 +298,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  VCVideoPlayerViewController.m
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
@@ -433,10 +433,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingParamKeyTimeFrom : @( CMTimeGetSeconds( self.previousTime ) ),
-                                      VTrackingParamKeyTimeTo : @( CMTimeGetSeconds( self.currentTime ) ),
-                                      VTrackingParamKeyUrls : self.trackingItem.videoSkip };
-            [VTrackingManager trackEvent:nil withParameters:params];
+            NSDictionary *params = @{ VTrackingKeyTimeFrom : @( CMTimeGetSeconds( self.previousTime ) ),
+                                      VTrackingKeyTimeTo : @( CMTimeGetSeconds( self.currentTime ) ),
+                                      VTrackingKeyUrls : self.trackingItem.videoSkip };
+            [VTrackingManager trackEvent:VTrackingEventVideoDidSkip withParameters:params];
         }
     }
 
@@ -462,14 +462,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishFirstQuartile:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play First Quartile" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete25 };
-            [VTrackingManager trackEvent:nil withParameters:params];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete25 };
+            [VTrackingManager trackEvent:VTrackingEventVideoDidComplete25 withParameters:params];
         }
         self.finishedFirstQuartile = YES;
     }
@@ -479,14 +475,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidReachMidpoint:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Halfway" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete50 };
-            [VTrackingManager trackEvent:nil withParameters:params];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete50 };
+            [VTrackingManager trackEvent:VTrackingEventVideoDidComplete50 withParameters:params];
         }
         self.finishedMidpoint = YES;
     }
@@ -496,14 +488,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishThirdQuartile:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Third Quartile" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete75 };
-            [VTrackingManager trackEvent:nil withParameters:params];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete75 };
+            [VTrackingManager trackEvent:VTrackingEventVideoDidComplete75 withParameters:params];
         }
         self.finishedThirdQuartile = YES;
     }
@@ -702,14 +690,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
-            if (self.shouldFireAnalytics)
-            {
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play to End" label:self.titleForAnalytics value:nil];
-            }
             if ( self.isTrackingEnabled )
             {
-                NSDictionary *params = @{ VTrackingParamKeyUrls : self.trackingItem.videoComplete100 };
-                [VTrackingManager trackEvent:nil withParameters:params];
+                NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
+                [VTrackingManager trackEvent:VTrackingEventVideoDidComplete100 withParameters:params];
             }
             self.startedVideo          = NO;
             self.finishedFirstQuartile = NO;
@@ -760,12 +744,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 {
                     [self.delegate videoPlayerWillStartPlaying:self];
                 }
-                if ( self.isTrackingEnabled )
-                {
-                    NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                              VTrackingParamKeyUrls : self.trackingItem.videoStart };
-                    [VTrackingManager trackEvent:nil withParameters:params];
-                }
                 self.toolbarView.playButton.selected = YES;
                 [self startToolbarTimer];
                 
@@ -787,7 +765,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if (!self.startedVideo)
                 {
                     self.startedVideo = YES;
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Start" label:self.titleForAnalytics value:nil];
+                    if ( self.isTrackingEnabled )
+                    {
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingKeyUrls : self.trackingItem.videoStart };
+                        [VTrackingManager trackEvent:VTrackingEventVideoDidStart withParameters:params];
+                    }
                 }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
@@ -829,9 +812,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     }
                     if ( self.isTrackingEnabled )
                     {
-                        NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                                  VTrackingParamKeyUrls : self.trackingItem.videoError };
-                        [VTrackingManager trackEvent:nil withParameters:params];
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingKeyUrls : self.trackingItem.videoError };
+                        [VTrackingManager trackEvent:VTrackingEventVideoDidError withParameters:params];
                     }
                     break;
                 }
@@ -878,9 +861,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 if ( self.isTrackingEnabled )
                 {
-                    NSDictionary *params = @{ VTrackingParamKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                              VTrackingParamKeyUrls : self.trackingItem.videoStall };
-                    [VTrackingManager trackEvent:nil withParameters:params];
+                    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                              VTrackingKeyUrls : self.trackingItem.videoStall };
+                    [VTrackingManager trackEvent:VTrackingEventVideoDidStall withParameters:params];
                 }
             }
         }

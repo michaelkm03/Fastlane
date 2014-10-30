@@ -37,7 +37,7 @@
 #import "VLoginViewController.h"
 
 // Analytics
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 
 
 @implementation VNewContentViewController (Actions)
@@ -103,8 +103,9 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 NSString *label = [contentViewController.viewModel.sequence.remoteId stringByAppendingPathComponent:contentViewController.viewModel.sequence.name];
-                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+                 NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
+                                           VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
+                 [VTrackingManager trackEvent:VTrackingEventRemixSelected withParameters:params];
                  
                  if (contentViewController.viewModel.type == VContentViewTypeVideo)
                  {
@@ -197,10 +198,9 @@
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
         {
             [[VThemeManager sharedThemeManager] applyStyling];
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
+                                      VTrackingKeyActivityType : activityType };
+            [VTrackingManager trackEvent:VTrackingEventUserDidShare withParameters:params];
             [self reloadInputViews];
         };
         

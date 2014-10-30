@@ -1,5 +1,5 @@
 //
-//  VAnalyticsRecorder.h
+//  VGoogleAnalyticsTracking.h
 //  victorious
 //
 //  Created by Josh Hinman on 6/5/14.
@@ -20,11 +20,15 @@ extern NSString * const kVAnalyticsEventCategoryVideo;        ///< Video playbac
 extern NSString * const kVAnalyticsEventCategoryCamera;       ///< Actions on the camera screen
 ///}
 
-@interface VAnalyticsRecorder : NSObject
+extern NSString * const kVAnalyticsKeyCategory;
+extern NSString * const kVAnalyticsKeyAction;
+extern NSString * const kVAnalyticsKeyLabel;
+extern NSString * const kVAnalyticsKeyValue;
 
-+ (VAnalyticsRecorder *)sharedAnalyticsRecorder;
+@interface VGoogleAnalyticsTracking : NSObject <VTrackingService>
 
-- (void)startAnalytics;                      ///< Call this on app launch to begin analytics tracking
++ (VGoogleAnalyticsTracking *)sharedAnalyticsRecorder;
+
 - (void)startAppView:(NSString *)screenName; ///< Call this on -viewDidAppear to send a screen view to the analytics server
 - (void)finishAppView;                       ///< Call this on -viewWillDisappear so subsequent events don't get tagged with the wrong screen name.
 

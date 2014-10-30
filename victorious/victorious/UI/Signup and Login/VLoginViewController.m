@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VLoginViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
@@ -104,13 +104,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Login"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Login"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
     
     // Stop being the navigation controller's delegate
     if (self.navigationController.delegate == self)
@@ -173,28 +173,28 @@
 - (IBAction)facebookClicked:(id)sender
 {
     [self disableButtons];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Facebook" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
-            self.profile = user;
-            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
-            {
-                [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-            }
-            else
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        });
+                       {
+                           [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
+                           self.profile = user;
+                           if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
+                           {
+                               [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
+                           }
+                           else
+                           {
+                               [self dismissViewControllerAnimated:YES completion:nil];
+                           }
+                       });
     }
                                                          onError:^(NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
+            [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookDidFail];
             [self didFailWithError:error];
             [self enableButtons];
         });
@@ -204,8 +204,7 @@
 - (IBAction)twitterClicked:(id)sender
 {
     [self disableButtons];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Twitter" label:nil value:nil];
-    
+    [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
@@ -214,7 +213,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Twitter Account Access Denied" label:nil value:nil];
+                [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
                 [self enableButtons];
                 [self twitterAccessDidFail:error];
             });
@@ -226,7 +225,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"User Has No Twitter Accounts" label:nil value:nil];
+                    [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
                     [self enableButtons];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
@@ -296,7 +295,8 @@
 
 - (IBAction)closeButtonClicked:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Cancel Login" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventUserDidCancelLogin];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -380,7 +380,9 @@
      {
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
-         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
+         
+         [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
+         
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
          {
@@ -396,7 +398,8 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
+         [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
+         
          [self enableButtons];
          [self didFailWithError:error];
      }];

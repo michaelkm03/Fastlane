@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VProfileEditViewController.h"
 #import "VSettingManager.h"
 #import "VUser.h"
@@ -42,13 +42,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Profile Edit"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Profile Edit"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -68,7 +68,7 @@
     }
     sender.enabled = NO;
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Save Profile" label:nil value:nil];
+    [VTrackingManager trackEvent:VTrackingEventProfileDidUpdated];
 
     MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");

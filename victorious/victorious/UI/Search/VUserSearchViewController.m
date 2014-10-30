@@ -8,7 +8,7 @@
 
 #import "VUserSearchViewController.h"
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
@@ -119,13 +119,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"User Search"];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"User Search"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
 }
 
 - (void)didReceiveMemoryWarning

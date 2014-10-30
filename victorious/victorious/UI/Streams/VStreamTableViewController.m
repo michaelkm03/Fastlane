@@ -49,7 +49,7 @@
 #import "VAsset.h"
 #import "VAbstractFilter.h"
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
@@ -184,7 +184,7 @@
         [self.tableView reloadRowsAtIndexPaths:@[self.lastSelectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:self.viewName];
     
     VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
     if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
@@ -197,7 +197,7 @@
 {
     [super viewWillDisappear:animated];
 
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
     
     [self.preloadImageCache removeAllObjects];
     
@@ -317,20 +317,20 @@
                        animated:YES
                      completion:nil];
     
-    NSDictionary *params = @{ VTrackingParamKeySequenceId : sequence.remoteId,
-                              VTrackingParamKeyStreamId : self.currentStream.remoteId,
-                              VTrackingParamKeyTimeStamp : [NSDate date],
-                              VTrackingParamKeyUrls : sequence.tracking.cellClick };
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick };
     [VTrackingManager trackEvent:nil withParameters:params ];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
-    NSDictionary *params = @{ VTrackingParamKeySequenceId : sequence.remoteId,
-                              VTrackingParamKeyStreamId : self.currentStream.remoteId,
-                              VTrackingParamKeyTimeStamp : [NSDate date],
-                              VTrackingParamKeyUrls : sequence.tracking.cellView };
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellView };
     [VTrackingManager trackEvent:nil withParameters:params];
     
     [cell setNeedsLayout];
