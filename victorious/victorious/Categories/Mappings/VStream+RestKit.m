@@ -42,10 +42,10 @@
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
     RKObjectMapping *sequenceMapping = [VSequence entityMapping];
     
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath != nil"]
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"streamContentType == content"]
                                                               objectMapping:[self entityMapping]]];
     
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath == nil"]
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"streamContentType != content"]
                                                               objectMapping:sequenceMapping]];
     
     return contentMapping;
