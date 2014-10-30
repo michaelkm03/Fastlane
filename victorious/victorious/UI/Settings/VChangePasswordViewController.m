@@ -13,6 +13,7 @@
 #import "VConstants.h"
 
 #import "UIViewController+VNavMenu.h"
+#import "VSettingManager.h"
 
 @interface VChangePasswordViewController () <UITextFieldDelegate, VNavigationHeaderDelegate>
 
@@ -49,6 +50,18 @@
          textField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
          textField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
      }];
+}
+
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
 }
 
 #pragma mark - Validation
