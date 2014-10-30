@@ -16,10 +16,13 @@
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
+static const NSUInteger kMaxQueuedUrls = 100;
+
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
 @property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
+@property (nonatomic, readonly) NSUInteger numberOFQueuedUrls;
 
 @end
 
@@ -139,13 +142,36 @@
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
         [self.queuedTrackingEvents addObject:event];
         
-        // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
+        // To save mememory
+        [self sendQueuedTrackingEventUrlsIfExceedMaximumCount:kMaxQueuedUrls];
         
 #if LOG_TRACKING_EVENTS
         VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
 #endif
         return YES;
     }
+}
+
+- (void)sendQueuedTrackingEventUrlsIfExceedMaximumCount:(NSUInteger)maxUrlsCount
+{
+    if ( self.numberOFQueuedUrls > maxUrlsCount )
+    {
+        [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+         {
+             [self trackEventWithUrls:event.urls andParameters:event.parameters];
+             [event clearUrls];
+         }];
+    }
+}
+
+- (NSUInteger)numberOFQueuedUrls
+{
+    __block NSUInteger count = 0;
+    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+    {
+        count += event.urls.count;
+    }];
+    return count;
 }
 
 - (void)popFrontOfQueue
