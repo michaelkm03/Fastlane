@@ -8,12 +8,12 @@
 
 SCHEME=$1
 CONFIGURATION=$2
-DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Ad Hoc 1/15/14"
+Deploy=$3
 
-shift 2
+shift 3
 
-if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" -o "$Deploy" == "" ]; then
+    echo "Usage: `basename $0` <scheme> <configuration> <deploymentDir> [app name(s) (optional)]"
     exit 1
 fi
 
@@ -55,12 +55,12 @@ BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     BuildHome=$HOME/Library/Developer/Xcode/DerivedData
     vdir=`ls -lrt $BuildHome | grep 'victorious-' | tail -1 | awk '{print $9}'`
-    Deploy=/Applications/Victorious/Apple/x86/Build/Products/
     if [ -d "$Deploy/victorious.app" ]; then
-        dt=`ls -lrt $Deploy | grep victorious.app | awk '{print $6$7$8}'`
+        dt=`ls -lrt $Deploy | grep victorious.app | awk '{print $6$7"_"$8}'`
         mv  $Deploy/victorious.app $Deploy/victorious_$dt.app
     fi
     mv $BuildHome/$vdir/Build/Products/$CONFIGURATION-iphonesimulator/victorious.app $Deploy/victorious.app
+    echo $Deploy/victorious.app
 else
     popd > /dev/null
     exit $BUILDRESULT
