@@ -6,28 +6,23 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VTrackingManager.h"
-#import "VAsyncTestHelper.h"
-#import "VObjectManager.h"
-#import "NSObject+VMethodSwizzling.h"
-
 #import <UIKit/UIKit.h>
-#import <Nocilla/Nocilla.h>
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
+#import "NSObject+VMethodSwizzling.h"
+#import "VTrackingManager.h"
 
-#undef andReturn // to make Nocilla play well with OCMock
-#undef andDo
+@interface VTrackingManager (UnitTests)
 
-static NSString * const kTestingUrl = @"http://www.example.com";
+- (void)sendRequestWithUrlString:(NSString *)url;
+
+@end
 
 @interface VTrackingManagerQueueTests : XCTestCase
 
 @property (nonatomic, strong) NSArray *urls;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
+@property (nonatomic, assign) IMP sendRequestImp;
 @property (nonatomic, assign) NSUInteger eventCount;
-@property (nonatomic, strong) VAsyncTestHelper *async;
-@property (nonatomic, assign) IMP sharedManagerImp;
 
 @end
 
@@ -37,26 +32,21 @@ static NSString * const kTestingUrl = @"http://www.example.com";
 {
     [super setUp];
     
-    [[LSNocilla sharedInstance] stop];
-    [[LSNocilla sharedInstance] start];
-    
-    self.eventCount = 10;
     self.trackingManager = [[VTrackingManager alloc] init];
-    self.urls = @[ kTestingUrl, kTestingUrl, kTestingUrl ];
     
-    self.sharedManagerImp = [VObjectManager v_swizzleClassMethod:@selector(sharedManager) withBlock:(VObjectManager *)^
-                             {
-                                 return [[VObjectManager alloc] init];
-                             }];
+    self.eventCount = 20;
+    
+    self.urls = @[ @"url", @"url", @"url" ];
 }
 
 - (void)tearDown
 {
-    [VObjectManager v_restoreOriginalImplementation:self.sharedManagerImp forClassMethod:@selector(sharedManager)];
-    
-    [[LSNocilla sharedInstance] stop];
-    
     [super tearDown];
+    
+    if ( self.sendRequestImp )
+    {
+        [VTrackingManager v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequestWithUrlString:)];
+    }
 }
 
 - (void)queueEvents:(NSUInteger)count
@@ -77,23 +67,15 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     XCTAssertEqual( self.trackingManager.numberOfQueuedEvents, self.eventCount,
                    @"Events with duplicate keys should not be added." );
     
-    
     __block NSUInteger callCount = 0;
-    __block NSUInteger expectedCallCount = self.eventCount * self.urls.count;
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 XCTAssertEqual( *status, 200 );
-                                                                 if ( ++callCount >= expectedCallCount )
-                                                                 {
-                                                                     [self.async signal];
-                                                                 }
-                                                             });
+    self.sendRequestImp = [VTrackingManager v_swizzleMethod:@selector(sendRequestWithUrlString:) withBlock:^void(NSString *url)
+                           {
+                               callCount++;
+                           }];
     
     [self.trackingManager sendQueuedTrackingEvents];
     XCTAssertEqual( self.trackingManager.numberOfQueuedEvents, (NSUInteger)0 );
-    [self.async waitForSignal:5.0f];
+    XCTAssertEqual( callCount, self.eventCount * self.urls.count );
 }
 
 - (void)testNoSendOnDealloc
@@ -103,17 +85,14 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     
     self.trackingManager.shouldIgnoreEventsInQueueOnDealloc = YES;
     
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 XCTAssert( false, @"This should never be called" );
-                                                             });
+    __block NSUInteger callCount = 0;
+    self.sendRequestImp = [VTrackingManager v_swizzleMethod:@selector(sendRequestWithUrlString:) withBlock:^void(NSString *url)
+                           {
+                               callCount++;
+                           }];
+    
     self.trackingManager = nil;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.async signal];
-    });
-    [self.async waitForSignal];
+    XCTAssertEqual( callCount, (NSUInteger)0);
 }
 
 - (void)testSendOnDealloc
@@ -124,19 +103,13 @@ static NSString * const kTestingUrl = @"http://www.example.com";
     XCTAssert( !self.trackingManager.shouldIgnoreEventsInQueueOnDealloc, @"Default value should be NO" );
     
     __block NSUInteger callCount = 0;
-    __block NSUInteger expectedCallCount = self.eventCount * self.urls.count;
-    stubRequest( @"GET", kTestingUrl ).withBody( nil ).andDo(^(NSDictionary * __autoreleasing *headers,
-                                                               NSInteger *status,
-                                                               id<LSHTTPBody> __autoreleasing *body)
-                                                             {
-                                                                 XCTAssertEqual( *status, 200 );
-                                                                 if ( ++callCount >= expectedCallCount )
-                                                                 {
-                                                                     [self.async signal];
-                                                                 }
-                                                             });
+    self.sendRequestImp = [VTrackingManager v_swizzleMethod:@selector(sendRequestWithUrlString:) withBlock:^void(NSString *url)
+                           {
+                               callCount++;
+                           }];
     
     self.trackingManager = nil;
+    XCTAssertEqual( callCount, self.eventCount * self.urls.count );
 }
 
 @end

@@ -11,10 +11,9 @@
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
 #import "NSObject+VMethodSwizzling.h"
-#import <Nocilla/Nocilla.h>
 
 static NSString * const kTestingPathRoot = @"fileself.cacheself.tests";
-static NSString * const kTestingFileUrl = @"http://www.testurl.com/";
+static NSString * const kTestingFileUrl = @"http://www.google.com/";
 
 #pragma mark - Category exposing public methods
 
@@ -62,21 +61,14 @@ static NSString * const kTestingFileUrl = @"http://www.testurl.com/";
 {
     [super setUp];
     
-    [[LSNocilla sharedInstance] stop];
-    [[LSNocilla sharedInstance] start];
-    
     [VFileSystemTestHelpers deleteCachesDirectory:kTestingPathRoot];
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCacheSubclass alloc] init];
-    
-    stubRequest( @"GET", kTestingFileUrl ).andReturnRawResponse( [@"some_data" dataUsingEncoding:NSUTF8StringEncoding] );
 }
 
 - (void)tearDown
 {
-    [[LSNocilla sharedInstance] stop];
-    
     [super tearDown];
 }
 

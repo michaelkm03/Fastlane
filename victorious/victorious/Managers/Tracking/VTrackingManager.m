@@ -10,7 +10,11 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-static const BOOL kLogTrackingEvents = NO;
+#define LOG_TRACKING_EVENTS 0
+
+#if DEBUG && LOG_TRACKING_EVENTS
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
 
 @interface VTrackingManager()
 
@@ -118,11 +122,9 @@ static const BOOL kLogTrackingEvents = NO;
         if ( [event.key isEqual:key] )
         {
             
-            if ( kLogTrackingEvents )
-            {
-                VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-            }
-            
+#if LOG_TRACKING_EVENTS
+            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
             doesEventExistForKey = YES;
             *stop = YES;
         }
@@ -134,16 +136,14 @@ static const BOOL kLogTrackingEvents = NO;
     }
     else
     {
-        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:completeParams key:key];
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
         [self.queuedTrackingEvents addObject:event];
         
         // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
         
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-        }
+#if LOG_TRACKING_EVENTS
+        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
         return YES;
     }
 }
@@ -162,10 +162,9 @@ static const BOOL kLogTrackingEvents = NO;
         [self popFrontOfQueue];
     }
     
-    if ( kLogTrackingEvents )
-    {
-        VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
-    }
+#if LOG_TRACKING_EVENTS
+    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
 }
 
 - (NSUInteger)numberOfQueuedEvents
@@ -237,14 +236,7 @@ static const BOOL kLogTrackingEvents = NO;
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
-        if ( CFNumberIsFloatType( (CFNumberRef)value ) )
-        {
-            replacementValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
-        }
-        else
-        {
-            replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
-        }
+        replacementValue = [NSString stringWithFormat:@"%@", (NSNumber *)value];
     }
     else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
     {
@@ -278,53 +270,24 @@ static const BOOL kLogTrackingEvents = NO;
 
 - (void)sendRequestWithUrlString:(NSString *)url
 {
-    NSURLRequest *request = [self requestWithUrl:url objectManager:[VObjectManager sharedManager]];
-    if ( request == nil )
-    {
-        return;
-    }
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    [[VObjectManager sharedManager] updateHTTPHeadersInRequest:request];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
-         if ( kLogTrackingEvents )
+#if LOG_TRACKING_EVENTS
+         if ( connectionError )
          {
-             if ( connectionError )
-             {
-                 VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
-             }
-             else
-             {
-                 VLog( @"TRACKING :: SUCCESS with URL %@", url );
-             }
+             VLog( @"TRACKING :: FAILURE with URL %@:: error %@", url, [connectionError localizedDescription] );
          }
+         else
+         {
+             VLog( @"TRACKING :: SUCCESS with URL %@", url );
+         }
+#endif
      }];
-}
-
-- (NSURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
-{
-    if ( objectManager == nil )
-    {
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"TRACKING :: ERROR unable to create request for URL %@ using a nil object manager.", urlString );
-        }
-        return nil;
-    }
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    if ( !url )
-    {
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
-        }
-        return nil;
-    }
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [objectManager updateHTTPHeadersInRequest:request];
-    return request;
 }
 
 @end
