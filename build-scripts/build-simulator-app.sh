@@ -12,13 +12,8 @@ Deploy=$3
 
 shift 3
 
-if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" -o "$Deploy" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> <deploymentDir> [app name(s) (optional)]"
-    exit 1
-fi
-
-if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
-    echo "App $APP_NAME not found."
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" -o "" == "$Deploy" ]; then
+    echo "Usage: `basename $0` <scheme> <configuration> <deploymentDir>"
     exit 1
 fi
 
