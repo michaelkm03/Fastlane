@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import <AFNetworking/AFNetworking.h>
 
-#define LOG_TRACKING_EVENTS 1
+#define LOG_TRACKING_EVENTS 0
 
 #if DEBUG && LOG_TRACKING_EVENTS
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
