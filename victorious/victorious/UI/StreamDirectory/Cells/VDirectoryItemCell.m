@@ -8,6 +8,9 @@
 
 #import "VDirectoryItemCell.h"
 
+// Views
+#import "VExtendedView.h"
+
 // Categories
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
@@ -22,21 +25,17 @@
 
 NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
-static const UIEdgeInsets kStackMiddleItemInsetsFromTopItem = {0, 4, -4, 4};
-static const UIEdgeInsets kStackBottomItemInsetsFromSecondItem = {0, 5, -4, 5};
-
 static const CGFloat kDirectoryItemBaseHeight = 223.0f;
 static const CGFloat kDirectoryItemStackHeight = 8.0f;
-
-inline static CGRect CGRectEdgeInset(CGRect rect, UIEdgeInsets insets) {
-    return CGRectMake(CGRectGetMinX(rect)+insets.left, CGRectGetMinY(rect)+insets.top, CGRectGetWidth(rect)-insets.left-insets.right, CGRectGetHeight(rect)-insets.top-insets.bottom);
-}
 
 @interface VDirectoryItemCell()
 
 @property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
 @property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
+@property (weak, nonatomic) IBOutlet VExtendedView *middleStack;
+@property (weak, nonatomic) IBOutlet VExtendedView *bottomStack;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
 
@@ -73,6 +72,9 @@ inline static CGRect CGRectEdgeInset(CGRect rect, UIEdgeInsets insets) {
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    
+    self.countLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font] fontWithSize:8];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
 
 #pragma mark - Property Accessors
@@ -83,6 +85,12 @@ inline static CGRect CGRectEdgeInset(CGRect rect, UIEdgeInsets insets) {
     
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
+    
+    self.countLabel.text = @"";
+    if ([streamItem isKindOfClass:[VStream class]])
+    {
+        self.countLabel.text = [NSString stringWithFormat:@"%@ %@", ((VStream *)streamItem).count, NSLocalizedString(@"ITEMS", @"")];
+    }
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
@@ -98,21 +106,8 @@ inline static CGRect CGRectEdgeInset(CGRect rect, UIEdgeInsets insets) {
         return;
     }
     
-    // Add the stack UI
-    CGRect middleItemFrame = CGRectEdgeInset(self.streamItemContainerOrTopStackItem.frame, kStackMiddleItemInsetsFromTopItem);
-    UIView *middleItem = [[UIView alloc] initWithFrame:middleItemFrame];
-    middleItem.backgroundColor = [UIColor lightGrayColor];
-    [self.contentView addSubview:middleItem];
-    
-    CGRect bottomItemFrame = CGRectEdgeInset(middleItemFrame, kStackBottomItemInsetsFromSecondItem);
-    UIView *botomItem = [[UIView alloc] initWithFrame:bottomItemFrame];
-    botomItem.backgroundColor = [UIColor darkGrayColor];
-    [self.contentView addSubview:botomItem];
-    
-    [self.contentView bringSubviewToFront:botomItem];
-    [self.contentView bringSubviewToFront:middleItem];
-    [self.contentView bringSubviewToFront:self.streamItemContainerOrTopStackItem];
-
+    self.bottomStack.hidden = NO;
+    self.middleStack.hidden = NO;
 }
 
 #pragma mark - UICollectionReusableView
@@ -122,6 +117,8 @@ inline static CGRect CGRectEdgeInset(CGRect rect, UIEdgeInsets insets) {
     [super prepareForReuse];
     
     self.nameLabel.frame = self.originalNameLabelFrame;
+    self.bottomStack.hidden = YES;
+    self.middleStack.hidden = YES;
 }
 
 @end
