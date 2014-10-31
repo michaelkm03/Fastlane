@@ -21,8 +21,10 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
-
+#import "VTrackingManager.h"
 #import "VConstants.h"
+#import "VSettingManager.h"
+#import "VObjectManager.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
@@ -34,6 +36,12 @@
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
+
+@interface VAppDelegate ()
+
+@property (strong, nonatomic) VTrackingManager *trackingManager;
+
+@end
 
 static BOOL isRunningTests(void) __attribute__((const));
 
@@ -68,6 +76,8 @@ static BOOL isRunningTests(void) __attribute__((const));
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
+    [self reportFirstInstall];
+    
     [VTrackingManager addService:[[VApplicationTracking alloc] init]];
     [VTrackingManager addService:[[VFlurryTracking alloc] init]];
     [VTrackingManager addService:[[VGoogleAnalyticsTracking alloc] init]];
@@ -80,6 +90,8 @@ static BOOL isRunningTests(void) __attribute__((const));
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
+    
+    [self initializeTracking];
     
     return YES;
 }
@@ -127,10 +139,15 @@ static BOOL isRunningTests(void) __attribute__((const));
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterBackground };
+    [VTrackingManager trackEvent:VTrackingEventApplicationDidEnterBackground withParameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterForeground };
+    [VTrackingManager trackEvent:VTrackingEventApplicationDidEnterForeground withParameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -151,6 +168,34 @@ static BOOL isRunningTests(void)
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
+}
+
+#pragma mark - VTrackingManager and App Event Tracking
+
+- (void)initializeTracking
+{
+    self.trackingManager = [[VTrackingManager alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
+}
+
+- (void)onInitResponse:(NSNotification *)notification
+{
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
+    [VTrackingManager trackEvent:VTrackingEventApplicationDidLaunch withParameters:params];
+    
+    // Only receive this once
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
+}
+
+- (void)reportFirstInstall
+{
+    NSString *key = @"appInstalledDefaultsKey";
+    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:key];
+    if ( ![firstInstall boolValue] )
+    {
+        [VTrackingManager trackEvent:VTrackingEventApplicationFirstInstall];
+        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:key];
+    }
 }
 
 @end

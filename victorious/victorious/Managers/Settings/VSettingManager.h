@@ -27,6 +27,8 @@ extern NSString * const kVPrivacyUrl;
 extern NSString * const kVAppStoreURL;
 extern NSString * const kVChannelURLSupport;
 
+@class VTracking;
+
 @interface VSettingManager : NSObject
 
 + (instancetype)sharedManager;
@@ -43,6 +45,9 @@ extern NSString * const kVChannelURLSupport;
 - (void)clearVoteTypes;
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
 
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking;
+
 @property (nonatomic, readonly) NSArray *voteTypes;
+@property (nonatomic, readonly) VTracking *applicationTracking;
 
 @end

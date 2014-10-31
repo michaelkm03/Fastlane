@@ -527,8 +527,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         return NO;
     }
     
-    NSTimeInterval difference = current - previous;
-    return previous > current || difference > kTimeDifferenceLimitForSkipEvent;
+    BOOL didSkipForward = current - previous >= kTimeDifferenceLimitForSkipEvent;
+    BOOL didSkipBackward = previous - current >= kTimeDifferenceLimitForSkipEvent;
+    return didSkipBackward || didSkipForward;
 }
 
 - (void)removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:(AVPlayerItem *)currentItem

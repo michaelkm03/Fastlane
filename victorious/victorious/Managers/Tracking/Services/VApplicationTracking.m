@@ -49,7 +49,7 @@ static const BOOL kLogTrackingEvents = NO;
                                     VTrackingKeyPageLabel          : kMacroPageLabel,
                                     VTrackingKeyStreamId           : kMacroStreamId,
                                     VTrackingKeySequenceId         : kMacroSequenceId,
-                                    VTrackingKeyVoteCount    : kMacroBallisticsCount,
+                                    VTrackingKeyVoteCount          : kMacroBallisticsCount,
                                     VTrackingKeyPositionX          : kMacroPositionX,
                                     VTrackingKeyPositionY          : kMacroPositionY,
                                     VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,

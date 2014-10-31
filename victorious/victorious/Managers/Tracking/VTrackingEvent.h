@@ -12,6 +12,8 @@
 
 - (instancetype)initWithUrls:(NSArray *)urls parameters:(NSDictionary *)parameters key:(id)key;
 
+- (void)clearUrls;
+
 @property (nonatomic, readonly) id key;
 @property (nonatomic, readonly) NSDictionary *parameters;
 @property (nonatomic, readonly) NSArray *urls;

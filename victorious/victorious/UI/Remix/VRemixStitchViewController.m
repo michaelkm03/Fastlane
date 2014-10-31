@@ -16,6 +16,8 @@
 #import "VCameraViewController.h"
 #import "VThemeManager.h"
 
+static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
+
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView             *thumbnail;
@@ -178,7 +180,10 @@
 
     AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    assetGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+    assetGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+    CMTime timeToSample = CMTimeMakeWithSeconds(kVideoPreviewSnapshotInSeconds, asset.duration.timescale);
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:timeToSample actualTime:NULL error:NULL];
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     publishViewController.previewImage = previewImage;
