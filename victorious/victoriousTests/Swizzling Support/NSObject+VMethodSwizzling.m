@@ -17,7 +17,10 @@
     Method originalMethod = class_getInstanceMethod(self, aOriginalMethod);
     Method mockMethod = class_getInstanceMethod(self, aNewMethod);
     method_exchangeImplementations(originalMethod, mockMethod);
-    aBlock();
+    if ( aBlock )
+    {
+        aBlock();
+    }
     method_exchangeImplementations(mockMethod, originalMethod);
 }
 
@@ -28,7 +31,10 @@
     // exchange
     IMP imp_newBlock = imp_implementationWithBlock(aNewBlock);
     method_setImplementation(originalMethod, imp_newBlock);
-    aBlock();
+    if ( aBlock )
+    {
+        aBlock();
+    }
     method_setImplementation(originalMethod, imp_original);
 }
 
@@ -53,7 +59,10 @@
     Method originalMethod = class_getClassMethod(self, aOriginalMethod);
     Method mockMethod = class_getClassMethod(self, aNewMethod);
     method_exchangeImplementations(originalMethod, mockMethod);
-    aBlock();
+    if ( aBlock )
+    {
+        aBlock();
+    }
     method_exchangeImplementations(mockMethod, originalMethod);
 }
 
@@ -64,7 +73,10 @@
     // exchange
     IMP imp_newBlock = imp_implementationWithBlock(aNewBlock);
     method_setImplementation(originalMethod, imp_newBlock);
-    aBlock();
+    if ( aBlock )
+    {
+        aBlock();
+    }
     method_setImplementation(originalMethod, imp_original);
 }
 
