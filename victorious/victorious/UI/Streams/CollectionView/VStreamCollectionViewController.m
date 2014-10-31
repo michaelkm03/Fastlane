@@ -181,8 +181,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
-    
-    [self refresh:self.refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,6 +188,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [super viewWillAppear:animated];
 
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
+    
+    if (!self.streamDataSource.count)
+    {
+        [self refresh:self.refreshControl];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -450,7 +453,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.currentStream = self.allStreams[index];
     
-    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading)
+    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
+    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
     {
         [self refresh:self.refreshControl];
     }
