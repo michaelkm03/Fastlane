@@ -40,13 +40,12 @@
 + (RKDynamicMapping *)listByStreamMapping
 {
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
-    RKObjectMapping *sequenceMapping = [VSequence entityMapping];
+
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type != nil"]
+                                                              objectMapping:[VStream entityMapping]]];
     
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"streamContentType == content"]
-                                                              objectMapping:[self entityMapping]]];
-    
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"streamContentType != content"]
-                                                              objectMapping:sequenceMapping]];
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type == nil"]
+                                                              objectMapping:[VSequence entityMapping]]];
     
     return contentMapping;
 }

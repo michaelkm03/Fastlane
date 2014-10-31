@@ -29,7 +29,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 - (BOOL)isStreamOfStreams
 {
-    return [self.streamContentType isEqual:kVStreamContentTypeStream];
+    return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
 }
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
