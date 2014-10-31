@@ -2152,9 +2152,9 @@
 		0314D43919B46B5E00FA363C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				BE88FF991A001D3D0064AB28 /* VStreamCellHeaderView-C.xib */,
 				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
 				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
+				BE88FF991A001D3D0064AB28 /* VStreamCellHeaderView-C.xib */,
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 				0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */,
