@@ -259,7 +259,7 @@
 {
     VStreamItem *item = [self.directoryDataSource itemAtIndexPath:indexPath];
     //Commented out code is the inital logic for supporting other stream types / sequences in streams.
-    if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
+    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
         NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
         VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
@@ -268,11 +268,11 @@
         VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
         [self.navigationController pushViewController:streamContainer animated:YES];
     }
-//    else if ([item isKindOfClass:[VStream class]])
-//    {
-//        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
-//        [self.navigationController pushViewController:sos animated:YES];
-//    }
+    else if ([item isKindOfClass:[VStream class]])
+    {
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
+        [self.navigationController pushViewController:sos animated:YES];
+    }
     else if ([item isKindOfClass:[VSequence class]])
     {
         VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item];

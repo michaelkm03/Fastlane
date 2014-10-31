@@ -14,7 +14,8 @@
 #import "VUser.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
-static NSString * const kVStreamContentType = @"stream";
+static NSString * const kVStreamContentTypeContent = @"content";
+static NSString * const kVStreamContentTypeStream = @"stream";
 
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
@@ -23,12 +24,12 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 - (BOOL)onlyContainsSequences
 {
-    return [self.streamContentType isEqualToString:kVSequenceContentType];
+    return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
 }
 
 - (BOOL)isStreamOfStreams
 {
-    return [self.streamContentType isEqual:kVStreamContentType];
+    return [self.streamContentType isEqual:kVStreamContentTypeStream];
 }
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
