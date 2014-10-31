@@ -78,6 +78,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deE-HG-45e" secondAttribute="trailing" constant="10" id="76a-Ek-EgZ"/>
                             <constraint firstAttribute="bottom" secondItem="dXz-4U-iLz" secondAttribute="bottom" id="E7t-2t-Khq"/>
                             <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="gXM-go-fxe" secondAttribute="bottom" constant="13" id="J8y-7k-iBF"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="JBv-WH-TQ0"/>
@@ -90,6 +91,7 @@
                             <constraint firstItem="gXM-go-fxe" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="sJp-cj-nVB"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="ujn-4O-CVm"/>
                             <constraint firstItem="gXM-go-fxe" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="w5L-tK-KzP"/>
+                            <constraint firstItem="deE-HG-45e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="10" id="zKe-FB-VEB"/>
                         </constraints>
                     </view>
                 </subviews>
