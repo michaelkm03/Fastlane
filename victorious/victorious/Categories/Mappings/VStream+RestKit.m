@@ -24,6 +24,7 @@
                                   @"stream_content_type"     :   VSelectorName(streamContentType),
                                   @"name"           :   VSelectorName(name),
                                   @"preview_image"  :   VSelectorName(previewImagesObject),
+                                  @"count"          :   VSelectorName(count),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
