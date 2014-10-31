@@ -162,7 +162,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
         
         // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macroValue ];
+        id value = parameters[ macroKey ];
         if ( value != nil )
         {
             NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value];
@@ -270,7 +270,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
 
 #pragma mark - VTrackingDelegate
 
-- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+- (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
     NSArray *urls = parameters[ VTrackingKeyUrls ];
     if ( urls )

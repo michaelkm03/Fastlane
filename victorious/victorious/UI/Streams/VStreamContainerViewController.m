@@ -190,7 +190,7 @@
         if ( streamName )
         {
             NSDictionary *params = @{ VTrackingKeyStreamName : streamName };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream withParameters:params];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
         }
     }
 }

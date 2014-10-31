@@ -236,7 +236,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Camera"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
     
     if (self.inRecordVideoState)
     {
@@ -247,7 +247,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

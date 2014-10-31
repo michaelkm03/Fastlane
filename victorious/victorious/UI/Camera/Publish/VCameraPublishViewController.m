@@ -202,13 +202,13 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Camera Publish"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraPublishDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraPublishDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -790,7 +790,7 @@ static const CGFloat kShareMargin = 34.0f;
             else
             {
                 NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithFacebook withParameters:params];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithFacebook parameters:params];
             }
         }
         
@@ -812,7 +812,7 @@ static const CGFloat kShareMargin = 34.0f;
             else
             {
                 NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithTwitter withParameters:params];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithTwitter parameters:params];
             }
         }
     }];

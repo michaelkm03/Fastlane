@@ -67,13 +67,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Inbox"];
+    [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
 }
 
 #pragma mark - Segmented Control

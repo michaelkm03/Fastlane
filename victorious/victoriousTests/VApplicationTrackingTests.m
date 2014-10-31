@@ -97,8 +97,8 @@
 
 - (void)testTrackEventValues
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
+    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
+    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
@@ -107,8 +107,8 @@
 
 - (void)testTrackEventValuesInvalid
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
+    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
+    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters;
@@ -128,8 +128,8 @@
 
 - (void)testMacroReplacement
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
+    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
+    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allKeys[1];
     NSString *macro3 = @"%%unregistered_macro%%";
     NSString *string = [NSString stringWithFormat:@"%@/%@/%@", macro1, macro2, macro3 ];
     
@@ -139,8 +139,8 @@
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2", macro3 : @"value3" };
     output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping inString:string withCorrspondingParameters:parameters];
-    expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ macro1 ]];
-    expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:parameters[ macro2 ]];
+    expected = [string stringByReplacingOccurrencesOfString:self.applicaitonTracking.parameterMacroMapping[macro1] withString:parameters[ macro1 ]];
+    expected = [expected stringByReplacingOccurrencesOfString:self.applicaitonTracking.parameterMacroMapping[macro2] withString:parameters[ macro2 ]];
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced." );
 }
 

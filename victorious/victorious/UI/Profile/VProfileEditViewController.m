@@ -42,13 +42,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Profile Edit"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventProfileEditDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventProfileEditDidAppear];
 }
 
 - (BOOL)prefersStatusBarHidden

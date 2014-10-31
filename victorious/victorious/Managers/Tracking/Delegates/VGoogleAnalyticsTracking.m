@@ -35,22 +35,11 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
 @interface VGoogleAnalyticsTracking ()
 
 @property (nonatomic, strong) id<GAITracker> tracker;
-@property (nonatomic)         BOOL           inBackground;
+@property (nonatomic) BOOL inBackground;
 
 @end
 
 @implementation VGoogleAnalyticsTracking
-
-+ (VGoogleAnalyticsTracking *)sharedAnalyticsRecorder
-{
-    static VGoogleAnalyticsTracking *sharedAnalyticsRecorder;
-    static dispatch_once_t     onceToken;
-    dispatch_once(&onceToken, ^(void)
-    {
-        sharedAnalyticsRecorder = [[VGoogleAnalyticsTracking alloc] init];
-    });
-    return sharedAnalyticsRecorder;
-}
 
 - (id)init
 {
@@ -67,19 +56,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     }
     return self;
 }
-
-- (void)startAppView:(NSString *)screenName
-{
-    [self.tracker set:kGAIScreenName value:screenName];
-    [self.tracker send:[[GAIDictionaryBuilder createAppView] build]];
-    CLSLog(@"AppView: %@", screenName);
-}
-
-- (void)finishAppView
-{
-    [self.tracker set:kGAIScreenName value:nil];
-}
-
 - (void)sendEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value
 {
     GAIDictionaryBuilder *eventDictionary = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
@@ -100,7 +76,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
 
 #pragma mark - VTrackingDelegate delegate
 
-- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+- (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
     NSDictionary *googleAnalyticsParams = [self dictionaryWithParametersFromEventName:eventName params:parameters];
     if ( googleAnalyticsParams )
@@ -111,6 +87,69 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         NSNumber *value = googleAnalyticsParams[ kVAnalyticsKeyValue ];
         [self sendEventWithCategory:category action:action label:label value:value];
     }
+}
+
+- (void)eventStarted:(NSString *)eventName parameters:(NSDictionary *)parameters
+{
+    NSString *screenName = [self screenNameForEventName:eventName parameters:parameters];
+    if ( screenName )
+    {
+        NSLog( @" -- -- -- - - -- - - %@ -- --- ---- -- -", screenName );
+        [self.tracker set:kGAIScreenName value:screenName];
+        [self.tracker send:[[GAIDictionaryBuilder createAppView] build]];
+        CLSLog( @"AppView: %@", screenName );
+    }
+}
+
+- (void)eventEnded:(NSString *)eventName parameters:(NSDictionary *)parameters duration:(NSTimeInterval)duration
+{
+    [self.tracker set:kGAIScreenName value:nil];
+}
+
+- (NSString *)screenNameForEventName:(NSString *)eventName parameters:(NSDictionary *)parameters
+{
+    if ( [eventName isEqualToString:VTrackingEventCameraPublishDidAppear] )
+    {
+        return @"Camera Publish";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventCameraDidAppear] )
+    {
+        return @"Camera";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventCommentsDidAppear] )
+    {
+        return @"Comments";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventCameraPreviewDidAppear] )
+    {
+        return @"Camera Preview";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventProfileEditDidAppear] )
+    {
+        return @"Profile Edit";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventRemixStitchDidAppear] )
+    {
+        return @"Remix Stitch";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventSetExpirationDidAppear] )
+    {
+        return @"Set Expiration";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventSettingsDidAppear] )
+    {
+        return @"Settings";
+    }
+    else if ( [eventName isEqualToString:VTrackingEventStreamDidAppear] )
+    {
+        return parameters[ VTrackingKeyStreamName ];
+    }
+    else if ( [eventName isEqualToString:VTrackingEventSearchDidAppear] )
+    {
+        return @"User Search";
+    }
+    
+    return nil;
 }
 
 /**

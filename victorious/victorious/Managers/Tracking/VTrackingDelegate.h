@@ -13,6 +13,12 @@
  */
 @protocol VTrackingDelegate <NSObject>
 
-- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters;
+- (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters;
+
+@optional
+
+- (void)eventStarted:(NSString *)eventName parameters:(NSDictionary *)parameters;
+
+- (void)eventEnded:(NSString *)eventName parameters:(NSDictionary *)parameters duration:(NSTimeInterval)duration;
 
 @end

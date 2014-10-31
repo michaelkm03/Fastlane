@@ -16,16 +16,24 @@
 
 @implementation VTrackingEvent
 
-- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters key:(id)key
+- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(id)eventId
 {
     self = [super init];
     if (self)
     {
-        _key = key;
+        _eventId = eventId;
         _parameters = parameters;
         _name = name;
+        
+        _dateCreated = [NSDate date];
     }
     return self;
+}
+
+- (void)minimize
+{
+    _parameters = nil;
+    _name = nil;
 }
 
 @end

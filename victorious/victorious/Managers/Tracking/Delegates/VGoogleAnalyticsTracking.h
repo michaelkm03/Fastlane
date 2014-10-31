@@ -27,11 +27,6 @@ extern NSString * const kVAnalyticsKeyValue;
 
 @interface VGoogleAnalyticsTracking : NSObject <VTrackingDelegate>
 
-+ (VGoogleAnalyticsTracking *)sharedAnalyticsRecorder;
-
-- (void)startAppView:(NSString *)screenName; ///< Call this on -viewDidAppear to send a screen view to the analytics server
-- (void)finishAppView;                       ///< Call this on -viewWillDisappear so subsequent events don't get tagged with the wrong screen name.
-
 /**
  Send an event hit to the analytics server
  */

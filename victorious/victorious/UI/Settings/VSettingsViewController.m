@@ -118,13 +118,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Settings"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventSettingsDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

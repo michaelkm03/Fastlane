@@ -93,13 +93,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Set Expiration"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventSetExpirationDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventSetExpirationDidAppear];
 }
 
 - (BOOL)shouldAutorotate

@@ -78,6 +78,17 @@ extern NSString * const VTrackingEventUserDidLogOut;
 extern NSString * const VTrackingEventUserDidSelectSignupWithEmail;
 extern NSString * const VTrackingEventUserDidSubmitSignupInfo;
 
+extern NSString * const VTrackingEventCameraPublishDidAppear;
+extern NSString * const VTrackingEventCameraDidAppear;
+extern NSString * const VTrackingEventCommentsDidAppear;
+extern NSString * const VTrackingEventCameraPreviewDidAppear;
+extern NSString * const VTrackingEventProfileEditDidAppear;
+extern NSString * const VTrackingEventRemixStitchDidAppear;
+extern NSString * const VTrackingEventSetExpirationDidAppear;
+extern NSString * const VTrackingEventSettingsDidAppear;
+extern NSString * const VTrackingEventStreamDidAppear;
+extern NSString * const VTrackingEventSearchDidAppear;
+
 extern NSString * const VTrackingKeyTimeFrom;
 extern NSString * const VTrackingKeyTimeTo;
 extern NSString * const VTrackingKeyTimeCurrent;
@@ -96,3 +107,4 @@ extern NSString * const VTrackingKeyCaptionType;
 extern NSString * const VTrackingKeyActivityType;
 extern NSString * const VTrackingKeySequenceCategory;
 extern NSString * const VTrackingKeyStreamName;
+extern NSString * const VTrackingKeyAppViewName;

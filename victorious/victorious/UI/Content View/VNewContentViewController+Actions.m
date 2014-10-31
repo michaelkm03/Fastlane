@@ -105,7 +105,7 @@
              {
                  NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
                                            VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
-                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected withParameters:params];
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected parameters:params];
                  
                  if (contentViewController.viewModel.type == VContentViewTypeVideo)
                  {
@@ -200,7 +200,7 @@
             [[VThemeManager sharedThemeManager] applyStyling];
             NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
                                       VTrackingKeyActivityType : activityType };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare withParameters:params];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
             [self reloadInputViews];
         };
         

@@ -9,7 +9,7 @@
 #import "VFlurryTracking.h"
 #import "Flurry.h"
 
-#define FLURRY_TRACKING_LOGGING_ENABLED 1
+#define FLURRY_TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -35,7 +35,7 @@ static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
 
 #pragma mark - VTrackingDelegate protocol
 
-- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+- (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
     [Flurry logEvent:eventName withParameters:parameters];
     
@@ -43,7 +43,7 @@ static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
     VLog( @"Flurry Tracking :: Event: %@", eventName );
 #endif
     
-    // [Flurry endTimedEvent:@"Article_Read" withParameters:nil];
+    // [Flurry endTimedEvent:@"Article_Read" parameters:nil];
     
     /*
     // Here's more stuff you can do with Flurry, copied from the documentation

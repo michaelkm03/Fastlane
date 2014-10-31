@@ -184,7 +184,8 @@
         [self.tableView reloadRowsAtIndexPaths:@[self.lastSelectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:self.viewName];
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
     
     VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
     if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
@@ -196,12 +197,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
     [self.preloadImageCache removeAllObjects];
     
-#warning    [self.trackingManager sendQueuedTrackingEvents];
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 - (BOOL)shouldAutorotate
@@ -272,7 +274,7 @@
         [self refresh:nil];
     }
     
-#warning [self.trackingManager sendQueuedTrackingEvents];
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -321,7 +323,7 @@
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -331,7 +333,7 @@
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceDidAppearInStream withParameters:params];
+    [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
     
     [cell setNeedsLayout];
     [cell setNeedsDisplay];

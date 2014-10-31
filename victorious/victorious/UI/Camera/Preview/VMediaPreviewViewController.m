@@ -93,13 +93,13 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Camera Preview"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraPreviewDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraPreviewDidAppear];
 }
 
 #pragma mark -

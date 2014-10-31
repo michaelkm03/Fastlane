@@ -10,10 +10,13 @@
 
 @interface VTrackingEvent : NSObject
 
-- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters key:(id)key;
+- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(id)eventId;
 
-@property (nonatomic, readonly) id key;
+- (void)minimize;
+
+@property (nonatomic, readonly) id eventId;
 @property (nonatomic, readonly) NSDictionary *parameters;
 @property (nonatomic, readonly) NSString *name;
+@property (nonatomic, strong) NSDate *dateCreated;
 
 @end

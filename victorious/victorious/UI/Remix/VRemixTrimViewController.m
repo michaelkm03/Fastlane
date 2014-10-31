@@ -75,7 +75,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Remix Trim"];
+    [[VTrackingManager sharedInstance] startEvent:@"Remix Trim"];
     
     //  Disable iOS 7 Back Gesture
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -85,7 +85,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:@"Remix Trim"];
     
     //  Enable iOS 7 Back Gesture
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;

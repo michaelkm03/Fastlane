@@ -67,7 +67,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] startAppView:@"Comments"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCommentsDidAppear];
     [self.tableView reloadData];
     
     if (self.needsRefresh)
@@ -298,7 +298,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VGoogleAnalyticsTracking sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
 }
 
 @end
