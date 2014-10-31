@@ -83,6 +83,10 @@
     
     [self.view addConstraints:@[self.headerYConstraint]];
     
+    //Register cells
+    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
+    
     self.directoryDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.stream];
     self.directoryDataSource.delegate = self;
     self.directoryDataSource.collectionView = self.collectionView;
@@ -95,10 +99,6 @@
     [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0);
-    
-    //Register cells
-    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
     
     [self refresh:self.refreshControl];
 }

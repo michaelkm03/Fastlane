@@ -108,6 +108,8 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
     
     self.bottomStack.hidden = NO;
     self.middleStack.hidden = NO;
+    
+    [self.streamItemContainerOrTopStackItem layoutIfNeeded];
 }
 
 #pragma mark - UICollectionReusableView
