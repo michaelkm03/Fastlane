@@ -33,6 +33,10 @@ NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
 
+//Monetization
+NSString * const kLiveRailPublisherId = @"monetization.LiveRailsPublisherID";
+NSString * const kOpenXVastTag = @"monetization.OpenXVastTag";
+
 //URLs
 NSString * const kVTermsOfServiceURL = @"url.tos";
 NSString * const kVAppStoreURL = @"url.appstore";
@@ -190,6 +194,17 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     {
         return AVCaptureSessionPresetMedium;
     }
+}
+
+- (NSString *)fetchMonetizationItemByKey:(NSString *)key
+{
+    NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    if ([self settingEnabledForKey:key])
+    {
+        return value;
+    }
+    
+    return @"";
 }
 
 @end

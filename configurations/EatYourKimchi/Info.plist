@@ -13,26 +13,18 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}EatYourKimchi</string>
+				<string>fb866010463411279</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>866010463411279</string>
 	<key>FacebookDisplayName</key>
 	<string>EatYourKimchi</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>L6vqTap4DxEwPhoM353Yhv1Zh</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<string>9dmJtNBZsFtUQjRFi1PBW3ykvu9xE9OpLu3VElrKJ422x8svf9</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>e32874bd-7c85-4874-9d8e-37546c066c12</string>
 	<key>TestflightQAAppToken</key>
@@ -42,7 +34,7 @@
 	<key>VictoriousAppID</key>
 	<integer>13</integer>
 	<key>StagingAppID</key>
-	<integer>0</integer>
+	<integer>29</integer>
 	<key>QAAppID</key>
 	<integer>0</integer>
 </dict>
