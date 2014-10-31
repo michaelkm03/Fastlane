@@ -224,7 +224,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                     completion(user, created);
                 }
             }
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithWitterDidSucceed];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithTwitterDidSucceed];
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {

@@ -82,9 +82,6 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
-    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall withParameters:params];
-    
     NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
     {
@@ -189,12 +186,14 @@ static BOOL isRunningTests(void)
 
 - (void)reportFirstInstall
 {
-    NSString *key = @"appInstalledDefaultsKey";
-    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:key];
-    if ( ![firstInstall boolValue] )
+    NSString *key = @"appInstallDate";
+    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:key];
+    if ( installDate == nil )
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall];
-        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:key];
+       installDate = [NSDate date];
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall withParameters:params];
+        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:key];
     }
 }
 

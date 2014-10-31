@@ -285,7 +285,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : @"Signed up via Facebook" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventSignupWithWitterDidSucceed] )
+    else if ( [eventName isEqualToString:VTrackingEventSignupWithTwitterDidSucceed] )
     {
         return @{ kVAnalyticsKeyCategory : @"Signed up via Twitter" };
     }

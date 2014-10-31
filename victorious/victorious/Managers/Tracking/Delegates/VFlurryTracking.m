@@ -9,6 +9,12 @@
 #import "VFlurryTracking.h"
 #import "Flurry.h"
 
+#define FLURRY_TRACKING_LOGGING_ENABLED 1
+
+#if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
+
 static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
 
 @implementation VFlurryTracking
@@ -33,9 +39,16 @@ static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
 {
     [Flurry logEvent:eventName withParameters:parameters];
     
+#if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
+    VLog( @"Flurry Tracking :: Event: %@", eventName );
+#endif
+    
     // [Flurry endTimedEvent:@"Article_Read" withParameters:nil];
     
-    /*[Flurry setAge:21];
+    /*
+    // Here's more stuff you can do with Flurry, copied from the documentation
+     
+    [Flurry setAge:21];
     
     [Flurry setGender:@"m"];
     

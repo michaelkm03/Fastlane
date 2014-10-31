@@ -71,7 +71,7 @@ extern NSString * const VTrackingEventLoginWithEmailDidSucceed;
 extern NSString * const VTrackingEventLoginWithEmailDidFail;
 extern NSString * const VTrackingEventSignupWithEmailDidSucceed;
 extern NSString * const VTrackingEventSignupWithFacebookDidSucceed;
-extern NSString * const VTrackingEventSignupWithWitterDidSucceed;
+extern NSString * const VTrackingEventSignupWithTwitterDidSucceed;
 extern NSString * const VTrackingEventCreateProfileDidSucceed;
 extern NSString * const VTrackingEventProfileDidUpdated;
 extern NSString * const VTrackingEventUserDidLogOut;

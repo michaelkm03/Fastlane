@@ -25,7 +25,7 @@ NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 
 static const NSUInteger kMaximumURLRequestRetryCount = 5;
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 1
+#define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -228,7 +228,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
              if ( connectionError && ++trackingRequest.retriesCount <= kMaximumURLRequestRetryCount )
              {
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-                 VLog( @"TRACKING :: RETRING %lu :: URL %@.", (unsigned long)((VTrackingURLRequest *)request).retriesCount, request.URL.absoluteString );
+                 VLog( @"Applicaiton Tracking :: Retrying... (%lu) :: URL %@.", (unsigned long)((VTrackingURLRequest *)request).retriesCount, request.URL.absoluteString );
 #endif
                  [self sendRequest:request];
              }
@@ -238,11 +238,11 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
          if ( connectionError )
          {
-             VLog( @"TRACKING :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
+             VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
          }
          else
          {
-             VLog( @"TRACKING :: SUCCESS with URL %@", request.URL.absoluteString );
+             VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
          }
 #endif
      }];
@@ -256,7 +256,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     if ( !url )
     {
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-        VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
+        VLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
 #endif
         return nil;
     }
