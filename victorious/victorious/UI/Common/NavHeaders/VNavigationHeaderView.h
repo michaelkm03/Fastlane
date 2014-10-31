@@ -56,8 +56,6 @@
  */
 @property (nonatomic, strong) NSString *headerText;
 
-@property (nonatomic, readonly) NSInteger lastSelectedControl;
-
 @property (nonatomic, weak) id<VNavigationHeaderDelegate> delegate;
 
 @property (nonatomic, weak, readonly) UIView<VNavigationSelectorProtocol> *navSelector;
