@@ -84,7 +84,6 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
-    [self.nameLabel sizeToFit];
     
     self.countLabel.text = @"";
     if ([streamItem isKindOfClass:[VStream class]])
