@@ -164,7 +164,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
-        [VTrackingManager trackEvent:VTrackingEventUserDidLogOut];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
         
         [[VUserManager sharedInstance] logout];
         [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];

@@ -84,7 +84,7 @@
 {
     [super viewDidAppear:animated];
     
-    [VTrackingManager trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     
     [self.emailTextField becomeFirstResponder];
     self.navigationController.delegate = self;
@@ -238,14 +238,14 @@
         self.registrationModel.email = self.emailTextField.text;
         self.registrationModel.password = self.passwordTextField.text;
         
-        [VTrackingManager trackEvent:VTrackingEventUserDidSubmitSignupInfo];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSubmitSignupInfo];
         
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
                                                  userName:kNoUserName
                                              onCompletion:^(VUser *user, BOOL created)
          {
-             [VTrackingManager trackEvent:VTrackingEventSignupWithEmailDidSucceed];
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidSucceed];
              [self didSignUpWithUser:user];
          }
                                                   onError:^(NSError *error)

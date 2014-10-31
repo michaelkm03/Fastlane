@@ -40,7 +40,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, strong) VApplicationTracking *trackingManager;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
@@ -85,7 +84,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
     OCMStub( [myObjectMock sendRequestWithUrlString:[OCMArg any]] );
-    self.viewController.trackingManager = trackingManager;
 }
 
 - (void)tearDown

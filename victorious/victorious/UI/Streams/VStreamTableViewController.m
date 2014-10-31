@@ -321,7 +321,7 @@
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick };
-    [VTrackingManager trackEvent:nil withParameters:params ];
+    [[VTrackingManager sharedInstance] trackEvent:nil withParameters:params ];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -331,7 +331,7 @@
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView };
-    [VTrackingManager trackEvent:nil withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:nil withParameters:params];
     
     [cell setNeedsLayout];
     [cell setNeedsDisplay];

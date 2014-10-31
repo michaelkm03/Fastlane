@@ -15,10 +15,6 @@
 
 @interface VCVideoPlayerViewController (UnitTest)
 
-@property (nonatomic, strong) VTrackingManager *trackingManager;
-@property (nonatomic, readonly) NSDictionary *trackingParameters;
-@property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
-
 - (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime;
 
 @end
@@ -49,41 +45,15 @@
 {
     XCTAssertNoThrow( [self.videoPlayer enableTrackingWithTrackingItem:self.trackingItem] );
     XCTAssert( self.videoPlayer.isTrackingEnabled );
-    XCTAssertNotNil( self.videoPlayer.trackingManager );
 }
 
 - (void)testEnableTrackingError
 {
     XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:nil] );
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
-    XCTAssertNil( self.videoPlayer.trackingManager );
     
     XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:(VTracking *)[NSObject new]] );
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
-    XCTAssertNil( self.videoPlayer.trackingManager );
-}
-
-- (void)testParams
-{
-    NSDictionary *params = self.videoPlayer.trackingParameters;
-    XCTAssertNotNil( params );
-    XCTAssertEqual( params.allKeys.count, (NSUInteger)1 );
-    
-    XCTAssertNotNil( params[ VTrackingKeyTimeCurrent ] );
-    XCTAssert( [params[ VTrackingKeyTimeCurrent ] isKindOfClass:[NSNumber class]] );
-}
-
-- (void)testParamsSkip
-{
-    NSDictionary *params = self.videoPlayer.trackingParametersForSkipEvent;
-    XCTAssertNotNil( params );
-    XCTAssertEqual( params.allKeys.count, (NSUInteger)2 );
-    
-    XCTAssertNotNil( params[ VTrackingKeyTimeFrom ] );
-    XCTAssert( [params[ VTrackingKeyTimeFrom ] isKindOfClass:[NSNumber class]] );
-    
-    XCTAssertNotNil( params[ VTrackingKeyTimeTo ] );
-    XCTAssert( [params[ VTrackingKeyTimeTo ] isKindOfClass:[NSNumber class]] );
 }
 
 - (void)testDetectSkip

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "VVideoCellViewModel.h"
-#import "VAdLiveRailsVideoPlayerViewController.h"
 
 @class VAdVideoPlayerViewController;
 
@@ -22,6 +21,7 @@
 @optional
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
+- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 - (void)adHadImpressionForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController;
 
@@ -30,7 +30,7 @@
 
 @interface VAdVideoPlayerViewController : UIViewController
 
-@property (nonatomic, readonly, getter = isAdPlaying) BOOL playing; ///< YES if ad video is playing
+@property (nonatomic, readonly) BOOL adPlaying; ///< YES if ad video is playing
 
 /**
  Ad video player delegate object

@@ -190,7 +190,7 @@
         if ( streamName )
         {
             NSDictionary *params = @{ VTrackingKeyStreamName : streamName };
-            [VTrackingManager trackEvent:VTrackingEventUserDidSelectStream withParameters:params];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream withParameters:params];
         }
     }
 }
@@ -276,7 +276,7 @@
         return;
     }
     
-    [VTrackingManager trackEvent:VTrackingEventUserDidSelectCreatePost];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                        onCancelButton:nil
@@ -285,19 +285,19 @@
                                            otherButtonTitlesAndBlocks:
                                   NSLocalizedString(@"Create a Video Post", @""), ^(void)
                                   {
-                                      [VTrackingManager trackEvent:VTrackingEventCreateVideoPostSelected];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
                                       
                                       [self presentCameraViewController:[VCameraViewController cameraViewController]];
                                   },
                                   NSLocalizedString(@"Create an Image Post", @""), ^(void)
                                   {
-                                      [VTrackingManager trackEvent:VTrackingEventCreateImagePostSelected];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
                                       
                                       [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
                                   },
                                   NSLocalizedString(@"Create a Poll", @""), ^(void)
                                   {
-                                      [VTrackingManager trackEvent:VTrackingEventCreatePollSelected];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
                                       
                                       VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
                                       [self.navigationController pushViewController:createViewController animated:YES];

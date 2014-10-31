@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VTrackingService.h"
+#import "VTrackingDelegate.h"
 
 @import CoreLocation;
 
-@interface VFlurryTracking : NSObject <VTrackingService, CLLocationManagerDelegate>
+@interface VFlurryTracking : NSObject <VTrackingDelegate, CLLocationManagerDelegate>
 
 @end

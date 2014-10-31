@@ -550,7 +550,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                destructiveButtonTitle:NSLocalizedString(@"Close", @"")
                                                   onDestructiveButton:^(void)
                                   {
-                                      [VTrackingManager trackEvent:VTrackingEventCameraPublishDidCancel];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraPublishDidCancel];
                                       [self.view endEditing:YES];
                                       [self didComplete];
                                   }
@@ -608,7 +608,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                    destructiveButtonTitle:NSLocalizedString(@"BackButton", @"")
                                                       onDestructiveButton:^(void)
                                       {
-                                          [VTrackingManager trackEvent:VTrackingEventCameraPublishDidGoBack];
+                                          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraPublishDidGoBack];
                                           [self.view endEditing:YES];
                                           [self didConfirmGoBack];
                                       }
@@ -785,12 +785,12 @@ static const CGFloat kShareMargin = 34.0f;
             
             if ( isVideo )
             {
-                [VTrackingManager trackEvent:VTrackingEventUserDidPublishVideoWithFacebook];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithFacebook];
             }
             else
             {
                 NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
-                [VTrackingManager trackEvent:VTrackingEventUserDidPublishImageWithFacebook withParameters:params];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithFacebook withParameters:params];
             }
         }
         
@@ -807,17 +807,17 @@ static const CGFloat kShareMargin = 34.0f;
             
             if ( isVideo )
             {
-                [VTrackingManager trackEvent:VTrackingEventUserDidPublishVideoWithTwitter];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithTwitter];
             }
             else
             {
                 NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
-                [VTrackingManager trackEvent:VTrackingEventUserDidPublishImageWithTwitter withParameters:params];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithTwitter withParameters:params];
             }
         }
     }];
     
-    [VTrackingManager trackEvent:VTrackingEventUserDidPublishContent];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent];
     
     NSURL *mediaURL = self.mediaURL;
     void (^cleanup)() = ^(void)

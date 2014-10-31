@@ -148,7 +148,7 @@
                                           successBlock:success
                                              failBlock:fail];
     
-    [VTrackingManager trackEvent:VTrackingEventUserDidPostComment];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment];
 }
 
 - (IBAction)pressedBackButton:(id)sender

@@ -133,8 +133,8 @@
     NSString *macro = @"%%macro%%";
     NSString *url = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     NSString *stringValue = @"__stringValue__";
-    NSNumber *integerValue = @1;
-    NSNumber *floatValue = @2.0f;
+    NSNumber *integerNumber = @1;
+    NSNumber *floatNumber = @2.0f;
     NSDate *dateValue = [NSDate date];
     
     NSString *output;
@@ -145,14 +145,14 @@
                                               withString:stringValue];
     XCTAssertEqualObjects( output, expected );
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:integerValue];
+    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:integerNumber];
     expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[NSString stringWithFormat:@"%@", integerValue]];
+                                              withString:[NSString stringWithFormat:@"%i", integerNumber.intValue]];
     XCTAssertEqualObjects( output, expected );
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:floatValue];
+    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:floatNumber];
     expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[NSString stringWithFormat:@"%@", floatValue]];
+                                              withString:[NSString stringWithFormat:@"%.2f", floatNumber.floatValue]];
     XCTAssertEqualObjects( output, expected );
     
     output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:dateValue];

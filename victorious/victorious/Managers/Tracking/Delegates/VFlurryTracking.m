@@ -27,7 +27,7 @@ static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
     return self;
 }
 
-#pragma mark - VTrackingService protocol
+#pragma mark - VTrackingDelegate protocol
 
 - (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {

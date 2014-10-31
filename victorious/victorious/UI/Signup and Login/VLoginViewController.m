@@ -173,12 +173,12 @@
 - (IBAction)facebookClicked:(id)sender
 {
     [self disableButtons];
-    [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
+                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
                            {
@@ -194,7 +194,7 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            [VTrackingManager trackEvent:VTrackingEventLoginWithFacebookDidFail];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
             [self didFailWithError:error];
             [self enableButtons];
         });
@@ -204,7 +204,7 @@
 - (IBAction)twitterClicked:(id)sender
 {
     [self disableButtons];
-    [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
@@ -213,7 +213,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
                 [self enableButtons];
                 [self twitterAccessDidFail:error];
             });
@@ -225,7 +225,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
                     [self enableButtons];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
@@ -295,7 +295,7 @@
 
 - (IBAction)closeButtonClicked:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventUserDidCancelLogin];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLogin];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -381,7 +381,7 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
@@ -398,7 +398,7 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [VTrackingManager trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
          
          [self enableButtons];
          [self didFailWithError:error];

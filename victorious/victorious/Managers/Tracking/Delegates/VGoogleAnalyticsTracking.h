@@ -25,7 +25,7 @@ extern NSString * const kVAnalyticsKeyAction;
 extern NSString * const kVAnalyticsKeyLabel;
 extern NSString * const kVAnalyticsKeyValue;
 
-@interface VGoogleAnalyticsTracking : NSObject <VTrackingService>
+@interface VGoogleAnalyticsTracking : NSObject <VTrackingDelegate>
 
 + (VGoogleAnalyticsTracking *)sharedAnalyticsRecorder;
 

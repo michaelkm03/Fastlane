@@ -445,7 +445,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (IBAction)nextAction:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventCameraDidCaptureVideo];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
     [self setAllControlsEnabled:NO];
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
@@ -519,7 +519,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (IBAction)capturePhoto:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventCameraDidCapturePhoto];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
     
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
@@ -572,7 +572,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         newSessionPreset = self.videoQuality;
         completion = ^(void)
         {
-            [VTrackingManager trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
             
             [self configureUIforVideoCaptureAnimated:YES completion:nil];
         };
@@ -582,7 +582,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         newSessionPreset = AVCaptureSessionPresetPhoto;
         completion = ^(void)
         {
-            [VTrackingManager trackEvent:VTrackingEventCameraDidSwitchToPhotoCapture];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToPhotoCapture];
             
             [self configureUIforPhotoCaptureAnimated:YES completion:nil];
         };
@@ -613,14 +613,14 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     if (!self.inTrashState)
     {
-        [VTrackingManager trackEvent:VTrackingEventCameraUserDidSelectDelete];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
         
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
         self.inTrashState = YES;
     }
     else
     {
-        [VTrackingManager trackEvent:VTrackingEventCameraUserDidConfirmtDelete];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidConfirmtDelete];
         
         self.captureController.videoEncoder = nil;
         [self clearRecordedVideoAnimated:YES];
@@ -1101,14 +1101,14 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     
     if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
     {
-        [VTrackingManager trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
         
         UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
         [self moveToPreviewControllerWithImage:originalImage];
     }
     else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
     {
-        [VTrackingManager trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
         
         NSURL *movieURL = info[UIImagePickerControllerMediaURL];
         

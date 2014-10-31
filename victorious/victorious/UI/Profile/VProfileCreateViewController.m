@@ -393,7 +393,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)didCreateProfile
 {
-    [VTrackingManager trackEvent:VTrackingEventCreateProfileDidSucceed];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileDidSucceed];
     
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];

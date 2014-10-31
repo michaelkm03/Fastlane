@@ -10,9 +10,9 @@
 
 #import "VTracking.h"
 #import "VTrackingEvent.h"
-#import "VTrackingService.h"
+#import "VTrackingDelegate.h"
 
-@interface VApplicationTracking : NSObject <VTrackingService>
+@interface VApplicationTracking : NSObject <VTrackingDelegate>
 
 /**
  Tracks event using URLS after replacing URL-embedded macros with values

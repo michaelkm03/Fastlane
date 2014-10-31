@@ -1,5 +1,5 @@
 //
-//  VTrackingService.h
+//  VTrackingDelegate.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/29/14.
@@ -11,7 +11,7 @@
 /**
  Required protocol for tracking services to be added to VTrackingManager.
  */
-@protocol VTrackingService <NSObject>
+@protocol VTrackingDelegate <NSObject>
 
 - (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters;
 

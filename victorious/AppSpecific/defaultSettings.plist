@@ -26,5 +26,9 @@
 	<false/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
+	<key>monetization.LiveRailsPublisherID</key>
+	<string>68957</string>
+	<key>monetization.OpenXVastTag</key>
+	<string>http://od.victorious.com/ma/1.0/av?auid=537201245</string>
 </dict>
 </plist>

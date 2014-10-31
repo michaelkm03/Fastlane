@@ -68,7 +68,7 @@
     }
     sender.enabled = NO;
     
-    [VTrackingManager trackEvent:VTrackingEventProfileDidUpdated];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
 
     MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");

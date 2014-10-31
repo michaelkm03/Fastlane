@@ -160,7 +160,7 @@
     
     [self showMenuViewController];
     
-    [VTrackingManager trackEvent:VTrackingEventUserDidSelectMainMenu];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainMenu];
 }
 
 - (void)showMenuViewController

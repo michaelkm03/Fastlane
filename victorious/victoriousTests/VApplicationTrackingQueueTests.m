@@ -14,7 +14,7 @@
 @interface VApplicationTracking (UnitTests)
 
 @property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
-@property (nonatomic, readonly) NSUInteger numberOFQueuedUrls;
+@property (nonatomic, readonly) NSUInteger numberOfQueuedUrls;
 
 - (void)sendRequestWithUrlString:(NSString *)url;
 - (void)sendQueuedTrackingEventUrlsIfExceedMaximumCount:(NSUInteger)maxUrlsCount;
@@ -126,7 +126,7 @@
         [self.applicaitonTracking.queuedTrackingEvents addObject:event];
     }
     
-    XCTAssertEqual( self.applicaitonTracking.numberOFQueuedUrls, eventCount * 3 );
+    XCTAssertEqual( self.applicaitonTracking.numberOfQueuedUrls, eventCount * 3 );
     
     __block NSUInteger callCount = 0;
     self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequestWithUrlString:) withBlock:^void(NSString *url)
@@ -137,13 +137,13 @@
     callCount = 0;
     [self.applicaitonTracking sendQueuedTrackingEventUrlsIfExceedMaximumCount:eventCount * 3];
     XCTAssertEqual( self.applicaitonTracking.numberOfQueuedEvents, eventCount );
-    XCTAssertEqual( self.applicaitonTracking.numberOFQueuedUrls, (NSUInteger)eventCount * 3 );
+    XCTAssertEqual( self.applicaitonTracking.numberOfQueuedUrls, (NSUInteger)eventCount * 3 );
     XCTAssertEqual( callCount, (NSUInteger)0 );
     
     callCount = 0;
     [self.applicaitonTracking sendQueuedTrackingEventUrlsIfExceedMaximumCount:eventCount * 3 - 1];
     XCTAssertEqual( self.applicaitonTracking.numberOfQueuedEvents, eventCount );
-    XCTAssertEqual( self.applicaitonTracking.numberOFQueuedUrls, (NSUInteger)0 );
+    XCTAssertEqual( self.applicaitonTracking.numberOfQueuedUrls, (NSUInteger)0 );
     XCTAssertEqual( callCount, (NSUInteger)eventCount * 3 );
 }
 

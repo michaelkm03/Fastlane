@@ -173,7 +173,7 @@
             NSDictionary *params = @{ VTrackingKeyVoteCount : @( voteCount ),
                                       VTrackingKeySequenceId : self.sequence.remoteId,
                                       VTrackingKeyUrls : enhancer.voteType.tracking.ballisticCount };
-            [VTrackingManager trackEvent:nil withParameters:params];
+            [[VTrackingManager sharedInstance] trackEvent:nil withParameters:params];
             [enhancer resetSessionVoteCount];
         }
     }];

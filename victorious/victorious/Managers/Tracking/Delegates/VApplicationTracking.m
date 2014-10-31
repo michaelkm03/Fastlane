@@ -23,12 +23,19 @@ NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 
-static const BOOL kLogTrackingEvents = NO;
+#define LOG_TRACKING_EVENTS 0
+
+#if DEBUG && LOG_TRACKING_EVENTS
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
+
+static const NSUInteger kMaxQueuedUrls = 100;
 
 @interface VApplicationTracking()
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
+@property (nonatomic, readonly) NSUInteger numberOfQueuedUrls;
 
 @end
 
@@ -134,10 +141,9 @@ static const BOOL kLogTrackingEvents = NO;
         if ( [event.key isEqual:key] )
         {
             
-            if ( kLogTrackingEvents )
-            {
-                VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-            }
+#if DEBUG && LOG_TRACKING_EVENTS
+            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
             
             doesEventExistForKey = YES;
             *stop = YES;
@@ -154,15 +160,38 @@ static const BOOL kLogTrackingEvents = NO;
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:completeParams key:key];
         [self.queuedTrackingEvents addObject:event];
         
-        // TODO: Keep memory consumption low somehow, don't let too many events build up, but clear the queue too early
+        // To save mememory
+        [self sendQueuedTrackingEventUrlsIfExceedMaximumCount:kMaxQueuedUrls];
         
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-        }
+#if DEBUG && LOG_TRACKING_EVENTS
+        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
         return YES;
     }
 }
+
+- (void)sendQueuedTrackingEventUrlsIfExceedMaximumCount:(NSUInteger)maxUrlsCount
+{
+    if ( self.numberOfQueuedUrls > maxUrlsCount )
+    {
+        [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+         {
+             [self trackEventWithUrls:event.urls andParameters:event.parameters];
+             [event clearUrls];
+         }];
+    }
+}
+
+- (NSUInteger)numberOfQueuedUrls
+{
+    __block NSUInteger count = 0;
+    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+     {
+         count += event.urls.count;
+     }];
+    return count;
+}
+
 
 - (void)popFrontOfQueue
 {
@@ -178,10 +207,9 @@ static const BOOL kLogTrackingEvents = NO;
         [self popFrontOfQueue];
     }
     
-    if ( kLogTrackingEvents )
-    {
-        VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
-    }
+#if DEBUG && LOG_TRACKING_EVENTS
+    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
 }
 
 - (NSUInteger)numberOfQueuedEvents
@@ -253,7 +281,14 @@ static const BOOL kLogTrackingEvents = NO;
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
-        replacementValue = [NSString stringWithFormat:@"%.2f@", ((NSNumber *)value).floatValue];
+        if ( CFNumberIsFloatType( (CFNumberRef)value ) )
+        {
+            replacementValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
+        }
+        else
+        {
+            replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
+        }
     }
     else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
     {
@@ -296,17 +331,16 @@ static const BOOL kLogTrackingEvents = NO;
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
-         if ( kLogTrackingEvents )
+#if DEBUG && LOG_TRACKING_EVENTS
+         if ( connectionError )
          {
-             if ( connectionError )
-             {
-                 VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
-             }
-             else
-             {
-                 VLog( @"TRACKING :: SUCCESS with URL %@", url );
-             }
+             VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
          }
+         else
+         {
+             VLog( @"TRACKING :: SUCCESS with URL %@", url );
+         }
+#endif
      }];
 }
 
@@ -314,20 +348,18 @@ static const BOOL kLogTrackingEvents = NO;
 {
     if ( objectManager == nil )
     {
-        if ( kLogTrackingEvents )
-        {
+#if DEBUG && LOG_TRACKING_EVENTS
             VLog( @"TRACKING :: ERROR unable to create request for URL %@ using a nil object manager.", urlString );
-        }
+#endif
         return nil;
     }
     
     NSURL *url = [NSURL URLWithString:urlString];
     if ( !url )
     {
-        if ( kLogTrackingEvents )
-        {
-            VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
-        }
+#if DEBUG && LOG_TRACKING_EVENTS
+        VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
+#endif
         return nil;
     }
     
@@ -336,6 +368,17 @@ static const BOOL kLogTrackingEvents = NO;
     request.HTTPBody = nil;
     request.HTTPMethod = @"GET";
     return request;
+}
+
+#pragma mark - VTrackingDelegate
+
+- (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+{
+    NSArray *urls = parameters[ VTrackingKeyUrls ];
+    if ( urls )
+    {
+        [self trackEventWithUrls:urls andParameters:parameters];
+    }
 }
 
 

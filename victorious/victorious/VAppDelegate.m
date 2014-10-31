@@ -78,12 +78,12 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     [self reportFirstInstall];
     
-    [VTrackingManager addService:[[VApplicationTracking alloc] init]];
-    [VTrackingManager addService:[[VFlurryTracking alloc] init]];
-    [VTrackingManager addService:[[VGoogleAnalyticsTracking alloc] init]];
+    [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
+    [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
+    [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date] };
-    [VTrackingManager trackEvent:VTrackingEventApplicationFirstInstall withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall withParameters:params];
     
     NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
@@ -141,13 +141,13 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
     
     NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterBackground };
-    [VTrackingManager trackEvent:VTrackingEventApplicationDidEnterBackground withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground withParameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterForeground };
-    [VTrackingManager trackEvent:VTrackingEventApplicationDidEnterForeground withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground withParameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -181,7 +181,7 @@ static BOOL isRunningTests(void)
 - (void)onInitResponse:(NSNotification *)notification
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
-    [VTrackingManager trackEvent:VTrackingEventApplicationDidLaunch withParameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch withParameters:params];
     
     // Only receive this once
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
@@ -193,7 +193,7 @@ static BOOL isRunningTests(void)
     NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:key];
     if ( ![firstInstall boolValue] )
     {
-        [VTrackingManager trackEvent:VTrackingEventApplicationFirstInstall];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall];
         [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:key];
     }
 }

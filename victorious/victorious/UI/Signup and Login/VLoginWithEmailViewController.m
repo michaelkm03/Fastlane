@@ -193,7 +193,7 @@
 - (void)didLoginWithUser:(VUser *)mainUser
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
-    [VTrackingManager trackEvent:VTrackingEventLoginWithEmailDidSucceed];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
     
     self.profile = mainUser;
     
@@ -209,7 +209,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    [VTrackingManager trackEvent:VTrackingEventLoginWithEmailDidFail];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
     if (error.code != kVUserBannedError)
     {
         NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription

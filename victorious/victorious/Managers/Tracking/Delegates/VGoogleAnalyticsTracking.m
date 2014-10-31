@@ -98,7 +98,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     CLSLog(@"%@/%@%@%@", category, action, labelLog, valueLog);
 }
 
-#pragma mark - VTrackingService delegate
+#pragma mark - VTrackingDelegate delegate
 
 - (void)trackEventWithName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {

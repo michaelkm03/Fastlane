@@ -137,7 +137,7 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 
 - (IBAction)deleteTapped:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventCameraUserDidSelectDelete];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
     
     CGRect deleteButtonBounds = self.deleteButton.bounds;
     CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
@@ -166,14 +166,14 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
 
 - (IBAction)deleteConfirmationTapped:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventCameraUserDidSelectDelete];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)backTapped:(id)sender
 {
-    [VTrackingManager trackEvent:VTrackingEventCameraUserDidGoBack];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidGoBack];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -185,7 +185,7 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
         return;
     }
     
-    [VTrackingManager trackEvent:VTrackingEventCameraUserDidCancelDelete];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidCancelDelete];
     
     CGRect deleteButtonBounds = self.deleteButton.bounds;
     CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
@@ -220,7 +220,7 @@ static       NSString * const kNibName           = @"VMediaPreviewViewController
                                                destructiveButtonTitle:NSLocalizedString(@"Close", @"")
                                                   onDestructiveButton:^(void)
     {
-        [VTrackingManager trackEvent:VTrackingEventCameraUserCancelMediaCapture];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserCancelMediaCapture];
 
         if (self.completionBlock)
         {
