@@ -7,10 +7,13 @@
 //
 
 #import "VTrackingManager.h"
+#import "VTrackingQueue.h"
+#import "VTrackingEvent.h"
 
 @interface VTrackingManager ()
 
 @property (nonatomic, strong) NSMutableArray *delegates;
+@property (nonatomic, strong) VTrackingQueue *queue;
 
 @end
 
@@ -27,12 +30,18 @@ static VTrackingManager *_sharedInstance;
     return _sharedInstance;
 }
 
++ (void)deallocateSharedInstance
+{
+    _sharedInstance = nil;
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self)
     {
         _delegates = [[NSMutableArray alloc] init];
+        _queue = [[VTrackingQueue alloc] init];
     }
     return self;
 }
@@ -61,19 +70,15 @@ static VTrackingManager *_sharedInstance;
     
     if ( self.delegates.count == 0 )
     {
-        [self deallocateSharedInstance];
+        [VTrackingManager deallocateSharedInstance];
     }
 }
 
 - (void)removeAllServices
 {
     [self.delegates removeAllObjects];
-    [self deallocateSharedInstance];
-}
-
-- (void)deallocateSharedInstance
-{
-    _sharedInstance = nil;
+    
+    [VTrackingManager deallocateSharedInstance];
 }
 
 @end

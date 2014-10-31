@@ -16,21 +16,16 @@
 
 @implementation VTrackingEvent
 
-- (instancetype)initWithUrls:(NSArray *)urls parameters:(NSDictionary *)parameters key:(id)key
+- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters key:(id)key
 {
     self = [super init];
     if (self)
     {
         _key = key;
         _parameters = parameters;
-        _urls = urls;
+        _name = name;
     }
     return self;
-}
-
-- (void)clearUrls
-{
-    self.urls = nil;
 }
 
 @end

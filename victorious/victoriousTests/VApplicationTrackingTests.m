@@ -7,8 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "OCMock.h"
+#import "NSObject+VMethodSwizzling.h"
 #import "VApplicationTracking.h"
+#import "VTrackingURLRequest.h"
+#import "VObjectManager.h"
+#import "VObjectManager+Private.h"
 
 @interface VApplicationTracking (UnitTest)
 
@@ -17,8 +20,9 @@
 
 - (NSString *)stringFromString:(NSString *)originalString byReplacingString:(NSString *)stringToReplace withValue:(id)value;
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
-- (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters;
-- (void)sendRequestWithUrlString:(NSString *)url;
+- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters;
+- (void)sendRequest:(NSURLRequest *)request;
+- (VObjectManager *)applicationObjectManager;
 - (NSString *)percentEncodedUrlString:(NSString *)originalUrl;
 
 @end
@@ -27,6 +31,8 @@
 @interface VApplicationTrackingTests : XCTestCase
 
 @property (nonatomic, strong) VApplicationTracking *applicaitonTracking;
+@property (nonatomic, assign) IMP sendRequestImp;
+@property (nonatomic, assign) IMP applicationObjectManagerImp;
 
 @end
 
@@ -36,10 +42,17 @@
 {
     [super setUp];
     
+    self.applicationObjectManagerImp = [VApplicationTracking v_swizzleMethod:@selector(applicationObjectManager)
+                                                                withBlock:(VObjectManager *)^
+                                     {
+                                         return [[VObjectManager alloc] init];
+                                     }];
+    
+    self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
+                                                                withBlock:^(NSURLRequest *request)
+                                     {}];
+    
     self.applicaitonTracking = [[VApplicationTracking alloc] init];
-    id myObjectMock = OCMPartialMock( self.applicaitonTracking  );
-    OCMStub( [myObjectMock sendRequestWithUrlString:[OCMArg any]] );
-    self.applicaitonTracking = (VApplicationTracking *)myObjectMock;
     
     XCTAssertNotNil( self.applicaitonTracking.parameterMacroMapping );
     XCTAssertNotEqual( self.applicaitonTracking.parameterMacroMapping.allKeys.count, (NSUInteger)0 );
@@ -48,6 +61,9 @@
 - (void)tearDown
 {
     [super tearDown];
+    
+    [VApplicationTracking v_restoreOriginalImplementation:self.applicationObjectManagerImp forMethod:@selector(applicationObjectManager)];
+    [VApplicationTracking v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequest:)];
 }
 
 - (void)testTrackEvents
@@ -81,8 +97,8 @@
 
 - (void)testTrackEventValues
 {
-    NSString *macro1 = @"%%macro1%%";
-    NSString *macro2 = @"%%macro2%%";
+    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
+    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
@@ -91,8 +107,8 @@
 
 - (void)testTrackEventValuesInvalid
 {
-    NSString *macro1 = @"%%macro1%%";
-    NSString *macro2 = @"%%macro2%%";
+    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
+    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters;
@@ -122,7 +138,7 @@
     NSDictionary *parameters;
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2", macro3 : @"value3" };
-    output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping.allValues inString:string withCorrspondingParameters:parameters];
+    output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping inString:string withCorrspondingParameters:parameters];
     expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ macro1 ]];
     expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:parameters[ macro2 ]];
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced." );

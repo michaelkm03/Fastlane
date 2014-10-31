@@ -306,7 +306,6 @@
 		A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */; };
 		A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */; };
 		A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709640419F0738200CE6633 /* VApplicationTrackingTests.m */; };
-		A72005421A03073B00285A9C /* VApplicationTrackingQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CFC1C119FB039F00726772 /* VApplicationTrackingQueueTests.m */; };
 		A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */; };
 		A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
 		A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D805CE301A005A470014EE2A /* VFollowUserControlTests.m */; };
@@ -318,6 +317,8 @@
 		A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A72005591A030E4700285A9C /* VApplicationTracking.m */; };
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
 		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
+		A72005641A03156A00285A9C /* VTrackingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A72005631A03156A00285A9C /* VTrackingQueue.m */; };
+		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
 		A73AFB7A19F1F6930005A9EA /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C919E78220004A8387 /* VFollowersTextFormatter.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
@@ -1068,6 +1069,10 @@
 		A720055C1A030E4700285A9C /* VGoogleAnalyticsTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGoogleAnalyticsTracking.h; sourceTree = "<group>"; };
 		A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGoogleAnalyticsTracking.m; sourceTree = "<group>"; };
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
+		A72005621A03156A00285A9C /* VTrackingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingQueue.h; sourceTree = "<group>"; };
+		A72005631A03156A00285A9C /* VTrackingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingQueue.m; sourceTree = "<group>"; };
+		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
+		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
@@ -1111,7 +1116,6 @@
 		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
 		A7CFC1B919FAF64700726772 /* portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait.m4v; sourceTree = "<group>"; };
-		A7CFC1C119FB039F00726772 /* VApplicationTrackingQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingQueueTests.m; sourceTree = "<group>"; };
 		A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_left.m4v; sourceTree = "<group>"; };
 		A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait_upsidedown.m4v; sourceTree = "<group>"; };
@@ -2554,6 +2558,10 @@
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				A72005611A030EB100285A9C /* VTrackingDelegate.h */,
+				A72005621A03156A00285A9C /* VTrackingQueue.h */,
+				A72005631A03156A00285A9C /* VTrackingQueue.m */,
+				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
+				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -2690,7 +2698,6 @@
 				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
-				A7CFC1C119FB039F00726772 /* VApplicationTrackingQueueTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
 				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
@@ -3624,6 +3631,7 @@
 				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				0314D50419B46B5E00FA363C /* VStreamTableViewController+ContentCreation.m in Sources */,
@@ -3797,6 +3805,7 @@
 				BEEDF46419D2337B000DF6F5 /* VStream.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				0314D4D119B46B5E00FA363C /* VMenuController.m in Sources */,
+				A72005641A03156A00285A9C /* VTrackingQueue.m in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
@@ -3923,7 +3932,6 @@
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
 				A720052D1A03073B00285A9C /* VObjectManagerStringTest.m in Sources */,
-				A72005421A03073B00285A9C /* VApplicationTrackingQueueTests.m in Sources */,
 				A72005371A03073B00285A9C /* VSettingManagerTests.m in Sources */,
 				A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */,
 				A720053B1A03073B00285A9C /* VPasswordValidationTests.m in Sources */,

@@ -10,12 +10,10 @@
 
 @interface VTrackingEvent : NSObject
 
-- (instancetype)initWithUrls:(NSArray *)urls parameters:(NSDictionary *)parameters key:(id)key;
-
-- (void)clearUrls;
+- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters key:(id)key;
 
 @property (nonatomic, readonly) id key;
 @property (nonatomic, readonly) NSDictionary *parameters;
-@property (nonatomic, readonly) NSArray *urls;
+@property (nonatomic, readonly) NSString *name;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "VApplicationTracking.h"
 #import "VObjectManager+Private.h"
-#import <AFNetworking/AFNetworking.h>
+#import "VTrackingURLRequest.h"
 
 NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
 NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
@@ -23,19 +23,17 @@ NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 
-#define LOG_TRACKING_EVENTS 0
+static const NSUInteger kMaximumURLRequestRetryCount = 5;
 
-#if DEBUG && LOG_TRACKING_EVENTS
+#define APPLICATION_TRACKING_LOGGING_ENABLED 1
+
+#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
-
-static const NSUInteger kMaxQueuedUrls = 100;
 
 @interface VApplicationTracking()
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
-@property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
-@property (nonatomic, readonly) NSUInteger numberOfQueuedUrls;
 
 @end
 
@@ -61,18 +59,8 @@ static const NSUInteger kMaxQueuedUrls = 100;
                                     VTrackingKeyPositionY          : kMacroPositionY,
                                     VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
                                     VTrackingKeyNavigiationTo      : kMacroNavigiationTo };
-        
-        self.queuedTrackingEvents = [[NSMutableArray alloc] init];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    if ( !self.shouldIgnoreEventsInQueueOnDealloc )
-    {
-        [self sendQueuedTrackingEvents];
-    }
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -127,96 +115,6 @@ static const NSUInteger kMaxQueuedUrls = 100;
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
-- (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key
-{
-    NSParameterAssert( key != nil );
-    
-    if ( ![self validateUrls:urls] )
-    {
-        return NO;
-    }
-    
-    __block BOOL doesEventExistForKey = NO;
-    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
-        if ( [event.key isEqual:key] )
-        {
-            
-#if DEBUG && LOG_TRACKING_EVENTS
-            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
-            
-            doesEventExistForKey = YES;
-            *stop = YES;
-        }
-    }];
-    
-    if ( doesEventExistForKey )
-    {
-        return NO;
-    }
-    else
-    {
-        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:completeParams key:key];
-        [self.queuedTrackingEvents addObject:event];
-        
-        // To save mememory
-        [self sendQueuedTrackingEventUrlsIfExceedMaximumCount:kMaxQueuedUrls];
-        
-#if DEBUG && LOG_TRACKING_EVENTS
-        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
-        return YES;
-    }
-}
-
-- (void)sendQueuedTrackingEventUrlsIfExceedMaximumCount:(NSUInteger)maxUrlsCount
-{
-    if ( self.numberOfQueuedUrls > maxUrlsCount )
-    {
-        [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
-         {
-             [self trackEventWithUrls:event.urls andParameters:event.parameters];
-             [event clearUrls];
-         }];
-    }
-}
-
-- (NSUInteger)numberOfQueuedUrls
-{
-    __block NSUInteger count = 0;
-    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
-     {
-         count += event.urls.count;
-     }];
-    return count;
-}
-
-
-- (void)popFrontOfQueue
-{
-    VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
-    [self trackEventWithUrls:event.urls andParameters:event.parameters];
-    [self.queuedTrackingEvents removeObjectAtIndex:0];
-}
-
-- (void)sendQueuedTrackingEvents
-{
-    while ( self.queuedTrackingEvents.count > 0 )
-    {
-        [self popFrontOfQueue];
-    }
-    
-#if DEBUG && LOG_TRACKING_EVENTS
-    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
-#endif
-}
-
-- (NSUInteger)numberOfQueuedEvents
-{
-    return self.queuedTrackingEvents.count;
-}
-
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
@@ -225,22 +123,33 @@ static const NSUInteger kMaxQueuedUrls = 100;
         return NO;
     }
     
-    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-    
-    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping.allValues
+    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
-                                         withCorrspondingParameters:completeParams];
+                                         withCorrspondingParameters:parameters];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
     }
     
-    [self sendRequestWithUrlString:urlWithMacrosReplaced];
+    
+    VObjectManager *objManager = [self applicationObjectManager];
+    VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
+    if ( request == nil )
+    {
+        return NO;
+    }
+    
+    [self sendRequest:request];
     
     return YES;
 }
 
-- (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
+- (VObjectManager *)applicationObjectManager
+{
+    return [VObjectManager sharedManager];
+}
+
+- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
 {
     // Optimization
     if ( !parameters|| parameters.allKeys.count == 0 )
@@ -250,13 +159,13 @@ static const NSUInteger kMaxQueuedUrls = 100;
     
     __block NSString *output = originalString;
     
-    [macros enumerateObjectsUsingBlock:^(NSString *macro, NSUInteger idx, BOOL *stop)
-    {
+    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
+        
         // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macro ];
+        id value = parameters[ macroValue ];
         if ( value != nil )
         {
-            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
+            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value];
             if ( stringWithNextMacro != nil )
             {
                 output = stringWithNextMacro;
@@ -303,26 +212,8 @@ static const NSUInteger kMaxQueuedUrls = 100;
     return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
 }
 
-- (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
+- (void)sendRequest:(NSURLRequest *)request
 {
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
-    
-    if ( dictionary[ kMacroTimeStamp ] )
-    {
-        return dictionary;
-    }
-    
-    NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-    [mutable setObject:[NSDate date] forKey:kMacroTimeStamp];
-    return [NSDictionary dictionaryWithDictionary:mutable];
-}
-
-- (void)sendRequestWithUrlString:(NSString *)url
-{
-    NSURLRequest *request = [self requestWithUrl:url objectManager:[VObjectManager sharedManager]];
     if ( request == nil )
     {
         return;
@@ -331,39 +222,46 @@ static const NSUInteger kMaxQueuedUrls = 100;
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
-#if DEBUG && LOG_TRACKING_EVENTS
+         if ( [request isMemberOfClass:[VTrackingURLRequest class]] )
+         {
+             VTrackingURLRequest *trackingRequest = (VTrackingURLRequest *)request;
+             if ( connectionError && ++trackingRequest.retriesCount <= kMaximumURLRequestRetryCount )
+             {
+#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
+                 VLog( @"TRACKING :: RETRING %lu :: URL %@.", (unsigned long)((VTrackingURLRequest *)request).retriesCount, request.URL.absoluteString );
+#endif
+                 [self sendRequest:request];
+             }
+         }
+         
+         
+#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
          if ( connectionError )
          {
-             VLog( @"TRACKING :: ERROR with URL %@ :: %@", url, [connectionError localizedDescription] );
+             VLog( @"TRACKING :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
          }
          else
          {
-             VLog( @"TRACKING :: SUCCESS with URL %@", url );
+             VLog( @"TRACKING :: SUCCESS with URL %@", request.URL.absoluteString );
          }
 #endif
      }];
 }
 
-- (NSURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
+- (VTrackingURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
 {
-    if ( objectManager == nil )
-    {
-#if DEBUG && LOG_TRACKING_EVENTS
-            VLog( @"TRACKING :: ERROR unable to create request for URL %@ using a nil object manager.", urlString );
-#endif
-        return nil;
-    }
+    NSParameterAssert( objectManager != nil );
     
     NSURL *url = [NSURL URLWithString:urlString];
     if ( !url )
     {
-#if DEBUG && LOG_TRACKING_EVENTS
+#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
         VLog( @"TRACKING :: ERROR :: Invalid URL %@.", urlString );
 #endif
         return nil;
     }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    VTrackingURLRequest *request = [VTrackingURLRequest requestWithURL:url];
     [objectManager updateHTTPHeadersInRequest:request];
     request.HTTPBody = nil;
     request.HTTPMethod = @"GET";
@@ -380,6 +278,5 @@ static const NSUInteger kMaxQueuedUrls = 100;
         [self trackEventWithUrls:urls andParameters:parameters];
     }
 }
-
 
 @end
