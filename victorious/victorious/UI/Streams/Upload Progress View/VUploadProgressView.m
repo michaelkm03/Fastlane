@@ -12,6 +12,7 @@
 #import "VUploadTaskInformation.h"
 
 static const NSTimeInterval kAnimationDuration = 0.1;
+static const CGFloat kAccessoryButtonWidth = 44.0f;
 
 @interface VUploadProgressView ()
 
@@ -23,8 +24,10 @@ static const NSTimeInterval kAnimationDuration = 0.1;
 @property (nonatomic, weak) IBOutlet UIView *uploadingIcon;
 @property (nonatomic, weak) IBOutlet UIView *finalizingIcon;
 @property (nonatomic, weak) IBOutlet UIView *failedIcon;
+@property (weak, nonatomic) IBOutlet UIImageView *alternateFailedIcon;
 @property (nonatomic, weak) IBOutlet UIView *finishedIcon;
 @property (nonatomic, weak) IBOutlet UIImageView *finishedIconCheckmark;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceLabelToContainer;
 
 @end
 
@@ -112,6 +115,8 @@ static const NSTimeInterval kAnimationDuration = 0.1;
     self.finalizingIcon.hidden = YES;
     self.failedIcon.hidden = YES;
     self.finishedIcon.hidden = YES;
+    self.alternateFailedIcon.hidden = YES;
+    self.trailingSpaceLabelToContainer.constant = kAccessoryButtonWidth;
     
     switch (self.state)
     {
@@ -124,29 +129,37 @@ static const NSTimeInterval kAnimationDuration = 0.1;
             self.titleLabel.text = NSLocalizedString(@"Cancelling...", @"");
             self.uploadingIcon.hidden = NO;
             break;
-            
         case VUploadProgressViewStateFinalizing:
             self.titleLabel.text = NSLocalizedString(@"UploadFinalizing", @"");
             self.finalizingIcon.hidden = NO;
             break;
-            
         case VUploadProgressViewStateFailed:
             self.titleLabel.text = NSLocalizedString(@"UploadFailed", @"");
             self.failedIcon.hidden = NO;
+            self.alternateFailedIcon.hidden = NO;
+            self.trailingSpaceLabelToContainer.constant = 2 * kAccessoryButtonWidth;
             break;
-            
         case VUploadProgressViewStateFinished:
             self.titleLabel.text = NSLocalizedString(@"UploadSuccess", @"");
             self.finishedIcon.hidden = NO;
             break;
-            
         default:
             self.titleLabel.text = @"";
             break;
     }
+    
+    [self layoutIfNeeded];
 }
 
 #pragma mark - IBActions
+
+- (IBAction)alternateAccessoryButtonTapped:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(alternateAccessoryButtonTapped:)])
+    {
+        [self.delegate alternateAccessoryButtonTappedInUploadProgressView:self];
+    }
+}
 
 - (IBAction)accessoryButtonTapped:(id)sender
 {
