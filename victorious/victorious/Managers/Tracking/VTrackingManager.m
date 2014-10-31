@@ -12,9 +12,17 @@
 
 #define LOG_TRACKING_EVENTS 0
 
+#if DEBUG && LOG_TRACKING_EVENTS
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
+
+static const NSUInteger kMaxQueuedUrls = 100;
+
 @interface VTrackingManager()
 
 @property (nonatomic, readonly) NSArray *registeredMacros;
+@property (nonatomic, strong) NSMutableArray *queuedTrackingEvents;
+@property (nonatomic, readonly) NSUInteger numberOFQueuedUrls;
 
 @end
 
@@ -37,8 +45,18 @@
                                kTrackingKeyPositionY,
                                kTrackingKeyNavigiationFrom,
                                kTrackingKeyNavigiationTo ];
+        
+        self.queuedTrackingEvents = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    if ( !self.shouldIgnoreEventsInQueueOnDealloc )
+    {
+        [self sendQueuedTrackingEvents];
+    }
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -55,10 +73,23 @@
     return dateFormatter;
 }
 
+- (NSString *)percentEncodedUrlString:(NSString *)originalUrl
+{
+    if ( !originalUrl )
+    {
+        return nil;
+    }
+    
+    NSString *output = originalUrl;
+    output = [output stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    output = [output stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    output = [output stringByReplacingOccurrencesOfString:@"-" withString:@"%2D"];
+    return output;
+}
+
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
 {
-    BOOL areUrlsValid = urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
-    if ( !areUrlsValid  )
+    if ( ![self validateUrls:urls]  )
     {
         return -1;
     }
@@ -75,6 +106,98 @@
     return numFailures;
 }
 
+- (BOOL)validateUrls:(NSArray *)urls
+{
+    return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
+}
+
+- (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key
+{
+    NSParameterAssert( key != nil );
+    
+    if ( ![self validateUrls:urls] )
+    {
+        return NO;
+    }
+    
+    __block BOOL doesEventExistForKey = NO;
+    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop) {
+        if ( [event.key isEqual:key] )
+        {
+            
+#if LOG_TRACKING_EVENTS
+            VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
+            doesEventExistForKey = YES;
+            *stop = YES;
+        }
+    }];
+    
+    if ( doesEventExistForKey )
+    {
+        return NO;
+    }
+    else
+    {
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithUrls:urls parameters:parameters key:key];
+        [self.queuedTrackingEvents addObject:event];
+        
+        // To save mememory
+        [self sendQueuedTrackingEventUrlsIfExceedMaximumCount:kMaxQueuedUrls];
+        
+#if LOG_TRACKING_EVENTS
+        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
+        return YES;
+    }
+}
+
+- (void)sendQueuedTrackingEventUrlsIfExceedMaximumCount:(NSUInteger)maxUrlsCount
+{
+    if ( self.numberOFQueuedUrls > maxUrlsCount )
+    {
+        [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+         {
+             [self trackEventWithUrls:event.urls andParameters:event.parameters];
+             [event clearUrls];
+         }];
+    }
+}
+
+- (NSUInteger)numberOFQueuedUrls
+{
+    __block NSUInteger count = 0;
+    [self.queuedTrackingEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+    {
+        count += event.urls.count;
+    }];
+    return count;
+}
+
+- (void)popFrontOfQueue
+{
+    VTrackingEvent *event = self.queuedTrackingEvents.firstObject;
+    [self trackEventWithUrls:event.urls andParameters:event.parameters];
+    [self.queuedTrackingEvents removeObjectAtIndex:0];
+}
+
+- (void)sendQueuedTrackingEvents
+{
+    while ( self.queuedTrackingEvents.count > 0 )
+    {
+        [self popFrontOfQueue];
+    }
+    
+#if LOG_TRACKING_EVENTS
+    VLog( @"Sent queued event. Queue: %lu", (unsigned long)self.queuedTrackingEvents.count);
+#endif
+}
+
+- (NSUInteger)numberOfQueuedEvents
+{
+    return self.queuedTrackingEvents.count;
+}
+
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
@@ -83,9 +206,11 @@
         return NO;
     }
     
+    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+    
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.registeredMacros
                                                            inString:url
-                                         withCorrspondingParameters:parameters];
+                                         withCorrspondingParameters:completeParams];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
@@ -133,6 +258,7 @@
     if ( [value isKindOfClass:[NSDate class]] )
     {
         replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
+        replacementValue = [self percentEncodedUrlString:replacementValue];
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
@@ -151,6 +277,23 @@
     return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
 }
 
+- (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
+{
+    if ( dictionary == nil )
+    {
+        return nil;
+    }
+    
+    if ( dictionary[ kTrackingKeyTimeStamp ] )
+    {
+        return dictionary;
+    }
+    
+    NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    [mutable setObject:[NSDate date] forKey:kTrackingKeyTimeStamp];
+    return [NSDictionary dictionaryWithDictionary:mutable];
+}
+
 - (void)sendRequestWithUrlString:(NSString *)url
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -163,7 +306,7 @@
 #if LOG_TRACKING_EVENTS
          if ( connectionError )
          {
-             VLog( @"TRACKING :: FAILSURE with URL %@:: error %@", url, [connectionError localizedDescription] );
+             VLog( @"TRACKING :: FAILURE with URL %@:: error %@", url, [connectionError localizedDescription] );
          }
          else
          {

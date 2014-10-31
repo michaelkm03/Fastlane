@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <UIKit/UIKit.h>
 #import "VFileCache.h"
 #import "VAsyncTestHelper.h"
 #import "VFileSystemTestHelpers.h"
@@ -24,6 +25,7 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
 - (NSString *)getCachesDirectoryPathForPath:(NSString *)path;
 - (BOOL)createDirectoryAtPath:(NSString *)path;
 - (BOOL)downloadAndWriteFile:(NSString *)urlString toPath:(NSString *)filepath;
+- (NSData *)synchronousDataFromUrl:(NSString *)urlString;
 
 @end
 
@@ -65,10 +67,19 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     self.fileCache = [[VFileCacheSubclass alloc] init];
+    
+    self.originalImplementation = [VFileCache v_swizzleMethod:@selector(synchronousDataFromUrl:) withBlock:(NSData *)^(NSString *url)
+                                   {
+                                       NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+                                       NSURL *previewImageFileURL = [bundle URLForResource:@"sampleImage" withExtension:@"png"];
+                                       UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:previewImageFileURL]];
+                                       return UIImagePNGRepresentation( image );
+                                   }];
 }
 
 - (void)tearDown
 {
+    [VFileCache v_restoreOriginalImplementation:self.originalImplementation forMethod:@selector(synchronousDataFromUrl:)];
     [super tearDown];
 }
 
