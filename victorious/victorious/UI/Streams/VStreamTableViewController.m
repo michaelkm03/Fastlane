@@ -198,7 +198,6 @@
 {
     [super viewWillDisappear:animated];
     
-    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
     [self.preloadImageCache removeAllObjects];

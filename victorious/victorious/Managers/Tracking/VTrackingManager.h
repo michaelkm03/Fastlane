@@ -61,8 +61,8 @@
 
 - (void)addDelegate:(id<VTrackingDelegate>)service;
 
-- (void)removeService:(id<VTrackingDelegate>)service;
+- (void)removeDelegate:(id<VTrackingDelegate>)service;
 
-- (void)removeAllServices;
+- (void)removeAllDelegates;
 
 @end

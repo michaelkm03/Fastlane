@@ -78,6 +78,8 @@
 - (void)tearDown
 {
     [super tearDown];
+    
+    [[VTrackingManager sharedInstance] removeAllDelegates];
 }
 
 - (void)testShardInstance
@@ -92,14 +94,38 @@
     XCTAssertNotEqualObjects( trackingManager2, trackingManager3 );
 }
 
-- (void)testTrackEvent
+- (void)testDelegates
 {
     VTestDelegate *delegate1 = [[VTestDelegate alloc] init];
     VTestDelegate *delegate2 = [[VTestDelegate alloc] init];
     
     [self.trackingMgr addDelegate:delegate1];
+    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)1 );
+    
     [self.trackingMgr addDelegate:delegate2];
     XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2 );
+    
+    [self.trackingMgr removeDelegate:delegate2];
+    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)1 );
+    XCTAssertEqualObjects( self.trackingMgr.delegates[0], delegate1 );
+    
+    [self.trackingMgr addDelegate:delegate2];
+    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2 );
+    
+    [self.trackingMgr addDelegate:delegate2];
+    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2, @"Should not add twice." );
+    
+    [self.trackingMgr removeAllDelegates];
+    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)0 );
+    
+}
+
+- (void)testTrackEvent
+{
+    VTestDelegate *delegate1 = [[VTestDelegate alloc] init];
+    VTestDelegate *delegate2 = [[VTestDelegate alloc] init];
+    [self.trackingMgr addDelegate:delegate1];
+    [self.trackingMgr addDelegate:delegate2];
     
     [self.trackingMgr trackEvent:nil parameters:nil];
     XCTAssertEqual( delegate1.trackedEventCount, (NSUInteger)0 );

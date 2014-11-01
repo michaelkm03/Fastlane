@@ -9,7 +9,7 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 
-#define TRACKING_LOGGING_ENABLED 1
+#define TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -224,15 +224,18 @@
 
 - (void)addDelegate:(id<VTrackingDelegate>)delegate
 {
-    [self.delegates addObject:delegate];
+    if ( ![self.delegates containsObject:delegate] )
+    {
+        [self.delegates addObject:delegate];
+    }
 }
 
-- (void)removeService:(id<VTrackingDelegate>)delegate
+- (void)removeDelegate:(id<VTrackingDelegate>)delegate
 {
     [self.delegates removeObject:delegate];
 }
 
-- (void)removeAllServices
+- (void)removeAllDelegates
 {
     [self.delegates removeAllObjects];
 }
