@@ -66,7 +66,6 @@ static const CGFloat kDescriptionBuffer = 15.0;
 {
     [super awakeFromNib];
     
-    
     self.originalHeight = self.frame.size.height;
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     if (!isTemplateC)
