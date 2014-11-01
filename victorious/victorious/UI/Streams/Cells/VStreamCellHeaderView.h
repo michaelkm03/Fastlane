@@ -28,7 +28,6 @@
 @property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
 @property (nonatomic, strong) UIViewController *parentViewController;
-@property (nonatomic) BOOL isFromProfile;
 
 @property (nonatomic, weak) VSequence *sequence;
 @property (nonatomic, strong) NSMutableArray *commentViews;

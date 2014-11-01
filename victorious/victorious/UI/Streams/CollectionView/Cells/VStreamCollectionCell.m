@@ -131,13 +131,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-    
-    // Check if being viewed from the User Profile
-    if ([self.parentViewController isKindOfClass:[VUserProfileViewController class]])
-    {
-        [self.streamCellHeaderView setIsFromProfile:YES];
-    }
-    
+
     [self setDescriptionText:self.sequence.name];
     
     self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;

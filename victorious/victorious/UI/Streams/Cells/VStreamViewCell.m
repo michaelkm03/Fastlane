@@ -144,13 +144,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
-    // Check if being viewed from the User Profile
-    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
-    {
-        [self.streamCellHeaderView setIsFromProfile:YES];
-    }
-
-    
     VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])
     {

@@ -70,11 +70,9 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     });
     
     _commentViews = [[NSMutableArray alloc] init];
-    _isFromProfile = NO;
     
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kCommentButtonBuffer, 0, 0)];
-
 
     // Style the ui
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
