@@ -15,13 +15,6 @@
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
-#define TRACKING_ALERTS_ENABLED 0
-
-#if DEBUG && TRACKING_ALERTS_ENABLED
-#import "UIAlertView+VBlocks.h"
-#warning Tracking alerts are enabled!
-#endif
-
 @interface VTrackingManager ()
 
 @property (nonatomic, readwrite) NSMutableArray *queuedEvents;
@@ -31,22 +24,17 @@
 
 @end
 
-static VTrackingManager *_sharedInstance;
-
 @implementation VTrackingManager
 
 + (VTrackingManager *)sharedInstance
 {
-    if ( _sharedInstance == nil )
-    {
-        _sharedInstance = [[self alloc] init];
-    }
-    return _sharedInstance;
-}
-
-+ (void)deallocateSharedInstance
-{
-    _sharedInstance = nil;
+    static VTrackingManager *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      instance = [[VTrackingManager alloc] init];
+                  });
+    return instance;
 }
 
 - (instancetype)init
@@ -65,22 +53,13 @@ static VTrackingManager *_sharedInstance;
 
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    if ( eventName == nil )
+    if ( eventName == nil || eventName.length == 0 )
     {
         return;
     }
     
 #if DEBUG && TRACKING_LOGGING_ENABLED
     VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
-
-#if DEBUG && TRACKING_ALERTS_ENABLED
-    NSString *title = @"Event Tracked";
-    __block NSString *message = [NSString stringWithFormat:@"Event:%@", eventName];
-    [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        message = [message stringByAppendingFormat:@"\n%@ = %@", key, obj];
-    }];
-    [[[UIAlertView alloc] initWithTitle:title message:message cancelButtonTitle:@"OK" onCancelButton:nil otherButtonTitlesAndBlocks:nil] show];
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
@@ -251,18 +230,11 @@ static VTrackingManager *_sharedInstance;
 - (void)removeService:(id<VTrackingDelegate>)delegate
 {
     [self.delegates removeObject:delegate];
-    
-    if ( self.delegates.count == 0 )
-    {
-        [VTrackingManager deallocateSharedInstance];
-    }
 }
 
 - (void)removeAllServices
 {
     [self.delegates removeAllObjects];
-    
-    [VTrackingManager deallocateSharedInstance];
 }
 
 @end
