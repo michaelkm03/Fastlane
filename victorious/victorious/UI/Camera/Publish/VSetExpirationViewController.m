@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VSetExpirationViewController.h"
 #import "VExpirationPickerTextField.h"
 #import "VExpirationDatePicker.h"

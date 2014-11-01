@@ -49,8 +49,6 @@
 #import "VAsset.h"
 #import "VAbstractFilter.h"
 
-#import "VGoogleAnalyticsTracking.h"
-
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VTracking.h"

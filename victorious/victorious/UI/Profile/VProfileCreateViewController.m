@@ -14,7 +14,6 @@
 #import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "VGoogleAnalyticsTracking.h"
 
 #import "VContentInputAccessoryView.h"
 

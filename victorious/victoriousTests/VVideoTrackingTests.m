@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "VTracking.h"
-#import "VTrackingManager.h"
 #import "VDummyModels.h"
 #import "VCVideoPlayerViewController.h"
 

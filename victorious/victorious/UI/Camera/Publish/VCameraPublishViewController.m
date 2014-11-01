@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-// Analytics
-#import "VGoogleAnalyticsTracking.h"
-
 // Model
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Users.h"

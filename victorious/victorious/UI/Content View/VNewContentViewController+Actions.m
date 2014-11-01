@@ -36,9 +36,6 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 
-// Analytics
-#import "VGoogleAnalyticsTracking.h"
-
 
 @implementation VNewContentViewController (Actions)
 

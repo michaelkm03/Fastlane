@@ -23,9 +23,6 @@ extern NSString * const VTrackingEventApplicationDidEnterForeground;
 extern NSString * const VTrackingEventApplicationDidLaunch;
 extern NSString * const VTrackingEventApplicationDidEnterBackground;
 
-/**
- Events previously handled by VGoogleAnalyticsTracking, VObjectManager+Analytics
- */
 extern NSString * const VTrackingEventApplicationFirstInstall;
 extern NSString * const VTrackingEventCreatePollSelected;
 extern NSString * const VTrackingEventCreateImagePostSelected;

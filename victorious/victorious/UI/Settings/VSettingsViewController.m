@@ -8,7 +8,6 @@
 
 @import MessageUI;
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"

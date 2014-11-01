@@ -11,7 +11,6 @@
 
 #import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
 #import "MBProgressHUD.h"
-#import "VGoogleAnalyticsTracking.h"
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VCameraViewController.h"

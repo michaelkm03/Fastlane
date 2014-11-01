@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"

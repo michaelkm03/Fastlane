@@ -8,7 +8,6 @@
 
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VGoogleAnalyticsTracking.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
 #import "VThemeManager.h"

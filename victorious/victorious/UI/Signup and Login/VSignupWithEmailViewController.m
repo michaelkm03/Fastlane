@@ -16,7 +16,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
-#import "VGoogleAnalyticsTracking.h"
 #import "MBProgressHUD.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>

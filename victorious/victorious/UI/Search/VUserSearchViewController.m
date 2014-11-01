@@ -8,8 +8,6 @@
 
 #import "VUserSearchViewController.h"
 
-#import "VGoogleAnalyticsTracking.h"
-
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 

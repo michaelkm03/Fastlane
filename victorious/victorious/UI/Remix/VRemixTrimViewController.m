@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"

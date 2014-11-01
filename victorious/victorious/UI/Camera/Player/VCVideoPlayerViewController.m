@@ -2,7 +2,6 @@
 //  VCVideoPlayerViewController.m
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"

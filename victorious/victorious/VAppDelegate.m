@@ -21,7 +21,6 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
-#import "VTrackingManager.h"
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"
