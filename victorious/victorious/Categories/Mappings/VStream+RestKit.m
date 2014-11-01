@@ -23,7 +23,8 @@
                                   @"id"             :   VSelectorName(remoteId),
                                   @"stream_content_type"     :   VSelectorName(streamContentType),
                                   @"name"           :   VSelectorName(name),
-                                  @"preview_images"  :   VSelectorName(previewImagesObject),
+                                  @"preview_image"  :   VSelectorName(previewImagesObject),
+                                  @"count"          :   VSelectorName(count),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -40,13 +41,12 @@
 + (RKDynamicMapping *)listByStreamMapping
 {
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
-    RKObjectMapping *sequenceMapping = [VSequence entityMapping];
+
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type != nil"]
+                                                              objectMapping:[VStream entityMapping]]];
     
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath != nil"]
-                                                              objectMapping:[self entityMapping]]];
-    
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"filterAPIPath == nil"]
-                                                              objectMapping:sequenceMapping]];
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type == nil"]
+                                                              objectMapping:[VSequence entityMapping]]];
     
     return contentMapping;
 }
