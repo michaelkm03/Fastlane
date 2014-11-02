@@ -5,8 +5,10 @@
 //  Created by Will Long on 2/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
+
 #import "VLoadingViewController.h"
 
+#import "VConstants.h"
 #import "VPushNotificationManager.h"
 #import "VStreamContainerViewController.h"
 #import "VObjectManager+Login.h"
@@ -19,6 +21,8 @@
 #import "VUserManager.h"
 
 #import "MBProgressHUD.h"
+
+NSString * const VLoadingViewControllerLoadingCompletedNotification = @"VLoadingViewControllerLoadingCompletedNotification";
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
@@ -37,6 +41,13 @@ static const NSUInteger kRetryAttempts = 5;
     BOOL     _appInitLoading;
     BOOL     _appInitLoaded;
     NSTimer *_retryTimer;
+}
+
++ (VLoadingViewController *)loadingViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
+    VLoadingViewController *loadingViewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VLoadingViewController class])];
+    return loadingViewController;
 }
 
 - (void)dealloc
@@ -168,20 +179,16 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoading = NO;
             _appInitLoaded = YES;
             
-            VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-            streamContainer.shouldShowHeaderLogo = YES;
-            streamContainer.shouldShowUploadProgress = YES;
-            
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
             }
                                                                         onError:^(NSError *error)
             {
                 [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
             }];
         }
                                                       failBlock:^(NSOperation *operation, NSError *error)
