@@ -160,10 +160,13 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;
 
-#warning Fix this.
-//         VRootViewController *root = [VRootViewController rootViewController];
-//         [root transitionToNavStack:@[homeContainer]];
-//         [homeContainer.navigationController pushViewController:profileVC animated:YES];
+         VRootViewController *root = [VRootViewController rootViewController];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeContainer]];
+             [homeContainer.navigationController pushViewController:profileVC animated:YES];
+         }
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -188,10 +191,13 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          VInboxContainerViewController *inbox = [VInboxContainerViewController inboxContainer];
          VMessageContainerViewController *messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
-#warning Fix this.
-//         VRootViewController *root = [VRootViewController rootViewController];
-//         [root transitionToNavStack:@[inbox]];
-//         [inbox.navigationController pushViewController:messageVC animated:YES];
+         VRootViewController *root = [VRootViewController rootViewController];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[inbox]];
+             [inbox.navigationController pushViewController:messageVC animated:YES];
+         }
      }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -243,13 +249,15 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
         return;
     }
     
-#warning Fix this.
-//    VRootViewController *root = [VRootViewController rootViewController];
-//    VEnterResetTokenViewController *enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
-//    enterTokenVC.deviceToken = deviceToken;
-//    enterTokenVC.userToken = userToken;
-//    
-//    [root.contentViewController pushViewController:enterTokenVC animated:YES];
+    VRootViewController *root = [VRootViewController rootViewController];
+    VEnterResetTokenViewController *enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
+    enterTokenVC.deviceToken = deviceToken;
+    enterTokenVC.userToken = userToken;
+    
+    if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+    {
+        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
+    }
 }
 
 #pragma mark - Deeplink generation
