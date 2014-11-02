@@ -8,18 +8,9 @@
 
 #import "VForceUpgradeViewController.h"
 #import "VRootViewController.h"
-#import "VMenuController.h"
-#import "VThemeManager.h"
-#import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 
-@interface  VSideMenuViewController ()
-
-- (void)setContentViewController:(UINavigationController *)contentViewController;
-
-@end
-
-@interface VRootViewController () <UINavigationControllerDelegate>
+@interface VRootViewController ()
 
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
@@ -39,19 +30,6 @@
     {
         return nil;
     }
-}
-
-- (void)awakeFromNib
-{
-    self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
-                            applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
-
-
-    self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
-    
-    NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
-    self.contentViewController.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -87,44 +65,6 @@
 {
     VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
-}
-
-- (void)transitionToNavStack:(NSArray *)navStack
-{
-    //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController *vc in self.contentViewController.viewControllers)
-    {
-        [vc dismissViewControllerAnimated:NO completion:nil];
-    }
-    
-    self.contentViewController.viewControllers = navStack;
-}
-
-#pragma mark - UINavigationControllerDelegate methods
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)fromVC navigationController:navigationController
-                                                               animationControllerForOperation:operation
-                                                                            fromViewController:fromVC
-                                                                              toViewController:toVC];
-    }
-    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)toVC navigationController:navigationController
-                                                               animationControllerForOperation:operation
-                                                                            fromViewController:fromVC
-                                                                              toViewController:toVC];
-    }
-    else
-    {
-        return nil;
-    }
 }
 
 @end
