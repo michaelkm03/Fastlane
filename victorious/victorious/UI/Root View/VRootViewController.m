@@ -8,7 +8,9 @@
 
 #import "VForceUpgradeViewController.h"
 #import "VLoadingViewController.h"
+#import "VObjectManager.h"
 #import "VRootViewController.h"
+#import "VSessionTimer.h"
 #import "VStreamContainerViewController.h"
 #import "VConstants.h"
 
@@ -48,6 +50,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadingCompleted:) name:VLoadingViewControllerLoadingCompletedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [self showLoadingViewController];
 }
 
@@ -137,15 +140,13 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (!viewController)
+    if (viewController)
     {
-        return;
+        [self addChildViewController:viewController];
+        [self.view addSubview:viewController.view];
+        viewController.view.frame = self.view.bounds;
     }
     
-    [self addChildViewController:viewController];
-    [self.view addSubview:viewController.view];
-    viewController.view.frame = self.view.bounds;
-
     void (^finishingTasks)() = ^(void)
     {
         [viewController didMoveToParentViewController:self];
@@ -155,6 +156,11 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     if (self.currentViewController)
     {
         UIViewController *fromViewController = self.currentViewController;
+        
+        if (fromViewController.presentedViewController)
+        {
+            [fromViewController dismissViewControllerAnimated:NO completion:nil];
+        }
         [fromViewController willMoveToParentViewController:nil];
         
         void (^removeViewController)(BOOL) = ^(BOOL complete)
@@ -195,6 +201,14 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 - (void)loadingCompleted:(NSNotification *)notification
 {
     [self showHomeStream];
+}
+
+- (void)newSessionShouldStart:(NSNotification *)notification
+{
+    [self showViewController:nil animated:NO];
+    [RKObjectManager setSharedManager:nil];
+    [VObjectManager setupObjectManager];
+    [self showLoadingViewController];
 }
 
 @end

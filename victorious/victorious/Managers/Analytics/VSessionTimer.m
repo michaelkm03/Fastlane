@@ -10,17 +10,28 @@
 #import "VObjectManager+Analytics.h"
 #import "VSessionTimer.h"
 
+#define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
+
 NSTimeInterval kVFirstLaunch = DBL_MAX;
+NSString * const VSessionTimerNewSessionShouldStart = @"VSessionTimerNewSessionShouldStart";
 
 static NSString * const kSessionEndTimeDefaultsKey     = @"com.victorious.VSessionTimer.SessionEndTime";
 static NSString * const kSessionEndTimePropertyListKey = @"date";
 static NSString * const kSessionLengthPropertyListKey  = @"length";
+
+#if TEST_NEW_SESSION
+#warning New sessions will start after 10 seconds of background time
+static NSTimeInterval const kMinimumTimeBetweenSessions = 10.0;
+#else
+static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
+#endif
 
 @interface VSessionTimer ()
 
 @property (nonatomic, strong)    NSMutableArray /* NSDictionary */ *previousSessions;
 @property (nonatomic, readwrite) NSTimeInterval  previousBackgroundTime;
 @property (nonatomic)            BOOL            transitioningFromBackgroundToForeground;
+@property (nonatomic)            BOOL            coldLaunch;
 @property (nonatomic, strong)    NSDate         *sessionStartTime;
 
 @end
@@ -58,6 +69,7 @@ static NSString * const kSessionLengthPropertyListKey  = @"length";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.transitioningFromBackgroundToForeground = YES;
+    self.coldLaunch = YES;
 }
 
 - (void)dealloc
@@ -76,6 +88,12 @@ static NSString * const kSessionLengthPropertyListKey  = @"length";
     {
         self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
     }
+    
+    if (!self.coldLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
+    }
+    self.coldLaunch = NO;
     
     if (self.previousSessions.count)
     {

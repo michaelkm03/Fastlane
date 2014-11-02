@@ -9,10 +9,12 @@
 #import "VEnvironment.h"
 #import "VObjectManager+Environment.h"
 #import "VServerEnvironmentTableViewController.h"
+#import "VSessionTimer.h"
 
 @interface VServerEnvironmentTableViewController ()
 
 @property (nonatomic, strong) NSArray *serverEnvironments;
+@property (nonatomic, strong) VEnvironment *startingEnvironment;
 
 @end
 
@@ -21,6 +23,21 @@
 - (void)awakeFromNib
 {
     self.serverEnvironments = [VObjectManager allEnvironments];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.startingEnvironment = [VObjectManager currentEnvironment];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if (![self.startingEnvironment isEqual:[VObjectManager currentEnvironment]])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -81,8 +98,6 @@
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     [VObjectManager setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Please restart the app for this change to take effect." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
 }
 
 #pragma mark - Actions

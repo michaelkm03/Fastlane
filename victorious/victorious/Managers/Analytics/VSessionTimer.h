@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSTimeInterval kVFirstLaunch; ///< Indicates that this launch is the first ever
+extern NSString * const VSessionTimerNewSessionShouldStart; ///< Indicates that the user has returned to the app after some time away
 
 /**
  VSessionTimer times a user's session for analytics purposes
