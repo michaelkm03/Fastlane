@@ -43,11 +43,13 @@
         self.adViewAppeared = YES;
         
         // Initialize ad manager and push it onto view stack
+        /*
         VSettingManager *settingsManager = [VSettingManager sharedManager];
         self.vastTag = [settingsManager fetchMonetizationItemByKey:kOpenXVastTag];
         self.adManager.customContentPlaybackView.frame = self.view.bounds;
         self.adManager.vastTag = self.vastTag;
         [self.view addSubview:self.adManager.customContentPlaybackView];
+         */
     }
 }
 

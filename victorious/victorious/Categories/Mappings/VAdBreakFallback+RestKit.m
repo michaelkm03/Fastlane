@@ -22,6 +22,7 @@
                                   @"ad_system" : VSelectorName(adSystem),
                                   @"ad_tag" : VSelectorName(adTag),
                                   @"timeout" : VSelectorName(timeout),
+                                  @"publisher_id": VSelectorName(publisherId),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

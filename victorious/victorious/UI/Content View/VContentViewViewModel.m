@@ -156,6 +156,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
             [fallbacks setValue:item.adTag forKey:@"adTag"];
             [fallbacks setValue:item.adSystem forKey:@"adSystem"];
             [fallbacks setValue:item.timeout forKey:@"timeout"];
+            [fallbacks setValue:item.publisherId forKey:@"publisherId"];
             
         }
         [self.adChain setValue:fallbacks forKey:[NSString stringWithFormat:@"%@", ad.startPosition]];
@@ -200,7 +201,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         // Sets up the monetization chain
         [self createAdChainWithCompletion:^(void){
             self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
-                                                                        andAdSystem:self.monetizationPartner];
+                                                                        withAdSystem:self.monetizationPartner withOptions:self.adChain];
             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
                                                                 object:self];
         }];
