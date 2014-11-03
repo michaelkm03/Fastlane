@@ -32,6 +32,7 @@ NSString * const VUploadManagerErrorUserInfoKey = @"VUploadManagerErrorUserInfoK
 
 NSString * const VUploadManagerErrorDomain = @"VUploadManagerErrorDomain";
 const NSInteger VUploadManagerCouldNotStartUploadErrorCode = 100;
+const NSInteger VUploadManagerBadHTTPResponseErrorCode = 200;
 
 static char kSessionQueueSpecific;
 
@@ -111,7 +112,6 @@ static inline BOOL isSessionQueue()
 - (void)_startURLSessionWithCompletion:(void(^)(void))completion
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
-    VLog(@"starting url session");
     if (!self.tasksInProgressSerializer)
     {
         self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
@@ -158,7 +158,6 @@ static inline BOOL isSessionQueue()
         {
             dispatch_async(self.sessionQueue, ^(void)
             {
-                VLog(@"getting current tasks: %lu", (unsigned long)uploadTasks.count);
                 // Reconnect in-progress upload tasks with their VUploadTaskInformation instances
                 if (self.taskInformation.count)
                 {
@@ -532,6 +531,14 @@ static inline BOOL isSessionQueue()
     return nil;
 }
 
+/**
+ Returns YES if the given response code is in the 'OK' range according to the HTTP spec
+ */
+- (BOOL)isOKResponseCode:(NSInteger)responseCode
+{
+    return responseCode >= 200 && responseCode < 400;
+}
+
 #pragma mark - NSURLSessionDelegate methods
 
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
@@ -599,7 +606,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
-    VLog(@"task did complete with error: %@", error.localizedDescription);
     dispatch_async(self.sessionQueue, ^(void)
     {
         NSError *victoriousError = nil;
@@ -616,10 +622,14 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             [self.responseData removeObjectForKey:task];
         }
         
+        if (!error && !victoriousError && ![self isOKResponseCode:[(NSHTTPURLResponse *)task.response statusCode]])
+        {
+            victoriousError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerBadHTTPResponseErrorCode userInfo:nil];
+        }
+        
         VUploadTaskInformation *taskInformation = [self informationForSessionTask:task];
         if (taskInformation)
         {
-            VLog(@"matched task with information: %@", taskInformation.identifier.UUIDString);
             if (error || victoriousError)
             {
                 if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
