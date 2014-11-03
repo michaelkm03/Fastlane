@@ -28,7 +28,7 @@ static NSString * const kVEmailValidateRegEx =
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:kVSignupErrorCodeBadEmailAddress
+                                                   code:kVSignupErrorCodeInvalidEmailAddress
                                                userInfo:nil];
         }
         return NO;
@@ -41,7 +41,7 @@ static NSString * const kVEmailValidateRegEx =
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:kVSignupErrorCodeBadEmailAddress
+                                                   code:kVSignupErrorCodeInvalidEmailAddress
                                                userInfo:nil];
         }
         return NO;
@@ -57,7 +57,7 @@ static NSString * const kVEmailValidateRegEx =
     
     switch ( error.code )
     {
-        case kVSignupErrorCodeBadEmailAddress:
+        case kVSignupErrorCodeInvalidEmailAddress:
         default:
             *title = NSLocalizedString( @"EmailValidation", @"" );
             *message = nil;
