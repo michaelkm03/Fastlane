@@ -97,6 +97,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
 @property (nonatomic, assign) CGAffineTransform targetTransform;
 @property (nonatomic, assign) CGRect oldRect;
@@ -267,6 +269,17 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewDidLoad];
 
+    // Hack to remove margins stuff should probably refactor :(
+    if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        self.view.layoutMargins = UIEdgeInsetsZero;
+    }
+    else
+    {
+        self.leadingCollectionViewToContainer.constant = 0.0f;
+        self.trailingCollectionViewToContainer.constant = 0.0f;
+    }
+    
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
