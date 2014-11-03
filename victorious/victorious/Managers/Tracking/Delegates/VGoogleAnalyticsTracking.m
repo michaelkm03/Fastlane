@@ -94,7 +94,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     NSString *screenName = [self screenNameForEventName:eventName parameters:parameters];
     if ( screenName )
     {
-        NSLog( @" -- -- -- - - -- - - %@ -- --- ---- -- -", screenName );
         [self.tracker set:kGAIScreenName value:screenName];
         [self.tracker send:[[GAIDictionaryBuilder createAppView] build]];
         CLSLog( @"AppView: %@", screenName );
