@@ -9,7 +9,7 @@
         <!--New Content View Controller-->
         <scene sceneID="Dx7-yy-EEW">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9O1-S6-jeB" customClass="VNewContentViewController" sceneMemberID="viewController">
+                <viewController wantsFullScreenLayout="YES" automaticallyAdjustsScrollViewInsets="NO" id="9O1-S6-jeB" customClass="VNewContentViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="C41-xf-66J"/>
                         <viewControllerLayoutGuide type="bottom" id="uhm-oa-mP9"/>
@@ -71,7 +71,6 @@
                                 </connections>
                             </button>
                             <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZqS-Yk-BYa" userLabel="Landscape Overlay">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -101,7 +100,9 @@
                         <outlet property="closeButton" destination="ToS-oB-8Vg" id="8eJ-1C-sNZ"/>
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
                         <outlet property="landscapeMaskOverlay" destination="ZqS-Yk-BYa" id="MDK-Ti-0nG"/>
+                        <outlet property="leadingCollectionViewToContainer" destination="e8f-31-PHL" id="lgG-EN-y7q"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
+                        <outlet property="trailingCollectionViewToContainer" destination="beS-6z-oSD" id="Nxc-Dh-5cG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
