@@ -49,9 +49,6 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptionBufferConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
 
-@property (nonatomic) BOOL animating;
-@property (nonatomic) NSUInteger originalHeight;
-
 @property (nonatomic, strong) NSArray *hashTagRanges;
 
 @end
@@ -66,7 +63,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 {
     [super awakeFromNib];
     
-    self.originalHeight = self.frame.size.height;
+
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     if (!isTemplateC)
     {
