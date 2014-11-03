@@ -9,6 +9,8 @@
 #import "VEmailValidator.h"
 #import "VConstants.h"
 
+NSInteger const VSignupErrorCodeInvalidEmailAddress  = 5102;
+
 static NSString * const kVEmailValidateRegEx =
 @"(?:[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}"
 @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
@@ -28,7 +30,7 @@ static NSString * const kVEmailValidateRegEx =
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:kVSignupErrorCodeInvalidEmailAddress
+                                                   code:VSignupErrorCodeInvalidEmailAddress
                                                userInfo:nil];
         }
         return NO;
@@ -41,7 +43,7 @@ static NSString * const kVEmailValidateRegEx =
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:kVSignupErrorCodeInvalidEmailAddress
+                                                   code:VSignupErrorCodeInvalidEmailAddress
                                                userInfo:nil];
         }
         return NO;
@@ -57,7 +59,7 @@ static NSString * const kVEmailValidateRegEx =
     
     switch ( error.code )
     {
-        case kVSignupErrorCodeInvalidEmailAddress:
+        case VSignupErrorCodeInvalidEmailAddress:
         default:
             *title = NSLocalizedString( @"EmailValidation", @"" );
             *message = nil;

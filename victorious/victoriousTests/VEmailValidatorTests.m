@@ -47,42 +47,42 @@
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:nil error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"adsp9u8had3" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa@dsadsa" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa2.com" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"@dsadas.com" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"@.com" error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa@dsa." error:&error] );
     XCTAssertNotNil( error );
-    XCTAssertEqual( error.code, kVSignupErrorCodeInvalidEmailAddress );
+    XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
 }
 
 @end

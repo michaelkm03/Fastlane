@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VValidator.h"
 
-static NSUInteger const kVSignupErrorCodeInvalidEmailAddress  = 5102;
+extern NSInteger const VSignupErrorCodeInvalidEmailAddress;
 
 @interface VEmailValidator : VValidator
 
