@@ -70,7 +70,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.count || self.count < (NSUInteger)indexPath.row)
+    if (!self.count || self.count <= (NSUInteger)indexPath.row)
     {
         return nil;
     }

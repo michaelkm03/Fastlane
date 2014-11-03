@@ -7,18 +7,18 @@
 //
 
 #import "VAdVideoPlayerViewController.h"
-#import "VAdLiveRailsVideoPlayerViewController.h"
 #import "VConstants.h"
-#import "LiveRailAdManager.h"
+#import "VAdViewController.h"
+#import "VLiveRailsAdViewController.h"
+#import "VOpenXAdViewController.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
-@interface VAdVideoPlayerViewController () <VAdLiveRailsVideoPlayerViewControllerDelegate>
+@interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL adViewAppeared;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
-
-@property (nonatomic, strong) VAdLiveRailsVideoPlayerViewController *liveRailsAdManager;
+@property (nonatomic, strong) VAdViewController *adViewController;
+@property (nonatomic, readwrite) BOOL adPlaying;
 
 @end
 
@@ -34,6 +34,13 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.adViewController startAdManager];
+}
+
 #pragma mark - Monetization setter
 
 - (void)setMonetizationPartner:(VMonetizationPartner)monetizationPartner
@@ -43,44 +50,49 @@
     switch (_monetizationPartner)
     {
         case VMonetizationPartnerLiveRail:
-            self.liveRailsAdManager = [[VAdLiveRailsVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-            self.liveRailsAdManager.delegate = self;
-            self.liveRailsAdManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            self.liveRailsAdManager.view.frame = kAdVideoPlayerFrameSize;
+            self.adViewController = [[VLiveRailsAdViewController alloc] initWithNibName:nil bundle:nil];
             break;
-            
+        
         default:
             break;
     }
+    
+    self.adViewController.delegate = self;
+    self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
 }
 
 - (void)start
 {
-    [self.view addSubview:self.liveRailsAdManager.view];
+    [self.view addSubview:self.adViewController.view];
 }
 
-#pragma mark - VAdLiveRailsVideoPlayerViewController
+#pragma mark - VAdViewControllerDelegate
 
-- (void)adDidLoadForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+- (void)adDidLoadForAdViewController:(VAdViewController *)adViewController
 {
     [self.delegate adDidLoadForAdVideoPlayerViewController:self];
 }
 
-- (void)adDidFinishForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+- (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
+    NSLog(@"\n\nAd playback finished in VAdVideoPlayerViewController");
+    
+    self.adPlaying = adViewController.isAdPlaying;
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
 // Optional delegate methods
-- (void)adHadErrorForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+- (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
+    self.adPlaying = adViewController.isAdPlaying;
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadErrorForAdVideoPlayerViewController:self];
     }
 }
 
-- (void)adHadImpressionForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+- (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController
 {
     if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
     {
@@ -88,11 +100,23 @@
     }
 }
 
-- (void)adDidStartPlaybackForAdLiveRailsVideoPlayerViewController:(VAdLiveRailsVideoPlayerViewController *)adLiveRailsVideoPlayerViewController
+- (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
 {
+    self.adPlaying = adViewController.isAdPlaying;
+    
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
+    }
+}
+
+- (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
+{
+    self.adPlaying = adViewController.isAdPlaying;
+    
+    if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])
+    {
+        [self.delegate adDidStopPlaybackForAdVideoPlayerViewController:self];
     }
 }
 

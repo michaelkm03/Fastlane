@@ -15,6 +15,7 @@
 /**
  *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
  */
+
 @interface VDirectoryViewController : VAbstractStreamCollectionViewController
 
 /**

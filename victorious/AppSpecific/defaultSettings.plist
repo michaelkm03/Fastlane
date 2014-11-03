@@ -20,8 +20,8 @@
 	<true/>
 	<key>histogram_enabled</key>
 	<false/>
-	<key>channelsEnabled</key>
-	<false/>
+	<key>channels_enabled</key>
+	<true/>
 	<key>marqueeEnabled</key>
 	<true/>
 	<key>template_c_enabled</key>
@@ -30,5 +30,9 @@
 	<false/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
+	<key>monetization.LiveRailsPublisherID</key>
+	<string>68957</string>
+	<key>monetization.OpenXVastTag</key>
+	<string>http://od.victorious.com/ma/1.0/av?auid=537201245</string>
 </dict>
 </plist>
