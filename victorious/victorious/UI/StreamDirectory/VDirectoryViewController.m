@@ -33,12 +33,11 @@
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
-static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
+static CGFloat const kDirectoryInset = 10.0f;
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
 
 @end
-
 
 @implementation VDirectoryViewController
 
@@ -63,8 +62,7 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
 
-    CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
+//    self.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, 10, 0, 10);
 
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -138,6 +136,16 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
         contentViewController.delegate = self;
         [self.navigationController pushViewController:contentViewController animated:YES];
     }
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(self.contentInset.top + kDirectoryInset,
+                            self.contentInset.left + kDirectoryInset,
+                            self.contentInset.bottom,
+                            self.contentInset.right + kDirectoryInset);
 }
 
 #pragma mark - VStreamCollectionDataDelegate
