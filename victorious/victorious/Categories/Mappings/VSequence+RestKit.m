@@ -11,6 +11,7 @@
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
 #import "VTracking+RestKit.h"
+#import "VAdBreak+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -57,7 +58,12 @@
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
+    
+    RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
+                                                                                           toKeyPath:VSelectorName(adBreaks)
+                                                                                         withMapping:[VAdBreak entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];
+    [mapping addPropertyMapping:adBreaksMapping];
     
     RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                           toKeyPath:VSelectorName(tracking)
