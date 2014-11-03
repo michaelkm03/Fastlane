@@ -23,6 +23,7 @@
 #import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
+#import "VEmailValidator.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
@@ -37,6 +38,9 @@
 @property (nonatomic, strong)           UIAlertView    *resetAlert;
 @property (nonatomic, strong)           UIAlertView    *thanksAlert;
 @property (nonatomic)                   BOOL            alertDismissed;
+
+@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
+@property (nonatomic, strong)           VEmailValidator *emailValidator;
 
 @end
 
@@ -71,6 +75,9 @@
     
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
+    
+    self.passwordValidator = [[VPasswordValidator alloc] init];
+    self.emailValidator = [[VEmailValidator alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,61 +119,20 @@
 
 - (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
 {
-    NSError    *theError;
+    NSError *validationError;
     
-    if (![self validateEmailAddress:&emailAddress error:&theError])
+    if (![self.emailValidator validateEmailAddress:emailAddress error:&validationError])
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
+        [self.emailValidator showAlertInViewController:self withError:validationError];
         return NO;
     }
     
-    if (![VPasswordValidator validatePassword:password error:&theError])
+    if ( ![self.passwordValidator validatePassword:password error:&validationError] )
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
+        [self.passwordValidator showAlertInViewController:self withError:validationError];
         return NO;
     }
     
-    return YES;
-}
-
-- (BOOL)validateEmailAddress:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    static  NSString *emailRegEx =
-    @"(?:[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}"
-    @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
-    @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[A-Za-z0-9](?:[a-"
-    @"z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?|\\[(?:(?:25[0-5"
-    @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
-    @"9][0-9]?|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
-    @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-
-    NSPredicate  *emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
-    if (!(*ioValue && [emailTest evaluateWithObject:*ioValue]))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:VLoginErrorCodeBadEmailAddress
-                                                   userInfo:userInfoDict];
-        }
-
-        return NO;
-    }
-
     return YES;
 }
 
