@@ -461,7 +461,6 @@
 		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
 		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
 		D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */; };
-		DB22A7E119FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB22A7E019FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48FD19DF3F3100CB687B /* VideoRemix.storyboard */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
@@ -494,17 +493,15 @@
 		DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890519F5BB9000D678A0 /* MapKit.framework */; };
 		DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */; };
 		DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */; };
+		DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1A0491A0025F600E16D62 /* VAdViewController.m */; };
+		DBB1A04D1A00265400E16D62 /* VLiveRailsAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1A04C1A00265400E16D62 /* VLiveRailsAdViewController.m */; };
+		DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */; };
 		DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC45CD319F4C4C1003079C4 /* libLiveRail.a */; };
 		DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */; };
 		DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7919F5860A00E0AC95 /* AdSupport.framework */; };
 		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
 		DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */; };
 		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
-		DBFE650F19F8577A0075F5D0 /* VHistogramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9CF3319E5B30E007B461E /* VHistogramCell.xib */; };
-		DBFE651019F8577A0075F5D0 /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70564C219E781EE004A8387 /* VNoContentTableViewCell.xib */; };
-		DBFE651119F8577A0075F5D0 /* VSuggestedPersonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0719E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.xib */; };
-		DBFE651219F8577A0075F5D0 /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E39BCF19CB7C80007FD86A /* VContentVideoCell.xib */; };
-		DBFE651319F8577A0075F5D0 /* VSuggestedPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0419E8AC1E00EB87C1 /* VSuggestedPeopleCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1371,8 +1368,6 @@
 		D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
-		DB22A7DF19FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdLiveRailsVideoPlayerViewController.h; sourceTree = "<group>"; };
-		DB22A7E019FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdLiveRailsVideoPlayerViewController.m; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB51C54019F86971005AA7B6 /* VAdBreakFallback+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreakFallback+RestKit.h"; sourceTree = "<group>"; };
 		DB51C54119F86971005AA7B6 /* VAdBreakFallback+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAdBreakFallback+RestKit.m"; sourceTree = "<group>"; };
@@ -1414,6 +1409,12 @@
 		DBAD890519F5BB9000D678A0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DBB1A0481A0025F600E16D62 /* VAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdViewController.h; sourceTree = "<group>"; };
+		DBB1A0491A0025F600E16D62 /* VAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdViewController.m; sourceTree = "<group>"; };
+		DBB1A04B1A00265400E16D62 /* VLiveRailsAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLiveRailsAdViewController.h; sourceTree = "<group>"; };
+		DBB1A04C1A00265400E16D62 /* VLiveRailsAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLiveRailsAdViewController.m; sourceTree = "<group>"; };
+		DBB1A04E1A00AF4500E16D62 /* VOpenXAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VOpenXAdViewController.h; sourceTree = "<group>"; };
+		DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VOpenXAdViewController.m; sourceTree = "<group>"; };
 		DBC45CD319F4C4C1003079C4 /* libLiveRail.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libLiveRail.a; sourceTree = "<group>"; };
 		DBC45CD419F4C4C1003079C4 /* LiveRailAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRailAdManager.h; sourceTree = "<group>"; };
 		DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdVideoPlayerViewController.h; sourceTree = "<group>"; };
@@ -3192,8 +3193,12 @@
 				DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */,
 				DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */,
 				DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */,
-				DB22A7DF19FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.h */,
-				DB22A7E019FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.m */,
+				DBB1A0481A0025F600E16D62 /* VAdViewController.h */,
+				DBB1A0491A0025F600E16D62 /* VAdViewController.m */,
+				DBB1A04B1A00265400E16D62 /* VLiveRailsAdViewController.h */,
+				DBB1A04C1A00265400E16D62 /* VLiveRailsAdViewController.m */,
+				DBB1A04E1A00AF4500E16D62 /* VOpenXAdViewController.h */,
+				DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */,
 			);
 			path = Monetization;
 			sourceTree = "<group>";
@@ -3371,8 +3376,6 @@
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
-				D8D73A6B19F072A800E6955C /* Firework_v01.00004.png in Resources */,
-				D8D73AA819F072A800E6955C /* Lightening_V01.00013.png in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
@@ -3603,6 +3606,7 @@
 				A70963F919F038EB00CE6633 /* VTappableTextManager.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
+				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
@@ -3658,6 +3662,7 @@
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				A73AFB7A19F1F6930005A9EA /* VFollowersTextFormatter.m in Sources */,
+				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
@@ -3685,6 +3690,7 @@
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
+				DBB1A04D1A00265400E16D62 /* VLiveRailsAdViewController.m in Sources */,
 				0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
@@ -3832,7 +3838,6 @@
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
-				DB22A7E119FAE817009251AF /* VAdLiveRailsVideoPlayerViewController.m in Sources */,
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,
