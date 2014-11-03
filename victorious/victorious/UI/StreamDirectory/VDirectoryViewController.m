@@ -35,7 +35,7 @@ static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate, VNavigationHeaderDelegate>
 
 @end
 
@@ -50,6 +50,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     streamDirectory.title = stream.name;
     
     [streamDirectory v_addNewNavHeaderWithTitles:nil];
+    streamDirectory.navHeaderView.delegate = streamDirectory;
     
     return streamDirectory;
 }
@@ -61,8 +62,6 @@ static CGFloat const kDirectoryInset = 10.0f;
     //Register cells
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
-
-//    self.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, 10, 0, 10);
 
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
