@@ -235,8 +235,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
                   kVAnalyticsKeyAction : [NSString stringWithFormat:@"Selected Filter: %@", streamName] };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventUserDidPublishImageWithTwitter] )
     {
         NSString *captionType = eventParams[ VTrackingKeyCaptionType ];
@@ -257,8 +255,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : @"Published video via facebook" };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventCameraDidCaptureVideo] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
@@ -314,8 +310,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
                   kVAnalyticsKeyAction : @"Cancel Media Capture" };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventSignupWithEmailDidSucceed] )
     {
         return @{ kVAnalyticsKeyCategory : @"Signed up via email" };
@@ -345,15 +339,11 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : @"Submitted email and password" };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventUserDidPostComment] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryInteraction,
                   kVAnalyticsKeyAction : @"Post Comment" };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventVideoDidStart] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryVideo,
@@ -379,8 +369,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryVideo,
                   kVAnalyticsKeyAction : @"Video Play to End" };
     }
-    
-    
     else if ( [eventName isEqualToString:VTrackingEventLoginWithFacebookSelected] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryUserAccount,

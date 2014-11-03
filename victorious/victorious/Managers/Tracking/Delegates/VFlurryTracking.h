@@ -11,6 +11,6 @@
 
 @import CoreLocation;
 
-@interface VFlurryTracking : NSObject <VTrackingDelegate, CLLocationManagerDelegate>
+@interface VFlurryTracking : NSObject <VTrackingDelegate>
 
 @end
