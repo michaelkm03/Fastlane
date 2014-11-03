@@ -155,7 +155,7 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
 
 - (IBAction)alternateAccessoryButtonTapped:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(alternateAccessoryButtonTapped:)])
+    if ([self.delegate respondsToSelector:@selector(alternateAccessoryButtonTappedInUploadProgressView:)])
     {
         [self.delegate alternateAccessoryButtonTappedInUploadProgressView:self];
     }
