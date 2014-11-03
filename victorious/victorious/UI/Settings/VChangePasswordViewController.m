@@ -11,6 +11,7 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+#import "VPasswordValidator.h"
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
 
@@ -47,63 +48,13 @@
      }];
 }
 
-#pragma mark - Validation
-
-- (BOOL)shouldUpdatePassword:(NSString *)password confirmation:(NSString *)confirmationPassword
-{
-    NSError *theError;
-    
-    if (![self validatePassword:password error:&theError])
-    {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-    
-    if (![password isEqualToString:confirmationPassword])
-    {
-        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                           message:NSLocalizedString(@"PasswordNotMatching", @"")
-                                                          delegate:nil
-                                                 cancelButtonTitle:nil
-                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-        [alert show];
-        return NO;
-    }
-    
-    
-    return YES;
-}
-
-- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError
-{
-    if ( password == nil || password.length < 8 )
-    {
-        if ( outError != nil )
-        {
-            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary   *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:kVInvalidPasswordEntered
-                                                   userInfo:userInfoDict];
-        }
-        return NO;
-    }
-    return YES;
-}
-
 #pragma mark - Actions
 
 - (IBAction)saveChanges:(id)sender
 {
     [[self view] endEditing:YES];
     
-    if (YES == [self shouldUpdatePassword:self.changedPasswordTextField.text
+    if (YES == [VPasswordValidator validatePassword:self.changedPasswordTextField.text
                              confirmation:self.confirmPasswordTextField.text])
     {
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -157,6 +108,7 @@
     }
     
     return YES;
+    
 }
 
 - (IBAction)goBack:(id)sender

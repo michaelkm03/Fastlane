@@ -8,55 +8,27 @@
 
 #import <XCTest/XCTest.h>
 
-#import "VChangePasswordViewController.h"
 #import "VConstants.h"
-
-@interface VChangePasswordViewController (UnitTest)
-
-- (BOOL)shouldUpdatePassword:(NSString *)password confirmation:(NSString *)confirmationPassword;
-
-- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError;
-
-@end
+#import "VPasswordValidator.h"
 
 @interface VPasswordValidationTests : XCTestCase
-{
-    VChangePasswordViewController *_viewController;
-}
 
 @end
 
 @implementation VPasswordValidationTests
 
-- (void)setUp
-{
-    [super setUp];
-    
-    _viewController = [[VChangePasswordViewController alloc] init];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
-- (void)testShouldUpdatePassword
+- (void)testvalidatePassword
 {
     NSString *current = @"password";
     NSString *confirm = @"password";
-    XCTAssert( [_viewController shouldUpdatePassword:current confirmation:confirm] );
-}
-
-- (void)testShouldUpdatePasswordInvalid
-{
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@""] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:@""] );
+    
+    XCTAssert( [VPasswordValidator validatePassword:current confirmation:confirm] );
+    
+    XCTAssertFalse( [VPasswordValidator validatePassword:current confirmation:@"nomatch"] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:@"" confirmation:@""] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:nil confirmation:nil] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:@"" confirmation:nil] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:nil confirmation:@""] );
 }
 
 - (void)testValidatePassword
@@ -64,11 +36,11 @@
     NSError *error;
     
     error = nil;
-    XCTAssert( [_viewController validatePassword:@"password" error:&error] );
+    XCTAssert( [VPasswordValidator validatePassword:@"password" error:&error] );
     XCTAssertNil( error );
     
     error = nil;
-    XCTAssert( [_viewController validatePassword:@"2+d2!5=7%1-4$da_s2#57" error:&error] );
+    XCTAssert( [VPasswordValidator validatePassword:@"2+d2!5=7%1-4$da_s2#57" error:&error] );
     XCTAssertNil( error );
 }
 
@@ -77,19 +49,19 @@
     NSError *error;
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:@"2short" error:&error] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:@"2short" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
     XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:nil error:&error] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:nil error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
     XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:@"" error:&error] );
+    XCTAssertFalse( [VPasswordValidator validatePassword:@"" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
     XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
