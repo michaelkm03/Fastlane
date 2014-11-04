@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -31,6 +32,9 @@
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0E0-ci-XL9">
                     <rect key="frame" x="157" y="17" width="20" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="0E0-ci-XL9" secondAttribute="height" multiplier="20:21" id="MNJ-D0-P2n"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -41,7 +45,7 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="C5f-48-MPU">
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="C5f-48-MPU">
                     <rect key="frame" x="142" y="21" width="13" height="13"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </imageView>
@@ -84,6 +88,8 @@
                 <constraint firstItem="YtL-IO-nl6" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" id="T2c-RO-vkG"/>
                 <constraint firstAttribute="trailing" secondItem="RMI-JK-HqJ" secondAttribute="trailing" constant="10" id="XOu-kN-ukU"/>
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" constant="17" id="XcU-Fk-6KE"/>
+                <constraint firstItem="EEh-UG-ydX" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RMI-JK-HqJ" secondAttribute="leading" constant="-5" id="ZpA-Oh-3Oh"/>
+                <constraint firstItem="0E0-ci-XL9" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RMI-JK-HqJ" secondAttribute="leading" constant="-5" id="a0L-WH-Ktj"/>
                 <constraint firstItem="0E0-ci-XL9" firstAttribute="leading" secondItem="C5f-48-MPU" secondAttribute="trailing" constant="2" id="b30-x9-sYV"/>
                 <constraint firstAttribute="trailing" secondItem="YtL-IO-nl6" secondAttribute="trailing" constant="245" id="bL5-jW-kB1"/>
                 <constraint firstItem="0E0-ci-XL9" firstAttribute="centerY" secondItem="C5f-48-MPU" secondAttribute="centerY" id="bg0-8b-aBs"/>
