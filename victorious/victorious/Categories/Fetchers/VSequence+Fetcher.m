@@ -109,6 +109,11 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return false;
 }
 
+- (BOOL)isAnnouncement
+{
+    return YES;
+}
+
 - (VNode *)firstNode
 {
     return [self.nodes.array firstObject];

@@ -22,6 +22,7 @@
 
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
+static NSString *kStreamWebViewCellIdentifier = @"VStreamWebViewCell";
 
 @interface VStreamViewCell : VTableViewCell
 

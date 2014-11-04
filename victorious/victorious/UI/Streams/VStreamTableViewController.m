@@ -36,6 +36,7 @@
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
 #import "VMarqueeTableViewCell.h"
+#import "VStreamWebViewCell.h"
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
@@ -417,7 +418,12 @@
     VStreamViewCell *cell;
     VSequence *sequence = [dataSource sequenceAtIndexPath:indexPath];
     
-    if ([sequence isPoll])
+    if ([sequence isAnnouncement])
+    {
+        cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamWebViewCellIdentifier
+                                                          forIndexPath:indexPath];
+    }
+    else if ([sequence isPoll])
     {
         cell = [dataSource.tableView dequeueReusableCellWithIdentifier:VStreamPollCellNibName
                                                           forIndexPath:indexPath];
@@ -425,6 +431,11 @@
     else if ([sequence isVideo])
     {
         cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                                          forIndexPath:indexPath];
+    }
+    else if ([sequence isAnnouncement])
+    {
+        cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamWebViewCellIdentifier
                                                           forIndexPath:indexPath];
     }
     else
@@ -464,6 +475,9 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:VStreamPollCellNibName bundle:nil]
          forCellReuseIdentifier:VStreamPollCellNibName];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamWebViewCellIdentifier bundle:nil]
+         forCellReuseIdentifier:VStreamWebViewCellNibName];
     
     [self.tableView registerNib:[VMarqueeTableViewCell nibForCell] forCellReuseIdentifier:[VMarqueeTableViewCell suggestedReuseIdentifier]];
 }
