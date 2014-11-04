@@ -35,6 +35,8 @@
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 
+#import <objc/NSObjCRuntime.h>
+
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
 @interface VObjectManager ()
@@ -460,7 +462,8 @@
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [request addValue:sha1String forHTTPHeaderField:@"Authorization"];
-    [request addValue:currentDate forHTTPHeaderField:@"Date"];
+    [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
+    [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
 }
 
 - (NSString *)rFC2822DateTimeString
