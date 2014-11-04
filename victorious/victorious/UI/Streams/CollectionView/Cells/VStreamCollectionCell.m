@@ -9,7 +9,6 @@
 #import "VStreamCollectionCell.h"
 
 #import "VStreamCellHeaderView.h"
-#import "VStreamTableViewController.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
 #import "VThemeManager.h"

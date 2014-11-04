@@ -16,7 +16,6 @@
 #import "VUser.h"
 #import "VSequence.h"
 
-#import "VStreamContainerViewController.h"
 #import "VRootViewController.h"
 #import "VUserProfileViewController.h"
 #import "VInboxContainerViewController.h"
@@ -147,14 +146,14 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
                              withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VUserProfileViewController *profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
-         
-         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-         homeContainer.shouldShowHeaderLogo = YES;
-         
-         VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeContainer]];
-         [homeContainer.navigationController pushViewController:profileVC animated:YES];
+//         VUserProfileViewController *profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
+//         
+//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
+//         homeContainer.shouldShowHeaderLogo = YES;
+//         
+//         VRootViewController *root = [VRootViewController rootViewController];
+//         [root transitionToNavStack:@[homeContainer]];
+//         [homeContainer.navigationController pushViewController:profileVC animated:YES];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {

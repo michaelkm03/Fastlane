@@ -32,7 +32,6 @@
 #import "VCameraPublishViewController.h"
 #import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
-#import "VStreamContainerViewController.h"
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 
@@ -126,17 +125,18 @@
         };
         remixItem.detailSelectionHandler = ^(void)
         {
-            [contentViewController dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-                 VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-                 streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-                 streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-                 streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-                 [contentViewController.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
-                 
-             }];
+            //TODO: replace
+//            [contentViewController dismissViewControllerAnimated:YES
+//                                     completion:^
+//             {
+//                 VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
+//                 VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
+//                 streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
+//                 streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
+//                 streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
+//                 [contentViewController.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+//                 
+//             }];
         };
         [actionItems addObject:remixItem];
     }

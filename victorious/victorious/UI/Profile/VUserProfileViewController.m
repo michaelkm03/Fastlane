@@ -13,7 +13,6 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Pagination.h"
 #import "VStreamTableDataSource.h"
-#import "VStreamTableViewController+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
 #import "VFollowerTableViewController.h"

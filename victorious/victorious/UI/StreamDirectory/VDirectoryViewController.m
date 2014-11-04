@@ -13,8 +13,6 @@
 
 // ViewControllers
 #import "VNewContentViewController.h"
-#import "VStreamContainerViewController.h"
-#import "VStreamTableViewController.h"
 
 // Menu
 #import "UIViewController+VSideMenuViewController.h"
@@ -116,12 +114,13 @@ static CGFloat const kDirectoryInset = 10.0f;
     //Commented out code is the inital logic for supporting other stream types / sequences in streams.
     if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
-        NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
-        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
-                                                                                                 name:streamName
-                                                                                                title:item.name];
-        VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
-        [self.navigationController pushViewController:streamContainer animated:YES];
+        //TODO: replace
+//        NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
+//        VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
+//                                                                                                 name:streamName
+//                                                                                                title:item.name];
+//        VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
+//        [self.navigationController pushViewController:streamContainer animated:YES];
     }
     else if ([item isKindOfClass:[VStream class]])
     {
