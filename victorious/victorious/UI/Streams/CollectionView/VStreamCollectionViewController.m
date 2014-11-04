@@ -45,6 +45,7 @@
 #import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
+#import "VTrackingManager.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
@@ -59,6 +60,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+
+@property (nonatomic, strong) VTrackingManager *trackingManager;
 
 @end
 
@@ -113,7 +116,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
 {
     VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
-
+    
     streamColllection.allStreams = allStreams;
     
     NSMutableArray *titles = [[NSMutableArray alloc] initWithCapacity:allStreams.count];
@@ -154,7 +157,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     
@@ -184,12 +187,20 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didEnterBackground:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
     
     if (!self.streamDataSource.count)
@@ -211,7 +222,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [super viewWillDisappear:animated];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
     [self.preloadImageCache removeAllObjects];
+    
+    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (BOOL)shouldAutorotate
@@ -300,26 +314,22 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - UICollectionViewDelegate
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
+    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
+                              kTrackingKeyStreamId : self.currentStream.remoteId,
+                              kTrackingKeyTimeStamp : [NSDate date] };
+    [self.trackingManager queueEventWithUrls:sequence.tracking.cellView andParameters:params withKey:sequence.remoteId];
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    VSequence *sequence;
     UIImageView *previewImageView;
     
-    if ([cell isKindOfClass:[VStreamCollectionCell class]])
-    {
-        sequence = ((VStreamCollectionCell *)cell).sequence;
-        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-    }
-    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
-    {
-        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
-        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
-    }
-
-    //If you don't have a valid sequence, you've selected an invalid cell (i.e. profile header) or something went wrong, so bail out
-    if (!sequence)
+    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
+    if ( sequence == nil )
     {
         return;
     }
@@ -334,11 +344,16 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
-
+    
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
                                          successBlock:nil
                                             failBlock:nil];
+    
+    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
+                              kTrackingKeyStreamId : self.currentStream.remoteId,
+                              kTrackingKeyTimeStamp : [NSDate date] };
+    [self.trackingManager trackEventWithUrls:sequence.tracking.cellClick andParameters:params];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -352,7 +367,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
-             &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+        &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
@@ -447,11 +462,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
     }
-
+    
     if (self.allStreams.count <= (NSUInteger)index)
     {
         return NO;
     }
+    
+    [self.trackingManager sendQueuedTrackingEvents];
     
     self.currentStream = self.allStreams[index];
     
@@ -605,6 +622,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     else
     {
         noContentUpdates();
+    }
+}
+
+- (void)didEnterBackground:(NSNotification *)notification
+{
+    if ( self.trackingManager != nil )
+    {
+        [self.trackingManager sendQueuedTrackingEvents];
     }
 }
 
