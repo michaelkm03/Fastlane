@@ -24,9 +24,9 @@ static NSString * const kVEmailValidateRegEx =
 
 - (BOOL)validateEmailAddress:(NSString *)emailAddress error:(NSError **)outError
 {
-    if ( emailAddress == nil || emailAddress.length == 0 )
+    if ( !emailAddress || emailAddress.length == 0 )
     {
-        if (outError != NULL)
+        if (outError != nil)
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
@@ -39,7 +39,7 @@ static NSString * const kVEmailValidateRegEx =
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", kVEmailValidateRegEx];
     if ( ![emailTest evaluateWithObject:emailAddress] )
     {
-        if (outError != NULL)
+        if (outError != nil)
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             *outError = [[NSError alloc] initWithDomain:errorString
