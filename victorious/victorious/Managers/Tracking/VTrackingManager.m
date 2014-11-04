@@ -9,7 +9,7 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 
-#define TRACKING_LOGGING_ENABLED 0
+#define TRACKING_LOGGING_ENABLED 1
 
 #if DEBUG && TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
