@@ -16,7 +16,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
-#import "VAnalyticsRecorder.h"
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
@@ -92,10 +91,7 @@
 {
     [super viewDidAppear:animated];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Started signup via email"
-                                                                 action:nil
-                                                                  label:nil
-                                                                  value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     
     [self.emailTextField becomeFirstResponder];
     self.navigationController.delegate = self;
@@ -179,16 +175,14 @@
         self.registrationModel.email = self.emailTextField.text;
         self.registrationModel.password = self.passwordTextField.text;
         
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Submitted email and password"
-                                                                     action:nil
-                                                                      label:nil
-                                                                      value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSubmitSignupInfo];
         
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
                                                  userName:kNoUserName
                                              onCompletion:^(VUser *user, BOOL created)
          {
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidSucceed];
              [self didSignUpWithUser:user];
          }
                                                   onError:^(NSError *error)

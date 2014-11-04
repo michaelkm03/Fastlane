@@ -25,7 +25,7 @@
 
 NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
-static const CGFloat kDirectoryItemBaseHeight = 223.0f;
+static const CGFloat kDirectoryItemBaseHeight = 217.0f;
 static const CGFloat kDirectoryItemStackHeight = 8.0f;
 
 @interface VDirectoryItemCell()
@@ -73,7 +73,7 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
     
-    self.countLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font] fontWithSize:8];
+    self.countLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
 
