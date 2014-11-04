@@ -89,8 +89,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
-
     UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     self.collectionView.backgroundColor = backgroundColor;
     
@@ -98,8 +96,6 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
-    
-    self.refreshControl.layer.zPosition = self.profileHeaderView.layer.zPosition + 1;
     
     [self.currentStream addObserver:self
                          forKeyPath:@"sequences"
@@ -111,7 +107,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
     if (self.isMe)
@@ -159,7 +155,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        [self.view insertSubview:self.backgroundImageView belowSubview:self.collectionView];
+        self.collectionView.backgroundView = self.backgroundImageView;
     }
     else
     {
@@ -188,6 +184,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)dealloc
 {
+    [self.currentStream removeObserver:self forKeyPath:@"sequences"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 

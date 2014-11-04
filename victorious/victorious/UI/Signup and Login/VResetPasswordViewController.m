@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
+#import "VPasswordValidator.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
@@ -18,6 +19,8 @@
 @property (nonatomic, weak) IBOutlet    UITextField    *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton       *updateButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
+
+@property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
 @end
 
@@ -51,6 +54,8 @@
     self.confirmPasswordTextField.delegate  =   self;
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    self.passwordValidator = [[VPasswordValidator alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -67,8 +72,10 @@
     [[self view] endEditing:YES];
     
     NSString *newPassword = self.passwordTextField.text;
+    NSString *newPasswordConfirm = self.confirmPasswordTextField.text;
     
-    if ([self shouldUpdatePassword:newPassword])
+    NSError *outError = nil;
+    if ([self.passwordValidator validatePassword:newPassword withConfirmation:newPasswordConfirm error:&outError] )
     {
         [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                        deviceToken:self.deviceToken
@@ -82,67 +89,15 @@
              [self dismissViewControllerAnimated:YES completion:nil];
          }];
     }
+    else
+    {
+        [self.passwordValidator showAlertInViewController:self withError:outError];
+    }
 }
 
 - (IBAction)cancel:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError
-{
-    if ( password == nil || password.length < 8 )
-    {
-        if ( outError != nil )
-        {
-            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary *userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError = [[NSError alloc] initWithDomain:kVictoriousErrorDomain
-                                                       code:kVInvalidPasswordEntered
-                                                   userInfo:userInfoDict];
-        }
-        return NO;
-    }
-    return YES;
-}
-
-#pragma mark - Support
-
-- (BOOL)shouldUpdatePassword:(NSString *)password
-{
-    NSError *theError;
-    
-    // Check length
-    if (![self validatePassword:password error:&theError])
-    {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-    
-    // Check other stuff
-    BOOL    isValid =   ((self.passwordTextField.text.length > 0) &&
-                         (self.confirmPasswordTextField.text.length > 0) &&
-                         ([self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text]));
-    
-    if (isValid)
-    {
-        return YES;
-    }
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                    message:NSLocalizedString(@"PasswordNotMatching", @"")
-                                                   delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-    [alert show];
-    
-    return NO;
 }
 
 #pragma mark - UITextFieldDelegate

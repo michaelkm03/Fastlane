@@ -10,7 +10,7 @@
 
 #import "VStreamCollectionViewDataSource.h"
 
-@class VStream, VNavigationHeaderView;
+@class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
 @interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate>
 

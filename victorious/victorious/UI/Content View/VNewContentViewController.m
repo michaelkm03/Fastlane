@@ -97,6 +97,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 @property (nonatomic, weak) NSLayoutConstraint *bottomExperienceEnhancerBarToContainerConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
 @property (nonatomic, assign) CGAffineTransform targetTransform;
 @property (nonatomic, assign) CGRect oldRect;
@@ -115,7 +117,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
 {
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
-    
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
@@ -151,7 +152,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
     return shouldRotate;
 }
 
@@ -267,6 +268,17 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 {
     [super viewDidLoad];
 
+    // Hack to remove margins stuff should probably refactor :(
+    if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        self.view.layoutMargins = UIEdgeInsetsZero;
+    }
+    else
+    {
+        self.leadingCollectionViewToContainer.constant = 0.0f;
+        self.trailingCollectionViewToContainer.constant = 0.0f;
+    }
+    
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -308,6 +320,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.view insertSubview:inputAccessoryView
                 belowSubview:self.landscapeMaskOverlay];
     [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
@@ -356,6 +369,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                              selector:@selector(pollDataDidUpdate:)
                                                  name:VContentViewViewModelDidUpdatePollDataNotification
                                                object:self.viewModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentDataDidUpdate:)
+                                                 name:VContentViewViewModelDidUpdateContentNotification
+                                               object:self.viewModel];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
@@ -485,6 +503,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
         self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
+}
+
+- (void)contentDataDidUpdate:(NSNotification *)notification
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
 - (void)commentsDidUpdate:(NSNotification *)notification
@@ -656,7 +679,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 [videoCell setTracking:self.viewModel.sequence.tracking];
-                videoCell.videoURL = self.viewModel.videoURL;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;

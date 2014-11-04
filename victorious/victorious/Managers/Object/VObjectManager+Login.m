@@ -21,14 +21,17 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
+#import "VTracking.h"
 
 @implementation VObjectManager (Login)
 
-NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
+NSString *kLoggedInChangedNotification          = @"LoggedInChangedNotification";
+NSString *kInitResponseNotification             = @"InitResponseNotification";
 
-static NSString * const kVExperimentsKey = @"experiments";
-static NSString * const kVAppearanceKey = @"appearance";
-static NSString * const kVVideoQualityKey = @"video_quality";
+static NSString * const kVExperimentsKey        = @"experiments";
+static NSString * const kVAppearanceKey         = @"appearance";
+static NSString * const kVVideoQualityKey       = @"video_quality";
+static NSString * const kVAppTrackingKey        = @"video_quality";
 
 #pragma mark - Init
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
@@ -36,41 +39,18 @@ static NSString * const kVVideoQualityKey = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self updateTheme:[VThemeManager sharedThemeManager] withResponsePayload:fullResponse[kVPayloadKey]];
 
-        NSDictionary *payload = fullResponse[kVPayloadKey];
+        [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
         
-        NSDictionary *newTheme = payload[kVAppearanceKey];
-        if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
-        {
-            [[VThemeManager sharedThemeManager] setTheme:newTheme];
-        }
-        
-        NSDictionary *videoQuality = payload[kVVideoQualityKey];
-        if ([videoQuality isKindOfClass:[NSDictionary class]])
-        {
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
-        }
-        
-        NSString *app_store_url = payload[@"app_store_url"];
-        if (app_store_url)
-        {
-            NSDictionary *dict = @{@"url.appstore": app_store_url};
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:dict];
-        }
-
-        NSDictionary *experiments = payload[kVExperimentsKey];
-        if ([experiments isKindOfClass:[NSDictionary class]])
-        {
-            [[VSettingManager sharedManager] updateSettingsWithDictionary:experiments];
-        }
-        
-        // VSettingManager will only accept VVoteType objects from this array
-        [[VSettingManager sharedManager] updateSettingsWithVoteTypes:resultObjects];
+        [self updateSettings:[VSettingManager sharedManager] withResultObjects:resultObjects];
         
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kInitResponseNotification object:nil];
     };
     
     return [self GET:@"/api/init"
@@ -78,6 +58,66 @@ static NSString * const kVVideoQualityKey = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
+}
+
+- (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
+{
+    NSDictionary *newTheme = payload[kVAppearanceKey];
+    if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+    {
+        [themeManager setTheme:newTheme];
+    }
+}
+
+- (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
+{
+    NSDictionary *videoQuality = payload[kVVideoQualityKey];
+    if ([videoQuality isKindOfClass:[NSDictionary class]])
+    {
+        [settingsManager updateSettingsWithDictionary:videoQuality];
+    }
+    
+    NSString *app_store_url = payload[@"app_store_url"];
+    if (app_store_url)
+    {
+        NSDictionary *dict = @{@"url.appstore": app_store_url};
+        [settingsManager updateSettingsWithDictionary:dict];
+    }
+    
+    NSDictionary *experiments = payload[kVExperimentsKey];
+    if ([experiments isKindOfClass:[NSDictionary class]])
+    {
+        [settingsManager updateSettingsWithDictionary:experiments];
+    }
+}
+
+- (void)updateSettings:(VSettingManager *)settingsManager withResultObjects:(NSArray *)resultObjects
+{
+    if ( ![resultObjects isKindOfClass:[NSArray class]] || resultObjects == nil || resultObjects.count == 0 )
+    {
+        return;
+    }
+    
+    VTracking *tracking = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VTracking class]].firstObject;
+    [settingsManager updateSettingsWithAppTracking:tracking];
+    
+    NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
+    [settingsManager updateSettingsWithVoteTypes:voteTypes];
+}
+
+- (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class
+{
+    NSParameterAssert( class != nil );
+    if ( ![array isKindOfClass:[NSArray class]] || array == nil || array.count == 0 )
+    {
+        return @[];
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bindings)
+                              {
+                                  return [obj isKindOfClass:class];
+                              }];
+    return [array filteredArrayUsingPredicate:predicate];
 }
 
 #pragma mark - Login and status
@@ -472,9 +512,21 @@ static NSString * const kVVideoQualityKey = @"video_quality";
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"user_token": userToken ?: @"",
-                                 @"device_token" : deviceToken ?: @"",
-                                 @"new_password" : newPassword ?: @""};
+
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    
+    if (userToken)
+    {
+        [parameters setObject:userToken forKey:@"user_token"];
+    }
+    if (deviceToken)
+    {
+        [parameters setObject:deviceToken forKey:@"device_token"];
+    }
+    if (newPassword)
+    {
+        [parameters setObject:newPassword forKey:@"new_password"];
+    }
     
     return [self POST:@"api/password_reset"
                object:nil

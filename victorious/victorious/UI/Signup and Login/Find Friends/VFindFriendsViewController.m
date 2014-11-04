@@ -61,7 +61,7 @@
 {
     [super viewDidLoad];
     
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.containerView

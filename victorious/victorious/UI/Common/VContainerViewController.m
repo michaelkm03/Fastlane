@@ -9,6 +9,7 @@
 #import "VContainerViewController.h"
 
 #import "UIViewController+VNavMenu.h"
+#import "VSettingManager.h"
 
 @interface VContainerViewController() <VNavigationHeaderDelegate>
 
@@ -27,8 +28,24 @@
     
     self.containedViewController = [self.childViewControllers lastObject];
     
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
 }
 
 @end

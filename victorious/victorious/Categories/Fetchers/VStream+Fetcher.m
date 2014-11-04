@@ -14,7 +14,8 @@
 #import "VUser.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
-static NSString * const kVStreamContentType = @"stream";
+static NSString * const kVStreamContentTypeContent = @"content";
+static NSString * const kVStreamContentTypeStream = @"stream";
 
 NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream/";
 
@@ -25,7 +26,12 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 - (BOOL)onlyContainsSequences
 {
-    return [self.streamContentType isEqualToString:kVSequenceContentType];
+    return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
+}
+
+- (BOOL)isStreamOfStreams
+{
+    return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
 }
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
@@ -83,7 +89,8 @@ NSString * const VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     
-    VStream *directory =  [self streamForRemoteId:@"directory" filterName:nil
+    VStream *directory =  [self streamForRemoteId:@"directory"
+                                       filterName:nil
                              managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     
     directory.name = NSLocalizedString(@"Channels", nil);
@@ -102,16 +109,12 @@ NSString * const VStreamFilterTypePopular = @"popular";
 {
     NSString *streamIdKey = remoteId ?: @"0";
     NSString *filterIdKey;
+    NSString *apiPath = [@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey];
     if (filterName.length)
     {
         filterIdKey = filterName;
+        apiPath = [apiPath stringByAppendingPathComponent:filterIdKey];
     }
-    else
-    {
-        filterIdKey = VStreamFilterTypeRecent;
-    }
-    
-    NSString *apiPath = [[@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey] stringByAppendingPathComponent:filterIdKey];
     
     VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
     stream.remoteId = remoteId;

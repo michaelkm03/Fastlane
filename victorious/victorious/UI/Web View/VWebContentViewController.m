@@ -10,6 +10,7 @@
 #import "VThemeManager.h"
 
 #import "UIViewController+VNavMenu.h"
+#import "VSettingManager.h"
 
 @interface VWebContentViewController () <VNavigationHeaderDelegate>
 
@@ -26,7 +27,7 @@
 {
     [super viewDidLoad];
     
-    [self addNewNavHeaderWithTitles:nil];
+    [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
     if (!self.activitiyIndicator)
@@ -78,7 +79,13 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
 }
 
 #pragma mark - UIWebViewDelegate

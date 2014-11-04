@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -17,18 +18,12 @@
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ODe-uo-H79">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="ODe-uo-H79" secondAttribute="height" multiplier="8:5" id="17h-rO-MCi"/>
-                        </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
                         <rect key="frame" x="127" y="64" width="65" height="72"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
                         <rect key="frame" x="23" y="223" width="274" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" placeholder="YES" id="F3u-VP-Tt0"/>
                             <constraint firstAttribute="width" constant="274" placeholder="YES" id="zwt-TY-aGX"/>
@@ -39,7 +34,6 @@
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOr-V2-P1Q" customClass="VDefaultProfileButton">
                         <rect key="frame" x="140" y="180" width="40" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="E98-lV-A5J"/>
                             <constraint firstAttribute="width" secondItem="fOr-V2-P1Q" secondAttribute="height" multiplier="1:1" id="xm4-Zf-Ilb"/>
@@ -59,11 +53,16 @@
                 <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="1ty-At-fXf"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="5uf-3A-yHo"/>
                 <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="7bJ-QV-5tr"/>
+                <constraint firstAttribute="centerX" secondItem="ODe-uo-H79" secondAttribute="centerX" id="QnN-ct-3wG"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" constant="127" id="Vqj-UG-avq"/>
                 <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="fOr-V2-P1Q" secondAttribute="bottom" constant="3" id="Z9t-70-S9q"/>
+                <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="cy7-gA-i1P"/>
+                <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="f30-pZ-MTc"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="centerY" id="i2s-Tt-pGG"/>
                 <constraint firstAttribute="centerX" secondItem="9uF-IU-Ue1" secondAttribute="centerX" placeholder="YES" id="iee-9L-sWr"/>
                 <constraint firstItem="fOr-V2-P1Q" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="bottom" id="mGO-EL-5C8"/>
+                <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="s8c-bt-paC"/>
+                <constraint firstAttribute="bottom" secondItem="ODe-uo-H79" secondAttribute="bottom" constant="83" id="sPE-Yd-12F"/>
                 <constraint firstAttribute="centerX" secondItem="fOr-V2-P1Q" secondAttribute="centerX" id="ygk-0W-Ud2"/>
             </constraints>
             <size key="customSize" width="393" height="383"/>
@@ -79,4 +78,9 @@
         <image name="PollBarOr" width="65" height="72"/>
         <image name="profile_full" width="80" height="80"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

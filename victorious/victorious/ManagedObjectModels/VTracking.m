@@ -23,9 +23,9 @@
 @dynamic videoStall;
 @dynamic videoStart;
 @dynamic ballisticCount;
-@dynamic enterForeground;
-@dynamic launch;
-@dynamic enterBackground;
+@dynamic appEnterForeground;
+@dynamic appLaunch;
+@dynamic appEnterBackground;
 @dynamic sequence;
 @dynamic voteType;
 

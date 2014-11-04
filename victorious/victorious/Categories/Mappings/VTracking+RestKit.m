@@ -29,9 +29,9 @@
                                   @"view-skip"          :   VSelectorName(videoSkip),
                                   @"cell-view"          :   VSelectorName(cellView),
                                   @"cell-click"         :   VSelectorName(cellClick),
-                                  @"init"               :   VSelectorName(launch),
-                                  @"start"              :   VSelectorName(enterForeground),
-                                  @"stop"               :   VSelectorName(enterBackground),
+                                  @"init"               :   VSelectorName(appLaunch),
+                                  @"start"              :   VSelectorName(appEnterForeground),
+                                  @"stop"               :   VSelectorName(appEnterBackground),
                                   @"ballistic_count"    :   VSelectorName(ballisticCount),
                                   };
     

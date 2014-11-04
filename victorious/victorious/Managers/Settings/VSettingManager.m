@@ -16,6 +16,7 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VVoteType+Fetcher.h"
+#import "VTracking.h"
 
 //Settings
 NSString * const kVCaptureVideoQuality =   @"capture";
@@ -24,14 +25,18 @@ NSString * const kVExportVideoQuality =   @"remix";
 NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
 NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
-NSString * const   VSettingsChannelsEnabled = @"channelsEnabled";
-NSString * const   VSettingsMarqueeEnabled = @"marqueeEnabled";
 NSString * const VSettingsTemplateCEnabled = @"template_c_enabled - 2";
+NSString * const VSettingsChannelsEnabled = @"channels_enabled";
+NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
+
+//Monetization
+NSString * const kLiveRailPublisherId = @"monetization.LiveRailsPublisherID";
+NSString * const kOpenXVastTag = @"monetization.OpenXVastTag";
 
 //URLs
 NSString * const kVTermsOfServiceURL = @"url.tos";
@@ -79,6 +84,11 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 - (void)clearVoteTypes
 {
     self.voteTypes = @[];
+}
+
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking
+{
+    _applicationTracking = tracking;
 }
 
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
@@ -185,6 +195,17 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     {
         return AVCaptureSessionPresetMedium;
     }
+}
+
+- (NSString *)fetchMonetizationItemByKey:(NSString *)key
+{
+    NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    if ([self settingEnabledForKey:key])
+    {
+        return value;
+    }
+    
+    return @"";
 }
 
 @end

@@ -19,6 +19,7 @@
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
 - (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters;
 - (void)sendRequestWithUrlString:(NSString *)url;
+- (NSString *)percentEncodedUrlString:(NSString *)originalUrl;
 
 @end
 
@@ -155,8 +156,9 @@
     XCTAssertEqualObjects( output, expected );
     
     output = [self.trackingManager stringFromString:url byReplacingString:macro withValue:dateValue];
-    expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[self.trackingManager.dateFormatter stringFromDate:dateValue ]];
+    NSString *dateString = [self.trackingManager.dateFormatter stringFromDate:dateValue ];
+    dateString = [self.trackingManager percentEncodedUrlString:dateString];
+    expected = [url stringByReplacingOccurrencesOfString:macro withString:dateString];
     XCTAssertEqualObjects( output, expected );
 }
 

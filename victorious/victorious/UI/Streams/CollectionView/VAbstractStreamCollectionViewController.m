@@ -60,11 +60,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refresh:)
-                  forControlEvents:UIControlEventValueChanged];
-    
-//    [self.collectionView addSubview:self.refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
 }
 
@@ -78,19 +73,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
         insets.top = CGRectGetHeight(self.navHeaderView.bounds);
         self.contentInset = insets;
     }
-}
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    
-//    if (self.navHeaderView)
-//    {
-//        UIEdgeInsets insets = self.collectionView.contentInset;
-//        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-//        self.contentInset = insets;
-//    }
-//}
+    [self.refreshControl removeFromSuperview];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    UIView *subView = self.refreshControl.subviews[0];
+    
+    //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
+    subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
+                               CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
+}
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -195,14 +188,14 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self hideHeader];
+             [self v_hideHeader];
          }];
     }
     else if (translation.y > 0)
     {
         [UIView animateWithDuration:.2f animations:^
          {
-             [self showHeader];
+             [self v_showHeader];
          }];
     }
     

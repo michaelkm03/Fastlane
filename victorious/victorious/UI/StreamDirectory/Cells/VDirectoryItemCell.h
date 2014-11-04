@@ -20,6 +20,16 @@ extern NSString * const VDirectoryItemCellNameStream;
 @interface VDirectoryItemCell : VBaseCollectionViewCell
 
 /**
+ *  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
+ */
++ (CGFloat)desiredStreamOfStreamsHeight;
+
+/**
+ *  The desired height for a directory item cell that is just a stream of content.
+ */
++ (CGFloat)desiredStreamOfContentHeight;
+
+/**
  *  The VStreamItem used to populate fields on the cell.
  */
 @property (nonatomic, strong) VStreamItem *streamItem;

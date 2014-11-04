@@ -8,15 +8,22 @@
 
 #import "VDirectoryViewController.h"
 
+// Data Source
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
 
+// ViewControllers
+#import "VNewContentViewController.h"
 #import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
-#import "VNavigationHeaderView.h"
+
+// Menu
 #import "UIViewController+VSideMenuViewController.h"
 #import "UIViewController+VNavMenu.h"
+
+// Views
+#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
+#import "VDirectoryItemCell.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -26,21 +33,24 @@
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 
-static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file.  20 pixels on 640 width.
+static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate, VStreamCollectionDataDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate, VNavigationHeaderDelegate>
 
 @end
-
 
 @implementation VDirectoryViewController
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VDirectoryViewController *streamDirectory = (VDirectoryViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamDirectoryStoryboardId];
-    
+    VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
+                                                                                           bundle:nil];
+    streamDirectory.defaultStream = stream;
     streamDirectory.currentStream = stream;
+    streamDirectory.title = stream.name;
+    
+    [streamDirectory v_addNewNavHeaderWithTitles:nil];
+    streamDirectory.navHeaderView.delegate = streamDirectory;
     
     return streamDirectory;
 }
@@ -48,22 +58,20 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+    
     //Register cells
     UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
 
-    CGFloat sideInset = CGRectGetWidth(self.view.bounds) * kVDirectoryCellInsetRatio;
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.collectionView.contentInset.top, sideInset, 0, sideInset);
-    
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
-
-    [self addNewNavHeaderWithTitles:nil];
+    self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
+
+    [self.view layoutIfNeeded];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -83,14 +91,30 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VDirectoryItemCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    
+    CGFloat width = CGRectGetWidth(collectionView.bounds);
+    width = width - flowLayout.sectionInset.left - flowLayout.sectionInset.right - flowLayout.minimumInteritemSpacing;
+    width = floorf(width * 0.5f);
+    
+    BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]];
+    
+    if (((indexPath.row % 2) == 1) && !isStreamOfStreamsRow)
+    {
+        NSIndexPath *previousIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+        isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:previousIndexPath] isKindOfClass:[VStream class]];
+    }
+    
+    CGFloat height = isStreamOfStreamsRow ? [VDirectoryItemCell desiredStreamOfStreamsHeight] : [VDirectoryItemCell desiredStreamOfContentHeight];
+    
+    return CGSizeMake(width, height);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
     //Commented out code is the inital logic for supporting other stream types / sequences in streams.
-    if ([item isKindOfClass:[VStream class]])// && [((VStream *)item) onlyContainsSequences])
+    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
         NSString *streamName = [@"stream" stringByAppendingString: item.remoteId];
         VStreamTableViewController *streamTable = [VStreamTableViewController streamWithDefaultStream:(VStream *)item
@@ -99,17 +123,28 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
         VStreamContainerViewController *streamContainer = [VStreamContainerViewController modalContainerForStreamTable:streamTable];
         [self.navigationController pushViewController:streamContainer animated:YES];
     }
-//    else if ([item isKindOfClass:[VStream class]])
-//    {
-//        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
-//        [self.navigationController pushViewController:sos animated:YES];
-//    }
-//    else if ([item isKindOfClass:[VSequence class]])
-//    {
-//        VContentViewController *contentViewController = [[VContentViewController alloc] init];
-//        contentViewController.sequence = (VSequence *)item;
-//        [self.navigationController pushViewController:contentViewController animated:YES];
-//    }
+    else if ([item isKindOfClass:[VStream class]])
+    {
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
+        [self.navigationController pushViewController:sos animated:YES];
+    }
+    else if ([item isKindOfClass:[VSequence class]])
+    {
+        VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel];
+        contentViewController.delegate = self;
+        [self.navigationController pushViewController:contentViewController animated:YES];
+    }
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(self.contentInset.top + kDirectoryInset,
+                            self.contentInset.left + kDirectoryInset,
+                            self.contentInset.bottom,
+                            self.contentInset.right + kDirectoryInset);
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -123,6 +158,21 @@ static CGFloat const kVDirectoryCellInsetRatio = .03125;//Ratio from spec file. 
     cell.streamItem = item;
     
     return cell;
+}
+
+#pragma mark - VNewContentViewControllerDelegate
+
+- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    contentViewController.delegate = nil;
+}
+
+- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    [self refresh:self.refreshControl];
+    contentViewController.delegate = nil;
 }
 
 @end

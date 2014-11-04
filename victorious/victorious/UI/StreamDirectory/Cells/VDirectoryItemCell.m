@@ -8,19 +8,34 @@
 
 #import "VDirectoryItemCell.h"
 
-#import "VStreamItem+Fetcher.h"
+// Views
+#import "VExtendedView.h"
 
+// Categories
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 
+//theme
 #import "VThemeManager.h"
 
+// Models
+#import "VStream.h"
+#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
+
 NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
+
+static const CGFloat kDirectoryItemBaseHeight = 223.0f;
+static const CGFloat kDirectoryItemStackHeight = 8.0f;
 
 @interface VDirectoryItemCell()
 
 @property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
+@property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
+@property (weak, nonatomic) IBOutlet VExtendedView *middleStack;
+@property (weak, nonatomic) IBOutlet VExtendedView *bottomStack;
 
 @property (nonatomic) CGRect originalNameLabelFrame;
 
@@ -28,12 +43,26 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
 @implementation VDirectoryItemCell
 
+#pragma mark - Sizing Methods
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds) * .453; //from spec, 290 width on 640
-    CGFloat height = width * 1.372;//from spec, 398 height for 290 width
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, kDirectoryItemBaseHeight);
 }
+
++ (CGFloat)desiredStreamOfStreamsHeight
+{
+    return kDirectoryItemBaseHeight + kDirectoryItemStackHeight;
+}
+
++ (CGFloat)desiredStreamOfContentHeight
+{
+    return [self desiredStreamOfStreamsHeight];
+    return kDirectoryItemBaseHeight;
+}
+
+#pragma mark - NSObject
 
 - (void)awakeFromNib
 {
@@ -43,25 +72,54 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    
+    self.countLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font] fontWithSize:8];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
+
+#pragma mark - Property Accessors
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
-    [self.nameLabel sizeToFit];
+    
+    self.countLabel.text = @"";
+    if ([streamItem isKindOfClass:[VStream class]])
+    {
+        self.countLabel.text = [NSString stringWithFormat:@"%@ %@", ((VStream *)streamItem).count, NSLocalizedString(@"ITEMS", @"")];
+    }
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    
+    if (![streamItem isKindOfClass:[VStream class]] )
+    {
+        return;
+    }
+    
+    if (![((VStream *)streamItem) isStreamOfStreams])
+    {
+        return;
+    }
+    
+    self.bottomStack.hidden = NO;
+    self.middleStack.hidden = NO;
+    
+    [self.streamItemContainerOrTopStackItem layoutIfNeeded];
 }
+
+#pragma mark - UICollectionReusableView
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
     self.nameLabel.frame = self.originalNameLabelFrame;
+    self.bottomStack.hidden = YES;
+    self.middleStack.hidden = YES;
 }
 
 @end

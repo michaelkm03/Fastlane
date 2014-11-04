@@ -10,10 +10,11 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VSequenceActionsDelegate.h"
+#import "VBaseCollectionViewCell.h"
 
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
-@interface VStreamCollectionCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
+@interface VStreamCollectionCell : VBaseCollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;

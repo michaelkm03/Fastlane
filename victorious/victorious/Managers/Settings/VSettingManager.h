@@ -21,12 +21,18 @@ extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsHistogramEnabled;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
 
+//Monetization
+extern NSString * const kLiveRailPublisherId;
+extern NSString * const kOpenXVastTag;
+
 //URLs
 extern NSString * const kVTermsOfServiceURL;
 extern NSString * const kVPrivacyUrl;
 
 extern NSString * const kVAppStoreURL;
 extern NSString * const kVChannelURLSupport;
+
+@class VTracking;
 
 @interface VSettingManager : NSObject
 
@@ -44,6 +50,11 @@ extern NSString * const kVChannelURLSupport;
 - (void)clearVoteTypes;
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
 
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking;
+
+- (NSString *)fetchMonetizationItemByKey:(NSString *)key;
+
 @property (nonatomic, readonly) NSArray *voteTypes;
+@property (nonatomic, readonly) VTracking *applicationTracking;
 
 @end

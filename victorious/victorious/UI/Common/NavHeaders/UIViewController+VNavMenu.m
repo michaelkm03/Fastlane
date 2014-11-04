@@ -87,7 +87,7 @@ static const char kUploadProgressYConstraintKey;
     return navHeaderYConstraint;
 }
 
-- (void)addNewNavHeaderWithTitles:(NSArray *)titles
+- (void)v_addNewNavHeaderWithTitles:(NSArray *)titles
 {
     if (self.navigationController.viewControllers.count <= 1)
     {
@@ -118,7 +118,7 @@ static const char kUploadProgressYConstraintKey;
                                                                         views:NSDictionaryOfVariableBindings(header)]];
 }
 
-- (void)hideHeader
+- (void)v_hideHeader
 {
     if (!CGRectContainsRect(self.view.frame, self.navHeaderView.frame))
     {
@@ -130,7 +130,7 @@ static const char kUploadProgressYConstraintKey;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)showHeader
+- (void)v_showHeader
 {
     if (CGRectContainsRect(self.view.frame, self.navHeaderView.frame))
     {
@@ -160,7 +160,7 @@ static const char kUploadProgressYConstraintKey;
 
 #pragma mark - Upload Progress View
 
-- (void)addUploadProgressView
+- (void)v_addUploadProgressView
 {
     self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
     [self addChildViewController:self.uploadProgressViewController];
@@ -189,11 +189,11 @@ static const char kUploadProgressYConstraintKey;
     
     if (self.uploadProgressViewController.numberOfUploads)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
 }
 
-- (void)showUploads
+- (void)v_showUploads
 {
     self.uploadProgressViewYconstraint.constant = 0;
 }
@@ -203,14 +203,14 @@ static const char kUploadProgressYConstraintKey;
     return self.uploadProgressViewController != nil && self.uploadProgressViewYconstraint.constant == 0;
 }
 
-- (void)hideUploads
+- (void)v_hideUploads
 {
     self.uploadProgressViewYconstraint.constant = -VUploadProgressViewControllerIdealHeight;
 }
 
 #pragma mark - Create Sequence action
 
-- (void)addCreateSequenceButton
+- (void)v_addCreateSequenceButton
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
 

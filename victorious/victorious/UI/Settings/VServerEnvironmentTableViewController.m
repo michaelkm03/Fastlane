@@ -29,7 +29,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.parentViewController addNewNavHeaderWithTitles:nil];
+    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 

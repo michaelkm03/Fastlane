@@ -17,6 +17,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VAdBreak.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -39,11 +40,14 @@
 // Media
 #import "NSURL+MediaType.h"
 
-#import "NSURL+MediaType.h"
+// Monetization
+#import "VAdBreak.h"
+#import "VAdBreakFallback.h"
 
 NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
 NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
+NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
 
 @interface VContentViewViewModel ()
 
@@ -57,6 +61,11 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) BOOL hasReposted;
 @property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
+@property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
+
+@property (nonatomic, strong) NSMutableDictionary *adChain;
+@property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
+@property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 
 @end
 
@@ -95,7 +104,13 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
         _currentNode = [sequence firstNode];
         _currentAsset = [_currentNode.assets firstObject];
         
-        [self reloadData];
+        // Set the default ad chain index
+        self.currentAdChainIndex = 0;
+        
+        // Go get the data
+        [self fetchUserinfo];
+        [self fetchHistogramData];
+        [self fetchPollData];
     }
     return self;
 }
@@ -120,22 +135,86 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
          self.hasReposted = YES;
      }
                                      failBlock:nil];
-
 }
 
-- (void)reloadData
+#pragma mark - Create the ad chain
+
+- (void)createAdChainWithCompletion:(void(^)(void))completionBlock
 {
-    [self fetchPollData];
-    [self fetchHistogramData];
+    self.adChain = [[NSMutableDictionary alloc] init];
+    NSSet *adBreakSet = self.sequence.adBreaks;
+    
+    for (VAdBreak *ad in adBreakSet)
+    {
+        NSSet *fallbackSet = ad.fallbacks;
+        NSMutableDictionary *fallbacks = [[NSMutableDictionary alloc] init];
+        
+        for (VAdBreakFallback *item in fallbackSet)
+        {
+            [fallbacks setValue:item.adTag forKey:@"adTag"];
+            [fallbacks setValue:item.adSystem forKey:@"adSystem"];
+            [fallbacks setValue:item.timeout forKey:@"timeout"];
+            [fallbacks setValue:item.publisherId forKey:@"publisherId"];
+            
+        }
+        [self.adChain setValue:fallbacks forKey:[NSString stringWithFormat:@"%@", ad.startPosition]];
+    }
+    
+    // Grab the preroll
+    NSDictionary *breakItems = [self.adChain valueForKey:[NSString stringWithFormat:@"%ld", (long)self.currentAdChainIndex]];
+    int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
+    
+    switch (adSystemPartner)
+    {
+        case 0:
+            self.monetizationPartner = VMonetizationPartnerNone;
+            break;
+            
+        case 1:
+            self.monetizationPartner = VMonetizationPartnerLiveRail;
+            break;
+            
+        case 2:
+            self.monetizationPartner = VMonetizationPartnerOpenX;
+            break;
+            
+        default:
+            self.monetizationPartner = VMonetizationPartnerNone;
+            break;
+    }
+    
+    if (completionBlock)
+    {
+        completionBlock();
+    }
+}
+
+#pragma mark - Sequence data fetching methods
+
+- (void)fetchSequenceData
+{
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          // This is here to update the vote counts
          [self.experienceEnhancerController updateData];
          
-         [self fetchUserinfo];
-     }
+        // Sets up the monetization chain
+        [self createAdChainWithCompletion:^(void){
+            self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
+                                                                        withAdSystem:self.monetizationPartner withOptions:self.adChain];
+            [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                object:self];
+        }];
+    }
                                             failBlock:nil];
+}
+
+- (void)reloadData
+{
+    [self fetchPollData];
+    [self fetchHistogramData];
+    [self fetchSequenceData];
 }
 
 - (void)fetchUserinfo
@@ -215,6 +294,16 @@ NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContent
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     return request;
 }
+
+/*
+- (VAdSystem)adSystem
+{
+    VAdBreak *adBreak = self.sequence.adBreaks;
+    NSNumber *system_type = adBreak.adSystem;
+    VAdSystem ad_system = [system_type intValue];
+    return ad_system;
+}
+*/
 
 - (VUser *)user
 {

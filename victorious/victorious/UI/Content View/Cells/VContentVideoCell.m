@@ -7,12 +7,16 @@
 //
 
 #import "VContentVideoCell.h"
-
+#import "VConstants.h"
 #import "VCVideoPlayerViewController.h"
+#import "VAdVideoPlayerViewController.h"
 
-@interface VContentVideoCell () <VCVideoPlayerDelegate>
+@interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
+@property (nonatomic, assign, readwrite) BOOL isPlayingAd;
+@property (nonatomic, strong) NSURL *contentURL;
 
 @end
 
@@ -45,11 +49,50 @@
 
 #pragma mark - Property Accessors
 
-- (void)setVideoURL:(NSURL *)videoURL
+- (void)setViewModel:(VVideoCellViewModel *)viewModel
 {
-    _videoURL = [videoURL copy];
+    _viewModel = viewModel;
     
-    [self.videoPlayerViewController setItemURL:videoURL];
+    self.contentURL = viewModel.itemURL;
+    
+    if (viewModel.monetizationPartner == VMonetizationPartnerNone || viewModel.monetizationPartner == VMonetizationPartnerOpenX)
+    {
+        self.isPlayingAd = NO;
+        self.videoPlayerViewController.itemURL = self.contentURL;
+        return;
+    }
+    
+    [self showPreRollWithPartner:viewModel.monetizationPartner withOptions:viewModel.monetizationOptions];
+}
+
+#pragma mark - Playback Methods
+
+- (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options
+{
+    // Set visibility
+    self.isPlayingAd = YES;
+    
+    self.videoPlayerViewController.view.hidden = YES;
+    
+    // Ad Video Player
+    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withOptions:options];
+    self.adPlayerViewController.delegate = self;
+    self.adPlayerViewController.view.hidden = NO;
+    [self.adPlayerViewController start];
+    [self.contentView addSubview:self.adPlayerViewController.view];
+}
+
+- (void)resumeContentPlayback
+{
+    // Set visibility
+    self.isPlayingAd = NO;
+    self.adPlayerViewController.view.hidden = YES;
+    self.videoPlayerViewController.view.hidden = NO;
+    self.videoPlayerViewController.itemURL = self.contentURL;
+    
+    // Play content Video
+    [self play];
 }
 
 - (AVPlayerStatus)status
@@ -112,6 +155,7 @@
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
+    // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
 }
@@ -119,6 +163,33 @@
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.delegate videoCellWillStartPlaying:self];
+}
+
+#pragma mark - VAdVideoPlayerViewControllerDelegate
+
+- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlayback];
+}
+
+- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    // This is where we can preload the content video after the ad video has loaded
+}
+
+- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    
+}
+
+- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    NSLog(@"\n\nAdVideo was stopped");
+}
+
+- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlayback];
 }
 
 @end

@@ -75,8 +75,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     
     homeStream.shouldDisplayMarquee = YES;
-    [homeStream addCreateSequenceButton];
-    [homeStream addUploadProgressView];
+    [homeStream v_addCreateSequenceButton];
+    [homeStream v_addUploadProgressView];
     homeStream.uploadProgressViewController.delegate = homeStream;
     
     return homeStream;
@@ -88,7 +88,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
     
     VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
-    [communityStream addCreateSequenceButton];
+    [communityStream v_addCreateSequenceButton];
     
     return communityStream;
 }
@@ -123,7 +123,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     streamColllection.title = title;
-    [streamColllection addNewNavHeaderWithTitles:titles];
+    [streamColllection v_addNewNavHeaderWithTitles:titles];
     streamColllection.navHeaderView.delegate = streamColllection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
     streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
@@ -148,6 +148,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     self.marquee.delegate = nil;
     self.streamDataSource.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -166,22 +167,23 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
-    VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-    self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
-    self.marquee.delegate = self;
+    if (self.shouldDisplayMarquee)
+    {
+        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        self.marquee.delegate = self;
+        [self.marquee refreshWithSuccess:nil failure:nil];
+    }
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
-    self.streamDataSource.hasHeaderCell = self.shouldDisplayMarquee;
     self.collectionView.dataSource = self.streamDataSource;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
-    
-    [self refresh:self.refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -189,6 +191,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [super viewWillAppear:animated];
 
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
+    
+    if (!self.streamDataSource.count)
+    {
+        [self refresh:self.refreshControl];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -240,7 +247,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
     {
-        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee;
+        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee && self.marquee.streamDataSource.count;
     }
     else
     {
@@ -255,8 +262,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
-
+        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee && self.marquee.streamDataSource.count;
     }
 }
 
@@ -449,7 +455,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.currentStream = self.allStreams[index];
     
-    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading)
+    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
+    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
     {
         [self refresh:self.refreshControl];
     }
@@ -463,11 +470,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if (uploadCount)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
     else
     {
-        [self hideUploads];
+        [self v_hideUploads];
     }
 }
 

@@ -235,11 +235,11 @@
 
     if (self.uploadProgressViewController.numberOfUploads)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
 }
 
-- (void)showUploads
+- (void)v_showUploads
 {
     self.uploadProgressViewYconstraint.constant = 0;
 }
@@ -249,7 +249,7 @@
     return self.uploadProgressViewController != nil && self.uploadProgressViewYconstraint.constant == 0;
 }
 
-- (void)hideUploads
+- (void)v_hideUploads
 {
     self.uploadProgressViewYconstraint.constant = -VUploadProgressViewControllerIdealHeight;
 }
@@ -371,11 +371,11 @@
 {
     if (uploadCount)
     {
-        [self showUploads];
+        [self v_showUploads];
     }
     else
     {
-        [self hideUploads];
+        [self v_hideUploads];
     }
 }
 

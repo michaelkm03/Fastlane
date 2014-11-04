@@ -23,14 +23,6 @@
     self.locationTextField.delegate = self;
     self.taglineTextView.delegate = self;
     
-    self.usernameTextField.text = self.profile.name;
-    self.taglineTextView.text = self.profile.tagline;
-    self.locationTextField.text = self.profile.location;
-    if ([self respondsToSelector:@selector(textViewDidChange:)])
-    {
-        [self textViewDidChange:self.taglineTextView];
-    }
-
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
@@ -42,13 +34,26 @@
     self.cameraButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.cameraButton.layer.shouldRasterize = YES;
     self.cameraButton.clipsToBounds = YES;
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.usernameTextField.text = self.profile.name;
+    self.taglineTextView.text = self.profile.tagline;
+    self.locationTextField.text = self.profile.location;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.taglineTextView];
+    }
+    
     UIImage    *backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                                    applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
-
+    
     NSURL  *imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     [self.profileImageView setImageWithURL:imageURL placeholderImage:backgroundImage];
-
+    
     //  Set background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]

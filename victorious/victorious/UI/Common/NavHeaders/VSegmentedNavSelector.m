@@ -72,16 +72,7 @@
 
 - (void)valueChanged
 {
-    BOOL shouldChange = YES;
-    if ([self.delegate respondsToSelector:@selector(navSelector:changedToIndex:)])
-    {
-        shouldChange = [self.delegate navSelector:self changedToIndex:self.segmentedControl.selectedSegmentIndex];
-    }
-    
-    if (!shouldChange)
-    {
-        self.currentIndex = self.lastIndex;
-    }
+    self.currentIndex = self.segmentedControl.selectedSegmentIndex;
 }
 
 - (void)setTitles:(NSArray *)titles
@@ -96,9 +87,22 @@
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
-    self.lastIndex = _currentIndex;
-    _currentIndex = currentIndex;
-    [self.segmentedControl setSelectedSegmentIndex:currentIndex];
+    BOOL shouldChange = YES;
+    if ([self.delegate respondsToSelector:@selector(navSelector:changedToIndex:)])
+    {
+        shouldChange = [self.delegate navSelector:self changedToIndex:currentIndex];
+    }
+    
+    if (!shouldChange)
+    {
+        [self.segmentedControl setSelectedSegmentIndex:_currentIndex];
+    }
+    else
+    {
+        self.lastIndex = _currentIndex;
+        _currentIndex = currentIndex;
+        [self.segmentedControl setSelectedSegmentIndex:currentIndex];
+    }
 }
 
 @end

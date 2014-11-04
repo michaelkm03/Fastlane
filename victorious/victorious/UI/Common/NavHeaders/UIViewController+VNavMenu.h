@@ -23,22 +23,22 @@
  *
  *  @param titles An array of NSStrings used to populate the headers nav selector.
  */
-- (void)addNewNavHeaderWithTitles:(NSArray *)titles;
+- (void)v_addNewNavHeaderWithTitles:(NSArray *)titles;
 
 /**
  *  Animates the header off screen.  Must be called in an animation block to animate.
  */
-- (void)hideHeader;
+- (void)v_hideHeader;
 
 /**
  *  Animates the header on sceen.  Must be called in an animation block to animate.
  */
-- (void)showHeader;
+- (void)v_showHeader;
 
 /**
  *  Adds a create new sequence button to the nav menu
  */
-- (void)addCreateSequenceButton;
+- (void)v_addCreateSequenceButton;
 
 /**
  *  The upload progress view controller that is added after addUploadProgressView
@@ -48,16 +48,16 @@
 /**
  *  Creates a new uploadProgressViewController, and adds the view to self.view with the proper constraints to the header.
  */
-- (void)addUploadProgressView;
+- (void)v_addUploadProgressView;
 
 /**
  *  Shows the upload progress view
  */
-- (void)showUploads;
+- (void)v_showUploads;
 
 /**
  *  Hides the upload progress view.
  */
-- (void)hideUploads;
+- (void)v_hideUploads;
 
 @end
