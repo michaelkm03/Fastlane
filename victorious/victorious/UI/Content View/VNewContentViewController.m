@@ -129,6 +129,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 
 - (void)dealloc
 {
+    [VContentCommentsCell clearSharedImageCache];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -446,8 +448,6 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
                                                   object:nil];
     
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
-    
-    [VContentCommentsCell clearSharedImageCache];
     
     self.contentCollectionView.delegate = nil;
 }
