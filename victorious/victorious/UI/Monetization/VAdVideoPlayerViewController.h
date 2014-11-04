@@ -43,6 +43,14 @@
 @property (nonatomic, assign) VMonetizationPartner monetizationPartner;
 
 /**
+ Sets the monetization type and options for the Ad Video Player
+ 
+ @param monetizationPartner enum value for which ad network to use
+ @param options             Dictionary of keys/values for setting ad display options and parameters
+ */
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options;
+
+/**
  Method tha starts the ad manager
  */
 - (void)start;

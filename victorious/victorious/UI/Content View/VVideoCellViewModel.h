@@ -17,9 +17,10 @@ typedef NS_ENUM(NSInteger, VMonetizationPartner)
 
 @interface VVideoCellViewModel : NSObject
 
-+ (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL andAdSystem:(VMonetizationPartner)monetizationPartner;
++ (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL withAdSystem:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options;
 
 @property (nonatomic, readonly) NSURL *itemURL;
 @property (nonatomic, readonly) VMonetizationPartner monetizationPartner;
+@property (nonatomic, readonly) NSDictionary *monetizationOptions;
 
 @end

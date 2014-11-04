@@ -43,7 +43,7 @@
 
 #pragma mark - Monetization setter
 
-- (void)setMonetizationPartner:(VMonetizationPartner)monetizationPartner
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options
 {
     _monetizationPartner = monetizationPartner;
     
@@ -58,6 +58,7 @@
     }
     
     self.adViewController.delegate = self;
+    self.adViewController.adServerMonetizationParameters = options;
     self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
 }
