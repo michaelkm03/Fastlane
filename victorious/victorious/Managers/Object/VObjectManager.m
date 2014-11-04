@@ -35,8 +35,6 @@
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 
-#import <objc/NSObjCRuntime.h>
-
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
 @interface VObjectManager ()
