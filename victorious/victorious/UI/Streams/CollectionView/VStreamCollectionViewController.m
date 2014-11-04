@@ -35,7 +35,6 @@
 //Managers
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
-#import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
@@ -189,6 +188,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
 
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
     
@@ -210,7 +212,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super viewWillDisappear:animated];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
+    
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    
     [self.preloadImageCache removeAllObjects];
 }
 

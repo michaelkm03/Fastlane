@@ -170,6 +170,9 @@
 {
     [super viewWillAppear:animated];
     
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
+    
     [self updateNoContentViewAnimated:animated];
 }
 
