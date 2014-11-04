@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "VChangePasswordViewController.h"
+#import "VPasswordValidator.h"
 #import "VConstants.h"
 
 @interface VChangePasswordViewController()
@@ -50,7 +51,7 @@
     
     title = nil;
     message = nil;
-    error = [NSError errorWithDomain:@"" code:kVCurrentPasswordIsInvalid userInfo:nil];
+    error = [NSError errorWithDomain:@"" code:VErrorCodeCurrentPasswordIsInvalid userInfo:nil];
     XCTAssert( [_viewController localizedErrorStringsForError:error title:&title message:&message] );
     XCTAssert( [title isEqualToString:NSLocalizedString(@"ResetPasswordErrorIncorrectTitle", @"")] );
     XCTAssert( [message isEqualToString:NSLocalizedString(@"ResetPasswordErrorIncorrectMessage", @"")] );
