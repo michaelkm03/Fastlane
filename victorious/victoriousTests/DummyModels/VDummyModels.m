@@ -12,9 +12,10 @@
 #import "VUser.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
-#import "VTrackingConstants.h"
 
 static NSManagedObjectContext *context = nil;
+
+NSString * const kMacroBallisticsCount = @"%%COUNT%%";
 
 @implementation VDummyModels
 
@@ -64,7 +65,7 @@ static NSManagedObjectContext *context = nil;
         voteType.imageCount = @(5);
         voteType.displayOrder = @(i+1);
         
-        NSString *trackingUrl = [NSString stringWithFormat:@"http://www.tracking.com/%@", kTrackingKeyBallisticsCount];
+        NSString *trackingUrl = [NSString stringWithFormat:@"http://www.tracking.com/%@", kMacroBallisticsCount];
         voteType.tracking = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
         voteType.tracking.ballisticCount = @[ trackingUrl, trackingUrl, trackingUrl ];
         

@@ -72,7 +72,8 @@
     // Create the NSDates
     NSDate *monthAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
     NSString *timeSince = [monthAgo timeSince];
-    XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastMonth", @"")], @"Failed last month");
+    //XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastMonth", @"")], @"Failed last month");
+    XCTAssertEqualObjects( timeSince, NSLocalizedString(@"LastMonth", @""), @"Failed last month");
 }
 
 - (void)testWeeksAgo
