@@ -170,11 +170,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
     self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
     self.marquee.delegate = self;
+    [self.marquee refreshWithSuccess:nil failure:nil];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
-    self.streamDataSource.hasHeaderCell = self.shouldDisplayMarquee;
     self.collectionView.dataSource = self.streamDataSource;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -244,7 +244,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
     {
-        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee;
+        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee && self.marquee.streamDataSource.count;
     }
     else
     {
@@ -259,8 +259,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
-
+        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee && self.marquee.streamDataSource.count;
     }
 }
 
