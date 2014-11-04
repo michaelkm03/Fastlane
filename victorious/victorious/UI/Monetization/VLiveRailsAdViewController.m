@@ -56,9 +56,8 @@
 #warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
         
-        // Initialize ad manager and push it onto view stack
+        // Grab the publisher id from the monetization options and init the ad manager with it
         NSString *pubID = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
-        NSAssert(pubID, @"Publisher ID CANNOT be blank!");
         
         // Check if the publisher id is blank or nil
         if ([pubID isEqualToString:@""] || [pubID isKindOfClass:[NSNull class]] || pubID == nil)
