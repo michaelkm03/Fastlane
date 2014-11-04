@@ -24,10 +24,10 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
 @property (nonatomic, weak) IBOutlet UIView *uploadingIcon;
 @property (nonatomic, weak) IBOutlet UIView *finalizingIcon;
 @property (nonatomic, weak) IBOutlet UIView *failedIcon;
-@property (weak, nonatomic) IBOutlet UIImageView *alternateFailedIcon;
+@property (nonatomic, weak) IBOutlet UIImageView *alternateFailedIcon;
 @property (nonatomic, weak) IBOutlet UIView *finishedIcon;
 @property (nonatomic, weak) IBOutlet UIImageView *finishedIconCheckmark;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceLabelToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingSpaceLabelToContainer;
 
 @end
 
@@ -129,20 +129,24 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
             self.titleLabel.text = NSLocalizedString(@"Cancelling...", @"");
             self.uploadingIcon.hidden = NO;
             break;
+            
         case VUploadProgressViewStateFinalizing:
             self.titleLabel.text = NSLocalizedString(@"UploadFinalizing", @"");
             self.finalizingIcon.hidden = NO;
             break;
+            
         case VUploadProgressViewStateFailed:
             self.titleLabel.text = NSLocalizedString(@"UploadFailed", @"");
             self.failedIcon.hidden = NO;
             self.alternateFailedIcon.hidden = NO;
             self.trailingSpaceLabelToContainer.constant = 2 * kAccessoryButtonWidth;
             break;
+            
         case VUploadProgressViewStateFinished:
             self.titleLabel.text = NSLocalizedString(@"UploadSuccess", @"");
             self.finishedIcon.hidden = NO;
             break;
+            
         default:
             self.titleLabel.text = @"";
             break;
