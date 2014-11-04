@@ -447,6 +447,8 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
+    [VContentCommentsCell clearSharedImageCache];
+    
     self.contentCollectionView.delegate = nil;
 }
 

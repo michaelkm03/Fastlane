@@ -26,6 +26,11 @@
 @property (nonatomic, readonly) UIImage *previewImage;
 @property (nonatomic, readonly) UIView *previewView;
 
+
++ (NSCache *)sharedImageCached;
+
++ (void)clearSharedImageCache;
+
 /**
  *  Sizing method for delegates.
  *
