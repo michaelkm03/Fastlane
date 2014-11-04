@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VSetExpirationViewController.h"
 #import "VExpirationPickerTextField.h"
 #import "VExpirationDatePicker.h"
@@ -93,13 +92,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Set Expiration"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventSetExpirationDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventSetExpirationDidAppear];
 }
 
 - (BOOL)shouldAutorotate

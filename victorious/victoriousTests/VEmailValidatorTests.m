@@ -11,6 +11,12 @@
 
 #import "VEmailValidator.h"
 
+@interface VEmailValidator()
+
+- (BOOL)localizedErrorStringsForError:(NSError *)error title:(NSString **)title message:(NSString **)message;
+
+@end
+
 @interface VEmailValidatorTests : XCTestCase
 
 @property (nonatomic, strong) VEmailValidator *emailValidator;
@@ -83,6 +89,27 @@
     XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa@dsa." error:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
+}
+
+- (void)testLocalizedErrorStrings
+{
+    NSString *title = nil;
+    NSString *message = nil;
+    NSError *error = nil;
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VSignupErrorCodeInvalidEmailAddress userInfo:nil];
+    XCTAssert( [self.emailValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
+    XCTAssertNil( message );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
+    XCTAssert( [self.emailValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
+    XCTAssertNil( message );
 }
 
 @end
