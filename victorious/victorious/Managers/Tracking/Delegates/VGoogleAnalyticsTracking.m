@@ -204,7 +204,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
                   kVAnalyticsKeyAction : @"Cancel Login" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidCancelLogin] )
+    else if ( [eventName isEqualToString:VTrackingEventUserDidShare] )
     {
         NSString *activityType = eventParams[ VTrackingKeyActivityType ];
         NSString *sequenceCategory = eventParams[ VTrackingKeySequenceCategory ];

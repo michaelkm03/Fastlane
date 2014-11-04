@@ -35,7 +35,6 @@
 //Managers
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
-#import "VAnalyticsRecorder.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
@@ -45,7 +44,7 @@
 #import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
-#import "VTrackingManager.h"
+#import "VTracking.h"
 
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
@@ -60,8 +59,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-
-@property (nonatomic, strong) VTrackingManager *trackingManager;
 
 @end
 
@@ -193,14 +190,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
-    
-    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
+
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
     
     if (!self.streamDataSource.count)
@@ -221,11 +219,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super viewWillDisappear:animated];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
+    
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     [self.preloadImageCache removeAllObjects];
-    
-    [self.trackingManager sendQueuedTrackingEvents];
 }
 
 - (BOOL)shouldAutorotate
@@ -317,10 +315,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
-                              kTrackingKeyStreamId : self.currentStream.remoteId,
-                              kTrackingKeyTimeStamp : [NSDate date] };
-    [self.trackingManager queueEventWithUrls:sequence.tracking.cellView andParameters:params withKey:sequence.remoteId];
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellView };
+    [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -350,10 +349,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                          successBlock:nil
                                             failBlock:nil];
     
-    NSDictionary *params = @{ kTrackingKeySequenceId : sequence.remoteId,
-                              kTrackingKeyStreamId : self.currentStream.remoteId,
-                              kTrackingKeyTimeStamp : [NSDate date] };
-    [self.trackingManager trackEventWithUrls:sequence.tracking.cellClick andParameters:params];
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -468,7 +468,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         return NO;
     }
     
-    [self.trackingManager sendQueuedTrackingEvents];
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     self.currentStream = self.allStreams[index];
     
@@ -627,10 +627,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    if ( self.trackingManager != nil )
-    {
-        [self.trackingManager sendQueuedTrackingEvents];
-    }
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 @end
