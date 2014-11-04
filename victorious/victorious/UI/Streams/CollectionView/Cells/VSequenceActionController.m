@@ -157,6 +157,8 @@
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+    streamCollection.noContentView = noRemixView;
+    
     [viewController.navigationController pushViewController:streamCollection animated:YES];
 }
 
