@@ -16,6 +16,7 @@
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
+#import "UIViewController+VNavMenu.h"
 
 @interface VFollowingTableViewController ()
 
@@ -45,7 +46,25 @@
 {
     [super viewWillAppear:animated];
     
+    if (!self.profile)
+    {
+        [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
+                                                                    usingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+         {
+             if ([obj isKindOfClass:[VUserProfileViewController class]])
+             {
+                 VUserProfileViewController *userProfile = obj;
+                 self.profile = userProfile.profile;
+                 *stop = YES;
+             }
+         }];
+    }
+    
     [self refreshFollowingList];
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
 }
 
 - (BOOL)shouldAutorotate

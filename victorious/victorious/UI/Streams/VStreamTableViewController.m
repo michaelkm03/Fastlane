@@ -632,7 +632,6 @@
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
-
 }
 
 - (void)hashTagButtonTappedInStreamViewCell:(VStreamViewCell *)streamViewCell withTag:(NSString *)tag

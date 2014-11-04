@@ -67,7 +67,12 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
                                                                                  maskImage:nil];
                                  dispatch_async(dispatch_get_main_queue(), ^
                                  {
+                                     weakSelf.alpha = 0;
                                      weakSelf.image = blurredImage;
+                                     [UIView animateWithDuration:.1f animations:^
+                                     {
+                                         weakSelf.alpha = 1.0f;
+                                     }];
                                  });
                              });
                          }

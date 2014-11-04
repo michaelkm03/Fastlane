@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 
 #import "UIButton+VImageLoading.h"
+#import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
 
@@ -35,11 +36,12 @@
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     [self setImage:defaultImage forState:UIControlStateNormal];
-    
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
+    NSString *colorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVAccentColor;
+    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
+    
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
 }

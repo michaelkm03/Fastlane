@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamTableViewController.h"
+#import "VStreamCollectionViewController.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamTableViewController
+@interface VUserProfileViewController : VStreamCollectionViewController
 
-+ (instancetype)userProfileWithSelf;
+@property   (nonatomic, readonly) VUser                  *profile;
+
 + (instancetype)userProfileWithUser:(VUser *)aUser;
-+ (instancetype)userProfileWithFollowerOrFollowing:(VUser *)aUser;
 
 @end

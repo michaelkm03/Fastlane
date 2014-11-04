@@ -33,8 +33,6 @@
 
 @property (nonatomic, weak) IBOutlet UIButton *editProfileButton;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomBufferConstraint;
-
 @property (nonatomic, strong) UIActivityIndicatorView *followButtonActivityIndicator;
 
 @property (nonatomic, strong) VUser *user;

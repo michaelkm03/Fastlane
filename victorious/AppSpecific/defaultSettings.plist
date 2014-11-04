@@ -23,6 +23,10 @@
 	<key>channels_enabled</key>
 	<true/>
 	<key>marqueeEnabled</key>
+	<true/>
+	<key>template_c_enabled</key>
+	<true/>
+	<key>template_c_enabled - 2</key>
 	<false/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>

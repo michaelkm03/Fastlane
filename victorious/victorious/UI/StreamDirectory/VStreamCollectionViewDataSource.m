@@ -20,6 +20,8 @@
 
 static char KVOContext;
 
+NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
+
 @interface VStreamCollectionViewDataSource()
 
 @property (nonatomic) BOOL isLoading;
@@ -68,12 +70,19 @@ static char KVOContext;
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.count || self.count <= (NSUInteger)indexPath.row)
+    {
+        return nil;
+    }
+    
     return [self.stream.streamItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
-    return [NSIndexPath indexPathForRow:[self.stream.streamItems indexOfObject:streamItem] inSection:0];
+    NSInteger section = self.hasHeaderCell ? 1 : 0;
+    NSUInteger index = [self.stream.streamItems indexOfObject:streamItem];
+    return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
@@ -134,17 +143,25 @@ static char KVOContext;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (self.hasHeaderCell && section == 0)
+    {
+        return 1;
+    }
+    
     return [self count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
-    return [self.delegate dataSource:self cellForStreamItem:item atIndexPath:indexPath];
+    return [self.delegate dataSource:self cellForIndexPath:indexPath];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    if (self.hasHeaderCell)
+    {
+        return 2;
+    }
     return 1;
 }
 
@@ -160,6 +177,8 @@ static char KVOContext;
     if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
         [self.collectionView reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
+                                                            object:self];
     }
 }
 

@@ -27,8 +27,8 @@ extern const CGFloat VTableContainerViewControllerStandardHeaderHeight;
 
 @property (nonatomic, weak) IBOutlet UIView *tableContainerView;
 
-- (void)hideHeader;
-- (void)showHeader;
+- (void)v_hideHeader;
+- (void)v_showHeader;
 - (CGFloat)hiddenHeaderHeight; //< When the header hides, it will scoot up off-screen by this amount.
 - (IBAction)changedFilterControls:(id)sender;
 

@@ -38,7 +38,7 @@
 
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
-@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VStreamCellHeaderDelegate, VTappableTextManagerDelegate>
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate, VSequenceActionsDelegate, VTappableTextManagerDelegate>
 
 @property (nonatomic) BOOL                          animating;
 @property (nonatomic) NSUInteger                    originalHeight;
@@ -143,13 +143,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-    
-    // Check if being viewed from the User Profile
-    if ([self.parentTableViewController isKindOfClass:[VUserProfileViewController class]])
-    {
-        [self.streamCellHeaderView setIsFromProfile:YES];
-    }
-
     
     VAsset *firstAsset = [[_sequence firstNode].assets.array firstObject];
     if ([firstAsset.type isEqualToString:VConstantsMediaTypeYoutube])

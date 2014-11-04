@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXT-Yp-qZC" userLabel="Header View" customClass="VNavigationHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="105"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tpY-SB-B55" userLabel="Menu Button">
+                    <rect key="frame" x="20" y="22" width="27" height="27"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal" image="menuC">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="pressedMenu:" destination="hXT-Yp-qZC" eventType="touchUpInside" id="nIK-4x-le9"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxx-w6-OxK" userLabel="Back Button">
+                    <rect key="frame" x="20" y="22" width="22" height="27"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal" image="cameraButtonBack">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="pressedBack:" destination="hXT-Yp-qZC" eventType="touchUpInside" id="zag-gU-L2K"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVo-IA-w0m" userLabel="Right Button">
+                    <rect key="frame" x="273" y="22" width="27" height="28"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdC-v0-4wZ" userLabel="Header Label">
+                    <rect key="frame" x="55" y="17" width="211" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8mA-Sb-CbD" userLabel="Header Image">
+                    <rect key="frame" x="49" y="17" width="217" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="8mA-Sb-CbD" secondAttribute="height" multiplier="217:40" id="90y-Oa-p1m"/>
+                    </constraints>
+                </imageView>
+                <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s8h-1I-uAz" customClass="VSwipeNavSelector">
+                    <rect key="frame" x="-1" y="57" width="322" height="48"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="hXT-Yp-qZC" id="nmo-07-zwT"/>
+                    </connections>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="lVo-IA-w0m" secondAttribute="trailing" constant="20" id="2UT-5B-nKT"/>
+                <constraint firstAttribute="width" secondItem="hXT-Yp-qZC" secondAttribute="height" multiplier="64:21" id="2xq-vs-IaQ"/>
+                <constraint firstItem="8mA-Sb-CbD" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="17" id="5OJ-ra-SHH"/>
+                <constraint firstItem="lVo-IA-w0m" firstAttribute="leading" secondItem="8mA-Sb-CbD" secondAttribute="trailing" constant="7" id="FIv-OF-J4e"/>
+                <constraint firstItem="tpY-SB-B55" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="20" id="FTy-hY-fXH"/>
+                <constraint firstAttribute="trailing" secondItem="s8h-1I-uAz" secondAttribute="trailing" constant="-1" id="HtK-vE-dcK"/>
+                <constraint firstItem="Hxx-w6-OxK" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="20" id="JLE-Ek-li3"/>
+                <constraint firstItem="OdC-v0-4wZ" firstAttribute="trailing" secondItem="lVo-IA-w0m" secondAttribute="leading" constant="-7" id="KWd-sD-nA8"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="8mA-Sb-CbD" secondAttribute="bottom" id="N3x-AC-aQS"/>
+                <constraint firstItem="lVo-IA-w0m" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="22" id="NjH-zB-Qyq"/>
+                <constraint firstItem="Hxx-w6-OxK" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="22" id="Pmx-BX-5vN"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="lVo-IA-w0m" secondAttribute="bottom" constant="7" id="QOp-Rg-h03"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="-1" id="QcT-MC-sqt"/>
+                <constraint firstItem="OdC-v0-4wZ" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="17" id="R5y-CD-Cwx"/>
+                <constraint firstAttribute="centerX" secondItem="OdC-v0-4wZ" secondAttribute="centerX" id="Rh6-t5-lFh"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="tpY-SB-B55" secondAttribute="bottom" constant="8" id="RhV-v0-oj9"/>
+                <constraint firstItem="OdC-v0-4wZ" firstAttribute="leading" secondItem="tpY-SB-B55" secondAttribute="trailing" constant="8" id="bqo-0q-g11"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="OdC-v0-4wZ" secondAttribute="bottom" id="feJ-ry-uaG"/>
+                <constraint firstItem="8mA-Sb-CbD" firstAttribute="leading" secondItem="Hxx-w6-OxK" secondAttribute="trailing" constant="7" id="g4L-Zi-xuz"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="8mA-Sb-CbD" secondAttribute="bottom" id="mfX-fe-3UN"/>
+                <constraint firstAttribute="bottom" secondItem="s8h-1I-uAz" secondAttribute="bottom" id="nXi-g3-4Lz"/>
+                <constraint firstItem="tpY-SB-B55" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="22" id="oOc-rh-cGo"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="Hxx-w6-OxK" secondAttribute="bottom" constant="8" id="y5U-bk-7vq"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addButton" destination="lVo-IA-w0m" id="2AS-aN-YAd"/>
+                <outlet property="backButton" destination="Hxx-w6-OxK" id="8ir-K4-H9Y"/>
+                <outlet property="headerImageView" destination="8mA-Sb-CbD" id="gCF-gW-MUp"/>
+                <outlet property="headerLabel" destination="OdC-v0-4wZ" id="CtM-xP-FZM"/>
+                <outlet property="menuButton" destination="tpY-SB-B55" id="NIJ-1e-ZfI"/>
+                <outlet property="navSelector" destination="s8h-1I-uAz" id="8dz-yR-zun"/>
+                <outlet property="ratioConstraint" destination="2xq-vs-IaQ" id="eAj-Ef-4zU"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="menuC" width="27" height="21"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

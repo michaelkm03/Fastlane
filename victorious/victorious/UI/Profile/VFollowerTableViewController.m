@@ -17,6 +17,7 @@
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
+#import "UIViewController+VNavMenu.h"
 
 @interface VFollowerTableViewController ()
 
@@ -38,16 +39,33 @@
                                                                             action:@selector(goBack:)];
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
-
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    if (!self.profile)
+    {
+        [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
+                                                                    usingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+        {
+            if ([obj isKindOfClass:[VUserProfileViewController class]])
+            {
+                VUserProfileViewController *userProfile = obj;
+                self.profile = userProfile.profile;
+                *stop = YES;
+            }
+        }];
+    }
     
     [self refreshFollowersList];
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
 }
 
 - (BOOL)shouldAutorotate
@@ -231,7 +249,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.followers[indexPath.row];
-    VUserProfileViewController *profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
+    VUserProfileViewController *profileVC   =   [VUserProfileViewController userProfileWithUser:user];
     [self.navigationController pushViewController:profileVC animated:YES];
 }
 
@@ -275,9 +293,12 @@
         }
     };
 
-    [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
-                                               successBlock:followerSuccess
-                                                  failBlock:followerFail];
+    if (self.profile)
+    {
+        [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
+                                                   successBlock:followerSuccess
+                                                      failBlock:followerFail];
+    }
 }
 
 - (void)loadMoreFollowers

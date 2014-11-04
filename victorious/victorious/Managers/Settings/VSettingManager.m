@@ -25,6 +25,7 @@ NSString * const kVExportVideoQuality =   @"remix";
 NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
 NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
+NSString * const VSettingsTemplateCEnabled = @"template_c_enabled - 2";
 NSString * const VSettingsChannelsEnabled = @"channels_enabled";
 NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 

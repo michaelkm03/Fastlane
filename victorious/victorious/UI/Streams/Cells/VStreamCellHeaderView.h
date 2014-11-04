@@ -8,17 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VDefaultProfileButton, VStreamCellHeaderView;
+#import "VSequenceActionsDelegate.h"
+#import "VStreamCollectionCell.h"
 
-@protocol VStreamCellHeaderDelegate <NSObject>
-
-- (void)commentsPressedOnHeader:(VStreamCellHeaderView *)header;
-
-@end
+@class VSequence, VDefaultProfileButton;
 
 @interface VStreamCellHeaderView : UIView
-
-@property (nonatomic, weak) id<VStreamCellHeaderDelegate> delegate;
 
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
@@ -29,11 +24,10 @@
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 @property (nonatomic, weak) IBOutlet UIButton *profileHitboxutton;
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
-@property (nonatomic, weak) IBOutlet UIButton *commentHitboxButton;
 
+@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
 @property (nonatomic, strong) UIViewController *parentViewController;
-@property (nonatomic) BOOL isFromProfile;
 
 @property (nonatomic, weak) VSequence *sequence;
 @property (nonatomic, strong) NSMutableArray *commentViews;

@@ -10,7 +10,9 @@
 #import "VObjectManager+Environment.h"
 #import "VServerEnvironmentTableViewController.h"
 
-@interface VServerEnvironmentTableViewController ()
+#import "UIViewController+VNavMenu.h"
+
+@interface VServerEnvironmentTableViewController () <VNavigationHeaderDelegate>
 
 @property (nonatomic, strong) NSArray *serverEnvironments;
 
@@ -21,6 +23,14 @@
 - (void)awakeFromNib
 {
     self.serverEnvironments = [VObjectManager allEnvironments];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
+    self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
 - (BOOL)shouldAutorotate

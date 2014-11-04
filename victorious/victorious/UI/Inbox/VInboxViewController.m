@@ -279,6 +279,14 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
 }
 
+#pragma mark - Content Creation
+
+- (IBAction)userSearchAction:(id)sender
+{
+    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    [self.navigationController pushViewController:userSearch animated:YES];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
