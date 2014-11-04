@@ -8,21 +8,18 @@
 
 #import <XCTest/XCTest.h>
 
-#import "VChangePasswordViewController.h"
 #import "VConstants.h"
+#import "VPasswordValidator.h"
 
-@interface VChangePasswordViewController (UnitTest)
+@interface VPasswordValidator()
 
-- (BOOL)shouldUpdatePassword:(NSString *)password confirmation:(NSString *)confirmationPassword;
-
-- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError;
+- (BOOL)localizedErrorStringsForError:(NSError *)error title:(NSString **)title message:(NSString **)message;
 
 @end
 
 @interface VPasswordValidationTests : XCTestCase
-{
-    VChangePasswordViewController *_viewController;
-}
+
+@property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
 @end
 
@@ -32,31 +29,44 @@
 {
     [super setUp];
     
-    _viewController = [[VChangePasswordViewController alloc] init];
+    self.passwordValidator = [[VPasswordValidator alloc] init];
 }
 
-- (void)tearDown
-{
-    [super tearDown];
-}
-
-- (void)testShouldUpdatePassword
+- (void)testvalidatePassword
 {
     NSString *current = @"password";
     NSString *confirm = @"password";
-    XCTAssert( [_viewController shouldUpdatePassword:current confirmation:confirm] );
-}
-
-- (void)testShouldUpdatePasswordInvalid
-{
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"password" confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:@"nomatch"] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:@""] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:@"" confirmation:nil] );
-    XCTAssertFalse( [_viewController shouldUpdatePassword:nil confirmation:@""] );
+    NSError *error = nil;
+    
+    XCTAssert( [self.passwordValidator validatePassword:current withConfirmation:confirm error:&error] );
+    XCTAssertNil( error );
+    
+    error = nil;
+    XCTAssertFalse( [self.passwordValidator validatePassword:current withConfirmation:@"nomatch" error:&error] );
+    XCTAssertNotNil( error );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordsDoNotMatch );
+    
+    error = nil;
+    XCTAssertFalse( [self.passwordValidator validatePassword:@"" withConfirmation:@"" error:&error] );
+    XCTAssertNotNil( error );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
+    
+    error = nil;
+    XCTAssertFalse( [self.passwordValidator validatePassword:nil withConfirmation:nil error:&error] );
+    XCTAssertNotNil( error );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
+    
+    error = nil;
+    XCTAssertFalse( [self.passwordValidator validatePassword:@"" withConfirmation:nil error:&error] );
+    XCTAssertNotNil( error );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
+    
+    error = nil;
+    XCTAssertFalse( [self.passwordValidator validatePassword:nil withConfirmation:@"" error:&error] );
+    XCTAssertNotNil( error );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
+    
+    error = nil;
 }
 
 - (void)testValidatePassword
@@ -64,11 +74,11 @@
     NSError *error;
     
     error = nil;
-    XCTAssert( [_viewController validatePassword:@"password" error:&error] );
+    XCTAssert( [self.passwordValidator validatePassword:@"password" error:&error] );
     XCTAssertNil( error );
     
     error = nil;
-    XCTAssert( [_viewController validatePassword:@"2+d2!5=7%1-4$da_s2#57" error:&error] );
+    XCTAssert( [self.passwordValidator validatePassword:@"2+d2!5=7%1-4$da_s2#57" error:&error] );
     XCTAssertNil( error );
 }
 
@@ -77,22 +87,64 @@
     NSError *error;
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:@"2short" error:&error] );
+    XCTAssertFalse( [self.passwordValidator validatePassword:@"2short" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:nil error:&error] );
+    XCTAssertFalse( [self.passwordValidator validatePassword:nil error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
     
     error = nil;
-    XCTAssertFalse( [_viewController validatePassword:@"" error:&error] );
+    XCTAssertFalse( [self.passwordValidator validatePassword:@"" error:&error] );
     XCTAssertNotNil( error );
     XCTAssertNotNil( error.domain );
-    XCTAssertEqual( error.code, (NSInteger)kVInvalidPasswordEntered );
+    XCTAssertEqual( error.code, VErrorCodeInvalidPasswordEntered );
+}
+
+- (void)testLocalizedErrorStrings
+{
+    NSString *title = nil;
+    NSString *message = nil;
+    NSError *error = nil;
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VErrorCodeInvalidPasswordEntered userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"PasswordError", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"PasswordValidation", @"")] );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VErrorCodeInvalidPasswordsDoNotMatch userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"PasswordError", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"PasswordNotMatching", @"")] );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VErrorCodeCurrentPasswordIsInvalid userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordErrorIncorrectMessage", @"")] );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VErrorCodeInvalidPasswordsNewEqualsCurrent userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordNewEqualsCurrentMessage", @"")] );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"ResetPasswordErrorFailTitle", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordErrorFailMessage", @"")] );
 }
 
 @end

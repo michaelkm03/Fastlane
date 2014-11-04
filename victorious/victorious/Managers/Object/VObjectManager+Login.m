@@ -512,9 +512,21 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"user_token": userToken ?: @"",
-                                 @"device_token" : deviceToken ?: @"",
-                                 @"new_password" : newPassword ?: @""};
+
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    
+    if (userToken)
+    {
+        [parameters setObject:userToken forKey:@"user_token"];
+    }
+    if (deviceToken)
+    {
+        [parameters setObject:deviceToken forKey:@"device_token"];
+    }
+    if (newPassword)
+    {
+        [parameters setObject:newPassword forKey:@"new_password"];
+    }
     
     return [self POST:@"api/password_reset"
                object:nil
