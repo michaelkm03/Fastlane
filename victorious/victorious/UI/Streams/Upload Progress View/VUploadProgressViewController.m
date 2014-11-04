@@ -171,6 +171,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 {
     switch (uploadProgressView.state)
     {
+        case VUploadProgressViewStateFailed:
         case VUploadProgressViewStateInProgress:
         {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"UploadCancelAreYouSure", @"")
@@ -186,18 +187,25 @@ static const NSTimeInterval kAnimationDuration = 0.2;
             [actionSheet showInView:self.parentViewController.view];
         }
             break;
-
-        case VUploadProgressViewStateFailed:
-            [self.uploadManager enqueueUploadTask:uploadProgressView.uploadTask onComplete:nil];
-            uploadProgressView.state = VUploadProgressViewStateInProgress;
-            [uploadProgressView setProgress:0 animated:NO];
-            break;
-            
         case VUploadProgressViewStateFinalizing:
         case VUploadProgressViewStateFinished:
             [self removeUpload:uploadProgressView animated:YES];
             break;
             
+        default:
+            break;
+    }
+}
+
+- (void)alternateAccessoryButtonTappedInUploadProgressView:(VUploadProgressView *)uploadProgressView
+{
+    switch (uploadProgressView.state)
+    {
+        case VUploadProgressViewStateFailed:
+            [self.uploadManager enqueueUploadTask:uploadProgressView.uploadTask onComplete:nil];
+            uploadProgressView.state = VUploadProgressViewStateInProgress;
+            [uploadProgressView setProgress:0 animated:NO];
+            break;
         default:
             break;
     }
