@@ -173,11 +173,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
             break;
             
         case 1:
-            self.monetizationPartner = VMonetizationPartnerOpenX;
+            self.monetizationPartner = VMonetizationPartnerLiveRail;
             break;
             
         case 2:
-            self.monetizationPartner = VMonetizationPartnerLiveRail;
+            self.monetizationPartner = VMonetizationPartnerOpenX;
             break;
             
         default:
