@@ -9,14 +9,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VStreamDirectoryItemCell" id="I6G-G0-y8J" customClass="VDirectoryItemCell">
-            <rect key="frame" x="0.0" y="0.0" width="145" height="231"/>
+            <rect key="frame" x="0.0" y="0.0" width="145" height="225"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="145" height="231"/>
+                <rect key="frame" x="0.0" y="0.0" width="145" height="225"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDm-oP-6CR" userLabel="Extended View - Bottom Stack" customClass="VExtendedView">
-                        <rect key="frame" x="9" y="0.0" width="127" height="231"/>
+                        <rect key="frame" x="9" y="0.0" width="127" height="225"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -28,7 +28,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3UW-gy-ZA4" userLabel="Extended View - Middle Stack" customClass="VExtendedView">
-                        <rect key="frame" x="4" y="0.0" width="137" height="227"/>
+                        <rect key="frame" x="4" y="0.0" width="137" height="221"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -40,10 +40,10 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sik-LB-7bi" userLabel="Stream Item Container (TopStackItem)">
-                        <rect key="frame" x="0.0" y="0.0" width="145" height="223"/>
+                        <rect key="frame" x="0.0" y="0.0" width="145" height="217"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dXz-4U-iLz" userLabel="Extended View - Top Stack" customClass="VExtendedView">
-                                <rect key="frame" x="0.0" y="0.0" width="145" height="223"/>
+                                <rect key="frame" x="0.0" y="0.0" width="145" height="217"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -63,14 +63,17 @@
                                     <constraint firstAttribute="width" secondItem="gXM-go-fxe" secondAttribute="height" multiplier="1:1" id="iWz-Zy-3Pc"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e" userLabel="Stream Name Label">
-                                <rect key="frame" x="10" y="158" width="125" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some really really long text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e" userLabel="Stream Name Label">
+                                <rect key="frame" x="10" y="155" width="125" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gga-cU-6P5" userLabel="Count Label">
-                                <rect key="frame" x="10" y="184" width="125" height="11"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gga-cU-6P5" userLabel="Count Label">
+                                <rect key="frame" x="10" y="197" width="125" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="zv6-rq-Z4B"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -80,14 +83,14 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="deE-HG-45e" secondAttribute="trailing" constant="10" id="76a-Ek-EgZ"/>
                             <constraint firstAttribute="bottom" secondItem="dXz-4U-iLz" secondAttribute="bottom" id="E7t-2t-Khq"/>
-                            <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="gXM-go-fxe" secondAttribute="bottom" constant="13" id="J8y-7k-iBF"/>
+                            <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="gXM-go-fxe" secondAttribute="bottom" constant="10" id="J8y-7k-iBF"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="JBv-WH-TQ0"/>
                             <constraint firstAttribute="trailing" secondItem="dXz-4U-iLz" secondAttribute="trailing" id="SB1-n9-Kgg"/>
-                            <constraint firstItem="gga-cU-6P5" firstAttribute="top" secondItem="deE-HG-45e" secondAttribute="bottom" priority="999" constant="5" id="VA2-eS-uzd"/>
+                            <constraint firstItem="gga-cU-6P5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="deE-HG-45e" secondAttribute="bottom" priority="999" constant="10" id="VA2-eS-uzd"/>
                             <constraint firstItem="gga-cU-6P5" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="10" id="Yg0-Sk-O61"/>
                             <constraint firstAttribute="trailing" secondItem="gXM-go-fxe" secondAttribute="trailing" id="h6U-wK-t9o"/>
                             <constraint firstAttribute="trailing" secondItem="gga-cU-6P5" secondAttribute="trailing" constant="10" id="hY2-yv-7Uw"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gga-cU-6P5" secondAttribute="bottom" constant="8" id="k9J-OH-QLK"/>
+                            <constraint firstAttribute="bottom" secondItem="gga-cU-6P5" secondAttribute="bottom" constant="10" id="k9J-OH-QLK"/>
                             <constraint firstItem="gXM-go-fxe" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="sJp-cj-nVB"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="ujn-4O-CVm"/>
                             <constraint firstItem="gXM-go-fxe" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="w5L-tK-KzP"/>
@@ -112,7 +115,7 @@
                 <constraint firstAttribute="trailing" secondItem="3UW-gy-ZA4" secondAttribute="trailing" constant="4" id="jJH-tw-hkZ"/>
                 <constraint firstAttribute="bottom" secondItem="Sik-LB-7bi" secondAttribute="bottom" constant="8" id="lPR-l4-qwO"/>
             </constraints>
-            <size key="customSize" width="145" height="199"/>
+            <size key="customSize" width="145" height="224"/>
             <connections>
                 <outlet property="bottomStack" destination="JDm-oP-6CR" id="eKT-wU-Ybt"/>
                 <outlet property="countLabel" destination="gga-cU-6P5" id="ccm-Ny-KPc"/>
@@ -121,7 +124,7 @@
                 <outlet property="previewImageView" destination="gXM-go-fxe" id="bUL-M1-ixG"/>
                 <outlet property="streamItemContainerOrTopStackItem" destination="Sik-LB-7bi" id="BfN-Ve-t3G"/>
             </connections>
-            <point key="canvasLocation" x="267.5" y="367.5"/>
+            <point key="canvasLocation" x="267.5" y="379.5"/>
         </collectionViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
