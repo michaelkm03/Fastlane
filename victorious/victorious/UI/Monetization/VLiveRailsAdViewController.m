@@ -50,12 +50,6 @@
         // Ad manager event observers
         [self addNotificationObservers];
         
-        // Debugging
-#if DEBUG && EnableLiveRailLogging
-        [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
-#warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
-#endif
-        
         // Grab the publisher id from the monetization options and init the ad manager with it
         NSString *pubID = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
         
@@ -151,10 +145,12 @@
         return;
     }
 
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"LiveRail Ad Server is Starting");
+    [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
+#warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
-
+    
     self.adManager = [[LiveRailAdManager alloc] init];
 }
 
@@ -224,7 +220,7 @@
 
 - (void)adDidLoad:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidLoad Fired");
 #endif
     // Show the LiveRail Ad Manager view and start ad playback
@@ -239,7 +235,7 @@
 
 - (void)adDidFinish:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidFinish Fired");
 #endif
     [self destroyAdInstance];
@@ -250,7 +246,7 @@
 
 - (void)adDidStopPlayback:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidStopPlayback Fired");
 #endif
     [self destroyAdInstance];
@@ -263,7 +259,7 @@
 
 - (void)adDidStartPlayback:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidStartPlayback Fired");
 #endif
     self.adPlaying = YES;
@@ -278,7 +274,7 @@
 
 - (void)adHadImpression:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdHadImpression Fired");
 #endif
     if ([self.delegate respondsToSelector:@selector(adHadImpressionInAdViewController:)])
@@ -289,7 +285,7 @@
 
 - (void)adHadError:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdHadError Fired");
 #endif
     [self destroyAdInstance];
