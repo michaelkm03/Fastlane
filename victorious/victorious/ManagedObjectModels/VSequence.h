@@ -38,6 +38,9 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSString *previewType;
+@property (nonatomic, retain) id previewData;
+
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

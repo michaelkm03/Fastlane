@@ -8,21 +8,39 @@
 
 #import "VStreamCollectionCellAnnouncement.h"
 #import "VWebContentViewController.h"
+#import "VThemeManager.h"
 
 @interface VStreamCollectionCellAnnouncement()
 
-@property (nonatomic, weak) IBOutlet VWebContentViewController *webContentViewController;
+@property (nonatomic, strong) VWebContentViewController *webContentViewController;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
 
 @end
 
 @implementation VStreamCollectionCellAnnouncement
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.backgroundColor = backgroundColor;
+    
+    self.webContentViewController = [[VWebContentViewController alloc] initWithWebView:self.webView];
+    self.webContentViewController.webView.backgroundColor = backgroundColor;
 }
-*/
+
+- (void)loadAnnouncementUrl:(NSString *)urlString forceReload:(BOOL)shouldForceReload
+{
+    if ( shouldForceReload || (self.webContentViewController.urlToView == nil && !shouldForceReload) )
+    {
+        self.webContentViewController.urlToView = [NSURL URLWithString:urlString];
+    }
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    [super setSequence:sequence];
+}
 
 @end

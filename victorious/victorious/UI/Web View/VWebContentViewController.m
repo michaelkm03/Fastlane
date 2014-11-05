@@ -23,6 +23,16 @@
 
 #pragma mark - UIViewController
 
+- (instancetype)initWithWebView:(UIWebView *)webView
+{
+    self = [super init];
+    if (self)
+    {
+        self.webView = webView;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,11 +60,13 @@
     
     self.webView.delegate = self;
     
-    if (self.urlToView)
-    {
-        NSURLRequest *requestWithURL = [NSURLRequest requestWithURL:self.urlToView];
-        [self.webView loadRequest:requestWithURL];
-    }
+    self.urlToView = self.urlToView;
+}
+
+- (void)setUrlToView:(NSURL *)urlToView
+{
+    _urlToView = urlToView;
+    [self.webView loadRequest:[NSURLRequest requestWithURL:self.urlToView]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

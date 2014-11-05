@@ -12,6 +12,7 @@
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
+#import "VStreamCollectionCellAnnouncement.h"
 
 //Controllers
 #import "VCommentsContainerViewController.h"
@@ -19,7 +20,7 @@
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
-
+#import "VWebContentViewController.h"
 #import "VNewContentViewController.h"
 
 //Views
@@ -164,6 +165,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VStreamCollectionCellAnnouncement nibForCell]
+          forCellWithReuseIdentifier:[VStreamCollectionCellAnnouncement suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -325,24 +328,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
-    UIImageView *previewImageView;
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     if ( sequence == nil )
     {
         return;
     }
-    
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-    contentViewController.placeholderImage = previewImageView.image;
-    contentViewController.delegate = self;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
     
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
@@ -354,6 +345,40 @@ static CGFloat const kTemplateCLineSpacing = 8;
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
+    
+    if ( [sequence isAnnouncement] )
+    {
+        [self showAnnouncementWithSequence:sequence];
+    }
+    else
+    {
+        [self showContentViewWithSequence:sequence];
+    }
+}
+
+- (void)showContentViewWithSequence:(VSequence *)sequence
+{
+    UIImageView *previewImageView;
+    
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.placeholderImage = previewImageView.image;
+    contentViewController.delegate = self;
+    
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)showAnnouncementWithSequence:(VSequence *)sequence
+{
+    VWebContentViewController *viewController = [[VWebContentViewController alloc] init];
+    viewController.urlToView = [NSURL URLWithString:sequence.announcementUrl];
+    [self presentViewController:viewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -420,6 +445,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
+    }
+    else if ([sequence isAnnouncement])
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellAnnouncement suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
+        [((VStreamCollectionCellAnnouncement *)cell) loadAnnouncementUrl:sequence.announcementUrl forceReload:YES];
     }
     else
     {

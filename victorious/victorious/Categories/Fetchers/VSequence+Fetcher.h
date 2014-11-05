@@ -33,4 +33,6 @@
 
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
 
+@property (nonatomic, readonly) NSString *announcementUrl;
+
 @end

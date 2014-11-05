@@ -10,4 +10,6 @@
 
 @interface VStreamCollectionCellAnnouncement : VStreamCollectionCell
 
+- (void)loadAnnouncementUrl:(NSString *)urlString forceReload:(BOOL)fshouldForceReload;
+
 @end
