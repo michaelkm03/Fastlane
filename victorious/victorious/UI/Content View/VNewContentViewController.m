@@ -64,9 +64,6 @@
 // Experiments
 #import "VSettingManager.h"
 
-static const NSTimeInterval kRotationCompletionAnimationDuration = 0.45f;
-static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
-
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -166,105 +163,37 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
 - (void)viewWillTransitionToSize:(CGSize)size
        withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    CGAffineTransform transform = [coordinator targetTransform];
-    if (CGAffineTransformIsIdentity(transform))
-    {
-        return;
-    }
-    UIInterfaceOrientation oldOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-    {
-        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-        {
-            if (UIInterfaceOrientationIsLandscape(oldOrientation))
-            {
-                [coordinator containerView].transform = CGAffineTransformRotate(CGAffineTransformInvert([UIApplication sharedApplication].keyWindow.transform), M_PI);
-                [self.view addSubview:self.videoCell.videoPlayerContainer];
-                [self.view bringSubviewToFront:self.videoCell.videoPlayerContainer];
-
-                return;
-            }
-            [coordinator containerView].transform = CGAffineTransformInvert([coordinator targetTransform]);
-            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
-            
-            self.videoCell.videoPlayerContainer.transform = [coordinator targetTransform];
-            self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
-            self.videoCell.videoPlayerContainer.center = self.view.center;
-            [self.view addSubview:self.videoCell.videoPlayerContainer];
-            self.landscapeMaskOverlay.alpha = 1.0f;
-        }
-        else
-        {
-            [coordinator containerView].transform = CGAffineTransformIdentity;
-            [coordinator containerView].bounds = CGRectMake(0, 0, CGRectGetHeight([coordinator containerView].bounds), CGRectGetWidth([coordinator containerView].bounds));
-            self.view.transform = CGAffineTransformIdentity;
-            self.videoCell.videoPlayerContainer.transform = CGAffineTransformInvert([coordinator targetTransform]);
-        }
-    }
+     {
+         [self alongsideRotationupdates];
+     }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+        
+     }];
+}
+
+- (void)alongsideRotationupdates
+{
+    self.landscapeMaskOverlay.alpha = (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) ? 1.0f : 0.0f;
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
-        [self animateVideoPlayerToPortrait];
-    }];
+        [self.view addSubview:self.videoCell.videoPlayerContainer];
+        self.videoCell.videoPlayerContainer.frame = self.view.bounds;
+    }
+    else
+    {
+        self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
+        [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    UIView *rootView = self.navigationController.view;
-    CGAffineTransform oldTransform = rootView.transform;
-
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-    {
-        rootView.transform = CGAffineTransformIdentity;
-        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
-        self.view.transform = CGAffineTransformIdentity;
-        self.view.bounds = rootView.bounds;
-
-        self.videoCell.videoPlayerContainer.transform = oldTransform;
-        self.videoCell.videoPlayerContainer.bounds = CGRectMake(0, 0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds));
-        self.videoCell.videoPlayerContainer.center = rootView.center;
-        [self.view addSubview:self.videoCell.videoPlayerContainer];
-        self.landscapeMaskOverlay.alpha = 1.0f;
-    }
-    else
-    {
-        self.view.transform = CGAffineTransformIdentity;
-    }
+    [self alongsideRotationupdates];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self animateVideoPlayerToPortrait];
-}
-
-- (void)animateVideoPlayerToPortrait
-{
-    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-    {
-        [UIView animateWithDuration:kRotationCompletionAnimationDuration
-                              delay:0.0f
-             usingSpringWithDamping:kRotationCompletionAnimationDamping
-              initialSpringVelocity:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-         {
-             self.videoCell.videoPlayerContainer.bounds = self.videoCell.contentView.bounds;//CGRectApplyAffineTransform(self.videoCell.contentView.bounds, self.videoCell.transform);
-             self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
-             self.videoCell.videoPlayerContainer.center = self.videoCell.contentView.center;
-             
-             self.landscapeMaskOverlay.alpha = 0.0f;
-         }
-                         completion:^(BOOL finished)
-         {
-             if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-             {
-                 [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
-                 self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
-             }
-         }];
-    }
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
+#pragma mark View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -346,11 +275,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
                  forCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
-                 forSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
+                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
-                 forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
-                        withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
+//    [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
+//                 forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
+//                        withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
     
     self.viewModel.experienceEnhancerController.delegate = self;
 }
@@ -499,11 +428,11 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
     }
     else if ([notification.name isEqualToString:UIKeyboardDidChangeFrameNotification])
     {
-        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-        CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
-        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? (CGRectGetHeight(self.textEntryView.bounds)) : newBottomInset;
-        self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
-        self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
+//        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+//        CGFloat newBottomInset = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(endFrame) - layout.allCommentsHandleBottomInset + CGRectGetHeight(self.textEntryView.bounds);
+//        newBottomInset = (isnan(newBottomInset) || isinf(newBottomInset)) ? (CGRectGetHeight(self.textEntryView.bounds)) : newBottomInset;
+//        self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, newBottomInset, 0);
+//        self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, newBottomInset + layout.allCommentsHandleBottomInset, 0);
     }
 }
 
@@ -634,7 +563,7 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         case VContentViewSectionContent:
             return 1;
         case VContentViewSectionHistogram:
-            return 1;
+            return 0;
         case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
@@ -893,9 +822,9 @@ static const CGFloat kRotationCompletionAnimationDamping = 1.0f;
         {
             if (!self.handleView)
             {
-                VSectionHandleReusableView *handleView = (self.viewModel.commentCount == 0) ? nil : [collectionView dequeueReusableSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
-                                                                                                                                       withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
-                                                                                                                                              forIndexPath:indexPath];
+                VSectionHandleReusableView *handleView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                            withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]
+                                                                                                   forIndexPath:indexPath];
                 self.handleView = handleView;
             }
             self.handleView.numberOfComments = self.viewModel.commentCount;
@@ -982,8 +911,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
-            CGSize allCommentsHandleSize = (self.viewModel.commentCount == 0) ? CGSizeZero :[VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-            return allCommentsHandleSize;
+            return (self.viewModel.commentCount > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;

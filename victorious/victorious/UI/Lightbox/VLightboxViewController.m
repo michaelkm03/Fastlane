@@ -54,13 +54,12 @@
 
 - (BOOL)shouldAutorotate
 {
-    // TODO: this (and the other thing in -supportedInterfaceOrientation) have been commented out because VNewContentViewController can't handle it. As soon as we fix VNCVC, this should be put back the way it was.
-    return NO; //self.hasAppeared;
+    return self.hasAppeared;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationPortrait; // UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 #pragma mark - Properties
