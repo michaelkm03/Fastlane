@@ -16,14 +16,13 @@
 #import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VTrackingManager.h"
 #import "VVoteType.h"
 #import "VVoteResult.h"
+#import "VTracking.h"
 
 @interface VExperienceEnhancerController ()
 
 @property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
@@ -55,8 +54,6 @@
         self.sequence = sequence;
         
         self.fileCache = [[VFileCache alloc] init];
-        
-        self.trackingManager = [[VTrackingManager alloc] init];
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         
@@ -173,9 +170,10 @@
         NSUInteger voteCount = enhancer.sessionVoteCount;
         if ( voteCount > 0 )
         {
-            NSDictionary *params = @{ kTrackingKeyBallisticsCount : @( voteCount ),
-                                      kTrackingKeySequenceId : self.sequence.remoteId };
-            [self.trackingManager trackEventWithUrls:enhancer.voteType.tracking.ballisticCount andParameters:params];
+            NSDictionary *params = @{ VTrackingKeyVoteCount : @( voteCount ),
+                                      VTrackingKeySequenceId : self.sequence.remoteId,
+                                      VTrackingKeyUrls : enhancer.voteType.tracking.ballisticCount };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:params];
             [enhancer resetSessionVoteCount];
         }
     }];

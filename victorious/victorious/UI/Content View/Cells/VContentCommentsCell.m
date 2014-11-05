@@ -16,6 +16,10 @@
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
+static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
+
+static NSCache *_sharedImageCache = nil;
+
 @interface VContentCommentsCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *commentersAvatarImageView;
@@ -29,6 +33,20 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 @end
 
 @implementation VContentCommentsCell
+
++ (NSCache *)sharedImageCached
+{
+    if ( !_sharedImageCache )
+    {
+        _sharedImageCache = [[NSCache alloc] init];
+    }
+    return _sharedImageCache;
+}
+
++ (void)clearSharedImageCache
+{
+    _sharedImageCache = nil;
+}
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
@@ -79,6 +97,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 {
     [self.commentAndMediaView resetView];
     self.commentAndMediaView.hasMedia = NO;
+    self.commentAndMediaView.mediaThumbnailView.image = nil;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
     
     self.commentAndMediaView.onMediaTapped = ^(void)
@@ -94,6 +113,7 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
     [super prepareForReuse];
     
     self.onUserProfileTapped = nil;
+    self.commentersAvatarImageView.image = nil;
     
     [self prepareContentAndMediaView];
 }
@@ -128,7 +148,44 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 - (void)setMediaPreviewURL:(NSURL *)mediaPreviewURL
 {
     _mediaPreviewURL = [mediaPreviewURL copy];
-    [self.commentAndMediaView.mediaThumbnailView setImageWithURL:mediaPreviewURL];
+    [self loadImageWithURL:_mediaPreviewURL intoImageView:self.commentAndMediaView.mediaThumbnailView withImageCache:[[self class] sharedImageCached]];
+}
+
+- (void)loadImageWithURL:(NSURL *)url intoImageView:(UIImageView *)imageView withImageCache:(NSCache *)imageCache
+{
+    NSParameterAssert( imageView != nil );
+    NSParameterAssert( imageCache != nil );
+    
+    if ( url == nil )
+    {
+        imageView.image = nil;
+        return;
+    }
+    
+    __block NSString *keyString = url.absoluteString;
+    UIImage *cachedImage = [imageCache objectForKey:keyString];
+    
+    if ( cachedImage != nil && [cachedImage isKindOfClass:[UIImage class]] )
+    {
+        [imageView setImage:cachedImage];
+    }
+    else
+    {
+        imageView.alpha = 0.0f;
+        [self.commentAndMediaView.mediaThumbnailView setImageWithURLRequest:[NSURLRequest requestWithURL:url]
+                                                           placeholderImage:nil
+                                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+         {
+             [imageView setImage:image];
+             [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^{
+                 imageView.alpha = 1.0f;
+             }];
+             [imageCache setObject:image forKey:keyString];
+             
+         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+             imageView.image = nil;
+         }];
+    }
 }
 
 - (void)setMediaIsVideo:(BOOL)mediaIsVideo
@@ -152,10 +209,8 @@ static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 - (void)setURLForCommenterAvatar:(NSURL *)URLForCommenterAvatar
 {
     _URLForCommenterAvatar = [URLForCommenterAvatar copy];
-    [self.commentersAvatarImageView setImageWithURLRequest:[NSURLRequest requestWithURL:URLForCommenterAvatar]
-                                          placeholderImage:nil
-                                                   success:nil
-                                                   failure:nil];
+    
+    [self loadImageWithURL:_URLForCommenterAvatar intoImageView:self.commentersAvatarImageView withImageCache:[[self class] sharedImageCached]];
 }
 
 - (void)setTimestampText:(NSString *)timestampText
