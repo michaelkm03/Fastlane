@@ -11,7 +11,7 @@
 #import "VSettingManager.h"
 #import "VAdPlayerView.h"
 
-#define EnableOpenXLogging 1 // Set to "1" to see OpenX ad server logging, but please remember to set it back to "0" before committing your changes.
+#define EnableOpenXLogging 0 // Set to "1" to see OpenX ad server logging, but please remember to set it back to "0" before committing your changes.
 
 @interface VOpenXAdViewController () <OXMVideoAdManagerDelegate>
 
@@ -91,6 +91,7 @@
     {
 #if DEBUG && EnableOpenXLogging
         VLog(@"OpenX Ad Server is Starting");
+#warning OpenX ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
         
         // Initialize ad manager and push it onto view stack
