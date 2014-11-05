@@ -122,7 +122,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 - (NSString *)announcementUrl
 {
 #warning This is returning this URL for testing purposes only
-    return @"http://www.apple.com";
+    return @"http://www.apple.com/";
     
     if ( self.previewData != nil && [self.previewData isKindOfClass:[NSString class]] )
     {

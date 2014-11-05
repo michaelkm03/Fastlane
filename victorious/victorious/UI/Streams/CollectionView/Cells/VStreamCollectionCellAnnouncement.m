@@ -7,13 +7,14 @@
 //
 
 #import "VStreamCollectionCellAnnouncement.h"
-#import "VWebContentViewController.h"
+#import "VWebViewDelegate.h"
 #import "VThemeManager.h"
 
 @interface VStreamCollectionCellAnnouncement()
 
-@property (nonatomic, strong) VWebContentViewController *webContentViewController;
+@property (nonatomic, strong) VWebViewDelegate *webViewDelegate;
 @property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) NSURL *url;
 
 @end
 
@@ -26,15 +27,16 @@
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.backgroundColor = backgroundColor;
     
-    self.webContentViewController = [[VWebContentViewController alloc] initWithWebView:self.webView];
-    self.webContentViewController.webView.backgroundColor = backgroundColor;
+    self.webViewDelegate = [[VWebViewDelegate alloc] init];
+    self.webView.delegate = self.webViewDelegate;
+    self.webView.backgroundColor = backgroundColor;
 }
 
 - (void)loadAnnouncementUrl:(NSString *)urlString forceReload:(BOOL)shouldForceReload
 {
-    if ( shouldForceReload || (self.webContentViewController.urlToView == nil && !shouldForceReload) )
+    if ( shouldForceReload || (self.url == nil && !shouldForceReload) )
     {
-        self.webContentViewController.urlToView = [NSURL URLWithString:urlString];
+        [self.webViewDelegate loadUrlString:urlString withWebView:self.webView];
     }
 }
 
