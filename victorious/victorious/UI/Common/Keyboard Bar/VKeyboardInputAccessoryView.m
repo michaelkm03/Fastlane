@@ -141,15 +141,15 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
     
     CGFloat desiredHeight = self.verticalSpaceTextViewTopToContainerConstraint.constant + self.verticalSpaceTextViewToBottomContainerConstraint.constant + self.editingTextView.contentSize.height;
-    if (self.frame.size.height < desiredHeight)
+    if (CGRectGetHeight(self.frame) < desiredHeight)
     {
         if (self.maximumAllowedSize.height <= desiredHeight)
         {
-            return;
+//            return;
         }
 
         [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fminf(desiredHeight, self.maximumAllowedSize.height))];
+                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.maximumAllowedSize.height))];
     }
     else if (CGRectGetHeight(self.frame) > desiredHeight)
     {
