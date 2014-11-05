@@ -165,25 +165,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     // Grab the preroll
     NSDictionary *breakItems = [self.adChain valueForKey:[NSString stringWithFormat:@"%ld", (long)self.currentAdChainIndex]];
     int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
-    
-    switch (adSystemPartner)
-    {
-        case 0:
-            self.monetizationPartner = VMonetizationPartnerNone;
-            break;
-            
-        case 1:
-            self.monetizationPartner = VMonetizationPartnerLiveRail;
-            break;
-            
-        case 2:
-            self.monetizationPartner = VMonetizationPartnerOpenX;
-            break;
-            
-        default:
-            self.monetizationPartner = VMonetizationPartnerNone;
-            break;
-    }
+    self.monetizationPartner = adSystemPartner;
     
     if (completionBlock)
     {

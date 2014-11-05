@@ -55,7 +55,7 @@
     
     self.contentURL = viewModel.itemURL;
     
-    if (viewModel.monetizationPartner == VMonetizationPartnerNone || viewModel.monetizationPartner == VMonetizationPartnerOpenX)
+    if (viewModel.monetizationPartner == VMonetizationPartnerNone)
     {
         self.isPlayingAd = NO;
         self.videoPlayerViewController.itemURL = self.contentURL;

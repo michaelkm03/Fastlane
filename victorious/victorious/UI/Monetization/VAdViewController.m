@@ -7,8 +7,6 @@
 //
 
 #import "VAdViewController.h"
-#import "VLiveRailsAdViewController.h"
-#import "VConstants.h"
 
 @interface VAdViewController ()
 
