@@ -349,6 +349,9 @@
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
 		A7D361AF1A0AA6BD00CCEC90 /* VWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D361AE1A0AA6BD00CCEC90 /* VWebViewDelegate.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
+		A7E81A501A0AE2E30012D5D3 /* VAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E81A4F1A0AE2E30012D5D3 /* VAnnouncementViewController.m */; };
+		A7E81A541A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E81A521A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.m */; };
+		A7E81A551A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E81A531A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.xib */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -1159,6 +1162,11 @@
 		A7D361AE1A0AA6BD00CCEC90 /* VWebViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewDelegate.m; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
+		A7E81A4E1A0AE2E30012D5D3 /* VAnnouncementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnnouncementViewController.h; sourceTree = "<group>"; };
+		A7E81A4F1A0AE2E30012D5D3 /* VAnnouncementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnnouncementViewController.m; sourceTree = "<group>"; };
+		A7E81A511A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationWebBrowserHeader.h; sourceTree = "<group>"; };
+		A7E81A521A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationWebBrowserHeader.m; sourceTree = "<group>"; };
+		A7E81A531A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNavigationWebBrowserHeader.xib; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCacheTests.m; sourceTree = "<group>"; };
@@ -1845,6 +1853,8 @@
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
 				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
+				A7E81A4E1A0AE2E30012D5D3 /* VAnnouncementViewController.h */,
+				A7E81A4F1A0AE2E30012D5D3 /* VAnnouncementViewController.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -2222,6 +2232,9 @@
 				0314D45619B46B5E00FA363C /* VWebContentViewController.m */,
 				A7D361AD1A0AA6BD00CCEC90 /* VWebViewDelegate.h */,
 				A7D361AE1A0AA6BD00CCEC90 /* VWebViewDelegate.m */,
+				A7E81A511A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.h */,
+				A7E81A521A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.m */,
+				A7E81A531A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.xib */,
 			);
 			path = "Web View";
 			sourceTree = "<group>";
@@ -3597,6 +3610,7 @@
 				0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */,
 				BE88FF761A0005E70064AB28 /* VStreamCollectionCellPoll-C.xib in Resources */,
 				0390088E19F3A8FC00FD7EDF /* VStreamViewCell.xib in Resources */,
+				A7E81A551A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.xib in Resources */,
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
@@ -3936,6 +3950,7 @@
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
+				A7E81A501A0AE2E30012D5D3 /* VAnnouncementViewController.m in Sources */,
 				BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
@@ -4055,6 +4070,7 @@
 				0314D46319B46B5E00FA363C /* VVideoPreviewViewController.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
+				A7E81A541A0AE3A90012D5D3 /* VNavigationWebBrowserHeader.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				0314D4E419B46B5E00FA363C /* VSuggestedFriendsTableViewController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
