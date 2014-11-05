@@ -160,6 +160,8 @@
     return (self.videoCell.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark iOS8.0+
+
 - (void)viewWillTransitionToSize:(CGSize)size
        withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
@@ -169,9 +171,23 @@
      }
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-        
+         [self finishedRotationUpdates];
      }];
 }
+
+#pragma mark iOS7.1+
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self alongsideRotationupdates];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self finishedRotationUpdates];
+}
+
+#pragma mark Shared
 
 - (void)alongsideRotationupdates
 {
@@ -184,13 +200,18 @@
     else
     {
         self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
-        [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+        self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
     }
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)finishedRotationUpdates
 {
-    [self alongsideRotationupdates];
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
+        [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+    }
 }
 
 #pragma mark View Lifecycle
