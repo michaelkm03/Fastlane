@@ -18,6 +18,7 @@
 - (BOOL)isImage;
 - (BOOL)isVideo;
 - (BOOL)isOwnerContent;
+- (BOOL)isAnnouncement;
 
 - (BOOL)isRemix;
 - (BOOL)isRepost;
@@ -31,5 +32,7 @@
 - (NSArray *)initialImageURLs;
 
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
+
+@property (nonatomic, readonly) NSString *announcementUrl;
 
 @end

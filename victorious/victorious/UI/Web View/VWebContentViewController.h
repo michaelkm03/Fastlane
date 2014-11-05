@@ -6,11 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VWebContentViewController : UIViewController <UIWebViewDelegate>
+#import "VWebViewDelegate.h"
+
+@interface VWebContentViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *urlToView;
-
-@property (nonatomic, weak, readonly) IBOutlet UIWebView *webView;
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *activitiyIndicator;
+@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) VWebViewDelegate *webViewDelegate;
 
 @end
