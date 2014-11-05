@@ -2,12 +2,11 @@
 //  VCVideoPlayerViewController.m
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
-#import "VTrackingManager.h"
+#import "VTracking.h"
 
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
@@ -433,7 +432,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoSkip andParameters:self.trackingParametersForSkipEvent];
+            NSDictionary *params = @{ VTrackingKeyTimeFrom : @( CMTimeGetSeconds( self.previousTime ) ),
+                                      VTrackingKeyTimeTo : @( CMTimeGetSeconds( self.currentTime ) ),
+                                      VTrackingKeyUrls : self.trackingItem.videoSkip };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
         }
     }
 
@@ -459,13 +461,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishFirstQuartile:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play First Quartile" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete25 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete25 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete25 parameters:params];
         }
         self.finishedFirstQuartile = YES;
     }
@@ -475,13 +474,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidReachMidpoint:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Halfway" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete50 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete50 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete50 parameters:params];
         }
         self.finishedMidpoint = YES;
     }
@@ -491,13 +487,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishThirdQuartile:self];
         }
-        if (self.shouldFireAnalytics)
-        {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Third Quartile" label:self.titleForAnalytics value:nil];
-        }
         if ( self.isTrackingEnabled )
         {
-            [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete75 andParameters:self.trackingParameters];
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete75 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete75 parameters:params];
         }
         self.finishedThirdQuartile = YES;
     }
@@ -697,13 +690,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
-            if (self.shouldFireAnalytics)
-            {
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play to End" label:self.titleForAnalytics value:nil];
-            }
             if ( self.isTrackingEnabled )
             {
-                [self.trackingManager trackEventWithUrls:self.trackingItem.videoComplete100 andParameters:self.trackingParameters];
+                NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
             }
             self.startedVideo          = NO;
             self.finishedFirstQuartile = NO;
@@ -754,10 +744,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 {
                     [self.delegate videoPlayerWillStartPlaying:self];
                 }
-                if ( self.isTrackingEnabled )
-                {
-                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStart andParameters:self.trackingParameters];
-                }
                 self.toolbarView.playButton.selected = YES;
                 [self startToolbarTimer];
                 
@@ -779,7 +765,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if (!self.startedVideo)
                 {
                     self.startedVideo = YES;
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Start" label:self.titleForAnalytics value:nil];
+                    if ( self.isTrackingEnabled )
+                    {
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingKeyUrls : self.trackingItem.videoStart };
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStart parameters:params];
+                    }
                 }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
@@ -821,7 +812,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     }
                     if ( self.isTrackingEnabled )
                     {
-                        [self.trackingManager trackEventWithUrls:self.trackingItem.videoError andParameters:self.trackingParameters];
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingKeyUrls : self.trackingItem.videoError };
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidError parameters:params];
                     }
                     break;
                 }
@@ -868,7 +861,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 if ( self.isTrackingEnabled )
                 {
-                    [self.trackingManager trackEventWithUrls:self.trackingItem.videoStall andParameters:self.trackingParameters];
+                    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                              VTrackingKeyUrls : self.trackingItem.videoStall };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStall parameters:params];
                 }
             }
         }
@@ -902,20 +897,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Tracking
 
-- (NSDictionary *)trackingParametersForSkipEvent
-{
-    return @{ kTrackingKeyTimeFrom  : @( CMTimeGetSeconds( self.previousTime ) ),
-              kTrackingKeyTimeTo    : @( CMTimeGetSeconds( self.currentTime ) ) };
-}
-
-- (NSDictionary *)trackingParameters
-{
-    return @{ kTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ) };
-}
-
 - (BOOL)isTrackingEnabled
 {
-    return self.trackingItem != nil && self.trackingManager != nil;
+    return self.trackingItem != nil;
 }
 
 - (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
@@ -923,13 +907,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
     
     self.trackingItem = trackingItem;
-    self.trackingManager = [[VTrackingManager alloc] init];
 }
 
 - (void)disableTracking
 {
     self.trackingItem = nil;
-    self.trackingManager = nil;
 }
 
 @end

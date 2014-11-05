@@ -2,42 +2,67 @@
 //  VTrackingManager.h
 //  victorious
 //
-//  Created by Patrick Lynch on 10/16/14.
+//  Created by Patrick Lynch on 10/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-
-#import "VTracking.h"
+#import "VTrackingDelegate.h"
 #import "VTrackingConstants.h"
-#import "VTrackingEvent.h"
 
+/**
+ Receives and dispenses tracking events to any added services that conform to VTrackingDelegate.
+ 
+ Adding a service:
+ MyTrackingService* service = [[MyTrackingService alloc] init];
+ [VTrackingManager addDelegate:service];
+ 
+ Tracking an event:
+ NSDictionary *params = { ... };
+ [[VTrackingManager sharedInstance] trackEventWithName:@"my_event_name" parameters:params];
+ 
+ In your service:
+ - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
+ {
+    if ( eventName isEqualToString:@"my_event_name"] )
+    {
+        // Handle event using parameters dictionary
+    }
+ }
+ */
 @interface VTrackingManager : NSObject
 
-/**
- Tracks event using URLS after replacing URL-embedded macros with values
- that correspond to values in parameters dictionary.  That is to say, the keys in 
- the parameters dictionary should be the same as the macro in the URLs that the value
- for that key is intended to replace.  See VTrackingConstants for list of supported keys/macros.
- */
-- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters;
++ (VTrackingManager *)sharedInstance;
 
 /**
- Queues a tracking event call in memory to be sent later.
+ Forwards a tracking event to any added VTrackingDelegate instanced.
  */
-- (BOOL)queueEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters withKey:(id)key;
+- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters;
 
 /**
- Sends tracking calls for all events stored in its internal queue.
+ Captures an event to be sent later or prevent another event from being sent.
+ @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.
+ @param groupId An ID to separate events into groups so that they can be dequeued in batches.
  */
-- (void)sendQueuedTrackingEvents;
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId;
 
 /**
- Determines if any queued tracking envets should be sent when this object is destroyed.
- If set to YES, events will not be sent and will be lost.
+ Removes events from queue and tracks thems using trackEvent:parameters
  */
-@property (nonatomic, assign) BOOL shouldIgnoreEventsInQueueOnDealloc;
+- (void)trackQueuedEventsWithName:(NSString *)eventName;
 
-@property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
+- (void)startEvent:(NSString *)eventName;
+
+- (void)startEvent:(NSString *)evetName parameters:(NSDictionary *)parameters;
+
+- (void)endEvent:(NSString *)eventName;
+
+- (void)trackEvent:(NSString *)eventName;
+
+- (void)addDelegate:(id<VTrackingDelegate>)service;
+
+- (void)removeDelegate:(id<VTrackingDelegate>)service;
+
+- (void)removeAllDelegates;
 
 @end

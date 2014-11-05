@@ -33,7 +33,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
 #import "VThemeManager.h"
-#import "VAnalyticsRecorder.h"
 
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"
@@ -202,11 +201,10 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
+        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        
         [[VThemeManager sharedThemeManager] applyStyling];
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", sequence.category, activityType]
-                                                                     action:nil
-                                                                      label:nil
-                                                                      value:nil];
         [viewController reloadInputViews];
     };
     

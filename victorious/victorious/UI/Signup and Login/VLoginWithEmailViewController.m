@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
 #import "VLoginViewController.h"
 #import "VProfileCreateViewController.h"
@@ -141,7 +140,7 @@
 - (void)didLoginWithUser:(VUser *)mainUser
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Email" label:nil value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
     
     self.profile = mainUser;
     
@@ -157,7 +156,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
     if (error.code != kVUserBannedError)
     {
         NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription

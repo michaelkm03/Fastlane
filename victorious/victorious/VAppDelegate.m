@@ -11,26 +11,26 @@
 #import "VThemeManager.h"
 #import "VReachability.h"
 
-#import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
-#import "VObjectManager+Analytics.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
-#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
-#import "VTrackingManager.h"
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
+
+#import "VApplicationTracking.h"
+#import "VFlurryTracking.h"
+#import "VGoogleAnalyticsTracking.h"
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -43,7 +43,6 @@
 @end
 
 static BOOL isRunningTests(void) __attribute__((const));
-static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VAppDelegate
 
@@ -75,14 +74,15 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
-    [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
+    [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
+    [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
+    [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
+    
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
-    NSURL  *openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
@@ -150,12 +150,14 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
     
-    [self.trackingManager trackEventWithUrls:[VSettingManager sharedManager].applicationTracking.appEnterBackground andParameters:nil];
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterBackground };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [self.trackingManager trackEventWithUrls:[VSettingManager sharedManager].applicationTracking.appEnterForeground andParameters:nil];
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterForeground };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -188,12 +190,8 @@ static BOOL isRunningTests(void)
 
 - (void)onInitResponse:(NSNotification *)notification
 {
-    // Must wait until tracking data is avialable on VSettingManager
-    VTracking *tracking = [VSettingManager sharedManager].applicationTracking;
-    if ( tracking != nil )
-    {
-        [self.trackingManager trackEventWithUrls:tracking.appLaunch andParameters:nil];
-    }
+    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
     
     // Only receive this once
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
@@ -201,20 +199,14 @@ static BOOL isRunningTests(void)
 
 - (void)reportFirstInstall
 {
-    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
-    if (![firstInstall boolValue])
+    NSString *key = @"appInstallDate";
+    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:key];
+    if ( installDate == nil )
     {
-        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
-        [[VObjectManager sharedManager] addEvents:@[installEvent]
-                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
-         }
-                                        failBlock:^(NSOperation *operation, NSError *error)
-         {
-             NSLog(@"Error reporting install event: %@", [error localizedDescription]);
-         }];
-        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
+       installDate = [NSDate date];
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
+        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:key];
     }
 }
 

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VCVideoPlayerViewController.h"
@@ -89,7 +88,7 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Stitch"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventRemixStitchDidAppear];
     
     
     // Set Video Playback Rate
@@ -113,7 +112,7 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventRemixStitchDidAppear];
 }
 
 #pragma mark - Video Methods

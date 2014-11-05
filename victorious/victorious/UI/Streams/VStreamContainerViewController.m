@@ -21,7 +21,6 @@
 
 #import "VStream.h"
 
-#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
 #import "VAuthorizationViewControllerFactory.h"
@@ -168,28 +167,29 @@
     
     if (sender) // sender is nil if this method is called directly (not in response to a user touch)
     {
-        NSString *eventAction = nil;
+        NSString *streamName = nil;
         switch (self.filterControls.selectedSegmentIndex)
         {
             case VStreamFilterFeatured:
-                eventAction = @"Selected Filter: Featured";
+                streamName = @"Featured";
                 break;
                 
             case VStreamFilterRecent:
-                eventAction = @"Selected Filter: Recent";
+                streamName = @"Recent";
                 break;
                 
             case VStreamFilterFollowing:
-                eventAction = @"Selected Filter: Following";
+                streamName = @"Following";
                 break;
                 
             default:
                 break;
         }
         
-        if (eventAction)
+        if ( streamName )
         {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:eventAction label:nil value:nil];
+            NSDictionary *params = @{ VTrackingKeyStreamName : streamName };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
         }
     }
 }
@@ -275,10 +275,7 @@
         return;
     }
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
-                                                                 action:@"Create Button Tapped"
-                                                                  label:nil
-                                                                  value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
                                                        onCancelButton:nil
@@ -287,26 +284,20 @@
                                            otherButtonTitlesAndBlocks:
                                   NSLocalizedString(@"Create a Video Post", @""), ^(void)
                                   {
-                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                   action:@"Selected Create Video Post"
-                                                                                                    label:nil
-                                                                                                    value:nil];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
+                                      
                                       [self presentCameraViewController:[VCameraViewController cameraViewController]];
                                   },
                                   NSLocalizedString(@"Create an Image Post", @""), ^(void)
                                   {
-                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                   action:@"Selected Create Image Post"
-                                                                                                    label:nil
-                                                                                                    value:nil];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
+                                      
                                       [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
                                   },
                                   NSLocalizedString(@"Create a Poll", @""), ^(void)
                                   {
-                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                   action:@"Selected Create Poll"
-                                                                                                    label:nil
-                                                                                                    value:nil];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
+                                      
                                       VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];

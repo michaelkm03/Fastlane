@@ -10,6 +10,7 @@ target :victorious do
     pod 'TestFlightSDK', '~> 3.0.0'
     pod 'TTTAttributedLabel', '~>1.8.1'
     pod 'MBProgressHUD', '~> 0.8'
+    pod 'FlurrySDK', '~> 5.4'
     link_with 'victorious'
 
     target :test do
