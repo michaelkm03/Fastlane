@@ -11,9 +11,9 @@
 NSString *const VShrinkingContentLayoutContentBackgroundView = @"com.victorious.VShrinkingContentLayoutContentBackgroundView";
 NSString *const VShrinkingContentLayoutAllCommentsHandle = @"com.victorious.VShrinkingContentLayoutContentBackgroundView";
 
-static const CGFloat kContentLayoutZIndex = 9999.0f;
-static const CGFloat kContentBackgroundZIndex = kContentLayoutZIndex - 1.0f;
-static const CGFloat kAllCommentsZIndex = 6666.0f;
+static const NSInteger kContentLayoutZIndex = 9999;
+static const NSInteger kContentBackgroundZIndex = kContentLayoutZIndex;
+static const NSInteger kAllCommentsZIndex = 6666;
 
 @interface VShrinkingContentLayout ()
 
@@ -120,10 +120,13 @@ static const CGFloat kAllCommentsZIndex = 6666.0f;
          {
              return;
          }
+         layoutAttributes.zIndex = kAllCommentsZIndex;
          [attributes addObject:layoutAttributes];
      }];
     [attributes addObject:[self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionContent]]];
-    [attributes addObject:[self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]]];
+    UICollectionViewLayoutAttributes *experienceEnhancerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]];
+    experienceEnhancerLayoutAttributes.zIndex = 0;
+    [attributes addObject:experienceEnhancerLayoutAttributes];
     
     return attributes;
 //
