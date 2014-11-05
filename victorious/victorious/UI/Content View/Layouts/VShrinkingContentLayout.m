@@ -12,7 +12,7 @@ NSString *const VShrinkingContentLayoutContentBackgroundView = @"com.victorious.
 NSString *const VShrinkingContentLayoutAllCommentsHandle = @"com.victorious.VShrinkingContentLayoutContentBackgroundView";
 
 static const NSInteger kContentLayoutZIndex = 9999;
-static const NSInteger kContentBackgroundZIndex = kContentLayoutZIndex;
+static const NSInteger kContentBackgroundZIndex = kContentLayoutZIndex - 1;
 static const NSInteger kAllCommentsZIndex = 6666;
 
 @interface VShrinkingContentLayout ()
@@ -24,38 +24,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
 @property (nonatomic, assign) CGSize allCommentsHandleSize;
 @property (nonatomic, assign) CGSize experienceEnhancerSize;
 
-//@property (nonatomic, strong) NSMutableDictionary *cachedComentSizes;
-
 @end
 
 @implementation VShrinkingContentLayout
-
-#pragma mark - Initializers
-
-//- (id)init
-//{
-//    self = [super init];
-//    if (self)
-//    {
-//        [self sharedInit];
-//    }
-//    return self;
-//}
-//
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    self = [super initWithCoder:aDecoder];
-//    if (self)
-//    {
-//        [self sharedInit];
-//    }
-//    return self;
-//}
-//
-//- (void)sharedInit
-//{
-//    _cachedComentSizes = [[NSMutableDictionary alloc] init];
-//}
 
 #pragma mark - UICollectionViewLayout
 
@@ -68,48 +39,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
     
     [self reloadMajorItemSizes];
 }
-//
-//- (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context
-//{
-//    [super invalidateLayoutWithContext:context];
-//    
-//    if (context.invalidateDataSourceCounts)
-//    {
-//        self.cachedContentSize = CGSizeZero;
-//        [self.cachedComentSizes removeAllObjects];
-//    }
-//}
-//
-//- (void)invalidateLayout
-//{
-//    [super invalidateLayout];
-//    [self reloadMajorItemSizes];
-//}
-//
-//- (CGSize)collectionViewContentSize
-//{
-//    if (!CGSizeEqualToSize(self.cachedContentSize, CGSizeZero))
-//    {
-//        return self.cachedContentSize;
-//    }
-//    
-//    NSInteger numberOfComments = [self.collectionView numberOfItemsInSection:VContentViewSectionAllComments];
-//    CGFloat allCommentsHeight = 0.0f;
-//    for (NSInteger commentIndex = 0; commentIndex < numberOfComments; commentIndex++)
-//    {
-//        NSIndexPath *indexPathForCommentIndex = [NSIndexPath indexPathForRow:commentIndex
-//                                                                   inSection:VContentViewSectionAllComments];
-//        UICollectionViewLayoutAttributes *layoutAttributesForComentAtIndex = [self layoutAttributesForItemAtIndexPath:indexPathForCommentIndex];
-//        allCommentsHeight = allCommentsHeight + CGRectGetHeight(layoutAttributesForComentAtIndex.frame);
-//    }
-//    
-//    self.cachedContentSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.mediaContentSize.height + self.histogramSize.height + self.experienceEnhancerSize.height + self.allCommentsHandleSize.height + allCommentsHeight + self.contentInsets.bottom);
-//    return self.cachedContentSize;
-//}
-
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-//    // We'll be adding attributes here
+    // We'll be adding attributes here
     NSMutableArray *attributes = [[NSMutableArray alloc] init];
     
     NSArray *inheritedAttributes = [super layoutAttributesForElementsInRect:rect];
@@ -127,54 +59,10 @@ static const NSInteger kAllCommentsZIndex = 6666;
     UICollectionViewLayoutAttributes *experienceEnhancerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]];
     experienceEnhancerLayoutAttributes.zIndex = 0;
     [attributes addObject:experienceEnhancerLayoutAttributes];
+    [attributes addObject:[self layoutAttributesForDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView
+                                                            atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
     
     return attributes;
-//
-//    UICollectionViewLayoutAttributes *contentLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
-//    [attributes addObject:contentLayoutAttributes];
-//    
-//    if (self.collectionView.contentOffset.y > [self catchPoint].y)
-//    {
-//        UICollectionViewLayoutAttributes *contentBackgroundAttributes = [self layoutAttributesForSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
-//                                                                                                             atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
-//        [attributes addObject:contentBackgroundAttributes];
-//    }
-//    
-//    if (self.collectionView.contentOffset.y < [self catchPoint].y)
-//    {
-//        UICollectionViewLayoutAttributes *histogramLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
-//        [attributes addObject:histogramLayoutAttributes];
-//    }
-//    
-//    if (self.collectionView.contentOffset.y < [self catchPoint].y)
-//    {
-//        UICollectionViewLayoutAttributes *tickerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
-//        [attributes addObject:tickerLayoutAttributes];
-//    }
-//    
-//    NSInteger numberOfComments = [self.collectionView numberOfItemsInSection:VContentViewSectionAllComments];
-//    if (numberOfComments > 0)
-//    {
-//        UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:VShrinkingContentLayoutAllCommentsHandle
-//                                                                                                        atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionAllComments]];
-//        handleLayoutAttributes.zIndex = kAllCommentsZIndex;
-//        [attributes addObject:handleLayoutAttributes];
-//        
-//        for (NSInteger commentIndex = 0; commentIndex < numberOfComments; commentIndex++)
-//        {
-//            UICollectionViewLayoutAttributes *commentLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:commentIndex
-//                                                                                                                                    inSection:VContentViewSectionAllComments]];
-//            if (CGRectGetMaxY(self.collectionView.bounds) < CGRectGetMinY(commentLayoutAttributes.frame))
-//            {
-//                break;
-//            }
-//
-//            commentLayoutAttributes.zIndex = kAllCommentsZIndex;
-//            [attributes addObject:commentLayoutAttributes];
-//        }
-//    }
-    
-//    return  [NSArray arrayWithArray:attributes];
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -207,7 +95,6 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 
                 layoutAttributesForIndexPath.transform = CGAffineTransformConcat(scaleTransform, translationTransform);
             }
-            
             break;
         case VContentViewSectionHistogram:
             layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
@@ -222,31 +109,61 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                             self.experienceEnhancerSize.height);
             break;
         case VContentViewSectionAllComments:
-//        {
-//            if (indexPath.row == 0)
-//            {
-//                layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-//                                                                self.mediaContentSize.height + self.histogramSize.height + self.experienceEnhancerSize.height + self.allCommentsHandleSize.height,
-//                                                                CGRectGetWidth(self.collectionView.bounds),
-//                                                                [self sizeForCommentIndexPath:indexPath].height);
-//            }
-//            else
-//            {
-//                NSIndexPath *indexPathForPreviousComment = [NSIndexPath indexPathForRow:indexPath.row-1
-//                                                                              inSection:indexPath.section];
-//                UICollectionViewLayoutAttributes *previousCommentLayoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPathForPreviousComment];
-//                
-//                layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-//                                                                CGRectGetMaxY(previousCommentLayoutAttributes.frame),
-//                                                                CGRectGetWidth(self.collectionView.bounds),
-//                                                                [self sizeForCommentIndexPath:indexPath].height);
-//            }
-//        }
             return [super layoutAttributesForItemAtIndexPath:indexPath];
-            break;
     }
     
     return layoutAttributesForIndexPath;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind
+                                                                     atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewLayoutAttributes *layoutAttributesForSupplementaryView = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind
+                                                                                                                                            withIndexPath:indexPath];
+    switch (indexPath.section)
+    {
+        case VContentViewSectionContent:
+        {
+            UICollectionViewLayoutAttributes *contentAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
+            layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                                    self.collectionView.contentOffset.y,
+                                                                    CGRectGetWidth(self.collectionView.bounds),
+                                                                    CGRectGetHeight(contentAttributes.frame));
+            layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
+        }
+            
+            
+            break;
+        case VContentViewSectionHistogram:
+            break;
+        case VContentViewSectionExperienceEnhancers:
+            break;
+        case VContentViewSectionAllComments:
+            break;
+    }
+    
+    return [super layoutAttributesForSupplementaryViewOfKind:kind
+                                                 atIndexPath:indexPath];
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind
+                                                                  atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([elementKind isEqualToString:VShrinkingContentLayoutContentBackgroundView])
+    {
+        UICollectionViewLayoutAttributes *contentAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
+        
+        UICollectionViewLayoutAttributes *layoutAttributesForDecoration = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:elementKind
+                                                                                                                                      withIndexPath:indexPath];
+        layoutAttributesForDecoration.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
+                                                                self.collectionView.contentOffset.y,
+                                                                CGRectGetWidth(self.collectionView.bounds),
+                                                                CGRectGetHeight(contentAttributes.frame));
+        layoutAttributesForDecoration.zIndex = kContentBackgroundZIndex;
+        return layoutAttributesForDecoration;
+    }
+    return [super layoutAttributesForDecorationViewOfKind:elementKind
+                                              atIndexPath:indexPath];
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds

@@ -277,9 +277,8 @@
     [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
                  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                         withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
-//    [self.contentCollectionView registerNib:[VContentBackgroundSupplementaryView nibForCell]
-//                 forSupplementaryViewOfKind:VShrinkingContentLayoutContentBackgroundView
-//                        withReuseIdentifier:[VContentBackgroundSupplementaryView suggestedReuseIdentifier]];
+    [self.contentCollectionView.collectionViewLayout registerNib:[VContentBackgroundSupplementaryView nibForCell]
+                                         forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
 }
