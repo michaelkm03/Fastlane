@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VProfileEditViewController.h"
 #import "VSettingManager.h"
 #import "VUser.h"
@@ -14,6 +13,9 @@
 
 #import "VObjectManager+Login.h"
 #import "VThemeManager.h"
+
+#import "VUserProfileViewController.h"
+#import "UIViewController+VNavMenu.h"
 
 @interface VProfileEditViewController ()
 
@@ -27,28 +29,48 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.backBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBack:)];
-
     [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-    self.nameLabel.text = self.profile.name;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (!self.profile)
+    {
+        [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
+                                                                    usingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+         {
+             if ([obj isKindOfClass:[VUserProfileViewController class]])
+             {
+                 VUserProfileViewController *userProfile = obj;
+                 self.profile = userProfile.profile;
+                 *stop = YES;
+             }
+         }];
+    }
     
+    [super viewWillAppear:animated];
+    
+    self.nameLabel.text = self.profile.name;
     [self.usernameTextField becomeFirstResponder];
+    
+    [self.parentViewController.navHeaderView setRightButtonTitle:NSLocalizedString(@"Save", nil)
+                                                      withAction:@selector(done:) onTarget:self];
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Profile Edit"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventProfileEditDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventProfileEditDidAppear];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -68,7 +90,7 @@
     }
     sender.enabled = NO;
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Save Profile" label:nil value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
 
     MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");

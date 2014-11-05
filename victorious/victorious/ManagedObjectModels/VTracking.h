@@ -24,9 +24,9 @@
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id videoStart;
 @property (nonatomic, retain) id ballisticCount;
-@property (nonatomic, retain) id enterForeground;
-@property (nonatomic, retain) id launch;
-@property (nonatomic, retain) id enterBackground;
+@property (nonatomic, retain) id appEnterForeground;
+@property (nonatomic, retain) id appLaunch;
+@property (nonatomic, retain) id appEnterBackground;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VVoteType *voteType;
 

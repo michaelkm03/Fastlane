@@ -18,15 +18,15 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VLargeNumberFormatter.h"
 #import "VAsyncTestHelper.h"
-#import "VTrackingManager.h"
 #import "OCMock.h"
+#import "VApplicationTracking.h"
 
 static const NSUInteger kValidExperienceEnhancerCount = 10;
 static const NSUInteger kExperienceEnhancerCount = 20;
 
-@interface VTrackingManager (UnitTests)
+@interface VApplicationTracking (UnitTests)
 
-- (void)sendRequestWithUrlString:(NSString *)url;
+- (void)sendRequest:(NSURLRequest *)request;
 
 @end
 
@@ -40,7 +40,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, strong) VTrackingManager *trackingManager;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
@@ -82,10 +81,9 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
     
     self.viewController = [[VExperienceEnhancerController alloc] initWithSequence:self.sequence];
-    VTrackingManager *trackingManager = [[VTrackingManager alloc] init];
+    VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
-    OCMStub( [myObjectMock sendRequestWithUrlString:[OCMArg any]] );
-    self.viewController.trackingManager = trackingManager;
+    OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
 }
 
 - (void)tearDown

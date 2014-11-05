@@ -11,7 +11,6 @@
 
 #import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
 #import "MBProgressHUD.h"
-#import "VAnalyticsRecorder.h"
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VCameraViewController.h"
@@ -236,7 +235,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
     
     if (self.inRecordVideoState)
     {
@@ -247,7 +246,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -445,7 +444,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (IBAction)nextAction:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Video" label:nil value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
     [self setAllControlsEnabled:NO];
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
@@ -519,7 +518,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (IBAction)capturePhoto:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Photo" label:nil value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
+    
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
     [self setAllControlsEnabled:NO];
@@ -571,7 +571,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         newSessionPreset = self.videoQuality;
         completion = ^(void)
         {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
+            
             [self configureUIforVideoCaptureAnimated:YES completion:nil];
         };
     }
@@ -580,7 +581,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         newSessionPreset = AVCaptureSessionPresetPhoto;
         completion = ^(void)
         {
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Photo Capture" label:nil value:nil];
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToPhotoCapture];
+            
             [self configureUIforPhotoCaptureAnimated:YES completion:nil];
         };
     }
@@ -610,13 +612,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     if (!self.inTrashState)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
+        
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
         self.inTrashState = YES;
     }
     else
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidConfirmtDelete];
+        
         self.captureController.videoEncoder = nil;
         [self clearRecordedVideoAnimated:YES];
     }
@@ -1096,13 +1100,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     
     if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Image From Library" label:nil value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
+        
         UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
         [self moveToPreviewControllerWithImage:originalImage];
     }
     else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
+        
         NSURL *movieURL = info[UIImagePickerControllerMediaURL];
         
         if (movieURL)

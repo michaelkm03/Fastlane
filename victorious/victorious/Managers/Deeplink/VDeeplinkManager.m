@@ -147,15 +147,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
                              withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         VUserProfileViewController *profileVC;
-         if ([VObjectManager sharedManager].mainUser && [userID isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
-         {
-             profileVC = [VUserProfileViewController userProfileWithSelf];
-         }
-         else
-         {
-             profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
-         }
+         VUserProfileViewController *profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
          
          VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          homeContainer.shouldShowHeaderLogo = YES;

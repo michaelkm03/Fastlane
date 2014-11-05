@@ -47,7 +47,7 @@
          {
              [UIView animateWithDuration:.6f animations:^
               {
-                  [(VStreamContainerViewController *)toVC showHeader];
+                  [(VStreamContainerViewController *)toVC v_showHeader];
               }];
          }
          

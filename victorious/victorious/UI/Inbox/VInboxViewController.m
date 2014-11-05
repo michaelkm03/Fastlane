@@ -7,7 +7,6 @@
 //
 
 #import "MBProgressHUD.h"
-#import "VAnalyticsRecorder.h"
 #import "VInboxViewController.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
@@ -67,13 +66,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Inbox"];
+    [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
 }
 
 #pragma mark - Segmented Control
@@ -277,6 +276,14 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
+}
+
+#pragma mark - Content Creation
+
+- (IBAction)userSearchAction:(id)sender
+{
+    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    [self.navigationController pushViewController:userSearch animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsContainerViewController.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
@@ -147,7 +147,8 @@
                                              andParent:nil
                                           successBlock:success
                                              failBlock:fail];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Comment" label:nil value:nil];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment];
 }
 
 - (IBAction)pressedBackButton:(id)sender

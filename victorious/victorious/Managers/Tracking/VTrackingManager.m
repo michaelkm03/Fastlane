@@ -2,175 +2,242 @@
 //  VTrackingManager.m
 //  victorious
 //
-//  Created by Patrick Lynch on 10/16/14.
+//  Created by Patrick Lynch on 10/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VTrackingManager.h"
-#import "VObjectManager+Private.h"
-#import <AFNetworking/AFNetworking.h>
+#import "VTrackingEvent.h"
 
-#define LOG_TRACKING_EVENTS 0
+#define TRACKING_LOGGING_ENABLED 0
 
-@interface VTrackingManager()
+#if DEBUG && TRACKING_LOGGING_ENABLED
+#warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
+#endif
 
-@property (nonatomic, readonly) NSArray *registeredMacros;
+@interface VTrackingManager ()
+
+@property (nonatomic, readwrite) NSMutableArray *queuedEvents;
+@property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
+@property (nonatomic, strong) NSMutableArray *delegates;
+@property (nonatomic, strong) NSMutableDictionary *durationEvents;
 
 @end
 
 @implementation VTrackingManager
+
++ (VTrackingManager *)sharedInstance
+{
+    static VTrackingManager *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      instance = [[VTrackingManager alloc] init];
+                  });
+    return instance;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self)
     {
-        _registeredMacros = @[ kTrackingKeyTimeFrom,
-                               kTrackingKeyTimeTo,
-                               kTrackingKeyTimeCurrent,
-                               kTrackingKeyTimeStamp,
-                               kTrackingKeyPageLabel,
-                               kTrackingKeyStreamId,
-                               kTrackingKeySequenceId,
-                               kTrackingKeyBallisticsCount,
-                               kTrackingKeyPositionX,
-                               kTrackingKeyPositionY,
-                               kTrackingKeyNavigiationFrom,
-                               kTrackingKeyNavigiationTo ];
+        _delegates = [[NSMutableArray alloc] init];
+        _queuedEvents = [[NSMutableArray alloc] init];
+        _durationEvents = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
-- (NSDateFormatter *)dateFormatter
+#pragma mark - Public tracking methods
+
+- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    static NSDateFormatter *dateFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      dateFormatter = [[NSDateFormatter alloc] init];
-                      dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-                      dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-                      dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-                  });
-    return dateFormatter;
+    if ( eventName == nil || eventName.length == 0 )
+    {
+        return;
+    }
+    
+#if DEBUG && TRACKING_LOGGING_ENABLED
+    VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+#endif
+    
+    [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
+     {
+         [delegate trackEventWithName:eventName parameters:parameters];
+     }];
 }
 
-- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
+- (void)trackEvent:(NSString *)eventName
 {
-    BOOL areUrlsValid = urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
-    if ( !areUrlsValid  )
-    {
-        return -1;
-    }
-    
-    __block NSUInteger numFailures = 0;
-    [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
-    {
-        if ( ![self trackEventWithUrl:url andParameters:parameters] )
-        {
-            numFailures++;
-        }
-    }];
-    
-    return numFailures;
+    [self trackEvent:eventName parameters:nil];
 }
 
-- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId
 {
-    BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
-    if ( !isUrlValid )
+    NSParameterAssert( eventName != nil );
+    
+    __block BOOL doesEventExistForKey = NO;
+    [self.queuedEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+     {
+         BOOL matchesEventId = [event.eventId isEqual:eventId] || eventId == nil;
+         BOOL matchesEventName = event.name == eventName;
+         if ( matchesEventId && matchesEventName )
+         {
+             
+#if DEBUG && TRACKING_LOGGING_ENABLED
+             VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+#endif
+             
+             doesEventExistForKey = YES;
+             *stop = YES;
+         }
+     }];
+    
+    if ( doesEventExistForKey )
     {
-        return NO;
+        return;
     }
-    
-    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.registeredMacros
-                                                           inString:url
-                                         withCorrspondingParameters:parameters];
-    if ( !urlWithMacrosReplaced )
+    else
     {
-        return NO;
+        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
+        [self.queuedEvents addObject:event];
+        
+#if DEBUG && TRACKING_LOGGING_ENABLED
+        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+#endif
     }
-    
-    [self sendRequestWithUrlString:urlWithMacrosReplaced];
-    
-    return YES;
 }
 
-- (NSString *)stringByReplacingMacros:(NSArray *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
+- (void)dequeuedAllEvents
 {
-    // Optimization
-    if ( !parameters|| parameters.allKeys.count == 0 )
-    {
-        return originalString;
-    }
-    
-    __block NSString *output = originalString;
-    
-    [macros enumerateObjectsUsingBlock:^(NSString *macro, NSUInteger idx, BOOL *stop)
-    {
-        // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macro ];
-        if ( value != nil )
-        {
-            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macro withValue:value];
-            if ( stringWithNextMacro != nil )
-            {
-                output = stringWithNextMacro;
-            }
-        }
-    }];
-    
-    return output;
+    [self trackEvents:self.queuedEvents];
+    self.queuedEvents = [[NSMutableArray alloc] init];
 }
 
-- (NSString *)stringFromString:(NSString *)originalString byReplacingString:(NSString *)stringToReplace withValue:(id)value
+- (void)trackQueuedEventsWithName:(NSString *)eventName
 {
-    NSParameterAssert( originalString && originalString.length > 0 );
-    NSParameterAssert( stringToReplace && stringToReplace.length > 0 );
+    NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
+    [self trackEvents:eventsForName];
+    [eventsForName enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
+     {
+         [self.queuedEvents removeObject:event];
+     }];
     
-    NSString *replacementValue = nil;
+#if DEBUG && TRACKING_LOGGING_ENABLED
+    VLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
+#endif
+}
+
+- (void)startEvent:(NSString *)eventName
+{
+    [self startEvent:eventName parameters:nil];
+}
+
+- (void)startEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
+{
+    [self endEvent:eventName];
     
-    if ( [value isKindOfClass:[NSDate class]] )
-    {
-        replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
-    }
-    else if ( [value isKindOfClass:[NSNumber class]] )
-    {
-        replacementValue = [NSString stringWithFormat:@"%@", (NSNumber *)value];
-    }
-    else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
-    {
-        replacementValue = value;
-    }
+#if DEBUG && TRACKING_LOGGING_ENABLED
+    VLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+#endif
     
-    if ( !replacementValue )
+    VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
+    self.durationEvents[ eventName ] = event;
+    
+    [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
+     {
+         if ( [delegate respondsToSelector:@selector(eventStarted:parameters:)] )
+         {
+             [delegate eventStarted:eventName parameters:parameters];
+         }
+     }];
+}
+
+- (void)endEvent:(NSString *)eventName
+{
+    __block VTrackingEvent *event = self.durationEvents[ eventName ];
+    if ( event )
+    {
+#if DEBUG && TRACKING_LOGGING_ENABLED
+        VLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+#endif
+        __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
+        [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
+         {
+             if ( [delegate respondsToSelector:@selector(eventEnded:parameters:duration:)] )
+             {
+                 [delegate eventEnded:event.name parameters:event.parameters duration:duration];
+             }
+         }];
+        
+        [self.durationEvents removeObjectForKey:eventName];
+    }
+}
+
+#pragma mark - Helpers
+
+- (NSDictionary *)addTimeStampToParametersDictionary:(NSDictionary *)dictionary
+{
+    if ( dictionary == nil )
     {
         return nil;
     }
     
-    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    if ( dictionary[ VTrackingKeyTimeStamp ] )
+    {
+        return dictionary;
+    }
+    
+    NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    [mutable setObject:[NSDate date] forKey:VTrackingKeyTimeStamp];
+    return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
-- (void)sendRequestWithUrlString:(NSString *)url
+- (NSArray *)eventsForName:(NSString *)eventName fromQueue:(NSArray *)queue
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
-    [[VObjectManager sharedManager] updateHTTPHeadersInRequest:request];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@", eventName];
+    return [queue filteredArrayUsingPredicate:predicate];
+}
+
+- (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName
+{
+    NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
+    return eventsForName.count;
+}
+
+- (void)trackEvents:(NSArray *)eventsArray
+{
+    [eventsArray enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
      {
-#if LOG_TRACKING_EVENTS
-         if ( connectionError )
-         {
-             VLog( @"TRACKING :: FAILSURE with URL %@:: error %@", url, [connectionError localizedDescription] );
-         }
-         else
-         {
-             VLog( @"TRACKING :: SUCCESS with URL %@", url );
-         }
-#endif
+         [self trackEvent:event.name parameters:event.parameters];
      }];
+}
+
+- (NSUInteger)numberOfQueuedEvents
+{
+    return self.queuedEvents.count;
+}
+
+#pragma mark - Delegate Management
+
+- (void)addDelegate:(id<VTrackingDelegate>)delegate
+{
+    if ( ![self.delegates containsObject:delegate] )
+    {
+        [self.delegates addObject:delegate];
+    }
+}
+
+- (void)removeDelegate:(id<VTrackingDelegate>)delegate
+{
+    [self.delegates removeObject:delegate];
+}
+
+- (void)removeAllDelegates
+{
+    [self.delegates removeAllObjects];
 }
 
 @end

@@ -166,12 +166,12 @@
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
+        <attribute name="appEnterBackground" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="appEnterForeground" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="appLaunch" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ballisticCount" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="enterBackground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="enterForeground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="launch" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>

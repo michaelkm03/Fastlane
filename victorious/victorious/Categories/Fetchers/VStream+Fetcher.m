@@ -17,6 +17,8 @@ static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentTypeContent = @"content";
 static NSString * const kVStreamContentTypeStream = @"stream";
 
+NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream/";
+
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
 
@@ -49,14 +51,18 @@ NSString * const VStreamFilterTypePopular = @"popular";
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *categoryString = [categories componentsJoinedByString:@","];
     NSString *apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Recent", nil);
+    return stream;
 }
 
 + (VStream *)hotSteamForSteamName:(NSString *)streamName
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Featured", nil);
+    return stream;
 }
 
 + (VStream *)streamForHashTag:(NSString *)hashTag
@@ -72,9 +78,11 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
     user = user ?: [VObjectManager sharedManager].mainUser;
     
-    NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.name = NSLocalizedString(@"Following", nil);
+    return stream;
 }
 
 + (VStream *)streamForChannelsDirectory

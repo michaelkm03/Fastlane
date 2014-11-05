@@ -16,6 +16,7 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VVoteType+Fetcher.h"
+#import "VTracking.h"
 
 //Settings
 NSString * const kVCaptureVideoQuality =   @"capture";
@@ -24,6 +25,7 @@ NSString * const kVExportVideoQuality =   @"remix";
 NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
 NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
+NSString * const VSettingsTemplateCEnabled = @"template_c_enabled - 2";
 NSString * const VSettingsChannelsEnabled = @"channels_enabled";
 NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 
@@ -82,6 +84,11 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 - (void)clearVoteTypes
 {
     self.voteTypes = @[];
+}
+
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking
+{
+    _applicationTracking = tracking;
 }
 
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes

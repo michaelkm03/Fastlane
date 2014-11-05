@@ -93,6 +93,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithFacebookDidSucceed];
+                
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
                                                            forKey:kLastLoginTypeUserDefaultsKey];
                 if (completion)
@@ -222,6 +224,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                     completion(user, created);
                 }
             }
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithTwitterDidSucceed];
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {

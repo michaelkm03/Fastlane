@@ -15,6 +15,7 @@ extern NSString * const kVRealtimeCommentsEnabled;
 extern NSString * const kVMemeAndQuoteEnabled;
 extern NSString * const VSettingsChannelsEnabled;
 extern NSString * const VSettingsMarqueeEnabled;
+extern NSString * const VSettingsTemplateCEnabled;
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsHistogramEnabled;
@@ -30,6 +31,8 @@ extern NSString * const kVPrivacyUrl;
 
 extern NSString * const kVAppStoreURL;
 extern NSString * const kVChannelURLSupport;
+
+@class VTracking;
 
 @interface VSettingManager : NSObject
 
@@ -47,8 +50,11 @@ extern NSString * const kVChannelURLSupport;
 - (void)clearVoteTypes;
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
 
+- (void)updateSettingsWithAppTracking:(VTracking *)tracking;
+
 - (NSString *)fetchMonetizationItemByKey:(NSString *)key;
 
 @property (nonatomic, readonly) NSArray *voteTypes;
+@property (nonatomic, readonly) VTracking *applicationTracking;
 
 @end

@@ -49,10 +49,9 @@
 #import "VAsset.h"
 #import "VAbstractFilter.h"
 
-#import "VAnalyticsRecorder.h"
-
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VTracking.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate, VMarqueeDelegate, VNewContentViewControllerDelegate>
 
@@ -69,6 +68,8 @@
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 @property (nonatomic, assign) BOOL shouldDisplayMarquee;
+
+@property (nonatomic, strong) VTrackingManager *trackingManager;
 
 @end
 
@@ -147,6 +148,11 @@
                                                  name:VStreamTableDataSourceDidChangeNotification
                                                object:self.tableDataSource];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataSourceDidChange:)
+                                                 name:VStreamTableDataSourceDidChangeNotification
+                                               object:self.tableDataSource];
+    
     self.clearsSelectionOnViewWillAppear = NO;
 }
 
@@ -164,6 +170,9 @@
 {
     [super viewWillAppear:animated];
     
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
+    
     [self updateNoContentViewAnimated:animated];
 }
 
@@ -176,7 +185,8 @@
         [self.tableView reloadRowsAtIndexPaths:@[self.lastSelectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.viewName };
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
     
     VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.tableDataSource.stream];
     if (!self.tableDataSource.count && ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter])
@@ -188,10 +198,12 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
     [self.preloadImageCache removeAllObjects];
+    
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 - (BOOL)shouldAutorotate
@@ -261,6 +273,8 @@
     {
         [self refresh:nil];
     }
+    
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -304,10 +318,23 @@
     [self presentViewController:contentNav
                        animated:YES
                      completion:nil];
+    
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    VSequence *sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellView };
+    [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+    
     [cell setNeedsLayout];
     [cell setNeedsDisplay];
 }
@@ -607,7 +634,6 @@
     VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = sequenceObject;
     [self.navigationController pushViewController:commentsTable animated:YES];
-
 }
 
 - (void)hashTagButtonTappedInStreamViewCell:(VStreamViewCell *)streamViewCell withTag:(NSString *)tag

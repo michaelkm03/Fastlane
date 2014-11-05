@@ -30,6 +30,9 @@
 #import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
 
+#import "VStreamCollectionViewController.h"
+#import "VMultipleStreamViewController.h"
+
 typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 {
     VMenuRowHome                =   0,
@@ -57,6 +60,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [super viewDidLoad];
     
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
+
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
          UIFont     *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
@@ -95,8 +100,15 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         self.nameLabel.text = NSLocalizedString(@"Channel", nil);
     }
     
-    self.view.backgroundColor = [UIColor clearColor];
-    self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    else
+    {
+        self.view.backgroundColor = [UIColor clearColor];
+        self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
@@ -127,13 +139,12 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         {
             case VMenuRowHome:
             {
-                VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-                homeContainer.shouldShowHeaderLogo = YES;
-                homeContainer.shouldShowUploadProgress = YES;
-                navigationController.viewControllers = @[homeContainer];
+                BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+                UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+                navigationController.viewControllers = @[homeVC];
                 [self.sideMenuViewController hideMenuViewController];
             }
-            break;
+                break;
             case VMenuRowOwnerChannel:
             {
                 if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
@@ -142,16 +153,22 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
+                    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+                    UIViewController *ownerVC = isTemplateC ? [VMultipleStreamViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
+                    navigationController.viewControllers = @[ownerVC];
                 }
                 [self.sideMenuViewController hideMenuViewController];
             }
-            break;
+                break;
             
             case VMenuRowCommunityChannel:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController communityStream]]];
+            {
+                BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+                UIViewController *communityVC = isTemplateC ? [VMultipleStreamViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
+                navigationController.viewControllers = @[communityVC];
                 [self.sideMenuViewController hideMenuViewController];
-            break;
+            }
+                break;
                 
             case VMenuRowDiscover:
             {
@@ -190,13 +207,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
+                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithUser:[VObjectManager sharedManager].mainUser]];
                     [self.sideMenuViewController hideMenuViewController];
                 }
             break;
                 
             case VMenuRowSettings:
-                navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
+                navigationController.viewControllers = @[[VSettingsViewController settingsContainer]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
             
@@ -214,26 +231,40 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (1 == section)
+    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
         sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         return sectionHeader;
     }
     
-    return nil;
+    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
 }
 
  - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (1 == section)
+    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         return 1.0;
+    }
+    else if (1 ==section)
+    {
+        return 0.01f;
     }
     else
     {
         return 100.0;
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return .01f;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

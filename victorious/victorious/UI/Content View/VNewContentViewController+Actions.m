@@ -36,9 +36,6 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 
-// Analytics
-#import "VAnalyticsRecorder.h"
-
 
 @implementation VNewContentViewController (Actions)
 
@@ -67,13 +64,13 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
-                                        container.shouldShowHeaderLogo = NO;
+                                        
+                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
-                                             [contentViewController.navigationController pushViewController:container
+                                             [contentViewController.navigationController pushViewController:stream
                                                                                   animated:YES];
                                          }];
                                     }];
@@ -103,8 +100,9 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 NSString *label = [contentViewController.viewModel.sequence.remoteId stringByAppendingPathComponent:contentViewController.viewModel.sequence.name];
-                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+                 NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
+                                           VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected parameters:params];
                  
                  if (contentViewController.viewModel.type == VContentViewTypeVideo)
                  {
@@ -197,10 +195,9 @@
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
         {
             [[VThemeManager sharedThemeManager] applyStyling];
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
+                                      VTrackingKeyActivityType : activityType };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
             [self reloadInputViews];
         };
         

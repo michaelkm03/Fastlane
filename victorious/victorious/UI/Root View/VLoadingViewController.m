@@ -9,6 +9,8 @@
 
 #import "VPushNotificationManager.h"
 #import "VStreamContainerViewController.h"
+#import "VStreamCollectionViewController.h"
+
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -19,6 +21,10 @@
 #import "VUserManager.h"
 
 #import "MBProgressHUD.h"
+
+#import "VSettingManager.h"
+
+#import "VMultipleStreamViewController.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
@@ -168,20 +174,14 @@ static const NSUInteger kRetryAttempts = 5;
             _appInitLoading = NO;
             _appInitLoaded = YES;
             
-            VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-            streamContainer.shouldShowHeaderLogo = YES;
-            streamContainer.shouldShowUploadProgress = YES;
-            
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [self goToHomeScreen];
             }
                                                                         onError:^(NSError *error)
             {
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [self.navigationController pushViewController:streamContainer animated:YES];
+                [self goToHomeScreen];
             }];
         }
                                                       failBlock:^(NSOperation *operation, NSError *error)
@@ -192,6 +192,15 @@ static const NSUInteger kRetryAttempts = 5;
             [self scheduleRetry];
         }];
     }
+}
+
+- (void)goToHomeScreen
+{
+    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+    
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    self.navigationController.viewControllers = @[homeVC];
 }
 
 - (void)scheduleRetry

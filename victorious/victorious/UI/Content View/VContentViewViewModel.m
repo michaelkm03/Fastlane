@@ -108,11 +108,9 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         self.currentAdChainIndex = 0;
         
         // Go get the data
-        [self fetchSequenceData];
         [self fetchUserinfo];
         [self fetchHistogramData];
         [self fetchPollData];
-        [self reloadData];
     }
     return self;
 }
@@ -179,7 +177,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 {
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-    {
+     {
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
+         
         // Sets up the monetization chain
         [self createAdChainWithCompletion:^(void){
             self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
@@ -195,15 +196,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 {
     [self fetchPollData];
     [self fetchHistogramData];
-    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         // This is here to update the vote counts
-         [self.experienceEnhancerController updateData];
-         
-         [self fetchUserinfo];
-     }
-                                            failBlock:nil];
+    [self fetchSequenceData];
 }
 
 - (void)fetchUserinfo

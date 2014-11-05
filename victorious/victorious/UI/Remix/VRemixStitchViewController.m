@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VCVideoPlayerViewController.h"
@@ -15,6 +14,8 @@
 #import "UIView+Masking.h"
 #import "VCameraViewController.h"
 #import "VThemeManager.h"
+
+static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
@@ -87,7 +88,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Stitch"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventRemixStitchDidAppear];
     
     
     // Set Video Playback Rate
@@ -111,7 +112,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventRemixStitchDidAppear];
 }
 
 #pragma mark - Video Methods
@@ -178,7 +179,10 @@
 
     AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    assetGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+    assetGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+    CMTime timeToSample = CMTimeMakeWithSeconds(kVideoPreviewSnapshotInSeconds, asset.duration.timescale);
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:timeToSample actualTime:NULL error:NULL];
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     publishViewController.previewImage = previewImage;
