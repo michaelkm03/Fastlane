@@ -17,7 +17,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 @interface VInviteFriendTableViewCell ()
 
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followUserControl;
 @property (nonatomic, weak) IBOutlet UIImageView *profileImage;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UILabel *profileLocation;

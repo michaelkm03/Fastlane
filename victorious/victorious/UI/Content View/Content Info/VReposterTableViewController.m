@@ -13,6 +13,9 @@
 
 #import "VObjectManager+Pagination.h"
 #import "VSequence.h"
+#import "VUser.h"
+
+#import "VFollowUserControl.h"
 
 @interface VReposterTableViewController ()
 
@@ -71,6 +74,10 @@
 {
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName];
     cell.profile = self.reposters[indexPath.row];
+    
+    BOOL isMainUser = cell.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    cell.followUserControl.hidden = isMainUser;
+    
     return cell;
 }
 
