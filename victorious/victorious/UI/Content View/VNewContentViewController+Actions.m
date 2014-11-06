@@ -26,15 +26,18 @@
 // Activities
 #import "VFacebookActivity.h"
 
+//Views
+#import "VNoContentView.h"
+
 // ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VCameraPublishViewController.h"
 #import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
-#import "VStreamContainerViewController.h"
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
+#import "VStreamCollectionViewController.h"
 
 
 @implementation VNewContentViewController (Actions)
@@ -128,11 +131,16 @@
                                      completion:^
              {
                  VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-                 VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-                 streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-                 streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-                 streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-                 [contentViewController.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+                 
+                 VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
+                 
+                 VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+                 noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
+                 noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
+                 noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+                 streamCollection.noContentView = noRemixView;
+                 
+                 [contentViewController.navigationController pushViewController:streamCollection animated:YES];
                  
              }];
         };
