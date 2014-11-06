@@ -9,10 +9,19 @@
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderView.h"
 #import "VSettingManager.h"
+#import "VWebViewProtocol.h"
 
-@interface VWebBrowserViewController() <UIWebViewDelegate, VWebBrowserHeaderViewDelegate>
+#define USE_WEBKIT = 1
 
-@property (nonatomic, strong) UIWebView *webView;
+#ifdef USE_WEBKIT
+#import "VWebViewAdvanced.h"
+#else
+#import "VWebViewBasic.h"
+#endif
+
+@interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
+
+@property (nonatomic, strong) id<VWebViewProtocol> webView;
 @property (nonatomic, strong) IBOutlet VWebBrowserHeaderView *headerView;
 @property (nonatomic, strong) NSURL *currentURL;
 
@@ -25,24 +34,44 @@
     return [[VWebBrowserViewController alloc] initWithNibName:@"VWebBrowserViewController" bundle:nil];
 }
 
+#pragma mark - UIViewController
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.headerView.browserDelegate = self;
     
-    self.webView = [[UIWebView alloc] init];
-    self.webView.backgroundColor = [UIColor whiteColor];
+#ifdef USE_WEBKIT
+    self.webView = [[VWebViewAdvanced alloc] init];
+#else
+    self.webView = [[VWebViewBasic alloc] init];
+#endif
+
     self.webView.delegate = self;
-    [self.view addSubview:self.webView];
+    [self.view addSubview:self.webView.asView];
+    [self.view sendSubviewToBack:self.webView.asView];
     
     if ( self.currentURL != nil )
     {
         [self loadUrl:self.currentURL];
     }
     
-    [self addConstraintsToWebView:self.webView withHeaderView:self.headerView];
+    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.headerView];
 }
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !CGRectContainsRect( self.view.frame, self.headerView.frame );
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
+    : UIStatusBarStyleDefault;
+}
+
+#pragma mark - Helpers
 
 - (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView
 {
@@ -69,6 +98,25 @@
                                                                                 views:viewsDict]];
 }
 
+- (void)updateHeaderView:(VWebBrowserHeaderView *)headerView withWebView:(id<VWebViewProtocol>)webView
+{
+    [webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error)
+     {
+         if ( !error && [result isKindOfClass:[NSString class]] )
+         {
+             [headerView setTitle:result];
+         }
+     }];
+    
+    [webView evaluateJavaScript:@"window.location.href" completionHandler:^(id result, NSError *error)
+     {
+         if ( !error && [result isKindOfClass:[NSString class]] )
+         {
+             [headerView setSubtitle:result];
+         }
+     }];
+}
+
 #pragma mark - Public API
 
 - (void)loadUrl:(NSURL *)url
@@ -77,7 +125,7 @@
     if ( self.webView != nil )
     {
         [self.headerView setSubtitle:url.absoluteString];
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        [self.webView loadURL:url];
     }
 }
 
@@ -86,27 +134,34 @@
     [self loadUrl:[NSURL URLWithString:urlString]];
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.headerView updateHeaderState];
+    [self.headerView setLoadingStarted];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.headerView updateHeaderState];
     
-    NSString *pagetitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    [self.headerView setTitle:pagetitle];
+    [self updateHeaderView:self.headerView withWebView:webView];
+    [self.headerView setLoadingComplete:NO];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.headerView updateHeaderState];
+    [self.headerView setLoadingComplete:YES];
+}
+
+- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+{
+    [self.headerView setLoadingProgress:progress];
 }
 
 #pragma mark - VWebBrowserHeaderView
@@ -139,17 +194,6 @@
 - (void)exit
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect( self.view.frame, self.headerView.frame );
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 @end

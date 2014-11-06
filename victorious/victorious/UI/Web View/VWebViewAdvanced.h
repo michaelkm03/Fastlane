@@ -11,8 +11,8 @@
 @import UIKit;
 @import WebKit;
 
-@interface VWebViewAdvanced : WKWebView <VWebViewProtocol>
+@interface VWebViewAdvanced : NSObject <VWebViewProtocol>
 
-@property (nonatomic, strong) id<VWebViewDelegate> unifiedDelegate;
+@property (nonatomic, strong) id<VWebViewDelegate> delegate;
 
 @end

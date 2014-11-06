@@ -88,4 +88,33 @@
     }
 }
 
+- (void)clearProgressAnimated:(BOOL)animated
+{
+    void (^updates)(void) = ^void(void)
+    {
+        self.completedProgressView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.bounds) * self.progress, 0.0 );
+    };
+    
+    void (^completion)(BOOL) = ^void(BOOL finished)
+    {
+        _progress = 0.0f;
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.4f
+                              delay:0.4f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:updates
+                         completion:completion];
+    }
+    else
+    {
+        updates();
+        completion(YES);
+    }
+}
+
 @end

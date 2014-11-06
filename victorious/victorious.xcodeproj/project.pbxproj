@@ -197,10 +197,7 @@
 		0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */; };
 		0390088619F3A76200FD7EDF /* VStreamDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088519F3A76200FD7EDF /* VStreamDirectoryItemCell.xib */; };
 		0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */; };
-		0390088A19F3A84D00FD7EDF /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088919F3A84D00FD7EDF /* VStreamPollCell.xib */; };
-		0390088C19F3A88B00FD7EDF /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088B19F3A88B00FD7EDF /* VStreamVideoCell.xib */; };
-		0390088E19F3A8FC00FD7EDF /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088D19F3A8FC00FD7EDF /* VStreamViewCell.xib */; };
-		0390089119F3AA4C00FD7EDF /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390089019F3AA4C00FD7EDF /* VWebContentViewController.xib */; };
+		0390088E19F3A8FC00FD7EDF /* (null) in Resources */ = {isa = PBXBuildFile; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
@@ -3567,7 +3564,7 @@
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
 				0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */,
 				BE88FF761A0005E70064AB28 /* VStreamCollectionCellPoll-C.xib in Resources */,
-				0390088E19F3A8FC00FD7EDF /* VStreamViewCell.xib in Resources */,
+				0390088E19F3A8FC00FD7EDF /* (null) in Resources */,
 				A7E81A551A0AE3A90012D5D3 /* VWebBrowserViewController.xib in Resources */,
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
@@ -3750,7 +3747,6 @@
 				BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */,
 				D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */,
 				0314D46419B46B5E00FA363C /* VCameraPublishViewController.m in Sources */,
-				0314D4F519B46B5E00FA363C /* VStreamToCommentAnimator.m in Sources */,
 				A7F8DD611A0B19FE00F82256 /* VWebViewAdvanced.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				A70564BF19E781B4004A8387 /* VHashtag.m in Sources */,

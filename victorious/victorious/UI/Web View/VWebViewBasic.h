@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VWebViewProtocol.h"
 
-@interface VWebViewBasic : UIWebView <VWebViewProtocol>
+@interface VWebViewBasic : NSObject <VWebViewProtocol>
 
-@property (nonatomic, strong) id<VWebViewDelegate> unifiedDelegate;
+@property (nonatomic, strong) id<VWebViewDelegate> delegate;
 
 @end

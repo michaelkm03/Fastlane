@@ -12,13 +12,20 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clipsSubviews="YES" contentMode="scaleToFill" id="Ay5-2H-sPn">
+        <view contentMode="scaleToFill" id="Ay5-2H-sPn">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnv-Hx-yhy" userLabel="Header View" customClass="VWebBrowserHeaderView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wmd-hs-5qR" userLabel="Progress bar" customClass="VProgressBarView">
+                            <rect key="frame" x="0.0" y="60" width="320" height="2"/>
+                            <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="2" id="TmC-41-qEM"/>
+                            </constraints>
+                        </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http://www.getvictorious.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ged-Wd-qzp" userLabel="Header Label">
                             <rect key="frame" x="65" y="33" width="191" height="24"/>
                             <constraints>
@@ -102,6 +109,7 @@
                     <constraints>
                         <constraint firstItem="LWi-rQ-yWu" firstAttribute="top" secondItem="rnv-Hx-yhy" secondAttribute="top" constant="14" id="2de-wS-UiG"/>
                         <constraint firstItem="OSa-TX-cI4" firstAttribute="top" secondItem="rnv-Hx-yhy" secondAttribute="top" constant="14" id="2tc-OG-hpR"/>
+                        <constraint firstItem="Wmd-hs-5qR" firstAttribute="leading" secondItem="rnv-Hx-yhy" secondAttribute="leading" id="3RN-kH-yCP"/>
                         <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="rnv-Hx-yhy" secondAttribute="top" constant="16" id="D1r-d3-qWl"/>
                         <constraint firstItem="Ged-Wd-qzp" firstAttribute="leading" secondItem="rnv-Hx-yhy" secondAttribute="leading" constant="65" id="Dun-UC-gra"/>
                         <constraint firstItem="Ged-Wd-qzp" firstAttribute="top" secondItem="rnv-Hx-yhy" secondAttribute="top" constant="33" id="Eos-tn-MoW"/>
@@ -115,13 +123,17 @@
                         <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="rnv-Hx-yhy" secondAttribute="leading" id="j4o-dP-N9o"/>
                         <constraint firstAttribute="trailing" secondItem="OSa-TX-cI4" secondAttribute="trailing" constant="30" id="kCg-N1-r8H"/>
                         <constraint firstAttribute="trailing" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="66" id="nrP-Yd-BGw"/>
+                        <constraint firstAttribute="trailing" secondItem="Wmd-hs-5qR" secondAttribute="trailing" id="sw6-H5-bIE"/>
+                        <constraint firstAttribute="bottom" secondItem="Wmd-hs-5qR" secondAttribute="bottom" constant="-2" id="vKc-zR-qU3"/>
                     </constraints>
                     <connections>
                         <outlet property="buttonBack" destination="sMx-qo-hHL" id="pjS-Bj-Mlx"/>
+                        <outlet property="buttonExit" destination="LWi-rQ-yWu" id="9Kn-m8-1L8"/>
                         <outlet property="buttonNext" destination="Jh0-W4-La5" id="O6a-Uy-xxN"/>
                         <outlet property="buttonOpenURL" destination="OSa-TX-cI4" id="xCe-Ef-xgA"/>
                         <outlet property="labelSubtitle" destination="Ged-Wd-qzp" id="QnV-6q-O5k"/>
                         <outlet property="labelTitle" destination="ESN-J9-ft1" id="zN5-Fk-j2a"/>
+                        <outlet property="progressBar" destination="Wmd-hs-5qR" id="NFO-fq-k7M"/>
                     </connections>
                 </view>
             </subviews>
