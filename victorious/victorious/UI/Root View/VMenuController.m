@@ -21,7 +21,6 @@
 #import "VUnreadConversation+RestKit.h"
 
 #import "VLoginViewController.h"
-#import "VStreamContainerViewController.h"
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"

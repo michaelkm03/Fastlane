@@ -7,7 +7,6 @@
 //
 
 #import "VStreamCellHeaderView.h"
-#import "VStreamViewCell.h"
 #import "VDefaultProfileButton.h"
 
 #import "VSequence.h"
