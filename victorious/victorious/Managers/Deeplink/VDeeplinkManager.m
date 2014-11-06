@@ -11,7 +11,9 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+Login.h"
 #import "VSettingManager.h"
+#import "VUserManager.h"
 
 #import "VConversation.h"
 #import "VUser.h"
@@ -92,6 +94,16 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
                                                     message:NSLocalizedString(@"Missing Content Message", nil)
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)showLoginFailedAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", nil)
+                                                    message:NSLocalizedString(@"NotLoggedInMessage", nil)
                                                    delegate:nil
                                           cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                           otherButtonTitles:nil];
@@ -196,6 +208,25 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
         return;
     }
     
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self goToConversation:conversationId];
+    }
+    else
+    {
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+         {
+             [self goToConversation:conversationId];
+         }
+                                                                    onError:^(NSError *error)
+         {
+             [self showLoginFailedAlert];
+         }];
+    }
+}
+
+- (void)goToConversation:(NSNumber *)conversationId
+{
     [[VObjectManager sharedManager] conversationByID:conversationId
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
@@ -213,6 +244,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          [self showMissingContentAlert];
      }];
 }
+
 
 - (void)handleCommentURL:(NSArray *)captures
 {
