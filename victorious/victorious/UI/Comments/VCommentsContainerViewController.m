@@ -16,9 +16,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
-#import "VStreamContainerViewController.h"
-
-#import "VCommentToStreamAnimator.h"
 
 #import "VThemeManager.h"
 
@@ -154,20 +151,6 @@
 - (IBAction)pressedBackButton:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VStreamContainerViewController class]])
-    {
-        VCommentToStreamAnimator *animator = [[VCommentToStreamAnimator alloc] init];
-        return animator;
-    }
-    return nil;
 }
 
 #pragma mark - Animations
