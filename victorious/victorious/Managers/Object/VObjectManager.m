@@ -460,6 +460,7 @@
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [request addValue:sha1String forHTTPHeaderField:@"Authorization"];
+    [request addValue:currentDate forHTTPHeaderField:@"Date"];
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
 }
