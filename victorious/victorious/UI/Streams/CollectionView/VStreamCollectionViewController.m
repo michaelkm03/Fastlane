@@ -20,7 +20,7 @@
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
-#import "VAnnouncementViewController.h"
+#import "VWebBrowserViewController.h"
 #import "VNewContentViewController.h"
 
 //Views
@@ -374,7 +374,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)showAnnouncementWithSequence:(VSequence *)sequence
 {
-    VAnnouncementViewController *viewController = [[VAnnouncementViewController alloc] initWithSequence:sequence];
+    VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromNib];
+    [viewController loadUrlString:sequence.announcementUrl];
     [self presentViewController:viewController
                        animated:YES
                      completion:nil];

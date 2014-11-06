@@ -7,12 +7,13 @@
 //
 
 #import "VWebContentViewController.h"
-#import "VThemeManager.h"
-
 #import "UIViewController+VNavMenu.h"
+#import "VThemeManager.h"
 #import "VSettingManager.h"
 
-@interface VWebContentViewController () <VNavigationHeaderDelegate>
+@interface VWebContentViewController () <VNavigationHeaderDelegate, UIWebViewDelegate>
+
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -24,19 +25,21 @@
 {
     [super viewDidLoad];
     
-    self.webViewDelegate = [[VWebViewDelegate alloc] init];
-    
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    
     self.webView = [[UIWebView alloc] init];
     self.webView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.webView];
-    self.webView.delegate = self.webViewDelegate;
-    
-    [self addConstraintsToWebView:self.webView withHeaderView:self.navHeaderView];
+    self.webView.delegate = self;
     
     self.urlToView = self.urlToView;
+    
+    [self addHeader];
+}
+
+- (void)addHeader
+{
+    [self v_addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    [self addConstraintsToWebView:self.webView withHeaderView:self.navHeaderView];
 }
 
 - (void)addConstraintsToWebView:(UIWebView *)webView withHeaderView:(UIView *)headerView
@@ -69,10 +72,36 @@
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
 }
 
+- (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState
+{
+    _shouldShowLoadingState = shouldShowLoadingState;
+    if ( _shouldShowLoadingState )
+    {
+        [self.activityIndicator startAnimating];
+    }
+    else
+    {
+        [self.activityIndicator stopAnimating];
+    }
+}
+
 - (void)setUrlToView:(NSURL *)urlToView
 {
     _urlToView = urlToView;
-    [self.webViewDelegate loadUrl:urlToView withWebView:self.webView];
+    
+    if ( _urlToView != nil )
+    {
+        [self.webView loadRequest:[NSURLRequest requestWithURL:_urlToView]];
+        
+        if ( !self.activityIndicator )
+        {
+            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self.webView.superview addSubview:self.activityIndicator];
+            self.activityIndicator.hidesWhenStopped = YES;
+        }
+        self.activityIndicator.center = self.webView.superview.center;
+        [self.activityIndicator startAnimating];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -104,6 +133,26 @@
 {
     return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
     : UIStatusBarStyleDefault;
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
 }
 
 @end

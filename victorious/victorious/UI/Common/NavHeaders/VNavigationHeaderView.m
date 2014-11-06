@@ -29,7 +29,8 @@
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:[self preferredNibForTheme] owner:nil options:nil] firstObject];
+    NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
     
@@ -39,7 +40,8 @@
 
 + (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
 {
-    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:[self preferredNibForTheme] owner:nil options:nil] firstObject];
+    NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
+    VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
     
@@ -47,22 +49,8 @@
     return header;
 }
 
-+ (NSString *)preferredNibForTheme
+- (void)applyTheme
 {
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return [NSStringFromClass(self) stringByAppendingString:@"-C"];
-    }
-    else
-    {
-        return NSStringFromClass(self);
-    }
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
     UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];

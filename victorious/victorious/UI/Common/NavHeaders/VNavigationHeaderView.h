@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VNavigationSelectorProtocol.h"
+#import "VHeaderView.h"
 
 @class  VNavigationHeaderView;
 
@@ -44,7 +45,7 @@
 /**
  *  Provides a themed Victorious header view that has options for: filters, adding content, side menu, back nav action, and the custom header logo.
  */
-@interface VNavigationHeaderView : UIView
+@interface VNavigationHeaderView : VHeaderView
 
 /**
  *  Shows the header logo image when set to yes.

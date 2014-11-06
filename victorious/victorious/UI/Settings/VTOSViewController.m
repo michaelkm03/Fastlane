@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
     
-    self.webViewDelegate.shouldShowLoadingState = YES;
+    self.shouldShowLoadingState = YES;
     
     [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
     {
@@ -37,7 +37,7 @@
         }
         else
         {
-            [self.webViewDelegate webView:self.webView didFailLoadWithError:error];
+            [self webView:self.webView didFailLoadWithError:error];
         }
     }];
 }
