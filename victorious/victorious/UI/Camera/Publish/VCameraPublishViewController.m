@@ -698,6 +698,8 @@ static const CGFloat kShareMargin = 34.0f;
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
+        //You just created a new image, so allow it to save to camera roll
+        self.didSelectAssetFromLibrary = NO;
     }
     
     CGFloat playbackSpeed;
