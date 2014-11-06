@@ -66,6 +66,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 @property (nonatomic, strong) NSMutableDictionary *adChain;
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
+@property (nonatomic, assign, readwrite) NSDictionary *monetizationOptions;
 
 @end
 
@@ -164,6 +165,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     NSDictionary *breakItems = [self.adChain valueForKey:[NSString stringWithFormat:@"%ld", (long)self.currentAdChainIndex]];
     int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
     self.monetizationPartner = adSystemPartner;
+    self.monetizationOptions = self.adChain;
     
     if (completionBlock)
     {

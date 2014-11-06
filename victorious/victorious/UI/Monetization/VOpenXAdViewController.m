@@ -68,6 +68,7 @@
     if ([vastTag isEqualToString:@""] || [vastTag isKindOfClass:[NSNull class]] || vastTag == nil)
     {
         [self videoInFeedCompelete];
+        return;
     }
     
     self.playerView = [[VAdPlayerView alloc] initWithFrame:self.view.bounds];
