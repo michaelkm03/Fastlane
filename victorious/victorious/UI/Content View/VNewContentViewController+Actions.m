@@ -211,33 +211,11 @@
                                                              detailText:nil];
         flagItem.selectionHandler = ^(void)
         {
-            [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
-                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            
+            [contentViewController dismissViewControllerAnimated:YES
+                                                      completion:^
              {
-                 [contentViewController dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                             message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                   otherButtonTitles:nil];
-                      [alert show];
-                  }];
-             }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 [contentViewController dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                             message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                   otherButtonTitles:nil];
-                      [alert show];
-                      
-                  }];
+                 [sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:flagItem];
