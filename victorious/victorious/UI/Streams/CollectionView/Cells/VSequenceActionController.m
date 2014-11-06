@@ -109,6 +109,20 @@
     
     UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
     
+    void(^writeBlock)(void) = ^void(void)
+    {
+        NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        {
+            publishViewController.mediaURL = tempFile;
+            [viewController presentViewController:remixNav
+                                         animated:YES
+                                       completion:nil];
+        }
+    };
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
@@ -117,32 +131,12 @@
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
                                   {
                                       publishViewController.captionType = VCaptionTypeMeme;
-                                      
-                                      NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-                                      NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                      NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                      if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                      {
-                                          publishViewController.mediaURL = tempFile;
-                                          [viewController presentViewController:remixNav
-                                                                       animated:YES
-                                                                     completion:nil];
-                                      }
+                                      writeBlock();
                                   },
                                   NSLocalizedString(@"Quote", nil),  ^(void)
                                   {
                                       publishViewController.captionType = VCaptionTypeQuote;
-                                      
-                                      NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-                                      NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                      NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                      if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                      {
-                                          publishViewController.mediaURL = tempFile;
-                                          [viewController presentViewController:remixNav
-                                                                       animated:YES
-                                                                     completion:nil];
-                                      }
+                                      writeBlock();
                                   }, nil];
     
     [actionSheet showInView:viewController.view];

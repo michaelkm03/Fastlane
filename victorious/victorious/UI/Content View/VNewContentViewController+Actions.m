@@ -226,30 +226,4 @@
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ( buttonIndex != 0 && buttonIndex != 1 )
-    {
-        return;
-    }
-    
-    NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-    
-    if ([filteredImageData writeToURL:tempFile atomically:NO])
-    {
-        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-        publishViewController.previewImage = self.placeholderImage;
-        publishViewController.parentSequenceID = [self.viewModel.sequence.remoteId integerValue];
-        publishViewController.parentNodeID = [self.viewModel.sequence.firstNode.remoteId integerValue];
-        publishViewController.completion = nil;
-        publishViewController.captionType = buttonIndex == 0 ? VCaptionTypeMeme : VCaptionTypeQuote;
-        publishViewController.mediaURL = tempFile;
-        
-        UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-        [self presentViewController:remixNav animated:YES completion:nil];
-    }
-}
-
 @end
