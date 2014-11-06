@@ -56,6 +56,8 @@
 
 - (void)pause;
 
+- (void)togglePlayControls;
+
 /**
  *  The speed to play the video.
  */

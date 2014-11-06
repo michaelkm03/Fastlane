@@ -49,6 +49,8 @@
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 @property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 
+- (void)toggleToolbarHidden;
+
 /**
  
  @return Whether tracking is enabled through VTrackingManager as set with

@@ -128,6 +128,11 @@
     [self.videoPlayerViewController.player pause];
 }
 
+- (void)togglePlayControls
+{
+    [self.videoPlayerViewController toggleToolbarHidden];
+}
+
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls
 {
     self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;

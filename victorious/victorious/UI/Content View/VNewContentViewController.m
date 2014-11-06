@@ -204,6 +204,7 @@
     }
     else
     {
+        [self.videoCell togglePlayControls];
         self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
         self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
     }
