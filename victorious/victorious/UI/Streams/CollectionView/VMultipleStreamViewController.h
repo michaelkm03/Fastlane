@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMultipleStreamViewController : UIViewController
+#import "VNewContentViewController.h"
+
+@interface VMultipleStreamViewController : UIViewController <VNewContentViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) BOOL shouldDisplayMarquee;
