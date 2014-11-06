@@ -17,8 +17,6 @@ static const NSInteger kAllCommentsZIndex = 6666;
 
 @interface VShrinkingContentLayout ()
 
-//@property (nonatomic, assign) CGSize cachedContentSize;
-//
 @property (nonatomic, assign) CGSize mediaContentSize;
 @property (nonatomic, assign) CGSize histogramSize;
 @property (nonatomic, assign) CGSize allCommentsHandleSize;

@@ -548,10 +548,7 @@
         lightbox.onCloseButtonTapped = ^(void)
         {
             [welf dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-//                 [UIViewController attemptRotationToDeviceOrientation];
-             }];
+                                     completion:nil];
         };
         
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
