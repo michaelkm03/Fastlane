@@ -308,8 +308,6 @@
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
-    
-    [self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -355,7 +353,6 @@
     
     self.contentCollectionView.delegate = self;
     
-    [self.viewModel fetchComments];
     
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
@@ -372,6 +369,8 @@
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
+    
+    [self.viewModel reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -504,11 +503,6 @@
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
         self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
-}
-
-- (void)reloadData
-{
-    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions
