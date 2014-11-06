@@ -19,6 +19,7 @@
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VNode.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VUser+Fetcher.h"
@@ -306,7 +307,8 @@
     {
         VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
         publishViewController.previewImage = self.placeholderImage;
-        publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
+        publishViewController.parentSequenceID = [self.viewModel.sequence.remoteId integerValue];
+        publishViewController.parentNodeID = [self.viewModel.sequence.firstNode.remoteId integerValue];
         publishViewController.completion = nil;
         publishViewController.captionType = buttonIndex == 0 ? VCaptionTypeMeme : VCaptionTypeQuote;
         publishViewController.mediaURL = tempFile;

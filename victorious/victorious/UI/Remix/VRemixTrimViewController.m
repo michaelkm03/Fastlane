@@ -257,7 +257,8 @@
             publishViewController.mediaURL = capturedMediaURL;
             publishViewController.playBackSpeed = self.playBackSpeed;
             publishViewController.playbackLooping = self.playbackLooping;
-            publishViewController.parentID = self.parentID;
+            publishViewController.parentNodeID = self.parentNodeID;
+            publishViewController.parentSequenceID = self.parentSequenceID;
             publishViewController.previewImage = previewImage;
             publishViewController.completion = ^(BOOL complete)
             {
@@ -292,7 +293,8 @@
         stitchViewController.shouldMuteAudio = self.shouldMuteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;
         stitchViewController.playbackLooping = self.playbackLooping;
-        stitchViewController.parentID = self.parentID;
+        stitchViewController.parentNodeID = self.parentNodeID;
+        stitchViewController.parentSequenceID = self.parentSequenceID;
     }
 }
 

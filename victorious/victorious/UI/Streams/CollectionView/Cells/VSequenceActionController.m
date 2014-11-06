@@ -99,7 +99,8 @@
     }
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.parentID = [sequence.remoteId integerValue];
+    publishViewController.parentSequenceID = [sequence.remoteId integerValue];
+    publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
     publishViewController.previewImage = previewImage;
     publishViewController.completion = ^(BOOL complete)
     {
