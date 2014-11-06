@@ -87,9 +87,24 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
+    NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
+    if (pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
+    
     [self initializeTracking];
     
     return YES;
+}
+
+- (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler

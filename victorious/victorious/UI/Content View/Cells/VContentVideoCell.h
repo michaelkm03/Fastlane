@@ -79,6 +79,4 @@
 
 - (void)setTracking:(VTracking *)tracking;
 
-@property (nonatomic, readonly) CGSize naturalSizeForVideo;
-
 @end

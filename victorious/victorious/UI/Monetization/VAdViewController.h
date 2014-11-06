@@ -38,6 +38,16 @@
 @property (nonatomic, strong) NSDictionary *adServerMonetizationParameters;
 
 /**
+ Ad network VAST Tag
+ */
+@property (nonatomic, strong) NSString *vastTag;
+
+/**
+ Ad network publisher id
+ */
+@property (nonatomic, strong) NSString *pubID;
+
+/**
  UIView used for ad video playback
  */
 @property (nonatomic, strong) UIView *playerView;

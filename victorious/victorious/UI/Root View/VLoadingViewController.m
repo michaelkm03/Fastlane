@@ -8,7 +8,7 @@
 #import "VLoadingViewController.h"
 
 #import "VPushNotificationManager.h"
-#import "VStreamContainerViewController.h"
+
 #import "VStreamCollectionViewController.h"
 
 #import "VObjectManager+Login.h"

@@ -11,10 +11,12 @@
 #import "VSettingManager.h"
 #import "VAdPlayerView.h"
 
+#define EnableOpenXLogging 0 // Set to "1" to see OpenX ad server logging, but please remember to set it back to "0" before committing your changes.
+
 @interface VOpenXAdViewController () <OXMVideoAdManagerDelegate>
 
 @property (nonatomic, strong) OXMVideoAdManager *adManager;
-@property (nonatomic, strong) IBOutlet VAdPlayerView *playerView;
+@property (nonatomic, strong) VAdPlayerView *playerView;
 @property (nonatomic, strong) NSMutableArray *adBreaks;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
@@ -41,15 +43,6 @@
     if (!self.adViewAppeared)
     {
         self.adViewAppeared = YES;
-        
-        // Initialize ad manager and push it onto view stack
-        /*
-        VSettingManager *settingsManager = [VSettingManager sharedManager];
-        self.vastTag = [settingsManager fetchMonetizationItemByKey:kOpenXVastTag];
-        self.adManager.customContentPlaybackView.frame = self.view.bounds;
-        self.adManager.vastTag = self.vastTag;
-        [self.view addSubview:self.adManager.customContentPlaybackView];
-         */
     }
 }
 
@@ -66,6 +59,58 @@
     [super viewDidAppear:animated];
 }
 
+- (void)setVastTag:(NSString *)vastTag
+{
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX VastTag: %@", vastTag);
+#endif
+    
+    if ([vastTag isEqualToString:@""] || [vastTag isKindOfClass:[NSNull class]] || vastTag == nil)
+    {
+        [self videoInFeedCompelete];
+        return;
+    }
+    
+    self.playerView = [[VAdPlayerView alloc] initWithFrame:self.view.bounds];
+    
+    self.adManager = [[OXMVideoAdManager alloc] initWithVASTTag:vastTag];
+    self.adManager.fullScreenOnOrientationChange = NO;
+    self.adManager.delegate = self;
+    [self.adManager setVideoPlayerView:self.playerView];
+    self.adManager.videoPlayerView.frame = self.view.bounds;
+    [self.view addSubview:self.adManager.videoPlayerView];
+    
+    [self.adManager setVideoContainer:self.view];
+    self.adManager.autoPlayConfig = AlwaysAutoPlay;
+    self.adManager.isInFeed = YES;
+    [self.adManager startAdManager];
+}
+
+- (void)startAdManager
+{
+    if (self.adManager == nil)
+    {
+#if DEBUG && EnableOpenXLogging
+        VLog(@"OpenX Ad Server is Starting");
+#warning OpenX ad server logging is enabled. Please remember to disable it when you're done debugging.
+#endif
+        
+        // Initialize ad manager and push it onto view stack
+        NSString *tagString = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"adTag"];
+        self.vastTag = tagString;
+    }
+}
+
+- (void)destroyAdInstance
+{
+    self.adPlaying = NO;
+    self.adViewAppeared = NO;
+    self.adManager.videoPlayerView.hidden = YES;
+    [self.adManager.videoPlayerView.player pause];
+    self.adManager = nil;
+    [self.activityIndicatorView stopAnimating];
+}
+
 - (BOOL)isAdPlaying
 {
     return self.adPlaying;
@@ -75,8 +120,11 @@
 
 - (void)videoAdManagerDidLoad:(OXMVideoAdManager *)adManager
 {
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX ad did load!");
+#endif
     self.adPlaying = YES;
-    NSLog(@"OpenX Ad loaded!");
+    NSLog(@"\n\n----------\nOpenX ad loaded!\n----------\n");
     
     if ([self.delegate respondsToSelector:@selector(adDidLoadForAdViewController:)])
     {
@@ -86,10 +134,54 @@
 
 - (void)videoAdManager:(OXMVideoAdManager *)adManager didFailToReceiveAdWithError:(NSError *)error
 {
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX ad FAILED to load!");
+#endif
+    
+    [self destroyAdInstance];
+    
     if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
     {
         [self.delegate adHadErrorInAdViewController:self withError:error];
     }
+}
+
+- (void)videoAdManagerDidStart:(OXMVideoAdManager *)adManager
+{
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX ad did start!");
+#endif
+
+    if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackInAdViewController:)])
+    {
+        [self.delegate adDidStartPlaybackInAdViewController:self];
+    }
+}
+
+- (void)videoAdManagerDidStop:(OXMVideoAdManager *)adManager
+{
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX ad did stop!");
+#endif
+    
+    [self destroyAdInstance];
+    
+    if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackInAdViewController:)])
+    {
+        [self.delegate adDidStopPlaybackInAdViewController:self];
+    }
+}
+
+- (void)videoInFeedCompelete
+{
+#if DEBUG && EnableOpenXLogging
+    VLog(@"OpenX ad did finish!");
+#endif
+    
+    [self destroyAdInstance];
+    
+    // Required delegate method
+    [self.delegate adDidFinishForAdViewController:self];
 }
 
 @end

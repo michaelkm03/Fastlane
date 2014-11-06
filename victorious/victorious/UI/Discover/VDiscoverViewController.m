@@ -14,8 +14,6 @@
 #import "VObjectManager+Discover.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
-#import "VStreamContainerViewController.h"
-#import "VStreamTableViewController.h"
 #import "VNoContentTableViewCell.h"
 #import "VDiscoverViewControllerProtocol.h"
 #import "VAuthorizationViewControllerFactory.h"

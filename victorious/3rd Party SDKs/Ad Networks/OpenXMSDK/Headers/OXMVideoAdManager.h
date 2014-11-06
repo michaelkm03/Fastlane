@@ -16,9 +16,112 @@ typedef NS_ENUM(NSUInteger, AutoPlayConfig) {
 };
 
 
+@class OXMAdRequest, AVPlayer, OXMMediaPlaybackView, OXMVideoAdManager;
 
-@class OXMAdRequest, AVPlayer, OXMMediaPlaybackView;
-@protocol OXMVideoAdManagerDelegate;
+
+@protocol OXMVideoAdManagerDelegate <NSObject>
+@required
+
+/** This method is invoked when the video ad manager has failed to load.
+ @param adManager The ad manager sending the notification
+ @param error The error code being returned by video ad manager.
+ */
+- (void) videoAdManager:(OXMVideoAdManager*)adManager didFailToReceiveAdWithError:(NSError*)error;
+
+/** This method is invoked when the video ad manager has been loaded successfully.
+ @param adManager The ad manager sending the notification
+ */
+- (void) videoAdManagerDidLoad:(OXMVideoAdManager*)adManager;
+
+
+@optional
+// -- PLAYBACK METHODS
+/** This method is invoked when a video ad player is complete when used in the infeed scenario
+ */
+-(void)videoInFeedCompelete;
+/** This method is invoked when the video expands to fullscreen (VAST v2.0)
+ @param none
+ */
+- (void) videoAdManagerDidExpand:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video expands to fullscreen (VAST v3.0)
+ @param none
+ */
+- (void) videoAdManagerDidEnterFullScreen:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video exits fullscreen (VAST v2.0)
+ @param none
+ */
+- (void) videoAdManagerDidCollapse:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video exits fullscreen (VAST v3.0)
+ @param none
+ */
+- (void) videoAdManagerDidExitFullScreen:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video finishes playback
+ @param none
+ */
+- (void) videoAdManagerDidFinish:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video closes (VAST v2.0)
+ @param none
+ */
+- (void) videoAdManagerDidClose:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video closes (VAST v3.0)
+ @param none
+ */
+- (void) videoAdManagerDidCloseLinear:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video begins / plays
+ @param none
+ */
+- (void) videoAdManagerDidStart:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video begins / plays
+ @param none
+ */
+- (void) videoAdManagerDidStop:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video is skipped
+ @param none
+ */
+- (void) videoAdManagerDidSkip:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video playhead is rewound
+ @param none
+ */
+- (void) videoAdManagerDidRewind:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked to give the video the ability to report it's progress
+ @param NSString the
+ */
+- (void) videoAdManagerDidHaveProgress:(OXMVideoAdManager*)adManager;
+
+
+/** This method is invoked when the video playback is paused
+ @param none
+ */
+- (void) videoAdManagerDidPause:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video playback resumes after a pause (Is NOT the same as the start method)
+ @param none
+ */
+- (void) videoAdManagerDidResume:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video audio is muted
+ @param none
+ */
+- (void) videoAdManagerDidMute:(OXMVideoAdManager*)adManager;
+
+/** This method is invoked when the video audio is unmuted
+ @param none
+ */
+- (void) videoAdManagerDidUnmute:(OXMVideoAdManager*)adManager;
+
+@end
+
 
 /** The OXMVideoAdManager gives you the ability to create a VAST-capable video player object to be used in your project.
  */
@@ -117,7 +220,7 @@ typedef NS_ENUM(NSUInteger, AutoPlayConfig) {
 @property (nonatomic, readonly) OXMAdRequest *adRequest;
 
 /** Main delegate which will handle methods from _OXMVideoAdManagerDelegate_ protocol. */
-@property (nonatomic,weak) id <OXMVideoAdManagerDelegate> adManagerDelegate;
+@property (nonatomic,weak) id <OXMVideoAdManagerDelegate> delegate;
 
 
 /** Initialize the Ad Manager With A VAST Ad Tag
@@ -139,99 +242,5 @@ typedef NS_ENUM(NSUInteger, AutoPlayConfig) {
  */
 -(void) startAdManager;
 
-
-@end
-
-
-@protocol OXMVideoAdManagerDelegate <NSObject>
-@required
-
-/** This method is invoked when the video ad manager has failed to load.
- @param adManager The ad manager sending the notification
- @param error The error code being returned by video ad manager.
- */
-- (void) videoAdManager:(OXMVideoAdManager*)adManager didFailToReceiveAdWithError:(NSError*)error;
-
-/** This method is invoked when the video ad manager has been loaded successfully.
- @param adManager The ad manager sending the notification
- */
-- (void) videoAdManagerDidLoad:(OXMVideoAdManager*)adManager;
-
-
-@optional
-// -- PLAYBACK METHODS
-/** This method is invoked when a video ad player is complete when used in the infeed scenario
- */
--(void)videoInFeedCompelete;
-/** This method is invoked when the video expands to fullscreen (VAST v2.0)
- @param none
- */
-- (void) expand;
-
-/** This method is invoked when the video expands to fullscreen (VAST v3.0)
- @param none
- */
-- (void) fullScreen;
-
-/** This method is invoked when the video exits fullscreen (VAST v2.0)
- @param none
- */
-- (void) collapse;
-
-/** This method is invoked when the video exits fullscreen (VAST v3.0)
- @param none
- */
-- (void) exitFullScreen;
-
-/** This method is invoked when the video closes (VAST v2.0)
- @param none
- */
-- (void) close;
-
-/** This method is invoked when the video closes (VAST v3.0)
- @param none
- */
-- (void) closeLinear;
-
-/** This method is invoked when the video begins / plays
- @param none
- */
-- (void) start;
-
-/** This method is invoked when the video is skipped
- @param none
- */
-- (void) skip;
-
-/** This method is invoked when the video playhead is rewound
- @param none
- */
-- (void) rewind;
-
-/** This method is invoked to give the video the ability to report it's progress
- @param NSString the
- */
-- (void) progress;
-
-
-/** This method is invoked when the video playback is paused
- @param none
- */
-- (void) pause;
-
-/** This method is invoked when the video playback resumes after a pause (Is NOT the same as the start method)
- @param none
- */
-- (void) resume;
-
-/** This method is invoked when the video audio is muted
- @param none
- */
-- (void) mute;
-
-/** This method is invoked when the video audio is unmuted
- @param none
- */
-- (void) unmuted;
 
 @end
