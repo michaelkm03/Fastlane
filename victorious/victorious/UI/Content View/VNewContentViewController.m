@@ -1017,29 +1017,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
-    // should we update content size?
-    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.naturalSizeForVideo, self.videoCell.contentView.bounds).size;
-    if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
+    if (!self.hasAutoPlayed)
     {
-        if (desiredSizeForVideo.height > desiredSizeForVideo.width)
-        {
-            desiredSizeForVideo = CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetWidth(self.contentCollectionView.bounds));
-        }
-        desiredSizeForVideo.width = CGRectGetWidth(self.contentCollectionView.bounds);
-        self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
+        [self.videoCell play];
+        self.hasAutoPlayed = YES;
     }
-    
-    [UIView animateWithDuration:0.0f
-                     animations:^
-     {
-         [self.contentCollectionView.collectionViewLayout invalidateLayout];
-     }completion:^(BOOL finished) {
-         if (!self.hasAutoPlayed)
-         {
-             [self.videoCell play];
-             self.hasAutoPlayed = YES;
-         }
-     }];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
