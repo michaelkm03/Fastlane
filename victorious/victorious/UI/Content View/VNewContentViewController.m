@@ -69,7 +69,6 @@
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
-@property (nonatomic, strong) NSValue *videoSizeValue;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
@@ -116,7 +115,6 @@
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
-    contentViewController.videoSizeValue = nil;
     
     return contentViewController;
 }
@@ -882,10 +880,6 @@
     {
         case VContentViewSectionContent:
         {
-            if (self.videoSizeValue)
-            {
-                return [self.videoSizeValue CGSizeValue];
-            }
             switch (self.viewModel.type)
             {
                 case VContentViewTypeInvalid:
@@ -980,29 +974,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
-    // should we update content size?
-    CGSize desiredSizeForVideo = AVMakeRectWithAspectRatioInsideRect(videoCell.naturalSizeForVideo, self.videoCell.contentView.bounds).size;
-    if (!isnan(desiredSizeForVideo.width) && !isnan(desiredSizeForVideo.height))
-    {
-        if (desiredSizeForVideo.height > desiredSizeForVideo.width)
-        {
-            desiredSizeForVideo = CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetWidth(self.contentCollectionView.bounds));
-        }
-        desiredSizeForVideo.width = CGRectGetWidth(self.contentCollectionView.bounds);
-        self.videoSizeValue = [NSValue valueWithCGSize:desiredSizeForVideo];
-    }
-    
-    [UIView animateWithDuration:0.0f
-                     animations:^
-     {
-         [self.contentCollectionView.collectionViewLayout invalidateLayout];
-     }completion:^(BOOL finished) {
-         if (!self.hasAutoPlayed)
-         {
-             [self.videoCell play];
-             self.hasAutoPlayed = YES;
-         }
-     }];
+    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
