@@ -199,6 +199,7 @@
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
         [self.view addSubview:self.videoCell.videoPlayerContainer];
+        [self.view bringSubviewToFront:self.closeButton];
         self.videoCell.videoPlayerContainer.frame = self.view.bounds;
     }
     else
@@ -975,6 +976,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
+    if (!self.hasAutoPlayed)
+    {
+        [self.videoCell play];
+        self.hasAutoPlayed = YES;
+    }
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
