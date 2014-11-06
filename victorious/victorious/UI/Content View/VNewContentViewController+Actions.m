@@ -40,11 +40,21 @@
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 
+#import "VSequenceActionController.h"
+
 
 @implementation VNewContentViewController (Actions)
 
 - (IBAction)pressedMore:(id)sender
 {
+    static VSequenceActionController *sequenceActionController;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        sequenceActionController = [[VSequenceActionController alloc] init];
+    });
+    
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
@@ -59,8 +69,7 @@
     {
         [contentViewController dismissViewControllerAnimated:YES completion:^
          {
-             VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
-             [contentViewController.navigationController pushViewController:profileViewController animated:YES];
+             [sequenceActionController showPosterProfileFromViewController:contentViewController sequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:userItem];
@@ -68,7 +77,6 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        
                                         VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
@@ -88,41 +96,21 @@
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
-            if (![VObjectManager sharedManager].mainUser)
-            {
-                [contentViewController dismissViewControllerAnimated:YES
-                                         completion:^
-                 {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController]
-                                        animated:YES
-                                      completion:NULL];
-                 }];
-                
-                return;
-            }
             
             [contentViewController dismissViewControllerAnimated:YES
-                                     completion:^
+                                                      completion:^
              {
-                 NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
-                                           VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
-                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected parameters:params];
-                 
-                 if (contentViewController.viewModel.type == VContentViewTypeVideo)
+                 VSequence *sequence = self.viewModel.sequence;
+                 if ([sequence isVideo])
                  {
-                     UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:contentViewController.viewModel.sourceURLForCurrentAssetData
-                                                                                             sequenceID:[contentViewController.viewModel.sequence.remoteId integerValue]
-                                                                                                 nodeID:contentViewController.viewModel.nodeID];
-                     [self presentViewController:remixVC animated:YES completion:nil];
+                     [sequenceActionController videoRemixActionFromViewController:contentViewController
+                                                                            asset:[self.viewModel.sequence firstNode].assets.firstObject
+                                                                             node:[sequence firstNode]
+                                                                         sequence:sequence];
                  }
                  else
                  {
-                     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                              delegate:self
-                                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                                destructiveButtonTitle:nil
-                                                                     otherButtonTitles:NSLocalizedString(@"Meme", nil), NSLocalizedString(@"Quote", nil), nil];
-                     [actionSheet showInView:contentViewController.view];
+                     [sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
                  }
              }];
         };
@@ -131,18 +119,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-                 
-                 VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
-                 
-                 VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
-                 noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
-                 noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
-                 noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
-                 streamCollection.noContentView = noRemixView;
-                 
-                 [contentViewController.navigationController pushViewController:streamCollection animated:YES];
-                 
+                 [sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:remixItem];
@@ -158,17 +135,11 @@
         [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
-             if (![VObjectManager sharedManager].mainUser)
-             {
-                 [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                 return;
-             }
              if (contentViewController.viewModel.hasReposted)
              {
                  return;
              }
-             
-             [contentViewController.viewModel repost];
+             [sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
          }];
     };
     repostItem.detailSelectionHandler = ^(void)
@@ -176,9 +147,7 @@
         [self dismissViewControllerAnimated:YES
                                  completion:^
          {
-             VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
-             vc.sequence = self.viewModel.sequence;
-             [self.navigationController pushViewController:vc animated:YES];
+             [sequenceActionController showRepostersFromViewController:contentViewController sequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:repostItem];
@@ -189,33 +158,12 @@
     
     void (^shareHandler)(void) = ^void(void)
     {
-        //Remove the styling for the mail view.
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
-        VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
-                                                                                                                     self.viewModel.shareText,
-                                                                                                                     self.viewModel.shareURL]
-                                                                                             applicationActivities:@[fbActivity]];
-        
-        NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
-        [activityViewController setValue:emailSubject forKey:@"subject"];
-        activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
-        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
-        {
-            [[VThemeManager sharedThemeManager] applyStyling];
-            NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
-                                      VTrackingKeyActivityType : activityType };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
-            [self reloadInputViews];
-        };
-        
         [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
-             [contentViewController presentViewController:activityViewController
-                                animated:YES
-                              completion:nil];
+             [sequenceActionController shareFromViewController:contentViewController
+                                                      sequence:contentViewController.viewModel.sequence
+                                                          node:contentViewController.viewModel.currentNode];
          }];
     };
     shareItem.selectionHandler = shareHandler;
