@@ -110,11 +110,6 @@
     return self.videoPlayerViewController.player.currentTime;
 }
 
-- (CGSize)naturalSizeForVideo
-{
-    return self.videoPlayerViewController.naturalSize;
-}
-
 #pragma mark - Public Methods
 
 - (void)play

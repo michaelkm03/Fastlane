@@ -18,10 +18,11 @@ static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
 
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
-@interface VCVideoPlayerViewController ()
+@interface VCVideoPlayerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) VCVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameTapGesture;
+@property (nonatomic, weak) UITapGestureRecognizer *videoFrameDoubleTapGesture;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL toolbarAnimating;
 @property (nonatomic) BOOL sliderTouchActive;
@@ -142,8 +143,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.toolbarView = toolbarView;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
+    tap.numberOfTapsRequired = 1;
+    tap.delegate = self;
     [self.view addGestureRecognizer:tap];
     self.videoFrameTapGesture = tap;
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameDoubleTapped:)];
+    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.delegate = self;
+    self.videoFrameDoubleTapGesture = doubleTap;
+    [self.view addGestureRecognizer:doubleTap];
     
     self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
@@ -646,6 +655,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
+- (void)videoFrameDoubleTapped:(UITapGestureRecognizer *)sender
+{
+    self.playerLayer.videoGravity = ([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+}
+
 - (IBAction)sliderTouchDown:(UISlider *)sender
 {
     self.sliderTouchActive = YES;
@@ -912,6 +926,18 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)disableTracking
 {
     self.trackingItem = nil;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return (gestureRecognizer == self.videoFrameTapGesture) ? YES : NO;
 }
 
 @end
