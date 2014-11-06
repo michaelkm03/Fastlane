@@ -20,6 +20,7 @@ extern NSString * const VSettingsTemplateCEnabled;
 extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsHistogramEnabled;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
+extern NSString * const VExperimentsClearVideoBackground;
 
 //Monetization
 extern NSString * const kLiveRailPublisherId;

@@ -317,12 +317,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : self.currentStream.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellView };
-    [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    if (sequence)
+    {
+        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                  VTrackingKeyStreamId : self.currentStream.remoteId,
+                                  VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyUrls : sequence.tracking.cellView };
+        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

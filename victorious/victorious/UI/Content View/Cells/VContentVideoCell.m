@@ -55,7 +55,7 @@
     
     self.contentURL = viewModel.itemURL;
     
-    if (viewModel.monetizationPartner == VMonetizationPartnerNone || viewModel.monetizationPartner == VMonetizationPartnerOpenX)
+    if (viewModel.monetizationPartner == VMonetizationPartnerNone)
     {
         self.isPlayingAd = NO;
         self.videoPlayerViewController.itemURL = self.contentURL;
@@ -108,11 +108,6 @@
 - (CMTime)currentTime
 {
     return self.videoPlayerViewController.player.currentTime;
-}
-
-- (CGSize)naturalSizeForVideo
-{
-    return self.videoPlayerViewController.naturalSize;
 }
 
 #pragma mark - Public Methods

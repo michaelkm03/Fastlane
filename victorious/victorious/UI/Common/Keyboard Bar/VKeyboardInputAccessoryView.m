@@ -88,6 +88,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     
     [self.attachmentsButton setImage:nil
                             forState:UIControlStateNormal];
+    
+    [self updateSendButton];
 }
 
 - (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
@@ -137,7 +139,6 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
-    self.sendButton.enabled = (textView.text.length == 0) ? NO : YES;
     
     CGFloat desiredHeight = self.verticalSpaceTextViewTopToContainerConstraint.constant + self.verticalSpaceTextViewToBottomContainerConstraint.constant + self.editingTextView.contentSize.height;
     if (self.frame.size.height < desiredHeight)
@@ -163,6 +164,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
             [self.delegate keyboardInputAccessoryViewDidClearInput:self];
         }
     }
+    
+    [self updateSendButton];
 }
 
 - (BOOL)textView:(UITextView *)textView
@@ -209,6 +212,11 @@ shouldChangeTextInRange:(NSRange)range
 - (NSDictionary *)textEntryAttributes
 {
     return @{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
+}
+
+- (void)updateSendButton
+{
+    self.sendButton.enabled = (self.selectedThumbnail || (self.composedText.length > 0));
 }
 
 @end
