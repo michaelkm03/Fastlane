@@ -328,7 +328,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
-    UIImageView *previewImageView;
+    UIImageView *previewImageView = ((VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath]).previewImageView;
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     if ( sequence == nil )
