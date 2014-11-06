@@ -51,24 +51,23 @@
 
 #pragma mark - User
 
-- (void)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    //If this cell is from the profile we should disable going to the profile
-    BOOL fromProfile = NO;
-    for (UIViewController *vc in viewController.parentViewController.navigationController.viewControllers)
+    if ( !viewController || !viewController.navigationController || !sequence )
     {
-        if ([vc isKindOfClass:[VUserProfileViewController class]])
-        {
-            fromProfile = YES;
-        }
+        return NO;
     }
-    if (fromProfile)
+    
+    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)viewController).profile isEqual:sequence.user] )
     {
-        return;
+        return NO;
     }
     
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
+    
+    return YES;
 }
 
 #pragma mark - Remix
