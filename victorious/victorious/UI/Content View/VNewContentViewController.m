@@ -308,6 +308,8 @@
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    [self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -370,8 +372,6 @@
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
     }
-    
-    [self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
