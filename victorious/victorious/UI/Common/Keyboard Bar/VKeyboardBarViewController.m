@@ -42,6 +42,7 @@ static const NSInteger kCharacterLimit = 255;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
     
     [self addAccessoryBar];
@@ -91,16 +92,11 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)enableOrDisableSendButtonAsAppropriate
 {
-    self.sendButton.enabled = self.sendButtonEnabled && (self.textView.text.length > 0);
+    self.sendButton.enabled = self.mediaURL || (self.textView.text.length > 0);
 }
 
 - (IBAction)sendButtonAction:(id)sender
 {
-    if (self.textView.text.length < 1)
-    {
-        return;
-    }
-    
     if (![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -148,7 +144,11 @@ static const NSInteger kCharacterLimit = 255;
             self.mediaURL = capturedMediaURL;
             [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
         }
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             [self enableOrDisableSendButtonAsAppropriate];
+         }];
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
