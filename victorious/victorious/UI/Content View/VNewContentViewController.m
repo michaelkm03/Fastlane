@@ -192,6 +192,11 @@
 {
     [self.inputAccessoryView endEditing:YES];
     
+    if (self.presentedViewController)
+    {
+        return;
+    }
+    
     self.landscapeMaskOverlay.alpha = (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) ? 1.0f : 0.0f;
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
@@ -203,7 +208,6 @@
         self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
         self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
     }
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)finishedRotationUpdates
@@ -212,6 +216,7 @@
     {
         self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
         [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
+        [self.contentCollectionView.collectionViewLayout invalidateLayout];
     }
 }
 
@@ -556,7 +561,11 @@
         
         lightbox.onCloseButtonTapped = ^(void)
         {
-            [welf dismissViewControllerAnimated:YES completion:nil];
+            [welf dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+//                 [UIViewController attemptRotationToDeviceOrientation];
+             }];
         };
         
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
@@ -863,6 +872,11 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    {
+        return CGSizeZero;
+    }
+    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {

@@ -143,13 +143,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     CGFloat desiredHeight = self.verticalSpaceTextViewTopToContainerConstraint.constant + self.verticalSpaceTextViewToBottomContainerConstraint.constant + self.editingTextView.contentSize.height;
     if (CGRectGetHeight(self.frame) < desiredHeight)
     {
-        if (self.maximumAllowedSize.height <= desiredHeight)
-        {
-//            return;
-        }
-
         [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.maximumAllowedSize.height))];
+                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), roundf(desiredHeight))];
     }
     else if (CGRectGetHeight(self.frame) > desiredHeight)
     {
