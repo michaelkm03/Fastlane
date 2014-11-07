@@ -37,6 +37,11 @@
     return self.webView;
 }
 
+- (BOOL)isProgressSupported
+{
+    return YES;
+}
+
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler
 {
     NSString *output = [self.webView stringByEvaluatingJavaScriptFromString:javaScriptString];

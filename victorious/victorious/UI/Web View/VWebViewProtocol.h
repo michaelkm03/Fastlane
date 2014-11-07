@@ -24,6 +24,7 @@
 
 @protocol VWebViewProtocol <NSObject>
 
+@property (nonatomic, readonly, assign) BOOL isProgressSupported;
 @property (nonatomic, readonly) UIView *asView;
 @property (nonatomic, strong) id<VWebViewDelegate> delegate;
 

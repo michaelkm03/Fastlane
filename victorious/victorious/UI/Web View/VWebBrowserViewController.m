@@ -10,14 +10,8 @@
 #import "VWebBrowserHeaderView.h"
 #import "VSettingManager.h"
 #import "VWebViewProtocol.h"
-
-#define USE_WEBKIT = 1
-
-#ifdef USE_WEBKIT
 #import "VWebViewAdvanced.h"
-#else
 #import "VWebViewBasic.h"
-#endif
 
 @interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
 
@@ -42,11 +36,14 @@
     
     self.headerView.browserDelegate = self;
     
-#ifdef USE_WEBKIT
-    self.webView = [[VWebViewAdvanced alloc] init];
-#else
-    self.webView = [[VWebViewBasic alloc] init];
-#endif
+    if ( NSClassFromString( @"WKWebView" ) != nil )
+    {
+        self.webView = [[VWebViewAdvanced alloc] init];
+    }
+    else
+    {
+        self.webView = [[VWebViewBasic alloc] init];
+    }
 
     self.webView.delegate = self;
     [self.view addSubview:self.webView.asView];
@@ -140,7 +137,6 @@
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.headerView updateHeaderState];
-    [self.headerView setLoadingStarted];
 }
 
 - (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
@@ -149,19 +145,39 @@
     [self.headerView updateHeaderState];
     
     [self updateHeaderView:self.headerView withWebView:webView];
-    [self.headerView setLoadingComplete:NO];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.headerView updateHeaderState];
-    [self.headerView setLoadingComplete:YES];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
 {
-    [self.headerView setLoadingProgress:progress];
+    if ( !webView.isProgressSupported )
+    {
+        return;
+    }
+    
+    if ( progress == 0.0f )
+    {
+        [self.headerView setLoadingStarted];
+    }
+    else if ( progress < 0.0f )  // This is when an error has occurred
+    {
+        BOOL didFail = YES;
+        [self.headerView setLoadingComplete:didFail];
+    }
+    else if ( progress == 1.0f )
+    {
+        BOOL didFail = NO;
+        [self.headerView setLoadingComplete:didFail];
+    }
+    else
+    {
+        [self.headerView setLoadingProgress:progress];
+    }
 }
 
 #pragma mark - VWebBrowserHeaderView

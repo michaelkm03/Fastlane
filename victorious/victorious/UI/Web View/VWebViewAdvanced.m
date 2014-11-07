@@ -44,6 +44,11 @@
 
 #pragma mark - UIWebViewProtocol
 
+- (BOOL)isProgressSupported
+{
+    return YES;
+}
+
 - (UIView *)asView
 {
     return self.webView;
@@ -86,6 +91,8 @@
     [self.delegate webViewDidFinishLoad:self];
     
     [self.progressBarAnimationTimer invalidate];
+    
+    [self.delegate webView:self didUpdateProgress:1.0f];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
@@ -93,17 +100,21 @@
     [self.delegate webView:self didFailLoadWithError:error];
     
     [self.progressBarAnimationTimer invalidate];
+    
+    [self.delegate webView:self didUpdateProgress:-1.0f];
 }
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     [self.delegate webViewDidStartLoad:self];
     
-    [self updateProgress];
-    if ( [self.delegate respondsToSelector:@selector(webView:didUpdateProgress:)] )
-    {
-        self.progressBarAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:self selector:@selector(updateProgress) userInfo:nil repeats:YES];
-    }
+    [self.delegate webView:self didUpdateProgress:0.0f];
+    
+    self.progressBarAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0
+                                                                      target:self
+                                                                    selector:@selector(updateProgress)
+                                                                    userInfo:nil
+                                                                     repeats:YES];
 }
 
 @end
