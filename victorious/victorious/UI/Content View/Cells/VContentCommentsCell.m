@@ -186,9 +186,9 @@ static NSCache *_sharedImageCache = nil;
               after the comment was posted and before it could be reloaded from the server.
               In those cases, the rotation of the preview image will be off and requires adjustment
               */
-             if ( self.comment.assetOrientation != nil )
+             if ( self.mediaAssetOrientation != nil )
              {
-                 UIDeviceOrientation orientation = (UIDeviceOrientation)self.comment.assetOrientation.integerValue;
+                 UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
                  image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
              }
              
