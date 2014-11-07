@@ -378,7 +378,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)showWebContentWithSequence:(VSequence *)sequence
 {
     VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromNib];
-    [viewController loadUrlString:sequence.webContentUrl];
+    viewController.sequence = sequence;
     [self presentViewController:viewController
                        animated:YES
                      completion:nil];

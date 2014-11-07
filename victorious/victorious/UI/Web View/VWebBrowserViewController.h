@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class VSequence;
+
 @interface VWebBrowserViewController : UIViewController
+
+@property (nonatomic, strong) VSequence *sequence;
 
 + (VWebBrowserViewController *)instantiateFromNib;
 

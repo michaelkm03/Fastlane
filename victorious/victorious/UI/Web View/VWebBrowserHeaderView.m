@@ -110,9 +110,9 @@
     [self updateHeaderState];
 }
 
-- (IBAction)viewInBrowserSelected:(id)sender
+- (IBAction)exportSelected:(id)sender
 {
-    [self.browserDelegate openInBrowser];
+    [self.browserDelegate export];
     [self updateHeaderState];
 }
 

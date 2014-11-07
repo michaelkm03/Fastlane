@@ -341,6 +341,7 @@
 		A7D361AF1A0AA6BD00CCEC90 /* VWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D361AE1A0AA6BD00CCEC90 /* VWebBrowserViewController.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7E81A551A0AE3A90012D5D3 /* VWebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E81A531A0AE3A90012D5D3 /* VWebBrowserViewController.xib */; };
+		A7ED86C91A0C8DDF006784F6 /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ED86C81A0C8DDF006784F6 /* VWebBrowserActions.m */; };
 		A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4C1A0B065800F82256 /* VHeaderView.m */; };
 		A7F8DD501A0B079A00F82256 /* VWebBrowserHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4F1A0B079A00F82256 /* VWebBrowserHeaderView.m */; };
 		A7F8DD5E1A0B19A000F82256 /* VWebViewBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD5D1A0B19A000F82256 /* VWebViewBasic.m */; };
@@ -1141,6 +1142,8 @@
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7E81A531A0AE3A90012D5D3 /* VWebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VWebBrowserViewController.xib; sourceTree = "<group>"; };
+		A7ED86C71A0C8DDF006784F6 /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
+		A7ED86C81A0C8DDF006784F6 /* VWebBrowserActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserActions.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F8DD4B1A0B065800F82256 /* VHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHeaderView.h; sourceTree = "<group>"; };
 		A7F8DD4C1A0B065800F82256 /* VHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHeaderView.m; sourceTree = "<group>"; };
@@ -2176,6 +2179,8 @@
 		0314D45419B46B5E00FA363C /* Web View */ = {
 			isa = PBXGroup;
 			children = (
+				A7ED86C71A0C8DDF006784F6 /* VWebBrowserActions.h */,
+				A7ED86C81A0C8DDF006784F6 /* VWebBrowserActions.m */,
 				A7F8DD4E1A0B079A00F82256 /* VWebBrowserHeaderView.h */,
 				A7F8DD4F1A0B079A00F82256 /* VWebBrowserHeaderView.m */,
 				A7D361AD1A0AA6BD00CCEC90 /* VWebBrowserViewController.h */,
@@ -2183,13 +2188,13 @@
 				A7E81A531A0AE3A90012D5D3 /* VWebBrowserViewController.xib */,
 				0314D45519B46B5E00FA363C /* VWebContentViewController.h */,
 				0314D45619B46B5E00FA363C /* VWebContentViewController.m */,
-				A7F8DD591A0B17B500F82256 /* VWebViewProtocol.h */,
-				A7F8DD711A0C60C400F82256 /* VWebViewCreator.h */,
-				A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */,
-				A7F8DD5C1A0B19A000F82256 /* VWebViewBasic.h */,
-				A7F8DD5D1A0B19A000F82256 /* VWebViewBasic.m */,
 				A7F8DD5F1A0B19FE00F82256 /* VWebViewAdvanced.h */,
 				A7F8DD601A0B19FE00F82256 /* VWebViewAdvanced.m */,
+				A7F8DD5C1A0B19A000F82256 /* VWebViewBasic.h */,
+				A7F8DD5D1A0B19A000F82256 /* VWebViewBasic.m */,
+				A7F8DD711A0C60C400F82256 /* VWebViewCreator.h */,
+				A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */,
+				A7F8DD591A0B17B500F82256 /* VWebViewProtocol.h */,
 			);
 			path = "Web View";
 			sourceTree = "<group>";
@@ -4040,6 +4045,7 @@
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
+				A7ED86C91A0C8DDF006784F6 /* VWebBrowserActions.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,

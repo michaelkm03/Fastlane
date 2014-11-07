@@ -10,6 +10,8 @@
 #import "VWebBrowserHeaderView.h"
 #import "VSettingManager.h"
 #import "VWebViewCreator.h"
+#import "VWebBrowserActions.h"
+#import "VSequence+Fetcher.h"
 
 typedef enum {
     VWebBrowserViewControllerStateComplete,
@@ -23,6 +25,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet VWebBrowserHeaderView *headerView;
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
+@property (nonatomic, strong) VWebBrowserActions *actions;
 
 @end
 
@@ -38,6 +41,8 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.actions = [[VWebBrowserActions alloc] init];
     
     self.headerView.browserDelegate = self;
     
@@ -70,6 +75,14 @@ typedef enum {
 {
     return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
     : UIStatusBarStyleDefault;
+}
+
+#pragma mark - Data source
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    [self loadUrlString:_sequence.webContentUrl];
 }
 
 #pragma mark - Helpers
@@ -218,9 +231,9 @@ typedef enum {
     [self.webView reload];
 }
 
-- (void)openInBrowser
+- (void)export
 {
-    [[UIApplication sharedApplication] openURL:self.currentURL];
+    [self.actions showInViewController:self withSequence:self.sequence];
 }
 
 - (void)exit

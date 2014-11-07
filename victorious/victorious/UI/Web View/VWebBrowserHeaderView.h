@@ -17,7 +17,7 @@
 - (void)goForward;
 - (void)goBack;
 - (void)reload;
-- (void)openInBrowser;
+- (void)export;
 - (void)exit;
 
 @end
