@@ -9,6 +9,7 @@
 #import "VContentCommentsCell.h"
 
 // Subviews
+#import "VDefaultProfileImageView.h"
 #import "VCommentTextAndMediaView.h"
 
 // Theme
@@ -22,7 +23,7 @@ static NSCache *_sharedImageCache = nil;
 
 @interface VContentCommentsCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *commentersAvatarImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *commentersAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
@@ -91,6 +92,7 @@ static NSCache *_sharedImageCache = nil;
     self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)prepareContentAndMediaView

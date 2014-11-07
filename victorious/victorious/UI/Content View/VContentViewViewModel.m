@@ -68,6 +68,8 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSDictionary *monetizationOptions;
 
+@property (nonatomic, assign) BOOL hasCreatedAdChain;
+
 @end
 
 @implementation VContentViewViewModel
@@ -107,11 +109,6 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
-        
-        // Go get the data
-        [self fetchUserinfo];
-        [self fetchHistogramData];
-        [self fetchPollData];
     }
     return self;
 }
@@ -142,6 +139,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 - (void)createAdChainWithCompletion:(void(^)(void))completionBlock
 {
+    if (self.hasCreatedAdChain)
+    {
+        return;
+    }
+    
     self.adChain = [[NSMutableDictionary alloc] init];
     NSSet *adBreakSet = self.sequence.adBreaks;
     
@@ -167,6 +169,8 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     self.monetizationPartner = adSystemPartner;
     self.monetizationOptions = self.adChain;
     
+    self.hasCreatedAdChain = YES;
+    
     if (completionBlock)
     {
         completionBlock();
@@ -180,11 +184,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         // This is here to update the vote counts
-         [self.experienceEnhancerController updateData];
+        // This is here to update the vote counts
+        [self.experienceEnhancerController updateData];
          
         // Sets up the monetization chain
-        [self createAdChainWithCompletion:^(void){
+        [self createAdChainWithCompletion:^(void)
+         {
             self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
                                                                         withAdSystem:self.monetizationPartner withOptions:self.adChain];
             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
@@ -197,7 +202,9 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 - (void)reloadData
 {
     [self fetchPollData];
+    [self fetchComments];
     [self fetchHistogramData];
+    [self fetchUserinfo];
     [self fetchSequenceData];
 }
 

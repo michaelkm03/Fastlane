@@ -102,11 +102,6 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 @property (nonatomic, strong) UIImage *selectedThumbnail;
 
 /**
- *  The maximum allowed size for the inputAcessoryView.
- */
-@property (nonatomic, assign) CGSize maximumAllowedSize;
-
-/**
  *  Assigning to this will determine the behavior of the return key. UIReturnKeyDefault will allow the user to insert newline characters into the text view while any other return key type will resign first responder status on the text field.
  */
 @property (nonatomic, assign) UIReturnKeyType returnKeyType;

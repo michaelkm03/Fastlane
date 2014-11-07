@@ -39,6 +39,7 @@
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
@@ -63,6 +64,11 @@
     }
     
     [self showPreRollWithPartner:viewModel.monetizationPartner withOptions:viewModel.monetizationOptions];
+}
+
+- (void)setAlpha:(CGFloat)alpha
+{
+    [super setAlpha:1.0f];
 }
 
 #pragma mark - Playback Methods
@@ -121,6 +127,11 @@
 - (void)pause
 {
     [self.videoPlayerViewController.player pause];
+}
+
+- (void)togglePlayControls
+{
+    [self.videoPlayerViewController toggleToolbarHidden];
 }
 
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls

@@ -70,6 +70,11 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
     self.experienceEnhancerBar = experienceEnhancerBar;
 }
 
+- (void)setAlpha:(CGFloat)alpha
+{
+    [super setAlpha:1.0f];
+}
+
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     [super applyLayoutAttributes:layoutAttributes];
