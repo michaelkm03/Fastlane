@@ -40,4 +40,25 @@
     }
 }
 
+- (float)previewImageRotationAdjustment
+{
+    return [[self class] rotationAdjustmentForOrientation:self.videoOrientation];
+}
+
++ (float)rotationAdjustmentForOrientation:(UIDeviceOrientation)orientation
+{
+    switch ( orientation )
+    {
+        case UIDeviceOrientationPortrait:
+            return 90.0f;
+        case UIDeviceOrientationPortraitUpsideDown:
+            return -90.0f;
+        case UIDeviceOrientationLandscapeLeft:
+            return 180.0f;
+        case UIDeviceOrientationLandscapeRight:
+        default:
+            return 0.0f;
+    }
+}
+
 @end

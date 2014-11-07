@@ -428,6 +428,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  failBlock:nil];
 }
 
+- (NSNumber*)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.assetOrientation;
+}
+
 - (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];

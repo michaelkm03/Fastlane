@@ -520,6 +520,7 @@
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.mediaAssetOrientation = [self.viewModel commentMediaAssetOrientationForCommentIndex:index];
     commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
     commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
     commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
