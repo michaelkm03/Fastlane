@@ -351,7 +351,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     if ( [sequence isWebContent] )
     {
-        [self showAnnouncementWithSequence:sequence];
+        [self showWebContentWithSequence:sequence];
     }
     else
     {
@@ -375,7 +375,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
                      completion:nil];
 }
 
-- (void)showAnnouncementWithSequence:(VSequence *)sequence
+- (void)showWebContentWithSequence:(VSequence *)sequence
 {
     VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromNib];
     [viewController loadUrlString:sequence.webContentUrl];
@@ -442,29 +442,35 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VStreamCollectionCell *cell;
     
-    if ([sequence isWebContent])
+    if ([sequence isPreviewWebContent])
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
+        NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
+        VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                               forIndexPath:indexPath];
-    }
-    else if ([sequence isPoll])
-    {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
-                                                              forIndexPath:indexPath];
+        cell.sequence = sequence;
+        return cell;
     }
     else
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
-                                                              forIndexPath:indexPath];
+        VStreamCollectionCell *cell;
+        if ([sequence isPoll])
+        {
+            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+                                                                  forIndexPath:indexPath];
+        }
+        else
+        {
+            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
+                                                                  forIndexPath:indexPath];
+        }
+        cell.delegate = self.actionDelegate ? self.actionDelegate : self;
+        cell.sequence = sequence;
+        
+        [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
+        
+        return cell;
     }
-    cell.delegate = self.actionDelegate ? self.actionDelegate : self;
-    cell.sequence = sequence;
-    
-    [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
-    
-    return cell;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource

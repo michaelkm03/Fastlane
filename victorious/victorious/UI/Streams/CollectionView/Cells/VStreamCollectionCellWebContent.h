@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionCell.h"
+#import "VBaseCollectionViewCell.h"
 
-@interface VStreamCollectionCellWebContent : VStreamCollectionCell
+@class VSequence;
+
+@interface VStreamCollectionCellWebContent : VBaseCollectionViewCell
+
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

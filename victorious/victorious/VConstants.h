@@ -135,7 +135,8 @@ NSArray *VRemixCategories();
 
 #pragma mark - Sequence data types
 
-static NSString * const   kVSequencePreviewTypeMedia = @"media";
+static NSString * const   kVAssetTypeMedia = @"media";
+static NSString * const   kVAssetTypeURL  = @"url";
 static NSString * const   kVSequencePreviewTypeHTML  = @"html";
 
 static NSString * const   kTemporaryContentStatus = @"temp";

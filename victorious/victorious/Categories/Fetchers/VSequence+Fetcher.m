@@ -15,6 +15,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "VAnswer.h"
 #import "VUser.h"
+#import "VAsset.h"
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
@@ -114,13 +115,42 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return  [self.category isEqualToString:kVOwnerAnnouncementCategory];
 }
 
+- (BOOL)isPreviewWebContent
+{
+    return [self.previewType isEqualToString:kVSequencePreviewTypeHTML];
+}
+
 - (BOOL)isWebContent
 {
-    return  [self.previewType isEqualToString:kVSequencePreviewTypeHTML] &&
-            self.webContentUrl != nil;
+    return self.webContentUrl != nil;
 }
 
 - (NSString *)webContentUrl
+{
+    VNode *primaryNode = self.nodes.array.firstObject;
+    if ( !primaryNode )
+    {
+        return nil;
+    }
+    
+    VAsset *primaryAsset = primaryNode.assets.array.firstObject;
+    if ( !primaryAsset )
+    {
+        return nil;
+    }
+    
+    if ( [primaryAsset.type isEqualToString:kVAssetTypeURL] )
+    {
+        if ( [primaryAsset.data isKindOfClass:[NSString class]] && primaryAsset.data != nil )
+        {
+            return primaryAsset.data;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)webContentPreviewUrl
 {
     if ( self.previewData != nil && [self.previewData isKindOfClass:[NSString class]] )
     {

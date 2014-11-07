@@ -58,11 +58,11 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [super setSequence:sequence];
+    _sequence = sequence;
     
     if ( self.url == nil )
     {
-        self.url = [NSURL URLWithString:sequence.webContentUrl];
+        self.url = [NSURL URLWithString:sequence.webContentPreviewUrl];
         [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     }
 }
