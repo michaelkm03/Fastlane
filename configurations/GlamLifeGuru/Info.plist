@@ -34,7 +34,7 @@
 	<key>VictoriousAppID</key>
 	<integer>14</integer>
 	<key>StagingAppID</key>
-	<integer>0</integer>
+	<integer>30</integer>
 	<key>QAAppID</key>
 	<integer>0</integer>
 </dict>
