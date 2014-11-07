@@ -14,7 +14,7 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
-- (void)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+- (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 - (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence;
 - (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence;
