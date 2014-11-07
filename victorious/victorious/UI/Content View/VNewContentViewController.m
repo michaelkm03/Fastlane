@@ -542,6 +542,48 @@
     };
 }
 
+- (void)showLightBoxWithMediaURL:(NSURL *)mediaURL
+                    previewImage:(UIImage *)previewImage
+                         isVideo:(BOOL)isVideo
+                      sourceView:(UIView *)sourceView
+{
+    __weak typeof(self) welf = self;
+    VLightboxViewController *lightbox;
+    if (isVideo)
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage
+                                                                     videoURL:mediaURL];
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
+    }
+    else
+    {
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:previewImage];
+    }
+    __weak typeof(lightbox) weakLightBox = lightbox;
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        if (welf.presentedViewController == weakLightBox)
+        {
+            [welf dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+             }];
+        }
+    };
+    if ([lightbox isKindOfClass:[VVideoLightboxViewController class]])
+    {
+        ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+    }
+    
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
+                                                                      referenceView:sourceView];
+    
+    [welf presentViewController:lightbox
+                       animated:YES
+                     completion:nil];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
