@@ -74,6 +74,59 @@
 		<string>PTSans-Narrow.ttf</string>
 		<string>Impact.ttf</string>
 		<string>HelveticaNeueLightItalic.ttf</string>
+		<string>Arimo-Bold.ttf</string>
+		<string>Arimo-Regular.ttf</string>
+		<string>Arvo-Bold.ttf</string>
+		<string>Arvo-Regular.ttf</string>
+		<string>Bitter-Bold.ttf</string>
+		<string>Bitter-Regular.ttf</string>
+		<string>DeliusUnicase-Bold.ttf</string>
+		<string>DeliusUnicase-Regular.ttf</string>
+		<string>DroidSans-Bold.ttf</string>
+		<string>DroidSans.ttf</string>
+		<string>JosefinSans-Bold.ttf</string>
+		<string>JosefinSans-SemiBold.ttf</string>
+		<string>JosefinSlab-Bold.ttf</string>
+		<string>JosefinSlab-SemiBold.ttf</string>
+		<string>Junction-bold.otf</string>
+		<string>Junction-regular.otf</string>
+		<string>Jura-DemiBold.ttf</string>
+		<string>Jura-Medium.ttf</string>
+		<string>Kreon-Bold.ttf</string>
+		<string>Kreon-Regular.ttf</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>LeagueGothic-Regular.otf</string>
+		<string>MavenPro-Bold.ttf</string>
+		<string>MavenPro-Regular.ttf</string>
+		<string>Merriweather-Bold.ttf</string>
+		<string>Merriweather-Regular.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Semibold.ttf</string>
+		<string>Oswald-Light.ttf</string>
+		<string>Oswald-Regular.ttf</string>
+		<string>PlayfairDisplay-Bold.ttf</string>
+		<string>PlayfairDisplay-Regular.ttf</string>
+		<string>PT_Sans-Web-Bold.ttf</string>
+		<string>PT_Sans-Web-Regular.ttf</string>
+		<string>PT_Serif-Web-Bold.ttf</string>
+		<string>PT_Serif-Web-Regular.ttf</string>
+		<string>Raleway-Medium.ttf</string>
+		<string>Raleway-SemiBold.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>RobotoSlab-Bold.ttf</string>
+		<string>RobotoSlab-Regular.ttf</string>
+		<string>Rosario-Bold.ttf</string>
+		<string>Rosario-Regular.ttf</string>
+		<string>Signika-Light.ttf</string>
+		<string>Signika-Semibold.ttf</string>
+		<string>SourceSansPro-Regular.ttf</string>
+		<string>SourceSansPro-Semibold.ttf</string>
+		<string>Ubuntu-Medium.ttf</string>
+		<string>Ubuntu-Regular.ttf</string>
+		<string>Volkhov-Bold.ttf</string>
+		<string>Volkhov-Regular.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
