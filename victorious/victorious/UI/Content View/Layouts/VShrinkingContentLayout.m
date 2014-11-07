@@ -54,11 +54,23 @@ static const NSInteger kAllCommentsZIndex = 6666;
          [attributes addObject:layoutAttributes];
      }];
     [attributes addObject:[self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionContent]]];
-    UICollectionViewLayoutAttributes *experienceEnhancerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]];
-    experienceEnhancerLayoutAttributes.zIndex = 0;
-    [attributes addObject:experienceEnhancerLayoutAttributes];
     [attributes addObject:[self layoutAttributesForDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView
                                                             atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
+    
+    
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion])
+    {
+        UICollectionViewLayoutAttributes *histogramOrQuestionLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogramOrQuestion]];
+        histogramOrQuestionLayoutAttributes.zIndex = 0;
+        [attributes addObject:histogramOrQuestionLayoutAttributes];
+    }
+    
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers])
+    {
+        UICollectionViewLayoutAttributes *experienceEnhancerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]];
+        experienceEnhancerLayoutAttributes.zIndex = 0;
+        [attributes addObject:experienceEnhancerLayoutAttributes];
+    }
     
     return attributes;
 }
@@ -94,7 +106,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 layoutAttributesForIndexPath.transform = CGAffineTransformConcat(scaleTransform, translationTransform);
             }
             break;
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                             self.collectionView.contentOffset.y + self.mediaContentSize.height,
                                                             CGRectGetWidth(self.collectionView.bounds),
@@ -132,7 +144,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
             
             
             break;
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             break;
         case VContentViewSectionExperienceEnhancers:
             break;
@@ -241,15 +253,25 @@ static const NSInteger kAllCommentsZIndex = 6666;
     self.mediaContentSize = [layoutDelegate collectionView:self.collectionView
                                                     layout:self
                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
-    self.histogramSize = [layoutDelegate collectionView:self.collectionView
-                                                 layout:self
-                                 sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogram]];
-    self.experienceEnhancerSize = [layoutDelegate collectionView:self.collectionView
-                                                          layout:self
-                                          sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
-    self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
-                                                         layout:self
-                                referenceSizeForHeaderInSection:VContentViewSectionAllComments];
+    
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion])
+    {
+        self.histogramSize = [layoutDelegate collectionView:self.collectionView
+                                                     layout:self
+                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogramOrQuestion]];
+    }
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers])
+    {
+        self.experienceEnhancerSize = [layoutDelegate collectionView:self.collectionView
+                                                              layout:self
+                                              sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionExperienceEnhancers]];
+    }
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionAllComments])
+    {
+        self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
+                                                             layout:self
+                                    referenceSizeForHeaderInSection:VContentViewSectionAllComments];
+    }
 }
 
 - (CGPoint)catchPoint

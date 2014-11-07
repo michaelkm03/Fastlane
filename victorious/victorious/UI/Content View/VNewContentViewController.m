@@ -594,8 +594,12 @@
     {
         case VContentViewSectionContent:
             return 1;
-        case VContentViewSectionHistogram:
-            return 0;
+        case VContentViewSectionHistogramOrQuestion:
+        {
+            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
+            return ret;
+        }
+            
         case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
@@ -691,7 +695,7 @@
                 return pollCell;
             }
         }
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
@@ -864,7 +868,7 @@
                                                              forIndexPath:indexPath];
         }
             
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             return nil;
         case VContentViewSectionExperienceEnhancers:
             return nil;
@@ -914,14 +918,11 @@
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-            }
-            if (!self.viewModel.histogramDataSource)
-            {
-                return CGSizeZero;
+                CGSize ret = [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                return  ret;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
@@ -929,10 +930,6 @@
             if (self.viewModel.type == VContentViewTypePoll)
             {
                 return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-            }
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                return CGSizeZero;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
@@ -956,7 +953,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         case VContentViewSectionContent:
             return CGSizeZero;
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             return CGSizeZero;
         case VContentViewSectionExperienceEnhancers:
             return CGSizeZero;
