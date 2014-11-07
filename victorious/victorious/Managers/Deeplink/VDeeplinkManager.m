@@ -138,7 +138,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
          UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
          contentNav.navigationBarHidden = YES;
-         
+
          UIViewController *homeStream;
          if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
          {
