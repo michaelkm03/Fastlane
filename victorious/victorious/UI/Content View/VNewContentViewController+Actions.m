@@ -147,15 +147,17 @@
         [actionItems addObject:remixItem];
     }
     
+    
+    BOOL repostEnabled = (self.viewModel.hasReposted ? NO : YES) && ![self.viewModel.sequence isPoll];
     NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
     VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                            actionIcon:[UIImage imageNamed:@"icon_repost"]
                                                            detailText:self.viewModel.repostCountText
-                                                              enabled:self.viewModel.hasReposted ? NO : YES];
+                                                              enabled:repostEnabled];
     repostItem.selectionHandler = ^(void)
     {
         [contentViewController dismissViewControllerAnimated:YES
-                                 completion:^
+                                                  completion:^
          {
              if (![VObjectManager sharedManager].mainUser)
              {
@@ -224,7 +226,7 @@
     if ([self.viewModel.sequence canDelete])
     {
         VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
-                                                               actionIcon:nil
+                                                               actionIcon:[UIImage imageNamed:@"delete-icon"]
                                                                detailText:nil];
         
         deleteItem.selectionHandler = ^(void)
