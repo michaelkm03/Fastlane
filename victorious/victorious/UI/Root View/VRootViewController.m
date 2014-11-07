@@ -8,10 +8,12 @@
 
 #import "VForceUpgradeViewController.h"
 #import "VLoadingViewController.h"
+#import "VMultipleStreamViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VStreamContainerViewController.h"
+#import "VSettingManager.h"
+#import "VStreamCollectionViewController.h"
 #import "VConstants.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
@@ -131,10 +133,9 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 - (void)showHomeStream
 {
     VSideMenuViewController *sideMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
-    VStreamContainerViewController *streamContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-    streamContainer.shouldShowHeaderLogo = YES;
-    streamContainer.shouldShowUploadProgress = YES;
-    [sideMenuViewController transitionToNavStack:@[streamContainer]];
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    [sideMenuViewController transitionToNavStack:@[homeVC]];
     [self showViewController:sideMenuViewController animated:YES];
 }
 

@@ -14,7 +14,6 @@
 #import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "VAnalyticsRecorder.h"
 
 #import "VContentInputAccessoryView.h"
 
@@ -393,29 +392,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)didCreateProfile
 {
-    switch (self.loginType)
-    {
-        case kVLoginTypeNone:
-            break;
-        case kVLoginTypeEmail:
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via email"
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-            break;
-        case kVLoginTypeFaceBook:
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via Facebook"
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-            break;
-        case kVLoginTypeTwitter:
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Signed up via Twitter"
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
-            break;
-    }
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileDidSucceed];
     
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
@@ -528,13 +505,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     if (isValid)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:@"Completed new profile"
-                                                                     action:nil
-                                                                      label:nil
-                                                                      value:nil];
         return YES;
     }
-    
     
     // Identify Which Form Field is Missing
     NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];

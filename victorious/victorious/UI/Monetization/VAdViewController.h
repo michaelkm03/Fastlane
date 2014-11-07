@@ -33,9 +33,19 @@
 @interface VAdViewController : UIViewController
 
 /**
- Ad vast tag
+ Ad options and parameters
+ */
+@property (nonatomic, strong) NSDictionary *adServerMonetizationParameters;
+
+/**
+ Ad network VAST Tag
  */
 @property (nonatomic, strong) NSString *vastTag;
+
+/**
+ Ad network publisher id
+ */
+@property (nonatomic, strong) NSString *pubID;
 
 /**
  UIView used for ad video playback

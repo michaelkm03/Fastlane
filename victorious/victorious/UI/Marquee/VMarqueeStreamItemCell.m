@@ -19,6 +19,7 @@
 #import "UIButton+VImageLoading.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @interface VMarqueeStreamItemCell ()
 
@@ -47,7 +48,9 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    NSString *textColorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVMainTextColor;
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
+    
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
     self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
@@ -83,7 +86,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:((VSequence *)streamItem).user.pictureUrl]
                                            forState:UIControlStateNormal];
-        self.profileImageButton.hidden = NO;
+        self.profileImageButton.hidden = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     }
     else
     {

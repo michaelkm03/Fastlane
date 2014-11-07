@@ -8,7 +8,6 @@
 
 @import MessageUI;
 
-#import "VAnalyticsRecorder.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -24,6 +23,8 @@
 #import "VLoginViewController.h"
 
 #import "VObjectManager+Websites.h"
+
+#import "UIViewController+VNavMenu.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
@@ -49,9 +50,14 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @implementation VSettingsViewController
 
-+ (VSettingsViewController *)settingsViewController
++ (UIViewController *)settingsContainer
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    UIViewController *settingsContainer = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    settingsContainer.title = NSLocalizedString(@"Settings", nil);
+    [settingsContainer v_addNewNavHeaderWithTitles:nil];
+    settingsContainer.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)settingsContainer;
+    settingsContainer.automaticallyAdjustsScrollViewInsets = NO;
+    return settingsContainer;
 }
 
 - (void)dealloc
@@ -83,6 +89,10 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     [super viewWillAppear:animated];
     
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = 50;
+    self.tableView.contentInset = insets;
+    
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
@@ -109,7 +119,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     self.showEnvironmentSetting = YES;
 #endif
     
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -118,13 +128,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Settings"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventSettingsDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -164,7 +174,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Log Out" label:nil value:nil];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
+        
         [[VUserManager sharedInstance] logout];
         [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
         [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

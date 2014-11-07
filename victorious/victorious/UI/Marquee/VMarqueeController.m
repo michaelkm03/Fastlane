@@ -19,7 +19,7 @@
 
 #import "VThemeManager.h"
 
-@interface VMarqueeController () <VStreamCollectionDataDelegate>
+@interface VMarqueeController () <VStreamCollectionDataDelegate, VMarqueeCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
@@ -52,6 +52,15 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.collectionView.delegate == self)
+    {
+        self.collectionView.delegate = nil;
+    }
+    [self.autoScrollTimer invalidate];
+}
+
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;
@@ -75,11 +84,6 @@
 
 - (void)scrolledToPage:(NSInteger)currentPage
 {
-    if ((unsigned)currentPage == self.tabView.currentlySelectedTab)
-    {
-        return;
-    }
-    
     self.tabView.currentlySelectedTab = currentPage;
     self.currentStreamItem = [self.streamDataSource itemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
     [self enableTimer];
@@ -89,6 +93,8 @@
 {
     [self.streamDataSource refreshWithSuccess:
      ^{
+         [self scrolledToPage:0];
+         
          [self.delegate marqueeRefreshedContent:self];
          
          if (successBlock)
@@ -153,7 +159,7 @@
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
     VMarqueeStreamItemCell *cell;
@@ -162,6 +168,7 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
+    cell.delegate = self;
     
     return cell;
 }

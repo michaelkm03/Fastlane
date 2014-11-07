@@ -13,5 +13,6 @@
 + (instancetype)inboxViewController;
 
 - (void)toggleFilterControl:(NSInteger)idx;
+- (IBAction)userSearchAction:(id)sender;
 
 @end

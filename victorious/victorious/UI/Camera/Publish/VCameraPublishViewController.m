@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-// Analytics
-#import "VAnalyticsRecorder.h"
-
 // Model
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Users.h"
@@ -202,13 +199,13 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Publish"];
+    [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraPublishDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraPublishDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -550,10 +547,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                destructiveButtonTitle:NSLocalizedString(@"Close", @"")
                                                   onDestructiveButton:^(void)
                                   {
-                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                   action:@"Camera Publish Cancelled"
-                                                                                                    label:nil
-                                                                                                    value:nil];
+                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraPublishDidCancel];
                                       [self.view endEditing:YES];
                                       [self didComplete];
                                   }
@@ -611,10 +605,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                    destructiveButtonTitle:NSLocalizedString(@"BackButton", @"")
                                                       onDestructiveButton:^(void)
                                       {
-                                          [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
-                                                                                                       action:@"Camera Publish Back"
-                                                                                                        label:nil
-                                                                                                        value:nil];
+                                          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraPublishDidGoBack];
                                           [self.view endEditing:YES];
                                           [self didConfirmGoBack];
                                       }
@@ -707,6 +698,8 @@ static const CGFloat kShareMargin = 34.0f;
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
+        //You just created a new image, so allow it to save to camera roll
+        self.didSelectAssetFromLibrary = NO;
     }
     
     CGFloat playbackSpeed;
@@ -763,25 +756,20 @@ static const CGFloat kShareMargin = 34.0f;
             return;
         }
         
-        NSString  *analyticsString;
-        if ([self.mediaURL v_hasVideoExtension])
+        NSString *captionTypeString;
+        BOOL isVideo = [self.mediaURL v_hasVideoExtension];
+        
+        switch (self.captionType)
         {
-            analyticsString = [NSString stringWithFormat:@"Published video via"];
-        }
-        else
-        {
-            switch (self.captionType)
-            {
-                case VCaptionTypeNormal:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"normal"];
-                    break;
-                case VCaptionTypeMeme:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"meme"];
-                    break;
-                case VCaptionTypeQuote:
-                    analyticsString = [NSString stringWithFormat:@"Published image with caption type: %@ via", @"quote"];
-                    break;
-            }
+            case VCaptionTypeNormal:
+                captionTypeString = @"normal";
+                break;
+            case VCaptionTypeMeme:
+                captionTypeString = @"meme";
+                break;
+            case VCaptionTypeQuote:
+                captionTypeString = @"quote";
+                break;
         }
         
         if (facebookSelected)
@@ -794,10 +782,15 @@ static const CGFloat kShareMargin = 34.0f;
                 VLog(@"Failed with error: %@", error);
             }];
             
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ facebook", analyticsString]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
+            if ( isVideo )
+            {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithFacebook];
+            }
+            else
+            {
+                NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithFacebook parameters:params];
+            }
         }
         
         if (twitterSelected)
@@ -811,17 +804,19 @@ static const CGFloat kShareMargin = 34.0f;
                 VLog(@"Failed with error: %@", error);
             }];
             
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"%@ twitter", analyticsString]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
+            if ( isVideo )
+            {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithTwitter];
+            }
+            else
+            {
+                NSDictionary *params = @{ VTrackingKeyCaptionType : captionTypeString };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishImageWithTwitter parameters:params];
+            }
         }
     }];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
-                                                                 action:@"Post Content"
-                                                                  label:finalText
-                                                                  value:nil];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent];
     
     NSURL *mediaURL = self.mediaURL;
     void (^cleanup)() = ^(void)

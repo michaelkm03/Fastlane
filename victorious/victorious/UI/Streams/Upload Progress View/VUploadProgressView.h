@@ -23,9 +23,14 @@ typedef NS_ENUM(NSInteger, VUploadProgressViewState)
 @optional
 
 /**
- Notifies the delegate that the accessory button was tapped
+ Notifies the delegate that the accessory button was tapped.
  */
 - (void)accessoryButtonTappedInUploadProgressView:(VUploadProgressView *)uploadProgressView;
+
+/**
+ Notifies the delegate thtat the second accessory button was tapped.
+ */
+- (void)alternateAccessoryButtonTappedInUploadProgressView:(VUploadProgressView *)uploadProgressView;
 
 @end
 

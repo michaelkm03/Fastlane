@@ -26,6 +26,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 @property (nonatomic, weak) UIButton *mediaButton;
 @property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
 @property (nonatomic, readwrite) UIImageView *playIcon;
+@property (nonatomic, strong) UIView *mediaBackground;
 
 @end
 
@@ -65,6 +66,12 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self addSubview:self.textView];
     
+    UIView *background = [[UIView alloc] init];
+    background.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    background.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:background];
+    self.mediaBackground = background;
+    
     UIImageView *mediaThumbnailView = [[UIImageView alloc] init];
     mediaThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
     mediaThumbnailView.clipsToBounds = YES;
@@ -103,6 +110,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     UIButton *mediaButton = self.mediaButton;
     UIImageView *mediaThumbnailView = self.mediaThumbnailView;
     UIImageView *playIcon = self.playIcon;
+    UIView *background = self.mediaBackground;
     
     if (!self.addedConstraints)
     {
@@ -171,6 +179,37 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f
                                                           constant:0.0f]];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:background
+                                                         attribute:NSLayoutAttributeWidth
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:background
+                                                         attribute:NSLayoutAttributeHeight
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:background
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:background
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        
+        
         self.addedConstraints = YES;
     }
     
@@ -211,6 +250,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 {
     _hasMedia = hasMedia;
     self.mediaButton.hidden = !hasMedia;
+    self.mediaBackground.hidden = !hasMedia;
     [self invalidateIntrinsicContentSize];
 }
 

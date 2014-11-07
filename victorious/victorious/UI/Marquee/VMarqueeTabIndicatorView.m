@@ -139,11 +139,11 @@
     if (totalWidth < CGRectGetWidth(self.bounds))
     {
         CGFloat xOffset = (CGRectGetWidth(self.bounds) - totalWidth) / 2;
-        self.scrollView.contentOffset = CGPointMake(-xOffset, self.scrollView.contentOffset.y);
+        self.scrollView.contentInset = UIEdgeInsetsMake(0, xOffset, 0, 0);
     }
     else
     {
-        self.scrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
+        self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
 }
 

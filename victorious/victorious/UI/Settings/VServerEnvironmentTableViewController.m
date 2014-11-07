@@ -10,8 +10,9 @@
 #import "VObjectManager+Environment.h"
 #import "VServerEnvironmentTableViewController.h"
 #import "VSessionTimer.h"
+#import "UIViewController+VNavMenu.h"
 
-@interface VServerEnvironmentTableViewController ()
+@interface VServerEnvironmentTableViewController () <VNavigationHeaderDelegate>
 
 @property (nonatomic, strong) NSArray *serverEnvironments;
 @property (nonatomic, strong) VEnvironment *startingEnvironment;
@@ -29,6 +30,8 @@
 {
     [super viewWillAppear:animated];
     self.startingEnvironment = [VObjectManager currentEnvironment];
+    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
+    self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
 - (void)viewDidDisappear:(BOOL)animated

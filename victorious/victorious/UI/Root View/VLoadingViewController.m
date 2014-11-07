@@ -10,7 +10,6 @@
 
 #import "VConstants.h"
 #import "VPushNotificationManager.h"
-#import "VStreamContainerViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"

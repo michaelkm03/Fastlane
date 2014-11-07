@@ -30,6 +30,13 @@
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
 "Discover"              =   "Discover";
+"Share"                 =   "Share";
+"Settings"              =   "Settings";
+"Save"                  =   "Save";
+
+"Featured"              =   "Featured";
+"Recent"                =   "Recent";
+"Following"             =   "Following";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -44,6 +51,7 @@
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "LoginFailMessage"      =   "Opps!  Something has gone wrong.";
+"NotLoggedInMessage"    =   "Opps!  It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
@@ -263,6 +271,7 @@
 "ResetPasswordPrompt"   =   "Please enter your e-mail address.";
 "ResetPasswordPlaceholder" = "E-mail Address";
 
+"PasswordError"         =   "Password Error";
 "ResetPasswordErrorExpiredTitle" = "Reset code expired.";
 "ResetPasswordErrorExpiredMessage" = "Reset code expired.";
 
@@ -271,6 +280,9 @@
 
 "ResetPasswordErrorFailTitle" = "Password Reset Error";
 "ResetPasswordErrorFailMessage" = "We are unable to reset your password at this time.  Please try again later.";
+
+"ResetPasswordNewEqualsCurrentTitle" = "Invalid New Password";
+"ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that different than your current password.";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";

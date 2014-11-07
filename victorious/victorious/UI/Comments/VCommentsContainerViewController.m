@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsContainerViewController.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
@@ -16,9 +16,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
-#import "VStreamContainerViewController.h"
-
-#import "VCommentToStreamAnimator.h"
 
 #import "VThemeManager.h"
 
@@ -147,26 +144,13 @@
                                              andParent:nil
                                           successBlock:success
                                              failBlock:fail];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Comment" label:nil value:nil];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment];
 }
 
 - (IBAction)pressedBackButton:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VStreamContainerViewController class]])
-    {
-        VCommentToStreamAnimator *animator = [[VCommentToStreamAnimator alloc] init];
-        return animator;
-    }
-    return nil;
 }
 
 #pragma mark - Animations

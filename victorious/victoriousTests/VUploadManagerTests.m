@@ -175,6 +175,21 @@
     [async waitForSignal:5.0];
 }
 
+- (void)testHTTPError
+{
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andReturn(404);
+    
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
+    {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(error.domain, VUploadManagerErrorDomain);
+        XCTAssertEqual(error.code, VUploadManagerBadHTTPResponseErrorCode);
+        [async signal];
+    }];
+    [async waitForSignal:5.0];
+}
+
 - (void)testNotificationSentWhenTaskCompletes
 {
     VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];

@@ -11,7 +11,6 @@
 #import "VDummyModels.h"
 #import "VTracking+RestKit.h"
 #import "VVoteType+Fetcher.h"
-#import "VTrackingConstants.h"
 
 @interface VVoteTypeFetcherTests : XCTestCase
 

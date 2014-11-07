@@ -20,9 +20,11 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
+#import "UIViewController+VNavMenu.h"
+
 @import MessageUI;
 
-@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
+@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
@@ -58,6 +60,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self v_addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.containerView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.navHeaderView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0]];
+    
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];

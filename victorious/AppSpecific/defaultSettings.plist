@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>clear_video_background</key>
+	<false/>
 	<key>pause_video_when_commenting</key>
 	<string>YES</string>
 	<key>capture</key>
@@ -23,6 +25,10 @@
 	<key>channels_enabled</key>
 	<true/>
 	<key>marqueeEnabled</key>
+	<true/>
+	<key>template_c_enabled</key>
+	<true/>
+	<key>template_c_enabled - 2</key>
 	<false/>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>

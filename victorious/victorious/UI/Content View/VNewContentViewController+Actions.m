@@ -26,18 +26,18 @@
 // Activities
 #import "VFacebookActivity.h"
 
+//Views
+#import "VNoContentView.h"
+
 // ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VCameraPublishViewController.h"
 #import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
-#import "VStreamContainerViewController.h"
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
-
-// Analytics
-#import "VAnalyticsRecorder.h"
+#import "VStreamCollectionViewController.h"
 
 
 @implementation VNewContentViewController (Actions)
@@ -67,13 +67,13 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamContainerViewController *container = [VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:hashTag]];
-                                        container.shouldShowHeaderLogo = NO;
+                                        
+                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^
                                          {
-                                             [contentViewController.navigationController pushViewController:container
+                                             [contentViewController.navigationController pushViewController:stream
                                                                                   animated:YES];
                                          }];
                                     }];
@@ -103,8 +103,9 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 NSString *label = [contentViewController.viewModel.sequence.remoteId stringByAppendingPathComponent:contentViewController.viewModel.sequence.name];
-                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:label value:nil];
+                 NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
+                                           VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected parameters:params];
                  
                  if (contentViewController.viewModel.type == VContentViewTypeVideo)
                  {
@@ -130,11 +131,16 @@
                                      completion:^
              {
                  VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-                 VStreamTableViewController  *streamTableView = [VStreamTableViewController streamWithDefaultStream:stream name:@"remix" title:NSLocalizedString(@"Remixes", nil)];
-                 streamTableView.noContentTitle = NSLocalizedString(@"NoRemixersTitle", @"");
-                 streamTableView.noContentMessage = NSLocalizedString(@"NoRemixersMessage", @"");
-                 streamTableView.noContentImage = [UIImage imageNamed:@"noRemixIcon"];
-                 [contentViewController.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:streamTableView] animated:YES];
+                 
+                 VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
+                 
+                 VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+                 noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
+                 noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
+                 noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+                 streamCollection.noContentView = noRemixView;
+                 
+                 [contentViewController.navigationController pushViewController:streamCollection animated:YES];
                  
              }];
         };
@@ -197,10 +203,9 @@
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
         {
             [[VThemeManager sharedThemeManager] applyStyling];
-            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:[NSString stringWithFormat:@"Shared %@, via %@", self.viewModel.analyticsContentTypeText, activityType]
-                                                                         action:nil
-                                                                          label:nil
-                                                                          value:nil];
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
+                                      VTrackingKeyActivityType : activityType };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
             [self reloadInputViews];
         };
         

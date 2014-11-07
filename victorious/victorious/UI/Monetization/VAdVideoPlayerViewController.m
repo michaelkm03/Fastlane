@@ -9,7 +9,7 @@
 #import "VAdVideoPlayerViewController.h"
 #import "VConstants.h"
 #import "VAdViewController.h"
-#import "VLiveRailsAdViewController.h"
+#import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
@@ -43,21 +43,24 @@
 
 #pragma mark - Monetization setter
 
-- (void)setMonetizationPartner:(VMonetizationPartner)monetizationPartner
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options
 {
     _monetizationPartner = monetizationPartner;
     
     switch (_monetizationPartner)
     {
         case VMonetizationPartnerLiveRail:
-            self.adViewController = [[VLiveRailsAdViewController alloc] initWithNibName:nil bundle:nil];
+            self.adViewController = [[VLiveRailAdViewController alloc] initWithNibName:nil bundle:nil];
             break;
+            
+        case VMonetizationPartnerOpenX:
+            self.adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
         
         default:
             break;
     }
-    
     self.adViewController.delegate = self;
+    self.adViewController.adServerMonetizationParameters = options;
     self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
 }
