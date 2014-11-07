@@ -536,8 +536,6 @@
         {
             lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
                                                                          videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
-            
-            ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
             ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
         }
         else
@@ -550,6 +548,10 @@
             [welf dismissViewControllerAnimated:YES
                                      completion:nil];
         };
+        if ([lightbox isKindOfClass:[VVideoLightboxViewController class]])
+        {
+            ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        }
         
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
                                                                           referenceView:wCommentCell.previewView];
