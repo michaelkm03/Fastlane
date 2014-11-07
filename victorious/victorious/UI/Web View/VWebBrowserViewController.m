@@ -99,6 +99,25 @@ typedef enum {
                                                                                 views:viewsDict]];
 }
 
+- (void)updateHeaderView:(VWebBrowserHeaderView *)headerView withWebView:(id<VWebViewProtocol>)webView
+{
+    [webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error)
+     {
+         if ( !error && [result isKindOfClass:[NSString class]] )
+         {
+             [headerView setTitle:result];
+         }
+     }];
+    
+    [webView evaluateJavaScript:@"window.location.href" completionHandler:^(id result, NSError *error)
+     {
+         if ( !error && [result isKindOfClass:[NSString class]] )
+         {
+             [headerView setSubtitle:result];
+         }
+     }];
+}
+
 #pragma mark - Public API
 
 - (void)loadUrl:(NSURL *)url
@@ -106,6 +125,7 @@ typedef enum {
     self.currentURL = url;
     if ( self.webView != nil )
     {
+        [self.headerView setSubtitle:url.absoluteString];
         [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
     }
 }
@@ -129,6 +149,7 @@ typedef enum {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.state = VWebBrowserViewControllerStateComplete;
     [self.headerView updateHeaderState];
+    [self updateHeaderView:self.headerView withWebView:webView];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error

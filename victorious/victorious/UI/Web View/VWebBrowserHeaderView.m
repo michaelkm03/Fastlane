@@ -19,6 +19,8 @@
 @property (nonatomic, weak) IBOutlet UIButton *buttonRefresh;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
+@property (nonatomic, weak) IBOutlet UILabel *labelTitle;
+@property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
 
 @end
@@ -28,6 +30,9 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.labelTitle.text = nil;
+    self.labelSubtitle.text = nil;
 }
 
 - (void)applyTheme
@@ -48,6 +53,11 @@
     }
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.labelTitle.textColor = tintColor;
+    self.labelSubtitle.textColor = tintColor;
+    
+    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
+    self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
 }
 
 - (void)setLoadingProgress:(float)loadingProgress
@@ -74,6 +84,16 @@
     self.buttonNext.enabled = [self.browserDelegate canGoForward];
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
     self.buttonRefresh.enabled = [self.browserDelegate canRefresh];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [self.labelTitle setText:title];
+}
+
+- (void)setSubtitle:(NSString *)subtitle
+{
+    [self.labelSubtitle setText:subtitle];
 }
 
 #pragma mark - Header Actions
