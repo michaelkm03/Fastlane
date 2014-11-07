@@ -225,13 +225,13 @@ static NSString * const kVAPIParamSearch = @"search";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self.mainUser addFollowingObject:user];
+        [self notifyIsFollowingUpdated];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [self.mainUser addFollowingObject:user];
-        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/add"
@@ -249,13 +249,13 @@ static NSString * const kVAPIParamSearch = @"search";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self.mainUser removeFollowingObject:user];
+        [self notifyIsFollowingUpdated];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [self.mainUser removeFollowingObject:user];
-        [self notifyIsFollowingUpdated];
     };
     
     return [self POST:@"/api/follow/remove"

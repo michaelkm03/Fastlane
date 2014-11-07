@@ -83,6 +83,11 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)updateFollowStatus
 {
+    //If we get into a weird state and the relaionships are the same don't do anything
+    if (self.followUserControl.following == self.haveRelationship)
+    {
+        return;
+    }
     if (!self.shouldAnimateFollowing)
     {
         self.followUserControl.following = self.haveRelationship;
