@@ -65,6 +65,11 @@
     [self showPreRollWithPartner:viewModel.monetizationPartner withOptions:viewModel.monetizationOptions];
 }
 
+- (void)setAlpha:(CGFloat)alpha
+{
+    [super setAlpha:1.0f];
+}
+
 #pragma mark - Playback Methods
 
 - (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options

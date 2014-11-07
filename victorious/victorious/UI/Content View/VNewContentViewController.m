@@ -548,10 +548,7 @@
         lightbox.onCloseButtonTapped = ^(void)
         {
             [welf dismissViewControllerAnimated:YES
-                                     completion:^
-            {
-                [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-            }];
+                                     completion:nil];
         };
         
         [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
