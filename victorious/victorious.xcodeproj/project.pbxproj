@@ -306,8 +306,8 @@
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
 		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
-		A724EBDC1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.m in Sources */ = {isa = PBXBuildFile; fileRef = A724EBDB1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.m */; };
-		A724EBDE1A099DF900A8865F /* VStreamCollectionCellAnnouncement.xib in Resources */ = {isa = PBXBuildFile; fileRef = A724EBDD1A099DF900A8865F /* VStreamCollectionCellAnnouncement.xib */; };
+		A724EBDC1A099D4D00A8865F /* VStreamCollectionCellWebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A724EBDB1A099D4D00A8865F /* VStreamCollectionCellWebContent.m */; };
+		A724EBDE1A099DF900A8865F /* VStreamCollectionCellWebContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */; };
 		A73AFB7A19F1F6930005A9EA /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C919E78220004A8387 /* VFollowersTextFormatter.m */; };
 		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
 		A743E7E01A08160300339CB3 /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DE1A08160300339CB3 /* VFileCache.m */; };
@@ -1075,9 +1075,9 @@
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
 		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
 		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
-		A724EBDA1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionCellAnnouncement.h; sourceTree = "<group>"; };
-		A724EBDB1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionCellAnnouncement.m; sourceTree = "<group>"; };
-		A724EBDD1A099DF900A8865F /* VStreamCollectionCellAnnouncement.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCellAnnouncement.xib; sourceTree = "<group>"; };
+		A724EBDA1A099D4D00A8865F /* VStreamCollectionCellWebContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionCellWebContent.h; sourceTree = "<group>"; };
+		A724EBDB1A099D4D00A8865F /* VStreamCollectionCellWebContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionCellWebContent.m; sourceTree = "<group>"; };
+		A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCellWebContent.xib; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
@@ -3113,9 +3113,9 @@
 				BE88FF671A0005E70064AB28 /* VStreamCollectionCellPoll.h */,
 				BE88FF681A0005E70064AB28 /* VStreamCollectionCellPoll.m */,
 				BE88FF691A0005E70064AB28 /* VStreamCollectionCellPoll.xib */,
-				A724EBDA1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.h */,
-				A724EBDB1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.m */,
-				A724EBDD1A099DF900A8865F /* VStreamCollectionCellAnnouncement.xib */,
+				A724EBDA1A099D4D00A8865F /* VStreamCollectionCellWebContent.h */,
+				A724EBDB1A099D4D00A8865F /* VStreamCollectionCellWebContent.m */,
+				A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3553,7 +3553,7 @@
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
-				A724EBDE1A099DF900A8865F /* VStreamCollectionCellAnnouncement.xib in Resources */,
+				A724EBDE1A099DF900A8865F /* VStreamCollectionCellWebContent.xib in Resources */,
 				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
 				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
@@ -3878,7 +3878,7 @@
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
 				0314D0BD19B469C100FA363C /* VSettingManager.m in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
-				A724EBDC1A099D4D00A8865F /* VStreamCollectionCellAnnouncement.m in Sources */,
+				A724EBDC1A099D4D00A8865F /* VStreamCollectionCellWebContent.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,

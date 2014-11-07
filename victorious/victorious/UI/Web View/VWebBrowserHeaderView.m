@@ -105,7 +105,7 @@
 
 - (IBAction)refreshSelected:(id)sender
 {
-    [self.browserDelegate refresh];
+    [self.browserDelegate reload];
     [self updateHeaderState];
 }
 

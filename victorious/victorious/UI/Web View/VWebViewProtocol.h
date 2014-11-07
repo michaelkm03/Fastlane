@@ -15,8 +15,6 @@
 - (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView;
 - (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView;
 - (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error;
-
-@optional
 - (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress;
 
 @end
@@ -44,5 +42,6 @@ extern id<VWebViewProtocol> createGenericWebView();
 - (void)stopLoading;
 - (BOOL)canGoBack;
 - (BOOL)canGoForward;
+- (void)reload;
 
 @end

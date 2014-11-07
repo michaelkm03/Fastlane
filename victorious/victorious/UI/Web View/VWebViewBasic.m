@@ -24,7 +24,6 @@
     if (self)
     {
         self.webView = [[UIWebView alloc] init];
-        self.webView.backgroundColor = [UIColor whiteColor];
         self.webView.scalesPageToFit = NO;
         self.webView.delegate = self;
     }
@@ -72,6 +71,11 @@
 - (void)stopLoading
 {
     [self.webView stopLoading];
+}
+
+- (void)reload
+{
+    [self.webView reload];
 }
 
 - (BOOL)canGoBack

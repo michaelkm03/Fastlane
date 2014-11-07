@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VStreamCollectionCellAnnouncement" id="zOh-Zh-QGD" customClass="VStreamCollectionCellAnnouncement">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VStreamCollectionCellWebContent" id="zOh-Zh-QGD" customClass="VStreamCollectionCellWebContent">
             <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -17,14 +17,13 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPB-vc-HRS" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <subviews>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gx-qd-AkN">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gx-qd-AkN">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oW9-4C-FPa">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
+                            <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Owh-Ls-xfB">
+                                <rect key="frame" x="142" y="142" width="37" height="37"/>
+                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="oj3-Oe-ty5">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
                             </imageView>
@@ -34,24 +33,20 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="oW9-4C-FPa" firstAttribute="top" secondItem="qPB-vc-HRS" secondAttribute="top" id="4Ed-7E-neK"/>
-                            <constraint firstItem="7gx-qd-AkN" firstAttribute="top" secondItem="oj3-Oe-ty5" secondAttribute="top" id="6Tt-RN-XxW"/>
-                            <constraint firstItem="7gx-qd-AkN" firstAttribute="leading" secondItem="qPB-vc-HRS" secondAttribute="leading" id="6zh-Cp-e7M"/>
+                            <constraint firstAttribute="trailing" secondItem="7gx-qd-AkN" secondAttribute="trailing" id="7CI-R3-tUI"/>
+                            <constraint firstAttribute="centerY" secondItem="Owh-Ls-xfB" secondAttribute="centerY" id="7XM-SW-TVA"/>
+                            <constraint firstAttribute="bottom" secondItem="7gx-qd-AkN" secondAttribute="bottom" id="BIN-tQ-4zd"/>
                             <constraint firstItem="oj3-Oe-ty5" firstAttribute="leading" secondItem="qPB-vc-HRS" secondAttribute="leading" id="JNK-ks-04V"/>
-                            <constraint firstAttribute="trailing" secondItem="oW9-4C-FPa" secondAttribute="trailing" id="LHd-8F-X52"/>
-                            <constraint firstItem="oj3-Oe-ty5" firstAttribute="leading" secondItem="7gx-qd-AkN" secondAttribute="leading" id="LVg-LC-u53"/>
-                            <constraint firstItem="ANb-iR-hwm" firstAttribute="trailing" secondItem="7gx-qd-AkN" secondAttribute="trailing" id="WbF-Jy-Yog"/>
-                            <constraint firstItem="7gx-qd-AkN" firstAttribute="bottom" secondItem="ANb-iR-hwm" secondAttribute="bottom" id="Wel-Yp-Jjg"/>
+                            <constraint firstItem="7gx-qd-AkN" firstAttribute="top" secondItem="qPB-vc-HRS" secondAttribute="top" id="OqJ-cy-81O"/>
                             <constraint firstAttribute="bottom" secondItem="ANb-iR-hwm" secondAttribute="bottom" id="XWL-ck-ZxZ"/>
                             <constraint firstAttribute="bottom" secondItem="ANb-iR-hwm" secondAttribute="bottom" id="YGT-e6-8lI"/>
-                            <constraint firstItem="oW9-4C-FPa" firstAttribute="leading" secondItem="qPB-vc-HRS" secondAttribute="leading" id="aRa-ng-te1"/>
                             <constraint firstAttribute="trailing" secondItem="oj3-Oe-ty5" secondAttribute="trailing" id="aYX-ac-NFe"/>
+                            <constraint firstAttribute="centerX" secondItem="Owh-Ls-xfB" secondAttribute="centerX" id="dtK-18-gVn"/>
                             <constraint firstAttribute="trailing" secondItem="ANb-iR-hwm" secondAttribute="trailing" id="jHT-Xc-UbT"/>
                             <constraint firstItem="ANb-iR-hwm" firstAttribute="leading" secondItem="oj3-Oe-ty5" secondAttribute="leading" id="klZ-12-aNh"/>
-                            <constraint firstItem="7gx-qd-AkN" firstAttribute="top" secondItem="qPB-vc-HRS" secondAttribute="top" id="l6Y-qk-nzJ"/>
                             <constraint firstItem="oj3-Oe-ty5" firstAttribute="top" secondItem="qPB-vc-HRS" secondAttribute="top" id="oMG-tu-1g3"/>
                             <constraint firstItem="ANb-iR-hwm" firstAttribute="leading" secondItem="qPB-vc-HRS" secondAttribute="leading" id="rOh-Wk-QQE"/>
-                            <constraint firstAttribute="bottom" secondItem="oW9-4C-FPa" secondAttribute="bottom" id="uFS-yu-kUi"/>
+                            <constraint firstItem="7gx-qd-AkN" firstAttribute="leading" secondItem="qPB-vc-HRS" secondAttribute="leading" id="whV-7U-W5M"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3gM-g0-IBc" userLabel="Overlay View">
@@ -94,12 +89,13 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
+                <outlet property="activityIndicator" destination="Owh-Ls-xfB" id="7bx-IE-YRH"/>
                 <outlet property="descriptionLabel" destination="h1z-VQ-pkX" id="uTa-0X-eH7"/>
                 <outlet property="lowerGradientView" destination="ANb-iR-hwm" id="44h-v9-vf4"/>
                 <outlet property="overlayView" destination="3gM-g0-IBc" id="5Fn-60-Yd9"/>
                 <outlet property="shadeView" destination="qPB-vc-HRS" id="Ddb-eA-6tF"/>
                 <outlet property="streamCellHeaderView" destination="XNn-If-c8r" id="pPZ-oe-pEe"/>
-                <outlet property="webView" destination="oW9-4C-FPa" id="jiu-JJ-SEO"/>
+                <outlet property="webViewContainer" destination="7gx-qd-AkN" id="9Iw-fN-9j9"/>
             </connections>
             <point key="canvasLocation" x="-122" y="658"/>
         </collectionViewCell>

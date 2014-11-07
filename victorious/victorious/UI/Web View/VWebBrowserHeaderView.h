@@ -16,7 +16,7 @@
 - (BOOL)canRefresh;
 - (void)goForward;
 - (void)goBack;
-- (void)refresh;
+- (void)reload;
 - (void)openInBrowser;
 - (void)exit;
 

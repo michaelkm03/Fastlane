@@ -111,12 +111,16 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)isAnnouncement
 {
-    return  [self.category isEqualToString:kVOwnerAnnouncementCategory] &&
-            [self.previewType isEqualToString:kVSequencePreviewTypeHTML] &&
-            self.announcementUrl != nil;
+    return  [self.category isEqualToString:kVOwnerAnnouncementCategory];
 }
 
-- (NSString *)announcementUrl
+- (BOOL)isWebContent
+{
+    return  [self.previewType isEqualToString:kVSequencePreviewTypeHTML] &&
+            self.webContentUrl != nil;
+}
+
+- (NSString *)webContentUrl
 {
     if ( self.previewData != nil && [self.previewData isKindOfClass:[NSString class]] )
     {

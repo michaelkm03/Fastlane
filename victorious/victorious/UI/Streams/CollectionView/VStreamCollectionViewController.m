@@ -12,7 +12,7 @@
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
-#import "VStreamCollectionCellAnnouncement.h"
+#import "VStreamCollectionCellWebContent.h"
 
 //Controllers
 #import "VCommentsContainerViewController.h"
@@ -165,8 +165,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCellAnnouncement nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCellAnnouncement suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
+          forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -349,7 +349,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
                               VTrackingKeyUrls : sequence.tracking.cellClick };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
-    if ( [sequence isAnnouncement] )
+    if ( [sequence isWebContent] )
     {
         [self showAnnouncementWithSequence:sequence];
     }
@@ -378,7 +378,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)showAnnouncementWithSequence:(VSequence *)sequence
 {
     VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromNib];
-    [viewController loadUrlString:sequence.announcementUrl];
+    [viewController loadUrlString:sequence.webContentUrl];
     [self presentViewController:viewController
                        animated:YES
                      completion:nil];
@@ -444,16 +444,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell;
     
-    if ([sequence isPoll])
+    if ([sequence isWebContent])
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
+    }
+    else if ([sequence isPoll])
     {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
-    }
-    else if ([sequence isAnnouncement])
-    {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellAnnouncement suggestedReuseIdentifier]
-                                                              forIndexPath:indexPath];
-        [((VStreamCollectionCellAnnouncement *)cell) loadAnnouncementUrl:sequence.announcementUrl forceReload:YES];
     }
     else
     {

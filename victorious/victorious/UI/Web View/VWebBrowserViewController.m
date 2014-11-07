@@ -106,7 +106,7 @@ typedef enum {
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self refresh];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
     }
 }
 
@@ -192,9 +192,9 @@ typedef enum {
     [self.webView goBack];
 }
 
-- (void)refresh
+- (void)reload
 {
-    [self.webView loadRequest:[NSURLRequest requestWithURL:self.currentURL]];
+    [self.webView reload];
 }
 
 - (void)openInBrowser

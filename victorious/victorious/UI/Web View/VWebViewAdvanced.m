@@ -84,6 +84,11 @@
     [self.webView stopLoading];
 }
 
+- (void)reload
+{
+    [self.webView reload];
+}
+
 - (BOOL)canGoBack
 {
     return self.webView.canGoBack;

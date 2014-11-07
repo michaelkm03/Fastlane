@@ -18,11 +18,10 @@
 - (BOOL)isImage;
 - (BOOL)isVideo;
 - (BOOL)isOwnerContent;
+- (BOOL)isWebContent;
 - (BOOL)isAnnouncement;
-
 - (BOOL)isRemix;
 - (BOOL)isRepost;
-
 - (BOOL)canDelete;
 - (BOOL)canRemix;
 - (BOOL)isVoteCountVisible;
@@ -33,6 +32,6 @@
 
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
 
-@property (nonatomic, readonly) NSString *announcementUrl;
+@property (nonatomic, readonly) NSString *webContentUrl;
 
 @end
