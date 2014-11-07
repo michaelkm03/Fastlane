@@ -340,7 +340,7 @@
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadData)
+                                             selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -495,6 +495,11 @@
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
         self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
+}
+
+- (void)loginStatusDidChange:(NSNotification *)notification
+{
+    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions
