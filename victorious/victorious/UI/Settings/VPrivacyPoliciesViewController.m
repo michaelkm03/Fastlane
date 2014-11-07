@@ -7,14 +7,18 @@
 //
 
 #import "VPrivacyPoliciesViewController.h"
-
-@interface VPrivacyPoliciesViewController ()    <UIWebViewDelegate>
-
-@end
+#import "VSettingManager.h"
 
 @implementation VPrivacyPoliciesViewController
 
 #pragma mark - Actions
+
+- (void)viewDidLoad
+{
+    self.urlToView = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
+    
+    [super viewDidLoad];
+}
 
 - (IBAction)goBack:(id)sender
 {

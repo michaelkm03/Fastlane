@@ -16,7 +16,7 @@
 @property (nonatomic, assign) BOOL shouldShowLoadingState;
 
 - (void)addHeader;
-
+- (void)setFailureWithError:(NSError *)error;
 - (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView;
 
 @end

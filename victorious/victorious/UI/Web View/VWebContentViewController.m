@@ -13,6 +13,8 @@
 #import "VWebViewAdvanced.h"
 #import "VWebViewBasic.h"
 
+static const BOOL kForceUIWebView = NO;
+
 @interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -28,7 +30,7 @@
     [super viewDidLoad];
     
     
-    if ( NSClassFromString( @"WKWebView" ) != nil )
+    if ( NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView )
     {
         self.webView = [[VWebViewAdvanced alloc] init];
     }
@@ -46,6 +48,11 @@
     [self addHeader];
 }
 
+- (void)setFailureWithError:(NSError *)error
+{
+    [self webView:self.webView didFailLoadWithError:error];
+}
+
 - (void)addHeader
 {
     [self v_addNewNavHeaderWithTitles:nil];
@@ -60,16 +67,18 @@
     NSParameterAssert( [webView.superview isEqual:headerView.superview] );
     
     webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:headerView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f constant:0.0f]];
     NSDictionary *viewsDict = @{ @"webView" : webView };
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[webView]-0-|" options:kNilOptions metrics:nil views:viewsDict]];
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|" options:kNilOptions metrics:nil views:viewsDict]];
-    
+    CGFloat headerHeight = CGRectGetHeight(headerView.frame);
+    CGFloat statusBarHeight = CGRectGetHeight( [[UIApplication sharedApplication] statusBarFrame] );
+    NSDictionary *metrics = @{ @"headerViewHeight" : @( headerHeight - statusBarHeight ) };
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-headerViewHeight-[webView]-0-|"
+                                                                              options:kNilOptions
+                                                                              metrics:metrics
+                                                                                views:viewsDict]];
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:viewsDict]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

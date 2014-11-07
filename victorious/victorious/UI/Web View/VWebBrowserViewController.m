@@ -13,6 +13,8 @@
 #import "VWebViewAdvanced.h"
 #import "VWebViewBasic.h"
 
+static const BOOL kForceUIWebView = NO;
+
 typedef enum {
     VWebBrowserViewControllerStateComplete,
     VWebBrowserViewControllerStateLoading,
@@ -43,7 +45,7 @@ typedef enum {
     
     self.headerView.browserDelegate = self;
     
-    if ( NSClassFromString( @"WKWebView" ) != nil )
+    if ( NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView )
     {
         self.webView = [[VWebViewAdvanced alloc] init];
     }

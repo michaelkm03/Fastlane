@@ -7,12 +7,7 @@
 //
 
 #import "VTOSViewController.h"
-
 #import "VObjectManager+Websites.h"
-
-@interface VTOSViewController ()    <UIWebViewDelegate>
-
-@end
 
 @implementation VTOSViewController
 
@@ -37,7 +32,7 @@
         }
         else
         {
-            [self webView:self.webView didFailLoadWithError:error];
+            [self setFailureWithError:error];
         }
     }];
 }

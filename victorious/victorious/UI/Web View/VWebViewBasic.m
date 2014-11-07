@@ -23,9 +23,10 @@
     self = [super init];
     if (self)
     {
-        _webView = [[UIWebView alloc] init];
-        _webView.backgroundColor = [UIColor whiteColor];
-        _webView.delegate = self;
+        self.webView = [[UIWebView alloc] init];
+        self.webView.backgroundColor = [UIColor whiteColor];
+        self.webView.scalesPageToFit = NO;
+        self.webView.delegate = self;
     }
     return self;
 }

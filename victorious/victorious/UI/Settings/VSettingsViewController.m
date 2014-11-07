@@ -207,10 +207,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     {
         viewController.title = NSLocalizedString(@"ToSText", @"");
     }
-    else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
-    {
-        viewController.urlToView = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
-    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
