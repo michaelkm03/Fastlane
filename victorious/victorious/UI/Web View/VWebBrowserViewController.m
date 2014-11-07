@@ -9,11 +9,7 @@
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderView.h"
 #import "VSettingManager.h"
-#import "VWebViewProtocol.h"
-#import "VWebViewAdvanced.h"
-#import "VWebViewBasic.h"
-
-static const BOOL kForceUIWebView = NO;
+#import "VWebViewCreator.h"
 
 typedef enum {
     VWebBrowserViewControllerStateComplete,
@@ -45,15 +41,7 @@ typedef enum {
     
     self.headerView.browserDelegate = self;
     
-    if ( NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView )
-    {
-        self.webView = [[VWebViewAdvanced alloc] init];
-    }
-    else
-    {
-        self.webView = [[VWebViewBasic alloc] init];
-    }
-
+    self.webView = [VWebViewCreator createWebView];
     self.webView.delegate = self;
     [self.view addSubview:self.webView.asView];
     [self.view sendSubviewToBack:self.webView.asView];

@@ -10,10 +10,7 @@
 #import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VWebViewAdvanced.h"
-#import "VWebViewBasic.h"
-
-static const BOOL kForceUIWebView = NO;
+#import "VWebViewCreator.h"
 
 @interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
@@ -29,15 +26,7 @@ static const BOOL kForceUIWebView = NO;
 {
     [super viewDidLoad];
     
-    
-    if ( NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView )
-    {
-        self.webView = [[VWebViewAdvanced alloc] init];
-    }
-    else
-    {
-        self.webView = [[VWebViewBasic alloc] init];
-    }
+    self.webView = [VWebViewCreator createWebView];
     
     self.webView.asView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.webView.asView];

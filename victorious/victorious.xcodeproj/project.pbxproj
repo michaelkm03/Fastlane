@@ -346,6 +346,7 @@
 		A7F8DD5E1A0B19A000F82256 /* VWebViewBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD5D1A0B19A000F82256 /* VWebViewBasic.m */; };
 		A7F8DD611A0B19FE00F82256 /* VWebViewAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD601A0B19FE00F82256 /* VWebViewAdvanced.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
+		A7F8DD701A0C607C00F82256 /* VWebViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -1151,6 +1152,8 @@
 		A7F8DD5F1A0B19FE00F82256 /* VWebViewAdvanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewAdvanced.h; sourceTree = "<group>"; };
 		A7F8DD601A0B19FE00F82256 /* VWebViewAdvanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewAdvanced.m; sourceTree = "<group>"; };
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewCreator.m; sourceTree = "<group>"; };
+		A7F8DD711A0C60C400F82256 /* VWebViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewCreator.h; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCacheTests.m; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2181,6 +2184,8 @@
 				0314D45519B46B5E00FA363C /* VWebContentViewController.h */,
 				0314D45619B46B5E00FA363C /* VWebContentViewController.m */,
 				A7F8DD591A0B17B500F82256 /* VWebViewProtocol.h */,
+				A7F8DD711A0C60C400F82256 /* VWebViewCreator.h */,
+				A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */,
 				A7F8DD5C1A0B19A000F82256 /* VWebViewBasic.h */,
 				A7F8DD5D1A0B19A000F82256 /* VWebViewBasic.m */,
 				A7F8DD5F1A0B19FE00F82256 /* VWebViewAdvanced.h */,
@@ -3991,6 +3996,7 @@
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
+				A7F8DD701A0C607C00F82256 /* VWebViewCreator.m in Sources */,
 				0314D4BD19B46B5E00FA363C /* VFollowerTableViewCell.m in Sources */,
 				0314D4C219B46B5E00FA363C /* VUserProfileHeaderView.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
