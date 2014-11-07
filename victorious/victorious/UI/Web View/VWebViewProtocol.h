@@ -29,9 +29,11 @@
 @property (nonatomic, strong) id<VWebViewDelegate> delegate;
 
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler;
-- (void)loadURL:(NSURL *)url;
+- (void)loadRequest:(NSURLRequest *)request;
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
 - (void)goBack;
 - (void)goForward;
+- (void)stopLoading;
 - (BOOL)canGoBack;
 - (BOOL)canGoForward;
 

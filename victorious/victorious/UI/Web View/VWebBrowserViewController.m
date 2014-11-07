@@ -64,6 +64,13 @@ typedef enum {
     [self addConstraintsToWebView:self.webView.asView withHeaderView:self.headerView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.webView stopLoading];
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return !CGRectContainsRect( self.view.frame, self.headerView.frame );
@@ -109,7 +116,7 @@ typedef enum {
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.webView loadURL:url];
+        [self refresh];
     }
 }
 
@@ -197,7 +204,7 @@ typedef enum {
 
 - (void)refresh
 {
-    [self.webView loadURL:self.currentURL];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:self.currentURL]];
 }
 
 - (void)openInBrowser

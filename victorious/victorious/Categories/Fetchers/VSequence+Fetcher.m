@@ -111,19 +111,13 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)isAnnouncement
 {
-#warning This is returning yes for testing purposes only
-    return YES;
-    
-    return  [self.category isEqualToString:kVOwnerVAnnouncementCategory] &&
+    return  [self.category isEqualToString:kVOwnerAnnouncementCategory] &&
             [self.previewType isEqualToString:kVSequencePreviewTypeHTML] &&
             self.announcementUrl != nil;
 }
 
 - (NSString *)announcementUrl
 {
-#warning This is returning this URL for testing purposes only
-    return @"http://www.apple.com/";
-    
     if ( self.previewData != nil && [self.previewData isKindOfClass:[NSString class]] )
     {
         NSString *url = (NSString *)self.previewData;

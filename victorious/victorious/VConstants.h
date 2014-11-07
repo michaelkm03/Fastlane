@@ -112,7 +112,7 @@ static NSString * const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString * const   kVOwnerVideoRepostCategory   = @"owner_video_repost";
 static NSString * const   kVOwnerMemeRepostCategory    = @"owner_meme_repost";
 static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
-static NSString * const   kVOwnerVAnnouncementCategory = @"owner_announcement";
+static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";

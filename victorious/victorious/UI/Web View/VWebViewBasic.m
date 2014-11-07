@@ -48,9 +48,14 @@
     completionHandler( output, nil );
 }
 
-- (void)loadURL:(NSURL *)url
+- (void)loadRequest:(NSURLRequest *)request
 {
-    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [self.webView loadRequest:request];
+}
+
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
+{
+    [self.webView loadHTMLString:string baseURL:baseURL];
 }
 
 - (void)goBack
@@ -61,6 +66,11 @@
 - (void)goForward
 {
     [self.webView goForward];
+}
+
+- (void)stopLoading
+{
+    [self.webView stopLoading];
 }
 
 - (BOOL)canGoBack

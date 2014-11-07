@@ -10,8 +10,10 @@
 #import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VWebViewAdvanced.h"
+#import "VWebViewBasic.h"
 
-@interface VWebContentViewController () <VNavigationHeaderDelegate, UIWebViewDelegate>
+@interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
@@ -25,9 +27,18 @@
 {
     [super viewDidLoad];
     
-    self.webView = [[UIWebView alloc] init];
-    self.webView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.webView];
+    
+    if ( NSClassFromString( @"WKWebView" ) != nil )
+    {
+        self.webView = [[VWebViewAdvanced alloc] init];
+    }
+    else
+    {
+        self.webView = [[VWebViewBasic alloc] init];
+    }
+    
+    self.webView.asView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.webView.asView];
     self.webView.delegate = self;
     
     self.urlToView = self.urlToView;
@@ -39,7 +50,7 @@
 {
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
-    [self addConstraintsToWebView:self.webView withHeaderView:self.navHeaderView];
+    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.navHeaderView];
 }
 
 - (void)addConstraintsToWebView:(UIWebView *)webView withHeaderView:(UIView *)headerView
@@ -96,10 +107,10 @@
         if ( !self.activityIndicator )
         {
             self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [self.webView.superview addSubview:self.activityIndicator];
+            [self.webView.asView.superview addSubview:self.activityIndicator];
             self.activityIndicator.hidesWhenStopped = YES;
         }
-        self.activityIndicator.center = self.webView.superview.center;
+        self.activityIndicator.center = self.webView.asView.superview.center;
         [self.activityIndicator startAnimating];
     }
 }
@@ -135,24 +146,28 @@
     : UIStatusBarStyleDefault;
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+{
 }
 
 @end
