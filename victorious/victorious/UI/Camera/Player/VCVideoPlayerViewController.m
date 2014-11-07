@@ -150,12 +150,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.view addGestureRecognizer:tap];
     self.videoFrameTapGesture = tap;
     
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameDoubleTapped:)];
-    doubleTap.numberOfTapsRequired = 2;
-    doubleTap.delegate = self;
-    self.videoFrameDoubleTapGesture = doubleTap;
-    [self.view addGestureRecognizer:doubleTap];
-    
     self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
@@ -198,7 +192,31 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
+- (void)addDoubleTapGestureRecognizer
+{
+    if (self.videoFrameDoubleTapGesture)
+    {
+        return;
+    }
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameDoubleTapped:)];
+    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.delegate = self;
+    self.videoFrameDoubleTapGesture = doubleTap;
+    [self.view addGestureRecognizer:doubleTap];
+}
+
 #pragma mark - Properties
+
+- (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
+{
+    _shouldChangeVideoGravityOnDoubleTap = shouldChangeVideoGravityOnDoubleTap;
+    
+    if (shouldChangeVideoGravityOnDoubleTap)
+    {
+        [self addDoubleTapGestureRecognizer];
+    }
+}
 
 - (void)setPlayer:(AVPlayer *)player
 {
@@ -934,12 +952,13 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return YES;
+    return (((gestureRecognizer == self.videoFrameTapGesture) || (gestureRecognizer == self.videoFrameDoubleTapGesture)) &&
+            ((otherGestureRecognizer == self.videoFrameTapGesture) || (otherGestureRecognizer == self.videoFrameDoubleTapGesture))) ? YES : NO;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return (gestureRecognizer == self.videoFrameTapGesture) ? YES : NO;
+    return ((gestureRecognizer == self.videoFrameTapGesture) && (otherGestureRecognizer == self.videoFrameDoubleTapGesture)) ? YES : NO;
 }
 
 @end

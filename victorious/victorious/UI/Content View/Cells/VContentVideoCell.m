@@ -39,6 +39,7 @@
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
 }
 
