@@ -7,11 +7,14 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VComment.h"
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
 @interface VContentCommentsCell : VBaseCollectionViewCell
+
+@property (nonatomic, strong) VComment *comment;
 
 @property (nonatomic, copy) NSURL *URLForCommenterAvatar;
 @property (nonatomic, copy) NSString *commenterName;

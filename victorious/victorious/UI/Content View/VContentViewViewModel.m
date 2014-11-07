@@ -428,6 +428,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  failBlock:nil];
 }
 
+- (VComment *)commentForIndex:(NSInteger)commentIndex
+{
+    return [self.comments objectAtIndex:commentIndex];
+}
+
 - (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];

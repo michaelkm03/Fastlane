@@ -45,6 +45,7 @@
     </entity>
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="assetOrientation" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -252,7 +253,7 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="313"/>
+        <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Hashtag" positionX="702" positionY="-459" width="128" height="73"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>

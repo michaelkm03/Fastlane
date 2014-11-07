@@ -515,6 +515,7 @@
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.comment = [self.viewModel commentForIndex:index];
     commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
     commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
     commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];

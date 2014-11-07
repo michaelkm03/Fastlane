@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSNumber * assetOrientation;
 @property (nonatomic, retain) VAsset *asset;
 @property (nonatomic, retain) VNotification *notification;
 @property (nonatomic, retain) VSequence *sequence;

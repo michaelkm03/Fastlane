@@ -33,5 +33,6 @@
 @dynamic notification;
 @dynamic sequence;
 @dynamic user;
+@dynamic assetOrientation;
 
 @end

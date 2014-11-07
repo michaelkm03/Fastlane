@@ -25,6 +25,7 @@
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
+#import "AVAsset+Orientation.h"
 
 @import AVFoundation;
 
@@ -348,6 +349,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
+    
+    if ( tempComment.mediaUrl != nil )
+    {
+        // For temporary comments added immediately after comment submissiong, we'll need to hang
+        // onto the video asset orientation to adjust our preview image accordingly
+        AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:tempComment.mediaUrl]];
+        tempComment.assetOrientation = @( asset.videoOrientation );
+    }
     
     [sequence addCommentsObject:tempComment];
     sequence.commentCount = @(sequence.commentCount.integerValue + 1);
