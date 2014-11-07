@@ -350,7 +350,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
     
-    if ( tempComment.mediaUrl != nil )
+    if ( tempComment.mediaUrl )
     {
         // For temporary comments added immediately after comment submissiong, we'll need to hang
         // onto the video asset orientation to adjust our preview image accordingly
