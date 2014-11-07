@@ -14,10 +14,9 @@
 
 @property (nonatomic, strong) NSURL *currentURL;
 
-@property (nonatomic, weak) IBOutlet UILabel *labelTitle;
-@property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet UIButton *buttonBack;
 @property (nonatomic, weak) IBOutlet UIButton *buttonNext;
+@property (nonatomic, weak) IBOutlet UIButton *buttonRefresh;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
@@ -29,37 +28,26 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.labelTitle.text = nil;
-    self.labelSubtitle.text = nil;
 }
 
 - (void)applyTheme
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-    UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     
     UIColor *progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.progressBar setProgressColor:progressColor];
     
+    UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     self.tintColor = tintColor;
-    self.buttonBack.tintColor = tintColor;
-    [self.buttonBack setTitleColor:tintColor forState:UIControlStateNormal];
-    self.buttonNext.tintColor = tintColor;
-    [self.buttonNext setTitleColor:tintColor forState:UIControlStateNormal];
-    self.buttonOpenURL.tintColor = tintColor;
-    [self.buttonOpenURL setTitleColor:tintColor forState:UIControlStateNormal];
-    self.buttonExit.tintColor = tintColor;
-    [self.buttonExit setTitleColor:tintColor forState:UIControlStateNormal];
+    for ( UIButton *button in @[ self.buttonBack, self.buttonNext, self.buttonRefresh,
+                                self.buttonExit, self.buttonOpenURL ])
+    {
+        [button setTitleColor:tintColor forState:UIControlStateNormal];
+        button.tintColor = tintColor;
+    }
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.labelTitle.textColor = tintColor;
-    self.labelSubtitle.textColor = tintColor;
-    
-    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
-    self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
 }
 
 - (void)setLoadingProgress:(float)loadingProgress
@@ -85,16 +73,7 @@
 {
     self.buttonNext.enabled = [self.browserDelegate canGoForward];
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
-}
-
-- (void)setTitle:(NSString *)title
-{
-    [self.labelTitle setText:title];
-}
-
-- (void)setSubtitle:(NSString *)subtitle
-{
-    [self.labelSubtitle setText:subtitle];
+    self.buttonRefresh.enabled = [self.browserDelegate canRefresh];
 }
 
 #pragma mark - Header Actions
@@ -120,6 +99,13 @@
 - (IBAction)exitSelected:(id)sender
 {
     [self.browserDelegate exit];
+    [self updateHeaderState];
+}
+
+
+- (IBAction)refreshSelected:(id)sender
+{
+    [self.browserDelegate refresh];
     [self updateHeaderState];
 }
 
