@@ -154,7 +154,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return (self.videoCell.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return ((self.viewModel.type == VContentViewTypeVideo) &&  (self.videoCell.status == AVPlayerStatusReadyToPlay)) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark iOS8.0+
@@ -464,7 +464,6 @@
     {
         NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
         [self.contentCollectionView reloadSections:commentsIndexSet];
-        
         self.handleView.numberOfComments = self.viewModel.commentCount;
     }
 }
@@ -531,34 +530,10 @@
     __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
-        VLightboxViewController *lightbox;
-        if (wCommentCell.mediaIsVideo)
-        {
-            lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
-                                                                         videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
-            ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
-        }
-        else
-        {
-            lightbox = [[VImageLightboxViewController alloc] initWithImage:wCommentCell.previewImage];
-        }
-        
-        lightbox.onCloseButtonTapped = ^(void)
-        {
-            [welf dismissViewControllerAnimated:YES
-                                     completion:nil];
-        };
-        if ([lightbox isKindOfClass:[VVideoLightboxViewController class]])
-        {
-            ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
-        }
-        
-        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
-                                                                          referenceView:wCommentCell.previewView];
-        
-        [welf presentViewController:lightbox
-                           animated:YES
-                         completion:nil];
+        [welf showLightBoxWithMediaURL:[welf.viewModel mediaURLForCommentIndex:index]
+                          previewImage:wCommentCell.previewImage
+                               isVideo:wCommentCell.mediaIsVideo
+                            sourceView:wCommentCell.previewView];
     };
     commentCell.onUserProfileTapped = ^(void)
     {
@@ -652,6 +627,24 @@
                 {
                     [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
                 }
+                __weak typeof(pollCell) weakPollCell = pollCell;
+                __weak typeof(self) welf = self;
+                
+                pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
+                {
+                    [welf showLightBoxWithMediaURL:mediaURL
+                                      previewImage:weakPollCell.answerAPreviewImage
+                                           isVideo:isVideo
+                                        sourceView:weakPollCell.answerAContainer];
+                };
+                pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
+                {
+                    [welf showLightBoxWithMediaURL:mediaURL
+                                      previewImage:weakPollCell.answerBPreviewImage
+                                           isVideo:isVideo
+                                        sourceView:weakPollCell.answerBContainer];
+                };
+                
                 self.pollCell = pollCell;
                 return pollCell;
             }

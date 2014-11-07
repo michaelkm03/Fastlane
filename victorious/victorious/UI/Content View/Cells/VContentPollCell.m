@@ -20,8 +20,8 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *answerAContainer;
-@property (nonatomic, weak) IBOutlet UIView *answerBContainer;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *answerAContainer;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *answerBContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *answerAThumbnail;
 @property (nonatomic, weak) IBOutlet UIButton *answerAButton;
@@ -41,8 +41,11 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
 
-@property (nonatomic, assign) BOOL answerBIsVideo;
-@property (nonatomic, assign) BOOL answerAIsVideo;
+@property (nonatomic, assign, readwrite) BOOL answerBIsVideo;
+@property (nonatomic, assign, readwrite) BOOL answerAIsVideo;
+
+@property (nonatomic, copy) NSURL *answerAMediaURL;
+@property (nonatomic, copy) NSURL *answerBMediaURL;
 
 @end
 
@@ -123,6 +126,16 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     [self.answerBResultView setColor:answerBIsFavored ? [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
 }
 
+- (UIImage *)answerAPreviewImage
+{
+    return self.answerAThumbnail.image;
+}
+
+- (UIImage *)answerBPreviewImage
+{
+    return self.answerBThumbnail.image;
+}
+
 #pragma mark - Public Methods
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage
@@ -142,6 +155,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerAIsVideowithVideoURL:(NSURL *)videoURL
 {
     self.answerAIsVideo = YES;
+    self.answerAMediaURL = videoURL;
     
     [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
     self.aVideoPlayerViewController = [self videoPlayerViewControllerWithItemURL:videoURL
@@ -152,6 +166,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerBIsVideowithVideoURL:(NSURL *)videoURL
 {
     self.answerBIsVideo = YES;
+    self.answerBMediaURL = videoURL;
     
     [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
     
@@ -185,56 +200,18 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 - (IBAction)pressedAnswerAButton:(id)sender
 {
-    [self.contentView bringSubviewToFront:self.answerAContainer];
-    self.answerAThumbnail.hidden = self.answerAIsVideo;
-    [self shareAnimationCurveWithAnimations:^
-     {
-         self.answerAContainerViewWidth.constant = (self.answerAContainerViewWidth.constant ==  CGRectGetWidth(self.contentView.bounds)) ? (CGRectGetWidth(self.contentView.bounds)/2)-1 : CGRectGetWidth(self.contentView.bounds);
-         [self.contentView layoutIfNeeded];
-     }
-                             withCompletion:^
-     {
-         if (self.answerAContainerViewWidth.constant == (CGRectGetWidth(self.contentView.bounds)/2)-1)
-         {
-             [self.aVideoPlayerViewController.player pause];
-             if (self.answerAIsVideo)
-             {
-                 [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
-             }
-         }
-         else
-         {
-             [self.aVideoPlayerViewController.player play];
-             [self.answerAButton setImage:nil forState:UIControlStateNormal];
-         }
-     }];
+    if (self.onAnswerASelection)
+    {
+        self.onAnswerASelection(self.answerAIsVideo, self.answerAIsVideo ? self.answerAMediaURL : self.answerAThumbnailMediaURL);
+    }
 }
 
 - (IBAction)pressedAnswerBButton:(id)sender
 {
-    [self.contentView bringSubviewToFront:self.answerBContainer];
-    self.answerBThumbnail.hidden = self.answerBIsVideo;
-    [self shareAnimationCurveWithAnimations:^
+    if (self.onAnswerBSelection)
     {
-         self.answerBContainerViewWidth.constant = (self.answerBContainerViewWidth.constant ==  CGRectGetWidth(self.contentView.bounds)) ? (CGRectGetWidth(self.contentView.bounds)/2)-1 : CGRectGetWidth(self.contentView.bounds);
-        [self.contentView layoutIfNeeded];
+        self.onAnswerBSelection(self.answerBIsVideo, self.answerBIsVideo ? self.answerBMediaURL : self.answerBThumbnailMediaURL);
     }
-     withCompletion:^
-    {
-        if (self.answerBContainerViewWidth.constant == (CGRectGetWidth(self.contentView.bounds)/2)-1)
-        {
-            [self.bVideoPlayerViewController.player pause];
-            if (self.answerBIsVideo)
-            {
-                [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
-            }
-        }
-        else
-        {
-            [self.bVideoPlayerViewController.player play];
-            [self.answerBButton setImage:nil forState:UIControlStateNormal];
-        }
-    }];
 }
 
 - (void)shareAnimationCurveWithAnimations:(void (^)(void))animations
