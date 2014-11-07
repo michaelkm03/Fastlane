@@ -185,8 +185,6 @@
 		036F37D81A0C45EB0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37881A0C45EB0014DF66 /* Arimo-Regular.ttf */; };
 		036F37D91A0C45EB0014DF66 /* Arvo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F378A1A0C45EB0014DF66 /* Arvo-Bold.ttf */; };
 		036F37DA1A0C45EB0014DF66 /* Arvo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F378B1A0C45EB0014DF66 /* Arvo-Regular.ttf */; };
-		036F37DB1A0C45EB0014DF66 /* Bitter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F378D1A0C45EB0014DF66 /* Bitter-Bold.ttf */; };
-		036F37DC1A0C45EB0014DF66 /* Bitter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F378E1A0C45EB0014DF66 /* Bitter-Regular.ttf */; };
 		036F37DD1A0C45EB0014DF66 /* DeliusUnicase-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37901A0C45EB0014DF66 /* DeliusUnicase-Bold.ttf */; };
 		036F37DE1A0C45EB0014DF66 /* DeliusUnicase-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37911A0C45EB0014DF66 /* DeliusUnicase-Regular.ttf */; };
 		036F37DF1A0C45EB0014DF66 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37931A0C45EB0014DF66 /* DroidSans-Bold.ttf */; };
@@ -235,6 +233,8 @@
 		036F380A1A0C45EB0014DF66 /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37D31A0C45EB0014DF66 /* Ubuntu-Regular.ttf */; };
 		036F380B1A0C45EB0014DF66 /* Volkhov-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37D51A0C45EB0014DF66 /* Volkhov-Bold.ttf */; };
 		036F380C1A0C45EB0014DF66 /* Volkhov-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F37D61A0C45EB0014DF66 /* Volkhov-Regular.ttf */; };
+		036F38101A0C4A2A0014DF66 /* Bitter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F380E1A0C4A2A0014DF66 /* Bitter-Bold.ttf */; };
+		036F38111A0C4A2A0014DF66 /* Bitter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F380F1A0C4A2A0014DF66 /* Bitter-Regular.ttf */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
 		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
@@ -909,8 +909,6 @@
 		036F37881A0C45EB0014DF66 /* Arimo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Regular.ttf"; sourceTree = "<group>"; };
 		036F378A1A0C45EB0014DF66 /* Arvo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Bold.ttf"; sourceTree = "<group>"; };
 		036F378B1A0C45EB0014DF66 /* Arvo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Regular.ttf"; sourceTree = "<group>"; };
-		036F378D1A0C45EB0014DF66 /* Bitter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Bold.ttf"; sourceTree = "<group>"; };
-		036F378E1A0C45EB0014DF66 /* Bitter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Regular.ttf"; sourceTree = "<group>"; };
 		036F37901A0C45EB0014DF66 /* DeliusUnicase-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Bold.ttf"; sourceTree = "<group>"; };
 		036F37911A0C45EB0014DF66 /* DeliusUnicase-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Regular.ttf"; sourceTree = "<group>"; };
 		036F37931A0C45EB0014DF66 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -959,6 +957,8 @@
 		036F37D31A0C45EB0014DF66 /* Ubuntu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Regular.ttf"; sourceTree = "<group>"; };
 		036F37D51A0C45EB0014DF66 /* Volkhov-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Bold.ttf"; sourceTree = "<group>"; };
 		036F37D61A0C45EB0014DF66 /* Volkhov-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Regular.ttf"; sourceTree = "<group>"; };
+		036F380E1A0C4A2A0014DF66 /* Bitter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Bold.ttf"; sourceTree = "<group>"; };
+		036F380F1A0C4A2A0014DF66 /* Bitter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Regular.ttf"; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
 		037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -2287,15 +2287,6 @@
 			path = Arvo;
 			sourceTree = "<group>";
 		};
-		036F378C1A0C45EB0014DF66 /* Blitter */ = {
-			isa = PBXGroup;
-			children = (
-				036F378D1A0C45EB0014DF66 /* Bitter-Bold.ttf */,
-				036F378E1A0C45EB0014DF66 /* Bitter-Regular.ttf */,
-			);
-			path = Blitter;
-			sourceTree = "<group>";
-		};
 		036F378F1A0C45EB0014DF66 /* Delius */ = {
 			isa = PBXGroup;
 			children = (
@@ -2512,6 +2503,15 @@
 			path = Volkhov;
 			sourceTree = "<group>";
 		};
+		036F380D1A0C4A2A0014DF66 /* Bitter */ = {
+			isa = PBXGroup;
+			children = (
+				036F380E1A0C4A2A0014DF66 /* Bitter-Bold.ttf */,
+				036F380F1A0C4A2A0014DF66 /* Bitter-Regular.ttf */,
+			);
+			path = Bitter;
+			sourceTree = "<group>";
+		};
 		037CB73919CFE8550084BBED /* Upload */ = {
 			isa = PBXGroup;
 			children = (
@@ -2599,7 +2599,7 @@
 			children = (
 				036F37861A0C45EB0014DF66 /* Arimo */,
 				036F37891A0C45EB0014DF66 /* Arvo */,
-				036F378C1A0C45EB0014DF66 /* Blitter */,
+				036F380D1A0C4A2A0014DF66 /* Bitter */,
 				036F378F1A0C45EB0014DF66 /* Delius */,
 				036F37921A0C45EB0014DF66 /* DroidSans */,
 				A705646019E737A5004A8387 /* HelveticaNeue */,
@@ -3716,6 +3716,7 @@
 				D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */,
 				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
+				036F38101A0C4A2A0014DF66 /* Bitter-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F38021A0C45EB0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
 				036F37E61A0C45EB0014DF66 /* Junction-regular.otf in Resources */,
@@ -3785,7 +3786,6 @@
 				036F37FB1A0C45EB0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				036F37F41A0C45EB0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				036F37DB1A0C45EB0014DF66 /* Bitter-Bold.ttf in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
@@ -3801,7 +3801,6 @@
 				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
 				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
 				036F37F21A0C45EB0014DF66 /* Montserrat-Bold.ttf in Resources */,
-				036F37DC1A0C45EB0014DF66 /* Bitter-Regular.ttf in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				036F37FD1A0C45EB0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
 				036F38041A0C45EB0014DF66 /* Rosario-Regular.ttf in Resources */,
@@ -3832,6 +3831,7 @@
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				036F37EC1A0C45EB0014DF66 /* Lato-Regular.ttf in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
+				036F38111A0C4A2A0014DF66 /* Bitter-Regular.ttf in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				036F37D71A0C45EB0014DF66 /* Arimo-Bold.ttf in Resources */,
