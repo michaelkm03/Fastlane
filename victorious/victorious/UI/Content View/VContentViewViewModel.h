@@ -86,6 +86,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)reloadData;
 
+- (void)fetchSequenceData;
+
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
                   realTime:(CMTime)realTime
@@ -238,7 +240,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex;
 
-- (NSNumber*)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex;
+- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex;
 
 /**
  *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
