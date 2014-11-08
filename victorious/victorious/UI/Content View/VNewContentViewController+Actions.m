@@ -147,42 +147,43 @@
         [actionItems addObject:remixItem];
     }
     
-    
-    BOOL repostEnabled = (self.viewModel.hasReposted ? NO : YES) && ![self.viewModel.sequence isPoll];
-    NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
-    VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
-                                                           actionIcon:[UIImage imageNamed:@"icon_repost"]
-                                                           detailText:self.viewModel.repostCountText
-                                                              enabled:repostEnabled];
-    repostItem.selectionHandler = ^(void)
+    if ( ![self.viewModel.sequence isPoll] )
     {
-        [contentViewController dismissViewControllerAnimated:YES
-                                                  completion:^
-         {
-             if (![VObjectManager sharedManager].mainUser)
+        NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
+        VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
+                                                               actionIcon:[UIImage imageNamed:@"icon_repost"]
+                                                               detailText:self.viewModel.repostCountText
+                                                                  enabled:!self.viewModel.hasReposted];
+        repostItem.selectionHandler = ^(void)
+        {
+            [contentViewController dismissViewControllerAnimated:YES
+                                                      completion:^
              {
-                 [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                 return;
-             }
-             if (contentViewController.viewModel.hasReposted)
+                 if (![VObjectManager sharedManager].mainUser)
+                 {
+                     [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+                     return;
+                 }
+                 if (contentViewController.viewModel.hasReposted)
+                 {
+                     return;
+                 }
+                 
+                 [contentViewController.viewModel repost];
+             }];
+        };
+        repostItem.detailSelectionHandler = ^(void)
+        {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
              {
-                 return;
-             }
-             
-             [contentViewController.viewModel repost];
-         }];
-    };
-    repostItem.detailSelectionHandler = ^(void)
-    {
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
-             vc.sequence = self.viewModel.sequence;
-             [self.navigationController pushViewController:vc animated:YES];
-         }];
-    };
-    [actionItems addObject:repostItem];
+                 VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
+                 vc.sequence = self.viewModel.sequence;
+                 [self.navigationController pushViewController:vc animated:YES];
+             }];
+        };
+        [actionItems addObject:repostItem];
+    }
     
     VActionItem *shareItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Share", @"")
                                                           actionIcon:[UIImage imageNamed:@"icon_share"]
