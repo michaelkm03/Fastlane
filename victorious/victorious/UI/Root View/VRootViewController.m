@@ -23,6 +23,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
+@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -51,8 +52,12 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.sessionTimer = [[VSessionTimer alloc] init];
+    [self.sessionTimer start];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadingCompleted:) name:VLoadingViewControllerLoadingCompletedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:self.sessionTimer];
     [self showLoadingViewController];
 }
 

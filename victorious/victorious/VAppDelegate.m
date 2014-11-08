@@ -76,7 +76,6 @@ static BOOL isRunningTests(void) __attribute__((const));
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];

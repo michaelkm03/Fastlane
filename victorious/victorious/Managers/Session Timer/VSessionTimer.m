@@ -27,22 +27,11 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 @property (nonatomic, readwrite) NSTimeInterval previousBackgroundTime;
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
-@property (nonatomic) BOOL coldLaunch;
+@property (nonatomic) BOOL firstLaunch;
 
 @end
 
 @implementation VSessionTimer
-
-+ (VSessionTimer *)sharedSessionTimer
-{
-    static VSessionTimer *sessionTimer;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-    {
-        sessionTimer = [[VSessionTimer alloc] init];
-    });
-    return sessionTimer;
-}
 
 - (void)start
 {
@@ -52,7 +41,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.transitioningFromBackgroundToForeground = YES;
-    self.coldLaunch = YES;
+    self.firstLaunch = YES;
 }
 
 - (void)dealloc
@@ -70,15 +59,16 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
         self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
     }
     
-    if (!self.coldLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions)
+    if (!self.firstLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
-    self.coldLaunch = NO;
+    self.firstLaunch = NO;
 }
 
 - (void)sessionDidEnd
 {
+    self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
 }
 
