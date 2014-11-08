@@ -896,11 +896,6 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-    {
-        return CGSizeZero;
-    }
-    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
@@ -909,7 +904,7 @@
             switch (self.viewModel.type)
             {
                 case VContentViewTypeInvalid:
-                    return CGSizeZero;
+                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
                 case VContentViewTypeImage:
                     return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypeVideo:
@@ -940,7 +935,7 @@
                                                andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
         case VContentViewSectionCount:
-            return CGSizeZero;
+            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
     }
 }
 

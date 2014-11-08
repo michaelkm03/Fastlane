@@ -154,7 +154,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     
-    self.overlayView = [[UIView alloc] init];
+    if (!self.overlayView)
+    {
+        self.overlayView = [[UIView alloc] init];
+    }
     
     [self updateViewForShowToolbarValue];
 }
