@@ -35,13 +35,14 @@
 #import "NSString+VParseHelp.h"
 
 #import "VSettingManager.h"
+#import "VTappableTextManager.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate>
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, VTappableTextManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic, strong) UITextView *descriptionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
@@ -49,6 +50,10 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
 
 @property (nonatomic, strong) NSArray *hashTagRanges;
+@property (nonatomic, strong) NSTextStorage *textStorage;
+@property (nonatomic, strong) NSLayoutManager *containerLayoutManager;
+@property (nonatomic, strong) NSTextContainer *textContainer;
+@property (nonatomic, strong) VTappableTextManager *tappableTextManager;
 
 @end
 
@@ -73,12 +78,41 @@ static const CGFloat kDescriptionBuffer = 15.0;
         self.backgroundColor = [UIColor whiteColor];
     }
     
-    self.descriptionLabel.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
+    
+    // Setup the layoutmanager, text container, and text storage
+    self.containerLayoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
+    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.heightTracksTextView = YES;
+    [self.containerLayoutManager addTextContainer:self.textContainer];
+    self.textStorage = [[NSTextStorage alloc] init];
+    [self.textStorage addLayoutManager:self.containerLayoutManager];
+    
+    self.tappableTextManager = [[VTappableTextManager alloc] init];
+    [self.tappableTextManager setDelegate:self];
+    
+    // Create text view and customize any further
+    self.descriptionTextView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
+    [self.overlayView addSubview:self.descriptionTextView ];
+    
+    NSDictionary *views = @{ @"textView" : self.descriptionTextView };
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
+    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
+    self.descriptionTextView.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
+    self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
+}
+
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.delegate hashTag:text tappedFromSequence:self.sequence fromView:self];
+    }
 }
 
 - (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
@@ -94,6 +128,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
+        self.tappableTextManager.tappableTextRanges = self.hashTagRanges;
         
         if ([self.hashTagRanges count] > 0)
         {
@@ -102,13 +137,13 @@ static const CGFloat kDescriptionBuffer = 15.0;
                                    attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
         }
         
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        self.descriptionTextView.attributedText = newAttributedCellText;
         
         self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
     else
     {
-        self.descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        self.descriptionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
         
         self.descriptionBufferConstraint.constant = 0;
     }
@@ -129,7 +164,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
     [self setDescriptionText:self.sequence.name];
     
-    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.descriptionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
     

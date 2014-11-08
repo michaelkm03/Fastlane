@@ -219,6 +219,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 - (CGSize)intrinsicContentSize
 {
     CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( CGRectGetWidth(self.textView.frame), CGFLOAT_MAX)];
+    
     if (self.hasMedia)
     {
         CGFloat mediaThumbnailSize = MAX(textViewSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
