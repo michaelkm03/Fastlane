@@ -131,6 +131,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) BOOL shouldShowTitle;
 
 @property (nonatomic, strong, readonly) VNode *currentNode;
 
