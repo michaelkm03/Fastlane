@@ -57,7 +57,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     [self.sessionTimer start];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadingCompleted:) name:VLoadingViewControllerLoadingCompletedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:self.sessionTimer];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [self showLoadingViewController];
 }
 
