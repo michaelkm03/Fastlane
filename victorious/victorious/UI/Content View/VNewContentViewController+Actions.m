@@ -42,17 +42,36 @@
 
 #import "VSequenceActionController.h"
 
+#import <objc/runtime.h>
+
+static const char kSequenceActionControllerKey;
+
+@interface VNewContentViewController (ActionsPrivate)
+
+@property VSequenceActionController *sequenceActionController;
+
+@end
 
 @implementation VNewContentViewController (Actions)
 
+
+- (void)setSequenceActionController:(VSequenceActionController *)sequenceActionController
+{
+    objc_setAssociatedObject(self, &kSequenceActionControllerKey, sequenceActionController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VSequenceActionController *)sequenceActionController
+{
+    VSequenceActionController *sequenceActionController = objc_getAssociatedObject(self, &kSequenceActionControllerKey);
+    return sequenceActionController;
+}
+
 - (IBAction)pressedMore:(id)sender
 {
-    static VSequenceActionController *sequenceActionController;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
+    if (self.sequenceActionController == nil)
     {
-        sequenceActionController = [[VSequenceActionController alloc] init];
-    });
+        self.sequenceActionController = [[VSequenceActionController alloc] init];
+    }
     
     
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
@@ -69,7 +88,7 @@
     {
         [contentViewController dismissViewControllerAnimated:YES completion:^
          {
-             [sequenceActionController showPosterProfileFromViewController:contentViewController sequence:self.viewModel.sequence];
+             [self.sequenceActionController showPosterProfileFromViewController:contentViewController sequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:userItem];
@@ -103,14 +122,14 @@
                  VSequence *sequence = self.viewModel.sequence;
                  if ([sequence isVideo])
                  {
-                     [sequenceActionController videoRemixActionFromViewController:contentViewController
+                     [self.sequenceActionController videoRemixActionFromViewController:contentViewController
                                                                             asset:[self.viewModel.sequence firstNode].assets.firstObject
                                                                              node:[sequence firstNode]
                                                                          sequence:sequence];
                  }
                  else
                  {
-                     [sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
+                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
                  }
              }];
         };
@@ -119,7 +138,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 [sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:remixItem];
@@ -139,7 +158,7 @@
              {
                  return;
              }
-             [sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
+             [self.sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
          }];
     };
     repostItem.detailSelectionHandler = ^(void)
@@ -147,7 +166,7 @@
         [self dismissViewControllerAnimated:YES
                                  completion:^
          {
-             [sequenceActionController showRepostersFromViewController:contentViewController sequence:self.viewModel.sequence];
+             [self.sequenceActionController showRepostersFromViewController:contentViewController sequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:repostItem];
@@ -161,7 +180,7 @@
         [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
-             [sequenceActionController shareFromViewController:contentViewController
+             [self.sequenceActionController shareFromViewController:contentViewController
                                                       sequence:contentViewController.viewModel.sequence
                                                           node:contentViewController.viewModel.currentNode];
          }];
@@ -215,7 +234,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:flagItem];

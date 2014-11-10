@@ -198,7 +198,7 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
-        if (activityType)
+        if (activityType != nil)
         {
             NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
