@@ -36,7 +36,7 @@ PODS:
 DEPENDENCIES:
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
-  - MarqueeLabel (from `https://github.com/TouchFrame/MarqueeLabel.git`, branch `iOS8Workaround`)
+  - MarqueeLabel (from `https://github.com/TouchFrame/MarqueeLabel.git`)
   - MBProgressHUD (~> 0.8)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
   - RestKit (~> 0.22.0)
@@ -45,7 +45,6 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   MarqueeLabel:
-    :branch: iOS8Workaround
     :git: https://github.com/TouchFrame/MarqueeLabel.git
   Nocilla:
     :branch: block-response
