@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Action Sheet View Controller-->
@@ -172,13 +173,13 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Alice Irvine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="ObS-hY-o4S" userLabel="Title Label">
-                                        <rect key="frame" x="30" y="42" width="260" height="21"/>
+                                        <rect key="frame" x="30" y="42" width="260" height="20.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="5.6K Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-7w-LgK" userLabel="Caption Label">
-                                        <rect key="frame" x="122" y="67" width="77" height="14"/>
+                                        <rect key="frame" x="122" y="66" width="76.5" height="13.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -219,18 +220,29 @@
                                     <action selector="pressedAvatarButton:" destination="zy4-f0-yQu" eventType="touchUpInside" id="ech-Wh-Vnt"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Text" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Oy9-M2-LJC">
+                                <rect key="frame" x="16" y="7" width="288" height="33"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Oy9-M2-LJC" firstAttribute="leading" secondItem="z7r-bL-ALi" secondAttribute="leadingMargin" priority="750" id="14j-NH-3Vu"/>
                             <constraint firstItem="eob-Pq-0le" firstAttribute="bottom" secondItem="nGE-Gh-2VM" secondAttribute="bottom" id="1ge-kA-CSE"/>
                             <constraint firstItem="eob-Pq-0le" firstAttribute="trailing" secondItem="nGE-Gh-2VM" secondAttribute="trailing" id="2mm-lT-50h"/>
                             <constraint firstAttribute="centerX" secondItem="eob-Pq-0le" secondAttribute="centerX" constant="-0.5" id="5ZB-mY-uCn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Oy9-M2-LJC" secondAttribute="trailing" priority="750" id="6ER-lU-lLt"/>
+                            <constraint firstItem="eob-Pq-0le" firstAttribute="top" secondItem="Oy9-M2-LJC" secondAttribute="bottom" constant="47" id="A0X-Bj-bxF"/>
                             <constraint firstAttribute="trailing" secondItem="fKP-Uj-Ir7" secondAttribute="trailing" id="d9L-mw-92u"/>
+                            <constraint firstAttribute="centerX" secondItem="Oy9-M2-LJC" secondAttribute="centerX" id="eIV-9G-dBU"/>
                             <constraint firstItem="fKP-Uj-Ir7" firstAttribute="leading" secondItem="z7r-bL-ALi" secondAttribute="leading" id="et3-2q-X5s"/>
                             <constraint firstItem="lwk-F9-KVR" firstAttribute="top" secondItem="fKP-Uj-Ir7" secondAttribute="bottom" id="ljM-BB-h6E"/>
                             <constraint firstItem="eob-Pq-0le" firstAttribute="top" secondItem="nGE-Gh-2VM" secondAttribute="top" id="nr6-UP-pky"/>
                             <constraint firstItem="fKP-Uj-Ir7" firstAttribute="top" secondItem="eob-Pq-0le" secondAttribute="top" constant="50" id="reo-L7-AMi"/>
                             <constraint firstItem="eob-Pq-0le" firstAttribute="leading" secondItem="nGE-Gh-2VM" secondAttribute="leading" id="tcc-fJ-sgD"/>
+                            <constraint firstItem="Oy9-M2-LJC" firstAttribute="top" secondItem="O6Y-jk-IHX" secondAttribute="bottom" priority="250" constant="20" id="y4v-qv-xXB"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -245,6 +257,7 @@
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
                         <outlet property="tableView" destination="dX5-Jj-M61" id="hFV-st-RLo"/>
+                        <outlet property="titleTextView" destination="Oy9-M2-LJC" id="bMM-6F-N9y"/>
                         <outlet property="userCaptionLabel" destination="bwB-7w-LgK" id="VgD-AY-edV"/>
                         <outlet property="usernameLabel" destination="ObS-hY-o4S" id="ySg-FL-xbl"/>
                     </connections>

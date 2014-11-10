@@ -21,15 +21,9 @@
 // Categories
 #import "UIView+MotionEffects.h"
 #import "UIView+VShadows.h"
+#import "VHashTags.h"
 
-typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
-{
-    VActionSheetTableViewSecionDescription,
-    VActionSheetTableViewSecionActions,
-    VActionSheetTableViewSecionCount
-};
-
-@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
@@ -45,6 +39,8 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
+@property (weak, nonatomic) IBOutlet UITextView *titleTextView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 
@@ -97,8 +93,16 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    
     [self reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setupTitleTextView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -178,82 +182,37 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return VActionSheetTableViewSecionCount;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    switch (section)
-    {
-        case VActionSheetTableViewSecionDescription:
-            return 1;
-        case VActionSheetTableViewSecionActions:
-            return (NSInteger)self.actionItems.count;
-    }
-    return 0;
+    return (NSInteger)self.actionItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView 
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
+    VActionItemTableViewCell *actionitemCell = [tableView dequeueReusableCellWithIdentifier:@"VActionItemTableViewCell"];
+    VActionItem *itemForCell = [self.actionItems objectAtIndex:indexPath.row];
+    actionitemCell.title = itemForCell.title;
+    actionitemCell.detailTitle = itemForCell.detailText;
+    actionitemCell.actionIcon = itemForCell.icon;
+    actionitemCell.separatorInsets = self.tableView.separatorInset;
+    actionitemCell.enabled = itemForCell.enabled;
+    actionitemCell.accessorySelectionHandler = ^(void)
     {
-        case VActionSheetTableViewSecionDescription:
+        if (itemForCell.detailSelectionHandler)
         {
-            VDescriptionTableViewCell *descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"VDescriptionTableViewCell"];
-            descriptionCell.descriptionText = self.descriptionItem.detailText;
-            descriptionCell.hashTagSelectionBlock = ^void(NSString *hashTag)
-            {
-                if (self.descriptionItem.hashTagSelectionHandler)
-                {
-                    self.descriptionItem.hashTagSelectionHandler(hashTag);
-                }
-            };
-            return descriptionCell;
+            itemForCell.detailSelectionHandler();
         }
-        case VActionSheetTableViewSecionActions:
-        {
-            VActionItemTableViewCell *actionitemCell = [tableView dequeueReusableCellWithIdentifier:@"VActionItemTableViewCell"];
-            VActionItem *itemForCell = [self.actionItems objectAtIndex:indexPath.row];
-            actionitemCell.title = itemForCell.title;
-            actionitemCell.detailTitle = itemForCell.detailText;
-            actionitemCell.actionIcon = itemForCell.icon;
-            actionitemCell.separatorInsets = self.tableView.separatorInset;
-            actionitemCell.enabled = itemForCell.enabled;
-            actionitemCell.accessorySelectionHandler = ^(void)
-            {
-                if (itemForCell.detailSelectionHandler)
-                {
-                    itemForCell.detailSelectionHandler();
-                }
-            };
-            
-            return actionitemCell;
-        }
-    }
-    return nil;
+    };
+    
+    return actionitemCell;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case VActionSheetTableViewSecionDescription:
-        {
-            CGFloat height = [VDescriptionTableViewCell desiredHeightWithTableViewWidth:CGRectGetWidth(tableView.bounds)
-                                                                         text:self.descriptionItem.detailText];
-            return height;
-        }
-        case VActionSheetTableViewSecionActions:
-        {
-            return 44.0f;
-        }
-    }
     return 44.0f;
 }
 
@@ -264,17 +223,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         return NO;
     }
     
-    switch (indexPath.section)
-    {
-        case VActionSheetTableViewSecionDescription:
-            return NO;
-        case VActionSheetTableViewSecionActions:
-        {
-            VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
-            return actionItem.enabled;
-        }
-    }
-    return YES;
+    VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+    return actionItem.enabled;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -285,6 +235,43 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     {
         actionItem.selectionHandler();
     }
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    if (self.descriptionItem.hashTagSelectionHandler)
+    {
+        NSString *selectedHashTag = [textView.text substringWithRange:characterRange];
+        selectedHashTag = [selectedHashTag stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
+        self.descriptionItem.hashTagSelectionHandler(selectedHashTag);
+    }
+    return NO;
+}
+
+#pragma mark - Private Methods
+
+- (void)setupTitleTextView
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc]initWithString:self.descriptionItem.title
+                                                                                               attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+                                                                                                            NSParagraphStyleAttributeName:paragraphStyle,
+                                                                                                            NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
+    NSArray *hashTagLocations = [VHashTags detectHashTags:mutableAttributedString.string];
+    [VHashTags formatHashTagsInString:mutableAttributedString
+                        withTagRanges:hashTagLocations
+                           attributes:@{
+                                        NSLinkAttributeName:[NSURL URLWithString:@"www.google.com"],
+                                        NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                                        }];
+    
+    self.titleTextView.attributedText = mutableAttributedString;
+    self.titleTextView.editable = NO;
+    self.titleTextView.delegate = self;
 }
 
 @end
