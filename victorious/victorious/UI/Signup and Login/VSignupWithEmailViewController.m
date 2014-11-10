@@ -179,7 +179,7 @@
         
         [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
                                                  password:self.registrationModel.password
-                                                 userName:kNoUserName
+                                                 userName:nil
                                              onCompletion:^(VUser *user, BOOL created)
          {
              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidSucceed];
