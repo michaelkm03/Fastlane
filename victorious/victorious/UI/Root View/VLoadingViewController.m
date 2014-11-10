@@ -35,10 +35,6 @@ static const NSUInteger kRetryAttempts = 5;
 
 @implementation VLoadingViewController
 {
-    BOOL     _initialSequenceLoading;
-    BOOL     _initialSequenceLoaded;
-    BOOL     _appInitLoading;
-    BOOL     _appInitLoaded;
     NSTimer *_retryTimer;
 }
 
@@ -155,49 +151,25 @@ static const NSUInteger kRetryAttempts = 5;
 
 - (void)loadInitData
 {
-    if (!_initialSequenceLoading && !_initialSequenceLoaded)
+    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [[VObjectManager sharedManager] loadInitialSequenceFilterWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            _initialSequenceLoading = NO;
-            _initialSequenceLoaded = YES;
-        }
-                                                                  failBlock:^(NSOperation *operation, NSError *error)
-        {
-            self.failCount++;
             
-            _initialSequenceLoading = NO;
-            [self scheduleRetry];
+            [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+            [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
+        }
+                                                                    onError:^(NSError *error)
+        {
+            [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+            [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
         }];
     }
-    
-    if (!_appInitLoading && !_appInitLoaded)
+                                                  failBlock:^(NSOperation *operation, NSError *error)
     {
-        [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            _appInitLoading = NO;
-            _appInitLoaded = YES;
-            
-            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-            {
-                
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
-            }
-                                                                        onError:^(NSError *error)
-            {
-                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
-            }];
-        }
-                                                      failBlock:^(NSOperation *operation, NSError *error)
-        {
-            self.failCount++;
-            
-            _appInitLoading = NO;
-            [self scheduleRetry];
-        }];
-    }
+        self.failCount++;
+        [self scheduleRetry];
+    }];
 }
 
 - (void)scheduleRetry
