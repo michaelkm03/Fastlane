@@ -266,9 +266,12 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                         withTagRanges:hashTagLocations
                            attributes:@{
                                         NSLinkAttributeName:[NSURL URLWithString:@"www.google.com"],
-                                        NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                                         }];
     
+    
+    self.titleTextView.linkTextAttributes = @{
+                                              NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
+                                              };
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.editable = NO;
     self.titleTextView.delegate = self;
