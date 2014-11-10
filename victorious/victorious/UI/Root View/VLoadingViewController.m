@@ -155,14 +155,11 @@ static const NSUInteger kRetryAttempts = 5;
     {
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            
-            [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-            [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
+            [self onDoneLoading];
         }
                                                                     onError:^(NSError *error)
         {
-            [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-            [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
+            [self onDoneLoading];
         }];
     }
                                                   failBlock:^(NSOperation *operation, NSError *error)
@@ -170,6 +167,12 @@ static const NSUInteger kRetryAttempts = 5;
         self.failCount++;
         [self scheduleRetry];
     }];
+}
+
+- (void)onDoneLoading
+{
+    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
 }
 
 - (void)scheduleRetry
