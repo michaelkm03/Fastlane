@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString * filterName;
 @property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
+@property (nonatomic, retain) NSString * hashtag;
 @end
 
 @interface VStream (CoreDataGeneratedAccessors)

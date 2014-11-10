@@ -53,12 +53,6 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3gM-g0-IBc" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="h1z-VQ-pkX" userLabel="Description">
-                                <rect key="frame" x="20" y="279" width="280" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XNn-If-c8r" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="76"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -72,13 +66,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="h1z-VQ-pkX" secondAttribute="trailing" constant="20" id="713-wm-aYG"/>
                             <constraint firstAttribute="bottom" secondItem="XNn-If-c8r" secondAttribute="bottom" constant="237" id="Koq-Qu-TnD"/>
                             <constraint firstItem="XNn-If-c8r" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" id="a2k-Na-FWQ"/>
                             <constraint firstItem="XNn-If-c8r" firstAttribute="top" secondItem="3gM-g0-IBc" secondAttribute="top" constant="7" id="iKP-6f-kSl"/>
                             <constraint firstAttribute="trailing" secondItem="XNn-If-c8r" secondAttribute="trailing" id="jz8-py-V5U"/>
-                            <constraint firstItem="h1z-VQ-pkX" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" constant="20" id="rPc-Fy-j1M"/>
-                            <constraint firstAttribute="bottom" secondItem="h1z-VQ-pkX" secondAttribute="bottom" constant="20" id="zK7-Mv-N1W"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -100,7 +91,6 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
-                <outlet property="descriptionLabel" destination="h1z-VQ-pkX" id="uTa-0X-eH7"/>
                 <outlet property="lowerGradientView" destination="ANb-iR-hwm" id="44h-v9-vf4"/>
                 <outlet property="overlayView" destination="3gM-g0-IBc" id="5Fn-60-Yd9"/>
                 <outlet property="playBackgroundImageView" destination="NuW-UN-tpX" id="Bgz-8G-1he"/>

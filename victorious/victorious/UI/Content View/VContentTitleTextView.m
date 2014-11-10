@@ -63,12 +63,8 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     self.textStorage = [[NSTextStorage alloc] init];
     [self.textStorage addLayoutManager:self.layoutManager];
     
-    NSError *error = nil;
     self.tappableTextManager = [[VTappableTextManager alloc] init];
-    if ( ![self.tappableTextManager setDelegate:self error:&error] )
-    {
-        VLog( @"Error setting delegate: %@", error.domain );
-    }
+    [self.tappableTextManager setDelegate:self];
     
     self.textView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     self.textView.backgroundColor = [UIColor clearColor];

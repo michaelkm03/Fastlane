@@ -48,17 +48,11 @@
     return _delegate != nil;
 }
 
-- (BOOL)setDelegate:(id<VTappableTextManagerDelegate>)delegate error:(NSError**)error
+- (void)setDelegate:(id<VTappableTextManagerDelegate>)delegate
 {
-    if ( [self validateDelegate:delegate error:error] )
-    {
-        _delegate = delegate;
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    NSError *error = nil;
+    NSAssert( [self validateDelegate:delegate error:&error], @"%@", error.domain );
+    _delegate = delegate;
 }
 
 - (void)unsetDelegate

@@ -69,7 +69,10 @@ NSString * const VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    stream.hashtag = hashTag;
+    return stream;
 }
 
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
