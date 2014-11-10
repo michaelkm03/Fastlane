@@ -67,7 +67,7 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
     
-    NSInteger profileID = _profile.remoteId.integerValue;
+    NSInteger profileID = profile.remoteId.integerValue;
     NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
