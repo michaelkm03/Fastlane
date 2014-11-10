@@ -15,7 +15,12 @@
  */
 @property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
-+ (instancetype)rootViewController; ///< NOT A CONSTRUCTOR/FACTORY METHOD. Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
+/**
+ NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 
+ set as the main window's rootViewController property. If no such instance exists,
+ returns nil.
+ */
++ (instancetype)rootViewController;
 
 - (void)presentForceUpgradeScreen;
 

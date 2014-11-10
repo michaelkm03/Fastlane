@@ -8,6 +8,7 @@
 
 #import "VLoadingViewController.h"
 
+#import "UIStoryboard+VMainStoryboard.h"
 #import "VConstants.h"
 #import "VPushNotificationManager.h"
 #import "VObjectManager+Login.h"
@@ -44,7 +45,7 @@ static const NSUInteger kRetryAttempts = 5;
 
 + (VLoadingViewController *)loadingViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard v_mainStoryboard];
     VLoadingViewController *loadingViewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VLoadingViewController class])];
     return loadingViewController;
 }
