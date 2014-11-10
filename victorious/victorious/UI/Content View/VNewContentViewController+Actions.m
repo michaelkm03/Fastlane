@@ -206,10 +206,15 @@
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
         {
             [[VThemeManager sharedThemeManager] applyStyling];
+            [self reloadInputViews];
+            if (activityType == nil)
+            {
+                return;
+            }
+            
             NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
                                       VTrackingKeyActivityType : activityType };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
-            [self reloadInputViews];
         };
         
         [contentViewController dismissViewControllerAnimated:YES
