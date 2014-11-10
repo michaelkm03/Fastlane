@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VLoadingViewController.h"
 #import "VMultipleStreamViewController.h"
@@ -31,7 +32,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 + (instancetype)rootViewController
 {
-    VRootViewController *rootViewController = (VRootViewController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    VRootViewController *rootViewController = (VRootViewController *)[[(VAppDelegate *)[[UIApplication sharedApplication] delegate] window] rootViewController];
     if ([rootViewController isKindOfClass:self])
     {
         return rootViewController;
