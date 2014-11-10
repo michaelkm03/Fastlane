@@ -92,7 +92,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
     self.descriptionTextView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     [self.overlayView addSubview:self.descriptionTextView ];
     
-    //[self applyConstraints:isTemplateC];
+    [self applyConstraints:isTemplateC];
     
     self.descriptionTextView.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
     self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
