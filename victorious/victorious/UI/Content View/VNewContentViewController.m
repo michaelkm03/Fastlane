@@ -311,7 +311,7 @@
     
     self.viewModel.experienceEnhancerController.delegate = self;
     
-    self.titleLabel.hidden = (self.viewModel.type == VContentViewTypePoll);
+    self.titleLabel.hidden = !self.viewModel.shouldShowTitle;
     self.titleLabel.text = self.viewModel.name;
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.titleLabel.shadowColor = [UIColor blackColor];

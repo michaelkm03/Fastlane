@@ -306,6 +306,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return self.sequence.name;
 }
 
+- (BOOL)shouldShowTitle
+{
+    BOOL isPollOrnameEmbedded = ([self.sequence.nameEmbeddedInContent boolValue]) || ([self.sequence isPoll]);
+    return !isPollOrnameEmbedded;
+}
+
 - (NSURL *)videoURL
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];
