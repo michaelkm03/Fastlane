@@ -262,17 +262,10 @@
     }
     
     self.videoPlayer.view.alpha = 1.0f;
-    [UIView animateWithDuration:0.2
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^(void)
-     {
-         [self.contentSuperview removeConstraints:self.previewImageConstraints];
-         [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:aspectRatio]];
-         [self.contentSuperview layoutIfNeeded];
-         self.previewImageView.alpha = 0.0f;
-     }
-                     completion:nil];
+    self.previewImageView.alpha = 0.0f;
+    [self.contentSuperview removeConstraints:self.previewImageConstraints];
+    [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:aspectRatio]];
+    [self.contentSuperview layoutIfNeeded];
 }
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
