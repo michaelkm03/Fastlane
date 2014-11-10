@@ -40,7 +40,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
 @property (weak, nonatomic) IBOutlet UITextView *titleTextView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 
@@ -93,7 +92,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     [self reloadData];
 }
@@ -153,6 +151,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (void)reloadData
 {
+    __block CGFloat blurredContainerHeight = CGRectGetHeight(self.blurringContainer.bounds) - CGRectGetHeight(self.tableView.bounds);
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     [self.addedItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
      {
@@ -165,6 +165,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          {
              case VActionItemTypeDefault:
                  [actionItems addObject:actionItem];
+                 blurredContainerHeight = blurredContainerHeight + 44.0f;
                  break;
              case VActionItemTypeUser:
                  [self.AvatarImageView setProfileImageURL:actionItem.avatarURL];
@@ -178,6 +179,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          }
      }];
     self.actionItems = [NSArray arrayWithArray:actionItems];
+    self.blurringContainerHeightConstraint.constant = fminf(blurredContainerHeight, CGRectGetHeight(self.view.bounds) * 0.75f);
 }
 
 #pragma mark - UITableViewDataSource
