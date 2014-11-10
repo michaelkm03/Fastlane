@@ -36,7 +36,7 @@ PODS:
 DEPENDENCIES:
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
-  - MarqueeLabel (~> 2.0.2)
+  - MarqueeLabel (from `https://github.com/TouchFrame/MarqueeLabel.git`, branch `iOS8Workaround`)
   - MBProgressHUD (~> 0.8)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
   - RestKit (~> 0.22.0)
@@ -44,6 +44,9 @@ DEPENDENCIES:
   - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
+  MarqueeLabel:
+    :branch: iOS8Workaround
+    :git: https://github.com/TouchFrame/MarqueeLabel.git
   Nocilla:
     :branch: block-response
     :git: https://github.com/TouchFrame/Nocilla.git
@@ -53,7 +56,7 @@ SPEC CHECKSUMS:
   FlurrySDK: bed9e5598353f867508d164795a451e3ada92cb6
   IGDigest: 9d142a7926ecc2983e6208d938ac5dddd26ed9c2
   ISO8601DateFormatterValueTransformer: a7e1ecf4380d0b561306ced1a3f01bd5f65d2213
-  MarqueeLabel: 80ff5069b2b8ccd8678b56af0d8ff08ce417d34c
+  MarqueeLabel: f7eeaffa9eae1cc5c75b3ca7c7201d73f5a80eb1
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   Nocilla: 8302b85f1e428a719ac76f78669d64a6872586bf
   RestKit: 6b82f862848cbe026ddc297985aa9a766b7e1a38
