@@ -131,7 +131,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     }
     
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
          VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
@@ -152,12 +152,16 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          }
          
          VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeStream]];
-         [homeStream presentViewController:contentNav
-                                  animated:YES
-                                completion:nil];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream presentViewController:contentNav
+                                      animated:YES
+                                    completion:nil];
+         }
      }
-                                        failBlock:^(NSOperation *operation, NSError *error)
+                                            failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
@@ -189,8 +193,12 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          }
          
          VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeStream]];
-         [homeStream.navigationController pushViewController:profileVC animated:YES];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream.navigationController pushViewController:profileVC animated:YES];
+         }
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -235,8 +243,12 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          VMessageContainerViewController *messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
          VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[inbox]];
-         [inbox.navigationController pushViewController:messageVC animated:YES];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[inbox]];
+             [inbox.navigationController pushViewController:messageVC animated:YES];
+         }
      }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -280,13 +292,17 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          commentsContainer.sequence = sequence;
          
          VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[homeStream]];
-         [homeStream presentViewController:contentNav
-                                  animated:YES
-                                completion:^
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
-             [contentNav pushViewController:commentsContainer animated:YES];
-         }];
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream presentViewController:contentNav
+                                      animated:YES
+                                    completion:^
+              {
+                  [contentNav pushViewController:commentsContainer animated:YES];
+              }];
+         }
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -310,7 +326,10 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     enterTokenVC.deviceToken = deviceToken;
     enterTokenVC.userToken = userToken;
     
-    [root.contentViewController pushViewController:enterTokenVC animated:YES];
+    if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+    {
+        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
+    }
 }
 
 #pragma mark - Deeplink generation

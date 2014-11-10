@@ -162,6 +162,7 @@
 		0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D50919B46BCB00FA363C /* UIView+Masking.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
+		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
@@ -895,6 +896,8 @@
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		032F0CA61A044837003B981F /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSessionTimer.h; sourceTree = "<group>"; };
+		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
 		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
@@ -2268,6 +2271,15 @@
 			path = "Push Notifications";
 			sourceTree = "<group>";
 		};
+		03449FE21A0C7EBB0070EC80 /* Session Timer */ = {
+			isa = PBXGroup;
+			children = (
+				03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */,
+				03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */,
+			);
+			path = "Session Timer";
+			sourceTree = "<group>";
+		};
 		036AE5EA18FF0C0600A74BDA /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -3259,6 +3271,7 @@
 				0314D09119B4698800FA363C /* Object */,
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
+				03449FE21A0C7EBB0070EC80 /* Session Timer */,
 				0314D0BA19B469C100FA363C /* Settings */,
 				A70963F619F038EB00CE6633 /* TappeableText */,
 				0314D2DC19B46AF300FA363C /* Theme */,
@@ -4382,6 +4395,7 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
 				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
+				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */,
 				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,

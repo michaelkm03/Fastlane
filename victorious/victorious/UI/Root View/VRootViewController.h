@@ -8,11 +8,14 @@
 
 #import "VSideMenuViewController.h"
 
-@interface VRootViewController : VSideMenuViewController
+@interface VRootViewController : UIViewController
 
-+ (instancetype)rootViewController; ///< Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
+/**
+ The view controller that is currently being displayed
+ */
+@property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
-- (void)transitionToNavStack:(NSArray *)navStack;
++ (instancetype)rootViewController; ///< NOT A CONSTRUCTOR/FACTORY METHOD. Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
 
 - (void)presentForceUpgradeScreen;
 

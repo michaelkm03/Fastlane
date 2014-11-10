@@ -7,22 +7,23 @@
 //
 
 #import "VForceUpgradeViewController.h"
+#import "VLoadingViewController.h"
+#import "VMultipleStreamViewController.h"
+#import "VObjectManager.h"
 #import "VRootViewController.h"
-#import "VMenuController.h"
-#import "VThemeManager.h"
-#import "UIImage+ImageEffects.h"
+#import "VSessionTimer.h"
+#import "VSettingManager.h"
+#import "VStreamCollectionViewController.h"
 #import "VConstants.h"
 
-@interface  VSideMenuViewController ()
+static const NSTimeInterval kAnimationDuration = 0.2;
 
-- (void)setContentViewController:(UINavigationController *)contentViewController;
-
-@end
-
-@interface VRootViewController () <UINavigationControllerDelegate>
+@interface VRootViewController ()
 
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
+@property (nonatomic, strong, readwrite) UIViewController *currentViewController;
+@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -41,17 +42,23 @@
     }
 }
 
-- (void)awakeFromNib
+- (void)dealloc
 {
-    self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
-                            applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
+#pragma mark - View Lifecycle
 
-    self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.sessionTimer = [[VSessionTimer alloc] init];
+    [self.sessionTimer start];
     
-    NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
-    self.contentViewController.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadingCompleted:) name:VLoadingViewControllerLoadingCompletedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
+    [self showLoadingViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -71,6 +78,37 @@
     self.appearing = NO;
 }
 
+#pragma mark - Status Bar Appearance
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.currentViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.currentViewController;
+}
+
+#pragma mark - Rotation
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return self.currentViewController.supportedInterfaceOrientations;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [self.currentViewController shouldAutorotate];
+}
+
+- (CGSize)sizeForChildContentContainer:(id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize
+{
+    return parentSize;
+}
+
+#pragma mark - Force Upgrade
+
 - (void)presentForceUpgradeScreen
 {
     if (self.appearing)
@@ -89,42 +127,94 @@
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
-- (void)transitionToNavStack:(NSArray *)navStack
+#pragma mark - Child View Controllers
+
+- (void)showLoadingViewController
 {
-    //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController *vc in self.contentViewController.viewControllers)
-    {
-        [vc dismissViewControllerAnimated:NO completion:nil];
-    }
-    
-    self.contentViewController.viewControllers = navStack;
+    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
+    [self showViewController:loadingViewController animated:NO];
 }
 
-#pragma mark - UINavigationControllerDelegate methods
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
+- (void)showHomeStream
 {
-    if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    VSideMenuViewController *sideMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    [sideMenuViewController transitionToNavStack:@[homeVC]];
+    [self showViewController:sideMenuViewController animated:YES];
+}
+
+- (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController)
     {
-        return [(UIViewController<UINavigationControllerDelegate> *)fromVC navigationController:navigationController
-                                                               animationControllerForOperation:operation
-                                                                            fromViewController:fromVC
-                                                                              toViewController:toVC];
+        [self addChildViewController:viewController];
+        [self.view addSubview:viewController.view];
+        viewController.view.frame = self.view.bounds;
     }
-    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    
+    void (^finishingTasks)() = ^(void)
     {
-        return [(UIViewController<UINavigationControllerDelegate> *)toVC navigationController:navigationController
-                                                               animationControllerForOperation:operation
-                                                                            fromViewController:fromVC
-                                                                              toViewController:toVC];
+        [viewController didMoveToParentViewController:self];
+        [UIViewController attemptRotationToDeviceOrientation];
+    };
+    
+    if (self.currentViewController)
+    {
+        UIViewController *fromViewController = self.currentViewController;
+        
+        if (fromViewController.presentedViewController)
+        {
+            [fromViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        [fromViewController willMoveToParentViewController:nil];
+        
+        void (^removeViewController)(BOOL) = ^(BOOL complete)
+        {
+            [fromViewController.view removeFromSuperview];
+            [fromViewController removeFromParentViewController];
+            finishingTasks();
+        };
+        
+        if (animated)
+        {
+            viewController.view.center = CGPointMake(CGRectGetWidth(self.view.bounds) * 1.5f, CGRectGetMidY(self.view.bounds));
+            [UIView animateWithDuration:kAnimationDuration
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^(void)
+                                        {
+                                            viewController.view.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+                                        }
+                             completion:removeViewController];
+        }
+        else
+        {
+            removeViewController(YES);
+        }
     }
     else
     {
-        return nil;
+        finishingTasks();
     }
+    
+    self.currentViewController = viewController;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+#pragma mark - NSNotifications
+
+- (void)loadingCompleted:(NSNotification *)notification
+{
+    [self showHomeStream];
+}
+
+- (void)newSessionShouldStart:(NSNotification *)notification
+{
+    [self showViewController:nil animated:NO];
+    [RKObjectManager setSharedManager:nil];
+    [VObjectManager setupObjectManager];
+    [self showLoadingViewController];
 }
 
 @end
