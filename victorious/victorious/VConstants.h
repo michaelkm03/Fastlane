@@ -138,8 +138,7 @@ static NSString * const   kTemporaryContentStatus = @"temp";
 
 static NSString * const   kUserStatusComplete = @"complete";
 static NSString * const   kUserStatusIncomplete = @"incomplete";
-//TODO: kNoUserName is a deprecated const.  The backend now accepts blank username names and we are sending up blank usernames.  This needs to be removed in a few months. - 11/10/14
-static NSString * const   kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
+static NSString * const __deprecated kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
 
 #pragma mark - Access Levels
 
