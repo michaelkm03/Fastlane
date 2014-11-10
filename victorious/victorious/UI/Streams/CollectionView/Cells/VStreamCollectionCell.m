@@ -66,18 +66,10 @@ static const CGFloat kDescriptionBuffer = 15.0;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
 
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    if (!isTemplateC)
-    {
-        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    }
-    else
-    {
-        self.backgroundColor = [UIColor whiteColor];
-    }
     
+    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
@@ -100,11 +92,32 @@ static const CGFloat kDescriptionBuffer = 15.0;
     self.descriptionTextView = [self.tappableTextManager createTappableTextViewWithFrame:self.bounds];
     [self.overlayView addSubview:self.descriptionTextView ];
     
-    NSDictionary *views = @{ @"textView" : self.descriptionTextView };
-    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textView]-21-|" options:0 metrics:nil views:views]];
-    [self.descriptionTextView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views]];
+    //[self applyConstraints:isTemplateC];
+    
     self.descriptionTextView.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
     self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
+}
+
+- (void)applyConstraints:(BOOL)isTemplateC
+{
+    NSParameterAssert( self.descriptionTextView.superview != nil );
+    
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.descriptionTextView,
+                                                                                  @"shadeView" : self.shadeView }];
+    NSString *formatV;
+    if ( isTemplateC )
+    {
+        [views setValue:self.actionView forKey:@"actionView"];
+        formatV = @"V:[shadeView]-15-[textView]-15-[actionView]";
+    }
+    else
+    {
+        formatV = @"V:[textView]-21-|";
+    }
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:formatV options:0 metrics:nil views:views];
+    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views];
+    [self.descriptionTextView.superview addConstraints:constraintsV];
+    [self.descriptionTextView.superview addConstraints:constraintsH];
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
