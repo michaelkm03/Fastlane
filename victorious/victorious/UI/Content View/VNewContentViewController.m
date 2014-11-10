@@ -154,7 +154,8 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return ((self.viewModel.type == VContentViewTypeVideo) &&  (self.videoCell.status == AVPlayerStatusReadyToPlay)) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    BOOL isVideoAndReadyToPlay = (self.viewModel.type == VContentViewTypeVideo) &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
+    return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark iOS8.0+

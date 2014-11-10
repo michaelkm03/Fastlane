@@ -58,14 +58,14 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                             atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
     
     
-    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion])
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion] > 0)
     {
         UICollectionViewLayoutAttributes *histogramOrQuestionLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogramOrQuestion]];
         histogramOrQuestionLayoutAttributes.zIndex = 0;
         [attributes addObject:histogramOrQuestionLayoutAttributes];
     }
     
-    if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers])
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers] > 0)
     {
         UICollectionViewLayoutAttributes *experienceEnhancerLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:VContentViewSectionExperienceEnhancers]];
         experienceEnhancerLayoutAttributes.zIndex = 0;
