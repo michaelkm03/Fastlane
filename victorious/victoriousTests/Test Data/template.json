@@ -1,0 +1,31 @@
+{
+    "id": "d07ab13a-1e39-4a66-952f-f04c638a9adc",
+    "name": "application",
+    "color.background": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 1
+    },
+    "font.header": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 18
+    },
+    "font.heading1": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 24
+    },
+    "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
+    "ivc": {
+        "id": "9ef1085d-4249-4bcc-8aca-126a657fbd65",
+        "name": "testInitMethod"
+    },
+    "nvc": {
+        "id": "ae742d8a-aaea-43db-b99a-707d72b147cb",
+        "name": "testNewMethod"
+    },
+    "video_quality": {
+        "capture": "medium",
+        "remix": "large"
+    }
+}

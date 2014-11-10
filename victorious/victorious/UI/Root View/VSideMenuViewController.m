@@ -7,10 +7,14 @@
 //
 
 #import "VMenuController.h"
+#import "VMultipleStreamViewController.h"
 #import "VNavigationDestination.h"
+#import "VSettingManager.h"
 #import "VSideMenuViewController.h"
+#import "VStreamCollectionViewController.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
+#import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VSideMenuViewController.h"
 
 @interface VSideMenuViewController () <UINavigationControllerDelegate>
@@ -23,6 +27,12 @@
 @end
 
 @implementation VSideMenuViewController
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VSideMenuViewController *sideMenuViewController = (VSideMenuViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
+    return sideMenuViewController;
+}
 
 - (instancetype)init
 {
@@ -120,6 +130,10 @@
     }
     
     [self addMenuViewControllerMotionEffects];
+    
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    [self transitionToNavStack:@[homeVC]];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

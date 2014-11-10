@@ -8,19 +8,18 @@
 
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
+#import "VDependencyManager.h"
 #import "VLoadingViewController.h"
-#import "VMultipleStreamViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
-#import "VStreamCollectionViewController.h"
 #import "VConstants.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -49,6 +48,14 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 }
 
 #pragma mark - View Lifecycle
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    NSDictionary *dependencyConfiguration = @{ @"scaffold": @{ @"name": @"hamburger.scaffold" } };
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:dependencyConfiguration dictionaryOfClassesByTemplateName:nil];
+}
 
 - (void)viewDidLoad
 {
@@ -138,11 +145,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)showHomeStream
 {
-    VSideMenuViewController *sideMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    [sideMenuViewController transitionToNavStack:@[homeVC]];
-    [self showViewController:sideMenuViewController animated:YES];
+    UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
+    [self showViewController:scaffold animated:YES];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
