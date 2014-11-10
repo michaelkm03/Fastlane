@@ -134,7 +134,7 @@
                  
                  VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
                  
-                 VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+                 VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
                  noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
                  noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
                  noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
