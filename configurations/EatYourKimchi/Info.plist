@@ -28,7 +28,7 @@
 	<key>TestflightReleaseAppToken</key>
 	<string>e32874bd-7c85-4874-9d8e-37546c066c12</string>
 	<key>TestflightQAAppToken</key>
-	<string></string>
+	<string>d33532a9-0dd3-424d-9337-99806b320bf6</string>
 	<key>TestflightStagingAppToken</key>
 	<string></string>
 	<key>VictoriousAppID</key>

@@ -147,6 +147,7 @@ static NSString * const   kUserAccessLevel = @"api_user";
 
 #pragma mark - Storyboard IDs
 
+static NSString * const   kMainStoryboardName                  = @"Main";
 static NSString * const   kStreamContainerID                   = @"streamcontainer";
 static NSString * const   kModalStreamContainerID              = @"modalstreamcontainer";
 static NSString * const   kHashTagStreamStoryboardID           = @"hashtagstream";

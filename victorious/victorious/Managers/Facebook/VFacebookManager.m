@@ -52,7 +52,14 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 
 - (void)loginWithStoredTokenOnSuccess:(void (^)())successBlock onFailure:(void (^)(NSError *))failureBlock
 {
-    if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
+    if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
+    {
+        if (successBlock)
+        {
+            successBlock();
+        }
+    }
+    else if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
     {
         [self loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent onSuccess:successBlock onFailure:failureBlock];
     }

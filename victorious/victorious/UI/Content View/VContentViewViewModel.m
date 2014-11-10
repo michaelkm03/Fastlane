@@ -131,6 +131,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.hasReposted = YES;
+         self.sequence.repostCount = @(self.sequence.repostCount.integerValue + 1);
      }
                                      failBlock:nil];
 }
@@ -306,6 +307,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return self.sequence.name;
 }
 
+- (BOOL)shouldShowTitle
+{
+    BOOL isPollOrnameEmbedded = ([self.sequence.nameEmbeddedInContent boolValue]) || ([self.sequence isPoll]);
+    return !isPollOrnameEmbedded;
+}
+
 - (NSURL *)videoURL
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];
@@ -426,6 +433,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                              object:self];
      }
                                                  failBlock:nil];
+}
+
+- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex
+{
+    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    return commentForIndex.assetOrientation;
 }
 
 - (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex

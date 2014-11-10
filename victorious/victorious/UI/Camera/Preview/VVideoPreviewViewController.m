@@ -59,33 +59,12 @@
 - (UIImage *)previewImage
 {
     AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
-    
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     
-    float rotationAdjustmentDegrees = 0.0f;
-    switch ( [asset videoOrientation] )
-    {
-        case UIDeviceOrientationPortrait:
-            rotationAdjustmentDegrees = 90.0f;
-            break;
-        case UIDeviceOrientationPortraitUpsideDown:
-            rotationAdjustmentDegrees = -90.0f;
-            break;
-        case UIDeviceOrientationLandscapeLeft:
-            rotationAdjustmentDegrees = 180.0f;
-            break;
-        case UIDeviceOrientationLandscapeRight:
-        default:
-            rotationAdjustmentDegrees = 0.0f;
-            break;
-    }
-    
-    previewImage = [previewImage imageRotatedByDegrees:rotationAdjustmentDegrees];
-    
-    return previewImage;
+    return [previewImage imageRotatedByDegrees:asset.previewImageRotationAdjustment];
 }
 
 #pragma mark - Actions

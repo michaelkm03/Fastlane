@@ -5,12 +5,12 @@
 //  Created by Will Long on 2/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
+
 #import "VLoadingViewController.h"
 
+#import "UIStoryboard+VMainStoryboard.h"
+#import "VConstants.h"
 #import "VPushNotificationManager.h"
-
-#import "VStreamCollectionViewController.h"
-
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -22,9 +22,7 @@
 
 #import "MBProgressHUD.h"
 
-#import "VSettingManager.h"
-
-#import "VMultipleStreamViewController.h"
+NSString * const VLoadingViewControllerLoadingCompletedNotification = @"VLoadingViewControllerLoadingCompletedNotification";
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
@@ -43,6 +41,13 @@ static const NSUInteger kRetryAttempts = 5;
     BOOL     _appInitLoading;
     BOOL     _appInitLoaded;
     NSTimer *_retryTimer;
+}
+
++ (VLoadingViewController *)loadingViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard v_mainStoryboard];
+    VLoadingViewController *loadingViewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VLoadingViewController class])];
+    return loadingViewController;
 }
 
 - (void)dealloc
@@ -177,11 +182,13 @@ static const NSUInteger kRetryAttempts = 5;
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 
-                [self goToHomeScreen];
+                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
             }
                                                                         onError:^(NSError *error)
             {
-                [self goToHomeScreen];
+                [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+                [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
             }];
         }
                                                       failBlock:^(NSOperation *operation, NSError *error)
@@ -192,15 +199,6 @@ static const NSUInteger kRetryAttempts = 5;
             [self scheduleRetry];
         }];
     }
-}
-
-- (void)goToHomeScreen
-{
-    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-    
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    self.navigationController.viewControllers = @[homeVC];
 }
 
 - (void)scheduleRetry

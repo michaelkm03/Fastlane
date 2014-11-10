@@ -12,6 +12,7 @@
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
+#import "VProfileHeaderCell.h"
 
 //Controllers
 #import "VCommentsContainerViewController.h"
@@ -331,6 +332,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
+    
+    // Return if the profile header was tapped
+    if ([[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath] isKindOfClass:[VProfileHeaderCell class]])
+    {
+        return;
+    }
+    
     UIImageView *previewImageView = ((VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath]).previewImageView;
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
