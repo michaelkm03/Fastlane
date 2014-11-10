@@ -131,6 +131,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.hasReposted = YES;
+         self.sequence.repostCount = @(self.sequence.repostCount.integerValue + 1);
      }
                                      failBlock:nil];
 }
@@ -428,7 +429,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  failBlock:nil];
 }
 
-- (NSNumber*)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex
+- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return commentForIndex.assetOrientation;

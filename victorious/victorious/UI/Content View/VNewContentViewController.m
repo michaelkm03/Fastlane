@@ -7,6 +7,7 @@
 //
 
 #import "VNewContentViewController.h"
+#import "VObjectManager+ContentCreation.h"
 
 // Theme
 #import "VThemeManager.h"
@@ -347,6 +348,10 @@
                                              selector:@selector(showLoginViewController:)
                                                  name:VExperienceEnhancerBarDidRequiredLoginNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentDidPublish:)
+                                                 name:VUploadManagerTaskFinishedNotification
+                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -500,6 +505,14 @@
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.viewModel reloadData];
+}
+
+- (void)contentDidPublish:(NSNotification *)notification
+{
+    // If content publication has occurred while content view is open,
+    // we should assume that this content is being remixed or reposted and
+    // the remix and repost counts needs updating:
+    [self.viewModel fetchSequenceData];
 }
 
 #pragma mark - IBActions
