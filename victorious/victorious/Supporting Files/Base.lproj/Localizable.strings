@@ -161,6 +161,10 @@
 "Vote that"             =   "Vote that";
 "Create Poll"           =   "Create Poll";
 
+
+"CreatePollErrorTitle"  =   "Whoops!";
+"CreatePollErrorMessage"=   "Your question and answers have to be at least 2 characters each.";
+
 "TranscodingMediaTitle" =   "Transcoding Upload";
 "TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";
 "PollUploadTitle"       =   "Poll Upload Failed";

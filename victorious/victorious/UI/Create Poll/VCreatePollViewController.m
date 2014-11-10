@@ -355,6 +355,19 @@ static char KVOContext;
 
 - (IBAction)postButtonAction:(id)sender
 {
+    if (self.questionTextView.text.length < 2
+        || self.leftAnswerTextView.text.length < 2
+        || self.rightAnswerTextView.text.length < 2)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CreatePollErrorTitle", nil)
+                                                        message:NSLocalizedString(@"CreatePollErrorMessage", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
     [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
                                            description:@"<none>"
                                           previewImage:self.leftPreviewImageView.image
