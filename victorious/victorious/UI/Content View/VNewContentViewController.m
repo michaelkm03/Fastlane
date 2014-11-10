@@ -314,10 +314,8 @@
     self.titleLabel.hidden = (self.viewModel.type == VContentViewTypePoll);
     self.titleLabel.text = self.viewModel.name;
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.titleLabel.layer.shadowOpacity = 1.0f;
-    self.titleLabel.layer.shadowOffset = CGSizeMake(0, 1);
-    self.titleLabel.layer.shadowRadius = 0.5f;
+    self.titleLabel.shadowColor = [UIColor blackColor];
+    self.titleLabel.shadowOffset = CGSizeMake(0, 0.5f);
     self.titleLabel.layer.masksToBounds = NO;
     self.titleLabel.clipsToBounds = NO;
     self.titleLabel.fadeLength = CGRectGetHeight(self.titleLabel.bounds);
