@@ -14,6 +14,9 @@
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
 
+#import "VFacebookManager.h"
+#import "VTwitterManager.h"
+
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
@@ -25,6 +28,7 @@
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
+#import "AVAsset+Orientation.h"
 
 @import AVFoundation;
 
@@ -129,10 +133,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                previewImage:(UIImage *)previewImage
                 captionType:(VCaptionType)type
                   expiresAt:(NSString *)expiresAt
+           parentSequenceId:(NSNumber *)parentSequenceId
                parentNodeId:(NSNumber *)parentNodeId
                       speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
                    mediaURL:(NSURL *)mediaUrl
+              facebookShare:(BOOL)facebookShare
+               twitterShare:(BOOL)twitterShare
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert(mediaUrl != nil);
@@ -157,7 +164,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         parameters[@"parent_node_id"] = [parentNodeId stringValue];
     }
-
+    if (parentSequenceId && ![parentSequenceId isEqualToNumber:@(0)])
+    {
+        parameters[@"parent_sequence_id"] = [parentSequenceId stringValue];
+    }
     if (type == VCaptionTypeMeme)
     {
         parameters[@"subcategory"] = @"meme";
@@ -174,6 +184,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         
         parameters[@"speed"] = [NSString stringWithFormat:@"%.1f", speed];
         parameters[@"playback"] = loopParam;
+    }
+    
+    if (facebookShare)
+    {
+        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+    }
+    if (twitterShare)
+    {
+        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
+        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
     }
     
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
@@ -348,6 +368,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
+    
+    if ( tempComment.mediaUrl )
+    {
+        // For temporary comments added immediately after comment submissiong, we'll need to hang
+        // onto the video asset orientation to adjust our preview image accordingly
+        AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:tempComment.mediaUrl]];
+        tempComment.assetOrientation = @( asset.videoOrientation );
+    }
     
     [sequence addCommentsObject:tempComment];
     sequence.commentCount = @(sequence.commentCount.integerValue + 1);

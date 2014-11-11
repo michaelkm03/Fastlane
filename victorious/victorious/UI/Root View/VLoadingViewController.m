@@ -5,12 +5,12 @@
 //  Created by Will Long on 2/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
+
 #import "VLoadingViewController.h"
 
+#import "UIStoryboard+VMainStoryboard.h"
+#import "VConstants.h"
 #import "VPushNotificationManager.h"
-
-#import "VStreamCollectionViewController.h"
-
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -22,9 +22,7 @@
 
 #import "MBProgressHUD.h"
 
-#import "VSettingManager.h"
-
-#import "VMultipleStreamViewController.h"
+NSString * const VLoadingViewControllerLoadingCompletedNotification = @"VLoadingViewControllerLoadingCompletedNotification";
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
@@ -38,11 +36,14 @@ static const NSUInteger kRetryAttempts = 5;
 
 @implementation VLoadingViewController
 {
-    BOOL     _initialSequenceLoading;
-    BOOL     _initialSequenceLoaded;
-    BOOL     _appInitLoading;
-    BOOL     _appInitLoaded;
     NSTimer *_retryTimer;
+}
+
++ (VLoadingViewController *)loadingViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard v_mainStoryboard];
+    VLoadingViewController *loadingViewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VLoadingViewController class])];
+    return loadingViewController;
 }
 
 - (void)dealloc
@@ -151,56 +152,28 @@ static const NSUInteger kRetryAttempts = 5;
 
 - (void)loadInitData
 {
-    if (!_initialSequenceLoading && !_initialSequenceLoaded)
+    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [[VObjectManager sharedManager] loadInitialSequenceFilterWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            _initialSequenceLoading = NO;
-            _initialSequenceLoaded = YES;
+            [self onDoneLoading];
         }
-                                                                  failBlock:^(NSOperation *operation, NSError *error)
+                                                                    onError:^(NSError *error)
         {
-            self.failCount++;
-            
-            _initialSequenceLoading = NO;
-            [self scheduleRetry];
+            [self onDoneLoading];
         }];
     }
-    
-    if (!_appInitLoading && !_appInitLoaded)
+                                                  failBlock:^(NSOperation *operation, NSError *error)
     {
-        [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            _appInitLoading = NO;
-            _appInitLoaded = YES;
-            
-            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-            {
-                
-                [self goToHomeScreen];
-            }
-                                                                        onError:^(NSError *error)
-            {
-                [self goToHomeScreen];
-            }];
-        }
-                                                      failBlock:^(NSOperation *operation, NSError *error)
-        {
-            self.failCount++;
-            
-            _appInitLoading = NO;
-            [self scheduleRetry];
-        }];
-    }
+        self.failCount++;
+        [self scheduleRetry];
+    }];
 }
 
-- (void)goToHomeScreen
+- (void)onDoneLoading
 {
     [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-    
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    self.navigationController.viewControllers = @[homeVC];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
 }
 
 - (void)scheduleRetry

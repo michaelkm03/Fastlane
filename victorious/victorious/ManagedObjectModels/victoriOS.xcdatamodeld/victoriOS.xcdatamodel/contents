@@ -45,6 +45,7 @@
     </entity>
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="assetOrientation" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -238,6 +239,7 @@
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content)?" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VStreamItem" inverseName="streams" inverseEntity="VStreamItem" syncable="YES"/>
     </entity>
@@ -254,7 +256,7 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="313"/>
+        <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Hashtag" positionX="702" positionY="-459" width="128" height="73"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
@@ -271,7 +273,7 @@
         <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
         <element name="VoteType" positionX="585" positionY="-612" width="128" height="210"/>
-        <element name="VStream" positionX="855" positionY="-412" width="128" height="118"/>
+        <element name="VStream" positionX="855" positionY="-412" width="128" height="135"/>
         <element name="VStreamItem" positionX="862" positionY="-612" width="128" height="103"/>
     </elements>
 </model>

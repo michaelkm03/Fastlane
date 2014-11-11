@@ -29,22 +29,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 @implementation VObjectManager (Pagination)
 
-- (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
-                                                                     failBlock:(VFailBlock)fail
-{
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self refreshStream:[VStreamCollectionViewController homeStreamCollection].currentStream
-                  successBlock:fullSuccess
-                     failBlock:fail];
-}
-
 #pragma mark - Comment
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence

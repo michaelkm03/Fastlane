@@ -82,7 +82,6 @@
 		0314D49619B46B5E00FA363C /* VResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37019B46B5E00FA363C /* VResultView.m */; };
 		0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */; };
 		0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37719B46B5E00FA363C /* VActionBarViewController.m */; };
-		0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37919B46B5E00FA363C /* VContentTitleTextView.m */; };
 		0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38619B46B5E00FA363C /* VImageSearchDataSource.m */; };
 		0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38819B46B5E00FA363C /* VImageSearchResultCell.m */; };
 		0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38A19B46B5E00FA363C /* VImageSearchResultsFooterView.m */; };
@@ -162,6 +161,7 @@
 		0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D50919B46BCB00FA363C /* UIView+Masking.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
+		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
@@ -172,6 +172,60 @@
 		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36219F32B3800FE6B9D /* VPhotoLibraryManager.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
+		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
+		036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38161A0C4DE90014DF66 /* Arvo-Bold.ttf */; };
+		036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38171A0C4DE90014DF66 /* Arvo-Regular.ttf */; };
+		036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38191A0C4DE90014DF66 /* Bitter-Bold.ttf */; };
+		036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381A1A0C4DE90014DF66 /* Bitter-Regular.ttf */; };
+		036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */; };
+		036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */; };
+		036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381F1A0C4DE90014DF66 /* DroidSans-Bold.ttf */; };
+		036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38201A0C4DE90014DF66 /* DroidSans.ttf */; };
+		036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38221A0C4DE90014DF66 /* JosefinSans-Bold.ttf */; };
+		036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38231A0C4DE90014DF66 /* JosefinSans-SemiBold.ttf */; };
+		036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38251A0C4DE90014DF66 /* JosefinSlab-Bold.ttf */; };
+		036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38261A0C4DE90014DF66 /* JosefinSlab-SemiBold.ttf */; };
+		036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38281A0C4DE90014DF66 /* Junction-bold.otf */; };
+		036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38291A0C4DE90014DF66 /* Junction-regular.otf */; };
+		036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382B1A0C4DE90014DF66 /* Jura-DemiBold.ttf */; };
+		036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382C1A0C4DE90014DF66 /* Jura-Medium.ttf */; };
+		036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382E1A0C4DE90014DF66 /* Kreon-Bold.ttf */; };
+		036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382F1A0C4DE90014DF66 /* Kreon-Regular.ttf */; };
+		036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38311A0C4DE90014DF66 /* Lato-Bold.ttf */; };
+		036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */; };
+		036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */; };
+		036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38361A0C4DE90014DF66 /* MavenPro-Bold.ttf */; };
+		036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38371A0C4DE90014DF66 /* MavenPro-Regular.ttf */; };
+		036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38391A0C4DE90014DF66 /* Merriweather-Bold.ttf */; };
+		036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F383A1A0C4DE90014DF66 /* Merriweather-Regular.ttf */; };
+		036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F383C1A0C4DE90014DF66 /* Montserrat-Bold.ttf */; };
+		036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F383D1A0C4DE90014DF66 /* Montserrat-Regular.ttf */; };
+		036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F383F1A0C4DE90014DF66 /* OpenSans-Bold.ttf */; };
+		036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38401A0C4DE90014DF66 /* OpenSans-Semibold.ttf */; };
+		036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38421A0C4DE90014DF66 /* Oswald-Light.ttf */; };
+		036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38431A0C4DE90014DF66 /* Oswald-Regular.ttf */; };
+		036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38451A0C4DE90014DF66 /* PlayfairDisplay-Bold.ttf */; };
+		036F38851A0C4DEA0014DF66 /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38461A0C4DE90014DF66 /* PlayfairDisplay-Regular.ttf */; };
+		036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */; };
+		036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */; };
+		036F38881A0C4DEA0014DF66 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */; };
+		036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384C1A0C4DE90014DF66 /* PT_Serif-Web-Bold.ttf */; };
+		036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384D1A0C4DE90014DF66 /* PT_Serif-Web-Regular.ttf */; };
+		036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384F1A0C4DE90014DF66 /* Raleway-Medium.ttf */; };
+		036F388C1A0C4DEA0014DF66 /* Raleway-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38501A0C4DE90014DF66 /* Raleway-SemiBold.ttf */; };
+		036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38521A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf */; };
+		036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38531A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf */; };
+		036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38551A0C4DEA0014DF66 /* Rosario-Bold.ttf */; };
+		036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38561A0C4DEA0014DF66 /* Rosario-Regular.ttf */; };
+		036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38581A0C4DEA0014DF66 /* Signika-Light.ttf */; };
+		036F38921A0C4DEA0014DF66 /* Signika-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38591A0C4DEA0014DF66 /* Signika-Semibold.ttf */; };
+		036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385B1A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf */; };
+		036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385C1A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf */; };
+		036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385E1A0C4DEA0014DF66 /* Ubuntu-Medium.ttf */; };
+		036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */; };
+		036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */; };
+		036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
 		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
@@ -200,6 +254,7 @@
 		0390088E19F3A8FC00FD7EDF /* (null) in Resources */ = {isa = PBXBuildFile; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
+		039D02B41A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED27D19C563B700305987 /* VCameraVideoEncoder.m */; };
 		039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */; };
@@ -216,8 +271,6 @@
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
-		03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */; };
-		03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856D19B42C9100E27D05 /* LICENSE.txt */; };
 		03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */; };
 		03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */; };
 		03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */; };
@@ -264,7 +317,6 @@
 		A70564BF19E781B4004A8387 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BE19E781B4004A8387 /* VHashtag.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
-		A70963F919F038EB00CE6633 /* VTappableTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70963F819F038EB00CE6633 /* VTappableTextManager.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
@@ -278,7 +330,6 @@
 		A720052D1A03073B00285A9C /* VObjectManagerStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FB19E335060072E87A /* VObjectManagerStringTest.m */; };
 		A720052E1A03073B00285A9C /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */; };
 		A720052F1A03073B00285A9C /* VPhotoLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */; };
-		A72005301A03073B00285A9C /* VTappableTextManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A7D62B19DE52DE00B18AB7 /* VTappableTextManagerTests.m */; };
 		A72005311A03073B00285A9C /* VUIAlertView+VBlocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */; };
 		A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FE19E335060072E87A /* VUploadManagerTests.m */; };
 		A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FF19E335060072E87A /* VUploadManagerURLSessionTests.m */; };
@@ -348,6 +399,7 @@
 		A7F8DD611A0B19FE00F82256 /* VWebViewAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD601A0B19FE00F82256 /* VWebViewAdvanced.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD701A0C607C00F82256 /* VWebViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */; };
+		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -458,6 +510,9 @@
 		D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D89A500A1A000E790010D050 /* VFollowUserControl.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
 		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
+		D8AF00EF1A128A7200B147C4 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
+		D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */; };
+		D8AF00F21A129FB000B147C4 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
 		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
@@ -692,8 +747,6 @@
 		0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
 		0314D37619B46B5E00FA363C /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarViewController.h; sourceTree = "<group>"; };
 		0314D37719B46B5E00FA363C /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarViewController.m; sourceTree = "<group>"; };
-		0314D37819B46B5E00FA363C /* VContentTitleTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentTitleTextView.h; sourceTree = "<group>"; };
-		0314D37919B46B5E00FA363C /* VContentTitleTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentTitleTextView.m; sourceTree = "<group>"; };
 		0314D38519B46B5E00FA363C /* VImageSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchDataSource.h; sourceTree = "<group>"; };
 		0314D38619B46B5E00FA363C /* VImageSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchDataSource.m; sourceTree = "<group>"; };
 		0314D38719B46B5E00FA363C /* VImageSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultCell.h; sourceTree = "<group>"; };
@@ -853,6 +906,8 @@
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		032F0CA61A044837003B981F /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSessionTimer.h; sourceTree = "<group>"; };
+		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
 		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
@@ -866,6 +921,60 @@
 		036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoLibraryManagerTests.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Bold.ttf"; sourceTree = "<group>"; };
+		036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Regular.ttf"; sourceTree = "<group>"; };
+		036F38161A0C4DE90014DF66 /* Arvo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Bold.ttf"; sourceTree = "<group>"; };
+		036F38171A0C4DE90014DF66 /* Arvo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Regular.ttf"; sourceTree = "<group>"; };
+		036F38191A0C4DE90014DF66 /* Bitter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Bold.ttf"; sourceTree = "<group>"; };
+		036F381A1A0C4DE90014DF66 /* Bitter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Regular.ttf"; sourceTree = "<group>"; };
+		036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Bold.ttf"; sourceTree = "<group>"; };
+		036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Regular.ttf"; sourceTree = "<group>"; };
+		036F381F1A0C4DE90014DF66 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
+		036F38201A0C4DE90014DF66 /* DroidSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSans.ttf; sourceTree = "<group>"; };
+		036F38221A0C4DE90014DF66 /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Bold.ttf"; sourceTree = "<group>"; };
+		036F38231A0C4DE90014DF66 /* JosefinSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		036F38251A0C4DE90014DF66 /* JosefinSlab-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSlab-Bold.ttf"; sourceTree = "<group>"; };
+		036F38261A0C4DE90014DF66 /* JosefinSlab-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSlab-SemiBold.ttf"; sourceTree = "<group>"; };
+		036F38281A0C4DE90014DF66 /* Junction-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Junction-bold.otf"; sourceTree = "<group>"; };
+		036F38291A0C4DE90014DF66 /* Junction-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Junction-regular.otf"; sourceTree = "<group>"; };
+		036F382B1A0C4DE90014DF66 /* Jura-DemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jura-DemiBold.ttf"; sourceTree = "<group>"; };
+		036F382C1A0C4DE90014DF66 /* Jura-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jura-Medium.ttf"; sourceTree = "<group>"; };
+		036F382E1A0C4DE90014DF66 /* Kreon-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kreon-Bold.ttf"; sourceTree = "<group>"; };
+		036F382F1A0C4DE90014DF66 /* Kreon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kreon-Regular.ttf"; sourceTree = "<group>"; };
+		036F38311A0C4DE90014DF66 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LeagueGothic-Regular.otf"; sourceTree = "<group>"; };
+		036F38361A0C4DE90014DF66 /* MavenPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MavenPro-Bold.ttf"; sourceTree = "<group>"; };
+		036F38371A0C4DE90014DF66 /* MavenPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MavenPro-Regular.ttf"; sourceTree = "<group>"; };
+		036F38391A0C4DE90014DF66 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
+		036F383A1A0C4DE90014DF66 /* Merriweather-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Regular.ttf"; sourceTree = "<group>"; };
+		036F383C1A0C4DE90014DF66 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		036F383D1A0C4DE90014DF66 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		036F383F1A0C4DE90014DF66 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		036F38401A0C4DE90014DF66 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		036F38421A0C4DE90014DF66 /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
+		036F38431A0C4DE90014DF66 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		036F38451A0C4DE90014DF66 /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		036F38461A0C4DE90014DF66 /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
+		036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
+		036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
+		036F384C1A0C4DE90014DF66 /* PT_Serif-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Serif-Web-Bold.ttf"; sourceTree = "<group>"; };
+		036F384D1A0C4DE90014DF66 /* PT_Serif-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Serif-Web-Regular.ttf"; sourceTree = "<group>"; };
+		036F384F1A0C4DE90014DF66 /* Raleway-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Medium.ttf"; sourceTree = "<group>"; };
+		036F38501A0C4DE90014DF66 /* Raleway-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-SemiBold.ttf"; sourceTree = "<group>"; };
+		036F38521A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Bold.ttf"; sourceTree = "<group>"; };
+		036F38531A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Regular.ttf"; sourceTree = "<group>"; };
+		036F38551A0C4DEA0014DF66 /* Rosario-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rosario-Bold.ttf"; sourceTree = "<group>"; };
+		036F38561A0C4DEA0014DF66 /* Rosario-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rosario-Regular.ttf"; sourceTree = "<group>"; };
+		036F38581A0C4DEA0014DF66 /* Signika-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Signika-Light.ttf"; sourceTree = "<group>"; };
+		036F38591A0C4DEA0014DF66 /* Signika-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Signika-Semibold.ttf"; sourceTree = "<group>"; };
+		036F385B1A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		036F385C1A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.ttf"; sourceTree = "<group>"; };
+		036F385E1A0C4DEA0014DF66 /* Ubuntu-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Medium.ttf"; sourceTree = "<group>"; };
+		036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Regular.ttf"; sourceTree = "<group>"; };
+		036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Bold.ttf"; sourceTree = "<group>"; };
+		036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Regular.ttf"; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
 		037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -928,6 +1037,8 @@
 		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
+		039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+VMainStoryboard.h"; sourceTree = "<group>"; };
+		039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+VMainStoryboard.m"; sourceTree = "<group>"; };
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		039ED27C19C563B700305987 /* VCameraVideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraVideoEncoder.h; sourceTree = "<group>"; };
 		039ED27D19C563B700305987 /* VCameraVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraVideoEncoder.m; sourceTree = "<group>"; };
@@ -961,8 +1072,6 @@
 		03B83B6019E0D2CC00DC04E4 /* VUploadProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadProgressViewController.h; sourceTree = "<group>"; };
 		03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadProgressViewController.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
-		03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
-		03C1856D19B42C9100E27D05 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -1057,8 +1166,6 @@
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
 		A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VoteTypeTests.m"; sourceTree = "<group>"; };
-		A70963F719F038EB00CE6633 /* VTappableTextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTappableTextManager.h; sourceTree = "<group>"; };
-		A70963F819F038EB00CE6633 /* VTappableTextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableTextManager.m; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A709642219F0A13800CE6633 /* VTracking+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTracking+RestKit.h"; sourceTree = "<group>"; };
 		A709642319F0A13800CE6633 /* VTracking+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VTracking+RestKit.m"; sourceTree = "<group>"; };
@@ -1125,7 +1232,6 @@
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
-		A7A7D62B19DE52DE00B18AB7 /* VTappableTextManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTappableTextManagerTests.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1157,6 +1263,7 @@
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		A7F8DD6F1A0C607C00F82256 /* VWebViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewCreator.m; sourceTree = "<group>"; };
 		A7F8DD711A0C60C400F82256 /* VWebViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewCreator.h; sourceTree = "<group>"; };
+		A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionControllerTests.m; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCacheTests.m; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1388,6 +1495,9 @@
 		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
 		D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramBarView.m; sourceTree = "<group>"; };
 		D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSourceTests.m; sourceTree = "<group>"; };
+		D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagTextView.h; sourceTree = "<group>"; };
+		D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextView.m; sourceTree = "<group>"; };
+		D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextViewTests.m; sourceTree = "<group>"; };
 		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
 		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
 		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
@@ -1803,6 +1913,8 @@
 				D8C8F5721A0400DF006BE3E8 /* VExtendedView.m */,
 				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
 				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
+				D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */,
+				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1835,8 +1947,6 @@
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
 				0314D37619B46B5E00FA363C /* VActionBarViewController.h */,
 				0314D37719B46B5E00FA363C /* VActionBarViewController.m */,
-				0314D37819B46B5E00FA363C /* VContentTitleTextView.h */,
-				0314D37919B46B5E00FA363C /* VContentTitleTextView.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
 				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
 				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
@@ -2208,6 +2318,15 @@
 			path = "Push Notifications";
 			sourceTree = "<group>";
 		};
+		03449FE21A0C7EBB0070EC80 /* Session Timer */ = {
+			isa = PBXGroup;
+			children = (
+				03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */,
+				03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */,
+			);
+			path = "Session Timer";
+			sourceTree = "<group>";
+		};
 		036AE5EA18FF0C0600A74BDA /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -2215,6 +2334,249 @@
 				036AE5EC18FF0C0600A74BDA /* VReachability.m */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		036F38121A0C4DE90014DF66 /* Arimo */ = {
+			isa = PBXGroup;
+			children = (
+				036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */,
+				036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */,
+			);
+			path = Arimo;
+			sourceTree = "<group>";
+		};
+		036F38151A0C4DE90014DF66 /* Arvo */ = {
+			isa = PBXGroup;
+			children = (
+				036F38161A0C4DE90014DF66 /* Arvo-Bold.ttf */,
+				036F38171A0C4DE90014DF66 /* Arvo-Regular.ttf */,
+			);
+			path = Arvo;
+			sourceTree = "<group>";
+		};
+		036F38181A0C4DE90014DF66 /* Bitter */ = {
+			isa = PBXGroup;
+			children = (
+				036F38191A0C4DE90014DF66 /* Bitter-Bold.ttf */,
+				036F381A1A0C4DE90014DF66 /* Bitter-Regular.ttf */,
+			);
+			path = Bitter;
+			sourceTree = "<group>";
+		};
+		036F381B1A0C4DE90014DF66 /* Delius */ = {
+			isa = PBXGroup;
+			children = (
+				036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */,
+				036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */,
+			);
+			path = Delius;
+			sourceTree = "<group>";
+		};
+		036F381E1A0C4DE90014DF66 /* DroidSans */ = {
+			isa = PBXGroup;
+			children = (
+				036F381F1A0C4DE90014DF66 /* DroidSans-Bold.ttf */,
+				036F38201A0C4DE90014DF66 /* DroidSans.ttf */,
+			);
+			path = DroidSans;
+			sourceTree = "<group>";
+		};
+		036F38211A0C4DE90014DF66 /* JosefinSans */ = {
+			isa = PBXGroup;
+			children = (
+				036F38221A0C4DE90014DF66 /* JosefinSans-Bold.ttf */,
+				036F38231A0C4DE90014DF66 /* JosefinSans-SemiBold.ttf */,
+			);
+			path = JosefinSans;
+			sourceTree = "<group>";
+		};
+		036F38241A0C4DE90014DF66 /* JosefinSlab */ = {
+			isa = PBXGroup;
+			children = (
+				036F38251A0C4DE90014DF66 /* JosefinSlab-Bold.ttf */,
+				036F38261A0C4DE90014DF66 /* JosefinSlab-SemiBold.ttf */,
+			);
+			path = JosefinSlab;
+			sourceTree = "<group>";
+		};
+		036F38271A0C4DE90014DF66 /* Junction */ = {
+			isa = PBXGroup;
+			children = (
+				036F38281A0C4DE90014DF66 /* Junction-bold.otf */,
+				036F38291A0C4DE90014DF66 /* Junction-regular.otf */,
+			);
+			path = Junction;
+			sourceTree = "<group>";
+		};
+		036F382A1A0C4DE90014DF66 /* Jura */ = {
+			isa = PBXGroup;
+			children = (
+				036F382B1A0C4DE90014DF66 /* Jura-DemiBold.ttf */,
+				036F382C1A0C4DE90014DF66 /* Jura-Medium.ttf */,
+			);
+			path = Jura;
+			sourceTree = "<group>";
+		};
+		036F382D1A0C4DE90014DF66 /* Kreon */ = {
+			isa = PBXGroup;
+			children = (
+				036F382E1A0C4DE90014DF66 /* Kreon-Bold.ttf */,
+				036F382F1A0C4DE90014DF66 /* Kreon-Regular.ttf */,
+			);
+			path = Kreon;
+			sourceTree = "<group>";
+		};
+		036F38301A0C4DE90014DF66 /* Lato */ = {
+			isa = PBXGroup;
+			children = (
+				036F38311A0C4DE90014DF66 /* Lato-Bold.ttf */,
+				036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */,
+			);
+			path = Lato;
+			sourceTree = "<group>";
+		};
+		036F38331A0C4DE90014DF66 /* LeagueGothic */ = {
+			isa = PBXGroup;
+			children = (
+				036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */,
+			);
+			path = LeagueGothic;
+			sourceTree = "<group>";
+		};
+		036F38351A0C4DE90014DF66 /* MavenPro */ = {
+			isa = PBXGroup;
+			children = (
+				036F38361A0C4DE90014DF66 /* MavenPro-Bold.ttf */,
+				036F38371A0C4DE90014DF66 /* MavenPro-Regular.ttf */,
+			);
+			path = MavenPro;
+			sourceTree = "<group>";
+		};
+		036F38381A0C4DE90014DF66 /* Merriweather */ = {
+			isa = PBXGroup;
+			children = (
+				036F38391A0C4DE90014DF66 /* Merriweather-Bold.ttf */,
+				036F383A1A0C4DE90014DF66 /* Merriweather-Regular.ttf */,
+			);
+			path = Merriweather;
+			sourceTree = "<group>";
+		};
+		036F383B1A0C4DE90014DF66 /* Montserrat */ = {
+			isa = PBXGroup;
+			children = (
+				036F383C1A0C4DE90014DF66 /* Montserrat-Bold.ttf */,
+				036F383D1A0C4DE90014DF66 /* Montserrat-Regular.ttf */,
+			);
+			path = Montserrat;
+			sourceTree = "<group>";
+		};
+		036F383E1A0C4DE90014DF66 /* OpenSans */ = {
+			isa = PBXGroup;
+			children = (
+				036F383F1A0C4DE90014DF66 /* OpenSans-Bold.ttf */,
+				036F38401A0C4DE90014DF66 /* OpenSans-Semibold.ttf */,
+			);
+			path = OpenSans;
+			sourceTree = "<group>";
+		};
+		036F38411A0C4DE90014DF66 /* Oswald */ = {
+			isa = PBXGroup;
+			children = (
+				036F38421A0C4DE90014DF66 /* Oswald-Light.ttf */,
+				036F38431A0C4DE90014DF66 /* Oswald-Regular.ttf */,
+			);
+			path = Oswald;
+			sourceTree = "<group>";
+		};
+		036F38441A0C4DE90014DF66 /* PlayfairDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				036F38451A0C4DE90014DF66 /* PlayfairDisplay-Bold.ttf */,
+				036F38461A0C4DE90014DF66 /* PlayfairDisplay-Regular.ttf */,
+			);
+			path = PlayfairDisplay;
+			sourceTree = "<group>";
+		};
+		036F38471A0C4DE90014DF66 /* PTSans */ = {
+			isa = PBXGroup;
+			children = (
+				036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */,
+				036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */,
+				036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */,
+			);
+			path = PTSans;
+			sourceTree = "<group>";
+		};
+		036F384B1A0C4DE90014DF66 /* PTSerif */ = {
+			isa = PBXGroup;
+			children = (
+				036F384C1A0C4DE90014DF66 /* PT_Serif-Web-Bold.ttf */,
+				036F384D1A0C4DE90014DF66 /* PT_Serif-Web-Regular.ttf */,
+			);
+			path = PTSerif;
+			sourceTree = "<group>";
+		};
+		036F384E1A0C4DE90014DF66 /* Raleway */ = {
+			isa = PBXGroup;
+			children = (
+				036F384F1A0C4DE90014DF66 /* Raleway-Medium.ttf */,
+				036F38501A0C4DE90014DF66 /* Raleway-SemiBold.ttf */,
+			);
+			path = Raleway;
+			sourceTree = "<group>";
+		};
+		036F38511A0C4DE90014DF66 /* RobotoSlab */ = {
+			isa = PBXGroup;
+			children = (
+				036F38521A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf */,
+				036F38531A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf */,
+			);
+			path = RobotoSlab;
+			sourceTree = "<group>";
+		};
+		036F38541A0C4DEA0014DF66 /* Rosario */ = {
+			isa = PBXGroup;
+			children = (
+				036F38551A0C4DEA0014DF66 /* Rosario-Bold.ttf */,
+				036F38561A0C4DEA0014DF66 /* Rosario-Regular.ttf */,
+			);
+			path = Rosario;
+			sourceTree = "<group>";
+		};
+		036F38571A0C4DEA0014DF66 /* Signika */ = {
+			isa = PBXGroup;
+			children = (
+				036F38581A0C4DEA0014DF66 /* Signika-Light.ttf */,
+				036F38591A0C4DEA0014DF66 /* Signika-Semibold.ttf */,
+			);
+			path = Signika;
+			sourceTree = "<group>";
+		};
+		036F385A1A0C4DEA0014DF66 /* SourceSansPro */ = {
+			isa = PBXGroup;
+			children = (
+				036F385B1A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf */,
+				036F385C1A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf */,
+			);
+			path = SourceSansPro;
+			sourceTree = "<group>";
+		};
+		036F385D1A0C4DEA0014DF66 /* Ubuntu */ = {
+			isa = PBXGroup;
+			children = (
+				036F385E1A0C4DEA0014DF66 /* Ubuntu-Medium.ttf */,
+				036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */,
+			);
+			path = Ubuntu;
+			sourceTree = "<group>";
+		};
+		036F38601A0C4DEA0014DF66 /* Volkhov */ = {
+			isa = PBXGroup;
+			children = (
+				036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */,
+				036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */,
+			);
+			path = Volkhov;
 			sourceTree = "<group>";
 		};
 		037CB73919CFE8550084BBED /* Upload */ = {
@@ -2303,11 +2665,37 @@
 		03C1856219B42C9100E27D05 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				036F38121A0C4DE90014DF66 /* Arimo */,
+				036F38151A0C4DE90014DF66 /* Arvo */,
+				036F38181A0C4DE90014DF66 /* Bitter */,
+				036F381B1A0C4DE90014DF66 /* Delius */,
+				036F381E1A0C4DE90014DF66 /* DroidSans */,
 				A705646019E737A5004A8387 /* HelveticaNeue */,
 				03C1856319B42C9100E27D05 /* Impact */,
+				036F38211A0C4DE90014DF66 /* JosefinSans */,
+				036F38241A0C4DE90014DF66 /* JosefinSlab */,
+				036F38271A0C4DE90014DF66 /* Junction */,
+				036F382A1A0C4DE90014DF66 /* Jura */,
+				036F382D1A0C4DE90014DF66 /* Kreon */,
+				036F38301A0C4DE90014DF66 /* Lato */,
+				036F38331A0C4DE90014DF66 /* LeagueGothic */,
+				036F38351A0C4DE90014DF66 /* MavenPro */,
+				036F38381A0C4DE90014DF66 /* Merriweather */,
+				036F383B1A0C4DE90014DF66 /* Montserrat */,
 				03C1858D19B42CEA00E27D05 /* MuseoSans */,
-				03C1856A19B42C9100E27D05 /* PTSans-Narrow */,
+				036F383E1A0C4DE90014DF66 /* OpenSans */,
+				036F38411A0C4DE90014DF66 /* Oswald */,
+				036F38441A0C4DE90014DF66 /* PlayfairDisplay */,
+				036F38471A0C4DE90014DF66 /* PTSans */,
+				036F384B1A0C4DE90014DF66 /* PTSerif */,
+				036F384E1A0C4DE90014DF66 /* Raleway */,
 				03C1856C19B42C9100E27D05 /* Roboto */,
+				036F38511A0C4DE90014DF66 /* RobotoSlab */,
+				036F38541A0C4DEA0014DF66 /* Rosario */,
+				036F38571A0C4DEA0014DF66 /* Signika */,
+				036F385A1A0C4DEA0014DF66 /* SourceSansPro */,
+				036F385D1A0C4DEA0014DF66 /* Ubuntu */,
+				036F38601A0C4DEA0014DF66 /* Volkhov */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -2320,18 +2708,9 @@
 			path = Impact;
 			sourceTree = "<group>";
 		};
-		03C1856A19B42C9100E27D05 /* PTSans-Narrow */ = {
-			isa = PBXGroup;
-			children = (
-				03C1856B19B42C9100E27D05 /* PTSans-Narrow.ttf */,
-			);
-			path = "PTSans-Narrow";
-			sourceTree = "<group>";
-		};
 		03C1856C19B42C9100E27D05 /* Roboto */ = {
 			isa = PBXGroup;
 			children = (
-				03C1856D19B42C9100E27D05 /* LICENSE.txt */,
 				03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */,
 				03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */,
 				03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */,
@@ -2512,15 +2891,6 @@
 				A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */,
 			);
 			path = HelveticaNeue;
-			sourceTree = "<group>";
-		};
-		A70963F619F038EB00CE6633 /* TappeableText */ = {
-			isa = PBXGroup;
-			children = (
-				A70963F719F038EB00CE6633 /* VTappableTextManager.h */,
-				A70963F819F038EB00CE6633 /* VTappableTextManager.m */,
-			);
-			path = TappeableText;
 			sourceTree = "<group>";
 		};
 		A719CD5619F6D5030019E866 /* FileSystemTestHelpers */ = {
@@ -2747,6 +3117,7 @@
 				A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */,
 				D805CE301A005A470014EE2A /* VFollowUserControlTests.m */,
 				A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */,
+				D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */,
 				D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */,
 				BE9674F819E335060072E87A /* VLargeNumberFormatterTests.m */,
 				BE9674F919E335060072E87A /* VMarqueeControllerTests.m */,
@@ -2755,9 +3126,9 @@
 				A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */,
 				BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */,
 				036AA36419F32C0500FE6B9D /* VPhotoLibraryManagerTests.m */,
+				A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */,
 				A75FAEFA19E8A6D600EB87C1 /* VSettingManagerTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
-				A7A7D62B19DE52DE00B18AB7 /* VTappableTextManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,
 				BE9674FE19E335060072E87A /* VUploadManagerTests.m */,
@@ -2834,6 +3205,8 @@
 				BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */,
 				0314D05C19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.h */,
 				0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */,
+				039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */,
+				039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */,
 				0314D50819B46BCB00FA363C /* UIView+Masking.h */,
 				0314D50919B46BCB00FA363C /* UIView+Masking.m */,
 				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
@@ -2939,8 +3312,8 @@
 				0314D09119B4698800FA363C /* Object */,
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
+				03449FE21A0C7EBB0070EC80 /* Session Timer */,
 				0314D0BA19B469C100FA363C /* Settings */,
-				A70963F619F038EB00CE6633 /* TappeableText */,
 				0314D2DC19B46AF300FA363C /* Theme */,
 				A790C81C1A01980F00C4F208 /* Tracking */,
 				03CE66F319B47B590011BB9E /* Twitter */,
@@ -3496,22 +3869,40 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
+				036F38921A0C4DEA0014DF66 /* Signika-Semibold.ttf in Resources */,
+				036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */,
 				03FD87D719F96F8700D93BAA /* VContentVideoCell.xib in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
+				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
 				D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */,
 				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
+				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
+				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
+				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
+				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				BE88FF731A0005E70064AB28 /* VStreamCollectionCell-C.xib in Resources */,
+				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
+				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
+				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
+				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				BE88FF901A00060E0064AB28 /* VNavigationHeaderView.xib in Resources */,
+				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
+				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				BE88FF9A1A001D3D0064AB28 /* VStreamCellHeaderView-C.xib in Resources */,
+				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
+				036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */,
+				036F388C1A0C4DEA0014DF66 /* Raleway-SemiBold.ttf in Resources */,
+				036F38851A0C4DEA0014DF66 /* PlayfairDisplay-Regular.ttf in Resources */,
+				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
-				03C1858019B42C9100E27D05 /* LICENSE.txt in Resources */,
+				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
-				03C1857F19B42C9100E27D05 /* PTSans-Narrow.ttf in Resources */,
 				BE88FF8E1A00060E0064AB28 /* VNavigationHeaderView-C.xib in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
@@ -3524,9 +3915,12 @@
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
 				D8E39BDB19CB7C80007FD86A /* VContentImageCell.xib in Resources */,
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
+				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
+				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
+				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
@@ -3538,23 +3932,37 @@
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
+				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				DB2A494719DF44EE00CB687B /* login.storyboard in Resources */,
 				BE88FF751A0005E70064AB28 /* VStreamCollectionCell.xib in Resources */,
+				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
 				0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */,
+				036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
+				036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */,
+				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
+				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
+				036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */,
 				A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				DB2A48FB19DF3F3100CB687B /* VideoRemix.storyboard in Resources */,
+				036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
+				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
 				DB2A490F19DF432F00CB687B /* VPublishShareView.xib in Resources */,
+				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
+				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
+				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
+				036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */,
+				0390089119F3AA4C00FD7EDF /* VWebContentViewController.xib in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				D8E39BEE19CB99A8007FD86A /* ContentView.storyboard in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
@@ -3564,29 +3972,46 @@
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
+				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
+				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
+				036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */,
+				036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */,
 				03FD87DB19F96FC600D93BAA /* VSuggestedPeopleCell.xib in Resources */,
+				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
+				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
+				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
+				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
+				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
+				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */,
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
+				036F38881A0C4DEA0014DF66 /* PTSans-Narrow.ttf in Resources */,
 				0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */,
 				BE88FF761A0005E70064AB28 /* VStreamCollectionCellPoll-C.xib in Resources */,
-				0390088E19F3A8FC00FD7EDF /* (null) in Resources */,
 				A7E81A551A0AE3A90012D5D3 /* VWebBrowserViewController.xib in Resources */,
+				036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */,
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
+				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
+				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
+				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
 				DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */,
+				036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */,
+				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				BE88FF781A0005E70064AB28 /* VStreamCollectionCellPoll.xib in Resources */,
 				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				0390088619F3A76200FD7EDF /* VStreamDirectoryItemCell.xib in Resources */,
 				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
+				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
 				0390087219F3A08100FD7EDF /* VMarqueeTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3761,7 +4186,6 @@
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				A70564BF19E781B4004A8387 /* VHashtag.m in Sources */,
 				03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */,
-				A70963F919F038EB00CE6633 /* VTappableTextManager.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
@@ -3807,6 +4231,7 @@
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				0314D45E19B46B5E00FA363C /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */,
+				D8AF00EF1A128A7200B147C4 /* VHashTagTextView.m in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
@@ -3957,6 +4382,7 @@
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				0314D4E519B46B5E00FA363C /* VFindFriendsViewController.m in Sources */,
+				039D02B41A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
 				A7F8DD501A0B079A00F82256 /* VWebBrowserHeaderView.m in Sources */,
@@ -4022,6 +4448,7 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
 				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
+				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				BE799B8C19C8A7C20023CE88 /* VAsset.m in Sources */,
 				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,
@@ -4052,7 +4479,6 @@
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
-				0314D49A19B46B5E00FA363C /* VContentTitleTextView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
@@ -4095,7 +4521,8 @@
 				A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */,
 				A72005351A03073B00285A9C /* VUploadTaskInformationTests.m in Sources */,
 				A72005341A03073B00285A9C /* VUploadTaskCreatorTests.m in Sources */,
-				A72005301A03073B00285A9C /* VTappableTextManagerTests.m in Sources */,
+				D8AF00F21A129FB000B147C4 /* VHashTagTextView.m in Sources */,
+				D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */,
 				A72005381A03073B00285A9C /* VFileCacheTests.m in Sources */,
 				A72005391A03073B00285A9C /* VFileCache+VoteTypeTests.m in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
@@ -4118,6 +4545,7 @@
 				A720052B1A03073B00285A9C /* VMarqueeControllerTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
+				A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

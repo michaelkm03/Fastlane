@@ -28,17 +28,6 @@ extern NSString * const kPollResultsLoaded;
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString *)accessToken
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString *)accessToken
-                                                      secret:(NSString *)secret
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence *)sequence
                                         voteTypes:(NSArray *)voteTypes
                                        votecounts:(NSArray *)voteCounts

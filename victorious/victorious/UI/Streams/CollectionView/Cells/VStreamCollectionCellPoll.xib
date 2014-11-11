@@ -54,12 +54,6 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFz-f0-h8E" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="05f-51-tqj">
-                                <rect key="frame" x="20" y="176" width="280" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BME-sG-S0C" customClass="VStreamCellHeaderView">
                                 <rect key="frame" x="0.0" y="7" width="320" height="76"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -67,12 +61,9 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="05f-51-tqj" secondAttribute="bottom" constant="17" id="0XB-yR-F3U"/>
-                            <constraint firstAttribute="trailing" secondItem="05f-51-tqj" secondAttribute="trailing" constant="20" id="6fM-yI-wHd"/>
                             <constraint firstItem="BME-sG-S0C" firstAttribute="top" secondItem="sFz-f0-h8E" secondAttribute="top" constant="7" id="MrQ-U0-4Ul"/>
                             <constraint firstItem="BME-sG-S0C" firstAttribute="leading" secondItem="sFz-f0-h8E" secondAttribute="leading" id="OWD-Mr-VYO"/>
                             <constraint firstAttribute="trailing" secondItem="BME-sG-S0C" secondAttribute="trailing" id="PYu-AP-x0y"/>
-                            <constraint firstItem="05f-51-tqj" firstAttribute="leading" secondItem="sFz-f0-h8E" secondAttribute="leading" constant="20" id="Pln-oy-8gX"/>
                             <constraint firstAttribute="bottom" secondItem="BME-sG-S0C" secondAttribute="bottom" constant="131" id="b82-xJ-ISi"/>
                         </constraints>
                     </view>
@@ -106,7 +97,6 @@
             </constraints>
             <size key="customSize" width="267" height="161"/>
             <connections>
-                <outlet property="descriptionLabel" destination="05f-51-tqj" id="WM8-4X-O5m"/>
                 <outlet property="lowerGradientView" destination="a4c-tz-jQh" id="V6U-Pb-y7M"/>
                 <outlet property="overlayView" destination="sFz-f0-h8E" id="iVu-KJ-0cB"/>
                 <outlet property="previewImageTwo" destination="CAh-rM-9BA" id="EoA-YZ-J66"/>

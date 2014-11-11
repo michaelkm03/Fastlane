@@ -106,9 +106,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
+    NSString *title = [@"#" stringByAppendingString:hashtag];
     VStream *defaultStream = [VStream streamForHashTag:hashtag];
-    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:@[defaultStream] title:[@"#" stringByAppendingString:hashtag]];
-    return communityStream;
+    VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
+                                                                             andAllStreams:@[ defaultStream ]
+                                                                                     title:title];
+    return streamVC;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
@@ -315,28 +318,39 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - UICollectionViewDelegate
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    if (sequence)
-    {
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyStreamId : self.currentStream.remoteId,
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellView };
-        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-    }
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
     
-    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    if ( sequence == nil )
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    VSequence *sequence;
+    UIImageView *previewImageView;
+    
+    if ([cell isKindOfClass:[VStreamCollectionCell class]])
+    {
+        sequence = ((VStreamCollectionCell *)cell).sequence;
+        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
+    }
+    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
+    {
+        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
+        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
+    }
+    else
     {
         return;
     }
+
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.placeholderImage = previewImageView.image;
+    contentViewController.delegate = self;
+    
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav
+                       animated:YES
+                     completion:nil];
     
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
@@ -442,35 +456,41 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
+    VStreamCollectionCell *cell;
     
-    if ([sequence isPreviewWebContent])
+    if ([sequence isPoll])
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
+    }
+    else if ([sequence isPreviewWebContent])
     {
         NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
         VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                              forIndexPath:indexPath];
+                                                                                               forIndexPath:indexPath];
         cell.sequence = sequence;
         return cell;
     }
     else
     {
-        VStreamCollectionCell *cell;
-        if ([sequence isPoll])
-        {
-            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
-                                                                  forIndexPath:indexPath];
-        }
-        else
-        {
-            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
-                                                                  forIndexPath:indexPath];
-        }
-        cell.delegate = self.actionDelegate ? self.actionDelegate : self;
-        cell.sequence = sequence;
-        
-        [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
-        
-        return cell;
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
     }
+    cell.delegate = self.actionDelegate ? self.actionDelegate : self;
+    cell.sequence = sequence;
+    
+    [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
+    
+    if ( sequence != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                  VTrackingKeyStreamId : self.currentStream.remoteId,
+                                  VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyUrls : sequence.tracking.cellView };
+        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+    }
+    
+    return cell;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource
@@ -573,6 +593,28 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
+}
+
+- (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    // Error checking
+    if ( !hashtag || !hashtag.length )
+    {
+        return;
+    }
+    
+    // Prevent another stream view for the current tag from being pushed
+    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
+    {
+        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
+        {
+            return;
+        }
+    }
+    
+    // Instanitate and push to stack
+    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
+    [self.navigationController pushViewController:hashtagStream animated:YES];
 }
 
 #pragma mark - Actions

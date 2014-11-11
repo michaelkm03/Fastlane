@@ -9,10 +9,14 @@
 #import "VContentCommentsCell.h"
 
 // Subviews
+#import "VDefaultProfileImageView.h"
 #import "VCommentTextAndMediaView.h"
 
 // Theme
 #import "VThemeManager.h"
+
+#import "UIImage+ImageCreation.h"
+#import "AVAsset+Orientation.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
@@ -22,7 +26,7 @@ static NSCache *_sharedImageCache = nil;
 
 @interface VContentCommentsCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *commentersAvatarImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *commentersAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
@@ -91,6 +95,7 @@ static NSCache *_sharedImageCache = nil;
     self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)prepareContentAndMediaView
@@ -176,6 +181,17 @@ static NSCache *_sharedImageCache = nil;
                                                            placeholderImage:nil
                                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
          {
+             /**
+              If the assetOrientation property was set, it was done so in a temporary comment
+              after the comment was posted and before it could be reloaded from the server.
+              In those cases, the rotation of the preview image will be off and requires adjustment
+              */
+             if ( self.mediaAssetOrientation != nil )
+             {
+                 UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
+                 image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
+             }
+             
              [imageView setImage:image];
              [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^{
                  imageView.alpha = 1.0f;

@@ -15,8 +15,6 @@
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
-#import "VHashTags.h"
-
 #import "VUserProfileViewController.h"
 
 #import "VSequence+Fetcher.h"
@@ -36,19 +34,21 @@
 
 #import "VSettingManager.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate>
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
+
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *captionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptionBufferConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
-
-@property (nonatomic, strong) NSArray *hashTagRanges;
 
 @end
 
@@ -61,24 +61,47 @@ static const CGFloat kDescriptionBuffer = 15.0;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
 
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    if (!isTemplateC)
-    {
-        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    }
-    else
-    {
-        self.backgroundColor = [UIColor whiteColor];
-    }
     
-    self.descriptionLabel.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
+    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
+    
+    [self applyConstraints:isTemplateC];
+}
+
+- (void)applyConstraints:(BOOL)isTemplateC
+{
+    NSParameterAssert( self.captionTextView.superview != nil );
+    
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.captionTextView,
+                                                                                  @"shadeView" : self.shadeView }];
+    NSString *formatV;
+    if ( isTemplateC )
+    {
+        [views setValue:self.actionView forKey:@"actionView"];
+        formatV = @"V:[shadeView]-15-[textView]-15-[actionView]";
+    }
+    else
+    {
+        formatV = @"V:[textView]-21-|";
+    }
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:formatV options:0 metrics:nil views:views];
+    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views];
+    [self.captionTextView.superview addConstraints:constraintsV];
+    [self.captionTextView.superview addConstraints:constraintsH];
+}
+
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.delegate hashTag:text tappedFromSequence:self.sequence fromView:self];
+    }
 }
 
 - (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
@@ -89,26 +112,20 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
 - (void)setDescriptionText:(NSString *)text
 {
-    if (!self.sequence.nameEmbeddedInContent.boolValue)
+    if (self.sequence.nameEmbeddedInContent.boolValue == NO)
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
-        self.hashTagRanges = [VHashTags detectHashTags:text];
-        
-        if ([self.hashTagRanges count] > 0)
-        {
-            [VHashTags formatHashTagsInString:newAttributedCellText
-                                withTagRanges:self.hashTagRanges
-                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
-        }
-        
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        self.captionTextView.linkDelegate = self;
+        self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+        self.captionTextView.attributedText = newAttributedCellText;
         
         self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
     else
     {
-        self.descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
         
         self.descriptionBufferConstraint.constant = 0;
     }
@@ -129,7 +146,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
     [self setDescriptionText:self.sequence.name];
     
-    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
     
@@ -254,7 +271,6 @@ static const CGFloat kDescriptionBuffer = 15.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     paragraphStyle.maximumLineHeight = 25;
     paragraphStyle.minimumLineHeight = 25;
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
     attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     
     if (!isTemplateC)
@@ -266,6 +282,18 @@ static const CGFloat kDescriptionBuffer = 15.0;
         attributes[NSShadowAttributeName] = shadow;
     }
     return [attributes copy];
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.delegate hashTag:value
+            tappedFromSequence:self.sequence
+                      fromView:self];
+    }
 }
 
 @end

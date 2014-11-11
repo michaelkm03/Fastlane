@@ -78,6 +78,10 @@
 "Missing Content"           =   "Uh Oh!";
 "Missing Content Message"   =   "We can't find what you're looking for!";
 
+"MissingMedia"          =   "You must have 2 photos.";
+"QuestionTextToShort"   =   "Your question must be at least 2 characters long.";
+"AnswerTextToShort"     =   "Your answers must be at least 2 characters long.";
+
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
@@ -340,7 +344,7 @@
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
 
-"Version"               =   "Version %@";
+"Version"               =   "Version %@ (%@)";
 
 "ToSText"               =   "Terms of Service";
 "ToSAgreement"          =   "I'm at least 13 years old and agree to Terms of Service";

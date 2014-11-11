@@ -69,7 +69,10 @@ NSString * const VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
+    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    stream.hashtag = hashTag;
+    return stream;
 }
 
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
@@ -124,7 +127,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
-           managedObjectContext:(NSManagedObjectContext *)context
+      managedObjectContext:(NSManagedObjectContext *)context
 {
     static NSCache *streamCache;
     static dispatch_once_t onceToken;
@@ -136,7 +139,15 @@ NSString * const VStreamFilterTypePopular = @"popular";
     VStream *object = [streamCache objectForKey:apiPath];
     if (object)
     {
-        return object;
+        if (object.managedObjectContext != context)
+        {
+            // If the contexts don't match, release the safety valve: dump all the chached objects and re-create them.
+            [streamCache removeAllObjects];
+        }
+        else
+        {
+            return object;
+        }
     }
     
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([VStream class])];

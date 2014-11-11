@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 4
 
+// CCHLinkTextView
+#define COCOAPODS_POD_AVAILABLE_CCHLinkTextView
+#define COCOAPODS_VERSION_MAJOR_CCHLinkTextView 1
+#define COCOAPODS_VERSION_MINOR_CCHLinkTextView 0
+#define COCOAPODS_VERSION_PATCH_CCHLinkTextView 1
+
 // FlurrySDK
 #define COCOAPODS_POD_AVAILABLE_FlurrySDK
 #define COCOAPODS_VERSION_MAJOR_FlurrySDK 5
@@ -41,6 +47,12 @@
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
 #define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+
+// MarqueeLabel
+#define COCOAPODS_POD_AVAILABLE_MarqueeLabel
+#define COCOAPODS_VERSION_MAJOR_MarqueeLabel 2
+#define COCOAPODS_VERSION_MINOR_MarqueeLabel 0
+#define COCOAPODS_VERSION_PATCH_MarqueeLabel 8
 
 // RKValueTransformers
 #define COCOAPODS_POD_AVAILABLE_RKValueTransformers

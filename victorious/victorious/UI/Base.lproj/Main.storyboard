@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -450,9 +451,27 @@
             <point key="canvasLocation" x="-1633" y="-2413"/>
         </scene>
         <!--Root View Controller-->
+        <scene sceneID="pW9-4c-3wc">
+            <objects>
+                <viewController storyboardIdentifier="VRootViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2yS-vh-N7a" customClass="VRootViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qfE-LN-agB"/>
+                        <viewControllerLayoutGuide type="bottom" id="aAx-r2-XFj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MQB-nc-6sX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="arB-cW-2q8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4997" y="-2357"/>
+        </scene>
+        <!--Side Menu View Controller-->
         <scene sceneID="SBu-AO-Tpm">
             <objects>
-                <viewController storyboardIdentifier="rootController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L3S-Yk-w4N" customClass="VRootViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VSideMenuViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L3S-Yk-w4N" customClass="VSideMenuViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fcF-4G-gYg"/>
                         <viewControllerLayoutGuide type="bottom" id="bi6-Tb-VbN"/>
@@ -641,9 +660,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="2ta-Hu-rne">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="tQg-av-FX1" kind="relationship" relationship="rootViewController" id="bed-2x-Xs3"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0Z-1A-ZGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -652,7 +668,7 @@
         <!--Loading View Controller-->
         <scene sceneID="dyI-d4-gTi">
             <objects>
-                <viewController storyboardIdentifier="loading" id="tQg-av-FX1" customClass="VLoadingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VLoadingViewController" id="tQg-av-FX1" customClass="VLoadingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="plz-61-Lg9"/>
                         <viewControllerLayoutGuide type="bottom" id="eWz-iW-3nF"/>

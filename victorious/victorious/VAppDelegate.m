@@ -18,6 +18,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
+#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -74,7 +75,7 @@ static BOOL isRunningTests(void) __attribute__((const));
 
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    
+
     [self reportFirstInstall];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
