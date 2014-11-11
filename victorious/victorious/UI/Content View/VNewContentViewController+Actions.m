@@ -154,7 +154,8 @@
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
-                                                               detailText:self.viewModel.repostCountText];
+                                                               detailText:self.viewModel.repostCountText
+                                                                  enabled:!self.viewModel.hasReposted];
         repostItem.selectionHandler = ^(void)
         {
             [contentViewController dismissViewControllerAnimated:YES
