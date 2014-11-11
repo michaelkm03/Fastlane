@@ -26,8 +26,6 @@
 
 @property (nonatomic, strong)   MBProgressHUD                  *progressHUD;
 
-@property (nonatomic)           NSInteger                       seqID;
-
 @end
 
 @implementation VRemixSelectViewController
@@ -37,8 +35,8 @@
     UINavigationController     *remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixSelectViewController *rootViewController  =   (VRemixSelectViewController *)remixViewController.topViewController;
     rootViewController.sourceURL = url;
-    rootViewController.parentID = nodeID;
-    rootViewController.seqID = sequenceID;
+    rootViewController.parentNodeID = nodeID;
+    rootViewController.parentSequenceID = sequenceID;
     
     return remixViewController;
 }
@@ -110,7 +108,7 @@
 {
     [self.videoPlayerViewController.player pause];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.videoPlayerViewController.startSeconds];
+    [self downloadVideoSegmentForSequenceID:self.parentSequenceID atTime:self.videoPlayerViewController.startSeconds];
 }
 
 - (IBAction)scrubberDidStartMoving:(id)sender
@@ -157,7 +155,8 @@
     {
         VRemixTrimViewController     *trimViewController = (VRemixTrimViewController *)segue.destinationViewController;
         trimViewController.sourceURL = self.targetURL;
-        trimViewController.parentID = self.parentID;
+        trimViewController.parentNodeID = self.parentNodeID;
+        trimViewController.parentSequenceID = self.parentSequenceID;
     }
 }
 

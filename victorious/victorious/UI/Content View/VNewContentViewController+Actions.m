@@ -19,6 +19,7 @@
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VNode.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VUser+Fetcher.h"
@@ -38,12 +39,41 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
+#import "VSequenceActionController.h"
+
+#import <objc/runtime.h>
+
+static const char kSequenceActionControllerKey;
+
+@interface VNewContentViewController (ActionsPrivate)
+
+@property VSequenceActionController *sequenceActionController;
+
+@end
 
 @implementation VNewContentViewController (Actions)
 
+- (void)setSequenceActionController:(VSequenceActionController *)sequenceActionController
+{
+    objc_setAssociatedObject(self, &kSequenceActionControllerKey, sequenceActionController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VSequenceActionController *)sequenceActionController
+{
+    VSequenceActionController *sequenceActionController = objc_getAssociatedObject(self, &kSequenceActionControllerKey);
+    return sequenceActionController;
+}
+
 - (IBAction)pressedMore:(id)sender
 {
+    if (self.sequenceActionController == nil)
+    {
+        self.sequenceActionController = [[VSequenceActionController alloc] init];
+    }
+    
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
@@ -58,8 +88,7 @@
     {
         [contentViewController dismissViewControllerAnimated:YES completion:^
          {
-             VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.viewModel.user];
-             [contentViewController.navigationController pushViewController:profileViewController animated:YES];
+             [self.sequenceActionController showPosterProfileFromViewController:contentViewController sequence:self.viewModel.sequence];
          }];
     };
     [actionItems addObject:userItem];
@@ -67,7 +96,6 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        
                                         VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
@@ -87,41 +115,20 @@
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
-            if (![VObjectManager sharedManager].mainUser)
-            {
-                [contentViewController dismissViewControllerAnimated:YES
-                                         completion:^
-                 {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController]
-                                        animated:YES
-                                      completion:NULL];
-                 }];
-                
-                return;
-            }
-            
             [contentViewController dismissViewControllerAnimated:YES
-                                     completion:^
+                                                      completion:^
              {
-                 NSDictionary *params = @{ VTrackingKeySequenceId : contentViewController.viewModel.sequence.remoteId,
-                                           VTrackingKeySequenceName : contentViewController.viewModel.sequence.name };
-                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRemixSelected parameters:params];
-                 
-                 if (contentViewController.viewModel.type == VContentViewTypeVideo)
+                 VSequence *sequence = self.viewModel.sequence;
+                 if ([sequence isVideo])
                  {
-                     UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:contentViewController.viewModel.sourceURLForCurrentAssetData
-                                                                                             sequenceID:[contentViewController.viewModel.sequence.remoteId integerValue]
-                                                                                                 nodeID:contentViewController.viewModel.nodeID];
-                     [self presentViewController:remixVC animated:YES completion:nil];
+                     [self.sequenceActionController videoRemixActionFromViewController:contentViewController
+                                                                            asset:[self.viewModel.sequence firstNode].assets.firstObject
+                                                                             node:[sequence firstNode]
+                                                                         sequence:sequence];
                  }
                  else
                  {
-                     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                              delegate:self
-                                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                                destructiveButtonTitle:nil
-                                                                     otherButtonTitles:NSLocalizedString(@"Meme", nil), NSLocalizedString(@"Quote", nil), nil];
-                     [actionSheet showInView:contentViewController.view];
+                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
                  }
              }];
         };
@@ -130,24 +137,13 @@
             [contentViewController dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 VStream *stream = [VStream remixStreamForSequence:self.viewModel.sequence];
-                 
-                 VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
-                 
-                 VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
-                 noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
-                 noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
-                 noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
-                 streamCollection.noContentView = noRemixView;
-                 
-                 [contentViewController.navigationController pushViewController:streamCollection animated:YES];
-                 
+                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll] )
+    if ( ![self.viewModel.sequence isPoll])
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
@@ -159,27 +155,20 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 if (![VObjectManager sharedManager].mainUser)
-                 {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                     return;
-                 }
                  if (contentViewController.viewModel.hasReposted)
                  {
                      return;
                  }
-                 
-                 [contentViewController.viewModel repost];
+                 [self.sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
              }];
         };
         repostItem.detailSelectionHandler = ^(void)
         {
+            
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
-                 vc.sequence = self.viewModel.sequence;
-                 [self.navigationController pushViewController:vc animated:YES];
+                 [self.sequenceActionController showRepostersFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:repostItem];
@@ -191,38 +180,12 @@
     
     void (^shareHandler)(void) = ^void(void)
     {
-        //Remove the styling for the mail view.
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
-        VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.viewModel.sequence,
-                                                                                                                     self.viewModel.shareText,
-                                                                                                                     self.viewModel.shareURL]
-                                                                                             applicationActivities:@[fbActivity]];
-        
-        NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
-        [activityViewController setValue:emailSubject forKey:@"subject"];
-        activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
-        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
-        {
-            [[VThemeManager sharedThemeManager] applyStyling];
-            [self reloadInputViews];
-            if (activityType == nil)
-            {
-                return;
-            }
-            
-            NSDictionary *params = @{ VTrackingKeySequenceCategory : self.viewModel.analyticsContentTypeText,
-                                      VTrackingKeyActivityType : activityType };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
-        };
-        
         [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
          {
-             [contentViewController presentViewController:activityViewController
-                                animated:YES
-                              completion:nil];
+             [self.sequenceActionController shareFromViewController:contentViewController
+                                                      sequence:contentViewController.viewModel.sequence
+                                                          node:contentViewController.viewModel.currentNode];
          }];
     };
     shareItem.selectionHandler = shareHandler;
@@ -270,33 +233,11 @@
                                                              detailText:nil];
         flagItem.selectionHandler = ^(void)
         {
-            [[VObjectManager sharedManager] flagSequence:self.viewModel.sequence
-                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            
+            [contentViewController dismissViewControllerAnimated:YES
+                                                      completion:^
              {
-                 [contentViewController dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                             message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                   otherButtonTitles:nil];
-                      [alert show];
-                  }];
-             }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 [contentViewController dismissViewControllerAnimated:YES
-                                          completion:^
-                  {
-                      UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                             message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                   otherButtonTitles:nil];
-                      [alert show];
-                      
-                  }];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:flagItem];
@@ -305,31 +246,6 @@
     [actionSheetViewController addActionItems:actionItems];
     
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ( buttonIndex != 0 && buttonIndex != 1 )
-    {
-        return;
-    }
-    
-    NSData *filteredImageData = UIImageJPEGRepresentation(self.placeholderImage, VConstantJPEGCompressionQuality);
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-    
-    if ([filteredImageData writeToURL:tempFile atomically:NO])
-    {
-        VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-        publishViewController.previewImage = self.placeholderImage;
-        publishViewController.parentID = [self.viewModel.sequence.remoteId integerValue];
-        publishViewController.completion = nil;
-        publishViewController.captionType = buttonIndex == 0 ? VCaptionTypeMeme : VCaptionTypeQuote;
-        publishViewController.mediaURL = tempFile;
-        
-        UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-        [self presentViewController:remixNav animated:YES completion:nil];
-    }
 }
 
 @end

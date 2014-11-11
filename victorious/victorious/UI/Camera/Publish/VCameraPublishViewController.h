@@ -18,7 +18,8 @@
 @property (nonatomic)   VLoopType               playbackLooping;
 @property (nonatomic)   VCaptionType            captionType;
 
-@property (nonatomic)   NSInteger               parentID;
+@property (nonatomic)   NSInteger               parentNodeID;
+@property (nonatomic)   NSInteger               parentSequenceID;
 @property (nonatomic)   BOOL                    didSelectAssetFromLibrary;
 
 /**
