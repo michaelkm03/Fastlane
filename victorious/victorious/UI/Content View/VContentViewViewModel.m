@@ -131,6 +131,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.hasReposted = YES;
+         self.sequence.repostCount = @(self.sequence.repostCount.integerValue + 1);
      }
                                      failBlock:nil];
 }
@@ -304,6 +305,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 - (NSString *)name
 {
     return self.sequence.name;
+}
+
+- (BOOL)shouldShowTitle
+{
+    BOOL isPollOrnameEmbedded = ([self.sequence.nameEmbeddedInContent boolValue]) || ([self.sequence isPoll]);
+    return !isPollOrnameEmbedded;
 }
 
 - (NSURL *)videoURL

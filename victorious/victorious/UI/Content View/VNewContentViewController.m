@@ -7,6 +7,7 @@
 //
 
 #import "VNewContentViewController.h"
+#import "VObjectManager+ContentCreation.h"
 
 // Theme
 #import "VThemeManager.h"
@@ -33,6 +34,7 @@
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
+#import "MarqueeLabel.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -75,6 +77,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
+@property (weak, nonatomic) IBOutlet MarqueeLabel *titleLabel;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -308,6 +311,15 @@
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    self.titleLabel.hidden = !self.viewModel.shouldShowTitle;
+    self.titleLabel.text = self.viewModel.name;
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.titleLabel.shadowColor = [UIColor blackColor];
+    self.titleLabel.shadowOffset = CGSizeMake(0, 0.5f);
+    self.titleLabel.layer.masksToBounds = NO;
+    self.titleLabel.clipsToBounds = NO;
+    self.titleLabel.fadeLength = CGRectGetHeight(self.titleLabel.bounds);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -346,6 +358,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginViewController:)
                                                  name:VExperienceEnhancerBarDidRequiredLoginNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentDidPublish:)
+                                                 name:VUploadManagerTaskFinishedNotification
                                                object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
@@ -500,6 +516,14 @@
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.viewModel reloadData];
+}
+
+- (void)contentDidPublish:(NSNotification *)notification
+{
+    // If content publication has occurred while content view is open,
+    // we should assume that this content is being remixed or reposted and
+    // the remix and repost counts needs updating:
+    [self.viewModel fetchSequenceData];
 }
 
 #pragma mark - IBActions

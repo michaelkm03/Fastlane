@@ -46,11 +46,9 @@
 - (UITextView *)createTappableTextViewWithFrame:(CGRect)frame;
 
 /**
- Use this method to set the delegate.  There are some specific requirements for this delegate
- that go beyond simply conforming to a protocol, so make sure to check the return value and
- read the error message if something's not working/
+ Use this method to set the delegate.
  */
-- (BOOL)setDelegate:(id<VTappableTextManagerDelegate>)delegate error:(NSError**)error;
+- (void)setDelegate:(id<VTappableTextManagerDelegate>)delegate;
 
 /**
  Sets the internally (weak) referenced delegate to nil.  This is provided because the delegate

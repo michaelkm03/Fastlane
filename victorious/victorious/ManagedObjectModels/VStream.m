@@ -17,5 +17,6 @@
 @dynamic filterName;
 @dynamic streamContentType;
 @dynamic streamItems;
+@dynamic hashtag;
 
 @end

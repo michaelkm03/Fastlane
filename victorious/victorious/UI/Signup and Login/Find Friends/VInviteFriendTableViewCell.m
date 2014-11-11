@@ -17,7 +17,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 @interface VInviteFriendTableViewCell ()
 
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followUserControl;
 @property (nonatomic, weak) IBOutlet UIImageView *profileImage;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UILabel *profileLocation;
@@ -68,6 +67,10 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
     
+    NSInteger profileID = profile.remoteId.integerValue;
+    NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    self.followUserControl.hidden = (profileID == mainUserID);
+    
     [self updateFollowStatus];
 }
 
@@ -80,6 +83,11 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)updateFollowStatus
 {
+    //If we get into a weird state and the relaionships are the same don't do anything
+    if (self.followUserControl.following == self.haveRelationship)
+    {
+        return;
+    }
     if (!self.shouldAnimateFollowing)
     {
         self.followUserControl.following = self.haveRelationship;

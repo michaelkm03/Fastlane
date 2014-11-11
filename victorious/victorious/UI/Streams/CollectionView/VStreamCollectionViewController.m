@@ -12,6 +12,7 @@
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
+#import "VProfileHeaderCell.h"
 
 //Controllers
 #import "VCommentsContainerViewController.h"
@@ -105,9 +106,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
+    NSString *title = [@"#" stringByAppendingString:hashtag];
     VStream *defaultStream = [VStream streamForHashTag:hashtag];
-    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:@[defaultStream] title:[@"#" stringByAppendingString:hashtag]];
-    return communityStream;
+    VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
+                                                                             andAllStreams:@[ defaultStream ]
+                                                                                     title:title];
+    return streamVC;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
@@ -328,6 +332,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
+    
+    // Return if the profile header was tapped
+    if ([[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath] isKindOfClass:[VProfileHeaderCell class]])
+    {
+        return;
+    }
+    
     UIImageView *previewImageView = ((VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath]).previewImageView;
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
@@ -537,6 +548,28 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
+}
+
+- (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    // Error checking
+    if ( !hashtag || !hashtag.length )
+    {
+        return;
+    }
+    
+    // Prevent another stream view for the current tag from being pushed
+    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
+    {
+        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
+        {
+            return;
+        }
+    }
+    
+    // Instanitate and push to stack
+    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
+    [self.navigationController pushViewController:hashtagStream animated:YES];
 }
 
 #pragma mark - Actions

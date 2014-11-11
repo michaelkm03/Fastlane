@@ -52,6 +52,9 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
 
 @property (nonatomic, strong) NSArray *hashTagRanges;
+@property (nonatomic, strong) NSTextStorage *textStorage;
+@property (nonatomic, strong) NSLayoutManager *containerLayoutManager;
+@property (nonatomic, strong) NSTextContainer *textContainer;
 
 @end
 
@@ -64,24 +67,59 @@ static const CGFloat kDescriptionBuffer = 15.0;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
 
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    if (!isTemplateC)
-    {
-        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    }
-    else
-    {
-        self.backgroundColor = [UIColor whiteColor];
-    }
     
-    self.descriptionLabel.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
+    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
+    
+    // Setup the layoutmanager, text container, and text storage
+    self.containerLayoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
+    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.heightTracksTextView = YES;
+    [self.containerLayoutManager addTextContainer:self.textContainer];
+    self.textStorage = [[NSTextStorage alloc] init];
+    [self.textStorage addLayoutManager:self.containerLayoutManager];
+    
+    [self applyConstraints:isTemplateC];
+    
+    self.descriptionTextView.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
+    self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
+}
+
+- (void)applyConstraints:(BOOL)isTemplateC
+{
+    NSParameterAssert( self.descriptionTextView.superview != nil );
+    
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.descriptionTextView,
+                                                                                  @"shadeView" : self.shadeView }];
+    NSString *formatV;
+    if ( isTemplateC )
+    {
+        [views setValue:self.actionView forKey:@"actionView"];
+        formatV = @"V:[shadeView]-15-[textView]-15-[actionView]";
+    }
+    else
+    {
+        formatV = @"V:[textView]-21-|";
+    }
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:formatV options:0 metrics:nil views:views];
+    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views];
+    [self.descriptionTextView.superview addConstraints:constraintsV];
+    [self.descriptionTextView.superview addConstraints:constraintsH];
+}
+
+- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.delegate hashTag:text tappedFromSequence:self.sequence fromView:self];
+    }
 }
 
 - (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
@@ -97,34 +135,23 @@ static const CGFloat kDescriptionBuffer = 15.0;
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
         self.hashTagRanges = [VHashTags detectHashTags:text];
-        
-        if ([self.hashTagRanges count] > 0)
-        {
-            [self.hashTagRanges enumerateObjectsUsingBlock:^(id range, NSUInteger idx, BOOL *stop)
-             {
-                 NSRange justwordRange = [range rangeValue];
-                 NSRange fullRange = NSMakeRange(justwordRange.location-1, justwordRange.length+1);
-                 [newAttributedCellText addAttribute:CCHLinkAttributeName
-                                                 value:[newAttributedCellText.string
-                                                        substringWithRange:[range rangeValue]]
-                                                 range:fullRange];
-             }];
-        }
+
         self.descriptionTextView.linkTextAttributes = @{
                                                   NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
                                                   };
         self.descriptionTextView.linkTextTouchAttributes = @{
                                                        NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
                                                        };
-        self.descriptionTextView.attributedText = newAttributedCellText;
         self.descriptionTextView.minimumPressDuration = 99999;
         self.descriptionTextView.linkDelegate = self;
+
+        self.descriptionTextView.attributedText = newAttributedCellText;
         
         self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
     else
     {
-        self.descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        self.descriptionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
         
         self.descriptionBufferConstraint.constant = 0;
     }
@@ -145,7 +172,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
     [self setDescriptionText:self.sequence.name];
     
-    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.descriptionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
     

@@ -138,7 +138,7 @@ static NSString * const   kTemporaryContentStatus = @"temp";
 
 static NSString * const   kUserStatusComplete = @"complete";
 static NSString * const   kUserStatusIncomplete = @"incomplete";
-static NSString * const   kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
+static NSString * const __deprecated kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
 
 #pragma mark - Access Levels
 
@@ -147,6 +147,7 @@ static NSString * const   kUserAccessLevel = @"api_user";
 
 #pragma mark - Storyboard IDs
 
+static NSString * const   kMainStoryboardName                  = @"Main";
 static NSString * const   kStreamContainerID                   = @"streamcontainer";
 static NSString * const   kModalStreamContainerID              = @"modalstreamcontainer";
 static NSString * const   kHashTagStreamStoryboardID           = @"hashtagstream";
