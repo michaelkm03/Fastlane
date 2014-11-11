@@ -14,9 +14,19 @@
 #import "VHashTagTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 
+@interface CCHLinkTextView (testingExtensions)
+
+- (void)didTapAtLocation:(CGPoint)location;
+- (void)didLongPressAtLocation:(CGPoint)location;
+
+@end
+
 @interface VHashTagTextViewTests : XCTestCase <CCHLinkTextViewDelegate>
 
 @property (nonatomic, strong) VHashTagTextView *textView;
+
+@property (nonatomic, strong) NSString *expectedValue;
+@property (nonatomic, strong) NSString *delegateValue;
 
 @end
 
@@ -25,7 +35,8 @@
 - (void)setUp
 {
     [super setUp];
-    self.textView = [[VHashTagTextView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    self.textView = [[VHashTagTextView alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+    self.textView.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)tearDown
@@ -91,6 +102,22 @@
      {
          XCTAssert([[attrs valueForKey:CCHLinkAttributeName] isEqualToString:@"hashy"]);
      }];
+}
+
+- (void)testDelegateFired
+{
+    self.textView.linkDelegate = self;
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"#hashy"];
+    self.expectedValue = @"hashy";
+    [self.textView didTapAtLocation:CGPointMake(CGRectGetMidX(self.textView.bounds), CGRectGetMidY(self.textView.bounds))];
+    XCTAssert([self.expectedValue isEqualToString:self.delegateValue]);
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    self.delegateValue = value;
 }
 
 @end
