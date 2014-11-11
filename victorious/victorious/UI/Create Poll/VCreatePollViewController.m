@@ -196,7 +196,7 @@ static char KVOContext;
     NSCharacterSet *whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     self.questionTextView.text = [self.questionTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
     self.leftAnswerTextView.text = [self.leftAnswerTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
-    self.rightAnswerTextView.text =[self.rightAnswerTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
+    self.rightAnswerTextView.text = [self.rightAnswerTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
     
     NSString *errorMessage = @"";
     if (!self.firstMediaURL || !self.secondMediaURL)
