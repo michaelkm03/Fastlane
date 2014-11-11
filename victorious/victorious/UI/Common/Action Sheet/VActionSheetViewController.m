@@ -13,6 +13,8 @@
 
 // SubViews
 #import "VDefaultProfileImageView.h"
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
 
 // Cells
 #import "VActionItemTableViewCell.h"
@@ -22,14 +24,10 @@
 #import "UIView+MotionEffects.h"
 #import "UIView+VShadows.h"
 
-typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
-{
-    VActionSheetTableViewSecionDescription,
-    VActionSheetTableViewSecionActions,
-    VActionSheetTableViewSecionCount
-};
+// Gesture Recognizers
+#import "CCHLinkGestureRecognizer.h"
 
-@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
@@ -45,6 +43,8 @@ typedef NS_ENUM(NSInteger, VActionSheetTableViewSecion)
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *titleTextView;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 
@@ -97,8 +97,15 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-
+    
     [self reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setupTitleTextView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -149,6 +156,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (void)reloadData
 {
+    __block CGFloat blurredContainerHeight = CGRectGetHeight(self.blurringContainer.bounds) - CGRectGetHeight(self.tableView.bounds);
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     [self.addedItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
      {
@@ -161,6 +170,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          {
              case VActionItemTypeDefault:
                  [actionItems addObject:actionItem];
+                 blurredContainerHeight = blurredContainerHeight + 44.0f;
                  break;
              case VActionItemTypeUser:
                  [self.AvatarImageView setProfileImageURL:actionItem.avatarURL];
@@ -174,86 +184,42 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          }
      }];
     self.actionItems = [NSArray arrayWithArray:actionItems];
+    self.blurringContainerHeightConstraint.constant = fminf(blurredContainerHeight, CGRectGetHeight(self.view.bounds) * 0.75f);
 }
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return VActionSheetTableViewSecionCount;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    switch (section)
-    {
-        case VActionSheetTableViewSecionDescription:
-            return 1;
-        case VActionSheetTableViewSecionActions:
-            return (NSInteger)self.actionItems.count;
-    }
-    return 0;
+    return (NSInteger)self.actionItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView 
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
+    VActionItemTableViewCell *actionitemCell = [tableView dequeueReusableCellWithIdentifier:@"VActionItemTableViewCell"];
+    VActionItem *itemForCell = [self.actionItems objectAtIndex:indexPath.row];
+    actionitemCell.title = itemForCell.title;
+    actionitemCell.detailTitle = itemForCell.detailText;
+    actionitemCell.actionIcon = itemForCell.icon;
+    actionitemCell.separatorInsets = self.tableView.separatorInset;
+    actionitemCell.enabled = itemForCell.enabled;
+    actionitemCell.accessorySelectionHandler = ^(void)
     {
-        case VActionSheetTableViewSecionDescription:
+        if (itemForCell.detailSelectionHandler)
         {
-            VDescriptionTableViewCell *descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"VDescriptionTableViewCell"];
-            descriptionCell.descriptionText = self.descriptionItem.detailText;
-            descriptionCell.hashTagSelectionBlock = ^void(NSString *hashTag)
-            {
-                if (self.descriptionItem.hashTagSelectionHandler)
-                {
-                    self.descriptionItem.hashTagSelectionHandler(hashTag);
-                }
-            };
-            return descriptionCell;
+            itemForCell.detailSelectionHandler();
         }
-        case VActionSheetTableViewSecionActions:
-        {
-            VActionItemTableViewCell *actionitemCell = [tableView dequeueReusableCellWithIdentifier:@"VActionItemTableViewCell"];
-            VActionItem *itemForCell = [self.actionItems objectAtIndex:indexPath.row];
-            actionitemCell.title = itemForCell.title;
-            actionitemCell.detailTitle = itemForCell.detailText;
-            actionitemCell.actionIcon = itemForCell.icon;
-            actionitemCell.separatorInsets = self.tableView.separatorInset;
-            actionitemCell.enabled = itemForCell.enabled;
-            actionitemCell.accessorySelectionHandler = ^(void)
-            {
-                if (itemForCell.detailSelectionHandler)
-                {
-                    itemForCell.detailSelectionHandler();
-                }
-            };
-            
-            return actionitemCell;
-        }
-    }
-    return nil;
+    };
+    
+    return actionitemCell;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case VActionSheetTableViewSecionDescription:
-        {
-            CGFloat height = [VDescriptionTableViewCell desiredHeightWithTableViewWidth:CGRectGetWidth(tableView.bounds)
-                                                                         text:self.descriptionItem.detailText];
-            return height;
-        }
-        case VActionSheetTableViewSecionActions:
-        {
-            return 44.0f;
-        }
-    }
     return 44.0f;
 }
 
@@ -264,17 +230,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         return NO;
     }
     
-    switch (indexPath.section)
-    {
-        case VActionSheetTableViewSecionDescription:
-            return NO;
-        case VActionSheetTableViewSecionActions:
-        {
-            VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
-            return actionItem.enabled;
-        }
-    }
-    return YES;
+    VActionItem *actionItem = [self.actionItems objectAtIndex:indexPath.row];
+    return actionItem.enabled;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -284,6 +241,32 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     if (actionItem.selectionHandler)
     {
         actionItem.selectionHandler();
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)setupTitleTextView
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc]initWithString:self.descriptionItem.title
+                                                                                               attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+                                                                                                            NSParagraphStyleAttributeName:paragraphStyle,
+                                                                                                            NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
+    [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
+    self.titleTextView.attributedText = mutableAttributedString;
+    self.titleTextView.linkDelegate = self;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    if (self.descriptionItem.hashTagSelectionHandler)
+    {
+        self.descriptionItem.hashTagSelectionHandler(value);
     }
 }
 

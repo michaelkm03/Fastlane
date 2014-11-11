@@ -12,6 +12,7 @@ target :victorious do
     pod 'MarqueeLabel', :git => 'https://github.com/TouchFrame/MarqueeLabel.git'
     pod 'MBProgressHUD', '~> 0.8'
     pod 'FlurrySDK', '~> 5.4'
+    pod 'CCHLinkTextView'
     link_with 'victorious'
 
     target :test do
