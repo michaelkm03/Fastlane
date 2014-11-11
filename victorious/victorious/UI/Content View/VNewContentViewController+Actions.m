@@ -38,6 +38,7 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 #import "VObjectManager+Login.h"
 
@@ -81,19 +82,19 @@
 
     [actionItems addObject:descripTionItem];
     
-    if ([self.viewModel.sequence canRemix] && [VObjectManager sharedManager].authorized)
+    if ([self.viewModel.sequence canRemix])
     {
         VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
                                                               actionIcon:[UIImage imageNamed:@"icon_remix"]
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
-            if (![VObjectManager sharedManager].mainUser)
+            if (![VObjectManager sharedManager].authorized)
             {
                 [contentViewController dismissViewControllerAnimated:YES
                                          completion:^
                  {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController]
+                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
                                         animated:YES
                                       completion:NULL];
                  }];
@@ -148,23 +149,24 @@
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll] && [VObjectManager sharedManager].authorized)
+    if ( ![self.viewModel.sequence isPoll])
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
-                                                               detailText:self.viewModel.repostCountText
-                                                                  enabled:!self.viewModel.hasReposted];
+                                                               detailText:self.viewModel.repostCountText];
         repostItem.selectionHandler = ^(void)
         {
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 if (![VObjectManager sharedManager].mainUser)
+                 if (![VObjectManager sharedManager].authorized)
                  {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                     return;
+                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
+                                        animated:YES
+                                      completion:NULL];
                  }
+                 
                  if (contentViewController.viewModel.hasReposted)
                  {
                      return;
