@@ -316,19 +316,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - UICollectionViewDelegate
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    if (sequence)
-    {
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyStreamId : self.currentStream.remoteId,
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellView };
-        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-    }
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
@@ -444,6 +431,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
+    
+    if ( sequence != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                  VTrackingKeyStreamId : self.currentStream.remoteId,
+                                  VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyUrls : sequence.tracking.cellView };
+        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+    }
     
     return cell;
 }
