@@ -13,6 +13,8 @@
 
 // SubViews
 #import "VDefaultProfileImageView.h"
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
 
 // Cells
 #import "VActionItemTableViewCell.h"
@@ -23,7 +25,10 @@
 #import "UIView+VShadows.h"
 #import "VHashTags.h"
 
-@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
+// Gesture Recognizers
+#import "CCHLinkGestureRecognizer.h"
+
+@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
@@ -39,7 +44,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
-@property (weak, nonatomic) IBOutlet UITextView *titleTextView;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *titleTextView;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 
@@ -239,19 +245,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     }
 }
 
-#pragma mark - UITextViewDelegate
-
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    if (self.descriptionItem.hashTagSelectionHandler)
-    {
-        NSString *selectedHashTag = [textView.text substringWithRange:characterRange];
-        selectedHashTag = [selectedHashTag stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
-        self.descriptionItem.hashTagSelectionHandler(selectedHashTag);
-    }
-    return NO;
-}
-
 #pragma mark - Private Methods
 
 - (void)setupTitleTextView
@@ -264,19 +257,35 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                                                                                                             NSParagraphStyleAttributeName:paragraphStyle,
                                                                                                             NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
     NSArray *hashTagLocations = [VHashTags detectHashTags:mutableAttributedString.string];
-    [VHashTags formatHashTagsInString:mutableAttributedString
-                        withTagRanges:hashTagLocations
-                           attributes:@{
-                                        NSLinkAttributeName:[NSURL URLWithString:@"www.google.com"],
-                                        }];
-    
+    [hashTagLocations enumerateObjectsUsingBlock:^(id range, NSUInteger idx, BOOL *stop)
+    {
+        NSRange justwordRange = [range rangeValue];
+        NSRange fullRange = NSMakeRange(justwordRange.location-1, justwordRange.length+1);
+        [mutableAttributedString addAttribute:CCHLinkAttributeName
+                                        value:[self.descriptionItem.title substringWithRange:[range rangeValue]]
+                                        range:fullRange];
+    }];
+    [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
     
     self.titleTextView.linkTextAttributes = @{
                                               NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
                                               };
+    self.titleTextView.linkTextTouchAttributes = @{
+                                                   NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
+                                                   };
     self.titleTextView.attributedText = mutableAttributedString;
-    self.titleTextView.editable = NO;
-    self.titleTextView.delegate = self;
+    self.titleTextView.minimumPressDuration = 99999;
+    self.titleTextView.linkDelegate = self;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    if (self.descriptionItem.hashTagSelectionHandler)
+    {
+        self.descriptionItem.hashTagSelectionHandler(value);
+    }
 }
 
 @end

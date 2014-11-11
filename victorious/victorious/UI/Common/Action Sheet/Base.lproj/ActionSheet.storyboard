@@ -169,8 +169,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" misplaced="YES" text="5.6K Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-7w-LgK" userLabel="Caption Label">
-                                        <rect key="frame" x="122" y="66" width="77" height="14"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="5.6K Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwB-7w-LgK" userLabel="Caption Label">
+                                        <rect key="frame" x="122" y="67" width="77" height="14"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -205,9 +205,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nzP-Jb-6eL" userLabel="Empty Space Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="137"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Text" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Oy9-M2-LJC">
-                                        <rect key="frame" x="16" y="52" width="288" height="33"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Title" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="S8s-wt-Bcj" customClass="CCHLinkTextView">
+                                        <rect key="frame" x="0.0" y="52" width="320" height="33"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="BBV-mj-8SB"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -215,11 +218,11 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Oy9-M2-LJC" secondAttribute="bottom" priority="250" constant="30" id="9fV-TO-vrK"/>
-                                    <constraint firstItem="Oy9-M2-LJC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nzP-Jb-6eL" secondAttribute="top" priority="250" constant="10" id="Oe6-rA-2Dr"/>
-                                    <constraint firstAttribute="centerY" secondItem="Oy9-M2-LJC" secondAttribute="centerY" id="P83-eo-5lR"/>
-                                    <constraint firstItem="Oy9-M2-LJC" firstAttribute="leading" secondItem="nzP-Jb-6eL" secondAttribute="leading" constant="16" id="TRn-Js-lKX"/>
-                                    <constraint firstAttribute="trailing" secondItem="Oy9-M2-LJC" secondAttribute="trailing" constant="16" id="UbZ-Ip-4VZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="S8s-wt-Bcj" secondAttribute="trailing" id="1gT-MX-p6J"/>
+                                    <constraint firstAttribute="centerY" secondItem="S8s-wt-Bcj" secondAttribute="centerY" id="6Sf-C8-Scn"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S8s-wt-Bcj" secondAttribute="bottom" priority="250" constant="40" id="BWG-Y8-vzW"/>
+                                    <constraint firstItem="S8s-wt-Bcj" firstAttribute="leading" secondItem="nzP-Jb-6eL" secondAttribute="leading" id="VFz-s7-TRc"/>
+                                    <constraint firstItem="S8s-wt-Bcj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nzP-Jb-6eL" secondAttribute="top" priority="250" constant="30" id="Z3L-ci-fNO"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="SwP-6a-xtZ" appends="YES" id="kvm-Fq-I3d"/>
@@ -264,7 +267,8 @@
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
                         <outlet property="tableView" destination="dX5-Jj-M61" id="hFV-st-RLo"/>
-                        <outlet property="titleTextView" destination="Oy9-M2-LJC" id="bMM-6F-N9y"/>
+                        <outlet property="tapAwayGestureRecognizer" destination="SwP-6a-xtZ" id="hxB-9R-B2W"/>
+                        <outlet property="titleTextView" destination="S8s-wt-Bcj" id="zFs-n9-YKO"/>
                         <outlet property="userCaptionLabel" destination="bwB-7w-LgK" id="VgD-AY-edV"/>
                         <outlet property="usernameLabel" destination="ObS-hY-o4S" id="ySg-FL-xbl"/>
                     </connections>
@@ -276,7 +280,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-120" y="528"/>
+            <point key="canvasLocation" x="-42" y="466"/>
         </scene>
     </scenes>
     <resources>

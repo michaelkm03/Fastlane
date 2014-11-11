@@ -36,12 +36,15 @@
 
 #import "VSettingManager.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate>
+#import "CCHLinkTextView.h"
+
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *descriptionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
@@ -89,7 +92,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
 - (void)setDescriptionText:(NSString *)text
 {
-    if (!self.sequence.nameEmbeddedInContent.boolValue)
+    if (self.sequence.nameEmbeddedInContent.boolValue == NO)
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
@@ -97,12 +100,25 @@ static const CGFloat kDescriptionBuffer = 15.0;
         
         if ([self.hashTagRanges count] > 0)
         {
-            [VHashTags formatHashTagsInString:newAttributedCellText
-                                withTagRanges:self.hashTagRanges
-                                   attributes:@{NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]}];
+            [self.hashTagRanges enumerateObjectsUsingBlock:^(id range, NSUInteger idx, BOOL *stop)
+             {
+                 NSRange justwordRange = [range rangeValue];
+                 NSRange fullRange = NSMakeRange(justwordRange.location-1, justwordRange.length+1);
+                 [newAttributedCellText addAttribute:CCHLinkAttributeName
+                                                 value:[newAttributedCellText.string
+                                                        substringWithRange:[range rangeValue]]
+                                                 range:fullRange];
+             }];
         }
-        
-        self.descriptionLabel.attributedText = newAttributedCellText;
+        self.descriptionTextView.linkTextAttributes = @{
+                                                  NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
+                                                  };
+        self.descriptionTextView.linkTextTouchAttributes = @{
+                                                       NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
+                                                       };
+        self.descriptionTextView.attributedText = newAttributedCellText;
+        self.descriptionTextView.minimumPressDuration = 99999;
+        self.descriptionTextView.linkDelegate = self;
         
         self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
@@ -266,6 +282,18 @@ static const CGFloat kDescriptionBuffer = 15.0;
         attributes[NSShadowAttributeName] = shadow;
     }
     return [attributes copy];
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.delegate hashTag:value
+            tappedFromSequence:self.sequence
+                      fromView:self];
+    }
 }
 
 @end
