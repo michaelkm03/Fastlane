@@ -141,6 +141,11 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     if (!hasMessages)
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+        noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
+        noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
+        self.tableView.backgroundView = noMessageView;
     }
     else
     {
