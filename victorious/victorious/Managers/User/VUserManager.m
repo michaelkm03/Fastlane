@@ -263,7 +263,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 - (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    if (!email || !password || !userName)
+    if (email == nil || password == nil)
     {
         if (errorBlock)
         {
@@ -309,7 +309,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 - (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    if (!email || !password)
+    if (email == nil || password == nil)
     {
         if (errorBlock)
         {

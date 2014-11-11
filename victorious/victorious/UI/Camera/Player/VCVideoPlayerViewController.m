@@ -7,7 +7,7 @@
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
 #import "VTracking.h"
-
+#import "VSettingManager.h"
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
@@ -18,10 +18,11 @@ static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
 
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
-@interface VCVideoPlayerViewController ()
+@interface VCVideoPlayerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) VCVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameTapGesture;
+@property (nonatomic, weak) UITapGestureRecognizer *videoFrameDoubleTapGesture;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL toolbarAnimating;
 @property (nonatomic) BOOL sliderTouchActive;
@@ -123,9 +124,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     self.view = [[UIView alloc] init];
     self.view.clipsToBounds = YES;
+    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
 
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
     [self.view.layer addSublayer:self.playerLayer];
     
     VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
@@ -142,6 +145,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.toolbarView = toolbarView;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
+    tap.numberOfTapsRequired = 1;
+    tap.delegate = self;
     [self.view addGestureRecognizer:tap];
     self.videoFrameTapGesture = tap;
     
@@ -150,7 +155,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     
     self.overlayView = [[UIView alloc] init];
-    
+
     [self updateViewForShowToolbarValue];
 }
 
@@ -187,7 +192,31 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
+- (void)addDoubleTapGestureRecognizer
+{
+    if (self.videoFrameDoubleTapGesture)
+    {
+        return;
+    }
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameDoubleTapped:)];
+    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.delegate = self;
+    self.videoFrameDoubleTapGesture = doubleTap;
+    [self.view addGestureRecognizer:doubleTap];
+}
+
 #pragma mark - Properties
+
+- (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
+{
+    _shouldChangeVideoGravityOnDoubleTap = shouldChangeVideoGravityOnDoubleTap;
+    
+    if (shouldChangeVideoGravityOnDoubleTap)
+    {
+        [self addDoubleTapGestureRecognizer];
+    }
+}
 
 - (void)setPlayer:(AVPlayer *)player
 {
@@ -646,6 +675,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
+- (void)videoFrameDoubleTapped:(UITapGestureRecognizer *)sender
+{
+    self.playerLayer.videoGravity = ([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+}
+
 - (IBAction)sliderTouchDown:(UISlider *)sender
 {
     self.sliderTouchActive = YES;
@@ -912,6 +946,19 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)disableTracking
 {
     self.trackingItem = nil;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return (((gestureRecognizer == self.videoFrameTapGesture) || (gestureRecognizer == self.videoFrameDoubleTapGesture)) &&
+            ((otherGestureRecognizer == self.videoFrameTapGesture) || (otherGestureRecognizer == self.videoFrameDoubleTapGesture))) ? YES : NO;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return ((gestureRecognizer == self.videoFrameTapGesture) && (otherGestureRecognizer == self.videoFrameDoubleTapGesture)) ? YES : NO;
 }
 
 @end

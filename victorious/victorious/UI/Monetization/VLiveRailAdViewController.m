@@ -1,19 +1,19 @@
 //
-//  VLiveRailsAdViewController.m
+//  VLiveRailAdViewController.m
 //  victorious
 //
 //  Created by Lawrence Leach on 10/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VLiveRailsAdViewController.h"
+#import "VLiveRailAdViewController.h"
 #import "LiveRailAdManager.h"
 #import "VSettingManager.h"
 #import "VAdBreakFallback+RestKit.h"
 
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
-@interface VLiveRailsAdViewController ()
+@interface VLiveRailAdViewController ()
 
 @property (nonatomic, strong) LiveRailAdManager *adManager;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation VLiveRailsAdViewController
+@implementation VLiveRailAdViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,12 +49,6 @@
         
         // Ad manager event observers
         [self addNotificationObservers];
-        
-        // Debugging
-#if DEBUG && EnableLiveRailLogging
-        [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
-#warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
-#endif
         
         // Grab the publisher id from the monetization options and init the ad manager with it
         NSString *pubID = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
@@ -130,6 +124,12 @@
     return self.adPlaying;
 }
 
+- (void)setPubID:(NSString *)pubID
+{
+    [self.adManager initAd:@{ @"LR_PUBLISHER_ID": pubID }];
+    
+}
+
 #pragma mark - Ad Methods
 
 - (void)destroyAdInstance
@@ -151,11 +151,21 @@
         return;
     }
 
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"LiveRail Ad Server is Starting");
+    [LiveRailAdManager setLogLevel:LiveRailLogLevelDebug];
+#warning LiveRails ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
-
+    
     self.adManager = [[LiveRailAdManager alloc] init];
+    NSString *pubId = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
+    if ([pubId isEqualToString:@""] || [pubId isKindOfClass:[NSNull class]] || pubId == nil)
+    {
+        [self adDidFinish:nil];
+        return;
+    }
+    
+    self.pubID = pubId;
 }
 
 #pragma mark - Observers
@@ -224,14 +234,12 @@
 
 - (void)adDidLoad:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidLoad Fired");
 #endif
     // Show the LiveRail Ad Manager view and start ad playback
     self.adManager.hidden = NO;
     [self.adManager startAd];
-    
-    [self.activityIndicatorView stopAnimating];
     
     // Required delegate method
     [self.delegate adDidLoadForAdViewController:self];
@@ -239,7 +247,7 @@
 
 - (void)adDidFinish:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidFinish Fired");
 #endif
     [self destroyAdInstance];
@@ -250,7 +258,7 @@
 
 - (void)adDidStopPlayback:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidStopPlayback Fired");
 #endif
     [self destroyAdInstance];
@@ -263,7 +271,7 @@
 
 - (void)adDidStartPlayback:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdDidStartPlayback Fired");
 #endif
     self.adPlaying = YES;
@@ -278,7 +286,7 @@
 
 - (void)adHadImpression:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdHadImpression Fired");
 #endif
     if ([self.delegate respondsToSelector:@selector(adHadImpressionInAdViewController:)])
@@ -289,10 +297,12 @@
 
 - (void)adHadError:(NSNotification *)notification
 {
-#if DEBUG && EnableLiveRailLogging
+#if EnableLiveRailLogging
     VLog(@"AdHadError Fired");
 #endif
-    [self destroyAdInstance];
+    
+    [self adDidFinish:nil];
+    
     if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
     {
         [self.delegate adHadErrorInAdViewController:self withError:nil];

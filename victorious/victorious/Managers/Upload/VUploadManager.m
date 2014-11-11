@@ -13,6 +13,8 @@
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
 
+#define UPLOADS_SHOULD_FAIL 0 // Set to 1 to test the failed upload UI. WARNING: Uploads will look like they failed, but will actually go through!
+
 static const NSInteger kConcurrentTaskLimit = 1; ///< Number of concurrent uploads. The NSURLSession API may also enforce its own limit on this number.
 
 static NSString * const kDirectoryName = @"VUploadManager"; ///< The directory where pending uploads and configuration files are stored
@@ -36,10 +38,12 @@ const NSInteger VUploadManagerBadHTTPResponseErrorCode = 200;
 
 static char kSessionQueueSpecific;
 
+#ifndef NS_BLOCK_ASSERTIONS
 static inline BOOL isSessionQueue()
 {
     return dispatch_get_specific(&kSessionQueueSpecific) != NULL;
 }
+#endif
 
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
@@ -333,6 +337,11 @@ static inline BOOL isSessionQueue()
                 break;
             }
         }
+        if ([self.taskInformation containsObject:uploadTask])
+        {
+            [self.taskInformation removeObject:uploadTask];
+            [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
+        }
         if ([self.pendingTaskInformation containsObject:uploadTask])
         {
             [self.pendingTaskInformation removeObject:uploadTask];
@@ -606,6 +615,9 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
+#if UPLOADS_SHOULD_FAIL
+    error = [NSError errorWithDomain:@"bad error" code:666 userInfo:nil];
+#endif
     dispatch_async(self.sessionQueue, ^(void)
     {
         NSError *victoriousError = nil;

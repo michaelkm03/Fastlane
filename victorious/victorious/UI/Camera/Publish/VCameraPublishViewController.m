@@ -743,9 +743,11 @@ static const CGFloat kShareMargin = 34.0f;
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
-                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
+                                          facebookShare:facebookSelected
+                                           twitterShare:twitterSelected
+                                             completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
-        NSDictionary *payload = jsonDictionary[kVPayloadKey];
+        NSDictionary *payload = jsonResponse[kVPayloadKey];
         if (![payload isKindOfClass:[NSDictionary class]])
         {
             return;
@@ -775,14 +777,6 @@ static const CGFloat kShareMargin = 34.0f;
         
         if (facebookSelected)
         {
-            [[VObjectManager sharedManager] facebookShareSequenceId:sequenceId
-                                                        accessToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                       successBlock:nil
-                                                          failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed with error: %@", error);
-            }];
-            
             if ( isVideo )
             {
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithFacebook];
@@ -796,15 +790,6 @@ static const CGFloat kShareMargin = 34.0f;
         
         if (twitterSelected)
         {
-            [[VObjectManager sharedManager] twittterShareSequenceId:sequenceId
-                                                        accessToken:[VTwitterManager sharedManager].oauthToken
-                                                             secret:[VTwitterManager sharedManager].secret
-                                                       successBlock:nil
-                                                          failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed with error: %@", error);
-            }];
-            
             if ( isVideo )
             {
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishVideoWithTwitter];

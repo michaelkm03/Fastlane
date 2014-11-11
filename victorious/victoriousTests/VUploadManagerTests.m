@@ -160,6 +160,13 @@
         });
     }];
     [async waitForSignal:5.0];
+    
+    [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+    {
+        XCTAssertFalse([tasks containsObject:upload2]);
+        [async signal];
+    }];
+    [async waitForSignal:5.0];
 }
 
 - (void)testError
@@ -328,6 +335,27 @@
             }
             [async signal];
         }];
+    }];
+    [async waitForSignal:5.0];
+}
+
+- (void)testFailedTasksCanBeCancelled
+{
+    VAsyncTestHelper *async = [[VAsyncTestHelper alloc] init];
+    
+    stubRequest(@"POST", self.uploadTask.request.URL.absoluteString).andFailWithError([NSError errorWithDomain:@"domain" code:1 userInfo:nil]);
+    
+    [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonDictionary, NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [self.uploadManager cancelUploadTask:self.uploadTask];
+            [self.uploadManager getQueuedUploadTasksWithCompletion:^(NSArray *tasks)
+            {
+                XCTAssertFalse([tasks containsObject:self.uploadTask]);
+                [async signal];
+            }];
+        });
     }];
     [async waitForSignal:5.0];
 }

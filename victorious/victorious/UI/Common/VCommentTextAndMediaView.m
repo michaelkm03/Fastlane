@@ -62,7 +62,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
     self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 0.0, -5.0);
-    self.textView.dataDetectorTypes = UIDataDetectorTypeAll;
+    self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self addSubview:self.textView];
     
@@ -219,6 +219,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 - (CGSize)intrinsicContentSize
 {
     CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( CGRectGetWidth(self.textView.frame), CGFLOAT_MAX)];
+    
     if (self.hasMedia)
     {
         CGFloat mediaThumbnailSize = MAX(textViewSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail

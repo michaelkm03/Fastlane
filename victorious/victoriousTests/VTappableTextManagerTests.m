@@ -84,16 +84,12 @@
     XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid before it is set." );
     
     NSError *error = nil;
-    XCTAssertFalse( [_tappableTextManager setDelegate:nil error:&error] );
-    XCTAssertNotNil( error );
-    XCTAssertNotNil( error.domain );
+    XCTAssertThrows( [_tappableTextManager setDelegate:nil] );
     
     error = nil;
-    XCTAssertFalse( [_tappableTextManager setDelegate:_delegate error:&error] );
-    XCTAssertNotNil( error );
-    XCTAssertNotNil( error.domain );
+    XCTAssertThrows( [_tappableTextManager setDelegate:_delegate] );
     
-    XCTAssertFalse( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertThrows( [_tappableTextManager setDelegate:_delegate] );
 }
 
 - (void)testDelegateInvalidNoTextStorage
@@ -130,20 +126,14 @@
 {
     XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid before it is set." );
     
-    NSError *error = nil;
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:&error] );
-    XCTAssertNil( error );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     
     XCTAssertTrue( _tappableTextManager.hasValidDelegate, @"Delegate should be valid now that it is set." );
     
     [_tappableTextManager unsetDelegate];
     XCTAssertFalse( _tappableTextManager.hasValidDelegate, @"Delegate should be invalid after it is unset." );
     
-    error = nil;
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:&error] );
-    XCTAssertNil( error );
-    
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
 }
 
 - (void)testCreateTextViewWithoutDelegate
@@ -154,7 +144,7 @@
 
 - (void)testCreateTextView
 {
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     
     UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     XCTAssertNotNil( textView );
@@ -172,7 +162,7 @@
 
 - (void)testDetectHashTagsInvalidText
 {
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     textView.text = @""; // Empty
     XCTAssertFalse( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
@@ -180,7 +170,7 @@
 
 - (void)testDetectHashTagsInvalidTextField
 {
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     UITextView *textView = [[UITextView alloc] init];
     textView.text = @"Hello #world";
     XCTAssertFalse( [_tappableTextManager findTextInTextView:textView atPoint:CGPointZero detectionCallback:nil] );
@@ -188,7 +178,7 @@
 
 - (void)testDetectHashTagsInvalidNoDelegate
 {
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     textView.text = @"Hello #world";
     [_tappableTextManager unsetDelegate];
@@ -211,7 +201,7 @@
 
 - (void)testDetectHashTags
 {
-    XCTAssertTrue( [_tappableTextManager setDelegate:_delegate error:nil] );
+    XCTAssertNoThrow( [_tappableTextManager setDelegate:_delegate] );
     UITextView *textView = [_tappableTextManager createTappableTextViewWithFrame:_frame];
     
     textView.text = @"Hello world";

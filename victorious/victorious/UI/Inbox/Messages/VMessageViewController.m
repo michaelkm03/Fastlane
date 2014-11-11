@@ -52,12 +52,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
          forCellReuseIdentifier:kVMessageCellNibName];
-
-    self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
-    self.tableDataSource.otherUser = self.otherUser;
-    self.tableDataSource.tableView = self.tableView;
-    self.tableDataSource.delegate = self;
-    self.tableView.dataSource = self.tableDataSource;
 }
 
 - (void)viewDidLayoutSubviews
@@ -74,6 +68,12 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
+    self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
+    self.tableDataSource.otherUser = self.otherUser;
+    self.tableDataSource.tableView = self.tableView;
+    self.tableDataSource.delegate = self;
+    self.tableView.dataSource = self.tableDataSource;
+
     if (self.shouldRefreshOnAppearance)
     {
         self.refreshFailed = NO;

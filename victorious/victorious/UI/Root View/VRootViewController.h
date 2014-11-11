@@ -8,11 +8,19 @@
 
 #import "VSideMenuViewController.h"
 
-@interface VRootViewController : VSideMenuViewController
+@interface VRootViewController : UIViewController
 
-+ (instancetype)rootViewController; ///< Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
+/**
+ The view controller that is currently being displayed
+ */
+@property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
-- (void)transitionToNavStack:(NSArray *)navStack;
+/**
+ NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 
+ set as the main window's rootViewController property. If no such instance exists,
+ returns nil.
+ */
++ (instancetype)rootViewController;
 
 - (void)presentForceUpgradeScreen;
 

@@ -229,7 +229,30 @@
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
+    [self.videoPlayer.player prerollAtRate:1.0f
+                         completionHandler:^(BOOL finished)
+    {
+        [self.videoPlayer.player play];
+    }];
+}
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+{
+    CMTime timeThreshold = CMTimeMake(1, 20);
+    
+    if (CMTIME_COMPARE_INLINE(time, <, timeThreshold))
+    {
+        return;
+    }
+    
     [self.activityIndicator removeFromSuperview];
+    
+    if (self.videoLoaded)
+    {
+        return;
+    }
+    
+    self.videoLoaded = YES;
     
     CGSize videoSize = self.videoPlayer.naturalSize;
     CGFloat aspectRatio = 1.0f;
@@ -238,22 +261,11 @@
         aspectRatio = videoSize.width / videoSize.height;
     }
     
-    [UIView animateWithDuration:0.2
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^(void)
-    {
-        [self.contentSuperview removeConstraints:self.previewImageConstraints];
-        [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:aspectRatio]];
-        [self.contentSuperview layoutIfNeeded];
-        self.previewImageView.alpha = 0.0f;
-        self.videoPlayer.view.alpha = 1.0f;
-    }
-                     completion:^(BOOL finished)
-    {
-        [self.videoPlayer.player play];
-        self.videoLoaded = YES;
-    }];
+    self.videoPlayer.view.alpha = 1.0f;
+    self.previewImageView.alpha = 0.0f;
+    [self.contentSuperview removeConstraints:self.previewImageConstraints];
+    [self.contentSuperview addConstraints:[NSLayoutConstraint v_constraintsToScaleAndCenterView:self.previewImageView withinView:self.contentSuperview withAspectRatio:aspectRatio]];
+    [self.contentSuperview layoutIfNeeded];
 }
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer

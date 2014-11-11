@@ -56,6 +56,8 @@
 
 - (void)pause;
 
+- (void)togglePlayControls;
+
 /**
  *  The speed to play the video.
  */
@@ -76,7 +78,5 @@
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls;
 
 - (void)setTracking:(VTracking *)tracking;
-
-@property (nonatomic, readonly) CGSize naturalSizeForVideo;
 
 @end

@@ -18,6 +18,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
+#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -74,7 +75,7 @@ static BOOL isRunningTests(void) __attribute__((const));
 
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    
+
     [self reportFirstInstall];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
@@ -87,9 +88,24 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
+    NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
+    if (pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
+    
     [self initializeTracking];
     
     return YES;
+}
+
+- (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && pushNotificationDeeplink)
+    {
+        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+    }
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler

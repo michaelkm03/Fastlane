@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>clear_video_background</key>
+	<false/>
 	<key>pause_video_when_commenting</key>
 	<string>YES</string>
 	<key>capture</key>

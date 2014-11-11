@@ -11,6 +11,9 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+Login.h"
+#import "VSettingManager.h"
+#import "VUserManager.h"
 
 #import "VConversation.h"
 #import "VUser.h"
@@ -23,6 +26,10 @@
 #import "VCommentsContainerViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VEnterResetTokenViewController.h"
+#import "VNewContentViewController.h"
+#import "VMultipleStreamViewController.h"
+#import "VStreamCollectionViewController.h"
+
 
 static NSString * const kVContentDeeplinkScheme = @"//content/";
 
@@ -93,6 +100,16 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [alert show];
 }
 
+- (void)showLoginFailedAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", nil)
+                                                    message:NSLocalizedString(@"NotLoggedInMessage", nil)
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 - (NSDictionary *)deepLinkPatterns
 {
     return @{
@@ -112,25 +129,42 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
         [self showMissingContentAlert];
         return;
     }
-#warning  Implement with NCV
+    
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-//         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
-//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-//         homeContainer.shouldShowHeaderLogo = YES;
-//         
-//         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-//         contentView.sequence = sequence;
-//         
-//         VRootViewController *root = [VRootViewController rootViewController];
-//         [root transitionToNavStack:@[homeContainer]];
-//         [homeContainer.navigationController pushViewController:contentView animated:YES];
+         VSequence *sequence = (VSequence *)[resultObjects firstObject];
+         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+         UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+         contentNav.navigationBarHidden = YES;
+
+         UIViewController *homeStream;
+         if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+         {
+             homeStream = [VMultipleStreamViewController homeStream];
+             contentViewController.delegate = (VMultipleStreamViewController *)homeStream;
+         }
+         else
+         {
+             homeStream = [VStreamCollectionViewController homeStreamCollection];
+             contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
+         }
+         
+         VRootViewController *root = [VRootViewController rootViewController];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream presentViewController:contentNav
+                                      animated:YES
+                                    completion:nil];
+         }
      }
-                                        failBlock:^(NSOperation *operation, NSError *error)
+                                            failBlock:^(NSOperation *operation, NSError *error)
      {
-//         VLog(@"Failed with error: %@", error);
-//         [self showMissingContentAlert];
+         VLog(@"Failed with error: %@", error);
+         [self showMissingContentAlert];
      }];
 }
 
@@ -146,14 +180,25 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
                              withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-//         VUserProfileViewController *profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
-//         
-//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-//         homeContainer.shouldShowHeaderLogo = YES;
-//         
-//         VRootViewController *root = [VRootViewController rootViewController];
-//         [root transitionToNavStack:@[homeContainer]];
-//         [homeContainer.navigationController pushViewController:profileVC animated:YES];
+         VUserProfileViewController *profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
+         
+         UIViewController *homeStream;
+         if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+         {
+             homeStream = [VMultipleStreamViewController homeStream];
+         }
+         else
+         {
+             homeStream = [VStreamCollectionViewController homeStreamCollection];
+         }
+         
+         VRootViewController *root = [VRootViewController rootViewController];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream.navigationController pushViewController:profileVC animated:YES];
+         }
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -171,6 +216,25 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
         return;
     }
     
+    if ([VObjectManager sharedManager].authorized)
+    {
+        [self goToConversation:conversationId];
+    }
+    else
+    {
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+         {
+             [self goToConversation:conversationId];
+         }
+                                                                    onError:^(NSError *error)
+         {
+             [self showLoginFailedAlert];
+         }];
+    }
+}
+
+- (void)goToConversation:(NSNumber *)conversationId
+{
     [[VObjectManager sharedManager] conversationByID:conversationId
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
@@ -179,8 +243,12 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          VMessageContainerViewController *messageVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
          
          VRootViewController *root = [VRootViewController rootViewController];
-         [root transitionToNavStack:@[inbox]];
-         [inbox.navigationController pushViewController:messageVC animated:YES];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[inbox]];
+             [inbox.navigationController pushViewController:messageVC animated:YES];
+         }
      }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -188,6 +256,7 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
          [self showMissingContentAlert];
      }];
 }
+
 
 - (void)handleCommentURL:(NSArray *)captures
 {
@@ -201,24 +270,44 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-#warning Implement with NCV
-//         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
-//         VContentViewController *contentView = [VContentViewController instantiateFromStoryboard:@"Main"];
-//         VStreamContainerViewController *homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
-//         homeContainer.shouldShowHeaderLogo = YES;
-//         
-//         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-//         contentView.sequence = sequence;
-//         commentsContainer.sequence = sequence;
-//         
-//         VRootViewController *root = [VRootViewController rootViewController];
-//         [root transitionToNavStack:@[homeContainer, contentView]];
-//         [contentView.navigationController pushViewController:commentsContainer animated:YES];
+         VSequence *sequence = (VSequence *)[resultObjects firstObject];
+         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+         UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+         contentNav.navigationBarHidden = YES;
+         
+         UIViewController *homeStream;
+         if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+         {
+             homeStream = [VMultipleStreamViewController homeStream];
+             contentViewController.delegate = (VMultipleStreamViewController *)homeStream;
+         }
+         else
+         {
+             homeStream = [VStreamCollectionViewController homeStreamCollection];
+             contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
+         }
+         
+         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
+         commentsContainer.sequence = sequence;
+         
+         VRootViewController *root = [VRootViewController rootViewController];
+         
+         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+         {
+             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [homeStream presentViewController:contentNav
+                                      animated:YES
+                                    completion:^
+              {
+                  [contentNav pushViewController:commentsContainer animated:YES];
+              }];
+         }
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
      {
-//         VLog(@"Failed with error: %@", error);
-//         [self showMissingContentAlert];
+         VLog(@"Failed with error: %@", error);
+         [self showMissingContentAlert];
      }];
 }
 
@@ -237,7 +326,10 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     enterTokenVC.deviceToken = deviceToken;
     enterTokenVC.userToken = userToken;
     
-    [root.contentViewController pushViewController:enterTokenVC animated:YES];
+    if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+    {
+        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
+    }
 }
 
 #pragma mark - Deeplink generation

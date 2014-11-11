@@ -51,24 +51,23 @@
 
 #pragma mark - User
 
-- (void)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    //If this cell is from the profile we should disable going to the profile
-    BOOL fromProfile = NO;
-    for (UIViewController *vc in viewController.parentViewController.navigationController.viewControllers)
+    if ( !viewController || !viewController.navigationController || !sequence )
     {
-        if ([vc isKindOfClass:[VUserProfileViewController class]])
-        {
-            fromProfile = YES;
-        }
+        return NO;
     }
-    if (fromProfile)
+    
+    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)viewController).profile isEqual:sequence.user] )
     {
-        return;
+        return NO;
     }
     
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
+    
+    return YES;
 }
 
 #pragma mark - Remix
@@ -147,7 +146,7 @@
     VStream *stream = [VStream remixStreamForSequence:sequence];
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
     
-    VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];

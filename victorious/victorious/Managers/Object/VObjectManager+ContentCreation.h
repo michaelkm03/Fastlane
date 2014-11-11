@@ -62,6 +62,8 @@ extern NSString * const VObjectManagerContentIndexKey;
                       speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
                    mediaURL:(NSURL *)mediaUrl
+              facebookShare:(BOOL)facebookShare
+               twitterShare:(BOOL)twitterShare
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**

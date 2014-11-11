@@ -33,6 +33,7 @@ NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
 NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
+NSString * const VExperimentsClearVideoBackground = @"clear_video_background";
 
 //Monetization
 NSString * const kLiveRailPublisherId = @"monetization.LiveRailsPublisherID";

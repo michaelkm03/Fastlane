@@ -21,9 +21,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                                   failBlock:(VFailBlock)fail;
 
 #pragma mark Sequence
-- (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
-                                                                     failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)refreshStream:(VStream *)stream
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;

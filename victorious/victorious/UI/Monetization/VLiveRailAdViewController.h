@@ -1,5 +1,5 @@
 //
-//  VLiveRailsAdViewController.h
+//  VLiveRailAdViewController.h
 //  victorious
 //
 //  Created by Lawrence Leach on 10/28/14.
@@ -8,6 +8,6 @@
 
 #import "VAdViewController.h"
 
-@interface VLiveRailsAdViewController : VAdViewController
+@interface VLiveRailAdViewController : VAdViewController
 
 @end
