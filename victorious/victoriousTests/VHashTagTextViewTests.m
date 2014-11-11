@@ -66,7 +66,7 @@
              }
          }];
      }];
-    XCTAssert(appliedLinkAttribute == YES);
+    XCTAssert(appliedLinkAttribute);
 }
 
 - (void)testNoTags
@@ -89,7 +89,7 @@
               }
           }];
      }];
-    XCTAssert(appliedLinkAttribute == NO);
+    XCTAssertFalse(appliedLinkAttribute);
 }
 
 - (void)testValueOfHashTag
@@ -100,7 +100,7 @@
                                                      options:kNilOptions
                                                   usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
      {
-         XCTAssert([[attrs valueForKey:CCHLinkAttributeName] isEqualToString:@"hashy"]);
+         XCTAssertEqualObjects([attrs valueForKey:CCHLinkAttributeName], @"hashy");
      }];
 }
 
@@ -110,7 +110,8 @@
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"#hashy"];
     self.expectedValue = @"hashy";
     [self.textView didTapAtLocation:CGPointMake(CGRectGetMidX(self.textView.bounds), CGRectGetMidY(self.textView.bounds))];
-    XCTAssert([self.expectedValue isEqualToString:self.delegateValue]);
+    
+    XCTAssertEqualObjects(self.expectedValue, self.delegateValue);
 }
 
 #pragma mark - CCHLinkTextViewDelegate
