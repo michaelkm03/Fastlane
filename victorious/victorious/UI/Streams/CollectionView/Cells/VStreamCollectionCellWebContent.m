@@ -11,6 +11,9 @@
 #import "VWebViewCreator.h"
 #import "VSequence+Fetcher.h"
 
+static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
+static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
+
 @interface VStreamCollectionCellWebContent() <VWebViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
@@ -28,14 +31,16 @@
     
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.backgroundColor = backgroundColor;
-    self.webViewContainer.backgroundColor = backgroundColor;
     
     self.webView = [VWebViewCreator createWebView];
     self.webView.delegate = self;
     self.webView.asView.userInteractionEnabled = NO;
-    self.webView.asView.backgroundColor = backgroundColor;
+    self.webView.asView.backgroundColor = [UIColor clearColor];
     [self.webViewContainer addSubview:self.webView.asView];
     [self addConstraintsToView:self.webView.asView];
+    
+    // The webview should start off hidden before first load to prevent an ugly white background from showing
+    self.webView.asView.alpha = 0.0;
 }
 
 - (void)addConstraintsToView:(UIView *)view
@@ -77,6 +82,12 @@
 - (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
 {
     [self.activityIndicator stopAnimating];
+    
+    [UIView animateWithDuration:kWebViewFirstLoadAnimationDuration delay:kWebViewFirstLoadAnimationDelay options:kNilOptions animations:^
+     {
+         self.webView.asView.alpha = 1.0f;
+     }
+                     completion:nil];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
