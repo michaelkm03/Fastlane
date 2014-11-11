@@ -1096,7 +1096,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         return;
     }
     
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
     __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
