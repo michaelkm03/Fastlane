@@ -160,7 +160,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     }
     if (parentSequenceId && ![parentSequenceId isEqualToNumber:@(0)])
     {
-        parameters[@"parent_sequence_id"] = parentSequenceId;
+        parameters[@"parent_sequence_id"] = [parentSequenceId stringValue];
     }
     if (type == VCaptionTypeMeme)
     {
