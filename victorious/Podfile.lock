@@ -1,5 +1,6 @@
 PODS:
   - AFNetworking (1.3.4)
+  - CCHLinkTextView (1.0.1)
   - FlurrySDK (5.4.0):
     - FlurrySDK/FlurrySDK
   - FlurrySDK/FlurrySDK (5.4.0)
@@ -34,6 +35,7 @@ PODS:
   - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
+  - CCHLinkTextView
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
   - MarqueeLabel (from `https://github.com/TouchFrame/MarqueeLabel.git`)
@@ -52,6 +54,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
+  CCHLinkTextView: eb9a0d2d901a5c1f592c1a8f0446b4249740117d
   FlurrySDK: bed9e5598353f867508d164795a451e3ada92cb6
   IGDigest: 9d142a7926ecc2983e6208d938ac5dddd26ed9c2
   ISO8601DateFormatterValueTransformer: a7e1ecf4380d0b561306ced1a3f01bd5f65d2213

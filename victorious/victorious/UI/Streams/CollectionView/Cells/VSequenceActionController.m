@@ -98,7 +98,8 @@
     }
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.parentID = [sequence.remoteId integerValue];
+    publishViewController.parentSequenceID = [sequence.remoteId integerValue];
+    publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
     publishViewController.previewImage = previewImage;
     publishViewController.completion = ^(BOOL complete)
     {
@@ -106,6 +107,20 @@
     };
     
     UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+    
+    void(^writeBlock)(void) = ^void(void)
+    {
+        NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        {
+            publishViewController.mediaURL = tempFile;
+            [viewController presentViewController:remixNav
+                                         animated:YES
+                                       completion:nil];
+        }
+    };
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
@@ -115,32 +130,12 @@
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
                                   {
                                       publishViewController.captionType = VCaptionTypeMeme;
-                                      
-                                      NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-                                      NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                      NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                      if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                      {
-                                          publishViewController.mediaURL = tempFile;
-                                          [viewController presentViewController:remixNav
-                                                                       animated:YES
-                                                                     completion:nil];
-                                      }
+                                      writeBlock();
                                   },
                                   NSLocalizedString(@"Quote", nil),  ^(void)
                                   {
                                       publishViewController.captionType = VCaptionTypeQuote;
-                                      
-                                      NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-                                      NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                                      NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                                      if ([filteredImageData writeToURL:tempFile atomically:NO])
-                                      {
-                                          publishViewController.mediaURL = tempFile;
-                                          [viewController presentViewController:remixNav
-                                                                       animated:YES
-                                                                     completion:nil];
-                                      }
+                                      writeBlock();
                                   }, nil];
     
     [actionSheet showInView:viewController.view];
@@ -151,7 +146,7 @@
     VStream *stream = [VStream remixStreamForSequence:sequence];
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
     
-    VNoContentView *noRemixView = [[VNoContentView alloc] initWithFrame:streamCollection.view.bounds];
+    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
@@ -202,8 +197,11 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
-        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        if (activityType != nil)
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        }
         
         [[VThemeManager sharedThemeManager] applyStyling];
         [viewController reloadInputViews];

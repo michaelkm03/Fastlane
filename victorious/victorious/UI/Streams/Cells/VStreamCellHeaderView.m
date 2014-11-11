@@ -14,7 +14,6 @@
 #import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VUser.h"
-#import "VHashTags.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"

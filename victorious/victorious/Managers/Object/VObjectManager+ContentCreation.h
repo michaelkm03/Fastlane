@@ -57,10 +57,13 @@ extern NSString * const VObjectManagerContentIndexKey;
                previewImage:(UIImage *)previewImage
                 captionType:(VCaptionType)type
                   expiresAt:(NSString *)expiresAt
+           parentSequenceId:(NSNumber *)parentSequenceId
                parentNodeId:(NSNumber *)parentNodeId
                       speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
                    mediaURL:(NSURL *)mediaUrl
+              facebookShare:(BOOL)facebookShare
+               twitterShare:(BOOL)twitterShare
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**

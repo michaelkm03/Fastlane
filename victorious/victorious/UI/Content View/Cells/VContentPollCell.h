@@ -8,6 +8,8 @@
 
 #import "VBaseCollectionViewCell.h"
 
+typedef void (^answerSelectionBlock)(BOOL isVideo, NSURL *mediaURL);
+
 /**
  *  A UICollectionViewCell for displaying poll content.
  */
@@ -20,6 +22,18 @@
 
 @property (nonatomic, assign) BOOL answerAIsFavored;
 @property (nonatomic, assign) BOOL answerBIsFavored;
+
+@property (nonatomic, readonly) BOOL answerBIsVideo;
+@property (nonatomic, readonly) BOOL answerAIsVideo;
+
+@property (nonatomic, readonly) UIImage *answerAPreviewImage;
+@property (nonatomic, readonly) UIImage *answerBPreviewImage;
+
+@property (nonatomic, weak, readonly) UIView *answerAContainer;
+@property (nonatomic, weak, readonly) UIView *answerBContainer;
+
+@property (nonatomic, copy) answerSelectionBlock onAnswerASelection;
+@property (nonatomic, copy) answerSelectionBlock onAnswerBSelection;
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage
                     animated:(BOOL)animated;

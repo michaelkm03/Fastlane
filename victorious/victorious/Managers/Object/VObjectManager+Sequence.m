@@ -95,43 +95,6 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
             failBlock:fail];
 }
 
-#pragma mark - Sharing
-
-- (RKManagedObjectRequestOperation *)facebookShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString *)accessToken
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail
-{
-    NSDictionary *parameters = @{@"sequence_id": @(sequenceId),
-                                 @"access_token":accessToken
-                                 };
-    
-    return [self POST:@"/api/share/facebook"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)twittterShareSequenceId:(NSInteger)sequenceId
-                                                 accessToken:(NSString *)accessToken
-                                                      secret:(NSString *)secret
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail
-{
-    NSDictionary *parameters = @{@"sequence_id": @(sequenceId),
-                                 @"access_token":accessToken,
-                                 @"access_secret":secret
-                                 };
-    
-    return [self POST:@"/api/share/twitter"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail];
-    
-}
-
 #pragma mark - Sequence Vote Methods
 
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence *)sequence
