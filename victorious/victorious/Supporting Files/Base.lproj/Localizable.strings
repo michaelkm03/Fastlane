@@ -340,7 +340,7 @@
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
 
-"Version"               =   "Version %@";
+"Version"               =   "Version %@ (%@)";
 
 "ToSText"               =   "Terms of Service";
 "ToSAgreement"          =   "I'm at least 13 years old and agree to Terms of Service";
