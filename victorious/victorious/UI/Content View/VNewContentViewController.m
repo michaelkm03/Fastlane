@@ -157,7 +157,8 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return (self.videoCell.status == AVPlayerStatusReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    BOOL isVideoAndReadyToPlay = (self.viewModel.type == VContentViewTypeVideo) &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
+    return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark iOS8.0+
@@ -480,7 +481,6 @@
     {
         NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
         [self.contentCollectionView reloadSections:commentsIndexSet];
-        
         self.handleView.numberOfComments = self.viewModel.commentCount;
     }
 }
@@ -561,40 +561,58 @@
     __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
-        VLightboxViewController *lightbox;
-        if (wCommentCell.mediaIsVideo)
-        {
-            lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:wCommentCell.previewImage
-                                                                         videoURL:[welf.viewModel mediaURLForCommentIndex:index]];
-            ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
-        }
-        else
-        {
-            lightbox = [[VImageLightboxViewController alloc] initWithImage:wCommentCell.previewImage];
-        }
-        
-        lightbox.onCloseButtonTapped = ^(void)
-        {
-            [welf dismissViewControllerAnimated:YES
-                                     completion:nil];
-        };
-        if ([lightbox isKindOfClass:[VVideoLightboxViewController class]])
-        {
-            ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
-        }
-        
-        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
-                                                                          referenceView:wCommentCell.previewView];
-        
-        [welf presentViewController:lightbox
-                           animated:YES
-                         completion:nil];
+        [welf showLightBoxWithMediaURL:[welf.viewModel mediaURLForCommentIndex:index]
+                          previewImage:wCommentCell.previewImage
+                               isVideo:wCommentCell.mediaIsVideo
+                            sourceView:wCommentCell.previewView];
     };
     commentCell.onUserProfileTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[welf.viewModel userForCommentIndex:index]];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
+}
+
+- (void)showLightBoxWithMediaURL:(NSURL *)mediaURL
+                    previewImage:(UIImage *)previewImage
+                         isVideo:(BOOL)isVideo
+                      sourceView:(UIView *)sourceView
+{
+    __weak typeof(self) welf = self;
+    VLightboxViewController *lightbox;
+    if (isVideo)
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage
+                                                                     videoURL:mediaURL];
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
+    }
+    else
+    {
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:previewImage];
+    }
+    __weak typeof(lightbox) weakLightBox = lightbox;
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        if (welf.presentedViewController == weakLightBox)
+        {
+            [welf dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+             }];
+        }
+    };
+    if ([lightbox isKindOfClass:[VVideoLightboxViewController class]])
+    {
+        ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+    }
+    
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
+                                                                      referenceView:sourceView];
+    
+    [welf presentViewController:lightbox
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -607,8 +625,12 @@
     {
         case VContentViewSectionContent:
             return 1;
-        case VContentViewSectionHistogram:
-            return 0;
+        case VContentViewSectionHistogramOrQuestion:
+        {
+            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
+            return ret;
+        }
+            
         case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
@@ -682,11 +704,29 @@
                 {
                     [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
                 }
+                __weak typeof(pollCell) weakPollCell = pollCell;
+                __weak typeof(self) welf = self;
+                
+                pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
+                {
+                    [welf showLightBoxWithMediaURL:mediaURL
+                                      previewImage:weakPollCell.answerAPreviewImage
+                                           isVideo:isVideo
+                                        sourceView:weakPollCell.answerAContainer];
+                };
+                pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
+                {
+                    [welf showLightBoxWithMediaURL:mediaURL
+                                      previewImage:weakPollCell.answerBPreviewImage
+                                           isVideo:isVideo
+                                        sourceView:weakPollCell.answerBContainer];
+                };
+                
                 self.pollCell = pollCell;
                 return pollCell;
             }
         }
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
@@ -859,7 +899,7 @@
                                                              forIndexPath:indexPath];
         }
             
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             return nil;
         case VContentViewSectionExperienceEnhancers:
             return nil;
@@ -887,11 +927,6 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-    {
-        return CGSizeZero;
-    }
-    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
@@ -900,7 +935,7 @@
             switch (self.viewModel.type)
             {
                 case VContentViewTypeInvalid:
-                    return CGSizeZero;
+                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
                 case VContentViewTypeImage:
                     return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypeVideo:
@@ -909,14 +944,11 @@
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                return [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-            }
-            if (!self.viewModel.histogramDataSource)
-            {
-                return CGSizeZero;
+                CGSize ret = [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                return  ret;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         case VContentViewSectionExperienceEnhancers:
@@ -924,10 +956,6 @@
             if (self.viewModel.type == VContentViewTypePoll)
             {
                 return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-            }
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                return CGSizeZero;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
@@ -938,7 +966,7 @@
                                                andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
         }
         case VContentViewSectionCount:
-            return CGSizeZero;
+            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
     }
 }
 
@@ -951,7 +979,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         case VContentViewSectionContent:
             return CGSizeZero;
-        case VContentViewSectionHistogram:
+        case VContentViewSectionHistogramOrQuestion:
             return CGSizeZero;
         case VContentViewSectionExperienceEnhancers:
             return CGSizeZero;
