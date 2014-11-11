@@ -42,13 +42,9 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet CCHLinkTextView *captionTextView;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *captionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptionBufferConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
 
 @end
 
@@ -70,30 +66,6 @@ static const CGFloat kDescriptionBuffer = 15.0;
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
-    
-    [self applyConstraints:isTemplateC];
-}
-
-- (void)applyConstraints:(BOOL)isTemplateC
-{
-    NSParameterAssert( self.captionTextView.superview != nil );
-    
-    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.captionTextView,
-                                                                                  @"shadeView" : self.shadeView }];
-    NSString *formatV;
-    if ( isTemplateC )
-    {
-        [views setValue:self.actionView forKey:@"actionView"];
-        formatV = @"V:[shadeView]-15-[textView]-15-[actionView]";
-    }
-    else
-    {
-        formatV = @"V:[textView]-21-|";
-    }
-    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:formatV options:0 metrics:nil views:views];
-    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views];
-    [self.captionTextView.superview addConstraints:constraintsV];
-    [self.captionTextView.superview addConstraints:constraintsH];
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
