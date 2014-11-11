@@ -80,6 +80,7 @@ static NSString * const   kGAID                    = @"GAID";
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
 static NSString * const   kVPayloadKey         = @"payload";
 static NSString * const   kVErrorKey           = @"error";
+static NSString * const   kVEmailForPasswordReset = @"email";
 static NSString * const   kRemoteIdKey         = @"remoteId";
 
 #pragma mark - Media Constants

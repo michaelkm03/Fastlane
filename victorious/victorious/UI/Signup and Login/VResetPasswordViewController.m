@@ -12,6 +12,8 @@
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
+#import "VUserManager.h"
+#import "VUser.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
@@ -82,6 +84,9 @@
                                                        newPassword:newPassword
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
+             NSString *email = [self emailForPasswordResetFromResponse:fullResponse];
+             [[VUserManager sharedInstance] savePassword:newPassword forEmail:email];
+         
              [self dismissViewControllerAnimated:YES completion:nil];
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
@@ -93,6 +98,20 @@
     {
         [self.passwordValidator showAlertInViewController:self withError:outError];
     }
+}
+
+- (NSString *)emailForPasswordResetFromResponse:(id)fullResponse
+{
+    if ( [fullResponse isKindOfClass:[NSDictionary class]] )
+    {
+        NSDictionary *payload = ((NSDictionary *)fullResponse)[ kVPayloadKey ];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            return payload[ kVEmailForPasswordReset ];
+        }
+    }
+    
+    return nil;
 }
 
 - (IBAction)cancel:(id)sender

@@ -40,4 +40,9 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
 
 - (void)logout;
 
+/**
+ Saves the user's password in the keychain for automatic login in the future
+ */
+- (void)savePassword:(NSString *)password forEmail:(NSString *)email;
+
 @end

@@ -58,9 +58,9 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         
         case kVLastLoginTypeEmail:
         {
-            NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-            NSString *password = [self passwordForUsername:username];
-            [self loginViaEmail:username password:password onCompletion:completion onError:errorBlock];
+            NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
+            NSString *password = [self passwordForEmail:email];
+            [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
             break;
         }
             
@@ -287,7 +287,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forUsername:email];
+            [self savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -332,7 +332,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forUsername:email];
+            [self savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -360,24 +360,34 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     [[VObjectManager sharedManager] logout];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
-    [self emptyKeychain];
+    [self clearSavedPassword];
 }
 
 #pragma mark - Keychain
 
-- (void)savePassword:(NSString *)password forUsername:(NSString *)username
+- (void)savePassword:(NSString *)password forEmail:(NSString *)email
 {
+    if ( email == nil || password == nil )
+    {
+        return;
+    }
+    
+    if ( [self passwordForEmail:email] != nil )
+    {
+        [self clearSavedPassword];
+    }
+    
     SecItemAdd((__bridge CFDictionaryRef)(@{
                                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                            (__bridge id)kSecAttrAccount: username,
+                                            (__bridge id)kSecAttrAccount: email,
                                             (__bridge id)kSecAttrService: kKeychainServiceName,
                                             (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
-                                            }), NULL);
+                                            }), NULL );
 }
 
-- (NSString *)passwordForUsername:(NSString *)username
+- (NSString *)passwordForEmail:(NSString *)email
 {
-    if (!username)
+    if (!email)
     {
         return nil;
     }
@@ -386,7 +396,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)(@{
                                                                     (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                                                                     (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                                    (__bridge id)kSecAttrAccount: username,
+                                                                    (__bridge id)kSecAttrAccount: email,
                                                                     (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
                                                                     (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
                                                                     (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue
@@ -395,7 +405,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     {
         NSDictionary *keychainItem = (__bridge_transfer NSDictionary *)result;
         NSData *keychainData = (NSData *)keychainItem[(__bridge id)(kSecValueData)];
-        return [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
+        NSString *password = [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
+        return password;
     }
     else
     {
@@ -403,7 +414,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     }
 }
 
-- (void)emptyKeychain
+- (void)clearSavedPassword
 {
     SecItemDelete((__bridge CFDictionaryRef)(@{
                                                (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
