@@ -37,6 +37,7 @@
     
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
+    [self.navHeaderView setRightButtonTitle:NSLocalizedString( @"Save", @"") withAction:@selector(saveChanges:) onTarget:self];
 
     self.oldPasswordTextField.delegate =   self;
     self.changedPasswordTextField.delegate =   self;
