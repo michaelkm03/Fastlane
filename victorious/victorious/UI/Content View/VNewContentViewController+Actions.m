@@ -54,7 +54,6 @@ static const char kSequenceActionControllerKey;
 
 @implementation VNewContentViewController (Actions)
 
-
 - (void)setSequenceActionController:(VSequenceActionController *)sequenceActionController
 {
     objc_setAssociatedObject(self, &kSequenceActionControllerKey, sequenceActionController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -156,15 +155,11 @@ static const char kSequenceActionControllerKey;
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [contentViewController dismissViewControllerAnimated:YES
-                                                           completion:^
-                  {
-                      if (contentViewController.viewModel.hasReposted)
-                      {
-                          return;
-                      }
-                      [self.sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
-                  }];
+                 if (contentViewController.viewModel.hasReposted)
+                 {
+                     return;
+                 }
+                 [self.sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
              }];
         };
         repostItem.detailSelectionHandler = ^(void)
