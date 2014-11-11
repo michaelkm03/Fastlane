@@ -23,7 +23,6 @@
 // Categories
 #import "UIView+MotionEffects.h"
 #import "UIView+VShadows.h"
-#import "VHashTags.h"
 
 // Gesture Recognizers
 #import "CCHLinkGestureRecognizer.h"
@@ -256,25 +255,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                                                                                                attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
                                                                                                             NSParagraphStyleAttributeName:paragraphStyle,
                                                                                                             NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
-    NSArray *hashTagLocations = [VHashTags detectHashTags:mutableAttributedString.string];
-    [hashTagLocations enumerateObjectsUsingBlock:^(id range, NSUInteger idx, BOOL *stop)
-    {
-        NSRange justwordRange = [range rangeValue];
-        NSRange fullRange = NSMakeRange(justwordRange.location-1, justwordRange.length+1);
-        [mutableAttributedString addAttribute:CCHLinkAttributeName
-                                        value:[self.descriptionItem.title substringWithRange:[range rangeValue]]
-                                        range:fullRange];
-    }];
     [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
-    
-    self.titleTextView.linkTextAttributes = @{
-                                              NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-                                              };
-    self.titleTextView.linkTextTouchAttributes = @{
-                                                   NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
-                                                   };
     self.titleTextView.attributedText = mutableAttributedString;
-    self.titleTextView.minimumPressDuration = 99999;
     self.titleTextView.linkDelegate = self;
 }
 

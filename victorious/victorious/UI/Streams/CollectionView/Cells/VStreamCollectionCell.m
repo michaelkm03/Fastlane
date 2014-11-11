@@ -15,8 +15,6 @@
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
-#import "VHashTags.h"
-
 #import "VUserProfileViewController.h"
 
 #import "VSequence+Fetcher.h"
@@ -37,6 +35,7 @@
 #import "VSettingManager.h"
 
 #import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
 
@@ -44,17 +43,12 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet CCHLinkTextView *descriptionTextView;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *captionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptionBufferConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBufferConstraint;
-
-@property (nonatomic, strong) NSArray *hashTagRanges;
-@property (nonatomic, strong) NSTextStorage *textStorage;
-@property (nonatomic, strong) NSLayoutManager *containerLayoutManager;
-@property (nonatomic, strong) NSTextContainer *textContainer;
 
 @end
 
@@ -77,26 +71,14 @@ static const CGFloat kDescriptionBuffer = 15.0;
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
     
-    // Setup the layoutmanager, text container, and text storage
-    self.containerLayoutManager = [[NSLayoutManager alloc] init]; // no delegate currently being used
-    self.textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
-    self.textContainer.widthTracksTextView = YES;
-    self.textContainer.heightTracksTextView = YES;
-    [self.containerLayoutManager addTextContainer:self.textContainer];
-    self.textStorage = [[NSTextStorage alloc] init];
-    [self.textStorage addLayoutManager:self.containerLayoutManager];
-    
     [self applyConstraints:isTemplateC];
-    
-    self.descriptionTextView.font = [VStreamCollectionCell sequenceDescriptionAttributes][NSFontAttributeName];
-    self.descriptionTextView.textContainer.size = self.descriptionTextView.superview.bounds.size;
 }
 
 - (void)applyConstraints:(BOOL)isTemplateC
 {
-    NSParameterAssert( self.descriptionTextView.superview != nil );
+    NSParameterAssert( self.captionTextView.superview != nil );
     
-    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.descriptionTextView,
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textView" : self.captionTextView,
                                                                                   @"shadeView" : self.shadeView }];
     NSString *formatV;
     if ( isTemplateC )
@@ -110,8 +92,8 @@ static const CGFloat kDescriptionBuffer = 15.0;
     }
     NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:formatV options:0 metrics:nil views:views];
     NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[textView]-21-|" options:0 metrics:nil views:views];
-    [self.descriptionTextView.superview addConstraints:constraintsV];
-    [self.descriptionTextView.superview addConstraints:constraintsH];
+    [self.captionTextView.superview addConstraints:constraintsV];
+    [self.captionTextView.superview addConstraints:constraintsH];
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
@@ -134,24 +116,16 @@ static const CGFloat kDescriptionBuffer = 15.0;
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
-        self.hashTagRanges = [VHashTags detectHashTags:text];
-
-        self.descriptionTextView.linkTextAttributes = @{
-                                                  NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-                                                  };
-        self.descriptionTextView.linkTextTouchAttributes = @{
-                                                       NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
-                                                       };
-        self.descriptionTextView.minimumPressDuration = 99999;
-        self.descriptionTextView.linkDelegate = self;
-
-        self.descriptionTextView.attributedText = newAttributedCellText;
+        self.captionTextView.linkDelegate = self;
+        self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+        self.captionTextView.attributedText = newAttributedCellText;
         
         self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
     else
     {
-        self.descriptionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
         
         self.descriptionBufferConstraint.constant = 0;
     }
@@ -172,7 +146,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
     [self setDescriptionText:self.sequence.name];
     
-    self.descriptionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
     
@@ -297,7 +271,6 @@ static const CGFloat kDescriptionBuffer = 15.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     paragraphStyle.maximumLineHeight = 25;
     paragraphStyle.minimumLineHeight = 25;
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
     attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     
     if (!isTemplateC)

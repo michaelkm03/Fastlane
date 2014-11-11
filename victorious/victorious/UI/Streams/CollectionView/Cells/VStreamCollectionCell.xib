@@ -53,17 +53,11 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3gM-g0-IBc" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="h1z-VQ-pkX" userLabel="Description">
-                                <rect key="frame" x="20" y="279" width="280" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum dolor sit er elit " translatesAutoresizingMaskIntoConstraints="NO" id="Ijd-Vg-9fv" customClass="CCHLinkTextView">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum dolor sit er elit " translatesAutoresizingMaskIntoConstraints="NO" id="Ijd-Vg-9fv" customClass="VHashTagTextView">
                                 <rect key="frame" x="20" y="267" width="280" height="33"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="20" id="tNo-mm-KAf"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="25" id="tNo-mm-KAf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -81,7 +75,6 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="h1z-VQ-pkX" secondAttribute="trailing" constant="20" id="713-wm-aYG"/>
                             <constraint firstAttribute="bottom" secondItem="XNn-If-c8r" secondAttribute="bottom" constant="237" id="Koq-Qu-TnD"/>
                             <constraint firstAttribute="trailing" secondItem="Ijd-Vg-9fv" secondAttribute="trailing" constant="20" id="Pyn-tg-Pw3"/>
                             <constraint firstItem="XNn-If-c8r" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" id="a2k-Na-FWQ"/>
@@ -89,8 +82,6 @@
                             <constraint firstItem="XNn-If-c8r" firstAttribute="top" secondItem="3gM-g0-IBc" secondAttribute="top" constant="7" id="iKP-6f-kSl"/>
                             <constraint firstAttribute="trailing" secondItem="XNn-If-c8r" secondAttribute="trailing" id="jz8-py-V5U"/>
                             <constraint firstItem="Ijd-Vg-9fv" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" constant="20" id="oP0-X2-BtF"/>
-                            <constraint firstItem="h1z-VQ-pkX" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" constant="20" id="rPc-Fy-j1M"/>
-                            <constraint firstAttribute="bottom" secondItem="h1z-VQ-pkX" secondAttribute="bottom" constant="20" id="zK7-Mv-N1W"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -112,8 +103,7 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
-                <outlet property="descriptionLabel" destination="h1z-VQ-pkX" id="uTa-0X-eH7"/>
-                <outlet property="descriptionTextView" destination="Ijd-Vg-9fv" id="nfj-kF-BiO"/>
+                <outlet property="captionTextView" destination="Ijd-Vg-9fv" id="4bk-Tz-fIr"/>
                 <outlet property="lowerGradientView" destination="ANb-iR-hwm" id="44h-v9-vf4"/>
                 <outlet property="overlayView" destination="3gM-g0-IBc" id="5Fn-60-Yd9"/>
                 <outlet property="playBackgroundImageView" destination="NuW-UN-tpX" id="Bgz-8G-1he"/>
