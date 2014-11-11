@@ -92,14 +92,10 @@ static const CGFloat kDescriptionBuffer = 15.0;
         self.captionTextView.textContainer.maximumNumberOfLines = 3;
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         self.captionTextView.attributedText = newAttributedCellText;
-        
-        self.descriptionBufferConstraint.constant = self.actionViewBufferConstraint.constant;
     }
     else
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
-        
-        self.descriptionBufferConstraint.constant = 0;
     }
 }
 
