@@ -193,9 +193,10 @@ static char KVOContext;
 - (BOOL)postButtonStateIsValid ///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.
 {
     //These should have already been trimmed by the textViewDidEndEditing: call.  But lets verify that they are trimmed.
-    [self.questionTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    [self.leftAnswerTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    [self.rightAnswerTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSCharacterSet *whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    self.questionTextView.text = [self.questionTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
+    self.leftAnswerTextView.text = [self.leftAnswerTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
+    self.rightAnswerTextView.text =[self.rightAnswerTextView.text stringByTrimmingCharactersInSet:whitespaceSet];
     
     NSString *errorMessage = @"";
     if (!self.firstMediaURL || !self.secondMediaURL)
@@ -462,7 +463,7 @@ static char KVOContext;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    textView.text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 #pragma mark -
