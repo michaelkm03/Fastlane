@@ -38,7 +38,9 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
+#import "VObjectManager+Login.h"
 
 @implementation VNewContentViewController (Actions)
 
@@ -87,12 +89,12 @@
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
-            if (![VObjectManager sharedManager].mainUser)
+            if (![VObjectManager sharedManager].authorized)
             {
                 [contentViewController dismissViewControllerAnimated:YES
                                          completion:^
                  {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController]
+                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
                                         animated:YES
                                       completion:NULL];
                  }];
@@ -147,7 +149,7 @@
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll] )
+    if ( ![self.viewModel.sequence isPoll])
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
@@ -159,11 +161,13 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 if (![VObjectManager sharedManager].mainUser)
+                 if (![VObjectManager sharedManager].authorized)
                  {
-                     [contentViewController presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-                     return;
+                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
+                                        animated:YES
+                                      completion:NULL];
                  }
+                 
                  if (contentViewController.viewModel.hasReposted)
                  {
                      return;
