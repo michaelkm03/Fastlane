@@ -218,8 +218,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    CGFloat width = self.preferredMaxLayoutWidth;
-    CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( width, CGFLOAT_MAX)];
+    CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( self.preferredMaxLayoutWidth, CGFLOAT_MAX)];
     
     if (self.hasMedia)
     {
