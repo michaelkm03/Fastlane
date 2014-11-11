@@ -277,7 +277,7 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)

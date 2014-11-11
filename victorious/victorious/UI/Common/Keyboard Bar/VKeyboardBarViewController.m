@@ -136,7 +136,7 @@ static const NSInteger kCharacterLimit = 255;
         return;
     }
     
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
