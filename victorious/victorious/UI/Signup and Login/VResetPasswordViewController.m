@@ -12,8 +12,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
-#import "VUserManager.h"
-#import "VUser.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
