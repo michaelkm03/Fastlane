@@ -175,7 +175,8 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
     publishViewController.mediaURL = self.targetURL;
     publishViewController.playBackSpeed = self.playBackSpeed;
     publishViewController.playbackLooping = self.playbackLooping;
-    publishViewController.parentID = self.parentID;
+    publishViewController.parentSequenceID = self.parentSequenceID;
+    publishViewController.parentNodeID = self.parentNodeID;
 
     AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];

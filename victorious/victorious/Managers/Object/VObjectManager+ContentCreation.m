@@ -133,6 +133,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                previewImage:(UIImage *)previewImage
                 captionType:(VCaptionType)type
                   expiresAt:(NSString *)expiresAt
+           parentSequenceId:(NSNumber *)parentSequenceId
                parentNodeId:(NSNumber *)parentNodeId
                       speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
@@ -163,7 +164,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         parameters[@"parent_node_id"] = [parentNodeId stringValue];
     }
-
+    if (parentSequenceId && ![parentSequenceId isEqualToNumber:@(0)])
+    {
+        parameters[@"parent_sequence_id"] = [parentSequenceId stringValue];
+    }
     if (type == VCaptionTypeMeme)
     {
         parameters[@"subcategory"] = @"meme";

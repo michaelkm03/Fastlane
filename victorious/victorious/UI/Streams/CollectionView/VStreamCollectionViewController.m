@@ -319,21 +319,25 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    VSequence *sequence;
+    UIImageView *previewImageView;
     
-    // Return if the profile header was tapped
-    if ([[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath] isKindOfClass:[VProfileHeaderCell class]])
+    if ([cell isKindOfClass:[VStreamCollectionCell class]])
+    {
+        sequence = ((VStreamCollectionCell *)cell).sequence;
+        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
+    }
+    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
+    {
+        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
+        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
+    }
+    else
     {
         return;
     }
-    
-    UIImageView *previewImageView = ((VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:self.lastSelectedIndexPath]).previewImageView;
-    
-    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    if ( sequence == nil )
-    {
-        return;
-    }
-    
+
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.placeholderImage = previewImageView.image;

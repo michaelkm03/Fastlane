@@ -738,7 +738,8 @@ static const CGFloat kShareMargin = 34.0f;
                                            previewImage:self.previewImage
                                             captionType:self.captionType
                                               expiresAt:self.expirationDateString
-                                           parentNodeId:@(self.parentID)
+                                       parentSequenceId:@(self.parentSequenceID)
+                                           parentNodeId:@(self.parentNodeID)
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                                mediaURL:self.mediaURL
