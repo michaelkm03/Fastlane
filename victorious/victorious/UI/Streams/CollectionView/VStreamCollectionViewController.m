@@ -322,35 +322,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     self.lastSelectedIndexPath = indexPath;
     
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    VSequence *sequence;
-    UIImageView *previewImageView;
-    
-    if ([cell isKindOfClass:[VStreamCollectionCell class]])
-    {
-        sequence = ((VStreamCollectionCell *)cell).sequence;
-        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-    }
-    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
-    {
-        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
-        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
-    }
-    else
-    {
-        return;
-    }
-
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-    contentViewController.placeholderImage = previewImageView.image;
-    contentViewController.delegate = self;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
@@ -369,24 +341,30 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     else
     {
-        [self showContentViewWithSequence:sequence];
+        UIImageView *previewImageView = nil;
+        UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        if ([cell isKindOfClass:[VStreamCollectionCell class]])
+        {
+            previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
+        }
+        else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
+        {
+            previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
+        }
+        [self showContentViewWithSequence:sequence placeHolderImage:previewImageView.image];
     }
 }
 
-- (void)showContentViewWithSequence:(VSequence *)sequence
+- (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage
 {
-    UIImageView *previewImageView;
-    
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-    contentViewController.placeholderImage = previewImageView.image;
+    contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
     UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
     contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
+    [self presentViewController:contentNav animated:YES completion:nil];
 }
 
 - (void)showWebContentWithSequence:(VSequence *)sequence
