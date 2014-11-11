@@ -39,6 +39,7 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 #import "VSequenceActionController.h"
 
@@ -114,7 +115,6 @@ static const char kSequenceActionControllerKey;
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
-            
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
@@ -143,7 +143,7 @@ static const char kSequenceActionControllerKey;
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll] )
+    if ( ![self.viewModel.sequence isPoll])
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
