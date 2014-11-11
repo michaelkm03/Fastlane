@@ -78,6 +78,10 @@
 "Missing Content"           =   "Uh Oh!";
 "Missing Content Message"   =   "We can't find what you're looking for!";
 
+"MissingMedia"          =   "You must have 2 photos.";
+"QuestionTextToShort"   =   "Your question must be at least 2 characters long.";
+"AnswerTextToShort"     =   "Your answers must be at least 2 characters long.";
+
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
@@ -160,10 +164,6 @@
 "Vote this"             =   "Vote this";
 "Vote that"             =   "Vote that";
 "Create Poll"           =   "Create Poll";
-
-
-"CreatePollErrorTitle"  =   "Whoops!";
-"CreatePollErrorMessage"=   "Your question and answers have to be at least 2 characters each.";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";
 "TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";

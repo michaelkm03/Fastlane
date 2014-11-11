@@ -17,6 +17,8 @@
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
+static const NSInteger kMinLength = 2;
+
 static char KVOContext;
 
 @interface VCreatePollViewController() <UITextViewDelegate>
@@ -156,7 +158,8 @@ static char KVOContext;
     [self.postButton setTitle:NSLocalizedString(@"Create Poll", @"Create Poll") forState:UIControlStateNormal];
     self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
     
-    [self validatePostButtonState];
+    [self.postButton setEnabled:YES];
+
     [self updateViewState];
 }
 
@@ -187,38 +190,41 @@ static char KVOContext;
     return YES;
 }
 
-- (void)validatePostButtonState
+- (BOOL)postButtonStateIsValid///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.
 {
-    [self.postButton setEnabled:YES];
+    //These should have already been trimmed by the textViewDidEndEditing: call.  But lets verify that they are trimmed.
+    [self.questionTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [self.leftAnswerTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [self.rightAnswerTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
+    NSString *errorMessage = @"";
     if (!self.firstMediaURL || !self.secondMediaURL)
     {
-        [self.postButton setEnabled:NO];
+        errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"MissingMedia", nil)];
+        errorMessage = [errorMessage stringByAppendingString:@"\n"];
     }
-    else if ([self.questionTextView.text isEmpty])
+    if ([self.questionTextView.text length] < kMinLength)
     {
-        [self.postButton setEnabled:NO];
+        errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"QuestionTextToShort", nil)];
+        errorMessage = [errorMessage stringByAppendingString:@"\n"];
     }
-    else if ([self.questionTextView.text length] > VConstantsMessageLength)
+    if ([self.leftAnswerTextView.text length] < kMinLength || [self.rightAnswerTextView.text length] < kMinLength)
     {
-        [self.postButton setEnabled:NO];
+        errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"AnswerTextToShort", nil)];
     }
-    else if ([self.leftAnswerTextView.text isEmpty])
+    
+    if (errorMessage.length > 0)
     {
-        [self.postButton setEnabled:NO];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                        message:errorMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+        return NO;
     }
-    else if ([self.leftAnswerTextView.text length] > VConstantsPollAnswerLength)
-    {
-        [self.postButton setEnabled:NO];
-    }
-    else if ([self.rightAnswerTextView.text isEmpty])
-    {
-        [self.postButton setEnabled:NO];
-    }
-    else if ([self.rightAnswerTextView.text length] > VConstantsPollAnswerLength)
-    {
-        [self.postButton setEnabled:NO];
-    }
+
+    return YES;
 }
 
 - (void)updateViewState
@@ -313,7 +319,6 @@ static char KVOContext;
     {
         temporaryLeftPreviewView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
         temporaryLeftPreviewView.alpha = 0;
-        [self validatePostButtonState];
         [self updateViewState];
     }
                      completion:^(BOOL finished)
@@ -344,7 +349,6 @@ static char KVOContext;
         temporaryRightPreviewView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
         temporaryRightPreviewView.alpha = 0;
         [self updateViewState];
-        [self validatePostButtonState];
     }
                      completion:^(BOOL finished)
     {
@@ -355,16 +359,8 @@ static char KVOContext;
 
 - (IBAction)postButtonAction:(id)sender
 {
-    if (self.questionTextView.text.length < 2
-        || self.leftAnswerTextView.text.length < 2
-        || self.rightAnswerTextView.text.length < 2)
+    if (![self postButtonStateIsValid])
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CreatePollErrorTitle", nil)
-                                                        message:NSLocalizedString(@"CreatePollErrorMessage", nil)
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
         return;
     }
     
@@ -462,7 +458,11 @@ static char KVOContext;
     {
         self.rightAnswerPrompt.hidden = textView.text.length > 0;
     }
-    [self validatePostButtonState];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 #pragma mark -
@@ -482,7 +482,6 @@ static char KVOContext;
     }
     
     [self updateViewState];
-    [self validatePostButtonState];
 }
 
 #pragma mark - KVO
