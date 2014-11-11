@@ -365,11 +365,11 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 #pragma mark - Keychain
 
-- (void)savePassword:(NSString *)password forEmail:(NSString *)email
+- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email
 {
     if ( email == nil || password == nil )
     {
-        return;
+        return NO;
     }
     
     if ( [self passwordForEmail:email] != nil )
@@ -377,17 +377,19 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         [self clearSavedPassword];
     }
     
-    SecItemAdd((__bridge CFDictionaryRef)(@{
-                                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                            (__bridge id)kSecAttrAccount: email,
-                                            (__bridge id)kSecAttrService: kKeychainServiceName,
-                                            (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
-                                            }), NULL );
+    CFTypeRef result;
+    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)(@{
+                                                           (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                                           (__bridge id)kSecAttrAccount: email,
+                                                           (__bridge id)kSecAttrService: kKeychainServiceName,
+                                                           (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
+                                                           }), &result);
+    return err == errSecSuccess;
 }
 
 - (NSString *)passwordForEmail:(NSString *)email
 {
-    if (!email)
+    if ( email == nil )
     {
         return nil;
     }
@@ -414,12 +416,13 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     }
 }
 
-- (void)clearSavedPassword
+- (BOOL)clearSavedPassword
 {
-    SecItemDelete((__bridge CFDictionaryRef)(@{
-                                               (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                               (__bridge id)kSecAttrService: kKeychainServiceName,
-                                               }));
+    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)(@{
+                                                              (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                                              (__bridge id)kSecAttrService: kKeychainServiceName,
+                                                              }));
+    return err == errSecSuccess;
 }
 
 @end
