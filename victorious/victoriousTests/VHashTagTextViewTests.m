@@ -12,8 +12,9 @@
 #import "VAsyncTestHelper.h"
 
 #import "VHashTagTextView.h"
+#import "CCHLinkTextViewDelegate.h"
 
-@interface VHashTagTextViewTests : XCTestCase
+@interface VHashTagTextViewTests : XCTestCase <CCHLinkTextViewDelegate>
 
 @property (nonatomic, strong) VHashTagTextView *textView;
 
@@ -34,15 +35,13 @@
 
 - (void)testFindsTags
 {
-    NSString *simpleHashTagString = @"#hashTag";
-    NSMutableAttributedString *attributedSimpleString = [[NSMutableAttributedString alloc] initWithString:simpleHashTagString];
+    NSMutableAttributedString *attributedSimpleString = [[NSMutableAttributedString alloc] initWithString:@"#hashTag"];
     
     self.textView.attributedText = attributedSimpleString;
 
     __block BOOL appliedLinkAttribute = NO;
     
-    
-    [self.textView.attributedText enumerateAttributesInRange:NSMakeRange(0, simpleHashTagString.length)
+    [self.textView.attributedText enumerateAttributesInRange:NSMakeRange(0, attributedSimpleString.string.length)
                                                      options:kNilOptions
                                                   usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
      {
@@ -56,7 +55,42 @@
              }
          }];
      }];
-    XCTAssert(appliedLinkAttribute);
+    XCTAssert(appliedLinkAttribute == YES);
+}
+
+- (void)testNoTags
+{
+    self.textView.attributedText = [[NSMutableAttributedString alloc] initWithString:@"hashTag"];;
+    
+    __block BOOL appliedLinkAttribute = NO;
+    
+    [self.textView.attributedText enumerateAttributesInRange:NSMakeRange(0, self.textView.text.length)
+                                                     options:kNilOptions
+                                                  usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
+     {
+         NSArray *allKeys = [attrs allKeys];
+         NSLog(@"%@", allKeys);
+         [allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+          {
+              if ([key isEqualToString:CCHLinkAttributeName])
+              {
+                  appliedLinkAttribute = YES;
+              }
+          }];
+     }];
+    XCTAssert(appliedLinkAttribute == NO);
+}
+
+- (void)testValueOfHashTag
+{
+    NSString *hashyText = @"#hashy";
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:hashyText];
+    [self.textView.attributedText enumerateAttributesInRange:NSMakeRange(0, self.textView.text.length)
+                                                     options:kNilOptions
+                                                  usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
+     {
+         XCTAssert([[attrs valueForKey:CCHLinkAttributeName] isEqualToString:@"hashy"]);
+     }];
 }
 
 @end
