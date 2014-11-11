@@ -14,6 +14,9 @@
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
 
+#import "VFacebookManager.h"
+#import "VTwitterManager.h"
+
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
@@ -134,6 +137,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                       speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
                    mediaURL:(NSURL *)mediaUrl
+              facebookShare:(BOOL)facebookShare
+               twitterShare:(BOOL)twitterShare
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert(mediaUrl != nil);
@@ -175,6 +180,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         
         parameters[@"speed"] = [NSString stringWithFormat:@"%.1f", speed];
         parameters[@"playback"] = loopParam;
+    }
+    
+    if (facebookShare)
+    {
+        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+    }
+    if (twitterShare)
+    {
+        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
+        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
     }
     
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
