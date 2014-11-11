@@ -190,7 +190,7 @@ static char KVOContext;
     return YES;
 }
 
-- (BOOL)postButtonStateIsValid///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.
+- (BOOL)postButtonStateIsValid ///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.
 {
     //These should have already been trimmed by the textViewDidEndEditing: call.  But lets verify that they are trimmed.
     [self.questionTextView.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
