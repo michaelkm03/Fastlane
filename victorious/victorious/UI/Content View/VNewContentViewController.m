@@ -1135,6 +1135,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
     if (self.viewModel.type != VContentViewTypeVideo)
     {
         return;

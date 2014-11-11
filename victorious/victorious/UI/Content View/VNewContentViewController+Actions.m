@@ -39,6 +39,7 @@
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 
+#import "VObjectManager+Login.h"
 
 @implementation VNewContentViewController (Actions)
 
@@ -80,7 +81,7 @@
 
     [actionItems addObject:descripTionItem];
     
-    if ([self.viewModel.sequence canRemix])
+    if ([self.viewModel.sequence canRemix] && [VObjectManager sharedManager].authorized)
     {
         VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
                                                               actionIcon:[UIImage imageNamed:@"icon_remix"]
@@ -147,7 +148,7 @@
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll] )
+    if ( ![self.viewModel.sequence isPoll] && [VObjectManager sharedManager].authorized)
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
