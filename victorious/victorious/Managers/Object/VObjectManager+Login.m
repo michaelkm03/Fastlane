@@ -23,6 +23,8 @@
 #import "VVoteType.h"
 #import "VTracking.h"
 
+#import "VUserManager.h"
+
 @implementation VObjectManager (Login)
 
 NSString *kLoggedInChangedNotification          = @"LoggedInChangedNotification";
@@ -310,6 +312,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         if (success)
         {
+            [[VUserManager sharedInstance] savePassword:newPassword forEmail:self.mainUser.email];
+            
             success(operation, fullResponse, resultObjects);
         }
     };

@@ -58,13 +58,25 @@
                                 <rect key="frame" x="0.0" y="7" width="320" height="76"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum dolor sit er elit " translatesAutoresizingMaskIntoConstraints="NO" id="cTE-CZ-EkI" customClass="VHashTagTextView">
+                                <rect key="frame" x="20" y="161" width="280" height="33"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="25" id="XCC-Nb-k8e"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="cTE-CZ-EkI" secondAttribute="trailing" constant="20" id="BFM-bn-ytb"/>
                             <constraint firstItem="BME-sG-S0C" firstAttribute="top" secondItem="sFz-f0-h8E" secondAttribute="top" constant="7" id="MrQ-U0-4Ul"/>
+                            <constraint firstItem="cTE-CZ-EkI" firstAttribute="leading" secondItem="sFz-f0-h8E" secondAttribute="leading" constant="20" id="NKR-ia-jet"/>
                             <constraint firstItem="BME-sG-S0C" firstAttribute="leading" secondItem="sFz-f0-h8E" secondAttribute="leading" id="OWD-Mr-VYO"/>
                             <constraint firstAttribute="trailing" secondItem="BME-sG-S0C" secondAttribute="trailing" id="PYu-AP-x0y"/>
                             <constraint firstAttribute="bottom" secondItem="BME-sG-S0C" secondAttribute="bottom" constant="131" id="b82-xJ-ISi"/>
+                            <constraint firstAttribute="bottom" secondItem="cTE-CZ-EkI" secondAttribute="bottom" constant="20" id="hlx-B3-GEq"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="6cV-mg-W2X">
@@ -97,6 +109,7 @@
             </constraints>
             <size key="customSize" width="267" height="161"/>
             <connections>
+                <outlet property="captionTextView" destination="cTE-CZ-EkI" id="ZBV-c8-asw"/>
                 <outlet property="lowerGradientView" destination="a4c-tz-jQh" id="V6U-Pb-y7M"/>
                 <outlet property="overlayView" destination="sFz-f0-h8E" id="iVu-KJ-0cB"/>
                 <outlet property="previewImageTwo" destination="CAh-rM-9BA" id="EoA-YZ-J66"/>

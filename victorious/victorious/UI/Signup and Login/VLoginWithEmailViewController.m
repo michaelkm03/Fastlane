@@ -228,7 +228,8 @@
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
-            [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
+            NSString *emailEntered = [alertView textFieldAtIndex:0].text;
+            [[VObjectManager sharedManager] requestPasswordResetForEmail:emailEntered
                                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  self.deviceToken = resultObjects[0];
