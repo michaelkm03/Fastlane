@@ -356,11 +356,6 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return comments;
 }
 
-- (NSInteger)commentCount
-{
-    return (NSInteger)self.comments.count;
-}
-
 #pragma mark - Public Methods
 
 - (void)addCommentWithText:(NSString *)text
@@ -435,40 +430,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  failBlock:nil];
 }
 
-- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return commentForIndex.assetOrientation;
-}
-
-- (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return commentForIndex.text;
-}
-
-- (NSString *)commenterNameForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return commentForIndex.user.name;
-}
-
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return [commentForIndex.postedAt timeSince];
-}
-
-- (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    if (commentForIndex.realtime.floatValue < 0)
-    {
-        return @"";
-    }
-    
-    return [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
-                                                                   andPostedTime:commentForIndex.realtime] string];
 }
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex
@@ -578,46 +543,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return nil;
 }
 
-- (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return [NSURL URLWithString:commentForIndex.user.pictureUrl];
-}
-
-- (BOOL)commentHasMediaForCommentIndex:(NSInteger)commentIndex
-{
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return commentForIndex.hasMedia;
-}
-
-- (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex
-{
-    if (![self commentHasMediaForCommentIndex:commentIndex])
-    {
-        [[NSException exceptionWithName:NSInternalInconsistencyException
-                                 reason:[NSString stringWithFormat:@"No media for comment index: %@", @(commentIndex)]
-                               userInfo:nil] raise];
-    }
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return commentForIndex.previewImageURL;
-}
-
 - (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
     return [NSURL URLWithString:commentForIndex.mediaUrl];
-}
-
-- (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex
-{
-    if (![self commentHasMediaForCommentIndex:commentIndex])
-    {
-        [[NSException exceptionWithName:NSInternalInconsistencyException
-                                 reason:[NSString stringWithFormat:@"No media for comment index: %@", @(commentIndex)]
-                               userInfo:nil] raise];
-    }
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
-    return ([commentForIndex.mediaUrl isKindOfClass:[NSString class]] && [commentForIndex.mediaUrl v_hasVideoExtension]);
 }
 
 - (VAnswer *)answerA

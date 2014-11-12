@@ -59,6 +59,7 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
+#import "VComment+Fetcher.h"
 
 // Simple Models
 #import "VExperienceEnhancer.h"
@@ -477,11 +478,11 @@
 
 - (void)commentsDidUpdate:(NSNotification *)notification
 {
-    if (self.viewModel.commentCount > 0)
+    if (self.viewModel.comments.count > 0)
     {
         NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
         [self.contentCollectionView reloadSections:commentsIndexSet];
-        self.handleView.numberOfComments = self.viewModel.commentCount;
+        self.handleView.numberOfComments = (NSInteger)self.viewModel.comments.count;
     }
 }
 
@@ -544,31 +545,20 @@
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
-    commentCell.mediaAssetOrientation = [self.viewModel commentMediaAssetOrientationForCommentIndex:index];
-    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
-    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
-    commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
-    commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
-    if ([self.viewModel commentHasMediaForCommentIndex:index])
-    {
-        commentCell.hasMedia = YES;
-        commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
-        commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
-    }
+    commentCell.comment = self.viewModel.comments[index];
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
-        [welf showLightBoxWithMediaURL:[welf.viewModel mediaURLForCommentIndex:index]
+        [welf showLightBoxWithMediaURL:wCommentCell.mediaURL
                           previewImage:wCommentCell.previewImage
                                isVideo:wCommentCell.mediaIsVideo
                             sourceView:wCommentCell.previewView];
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[welf.viewModel userForCommentIndex:index]];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -634,7 +624,7 @@
         case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
-            return self.viewModel.commentCount;
+            return (NSInteger)self.viewModel.comments.count;
         case VContentViewSectionCount:
             return 0;
     }
@@ -912,7 +902,7 @@
                                                                                                    forIndexPath:indexPath];
                 self.handleView = handleView;
             }
-            self.handleView.numberOfComments = self.viewModel.commentCount;
+            self.handleView.numberOfComments = self.viewModel.comments.count;
             
             return self.handleView;
         }
@@ -961,9 +951,10 @@
         }
         case VContentViewSectionAllComments:
         {
+            VComment *comment = self.viewModel.comments[indexPath.row];
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
-                                               andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
+                                               commentBody:comment.text
+                                               andHasMedia:comment.hasMedia];
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -985,7 +976,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
-            return (self.viewModel.commentCount > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
+            return (self.viewModel.comments.count > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;

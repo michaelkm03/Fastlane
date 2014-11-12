@@ -8,6 +8,8 @@
 
 #import "VContentCommentsCell.h"
 
+#import "VUser.h"
+
 // Subviews
 #import "VDefaultProfileImageView.h"
 #import "VCommentTextAndMediaView.h"
@@ -15,8 +17,13 @@
 // Theme
 #import "VThemeManager.h"
 
+// Formatting
 #import "UIImage+ImageCreation.h"
 #import "AVAsset+Orientation.h"
+#import "NSDate+timeSince.h"
+#import "VRTCUserPostedAtFormatter.h"
+#import "VComment+Fetcher.h"
+#import "NSURL+MediaType.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
@@ -33,6 +40,16 @@ static NSCache *_sharedImageCache = nil;
 @property (weak, nonatomic) IBOutlet UIImageView *seperatorImageView;
 @property (weak, nonatomic) IBOutlet VCommentTextAndMediaView *commentAndMediaView;
 @property (weak, nonatomic) IBOutlet UIImageView *clockIconImageView;
+
+@property (nonatomic, strong) NSNumber *mediaAssetOrientation;
+@property (nonatomic, copy) NSURL *URLForCommenterAvatar;
+@property (nonatomic, copy) NSString *commenterName;
+@property (nonatomic, copy) NSString *timestampText;
+@property (nonatomic, copy) NSString *realTimeCommentText;
+@property (nonatomic, copy) NSString *commentBody;
+@property (nonatomic, assign) BOOL hasMedia;
+@property (nonatomic, copy) NSURL *mediaPreviewURL;
+@property (nonatomic, assign) BOOL mediaIsVideo;
 
 @end
 
@@ -117,6 +134,7 @@ static NSCache *_sharedImageCache = nil;
 {
     [super prepareForReuse];
     
+    self.hasMedia = NO;
     self.onUserProfileTapped = nil;
     self.commentersAvatarImageView.image = nil;
     
@@ -142,6 +160,29 @@ static NSCache *_sharedImageCache = nil;
 }
 
 #pragma mark - Property Accessor
+
+- (void)setComment:(VComment *)comment
+{
+    _comment = comment;
+    
+    self.mediaAssetOrientation = comment.assetOrientation;
+    self.commentBody = comment.text;
+    self.commenterName = comment.user.name;
+    self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
+    self.timestampText = [comment.postedAt timeSince];
+    
+    if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
+    {
+        self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
+                                                                                            andPostedTime:comment.realtime] string];
+    }
+    self.hasMedia = comment.hasMedia;
+    if (self.hasMedia)
+    {
+        self.mediaPreviewURL = comment.previewImageURL;
+        self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
+    }
+}
 
 - (void)setHasMedia:(BOOL)hasMedia
 {

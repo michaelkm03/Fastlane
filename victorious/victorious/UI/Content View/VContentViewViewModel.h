@@ -161,96 +161,17 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
-/**
- *  The number of comments on this particular sequence.
- */
-@property (nonatomic, readonly) NSInteger commentCount;
 
 /**
  *  Fetches the all comments and realtime comments for this viewModel's sequence.
  */
 - (void)fetchComments;
 
+@property (nonatomic, readonly) NSArray *comments;
+
 - (void)repost;
 
-/**
- *  Returns the corrensponding comment body for the given commentIndex. Might return nil if comment has no body text.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The comment body for the corresponding comment.
- */
-- (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex;
 
-/**
- *  Returns the corresponding name for the user who posted the comment at the specified index.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The user's name who posted a given comment.
- */
-- (NSString *)commenterNameForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns the text to place in the time ago/ time since label for a given comment view.
- *
- *  @param commentIndex The corresponding index of the comment.
- *
- *  @return The formatted time ago text for the given coment.
- */
-- (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex;
-
-
-/**
- *  Returns the text to place in the real time comment label for a given comment view.
- *
- *  @param commentIndex The corresponding index of the comment.
- *
- *  @return The formatted real time comment text for the given coment.
- */
-- (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns the avatar URL for the user who posted a given comment. May return nil if no avatar URL exists.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The avatar URL for the given user.
- */
-- (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a boolean determining if a given comment has any media (such as a photo or video) attached.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return A determination of the comment's media.
- */
-- (BOOL)commentHasMediaForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a preview image url for the media for a given comment. Raises an exception if comment has no media.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The preview image URL.
- */
-- (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
-
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
-
-- (VUser *)userForCommentIndex:(NSInteger)commentIndex;
-
-- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return Whether or not the media for the comment is a video.
- */
-- (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
 
 @property (nonatomic, readonly) NSString *answerALabelText;
 @property (nonatomic, readonly) NSString *answerBLabelText;
