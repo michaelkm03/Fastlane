@@ -223,12 +223,14 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
          }
      }
                                                 failBlock:nil];
-    
-    [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
-                                                      withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
-     {
-         self.hasReposted = userInteractions.hasReposted;
-     }];
+    if ( [VObjectManager sharedManager].mainUserLoggedIn )
+    {
+        [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
+                                                          withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
+         {
+             self.hasReposted = userInteractions.hasReposted;
+         }];
+    }
 }
 
 - (void)fetchHistogramData
