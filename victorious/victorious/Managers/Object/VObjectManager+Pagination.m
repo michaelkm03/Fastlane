@@ -490,23 +490,58 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self filterForStream:stream];
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if (refresh)
+        void(^paginationBlock)(void) = ^(void)
         {
-            stream.streamItems = [[NSOrderedSet alloc] init];
-        }
+            //If this is the first page, break the relationship to all the old objects.
+            if (refresh)
+            {
+                stream.streamItems = [[NSOrderedSet alloc] init];
+            }
+            
+            NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+            for (VStreamItem *streamItem in resultObjects)
+            {
+                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+                [streamItems addObject:streamItemInContext];
+            }
+            stream.streamItems = streamItems;
+            
+            if (success)
+            {
+                success(operation, fullResponse, resultObjects);
+            }
+        };
         
-        NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        for (VStreamItem *streamItem in resultObjects)
+        //Don't complete the fetch until we have the users
+        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VStreamItem *item in resultObjects)
         {
-            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
-            [streamItems addObject:streamItemInContext];
+            VSequence *sequence = (VSequence *)item;
+            if ([item isKindOfClass:[VSequence class]] && !sequence.user)
+            {
+                [nonExistantUsers addObject:sequence.createdBy];
+            }
+            if ([item isKindOfClass:[VSequence class]] &&  sequence.parentUserId && !sequence.parentUser)
+            {
+                [nonExistantUsers addObject:sequence.parentUserId];
+            }
         }
-        stream.streamItems = streamItems;
-        
-        if (success)
+        if ([nonExistantUsers count])
         {
-            success(operation, fullResponse, resultObjects);
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+             {
+                 paginationBlock();
+             }
+                                             failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 VLog(@"Failed with error: %@", error);
+                 paginationBlock();
+             }];
+        }
+        else
+        {
+            paginationBlock();
         }
     };
     

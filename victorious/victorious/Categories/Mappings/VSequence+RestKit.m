@@ -11,7 +11,6 @@
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
 #import "VTracking+RestKit.h"
-#import "VUser.h"
 #import "VAdBreak+RestKit.h"
 
 @implementation VSequence (RestKit)
@@ -54,7 +53,6 @@
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
     
     mapping.forceCollectionMapping = YES;
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
