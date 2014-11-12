@@ -137,7 +137,6 @@ NSArray *VRemixCategories();
 
 static NSString * const   kVAssetTypeMedia = @"media";
 static NSString * const   kVAssetTypeURL  = @"url";
-static NSString * const   kVSequencePreviewTypeHTML  = @"html";
 
 static NSString * const   kTemporaryContentStatus = @"temp";
 

@@ -14,7 +14,7 @@ static const BOOL kForceUIWebView = NO;
 
 + (id<VWebViewProtocol>)createWebView
 {
-    if ( NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView )
+    if ( [[self class] canUsedAdvancedWebView] )
     {
         return [[VWebViewAdvanced alloc] init];
     }
@@ -22,6 +22,11 @@ static const BOOL kForceUIWebView = NO;
     {
         return [[VWebViewBasic alloc] init];
     }
+}
+
++ (BOOL)canUsedAdvancedWebView
+{
+    return NSClassFromString( @"WKWebView" ) != nil && !kForceUIWebView;
 }
 
 @end

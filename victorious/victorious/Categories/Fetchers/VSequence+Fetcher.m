@@ -112,12 +112,12 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)isAnnouncement
 {
-    return  [self.category isEqualToString:kVOwnerAnnouncementCategory];
+    return [self.category isEqualToString:kVOwnerAnnouncementCategory];
 }
 
 - (BOOL)isPreviewWebContent
 {
-    return [self.previewType isEqualToString:kVSequencePreviewTypeHTML];
+    return [self.previewType isEqualToString:kVAssetTypeURL];
 }
 
 - (BOOL)isWebContent
