@@ -375,9 +375,8 @@
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
-		A769C3EA1A13176700698D0C /* VWebBrowserHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderView.m */; };
+		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
 		A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */; };
-		A769C3EC1A13176700698D0C /* VWebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A769C3DF1A13176700698D0C /* VWebBrowserViewController.xib */; };
 		A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E11A13176700698D0C /* VWebContentViewController.m */; };
 		A769C3EE1A13176700698D0C /* VWebViewAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E31A13176700698D0C /* VWebViewAdvanced.m */; };
 		A769C3EF1A13176700698D0C /* VWebViewBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E51A13176700698D0C /* VWebViewBasic.m */; };
@@ -385,6 +384,7 @@
 		A769C3F21A13196500698D0C /* VWebViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F11A13196500698D0C /* VWebViewTests.m */; };
 		A769C3F31A131D8C00698D0C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A769C3F51A131F5C00698D0C /* VWebViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */; };
+		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
@@ -1226,11 +1226,10 @@
 		A769C3D61A12DD5000698D0C /* VUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserManagerTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
 		A769C3DA1A13176700698D0C /* VWebBrowserActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserActions.m; sourceTree = "<group>"; };
-		A769C3DB1A13176700698D0C /* VWebBrowserHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserHeaderView.h; sourceTree = "<group>"; };
-		A769C3DC1A13176700698D0C /* VWebBrowserHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserHeaderView.m; sourceTree = "<group>"; };
+		A769C3DB1A13176700698D0C /* VWebBrowserHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserHeaderViewController.h; sourceTree = "<group>"; };
+		A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserHeaderViewController.m; sourceTree = "<group>"; };
 		A769C3DD1A13176700698D0C /* VWebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserViewController.h; sourceTree = "<group>"; };
 		A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserViewController.m; sourceTree = "<group>"; };
-		A769C3DF1A13176700698D0C /* VWebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VWebBrowserViewController.xib; sourceTree = "<group>"; };
 		A769C3E01A13176700698D0C /* VWebContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebContentViewController.h; sourceTree = "<group>"; };
 		A769C3E11A13176700698D0C /* VWebContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebContentViewController.m; sourceTree = "<group>"; };
 		A769C3E21A13176700698D0C /* VWebViewAdvanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewAdvanced.h; sourceTree = "<group>"; };
@@ -1242,6 +1241,7 @@
 		A769C3E81A13176700698D0C /* VWebViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewProtocol.h; sourceTree = "<group>"; };
 		A769C3F11A13196500698D0C /* VWebViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewTests.m; sourceTree = "<group>"; };
 		A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewFactoryTests.m; sourceTree = "<group>"; };
+		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
@@ -2973,11 +2973,10 @@
 			children = (
 				A769C3D91A13176700698D0C /* VWebBrowserActions.h */,
 				A769C3DA1A13176700698D0C /* VWebBrowserActions.m */,
-				A769C3DB1A13176700698D0C /* VWebBrowserHeaderView.h */,
-				A769C3DC1A13176700698D0C /* VWebBrowserHeaderView.m */,
+				A769C3DB1A13176700698D0C /* VWebBrowserHeaderViewController.h */,
+				A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */,
 				A769C3DD1A13176700698D0C /* VWebBrowserViewController.h */,
 				A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */,
-				A769C3DF1A13176700698D0C /* VWebBrowserViewController.xib */,
 				A769C3E01A13176700698D0C /* VWebContentViewController.h */,
 				A769C3E11A13176700698D0C /* VWebContentViewController.m */,
 				A769C3E21A13176700698D0C /* VWebViewAdvanced.h */,
@@ -2987,6 +2986,7 @@
 				A769C3E61A13176700698D0C /* VWebViewFactory.h */,
 				A769C3E71A13176700698D0C /* VWebViewFactory.m */,
 				A769C3E81A13176700698D0C /* VWebViewProtocol.h */,
+				A769C3F61A13D69500698D0C /* WebBrowser.storyboard */,
 			);
 			path = "Web View";
 			sourceTree = "<group>";
@@ -3996,6 +3996,7 @@
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
+				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */,
 				0314D45A19B46B5E00FA363C /* filters.xml in Resources */,
@@ -4007,7 +4008,6 @@
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
 				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
-				A769C3EC1A13176700698D0C /* VWebBrowserViewController.xib in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
@@ -4232,7 +4232,7 @@
 				D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */,
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
-				A769C3EA1A13176700698D0C /* VWebBrowserHeaderView.m in Sources */,
+				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
 				BE799BC119C93C210023CE88 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,

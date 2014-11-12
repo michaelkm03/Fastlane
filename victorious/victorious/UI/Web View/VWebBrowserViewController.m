@@ -7,7 +7,7 @@
 //
 
 #import "VWebBrowserViewController.h"
-#import "VWebBrowserHeaderView.h"
+#import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
 #import "VWebViewFactory.h"
 #import "VWebBrowserActions.h"
@@ -25,15 +25,17 @@ typedef enum {
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
-@property (nonatomic, weak) IBOutlet VWebBrowserHeaderView *headerView;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
+@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
 
 @end
 
 @implementation VWebBrowserViewController
 
-+ (VWebBrowserViewController *)instantiateFromNib
++ (VWebBrowserViewController *)instantiateFromStoryboard
 {
-    return [[VWebBrowserViewController alloc] initWithNibName:@"VWebBrowserViewController" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:nil];
+    return [storyboard instantiateInitialViewController];
 }
 
 #pragma mark - UIViewController
@@ -44,19 +46,27 @@ typedef enum {
     
     self.actions = [[VWebBrowserActions alloc] init];
     
-    self.headerView.browserDelegate = self;
+    self.headerViewController.browserDelegate = self;
     
     self.webView = [VWebViewFactory createWebView];
     self.webView.delegate = self;
-    [self.view addSubview:self.webView.asView];
-    [self.view sendSubviewToBack:self.webView.asView];
+    [self.containerView addSubview:self.webView.asView];
+    
+    NSDictionary *views = @{ @"webView" : self.webView.asView };
+    self.webView.asView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|"
+                                                                               options:kNilOptions
+                                                                               metrics:nil
+                                                                                 views:views]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"
+                                                                               options:kNilOptions
+                                                                               metrics:nil
+                                                                                 views:views]];
     
     if ( self.currentURL != nil )
     {
         [self loadUrl:self.currentURL];
     }
-    
-    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.headerView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -66,10 +76,23 @@ typedef enum {
     [self.webView stopLoading];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
     : UIStatusBarStyleDefault;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ( [segue.identifier isEqualToString:@"embedHeader"] && [segue.destinationViewController isKindOfClass:[VWebBrowserHeaderViewController class]] )
+    {
+        self.headerViewController = (VWebBrowserHeaderViewController *)segue.destinationViewController;
+    }
 }
 
 #pragma mark - Data source
@@ -82,46 +105,21 @@ typedef enum {
 
 #pragma mark - Helpers
 
-- (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView
+- (void)updateWebViewPageInfo
 {
-    NSParameterAssert( webView.superview != nil );
-    NSParameterAssert( headerView.superview != nil );
-    NSParameterAssert( [webView.superview isEqual:headerView.superview] );
-    
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
-    headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:headerView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f constant:0.0f]];
-    NSDictionary *viewsDict = @{ @"webView" : webView };
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[webView]-0-|"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewsDict]];
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewsDict]];
-}
-
-- (void)updateHeaderView:(VWebBrowserHeaderView *)headerView withWebView:(id<VWebViewProtocol>)webView
-{
-    [webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error)
+    [self.webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error)
      {
          if ( !error && [result isKindOfClass:[NSString class]] )
          {
-             [headerView setTitle:result];
+             [self.headerViewController setTitle:result];
          }
      }];
     
-    [webView evaluateJavaScript:@"window.location.href" completionHandler:^(id result, NSError *error)
+    [self.webView evaluateJavaScript:@"window.location.href" completionHandler:^(id result, NSError *error)
      {
          if ( !error && [result isKindOfClass:[NSString class]] )
          {
-             [headerView setSubtitle:result];
+             [self.headerViewController setSubtitle:result];
          }
      }];
 }
@@ -148,22 +146,22 @@ typedef enum {
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.state = VWebBrowserViewControllerStateLoading;
-    [self.headerView updateHeaderState];
+    [self.headerViewController updateHeaderState];
 }
 
 - (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.state = VWebBrowserViewControllerStateComplete;
-    [self.headerView updateHeaderState];
-    [self updateHeaderView:self.headerView withWebView:webView];
+    [self.headerViewController updateHeaderState];
+    [self updateWebViewPageInfo];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.state = VWebBrowserViewControllerStateFailed;
-    [self.headerView updateHeaderState];
+    [self updateWebViewPageInfo];
 }
 
 - (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
@@ -175,21 +173,21 @@ typedef enum {
     
     if ( progress == 0.0f )
     {
-        [self.headerView setLoadingStarted];
+        [self.headerViewController setLoadingStarted];
     }
     else if ( progress < 0.0f )  // This is when an error has occurred
     {
         BOOL didFail = YES;
-        [self.headerView setLoadingComplete:didFail];
+        [self.headerViewController setLoadingComplete:didFail];
     }
     else if ( progress == 1.0f )
     {
         BOOL didFail = NO;
-        [self.headerView setLoadingComplete:didFail];
+        [self.headerViewController setLoadingComplete:didFail];
     }
     else
     {
-        [self.headerView setLoadingProgress:progress];
+        [self.headerViewController setLoadingProgress:progress];
     }
 }
 

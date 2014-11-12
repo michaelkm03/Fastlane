@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 
-+ (VWebBrowserViewController *)instantiateFromNib;
++ (VWebBrowserViewController *)instantiateFromStoryboard;
 
 - (void)loadUrl:(NSURL *)url;
 

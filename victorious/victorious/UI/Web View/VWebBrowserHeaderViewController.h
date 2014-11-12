@@ -1,5 +1,5 @@
 //
-//  VWebBrowserHeaderView.h
+//  VWebBrowserHeaderViewController.h
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/14.
@@ -22,7 +22,7 @@
 
 @end
 
-@interface VWebBrowserHeaderView : VHeaderView
+@interface VWebBrowserHeaderViewController : UIViewController
 
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
 

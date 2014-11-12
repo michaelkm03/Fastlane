@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VWebBrowserHeaderView.h"
+#import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 
@@ -15,7 +15,7 @@ static const NSTimeInterval kLayoutChangeAnimationDelay     = 0.5f;
 static const float kLayoutChangeAnimationSpringDampening    = 0.8f;
 static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 
-@interface VWebBrowserHeaderView() <UIWebViewDelegate>
+@interface VWebBrowserHeaderViewController() <UIWebViewDelegate>
 
 @property (nonatomic, strong) NSURL *currentURL;
 
@@ -27,6 +27,7 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 @property (nonatomic, weak) IBOutlet UILabel *labelTitle;
 @property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
+
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonNextWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtitleHeightConstraint;
@@ -36,11 +37,13 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 
 @end
 
-@implementation VWebBrowserHeaderView
+@implementation VWebBrowserHeaderViewController
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
+    
+    [self applyTheme];
     
     self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
     self.labelSubtitle.text = nil;
@@ -51,7 +54,7 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     
     [self contractExtraControls];
     
-    [self layoutIfNeeded];
+    [self.view layoutIfNeeded];
 }
 
 - (void)contractExtraControls
@@ -63,14 +66,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.buttonNextWidthConstraint.constant = 0.0f;
 }
 
-- (void)expandExtraControls
-{
-    self.labelTitle.textAlignment = NSTextAlignmentCenter;
-    self.labelSubtitle.textAlignment = NSTextAlignmentCenter;
-    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
-    self.buttonNextWidthConstraint.constant = self.startingButtonWidth;
-}
-
 - (void)applyTheme
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
@@ -80,20 +75,54 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     [self.progressBar setProgressColor:progressColor];
     
     UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    self.tintColor = tintColor;
+    self.view.tintColor = tintColor;
     for ( UIButton *button in @[ self.buttonBack, self.buttonNext, self.buttonRefresh,
-                                self.buttonExit, self.buttonOpenURL ])
+                                 self.buttonExit, self.buttonOpenURL ])
     {
         [button setTitleColor:tintColor forState:UIControlStateNormal];
         button.tintColor = tintColor;
     }
     
-    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.view.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.labelTitle.textColor = tintColor;
     self.labelSubtitle.textColor = tintColor;
     
     NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
     self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
+}
+
+- (void)expandExtraControls
+{
+    self.labelTitle.textAlignment = NSTextAlignmentCenter;
+    self.labelSubtitle.textAlignment = NSTextAlignmentCenter;
+    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
+    self.buttonNextWidthConstraint.constant = self.startingButtonWidth;
+}
+
+- (BOOL)shouldShowNavigationControls
+{
+    return [self.browserDelegate canGoBack];
+}
+
+- (void)updateHeaderState
+{
+    if ( self.shouldShowNavigationControls )
+    {
+        [UIView animateWithDuration:kLayoutChangeAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
+              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
+                            options:kNilOptions
+                         animations:^void
+        {
+            [self expandExtraControls];
+            [self.view layoutIfNeeded];
+        }
+                         completion:nil];
+    }
+    
+    self.buttonNext.enabled = [self.browserDelegate canGoForward];
+    self.buttonBack.enabled = [self.browserDelegate canGoBack];
 }
 
 - (void)setLoadingProgress:(float)loadingProgress
@@ -115,32 +144,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.progressBar.progress = 0.0f;
 }
 
-- (BOOL)shouldShowNavigationControls
-{
-    return [self.browserDelegate canGoBack];
-}
-
-- (void)updateHeaderState
-{
-    if ( self.shouldShowNavigationControls )
-    {
-        [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                              delay:0.0f
-             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                            options:kNilOptions
-                         animations:^void
-        {
-            [self expandExtraControls];
-            [self layoutIfNeeded];
-        }
-                         completion:nil];
-    }
-    
-    self.buttonNext.enabled = [self.browserDelegate canGoForward];
-    self.buttonBack.enabled = [self.browserDelegate canGoBack];
-}
-
 - (void)setTitle:(NSString *)title
 {
     [self.labelTitle setText:title];
@@ -160,7 +163,7 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
          {
              self.subtitleHeightConstraint.constant = self.startingSubtitleHeight;
              self.labelSubtitle.alpha = 0.6f;
-             [self layoutIfNeeded];
+             [self.view layoutIfNeeded];
          }
                          completion:nil];
     }
@@ -191,7 +194,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     [self.browserDelegate exit];
     [self updateHeaderState];
 }
-
 
 - (IBAction)refreshSelected:(id)sender
 {

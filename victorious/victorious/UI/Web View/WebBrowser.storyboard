@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lY7-iJ-Wrx">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Web Browser View Controller-->
+        <scene sceneID="7mm-rc-Jhh">
+            <objects>
+                <viewController storyboardIdentifier="VWebBrowserViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lY7-iJ-Wrx" customClass="VWebBrowserViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sfn-Rc-JjZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cq7-9N-HqV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KzY-xN-OP6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VfO-NC-MFs" userLabel="Web View Container">
+                                <rect key="frame" x="0.0" y="60" width="320" height="508"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idt-30-NjI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="G9h-P5-arx"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="XJq-6Z-G52" kind="embed" identifier="embedHeader" id="3rD-5f-0tG"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Idt-30-NjI" firstAttribute="top" secondItem="KzY-xN-OP6" secondAttribute="top" id="76X-zk-Ep8"/>
+                            <constraint firstItem="VfO-NC-MFs" firstAttribute="top" secondItem="Idt-30-NjI" secondAttribute="bottom" id="Ai2-cb-Afm"/>
+                            <constraint firstAttribute="trailing" secondItem="Idt-30-NjI" secondAttribute="trailing" id="EoB-gu-reM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VfO-NC-MFs" secondAttribute="trailing" constant="-16" id="Ss2-Aj-gmq"/>
+                            <constraint firstItem="Idt-30-NjI" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leading" id="kMW-lt-DHZ"/>
+                            <constraint firstItem="VfO-NC-MFs" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leadingMargin" constant="-16" id="pWg-hJ-1IV"/>
+                            <constraint firstItem="Cq7-9N-HqV" firstAttribute="top" secondItem="VfO-NC-MFs" secondAttribute="bottom" id="zDa-sE-Ays"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="containerView" destination="VfO-NC-MFs" id="9iH-IV-QYs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oTy-6p-Mi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="256" y="588"/>
+        </scene>
+        <!--Web Browser Header View Controller-->
+        <scene sceneID="XfX-we-3cZ">
+            <objects>
+                <viewController id="XJq-6Z-G52" customClass="VWebBrowserHeaderViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S66-qs-wfS"/>
+                        <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3" customClass="VHeaderView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
+                                <rect key="frame" x="0.0" y="60" width="320" height="2"/>
+                                <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="Ml5-Zb-3kt"/>
+                                </constraints>
+                            </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="inl-W8-BQu" userLabel="Refresh Button (HIDDEN)">
+                                <rect key="frame" x="6" y="14" width="28" height="44"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-refresh">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="refreshSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="MMq-Vm-flb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
+                                <rect key="frame" x="2" y="15" width="30" height="43"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="oGP-Xd-2Re"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="gTS-BW-Ojg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4LQ-R4-2VK" userLabel="Next Button">
+                                <rect key="frame" x="33" y="15" width="30" height="43"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="r9n-Hp-eVg"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-next">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="forwardSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="2MV-ls-GGW"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
+                                <rect key="frame" x="70" y="15" width="180" height="33"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" alpha="0.75" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0s-G9-Xdq" userLabel="Current URL Label">
+                                <rect key="frame" x="70" y="37" width="180" height="15"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="fhB-UG-OJD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
+                                <rect key="frame" x="253" y="15" width="32" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="pHw-lZ-MSf"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-share">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exportSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="jan-b3-dfo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
+                                <rect key="frame" x="285" y="15" width="32" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="XFO-l5-oiB"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exitSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="alY-qL-aAO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Vt8-xj-xda" firstAttribute="top" secondItem="xd6-ZA-jPh" secondAttribute="bottom" id="0vR-KT-B02"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="6Am-aM-Xyx"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="cNG-U0-zNK" secondAttribute="bottom" constant="2" id="8jI-9g-IEY"/>
+                            <constraint firstItem="4LQ-R4-2VK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="AgC-tZ-dfm"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="a0s-G9-Xdq" secondAttribute="bottom" constant="8" id="B3X-OZ-lg4"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="4LQ-R4-2VK" secondAttribute="bottom" constant="2" id="Ecd-95-kSf"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="PQl-Vo-dCr"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="PdZ-AO-ZRO"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="4LQ-R4-2VK" secondAttribute="trailing" constant="7" id="PpZ-U2-kXF"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leadingMargin" constant="-14" id="TTg-0B-mea"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Vt8-xj-xda" secondAttribute="trailing" constant="-16" id="V5J-Md-mBp"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="a0s-G9-Xdq" secondAttribute="trailing" constant="3" id="YeY-gp-2c7"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="ZJC-3u-TIL"/>
+                            <constraint firstItem="4LQ-R4-2VK" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="1" id="bwb-Or-29K"/>
+                            <constraint firstItem="a0s-G9-Xdq" firstAttribute="top" secondItem="6my-03-sbB" secondAttribute="bottom" constant="-11" id="eK1-Fe-kgG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PTL-ew-6sW" secondAttribute="trailing" constant="-13" id="gA5-bh-iRF"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="2n7-et-juQ" secondAttribute="bottom" constant="2" id="lEq-hD-muI"/>
+                            <constraint firstItem="Vt8-xj-xda" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leadingMargin" constant="-16" id="qPI-pL-IMi"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="PTL-ew-6sW" secondAttribute="bottom" constant="2" id="qVP-2e-M4B"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" id="rpE-5g-zo7"/>
+                            <constraint firstItem="a0s-G9-Xdq" firstAttribute="leading" secondItem="4LQ-R4-2VK" secondAttribute="trailing" constant="7" id="tQ8-SV-IaU"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="vYQ-FQ-RwO"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
+                        <outlet property="buttonBackWidthConstraint" destination="oGP-Xd-2Re" id="pa4-my-iKd"/>
+                        <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
+                        <outlet property="buttonNext" destination="4LQ-R4-2VK" id="glN-pa-7LW"/>
+                        <outlet property="buttonNextWidthConstraint" destination="r9n-Hp-eVg" id="XNg-JE-5jz"/>
+                        <outlet property="buttonOpenURL" destination="cNG-U0-zNK" id="fug-La-b7U"/>
+                        <outlet property="buttonRefresh" destination="inl-W8-BQu" id="13v-Ul-xsl"/>
+                        <outlet property="labelSubtitle" destination="a0s-G9-Xdq" id="FgB-HO-f6E"/>
+                        <outlet property="labelTitle" destination="6my-03-sbB" id="RU0-Y1-RNX"/>
+                        <outlet property="progressBar" destination="Vt8-xj-xda" id="rdZ-zt-FEM"/>
+                        <outlet property="subtitleHeightConstraint" destination="fhB-UG-OJD" id="7Cb-tX-2Lr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n5P-AU-Gzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="686" y="334"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="browser-back" width="16" height="16"/>
+        <image name="browser-close" width="16" height="16"/>
+        <image name="browser-next" width="16" height="16"/>
+        <image name="browser-refresh" width="16" height="16"/>
+        <image name="browser-share" width="16" height="20"/>
+    </resources>
+</document>
