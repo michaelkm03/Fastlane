@@ -37,8 +37,6 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
 @property (weak, nonatomic) IBOutlet VExtendedView *middleStack;
 @property (weak, nonatomic) IBOutlet VExtendedView *bottomStack;
 
-@property (nonatomic) CGRect originalNameLabelFrame;
-
 @end
 
 @implementation VDirectoryItemCell
@@ -67,8 +65,6 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
-    self.originalNameLabelFrame = self.nameLabel.frame;
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
@@ -109,6 +105,7 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
     self.middleStack.hidden = NO;
     
     [self.streamItemContainerOrTopStackItem layoutIfNeeded];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - UICollectionReusableView
@@ -117,7 +114,6 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
 {
     [super prepareForReuse];
     
-    self.nameLabel.frame = self.originalNameLabelFrame;
     self.bottomStack.hidden = YES;
     self.middleStack.hidden = YES;
 }
