@@ -149,10 +149,7 @@ static NSString * const   kUserAccessLevel = @"api_user";
 
 static NSString * const   kMainStoryboardName                  = @"Main";
 static NSString * const   kStreamContainerID                   = @"streamcontainer";
-static NSString * const   kModalStreamContainerID              = @"modalstreamcontainer";
 static NSString * const   kHashTagStreamStoryboardID           = @"hashtagstream";
-static NSString * const   kStreamStoryboardID                  = @"streamtable";
-
 
 static NSString * const   kInboxContainerID                    = @"inboxcontainer";
 static NSString * const   kMessageContainerID                  = @"messagecontainer";
