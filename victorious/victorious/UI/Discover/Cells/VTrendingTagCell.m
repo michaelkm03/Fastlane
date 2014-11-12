@@ -15,7 +15,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 @interface VTrendingTagCell()
 
 @property (strong, nonatomic) UITextView *hashTagTextView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundViewWidthConstraint;
 @property (nonatomic, strong) NSMutableArray *textViewContraints;
 
 @end
