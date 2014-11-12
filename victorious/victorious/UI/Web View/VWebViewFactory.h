@@ -1,5 +1,5 @@
 //
-//  VWebView.m
+//  VWebViewFactory.m
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/14.
@@ -12,7 +12,7 @@
 #import "VWebViewAdvanced.h"
 #import "VWebViewBasic.h"
 
-@interface VWebViewCreator : NSObject
+@interface VWebViewFactory : NSObject
 
 /**
  Factory method that creates the appropriate web view (UIWebView or WKWebView) according

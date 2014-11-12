@@ -11,29 +11,103 @@
 #import "VThemeManager.h"
 #import "VFacebookActivity.h"
 #import "VSequence+Fetcher.h"
-#import "TUSafariActivity.h"
+
+@import Social;
+@import MessageUI;
+
+@interface VWebBrowserActions() <MFMessageComposeViewControllerDelegate>
+
+@end
 
 @implementation VWebBrowserActions
 
-- (void)showInViewController:(UIViewController *)viewController withSequence:(VSequence *)sequence
+- (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url text:(NSString *)text
 {
-    NSArray *acitivtyItems = @[ sequence.description, [NSURL URLWithString:sequence.webContentUrl] ];
-    TUSafariActivity *openInSafariActivity = [[TUSafariActivity alloc] init];
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:acitivtyItems
-                                                                                         applicationActivities:@[ openInSafariActivity ]];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString( @"Cancel", nil)
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:nil
+                                                  onDestructiveButton:nil
+                                           otherButtonTitlesAndBlocks:nil];
     
-    
-    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+    if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
     {
-        if ( completed )
-        {
-            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category,
-                                      VTrackingKeyActivityType : activityType };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
-        }
-    };
+        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
+         {
+             SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+             if ( text != nil )
+             {
+                 [controller setInitialText:text];
+             }
+             [controller addURL:url];
+             [viewController presentViewController:controller animated:YES completion:nil];
+         }];
+     }
     
-    [viewController presentViewController:activityViewController animated:YES completion:nil];
+    if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
+    {
+        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareTwitter", nil) block:^
+         {
+             SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+             if ( text != nil )
+             {
+                 [controller setInitialText:text];
+             }
+             [controller addURL:url];
+             [viewController presentViewController:controller animated:YES completion:nil];
+         }];
+    }
+    
+    [actionSheet addButtonWithTitle:NSLocalizedString( @"OpenSafari", nil) block:^
+     {
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)),
+                        dispatch_get_main_queue(), ^
+                        {
+                            [[UIApplication sharedApplication] openURL:url];
+                        });
+     }];
+    
+    
+    if ( [MFMessageComposeViewController canSendText] )
+    {
+        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareSMS", nil) block:^
+         {
+             NSString *message = nil;
+             if ( text != nil )
+             {
+                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSMessage", @"" ), text, url.absoluteString];
+             }
+             else
+             {
+                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSURL", @"" ), url.absoluteString];
+             }
+             MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+             controller.messageComposeDelegate = self;
+             if ( message != nil )
+             {
+                 [controller setBody:message];
+             }
+             [viewController presentViewController:controller animated:YES completion:nil];
+         }];
+    }
+    
+    [actionSheet showInView:viewController.view];
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult )result
+{
+    switch (result)
+    {
+        case MessageComposeResultCancelled:
+            break;
+        case MessageComposeResultFailed:
+            break;
+        case MessageComposeResultSent:
+            break;
+        default:
+            break;
+    }
+    [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -10,6 +10,11 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 
+static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
+static const NSTimeInterval kLayoutChangeAnimationDelay     = 0.5f;
+static const float kLayoutChangeAnimationSpringDampening    = 0.8f;
+static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
+
 @interface VWebBrowserHeaderView() <UIWebViewDelegate>
 
 @property (nonatomic, strong) NSURL *currentURL;
@@ -22,6 +27,12 @@
 @property (nonatomic, weak) IBOutlet UILabel *labelTitle;
 @property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonNextWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtitleHeightConstraint;
+
+@property (nonatomic, assign) CGFloat startingButtonWidth;
+@property (nonatomic, assign) CGFloat startingSubtitleHeight;
 
 @end
 
@@ -31,8 +42,33 @@
 {
     [super awakeFromNib];
     
-    self.labelTitle.text = nil;
+    self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
     self.labelSubtitle.text = nil;
+    self.labelSubtitle.alpha = 0.0f;
+    
+    self.startingButtonWidth = self.buttonBackWidthConstraint.constant;
+    self.startingSubtitleHeight = self.subtitleHeightConstraint.constant;
+    
+    [self contractExtraControls];
+    
+    [self layoutIfNeeded];
+}
+
+- (void)contractExtraControls
+{
+    self.labelTitle.textAlignment = NSTextAlignmentLeft;
+    self.labelSubtitle.textAlignment = NSTextAlignmentLeft;
+    self.subtitleHeightConstraint.constant = 0.0f;
+    self.buttonBackWidthConstraint.constant = 0.0f;
+    self.buttonNextWidthConstraint.constant = 0.0f;
+}
+
+- (void)expandExtraControls
+{
+    self.labelTitle.textAlignment = NSTextAlignmentCenter;
+    self.labelSubtitle.textAlignment = NSTextAlignmentCenter;
+    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
+    self.buttonNextWidthConstraint.constant = self.startingButtonWidth;
 }
 
 - (void)applyTheme
@@ -79,11 +115,30 @@
     self.progressBar.progress = 0.0f;
 }
 
+- (BOOL)shouldShowNavigationControls
+{
+    return [self.browserDelegate canGoBack];
+}
+
 - (void)updateHeaderState
 {
+    if ( self.shouldShowNavigationControls )
+    {
+        [UIView animateWithDuration:kLayoutChangeAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
+              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
+                            options:kNilOptions
+                         animations:^void
+        {
+            [self expandExtraControls];
+            [self layoutIfNeeded];
+        }
+                         completion:nil];
+    }
+    
     self.buttonNext.enabled = [self.browserDelegate canGoForward];
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
-    self.buttonRefresh.enabled = [self.browserDelegate canRefresh];
 }
 
 - (void)setTitle:(NSString *)title
@@ -94,6 +149,21 @@
 - (void)setSubtitle:(NSString *)subtitle
 {
     [self.labelSubtitle setText:subtitle];
+    if ( subtitle != nil && self.shouldShowNavigationControls )
+    {
+        [UIView animateWithDuration:kLayoutChangeAnimationDuration
+                              delay:kLayoutChangeAnimationDelay
+             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
+              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
+                            options:kNilOptions
+                         animations:^void
+         {
+             self.subtitleHeightConstraint.constant = self.startingSubtitleHeight;
+             self.labelSubtitle.alpha = 0.6f;
+             [self layoutIfNeeded];
+         }
+                         completion:nil];
+    }
 }
 
 #pragma mark - Header Actions

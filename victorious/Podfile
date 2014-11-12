@@ -13,7 +13,6 @@ target :victorious do
     pod 'MBProgressHUD', '~> 0.8'
     pod 'FlurrySDK', '~> 5.4'
     pod 'CCHLinkTextView'
-    pod 'TUSafariActivity', '~> 1.0.1'
     link_with 'victorious'
 
     target :test do

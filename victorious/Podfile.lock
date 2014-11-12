@@ -33,7 +33,6 @@ PODS:
   - TestFlightSDK (3.0.2)
   - TransitionKit (2.0.0)
   - TTTAttributedLabel (1.8.1)
-  - TUSafariActivity (1.0.2)
 
 DEPENDENCIES:
   - CCHLinkTextView
@@ -45,7 +44,6 @@ DEPENDENCIES:
   - RestKit (~> 0.22.0)
   - TestFlightSDK (~> 3.0.0)
   - TTTAttributedLabel (~> 1.8.1)
-  - TUSafariActivity (~> 1.0.1)
 
 EXTERNAL SOURCES:
   MarqueeLabel:
@@ -69,6 +67,5 @@ SPEC CHECKSUMS:
   TestFlightSDK: 0c24c533748d0d84bfe7a3cb6036fa79124d84ee
   TransitionKit: 7877021649a734f3239ed176b7967de29321dcf3
   TTTAttributedLabel: 2be49e23f10fc87130272e03160bdb938835c51c
-  TUSafariActivity: 63c6b0584d1f0a731e955c0e4d9c89cde63bedc2
 
 COCOAPODS: 0.34.1

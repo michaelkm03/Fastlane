@@ -1,16 +1,16 @@
 //
-//  VWebViewCreator.m
+//  VWebViewFactory.m
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VWebViewCreator.h"
+#import "VWebViewFactory.h"
 
 static const BOOL kForceUIWebView = NO;
 
-@implementation VWebViewCreator
+@implementation VWebViewFactory
 
 + (id<VWebViewProtocol>)createWebView
 {

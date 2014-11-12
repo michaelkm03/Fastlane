@@ -9,7 +9,7 @@
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderView.h"
 #import "VSettingManager.h"
-#import "VWebViewCreator.h"
+#import "VWebViewFactory.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 
@@ -22,10 +22,10 @@ typedef enum {
 @interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
 
 @property (nonatomic, strong) id<VWebViewProtocol> webView;
-@property (nonatomic, strong) IBOutlet VWebBrowserHeaderView *headerView;
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
+@property (nonatomic, weak) IBOutlet VWebBrowserHeaderView *headerView;
 
 @end
 
@@ -46,7 +46,7 @@ typedef enum {
     
     self.headerView.browserDelegate = self;
     
-    self.webView = [VWebViewCreator createWebView];
+    self.webView = [VWebViewFactory createWebView];
     self.webView.delegate = self;
     [self.view addSubview:self.webView.asView];
     [self.view sendSubviewToBack:self.webView.asView];
@@ -64,11 +64,6 @@ typedef enum {
     [super viewWillDisappear:animated];
     
     [self.webView stopLoading];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect( self.view.frame, self.headerView.frame );
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -138,7 +133,6 @@ typedef enum {
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.headerView setSubtitle:url.absoluteString];
         [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
     }
 }
@@ -233,7 +227,11 @@ typedef enum {
 
 - (void)export
 {
-    [self.actions showInViewController:self withSequence:self.sequence];
+    // Only provide share text if this is the root of the navigation history,
+    // i.e. the original announcement itself.
+    NSString *shareText = [self.webView canGoBack] ? nil : self.sequence.name;
+    
+    [self.actions showInViewController:self withCurrentUrl:self.currentURL text:shareText];
 }
 
 - (void)exit

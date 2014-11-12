@@ -12,6 +12,6 @@
 
 @interface VWebBrowserActions : NSObject
 
-- (void)showInViewController:(UIViewController *)viewController withSequence:(VSequence *)sequence;
+- (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url text:(NSString *)text;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "VStreamCollectionCellWebContent.h"
 #import "VThemeManager.h"
-#import "VWebViewCreator.h"
+#import "VWebViewFactory.h"
 #import "VSequence+Fetcher.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
@@ -32,7 +32,7 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.backgroundColor = backgroundColor;
     
-    self.webView = [VWebViewCreator createWebView];
+    self.webView = [VWebViewFactory createWebView];
     self.webView.delegate = self;
     self.webView.asView.userInteractionEnabled = NO;
     self.webView.asView.backgroundColor = [UIColor clearColor];

@@ -10,7 +10,7 @@
 #import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VWebViewCreator.h"
+#import "VWebViewFactory.h"
 
 @interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
@@ -26,7 +26,7 @@
 {
     [super viewDidLoad];
     
-    self.webView = [VWebViewCreator createWebView];
+    self.webView = [VWebViewFactory createWebView];
     
     self.webView.asView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.webView.asView];
