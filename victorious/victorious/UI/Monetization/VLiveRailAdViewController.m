@@ -124,12 +124,6 @@
     return self.adPlaying;
 }
 
-- (void)setPubID:(NSString *)pubID
-{
-    [self.adManager initAd:@{ @"LR_PUBLISHER_ID": pubID }];
-    
-}
-
 #pragma mark - Ad Methods
 
 - (void)destroyAdInstance

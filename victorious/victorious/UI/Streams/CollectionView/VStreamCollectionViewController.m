@@ -349,11 +349,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
                        animated:YES
                      completion:nil];
     
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
-    
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
