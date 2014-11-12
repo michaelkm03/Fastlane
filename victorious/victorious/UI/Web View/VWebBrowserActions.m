@@ -17,9 +17,7 @@
 
 - (void)showInViewController:(UIViewController *)viewController withSequence:(VSequence *)sequence
 {
-    [[VThemeManager sharedThemeManager] applyStyling];
-    
-    NSArray *acitivtyItems = @[ sequence, sequence.description, [NSURL URLWithString:sequence.webContentUrl] ];
+    NSArray *acitivtyItems = @[ sequence.description, [NSURL URLWithString:sequence.webContentUrl] ];
     TUSafariActivity *openInSafariActivity = [[TUSafariActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:acitivtyItems
                                                                                          applicationActivities:@[ openInSafariActivity ]];
