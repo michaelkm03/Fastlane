@@ -80,9 +80,13 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
          label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
      }];
     
-    NSString *appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSString *appBuildNumberString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    self.versionString.text = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), appVersionString, appBuildNumberString];
+    NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    
+#if defined(DEBUG) || defined(QA) || defined(STAGING)
+    appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+#endif
+    
+    self.versionString.text = appVersionString;
     self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
