@@ -490,58 +490,23 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self filterForStream:stream];
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        void(^paginationBlock)(void) = ^(void)
+        //If this is the first page, break the relationship to all the old objects.
+        if (refresh)
         {
-            //If this is the first page, break the relationship to all the old objects.
-            if (refresh)
-            {
-                stream.streamItems = [[NSOrderedSet alloc] init];
-            }
-            
-            NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-            for (VStreamItem *streamItem in resultObjects)
-            {
-                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
-                [streamItems addObject:streamItemInContext];
-            }
-            stream.streamItems = streamItems;
-            
-            if (success)
-            {
-                success(operation, fullResponse, resultObjects);
-            }
-        };
+            stream.streamItems = [[NSOrderedSet alloc] init];
+        }
         
-        //Don't complete the fetch until we have the users
-        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VStreamItem *item in resultObjects)
+        NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+        for (VStreamItem *streamItem in resultObjects)
         {
-            VSequence *sequence = (VSequence *)item;
-            if ([item isKindOfClass:[VSequence class]] && !sequence.user)
-            {
-                [nonExistantUsers addObject:sequence.createdBy];
-            }
-            if ([item isKindOfClass:[VSequence class]] &&  sequence.parentUserId && !sequence.parentUser)
-            {
-                [nonExistantUsers addObject:sequence.parentUserId];
-            }
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            [streamItems addObject:streamItemInContext];
         }
-        if ([nonExistantUsers count])
+        stream.streamItems = streamItems;
+        
+        if (success)
         {
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 paginationBlock();
-             }
-                                             failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 VLog(@"Failed with error: %@", error);
-                 paginationBlock();
-             }];
-        }
-        else
-        {
-            paginationBlock();
+            success(operation, fullResponse, resultObjects);
         }
     };
     
