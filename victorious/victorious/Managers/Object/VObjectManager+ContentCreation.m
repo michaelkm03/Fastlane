@@ -322,18 +322,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         VComment *newComment;
         
-        if ([[resultObjects firstObject] isKindOfClass:[VComment class]])
-        {
-            newComment = [resultObjects firstObject];
-        }
-        else
-        {
-            NSDictionary *payload = fullResponse[kVPayloadKey];
-            NSNumber *commentID = @([payload[@"id"] integerValue]);
-            newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
-            newComment.realtime = time;
-            [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
-        }
+        NSDictionary *payload = fullResponse[kVPayloadKey];
+        NSNumber *commentID = @([payload[@"id"] integerValue]);
+        newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
+        newComment.realtime = time;
+        [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         
         if (asset)
         {
