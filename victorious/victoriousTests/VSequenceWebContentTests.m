@@ -1,8 +1,8 @@
 //
-//  VWebViewTests.m
+//  VSequenceWebContentTests.m
 //  victorious
 //
-//  Created by Patrick Lynch on 11/11/14.
+//  Created by Patrick Lynch on 11/12/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,21 +15,11 @@
 #import "VNode.h"
 #import "VAsset.h"
 
-@interface VWebViewTests : XCTestCase
+@interface VSequenceWebContentTests : XCTestCase
 
 @end
 
-@implementation VWebViewTests
-
-- (void)setUp
-{
-    [super setUp];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
+@implementation VSequenceWebContentTests
 
 - (void)testSequenceWebContent
 {

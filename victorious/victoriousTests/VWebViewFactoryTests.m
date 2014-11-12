@@ -24,12 +24,10 @@
 
 @implementation VWebViewFactoryTests
 
-- (void)testWebViewFactory
+- (void)testWebViewFactoryAdvanced
 {
     __block id webView = nil;
-    __block BOOL blockCalledBasic = NO;
-    __block BOOL blockCalledAdvanced = NO;
-    
+    __block BOOL blockWasCalled = NO;
     [VWebViewFactory v_swizzleClassMethod:@selector(canUsedAdvancedWebView) withBlock:^BOOL
      {
          return YES;
@@ -40,9 +38,15 @@
          XCTAssertNotNil( webView );
          XCTAssert( [webView isKindOfClass:[VWebViewAdvanced class]] );
          XCTAssert( [webView conformsToProtocol:@protocol(VWebViewProtocol)] );
-         blockCalledAdvanced = YES;
+         blockWasCalled = YES;
      }];
-    
+    XCTAssert( blockWasCalled );
+}
+
+- (void)testWebViewBasic
+{
+    __block id webView = nil;
+    __block BOOL blockWasCalled = NO;
     [VWebViewFactory v_swizzleClassMethod:@selector(canUsedAdvancedWebView) withBlock:^BOOL
      {
          return NO;
@@ -53,12 +57,9 @@
          XCTAssertNotNil( webView );
          XCTAssert( [webView isKindOfClass:[VWebViewBasic class]] );
          XCTAssert( [webView conformsToProtocol:@protocol(VWebViewProtocol)] );
-         blockCalledBasic = YES;
+         blockWasCalled = YES;
      }];
-    
-    XCTAssert( blockCalledAdvanced );
-    XCTAssert( blockCalledBasic );
-    
+    XCTAssert( blockWasCalled );
 }
 
 @end

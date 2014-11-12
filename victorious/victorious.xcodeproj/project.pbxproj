@@ -381,10 +381,10 @@
 		A769C3EE1A13176700698D0C /* VWebViewAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E31A13176700698D0C /* VWebViewAdvanced.m */; };
 		A769C3EF1A13176700698D0C /* VWebViewBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E51A13176700698D0C /* VWebViewBasic.m */; };
 		A769C3F01A13176700698D0C /* VWebViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E71A13176700698D0C /* VWebViewFactory.m */; };
-		A769C3F21A13196500698D0C /* VWebViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F11A13196500698D0C /* VWebViewTests.m */; };
 		A769C3F31A131D8C00698D0C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A769C3F51A131F5C00698D0C /* VWebViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */; };
 		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
+		A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
@@ -1239,9 +1239,9 @@
 		A769C3E61A13176700698D0C /* VWebViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewFactory.h; sourceTree = "<group>"; };
 		A769C3E71A13176700698D0C /* VWebViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewFactory.m; sourceTree = "<group>"; };
 		A769C3E81A13176700698D0C /* VWebViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebViewProtocol.h; sourceTree = "<group>"; };
-		A769C3F11A13196500698D0C /* VWebViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewTests.m; sourceTree = "<group>"; };
 		A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebViewFactoryTests.m; sourceTree = "<group>"; };
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
+		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
@@ -3146,7 +3146,7 @@
 				A769C3D61A12DD5000698D0C /* VUserManagerTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
-				A769C3F11A13196500698D0C /* VWebViewTests.m */,
+				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
 			);
 			path = victoriousTests;
@@ -4537,7 +4537,6 @@
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
 				A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */,
 				A720053A1A03073B00285A9C /* VVoteTypeFetcherTests.m in Sources */,
-				A769C3F21A13196500698D0C /* VWebViewTests.m in Sources */,
 				A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */,
 				A72005311A03073B00285A9C /* VUIAlertView+VBlocksTests.m in Sources */,
 				A72005291A03073B00285A9C /* VHistogramDataSourceTests.m in Sources */,
@@ -4553,6 +4552,7 @@
 				A720053E1A03073B00285A9C /* VFollowersTextFormatterTests.m in Sources */,
 				A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
+				A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VMarqueeControllerTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,

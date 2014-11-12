@@ -9,6 +9,7 @@
 #import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
+#import "VConstants.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const NSTimeInterval kLayoutChangeAnimationDelay     = 0.5f;
@@ -28,6 +29,8 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 @property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackX1Constraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonNextWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtitleHeightConstraint;
@@ -53,6 +56,12 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.startingSubtitleHeight = self.subtitleHeightConstraint.constant;
     
     [self contractExtraControls];
+    
+    if ( UI_IS_IOS8_AND_HIGHER == NO )
+    {
+        self.buttonBackX1Constraint.constant += kIOS7HorizontalConstraintAdjustment;
+        self.buttonExitX2Constraint.constant += kIOS7HorizontalConstraintAdjustment;
+    }
     
     [self.view layoutIfNeeded];
 }
@@ -101,6 +110,7 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 
 - (BOOL)shouldShowNavigationControls
 {
+    // If any navigation action has occurred, the controls should be displayed
     return [self.browserDelegate canGoBack];
 }
 

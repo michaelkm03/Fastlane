@@ -38,6 +38,8 @@ static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
 static CGFloat    const VConstantsInputAccessoryHeight  = 44.0f;
 
+static CGFloat const kIOS7HorizontalConstraintAdjustment  = 7.0;
+
 static CGFloat const kStreamDoublePollCellHeight = 214.0f;
 static CGFloat const kStreamViewCellHeight       = 320.0f;
 

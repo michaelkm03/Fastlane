@@ -47,6 +47,8 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="containerView" destination="VfO-NC-MFs" id="9iH-IV-QYs"/>
+                        <outlet property="containerViewX1Constraint" destination="pWg-hJ-1IV" id="Ugk-mj-wF6"/>
+                        <outlet property="containerViewX2Constraint" destination="Ss2-Aj-gmq" id="i5A-6d-8fC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTy-6p-Mi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -187,7 +189,9 @@
                     <connections>
                         <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
                         <outlet property="buttonBackWidthConstraint" destination="oGP-Xd-2Re" id="pa4-my-iKd"/>
+                        <outlet property="buttonBackX1Constraint" destination="TTg-0B-mea" id="2Bs-cC-O9c"/>
                         <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
+                        <outlet property="buttonExitX2Constraint" destination="gA5-bh-iRF" id="Wac-xP-lYP"/>
                         <outlet property="buttonNext" destination="4LQ-R4-2VK" id="glN-pa-7LW"/>
                         <outlet property="buttonNextWidthConstraint" destination="r9n-Hp-eVg" id="XNg-JE-5jz"/>
                         <outlet property="buttonOpenURL" destination="cNG-U0-zNK" id="fug-La-b7U"/>

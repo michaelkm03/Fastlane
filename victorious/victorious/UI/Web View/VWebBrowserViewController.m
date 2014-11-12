@@ -12,6 +12,7 @@
 #import "VWebViewFactory.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
+#import "VConstants.h"
 
 typedef enum {
     VWebBrowserViewControllerStateComplete,
@@ -25,8 +26,11 @@ typedef enum {
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
-@property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
+
+@property (nonatomic, weak) IBOutlet UIView *containerView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX1Constraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX2Constraint;
 
 @end
 
@@ -34,7 +38,7 @@ typedef enum {
 
 + (VWebBrowserViewController *)instantiateFromStoryboard
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -52,13 +56,19 @@ typedef enum {
     self.webView.delegate = self;
     [self.containerView addSubview:self.webView.asView];
     
+    if ( UI_IS_IOS8_AND_HIGHER == NO )
+    {
+        self.containerViewX1Constraint.constant += kIOS7HorizontalConstraintAdjustment;
+        self.containerViewX2Constraint.constant += kIOS7HorizontalConstraintAdjustment;
+    }
+    
     NSDictionary *views = @{ @"webView" : self.webView.asView };
     self.webView.asView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|"
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"
                                                                                options:kNilOptions
                                                                                metrics:nil
                                                                                  views:views]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|"
                                                                                options:kNilOptions
                                                                                metrics:nil
                                                                                  views:views]];
