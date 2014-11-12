@@ -34,7 +34,6 @@
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
-#import "MarqueeLabel.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -77,7 +76,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
-@property (weak, nonatomic) IBOutlet MarqueeLabel *titleLabel;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -312,15 +310,6 @@
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
-    
-    self.titleLabel.hidden = !self.viewModel.shouldShowTitle;
-    self.titleLabel.text = self.viewModel.name;
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.shadowOffset = CGSizeMake(0, 0.5f);
-    self.titleLabel.layer.masksToBounds = NO;
-    self.titleLabel.clipsToBounds = NO;
-    self.titleLabel.fadeLength = CGRectGetHeight(self.titleLabel.bounds);
 }
 
 - (void)viewWillAppear:(BOOL)animated
