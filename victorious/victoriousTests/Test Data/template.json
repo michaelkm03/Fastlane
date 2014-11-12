@@ -27,5 +27,11 @@
     "video_quality": {
         "capture": "medium",
         "remix": "large"
+    },
+    "experiments": {
+        "channels_enabled": true,
+        "histogram_enabled": false,
+        "require_profile_image": true,
+        "template_c_enabled": false
     }
 }

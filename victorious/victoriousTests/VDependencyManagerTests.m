@@ -146,4 +146,20 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testNumber
+{
+    NSNumber *expected = [NSNumber numberWithBool:YES];
+    NSNumber *actual = [self.dependencyManager numberForKey:@"experiments.require_profile_image"];
+    XCTAssertNotNil(actual);
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildNumber
+{
+    NSNumber *expected = [NSNumber numberWithBool:NO];
+    NSNumber *actual = [self.childDependencyManager numberForKey:@"experiments.histogram_enabled"];
+    XCTAssertNotNil(actual);
+    XCTAssertEqualObjects(expected, actual);
+}
+
 @end

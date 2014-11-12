@@ -33,6 +33,10 @@ extern NSString * const VDependencyManagerLabel4FontKey;
 extern NSString * const VDependencyManagerButton1FontKey;
 extern NSString * const VDependencyManagerButton2FontKey;
 
+// Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
+extern NSString * const VDependencyManagerHistogramEnabledKey;
+extern NSString * const VDependencyManagerProfileImageRequiredKey;
+
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
 
@@ -70,6 +74,11 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
  Returns the string with the specified key
  */
 - (NSString *)stringForKey:(NSString *)key;
+
+/**
+ Returns the NSNumber with the specified key
+ */
+- (NSNumber *)numberForKey:(NSString *)key;
 
 /**
  Returns a new instance of a view controller with the specified key

@@ -53,6 +53,10 @@ static NSString * const kFontSizeKey = @"fontSize";
 // Keys for dependency metadata
 static NSString * const kClassNameKey = @"name";
 
+// Keys for experiments
+NSString * const VDependencyManagerHistogramEnabledKey = @"experiments.histogram_enabled";
+NSString * const VDependencyManagerProfileImageRequiredKey = @"experiments.require_profile_image";
+
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 
@@ -135,6 +139,11 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 - (NSString *)stringForKey:(NSString *)key
 {
     return [self templateValueOfType:[NSString class] forKeyPath:key];
+}
+
+- (NSNumber *)numberForKey:(NSString *)key
+{
+    return [self templateValueOfType:[NSNumber class] forKeyPath:key];
 }
 
 - (UIViewController *)viewControllerForKey:(NSString *)key
