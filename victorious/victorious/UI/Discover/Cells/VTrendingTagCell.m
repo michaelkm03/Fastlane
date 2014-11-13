@@ -44,7 +44,10 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (void)applyConstraints
 {
-    NSParameterAssert( [self.hashTagTextView.superview isEqual:self] );
+    if ( [self.hashTagTextView.superview isEqual:self] == NO )
+    {
+        return;
+    }
     
     [self removeConstraints:self.textViewContraints];
     [self.textViewContraints removeAllObjects];
