@@ -49,10 +49,21 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.startingButtonWidth = self.buttonBackWidthConstraint.constant;
     self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
     
-    self.buttonBackWidthConstraint.constant = 0.0f;
-    self.pageTitleX1Constraint.constant = 10.0f;
+    [self hideNavigationControls];
     
     [self.view layoutIfNeeded];
+}
+
+- (void)hideNavigationControls
+{
+    self.buttonBackWidthConstraint.constant = 0.0f;
+    self.pageTitleX1Constraint.constant = 10.0f;
+}
+
+- (void)showNavigationControls
+{
+    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
+    self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
 }
 
 - (void)applyTheme
@@ -78,29 +89,25 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
 }
 
-- (BOOL)shouldShowNavigationControls
-{
-    // If any navigation action has occurred, the controls should be displayed
-    return [self.browserDelegate canGoBack];
-}
-
 - (void)updateHeaderState
 {
-    if ( self.shouldShowNavigationControls )
-    {
-        [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                              delay:0.0f
-             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                            options:kNilOptions
-                         animations:^void
+    [UIView animateWithDuration:kLayoutChangeAnimationDuration
+                          delay:0.0f
+         usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
+          initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
+                        options:kNilOptions
+                     animations:^void
+     {
+         if ( [self.browserDelegate canGoBack] )
          {
-             self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
-             self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
-            [self.view layoutIfNeeded];
-        }
-                         completion:nil];
-    }
+             [self showNavigationControls];
+         }
+         else
+         {
+             [self hideNavigationControls];
+         }
+         [self.view layoutIfNeeded];
+     } completion:nil];
     
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
 }
