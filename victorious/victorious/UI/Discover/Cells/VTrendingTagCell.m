@@ -10,15 +10,12 @@
 #import "VThemeManager.h"
 #import "VHashTags.h"
 
-static const CGFloat kTrendingTagCellRowHeight              = 40.0f;
-static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
+static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @interface VTrendingTagCell()
 
 @property (strong, nonatomic) UITextView *hashTagTextView;
-
-@property (weak, nonatomic) IBOutlet UIView *textBackgroundView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundViewWidthConstraint;
+@property (nonatomic, strong) NSMutableArray *textViewContraints;
 
 @end
 
@@ -31,25 +28,54 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
 
 - (void)awakeFromNib
 {
-    self.hashTagTextView = [[UITextView alloc] init];
+    self.textViewContraints = [[NSMutableArray alloc] init];
     
+    self.hashTagTextView = [[UITextView alloc] init];
     self.hashTagTextView.scrollEnabled = NO;
     self.hashTagTextView.selectable = NO;
     self.hashTagTextView.userInteractionEnabled = NO;
-    
+    self.hashTagTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     self.hashTagTextView.backgroundColor = [UIColor clearColor];
     self.hashTagTextView.textColor = [UIColor whiteColor];
-    
-    // Remove any excess padding
     self.hashTagTextView.textContainer.lineFragmentPadding = 0;
-    self.hashTagTextView.textContainerInset = UIEdgeInsetsZero;
+    self.hashTagTextView.textContainerInset = UIEdgeInsetsMake( 4.0f, 6.0f, 4.0f, 8.0f );
+    [self addSubview:self.hashTagTextView];
+}
+
+- (void)applyConstraints
+{
+    NSParameterAssert( [self.hashTagTextView.superview isEqual:self] );
     
-    [self.textBackgroundView addSubview:self.hashTagTextView];
+    [self removeConstraints:self.textViewContraints];
+    [self.textViewContraints removeAllObjects];
+    
+    CGSize textRect = [self.hashTagTextView.text sizeWithAttributes:@{ NSFontAttributeName : self.hashTagTextView.font }];
+    textRect.width += self.hashTagTextView.textContainerInset.right + self.hashTagTextView.textContainerInset.left;
+    textRect.height += self.hashTagTextView.textContainerInset.top + self.hashTagTextView.textContainerInset.bottom;
+    
+    NSDictionary *views = @{ @"textView" : self.hashTagTextView };
+    NSDictionary *metrics = @{ @"height" : @(textRect.height),
+                               @"width" : @(textRect.width),
+                               @"topSpacing" : @0.0f,
+                               @"leftSpacing" : @17.0,
+                               @"rightSpacing" : @12.0f };
+    self.hashTagTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leftSpacing-[textView]-(>=rightSpacing)-|"
+                                                                                  options:0
+                                                                                  metrics:metrics
+                                                                                    views:views]];
+    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topSpacing-[textView(==height)]"
+                                                                                  options:0
+                                                                                  metrics:metrics
+                                                                                    views:views]];
+    
+    [self addConstraints:[NSArray arrayWithArray:self.textViewContraints]];
 }
 
 - (void)applyTheme
 {
-    self.textBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.hashTagTextView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.hashTagTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
@@ -58,30 +84,13 @@ static const CGFloat kTrendingTagCellTextPadding            = 8.0f;
     // Make sure there's a # at the beginning of the text
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
+    // Remove any excess padding
+    self.hashTagTextView.textContainer.lineFragmentPadding = 0;
+    
     [self.hashTagTextView setText:text];
     [self applyTheme];
     
-    [self updateTextPosition];
-}
-
-- (void)updateTextPosition
-{
-    // Get the exact size of just the text
-    CGSize textRect = [self.hashTagTextView.text sizeWithAttributes:@{ NSFontAttributeName : self.hashTagTextView.font }];
-    textRect.width += kTrendingTagCellTextPadding * 2.0f;
-    
-    // Update the background view to match the width
-    self.textBackgroundViewWidthConstraint.constant = textRect.width;
-
-    // Center the text within the background view horizontally and vertically
-    CGRect rect = self.hashTagTextView.frame;
-    rect.size.width = textRect.width;
-    rect.size.height = textRect.height;
-    rect.origin.x = kTrendingTagCellTextPadding;
-    CGFloat yOffset = abs( CGRectGetHeight(self.textBackgroundView.frame) - textRect.height ) / 2.0f;
-    CGFloat additionalYOffset = yOffset * 0.6f; // beacuse hashtags are all lowercase, they need a little bump upwards to appear centered veritcally as in the specs
-    rect.origin.y = CGRectGetMinY( self.textBackgroundView.frame) + yOffset - additionalYOffset;
-    self.hashTagTextView.frame = rect;
+    [self applyConstraints];
 }
 
 @end
