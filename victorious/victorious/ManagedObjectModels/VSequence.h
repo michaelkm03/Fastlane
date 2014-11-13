@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Lawrence Leach on 10/22/14.
+//  Created by Will Long on 11/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -28,6 +28,8 @@
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSNumber * isRepost;
+@property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSSet *adBreaks;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) NSOrderedSet *nodes;

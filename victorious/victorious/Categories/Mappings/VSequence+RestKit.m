@@ -33,6 +33,8 @@
                                   @"description"    :   VSelectorName(sequenceDescription),
                                   @"status"         :   VSelectorName(status),
                                   @"is_complete"    :   VSelectorName(isComplete),
+                                  @"is_remix"       :   VSelectorName(isRemix),
+                                  @"is_repost"      :   VSelectorName(isRepost),
                                   @"game_status"    :   VSelectorName(gameStatus),
                                   @"permissions"    :   VSelectorName(permissions),
                                   @"parent_user_id" :   VSelectorName(parentUserId),

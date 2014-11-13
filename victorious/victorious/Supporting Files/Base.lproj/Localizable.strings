@@ -257,6 +257,7 @@
 "JustAMoment"           =   "Just a moment";
 "LocatingVideo"         =   "Locating Video...";
 "DownloadingVideo"      =   "Downloading Video...";
+"Stitching"             =   "Stitching...";
 
 "SegmentDownloadFail"   =   "Unable to get Video";
 
