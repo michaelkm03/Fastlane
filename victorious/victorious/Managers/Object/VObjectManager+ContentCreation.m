@@ -305,7 +305,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
-    if (mediaURL)
+    if (mediaURL != nil)
     {
         allURLs = @{@"media_data":mediaURL};
     }
