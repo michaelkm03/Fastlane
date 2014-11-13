@@ -53,7 +53,9 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(parentUser) mapping:[VUser entityMapping]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"parent_user"
+                                                                            toKeyPath:@"parentUser"
+                                                                          withMapping:[VUser entityMapping]]];
     
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
