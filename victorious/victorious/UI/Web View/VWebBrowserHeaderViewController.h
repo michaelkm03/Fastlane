@@ -28,7 +28,6 @@
 
 - (void)updateHeaderState;
 - (void)setTitle:(NSString *)title;
-- (void)setSubtitle:(NSString *)subtitle;
 - (void)setLoadingStarted;
 - (void)setLoadingComplete:(BOOL)didFail;
 - (void)setLoadingProgress:(float)loadingProgress;

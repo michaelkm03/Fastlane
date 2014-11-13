@@ -124,14 +124,6 @@ typedef enum {
              [self.headerViewController setTitle:result];
          }
      }];
-    
-    [self.webView evaluateJavaScript:@"window.location.href" completionHandler:^(id result, NSError *error)
-     {
-         if ( !error && [result isKindOfClass:[NSString class]] )
-         {
-             [self.headerViewController setSubtitle:result];
-         }
-     }];
 }
 
 #pragma mark - Public API

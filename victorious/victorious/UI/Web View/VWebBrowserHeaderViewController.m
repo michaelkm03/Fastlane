@@ -21,22 +21,18 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 @property (nonatomic, strong) NSURL *currentURL;
 
 @property (nonatomic, weak) IBOutlet UIButton *buttonBack;
-@property (nonatomic, weak) IBOutlet UIButton *buttonNext;
-@property (nonatomic, weak) IBOutlet UIButton *buttonRefresh;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
 @property (nonatomic, weak) IBOutlet UILabel *labelTitle;
-@property (nonatomic, weak) IBOutlet UILabel *labelSubtitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonNextWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtitleHeightConstraint;
 
 @property (nonatomic, assign) CGFloat startingButtonWidth;
-@property (nonatomic, assign) CGFloat startingSubtitleHeight;
+@property (nonatomic, assign) CGFloat startingPageTitleX1;
 
 @end
 
@@ -49,13 +45,12 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     [self applyTheme];
     
     self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
-    self.labelSubtitle.text = nil;
-    self.labelSubtitle.alpha = 0.0f;
     
     self.startingButtonWidth = self.buttonBackWidthConstraint.constant;
-    self.startingSubtitleHeight = self.subtitleHeightConstraint.constant;
+    self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
     
-    [self contractExtraControls];
+    self.buttonBackWidthConstraint.constant = 0.0f;
+    self.pageTitleX1Constraint.constant = 10.0f;
     
     if ( UI_IS_IOS8_AND_HIGHER == NO )
     {
@@ -64,15 +59,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     }
     
     [self.view layoutIfNeeded];
-}
-
-- (void)contractExtraControls
-{
-    self.labelTitle.textAlignment = NSTextAlignmentLeft;
-    self.labelSubtitle.textAlignment = NSTextAlignmentLeft;
-    self.subtitleHeightConstraint.constant = 0.0f;
-    self.buttonBackWidthConstraint.constant = 0.0f;
-    self.buttonNextWidthConstraint.constant = 0.0f;
 }
 
 - (void)applyTheme
@@ -85,8 +71,7 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     
     UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
     self.view.tintColor = tintColor;
-    for ( UIButton *button in @[ self.buttonBack, self.buttonNext, self.buttonRefresh,
-                                 self.buttonExit, self.buttonOpenURL ])
+    for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setTitleColor:tintColor forState:UIControlStateNormal];
         button.tintColor = tintColor;
@@ -94,18 +79,9 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     
     self.view.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.labelTitle.textColor = tintColor;
-    self.labelSubtitle.textColor = tintColor;
     
     NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
     self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
-}
-
-- (void)expandExtraControls
-{
-    self.labelTitle.textAlignment = NSTextAlignmentCenter;
-    self.labelSubtitle.textAlignment = NSTextAlignmentCenter;
-    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
-    self.buttonNextWidthConstraint.constant = self.startingButtonWidth;
 }
 
 - (BOOL)shouldShowNavigationControls
@@ -124,14 +100,14 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
               initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
                             options:kNilOptions
                          animations:^void
-        {
-            [self expandExtraControls];
+         {
+             self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
+             self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
             [self.view layoutIfNeeded];
         }
                          completion:nil];
     }
     
-    self.buttonNext.enabled = [self.browserDelegate canGoForward];
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
 }
 
@@ -157,26 +133,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
 - (void)setTitle:(NSString *)title
 {
     [self.labelTitle setText:title];
-}
-
-- (void)setSubtitle:(NSString *)subtitle
-{
-    [self.labelSubtitle setText:subtitle];
-    if ( subtitle != nil && self.shouldShowNavigationControls )
-    {
-        [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                              delay:kLayoutChangeAnimationDelay
-             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                            options:kNilOptions
-                         animations:^void
-         {
-             self.subtitleHeightConstraint.constant = self.startingSubtitleHeight;
-             self.labelSubtitle.alpha = 0.6f;
-             [self.view layoutIfNeeded];
-         }
-                         completion:nil];
-    }
 }
 
 #pragma mark - Header Actions

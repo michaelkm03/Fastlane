@@ -19,13 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VfO-NC-MFs" userLabel="Web View Container">
-                                <rect key="frame" x="0.0" y="60" width="320" height="508"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idt-30-NjI">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="G9h-P5-arx"/>
+                                    <constraint firstAttribute="height" constant="64" id="G9h-P5-arx"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="XJq-6Z-G52" kind="embed" identifier="embedHeader" id="3rD-5f-0tG"/>
@@ -64,32 +64,20 @@
                         <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3" customClass="VHeaderView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
-                                <rect key="frame" x="0.0" y="60" width="320" height="2"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="guide" translatesAutoresizingMaskIntoConstraints="NO" id="4zf-m7-e1a">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="2" id="Ml5-Zb-3kt"/>
-                                </constraints>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="inl-W8-BQu" userLabel="Refresh Button (HIDDEN)">
-                                <rect key="frame" x="6" y="14" width="28" height="44"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <state key="normal" image="browser-refresh">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="refreshSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="MMq-Vm-flb"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
-                                <rect key="frame" x="2" y="15" width="30" height="43"/>
+                                <rect key="frame" x="2" y="17" width="30" height="45"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="oGP-Xd-2Re"/>
+                                    <constraint firstAttribute="width" constant="30" id="qQ4-OK-Ra3"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <state key="normal" image="browser-back">
@@ -99,41 +87,17 @@
                                     <action selector="backSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="gTS-BW-Ojg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4LQ-R4-2VK" userLabel="Next Button">
-                                <rect key="frame" x="33" y="15" width="30" height="43"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="r9n-Hp-eVg"/>
-                                </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <state key="normal" image="browser-next">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="forwardSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="2MV-ls-GGW"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
-                                <rect key="frame" x="70" y="15" width="180" height="33"/>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
+                                <rect key="frame" x="35" y="16" width="215" height="46"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" alpha="0.75" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0s-G9-Xdq" userLabel="Current URL Label">
-                                <rect key="frame" x="70" y="37" width="180" height="15"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="fhB-UG-OJD"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
-                                <rect key="frame" x="253" y="15" width="32" height="43"/>
+                                <rect key="frame" x="253" y="15" width="32" height="46"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="pHw-lZ-MSf"/>
+                                    <constraint firstAttribute="width" constant="32" id="Rab-ah-Rby"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <state key="normal" image="browser-share">
@@ -145,9 +109,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
-                                <rect key="frame" x="285" y="15" width="32" height="43"/>
+                                <rect key="frame" x="286" y="15" width="32" height="49"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="XFO-l5-oiB"/>
+                                    <constraint firstAttribute="width" constant="32" id="mWz-d4-er6"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <state key="normal" image="browser-close">
@@ -161,45 +125,37 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Vt8-xj-xda" firstAttribute="top" secondItem="xd6-ZA-jPh" secondAttribute="bottom" id="0vR-KT-B02"/>
-                            <constraint firstItem="2n7-et-juQ" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="6Am-aM-Xyx"/>
-                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="cNG-U0-zNK" secondAttribute="bottom" constant="2" id="8jI-9g-IEY"/>
-                            <constraint firstItem="4LQ-R4-2VK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="AgC-tZ-dfm"/>
-                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="a0s-G9-Xdq" secondAttribute="bottom" constant="8" id="B3X-OZ-lg4"/>
-                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="4LQ-R4-2VK" secondAttribute="bottom" constant="2" id="Ecd-95-kSf"/>
-                            <constraint firstItem="cNG-U0-zNK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="PQl-Vo-dCr"/>
-                            <constraint firstItem="6my-03-sbB" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="PdZ-AO-ZRO"/>
-                            <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="4LQ-R4-2VK" secondAttribute="trailing" constant="7" id="PpZ-U2-kXF"/>
-                            <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leadingMargin" constant="-14" id="TTg-0B-mea"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Vt8-xj-xda" secondAttribute="trailing" constant="-16" id="V5J-Md-mBp"/>
-                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="a0s-G9-Xdq" secondAttribute="trailing" constant="3" id="YeY-gp-2c7"/>
-                            <constraint firstItem="PTL-ew-6sW" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="ZJC-3u-TIL"/>
-                            <constraint firstItem="4LQ-R4-2VK" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="1" id="bwb-Or-29K"/>
-                            <constraint firstItem="a0s-G9-Xdq" firstAttribute="top" secondItem="6my-03-sbB" secondAttribute="bottom" constant="-11" id="eK1-Fe-kgG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="PTL-ew-6sW" secondAttribute="trailing" constant="-13" id="gA5-bh-iRF"/>
-                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="2n7-et-juQ" secondAttribute="bottom" constant="2" id="lEq-hD-muI"/>
-                            <constraint firstItem="Vt8-xj-xda" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leadingMargin" constant="-16" id="qPI-pL-IMi"/>
-                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="PTL-ew-6sW" secondAttribute="bottom" constant="2" id="qVP-2e-M4B"/>
-                            <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" id="rpE-5g-zo7"/>
-                            <constraint firstItem="a0s-G9-Xdq" firstAttribute="leading" secondItem="4LQ-R4-2VK" secondAttribute="trailing" constant="7" id="tQ8-SV-IaU"/>
-                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="vYQ-FQ-RwO"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="1hk-oi-9Au"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="cNG-U0-zNK" secondAttribute="bottom" constant="3" id="6z1-HT-scI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PTL-ew-6sW" secondAttribute="trailing" constant="-14" id="9nl-ad-Es7"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-4" id="DCF-dV-1dQ"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="2n7-et-juQ" secondAttribute="bottom" constant="2" id="DbO-Re-w1J"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="6my-03-sbB" secondAttribute="bottom" constant="2" id="QTR-ZO-7Tl"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="QXW-XI-YiL"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="3" id="WME-O1-JeV"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" constant="1" id="WkO-KO-Ko8"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="YZ6-dE-ype"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="PTL-ew-6sW" secondAttribute="bottom" id="jeX-S7-Dje"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leadingMargin" constant="-14" id="qF7-aT-FSL"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-3" id="qHd-Aj-iHu"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="4zf-m7-e1a"/>
+                            </mask>
+                        </variation>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
-                        <outlet property="buttonBackWidthConstraint" destination="oGP-Xd-2Re" id="pa4-my-iKd"/>
-                        <outlet property="buttonBackX1Constraint" destination="TTg-0B-mea" id="2Bs-cC-O9c"/>
+                        <outlet property="buttonBackWidthConstraint" destination="qQ4-OK-Ra3" id="dLM-pG-MR7"/>
+                        <outlet property="buttonBackX1Constraint" destination="qF7-aT-FSL" id="K8R-fa-9hU"/>
                         <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
-                        <outlet property="buttonExitX2Constraint" destination="gA5-bh-iRF" id="Wac-xP-lYP"/>
-                        <outlet property="buttonNext" destination="4LQ-R4-2VK" id="glN-pa-7LW"/>
-                        <outlet property="buttonNextWidthConstraint" destination="r9n-Hp-eVg" id="XNg-JE-5jz"/>
+                        <outlet property="buttonExitX2Constraint" destination="9nl-ad-Es7" id="VZI-S4-iU9"/>
                         <outlet property="buttonOpenURL" destination="cNG-U0-zNK" id="fug-La-b7U"/>
-                        <outlet property="buttonRefresh" destination="inl-W8-BQu" id="13v-Ul-xsl"/>
-                        <outlet property="labelSubtitle" destination="a0s-G9-Xdq" id="FgB-HO-f6E"/>
                         <outlet property="labelTitle" destination="6my-03-sbB" id="RU0-Y1-RNX"/>
+                        <outlet property="pageTitleX1Constraint" destination="WME-O1-JeV" id="GJE-XO-NGQ"/>
                         <outlet property="progressBar" destination="Vt8-xj-xda" id="rdZ-zt-FEM"/>
-                        <outlet property="subtitleHeightConstraint" destination="fhB-UG-OJD" id="7Cb-tX-2Lr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5P-AU-Gzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -208,10 +164,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="browser-back" width="16" height="16"/>
-        <image name="browser-close" width="16" height="16"/>
-        <image name="browser-next" width="16" height="16"/>
-        <image name="browser-refresh" width="16" height="16"/>
-        <image name="browser-share" width="16" height="20"/>
+        <image name="browser-back" width="13" height="24"/>
+        <image name="browser-close" width="17" height="17"/>
+        <image name="browser-share" width="14" height="21"/>
+        <image name="guide" width="640" height="128"/>
     </resources>
 </document>
