@@ -47,11 +47,6 @@ static void *kExportProgressContext = &kExportProgressContext;
 
 @implementation VRemixStitchViewController
 
-- (void)dealloc
-{
-    
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
