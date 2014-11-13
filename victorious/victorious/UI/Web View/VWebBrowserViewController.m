@@ -237,9 +237,10 @@ typedef enum {
 {
     // Only provide share text if this is the root of the navigation history,
     // i.e. the original announcement itself.
-    NSString *shareText = [self.webView canGoBack] ? nil : self.sequence.name;
+    NSString *shareTextTitle = [self.webView canGoBack] ? nil : self.sequence.name;
+    NSString *shareTextDescription = [self.webView canGoBack] ? nil : self.sequence.sequenceDescription;
     
-    [self.actions showInViewController:self withCurrentUrl:self.currentURL text:shareText];
+    [self.actions showInViewController:self withCurrentUrl:self.currentURL titleText:shareTextTitle descriptionText:shareTextDescription];
 }
 
 - (void)exit

@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 #import "VFacebookActivity.h"
 #import "VSequence+Fetcher.h"
+#import "VFacebookManager.h"
 
 @import Social;
 @import MessageUI;
@@ -21,7 +22,7 @@
 
 @implementation VWebBrowserActions
 
-- (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url text:(NSString *)text
+- (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url titleText:(NSString *)title descriptionText:(NSString *)description
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString( @"Cancel", nil)
@@ -30,28 +31,22 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:nil];
     
-    if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
-    {
-        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
-         {
-             SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-             if ( text != nil )
-             {
-                 [controller setInitialText:text];
-             }
-             [controller addURL:url];
-             [viewController presentViewController:controller animated:YES completion:nil];
-         }];
-     }
+    
+    
+    
+    [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
+     {
+         [[VFacebookManager sharedFacebookManager] shareLink:url description:description name:title previewUrl:url];
+     }];
     
     if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
     {
         [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareTwitter", nil) block:^
          {
              SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-             if ( text != nil )
+             if ( title != nil )
              {
-                 [controller setInitialText:text];
+                 [controller setInitialText:title];
              }
              [controller addURL:url];
              [viewController presentViewController:controller animated:YES completion:nil];
@@ -73,9 +68,9 @@
         [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareSMS", nil) block:^
          {
              NSString *message = nil;
-             if ( text != nil )
+             if ( title != nil )
              {
-                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSMessage", @"" ), text, url.absoluteString];
+                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSMessage", @"" ), title, url.absoluteString];
              }
              else
              {
