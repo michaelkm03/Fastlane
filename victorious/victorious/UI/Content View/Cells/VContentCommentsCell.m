@@ -176,6 +176,10 @@ static NSCache *_sharedImageCache = nil;
         self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:nil
                                                                                             andPostedTime:comment.realtime] string];
     }
+    else
+    {
+        self.realTimeCommentText = @"";
+    }
     self.hasMedia = comment.hasMedia;
     if (self.hasMedia)
     {
