@@ -301,15 +301,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    NSString *extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    NSString *type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
     NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
-    if (mediaURL && type)
+    if (mediaURL != nil)
     {
-        [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
     }
     if (time.doubleValue >= 0 && asset.remoteId)
