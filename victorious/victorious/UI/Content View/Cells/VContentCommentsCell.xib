@@ -28,12 +28,12 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="at 0:18" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lE-ff-0O9" userLabel="RTC at label">
-                        <rect key="frame" x="90" y="15" width="36" height="14"/>
+                        <rect key="frame" x="91" y="15" width="36" height="14"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="daH-W6-ypI" userLabel="Clock icon">
-                        <rect key="frame" x="273" y="16" width="9" height="9"/>
+                        <rect key="frame" x="273" y="17" width="9" height="9"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayU-64-4TS" userLabel="Commenter Button">
                         <rect key="frame" x="0.0" y="0.0" width="87" height="52"/>
@@ -57,7 +57,7 @@
                         </constraints>
                     </imageView>
                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-el-glf" userLabel="Comment and Media View" customClass="VCommentTextAndMediaView">
-                        <rect key="frame" x="56" y="35" width="239" height="38"/>
+                        <rect key="frame" x="56" y="36" width="239" height="37"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
@@ -80,9 +80,9 @@
                 <constraint firstItem="bUD-zJ-JyM" firstAttribute="top" secondItem="vCF-vU-SYK" secondAttribute="top" constant="14" id="b3E-KM-TdG"/>
                 <constraint firstItem="PCz-Qy-bMd" firstAttribute="top" secondItem="vCF-vU-SYK" secondAttribute="top" constant="10" id="eNm-g8-1fZ"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="bottom" secondItem="bUD-zJ-JyM" secondAttribute="bottom" constant="-3" id="fjj-vd-pMR"/>
-                <constraint firstItem="bUD-zJ-JyM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9lE-ff-0O9" secondAttribute="trailing" constant="8" id="hvg-Bo-grm"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="PCz-Qy-bMd" secondAttribute="trailing" constant="8" id="psG-gM-2YS"/>
                 <constraint firstItem="9lE-ff-0O9" firstAttribute="baseline" secondItem="bUD-zJ-JyM" secondAttribute="baseline" id="sI1-GG-4sQ"/>
+                <constraint firstItem="daH-W6-ypI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9lE-ff-0O9" secondAttribute="trailing" constant="8" id="tJl-27-mCX"/>
                 <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="25" id="tU8-Zn-C2v"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="rjx-el-glf" secondAttribute="leading" id="taJ-He-cGE"/>
                 <constraint firstAttribute="trailing" secondItem="Adc-3N-IK1" secondAttribute="trailing" id="tg1-Rb-Iqh"/>
