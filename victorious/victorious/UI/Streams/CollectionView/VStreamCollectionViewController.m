@@ -150,7 +150,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)dealloc
 {
-    self.marquee.delegate = nil;
+    self.marquee = nil;
     self.streamDataSource.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
