@@ -21,8 +21,6 @@
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
 - (BOOL)isAnnouncement;
-- (BOOL)isRemix;
-- (BOOL)isRepost;
 - (BOOL)canDelete;
 - (BOOL)canRemix;
 - (BOOL)isVoteCountVisible;

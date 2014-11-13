@@ -84,32 +84,6 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return false;
 }
 
-- (BOOL)isRepost
-{
-    for (NSString *category in VRepostCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-- (BOOL)isRemix
-{
-    for (NSString *category in VRemixCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
 - (BOOL)isAnnouncement
 {
     return [self.category isEqualToString:kVOwnerAnnouncementCategory];
