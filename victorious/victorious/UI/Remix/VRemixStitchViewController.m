@@ -14,8 +14,11 @@
 #import "UIView+Masking.h"
 #import "VCameraViewController.h"
 #import "VThemeManager.h"
+#import <MBProgressHUD.h>
 
 static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
+
+static void *kExportProgressContext = &kExportProgressContext;
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
@@ -36,6 +39,9 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 @property (nonatomic, strong) IBOutlet UIView *progressView;
 @property (nonatomic, strong) IBOutlet UISlider *progressIndicator;
 @property (nonatomic, strong) id progressObserver;
+@property (nonatomic, strong) NSTimer *exportTimer;
+
+@property (nonatomic, weak) MBProgressHUD *renderHud;
 
 @end
 
@@ -78,11 +84,6 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 
     UIImage *nextButtonImage = [[UIImage imageNamed:@"btnNextArrowWhiteDs"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -293,6 +294,13 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+#pragma mark - Timer Target
+
+- (void)updateProgress
+{
+    self.renderHud.progress = self.exportSession.progress;
+}
+
 #pragma mark - Support
 
 - (void)didSelectVideo:(NSURL *)url
@@ -354,8 +362,23 @@ static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
     self.exportSession.shouldOptimizeForNetworkUse = YES;
     self.exportSession.videoComposition = mainCompositionInst;
     
+    self.renderHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    self.renderHud.mode = MBProgressHUDModeAnnularDeterminate;
+    self.renderHud.labelText = NSLocalizedString(@"Stitching", @"");
+    
+    self.exportTimer = [NSTimer scheduledTimerWithTimeInterval:1/60.0f
+                                                        target:self 
+                                                      selector:@selector(updateProgress)
+                                                      userInfo:nil
+                                                       repeats:YES];
+    
     [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.exportTimer invalidate];
+            self.exportTimer = nil;
+            self.renderHud.progress = 1.0f;
+            [self.renderHud hide:YES afterDelay:0.1f];
+            
             switch ([self.exportSession status])
             {
                 case AVAssetExportSessionStatusFailed:
