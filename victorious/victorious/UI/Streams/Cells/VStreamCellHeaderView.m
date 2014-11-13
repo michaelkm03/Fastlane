@@ -97,12 +97,12 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
-    if (self.sequence.isRepost.boolValue && self.sequence.parentUser)
+    if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text];
     }
     
-    if (self.sequence.isRemix.boolValue && self.sequence.parentUser)
+    if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
     {
         parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), text];
     }
