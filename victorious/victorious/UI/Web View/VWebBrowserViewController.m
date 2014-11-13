@@ -58,12 +58,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.webView.delegate = self;
     [self.containerView addSubview:self.webView.asView];
     
-    if ( UI_IS_IOS8_AND_HIGHER == NO )
-    {
-        self.containerViewX1Constraint.constant += kIOS7HorizontalConstraintAdjustment;
-        self.containerViewX2Constraint.constant += kIOS7HorizontalConstraintAdjustment;
-    }
-    
     NSDictionary *views = @{ @"webView" : self.webView.asView };
     self.webView.asView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"

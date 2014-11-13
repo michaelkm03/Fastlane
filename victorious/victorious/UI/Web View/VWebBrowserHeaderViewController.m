@@ -52,12 +52,6 @@ static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
     self.buttonBackWidthConstraint.constant = 0.0f;
     self.pageTitleX1Constraint.constant = 10.0f;
     
-    if ( UI_IS_IOS8_AND_HIGHER == NO )
-    {
-        self.buttonBackX1Constraint.constant += kIOS7HorizontalConstraintAdjustment;
-        self.buttonExitX2Constraint.constant += kIOS7HorizontalConstraintAdjustment;
-    }
-    
     [self.view layoutIfNeeded];
 }
 
