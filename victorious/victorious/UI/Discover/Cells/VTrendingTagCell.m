@@ -9,13 +9,14 @@
 #import "VTrendingTagCell.h"
 #import "VThemeManager.h"
 #import "VHashTags.h"
+#import "VConstants.h"
 
 static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @interface VTrendingTagCell()
 
 @property (strong, nonatomic) UITextView *hashTagTextView;
-@property (nonatomic, strong) NSMutableArray *textViewContraints;
+@property (nonatomic, strong) NSArray *textViewContraints;
 
 @end
 
@@ -28,8 +29,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (void)awakeFromNib
 {
-    self.textViewContraints = [[NSMutableArray alloc] init];
-    
     self.hashTagTextView = [[UITextView alloc] init];
     self.hashTagTextView.scrollEnabled = NO;
     self.hashTagTextView.selectable = NO;
@@ -42,35 +41,48 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     [self addSubview:self.hashTagTextView];
 }
 
-- (void)applyConstraints
+- (NSArray *)applyConstraintsWithTextView:(UITextView *)textView existingConstraints:(NSArray *)existingConstraints
 {
-    NSParameterAssert( [self.hashTagTextView.superview isEqual:self] );
+    NSParameterAssert( textView.superview != nil );
     
-    [self removeConstraints:self.textViewContraints];
-    [self.textViewContraints removeAllObjects];
+    if ( existingConstraints != nil )
+    {
+        [textView.superview removeConstraints:existingConstraints];
+    }
+    NSMutableArray *constraintsCreated = [[NSMutableArray alloc] init];
     
-    CGSize textRect = [self.hashTagTextView.text sizeWithAttributes:@{ NSFontAttributeName : self.hashTagTextView.font }];
-    textRect.width += self.hashTagTextView.textContainerInset.right + self.hashTagTextView.textContainerInset.left;
-    textRect.height += self.hashTagTextView.textContainerInset.top + self.hashTagTextView.textContainerInset.bottom;
+    textView.translatesAutoresizingMaskIntoConstraints = NO;
     
+    CGSize textRect = [textView.text sizeWithAttributes:@{ NSFontAttributeName : textView.font ?: [UIFont systemFontOfSize:[UIFont systemFontSize]] }];
+    textRect.width += textView.textContainerInset.right + textView.textContainerInset.left;
+    textRect.height += textView.textContainerInset.top + textView.textContainerInset.bottom;
+    
+    CGFloat rightSpacing = 12.0f;
+    CGFloat leftSpacing = 17.0f;
+    CGFloat width = textRect.width + 2.0f; // Extra spacing needed on iOS 7 to prevent truncating text too soon
+    CGFloat maxWidth = textView.superview.frame.size.width - leftSpacing - rightSpacing;
+    width = MIN( width, maxWidth );
     NSDictionary *views = @{ @"textView" : self.hashTagTextView };
     NSDictionary *metrics = @{ @"height" : @(textRect.height),
-                               @"width" : @(textRect.width),
+                               @"width" : @(width),
                                @"topSpacing" : @0.0f,
-                               @"leftSpacing" : @17.0,
-                               @"rightSpacing" : @12.0f };
-    self.hashTagTextView.translatesAutoresizingMaskIntoConstraints = NO;
+                               @"leftSpacing" : @(leftSpacing),
+                               @"rightSpacing" : @(rightSpacing) };
     
-    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leftSpacing-[textView]-(>=rightSpacing)-|"
+    // iOS 7 doesn't seem to respond to the (>=rightSpacing) part of the format, hence this smelly hack:
+    NSString *formatH = UI_IS_IOS8_AND_HIGHER ? @"H:|-leftSpacing-[textView]-(>=rightSpacing)-|" : @"H:|-leftSpacing-[textView(==width)]-|";
+    [constraintsCreated addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:formatH
                                                                                   options:0
                                                                                   metrics:metrics
                                                                                     views:views]];
-    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topSpacing-[textView(==height)]"
+    [constraintsCreated addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topSpacing-[textView(==height)]"
                                                                                   options:0
                                                                                   metrics:metrics
                                                                                     views:views]];
     
-    [self addConstraints:[NSArray arrayWithArray:self.textViewContraints]];
+    [textView.superview addConstraints:[NSArray arrayWithArray:constraintsCreated]];
+    
+    return constraintsCreated;
 }
 
 - (void)applyTheme
@@ -90,7 +102,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     [self.hashTagTextView setText:text];
     [self applyTheme];
     
-    [self applyConstraints];
+    self.textViewContraints = [self applyConstraintsWithTextView:self.hashTagTextView existingConstraints:self.textViewContraints];
 }
 
 @end
