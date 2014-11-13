@@ -18,8 +18,6 @@
 
 static Float64 const kVideoPreviewSnapshotInSeconds = 0.5f;
 
-static void *kExportProgressContext = &kExportProgressContext;
-
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView             *thumbnail;
