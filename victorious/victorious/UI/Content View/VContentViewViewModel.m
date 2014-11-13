@@ -430,6 +430,18 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  failBlock:nil];
 }
 
+- (void)attemptToLoadNextPageOfComments
+{
+    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
+                                                 isRefresh:NO
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
+                                                             object:self];
+     }
+                                                 failBlock:nil];
+}
+
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];

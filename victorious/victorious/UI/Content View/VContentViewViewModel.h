@@ -167,6 +167,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (void)fetchComments;
 
+- (void)attemptToLoadNextPageOfComments;
+
 @property (nonatomic, readonly) NSArray *comments;
 
 - (void)repost;

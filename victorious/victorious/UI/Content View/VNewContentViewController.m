@@ -359,7 +359,7 @@
                                              animated:YES];
     
     self.contentCollectionView.delegate = self;
-    
+    self.videoCell.delegate = self;
     
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
@@ -411,6 +411,7 @@
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
     self.contentCollectionView.delegate = nil;
+    self.videoCell.delegate = nil;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -469,9 +470,17 @@
 {
     if (self.viewModel.comments.count > 0)
     {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
-        self.handleView.numberOfComments = (NSInteger)self.viewModel.comments.count;
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            [self.contentCollectionView reloadData];
+        }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
     }
 }
 
@@ -520,6 +529,11 @@
 
 - (IBAction)pressedClose:(id)sender
 {
+    // Sometimes UICollecitonView hangs gets stuck in infinite loops while we are dismissing slowing the UI down to a crawl, by replacing it with a snapshot of the current UI we don't risk this happening.
+    [self.view addSubview:[self.view snapshotViewAfterScreenUpdates:NO]];
+    self.contentCollectionView.delegate = nil;
+    self.videoCell.delegate = nil;
+    [self.contentCollectionView removeFromSuperview];
     [self.delegate newContentViewControllerDidClose:self];
 }
 
@@ -891,7 +905,7 @@
                                                                                                    forIndexPath:indexPath];
                 self.handleView = handleView;
             }
-            self.handleView.numberOfComments = self.viewModel.comments.count;
+            self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
             
             return self.handleView;
         }
@@ -979,6 +993,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
                                             animated:YES];
+    }
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    {
+        [self.viewModel attemptToLoadNextPageOfComments];
     }
 }
 
