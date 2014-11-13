@@ -10,6 +10,7 @@
 #import "VComment+RestKit.h"
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
+#import "VUser+RestKit.h"
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
 
@@ -24,7 +25,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"category"       :   VSelectorName(category),
-                                  // for some reason this cannot be camelCase...
                                   @"id"             :   VSelectorName(remoteId),
                                   @"created_by"     :   VSelectorName(createdBy),
                                   @"name"           :   VSelectorName(name),
@@ -34,7 +34,6 @@
                                   @"status"         :   VSelectorName(status),
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
-//                                  @"expires_at"     :   VSelectorName(expiresAt),
                                   @"permissions"    :   VSelectorName(permissions),
                                   @"parent_user_id" :   VSelectorName(parentUserId),
                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
@@ -53,8 +52,11 @@
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"parent_user"
+                                                                            toKeyPath:@"parentUser"
+                                                                          withMapping:[VUser entityMapping]]];
     
-    mapping.forceCollectionMapping = YES;
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
@@ -70,8 +72,6 @@
                                                                                         withMapping:[VTracking entityMapping]];
     [mapping addPropertyMapping:trackingMapping];
     
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
-    [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
