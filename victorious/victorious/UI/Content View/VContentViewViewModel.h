@@ -93,7 +93,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 
-
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
 
 @property (nonatomic, readonly) NSInteger nodeID;
@@ -122,6 +121,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, strong, readonly) VExperienceEnhancerController *experienceEnhancerController;
 
+#pragma mark - Interface Properties
+
 /**
  *  For content type image this will be a convenient url request for setting the image.
  */
@@ -131,24 +132,34 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
+
 @property (nonatomic, readonly) BOOL shouldShowTitle;
 
 @property (nonatomic, strong, readonly) VNode *currentNode;
 
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
+
 @property (nonatomic, readonly) BOOL hasReposted;
 
 @property (nonatomic, readonly) NSString *remixCountText;
+
 @property (nonatomic, readonly) NSString *repostCountText;
+
 @property (nonatomic, readonly) NSString *shareCountText;
 
 @property (nonatomic, readonly) NSString *authorName;
+
 @property (nonatomic, readonly) NSString *authorCaption;
+
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
 
 @property (nonatomic, readonly) NSString *shareText;
+
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
+
 @property (nonatomic, readonly) NSURL *shareURL;
+
+#pragma mark - Videos
 
 @property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
 
@@ -156,11 +167,12 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL loop;
 
+#pragma mark - Comments
+
 /**
  *  If a video content has any real time comments this will be YES.
  */
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
-
 
 /**
  *  Fetches the all comments and realtime comments for this viewModel's sequence.
@@ -171,26 +183,42 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) NSArray *comments;
 
+#pragma mark - Actions
+
 - (void)repost;
 
-
+#pragma mark - Polls
 
 @property (nonatomic, readonly) NSString *answerALabelText;
+
 @property (nonatomic, readonly) NSString *answerBLabelText;
+
 @property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
+
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+
 @property (nonatomic, readonly) BOOL answerAIsVideo;
+
 @property (nonatomic, readonly) BOOL answerBIsVideo;
+
 @property (nonatomic, readonly) NSURL *answerAVideoUrl;
+
 @property (nonatomic, readonly) NSURL *answerBVideoUrl;
+
 @property (nonatomic, readonly) BOOL votingEnabled;
+
 @property (nonatomic, readonly) CGFloat answerAPercentage;
+
 @property (nonatomic, readonly) CGFloat answerBPercentage;
+
 @property (nonatomic, readonly) NSString *numberOfVotersText;
 
 - (VPollAnswer)favoredAnswer; // By the current user.
+
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion;
+
+#pragma mark - Histogram
 
 /** This will be nil if no histogram data is available.
  */
