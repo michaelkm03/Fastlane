@@ -46,8 +46,6 @@
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
     [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
-    [mapping addConnectionForRelationship:@"postedSequences" connectedBy:@{@"remoteId" : @"createdBy"}];
-    [mapping addConnectionForRelationship:@"childSequences" connectedBy:@{@"remoteId" : @"parentUserId"}];
 
     return mapping;
 }
