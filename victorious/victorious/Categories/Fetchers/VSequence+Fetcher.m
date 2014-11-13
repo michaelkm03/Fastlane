@@ -128,13 +128,13 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 - (NSString *)webContentUrl
 {
     VNode *primaryNode = self.nodes.array.firstObject;
-    if ( !primaryNode )
+    if ( primaryNode == nil )
     {
         return nil;
     }
     
     VAsset *primaryAsset = primaryNode.assets.array.firstObject;
-    if ( !primaryAsset )
+    if ( primaryAsset == nil )
     {
         return nil;
     }
