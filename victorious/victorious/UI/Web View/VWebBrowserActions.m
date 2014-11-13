@@ -25,14 +25,11 @@
 - (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url titleText:(NSString *)title descriptionText:(NSString *)description
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString( @"Cancel", nil)
+                                                    cancelButtonTitle:nil
                                                        onCancelButton:nil
                                                destructiveButtonTitle:nil
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:nil];
-    
-    
-    
     
     [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
      {
@@ -85,6 +82,10 @@
              [viewController presentViewController:controller animated:YES completion:nil];
          }];
     }
+    
+    // Setup cancel button here to ensure it is on the bottom of the action sheet
+    [actionSheet addButtonWithTitle:NSLocalizedString( @"Cancel", nil)];
+    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
     
     [actionSheet showInView:viewController.view];
 }
