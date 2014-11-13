@@ -12,9 +12,8 @@
 #import "VConstants.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
-static const NSTimeInterval kLayoutChangeAnimationDelay     = 0.5f;
-static const float kLayoutChangeAnimationSpringDampening    = 0.8f;
-static const float kLayoutChangeAnimationSpringVelocity     = 0.1f;
+static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
+static const CGFloatkLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 @interface VWebBrowserHeaderViewController() <UIWebViewDelegate>
 

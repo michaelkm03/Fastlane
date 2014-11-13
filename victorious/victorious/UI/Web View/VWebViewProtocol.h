@@ -32,7 +32,7 @@ extern id<VWebViewProtocol> createGenericWebView();
 
 @property (nonatomic, readonly, assign) BOOL isProgressSupported;
 @property (nonatomic, readonly) UIView *asView;
-@property (nonatomic, strong) id<VWebViewDelegate> delegate;
+@property (nonatomic, weak) id<VWebViewDelegate> delegate;
 
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler;
 - (void)loadRequest:(NSURLRequest *)request;
