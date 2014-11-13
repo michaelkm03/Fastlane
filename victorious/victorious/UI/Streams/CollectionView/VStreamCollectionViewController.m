@@ -75,7 +75,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     
-    homeStream.shouldDisplayMarquee = YES;
+    homeStream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
     [homeStream v_addCreateSequenceButton];
     [homeStream v_addUploadProgressView];
     homeStream.uploadProgressViewController.delegate = homeStream;
@@ -150,7 +150,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)dealloc
 {
-    self.marquee.delegate = nil;
+    self.marquee = nil;
     self.streamDataSource.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -170,14 +170,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
-    
-    if (self.shouldDisplayMarquee)
-    {
-        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-        self.marquee = [[VMarqueeController alloc] initWithStream:marquee];
-        self.marquee.delegate = self;
-        [self.marquee refreshWithSuccess:nil failure:nil];
-    }
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -248,6 +240,18 @@ static CGFloat const kTemplateCLineSpacing = 8;
 }
 
 #pragma mark - Properties
+
+- (VMarqueeController *)marquee
+{
+    if (!_marquee)
+    {
+        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        _marquee.delegate = self;
+        [_marquee refreshWithSuccess:nil failure:nil];
+    }
+    return _marquee;
+}
 
 - (NSCache *)preloadImageCache
 {
