@@ -53,8 +53,8 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(parentUser) mapping:[VUser entityMapping]];
     
-    mapping.forceCollectionMapping = YES;
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
@@ -70,8 +70,6 @@
                                                                                         withMapping:[VTracking entityMapping]];
     [mapping addPropertyMapping:trackingMapping];
     
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
-    [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
