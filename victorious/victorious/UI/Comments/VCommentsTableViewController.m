@@ -222,6 +222,7 @@
     else
     {
         cell.commentTextView.mediaThumbnailView.hidden = YES;
+        cell.commentTextView.hasMedia = NO;
     }
     
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
