@@ -400,5 +400,3 @@
 "ShareTwitter"          = "Share to Twitter";
 "OpenSafari"            = "Open in Safari";
 "ShareSMS"              = "Send as Text";
-"ShareSMSMessage"       = "%@\n%@";
-"ShareSMSURL"           = "%@";

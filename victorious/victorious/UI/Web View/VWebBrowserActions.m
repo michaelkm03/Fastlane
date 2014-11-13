@@ -67,11 +67,11 @@
              NSString *message = nil;
              if ( title != nil )
              {
-                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSMessage", @"" ), title, url.absoluteString];
+                 message = [NSString stringWithFormat:@"%@\n%@", title, url.absoluteString];
              }
              else
              {
-                 message = [NSString stringWithFormat:NSLocalizedString( @"ShareSMSURL", @"" ), url.absoluteString];
+                 message = [NSString stringWithFormat:@"%@", url.absoluteString];
              }
              MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
              controller.messageComposeDelegate = self;
