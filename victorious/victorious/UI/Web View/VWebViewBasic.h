@@ -11,6 +11,6 @@
 
 @interface VWebViewBasic : NSObject <VWebViewProtocol>
 
-@property (nonatomic, strong) id<VWebViewDelegate> delegate;
+@property (nonatomic, weak) id<VWebViewDelegate> delegate;
 
 @end
