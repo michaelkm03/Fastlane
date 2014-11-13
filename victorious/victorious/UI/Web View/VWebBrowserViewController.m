@@ -14,11 +14,13 @@
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
 
-typedef enum {
+
+typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
+{
     VWebBrowserViewControllerStateComplete,
     VWebBrowserViewControllerStateLoading,
     VWebBrowserViewControllerStateFailed,
-} VWebBrowserViewControllerState;
+};
 
 @interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
 
