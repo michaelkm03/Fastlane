@@ -473,6 +473,12 @@
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
         {
             [self.contentCollectionView reloadData];
+            
+            __weak typeof(self) welf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [welf.contentCollectionView flashScrollIndicators];
+            });
         }
         else
         {
