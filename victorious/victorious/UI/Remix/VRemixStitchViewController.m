@@ -47,6 +47,11 @@ static void *kExportProgressContext = &kExportProgressContext;
 
 @implementation VRemixStitchViewController
 
+- (void)dealloc
+{
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -189,15 +194,16 @@ static void *kExportProgressContext = &kExportProgressContext;
     CGImageRelease(imageRef);
     publishViewController.previewImage = previewImage;
     
+    __weak typeof(self) welf = self;
     publishViewController.completion = ^(BOOL complete)
     {
         if (complete)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [welf dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
-            [self.navigationController popViewControllerAnimated:YES];
+            [welf.navigationController popViewControllerAnimated:YES];
         }
     };
     
@@ -366,32 +372,33 @@ static void *kExportProgressContext = &kExportProgressContext;
     self.renderHud.mode = MBProgressHUDModeAnnularDeterminate;
     self.renderHud.labelText = NSLocalizedString(@"Stitching", @"");
     
+    __weak typeof(self) welf = self;
     self.exportTimer = [NSTimer scheduledTimerWithTimeInterval:1/60.0f
-                                                        target:self 
+                                                        target:welf
                                                       selector:@selector(updateProgress)
                                                       userInfo:nil
                                                        repeats:YES];
-    
+
     [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.exportTimer invalidate];
-            self.exportTimer = nil;
-            self.renderHud.progress = 1.0f;
-            [self.renderHud hide:YES afterDelay:0.1f];
+            [welf.exportTimer invalidate];
+            welf.exportTimer = nil;
+            welf.renderHud.progress = 1.0f;
+            [welf.renderHud hide:YES afterDelay:0.1f];
             
-            switch ([self.exportSession status])
+            switch ([welf.exportSession status])
             {
                 case AVAssetExportSessionStatusFailed:
-                    NSLog(@"Export failed: %@ : %@", [[self.exportSession error] localizedDescription], [self.exportSession error]);
+                    NSLog(@"Export failed: %@ : %@", [[welf.exportSession error] localizedDescription], [welf.exportSession error]);
                     break;
                 case AVAssetExportSessionStatusCancelled:
                     NSLog(@"Export canceled");
                     break;
                 default:
                     NSLog(@"Export Complete");
-                    self.targetURL = target;
-                    [self.videoPlayerViewController setItemURL:target];
-                    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
+                    welf.targetURL = target;
+                    [welf.videoPlayerViewController setItemURL:target];
+                    [welf.videoPlayerViewController.player seekToTime:kCMTimeZero];
                     break;
             }
         });
