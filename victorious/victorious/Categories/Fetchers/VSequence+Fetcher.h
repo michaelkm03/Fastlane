@@ -19,9 +19,6 @@
 - (BOOL)isVideo;
 - (BOOL)isOwnerContent;
 
-- (BOOL)isRemix;
-- (BOOL)isRepost;
-
 - (BOOL)canDelete;
 - (BOOL)canRemix;
 - (BOOL)isVoteCountVisible;
