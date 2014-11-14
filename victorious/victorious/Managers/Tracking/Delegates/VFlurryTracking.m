@@ -30,10 +30,10 @@
     if (self)
     {
         NSString *apiKey = self.apiKey;
-        if ( apiKey )
+        if ( apiKey != nil )
         {
             NSString *appVersion = self.appVersionString;
-            if ( appVersion )
+            if ( appVersion != nil )
             {
                 // Call this before startSession:
                 [Flurry setAppVersion:appVersion];
