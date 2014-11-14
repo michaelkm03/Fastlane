@@ -186,9 +186,9 @@
                                       withName:nil
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
          if ( completion != nil )
          {
-             node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
              completion( YES );
          }
      }
