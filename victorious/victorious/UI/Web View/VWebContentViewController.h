@@ -6,11 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VWebContentViewController : UIViewController <UIWebViewDelegate>
+#import <UIKit/UIKit.h>
+#import "VWebViewProtocol.h"
+
+@interface VWebContentViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *urlToView;
+@property (nonatomic, strong) id<VWebViewProtocol> webView;
+@property (nonatomic, assign) BOOL shouldShowLoadingState;
 
-@property (nonatomic, weak, readonly) IBOutlet UIWebView *webView;
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *activitiyIndicator;
+- (void)addHeader;
+- (void)setFailureWithError:(NSError *)error;
+- (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView;
 
 @end

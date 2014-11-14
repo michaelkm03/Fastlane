@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Lawrence Leach on 10/22/14.
+//  Created by Will Long on 11/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -32,6 +32,8 @@
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
+@dynamic isRepost;
+@dynamic isRemix;
 @dynamic adBreaks;
 @dynamic comments;
 @dynamic nodes;
@@ -42,5 +44,7 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic previewType;
+@dynamic previewData;
 
 @end

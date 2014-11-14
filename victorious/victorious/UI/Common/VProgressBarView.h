@@ -29,4 +29,10 @@
 - (void)setProgress:(CGFloat)progress
            animated:(BOOL)animated;
 
+/**
+ * Will hide the progress view by flattening it down, as if
+ * shrinking up into itself.
+ */
+- (void)clearProgressAnimated:(BOOL)animated;
+
 @end

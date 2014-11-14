@@ -93,7 +93,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 
-
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
 
 @property (nonatomic, readonly) NSInteger nodeID;
@@ -122,6 +121,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, strong, readonly) VExperienceEnhancerController *experienceEnhancerController;
 
+#pragma mark - Interface Properties
+
 /**
  *  For content type image this will be a convenient url request for setting the image.
  */
@@ -131,24 +132,34 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
+
 @property (nonatomic, readonly) BOOL shouldShowTitle;
 
 @property (nonatomic, strong, readonly) VNode *currentNode;
 
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
+
 @property (nonatomic, readonly) BOOL hasReposted;
 
 @property (nonatomic, readonly) NSString *remixCountText;
+
 @property (nonatomic, readonly) NSString *repostCountText;
+
 @property (nonatomic, readonly) NSString *shareCountText;
 
 @property (nonatomic, readonly) NSString *authorName;
+
 @property (nonatomic, readonly) NSString *authorCaption;
+
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
 
 @property (nonatomic, readonly) NSString *shareText;
+
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
+
 @property (nonatomic, readonly) NSURL *shareURL;
+
+#pragma mark - Videos
 
 @property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
 
@@ -156,118 +167,58 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL loop;
 
+#pragma mark - Comments
+
 /**
  *  If a video content has any real time comments this will be YES.
  */
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
- *  The number of comments on this particular sequence.
- */
-@property (nonatomic, readonly) NSInteger commentCount;
-
-/**
  *  Fetches the all comments and realtime comments for this viewModel's sequence.
  */
 - (void)fetchComments;
 
+- (void)attemptToLoadNextPageOfComments;
+
+@property (nonatomic, readonly) NSArray *comments;
+
+#pragma mark - Actions
+
 - (void)repost;
 
-/**
- *  Returns the corrensponding comment body for the given commentIndex. Might return nil if comment has no body text.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The comment body for the corresponding comment.
- */
-- (NSString *)commentBodyForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns the corresponding name for the user who posted the comment at the specified index.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The user's name who posted a given comment.
- */
-- (NSString *)commenterNameForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns the text to place in the time ago/ time since label for a given comment view.
- *
- *  @param commentIndex The corresponding index of the comment.
- *
- *  @return The formatted time ago text for the given coment.
- */
-- (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex;
-
-
-/**
- *  Returns the text to place in the real time comment label for a given comment view.
- *
- *  @param commentIndex The corresponding index of the comment.
- *
- *  @return The formatted real time comment text for the given coment.
- */
-- (NSString *)commentRealTimeCommentTextForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns the avatar URL for the user who posted a given comment. May return nil if no avatar URL exists.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The avatar URL for the given user.
- */
-- (NSURL *)commenterAvatarURLForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a boolean determining if a given comment has any media (such as a photo or video) attached.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return A determination of the comment's media.
- */
-- (BOOL)commentHasMediaForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a preview image url for the media for a given comment. Raises an exception if comment has no media.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return The preview image URL.
- */
-- (NSURL *)commentMediaPreviewUrlForCommentIndex:(NSInteger)commentIndex;
-
-- (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex; 
-
-- (VUser *)userForCommentIndex:(NSInteger)commentIndex;
-
-- (NSNumber *)commentMediaAssetOrientationForCommentIndex:(NSInteger)commentIndex;
-
-/**
- *  Returns a determination of whetehr or not the media for a given comment is a video or not. Raises an exception if comment has no media.
- *
- *  @param commentIndex The index of the comment.
- *
- *  @return Whether or not the media for the comment is a video.
- */
-- (BOOL)commentMediaIsVideoForCommentIndex:(NSInteger)commentIndex;
+#pragma mark - Polls
 
 @property (nonatomic, readonly) NSString *answerALabelText;
+
 @property (nonatomic, readonly) NSString *answerBLabelText;
+
 @property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
+
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
+
 @property (nonatomic, readonly) BOOL answerAIsVideo;
+
 @property (nonatomic, readonly) BOOL answerBIsVideo;
+
 @property (nonatomic, readonly) NSURL *answerAVideoUrl;
+
 @property (nonatomic, readonly) NSURL *answerBVideoUrl;
+
 @property (nonatomic, readonly) BOOL votingEnabled;
+
 @property (nonatomic, readonly) CGFloat answerAPercentage;
+
 @property (nonatomic, readonly) CGFloat answerBPercentage;
+
 @property (nonatomic, readonly) NSString *numberOfVotersText;
 
 - (VPollAnswer)favoredAnswer; // By the current user.
+
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion;
+
+#pragma mark - Histogram
 
 /** This will be nil if no histogram data is available.
  */

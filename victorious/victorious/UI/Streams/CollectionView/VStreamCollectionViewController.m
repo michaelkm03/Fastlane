@@ -12,7 +12,7 @@
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
-#import "VProfileHeaderCell.h"
+#import "VStreamCollectionCellWebContent.h"
 
 //Controllers
 #import "VCommentsContainerViewController.h"
@@ -20,7 +20,7 @@
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
-
+#import "VWebBrowserViewController.h"
 #import "VNewContentViewController.h"
 
 //Views
@@ -168,6 +168,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
+          forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -323,41 +325,59 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.lastSelectedIndexPath = indexPath;
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    VSequence *sequence;
-    UIImageView *previewImageView;
     
-    if ([cell isKindOfClass:[VStreamCollectionCell class]])
-    {
-        sequence = ((VStreamCollectionCell *)cell).sequence;
-        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-    }
-    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
-    {
-        sequence = (VSequence *)((VMarqueeCollectionCell *)cell).marquee.currentStreamItem;
-        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
-    }
-    else
-    {
-        return;
-    }
-
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-    contentViewController.placeholderImage = previewImageView.image;
-    contentViewController.delegate = self;
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav
-                       animated:YES
-                     completion:nil];
+    //Every time we go to the content view, update the sequence
+    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
     
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
+    
+    if ( [sequence isWebContent] )
+    {
+        [self showWebContentWithSequence:sequence];
+    }
+    else
+    {
+        UIImageView *previewImageView = nil;
+        UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        if ([cell isKindOfClass:[VStreamCollectionCell class]])
+        {
+            previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
+        }
+        else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
+        {
+            previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
+        }
+        [self showContentViewWithSequence:sequence placeHolderImage:previewImageView.image];
+    }
+}
+
+- (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage
+{
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.placeholderImage = placeHolderImage;
+    contentViewController.delegate = self;
+    
+    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
+    contentNav.navigationBarHidden = YES;
+    [self presentViewController:contentNav animated:YES completion:nil];
+}
+
+- (void)showWebContentWithSequence:(VSequence *)sequence
+{
+    VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
+    viewController.sequence = sequence;
+    [self presentViewController:viewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -424,6 +444,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
+    }
+    else if ([sequence isPreviewWebContent])
+    {
+        NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
+        VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                               forIndexPath:indexPath];
+        cell.sequence = sequence;
+        return cell;
     }
     else
     {

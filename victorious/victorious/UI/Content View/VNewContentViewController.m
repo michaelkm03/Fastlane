@@ -58,6 +58,7 @@
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
+#import "VComment+Fetcher.h"
 
 // Simple Models
 #import "VExperienceEnhancer.h"
@@ -358,7 +359,7 @@
                                              animated:YES];
     
     self.contentCollectionView.delegate = self;
-    
+    self.videoCell.delegate = self;
     
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
@@ -410,6 +411,7 @@
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
     self.contentCollectionView.delegate = nil;
+    self.videoCell.delegate = nil;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -466,11 +468,25 @@
 
 - (void)commentsDidUpdate:(NSNotification *)notification
 {
-    if (self.viewModel.commentCount > 0)
+    if (self.viewModel.comments.count > 0)
     {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
-        self.handleView.numberOfComments = self.viewModel.commentCount;
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            [self.contentCollectionView reloadData];
+            
+            __weak typeof(self) welf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [welf.contentCollectionView flashScrollIndicators];
+            });
+        }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
     }
 }
 
@@ -519,6 +535,11 @@
 
 - (IBAction)pressedClose:(id)sender
 {
+    // Sometimes UICollecitonView hangs gets stuck in infinite loops while we are dismissing slowing the UI down to a crawl, by replacing it with a snapshot of the current UI we don't risk this happening.
+    [self.view addSubview:[self.view snapshotViewAfterScreenUpdates:NO]];
+    self.contentCollectionView.delegate = nil;
+    self.videoCell.delegate = nil;
+    [self.contentCollectionView removeFromSuperview];
     [self.delegate newContentViewControllerDidClose:self];
 }
 
@@ -533,31 +554,20 @@
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
-    commentCell.mediaAssetOrientation = [self.viewModel commentMediaAssetOrientationForCommentIndex:index];
-    commentCell.commentBody = [self.viewModel commentBodyForCommentIndex:index];
-    commentCell.commenterName = [self.viewModel commenterNameForCommentIndex:index];
-    commentCell.URLForCommenterAvatar = [self.viewModel commenterAvatarURLForCommentIndex:index];
-    commentCell.timestampText = [self.viewModel commentTimeAgoTextForCommentIndex:index];
-    commentCell.realTimeCommentText = [self.viewModel commentRealTimeCommentTextForCommentIndex:index];
-    if ([self.viewModel commentHasMediaForCommentIndex:index])
-    {
-        commentCell.hasMedia = YES;
-        commentCell.mediaPreviewURL = [self.viewModel commentMediaPreviewUrlForCommentIndex:index];
-        commentCell.mediaIsVideo = [self.viewModel commentMediaIsVideoForCommentIndex:index];
-    }
+    commentCell.comment = self.viewModel.comments[index];
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
     commentCell.onMediaTapped = ^(void)
     {
-        [welf showLightBoxWithMediaURL:[welf.viewModel mediaURLForCommentIndex:index]
+        [welf showLightBoxWithMediaURL:wCommentCell.mediaURL
                           previewImage:wCommentCell.previewImage
                                isVideo:wCommentCell.mediaIsVideo
                             sourceView:wCommentCell.previewView];
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:[welf.viewModel userForCommentIndex:index]];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -623,7 +633,7 @@
         case VContentViewSectionExperienceEnhancers:
             return 1;
         case VContentViewSectionAllComments:
-            return self.viewModel.commentCount;
+            return (NSInteger)self.viewModel.comments.count;
         case VContentViewSectionCount:
             return 0;
     }
@@ -901,7 +911,7 @@
                                                                                                    forIndexPath:indexPath];
                 self.handleView = handleView;
             }
-            self.handleView.numberOfComments = self.viewModel.commentCount;
+            self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
             
             return self.handleView;
         }
@@ -950,9 +960,10 @@
         }
         case VContentViewSectionAllComments:
         {
+            VComment *comment = self.viewModel.comments[indexPath.row];
             return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:[self.viewModel commentBodyForCommentIndex:indexPath.row]
-                                               andHasMedia:[self.viewModel commentHasMediaForCommentIndex:indexPath.row]];
+                                               commentBody:comment.text
+                                               andHasMedia:comment.hasMedia];
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -974,7 +985,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
-            return (self.viewModel.commentCount > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
+            return (self.viewModel.comments.count > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;
@@ -988,6 +999,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
                                             animated:YES];
+    }
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    {
+        [self.viewModel attemptToLoadNextPageOfComments];
     }
 }
 

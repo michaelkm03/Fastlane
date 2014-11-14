@@ -112,6 +112,7 @@ static NSString * const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString * const   kVOwnerVideoRepostCategory   = @"owner_video_repost";
 static NSString * const   kVOwnerMemeRepostCategory    = @"owner_meme_repost";
 static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
+static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";
@@ -131,6 +132,11 @@ NSArray *VVideoCategories();
 NSArray *VPollCategories();
 NSArray *VRepostCategories();
 NSArray *VRemixCategories();
+
+#pragma mark - Sequence data types
+
+static NSString * const   kVAssetTypeMedia = @"media";
+static NSString * const   kVAssetTypeURL  = @"url";
 
 static NSString * const   kTemporaryContentStatus = @"temp";
 

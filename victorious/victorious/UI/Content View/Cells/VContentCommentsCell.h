@@ -14,20 +14,15 @@
  */
 @interface VContentCommentsCell : VBaseCollectionViewCell
 
-@property (nonatomic, strong) NSNumber *mediaAssetOrientation;
-@property (nonatomic, copy) NSURL *URLForCommenterAvatar;
-@property (nonatomic, copy) NSString *commenterName;
-@property (nonatomic, copy) NSString *timestampText;
-@property (nonatomic, copy) NSString *realTimeCommentText;
-@property (nonatomic, copy) NSString *commentBody;
-@property (nonatomic, assign) BOOL hasMedia;
-@property (nonatomic, copy) NSURL *mediaPreviewURL;
-@property (nonatomic, assign) BOOL mediaIsVideo;
+@property (nonatomic, strong) VComment *comment;
+@property (nonatomic, readonly) NSURL *mediaURL;
+
 @property (nonatomic, copy) void (^onMediaTapped)();
 @property (nonatomic, copy) void (^onUserProfileTapped)();
+
 @property (nonatomic, readonly) UIImage *previewImage;
 @property (nonatomic, readonly) UIView *previewView;
-
+@property (nonatomic, readonly) BOOL mediaIsVideo;
 
 + (NSCache *)sharedImageCached;
 

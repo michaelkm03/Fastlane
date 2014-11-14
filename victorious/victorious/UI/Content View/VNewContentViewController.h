@@ -14,7 +14,14 @@
 
 @protocol VNewContentViewControllerDelegate  <NSObject>
 
+/**
+ *  When NCV has called this delegate method it has already begun destroying it's internal view hierarchy. It should be dismissed at this point.
+ */
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController;
+
+/**
+ *  NCV has issues an API request to delete itself and is giving the delegate a chance to reload it's list of items.
+ */
 - (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController;
 
 @end

@@ -32,6 +32,10 @@
     self.startingEnvironment = [VObjectManager currentEnvironment];
     [self.parentViewController v_addNewNavHeaderWithTitles:nil];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    self.tableView.contentInset = insets;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
