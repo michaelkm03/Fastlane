@@ -36,7 +36,3 @@ NSArray *VRemixCategories()
 {
     return @[kVOwnerVideoRemixCategory, kVUGCVideoRemixCategory];
 }
-NSArray *VMemeCategories()
-{
-    return @[kVUGCMemeRepostCategory, kVUGCImageMemeCategory, kVOwnerMemeRepostCategory, kVOwnerImageMemeCategory];
-}

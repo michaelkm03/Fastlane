@@ -132,7 +132,6 @@ NSArray *VVideoCategories();
 NSArray *VPollCategories();
 NSArray *VRepostCategories();
 NSArray *VRemixCategories();
-NSArray *VMemeCategories();
 
 #pragma mark - Sequence data types
 
