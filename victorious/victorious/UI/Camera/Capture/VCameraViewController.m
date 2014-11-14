@@ -359,7 +359,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             self.recordButton.userInteractionEnabled = YES;
         }
         self.capturePhotoButton.userInteractionEnabled = YES;
-        self.flashButton.enabled = YES;
+        self.flashButton.enabled = self.captureController.currentDevice.hasFlash;
         self.switchCameraButton.enabled = YES;
         self.switchCameraModeButton.enabled = YES;
         self.openAlbumButton.enabled = YES;
