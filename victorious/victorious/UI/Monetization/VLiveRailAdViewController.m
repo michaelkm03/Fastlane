@@ -51,18 +51,7 @@
         // Ad manager event observers
         [self addNotificationObservers];
         
-        // Grab the publisher id from the monetization options and init the ad manager with it
-        NSString *pubID = [[self.adServerMonetizationDetails valueForKey:@"0"] valueForKey:@"publisherId"];
-        
-        // Check if the publisher id is blank or nil
-        if ([pubID isEqualToString:@""] || [pubID isKindOfClass:[NSNull class]] || pubID == nil)
-        {
-            [self adDidFinish:nil];
-            return;
-        }
-        
         self.adManager.frame = self.view.bounds;
-        [self.adManager initAd:@{@"LR_PUBLISHER_ID":pubID}];
         [self.view addSubview:self.adManager];
     }
 }
@@ -128,6 +117,7 @@
 - (void)setPubID:(NSString *)pubID
 {
     _pubID = pubID;
+    [self.adManager initAd:@{@"LR_PUBLISHER_ID":self.pubID}];
 }
 
 #pragma mark - Ad Methods
@@ -158,14 +148,16 @@
 #endif
     
     self.adManager = [[LiveRailAdManager alloc] init];
-    NSString *pubId = [[self.adServerMonetizationDetails valueForKey:@"0"] valueForKey:@"publisherId"];
-    if ([pubId isEqualToString:@""] || [pubId isKindOfClass:[NSNull class]] || pubId == nil)
+    VAdBreakFallback *adBreak = [self.adServerMonetizationDetails objectAtIndex:0];
+    NSString *publisherId = adBreak.publisherId;
+    
+    if ([publisherId isEqualToString:@""] || [publisherId isKindOfClass:[NSNull class]] || publisherId == nil)
     {
         [self adDidFinish:nil];
         return;
     }
     
-    self.pubID = pubId;
+    self.pubID = publisherId;
 }
 
 #pragma mark - Observers
