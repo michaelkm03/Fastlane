@@ -396,3 +396,8 @@
 "AreYouSureYouWantToDelete" = "Are you sure you want to delete?";
 
 "ITEMS"                 = "ITEMS";
+
+"ShareFacebook"         = "Share to Facebook";
+"ShareTwitter"          = "Share to Twitter";
+"OpenSafari"            = "Open in Safari";
+"ShareSMS"              = "Send as Text";

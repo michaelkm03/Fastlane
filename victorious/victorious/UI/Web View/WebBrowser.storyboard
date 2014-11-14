@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lY7-iJ-Wrx">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <scenes>
+        <!--Web Browser View Controller-->
+        <scene sceneID="7mm-rc-Jhh">
+            <objects>
+                <viewController storyboardIdentifier="VWebBrowserViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lY7-iJ-Wrx" customClass="VWebBrowserViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sfn-Rc-JjZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cq7-9N-HqV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KzY-xN-OP6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VfO-NC-MFs" userLabel="Web View Container">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idt-30-NjI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="x4L-r2-Ovs"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="XJq-6Z-G52" kind="embed" identifier="embedHeader" id="3rD-5f-0tG"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Idt-30-NjI" firstAttribute="top" secondItem="sfn-Rc-JjZ" secondAttribute="bottom" constant="-20" id="5BU-ly-Pf2"/>
+                            <constraint firstAttribute="trailing" secondItem="VfO-NC-MFs" secondAttribute="trailing" id="efP-d5-hpP"/>
+                            <constraint firstItem="Cq7-9N-HqV" firstAttribute="top" secondItem="VfO-NC-MFs" secondAttribute="bottom" id="hhT-8B-p5k"/>
+                            <constraint firstItem="Idt-30-NjI" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leading" id="nQk-Mi-kJD"/>
+                            <constraint firstItem="VfO-NC-MFs" firstAttribute="top" secondItem="Idt-30-NjI" secondAttribute="bottom" id="qAO-ZV-zGF"/>
+                            <constraint firstItem="VfO-NC-MFs" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leading" id="rVZ-4d-rY5"/>
+                            <constraint firstAttribute="trailing" secondItem="Idt-30-NjI" secondAttribute="trailing" id="xE5-4l-18B"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="containerView" destination="VfO-NC-MFs" id="9iH-IV-QYs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oTy-6p-Mi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="256" y="588"/>
+        </scene>
+        <!--Web Browser Header View Controller-->
+        <scene sceneID="XfX-we-3cZ">
+            <objects>
+                <viewController id="XJq-6Z-G52" customClass="VWebBrowserHeaderViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S66-qs-wfS"/>
+                        <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3" customClass="VHeaderView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
+                                <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
+                                <rect key="frame" x="2" y="17" width="30" height="45"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="qQ4-OK-Ra3"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="gTS-BW-Ojg"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
+                                <rect key="frame" x="35" y="16" width="212" height="46"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
+                                <rect key="frame" x="250" y="15" width="32" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="Rab-ah-Rby"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-share">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exportSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="jan-b3-dfo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
+                                <rect key="frame" x="283" y="15" width="32" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="mWz-d4-er6"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <state key="normal" image="browser-close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exitSelected:" destination="XJq-6Z-G52" eventType="touchUpInside" id="alY-qL-aAO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="1hk-oi-9Au"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="cNG-U0-zNK" secondAttribute="bottom" constant="3" id="6z1-HT-scI"/>
+                            <constraint firstAttribute="trailing" secondItem="PTL-ew-6sW" secondAttribute="trailing" constant="5" id="9nl-ad-Es7"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-4" id="DCF-dV-1dQ"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="2n7-et-juQ" secondAttribute="bottom" constant="2" id="DbO-Re-w1J"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="6my-03-sbB" secondAttribute="bottom" constant="2" id="QTR-ZO-7Tl"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-5" id="QXW-XI-YiL"/>
+                            <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="3" id="WME-O1-JeV"/>
+                            <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" constant="1" id="WkO-KO-Ko8"/>
+                            <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="YZ6-dE-ype"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="PTL-ew-6sW" secondAttribute="bottom" id="jeX-S7-Dje"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" constant="2" id="qF7-aT-FSL"/>
+                            <constraint firstItem="2n7-et-juQ" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-3" id="qHd-Aj-iHu"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
+                        <outlet property="buttonBackWidthConstraint" destination="qQ4-OK-Ra3" id="dLM-pG-MR7"/>
+                        <outlet property="buttonBackX1Constraint" destination="qF7-aT-FSL" id="K8R-fa-9hU"/>
+                        <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
+                        <outlet property="buttonExitX2Constraint" destination="9nl-ad-Es7" id="VZI-S4-iU9"/>
+                        <outlet property="buttonOpenURL" destination="cNG-U0-zNK" id="fug-La-b7U"/>
+                        <outlet property="labelTitle" destination="6my-03-sbB" id="RU0-Y1-RNX"/>
+                        <outlet property="pageTitleX1Constraint" destination="WME-O1-JeV" id="GJE-XO-NGQ"/>
+                        <outlet property="progressBar" destination="Vt8-xj-xda" id="rdZ-zt-FEM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n5P-AU-Gzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="686" y="334"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="browser-back" width="13" height="24"/>
+        <image name="browser-close" width="17" height="17"/>
+        <image name="browser-share" width="14" height="21"/>
+    </resources>
+</document>

@@ -41,7 +41,9 @@
                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
                                   @"sequence_counts.remixes"    : VSelectorName(remixCount),
-                                  @"sequence_counts.reposts"    : VSelectorName(repostCount)
+                                  @"sequence_counts.reposts"    : VSelectorName(repostCount),
+                                  @"preview.type"           : VSelectorName(previewType),
+                                  @"preview.data"           : VSelectorName(previewData)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

@@ -44,5 +44,7 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic previewType;
+@dynamic previewData;
 
 @end

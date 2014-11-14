@@ -157,6 +157,8 @@
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
+        <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
@@ -267,6 +269,8 @@
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
+        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="403"/>
+        <element name="Tracking" positionX="918" positionY="-522" width="128" height="315"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="433"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
