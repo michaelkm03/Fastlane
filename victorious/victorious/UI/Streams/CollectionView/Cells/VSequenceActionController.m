@@ -171,6 +171,11 @@
 
 - (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
+    return [self repostActionFromViewController:viewController node:node completion:nil];
+}
+
+- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
+{
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -179,9 +184,22 @@
     
     [[VObjectManager sharedManager] repostNode:node
                                       withName:nil
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
-                                      node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-                                  } failBlock:nil];
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         if ( completion )
+         {
+             node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+             completion( YES );
+         }
+     }
+                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( completion )
+         {
+             completion( NO );
+         }
+     }];
+    
     return YES;
 }
 

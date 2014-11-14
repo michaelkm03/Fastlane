@@ -528,7 +528,7 @@
 - (void)onRemixPublished:(NSNotification *)notification
 {
     // Dismiss the content view and return to stream
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - IBActions

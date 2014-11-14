@@ -23,6 +23,8 @@
 
 
 - (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;///<Returns true if the user is allow to repost, false if not
+- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion;
+
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node;

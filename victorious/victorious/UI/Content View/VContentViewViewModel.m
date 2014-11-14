@@ -59,7 +59,6 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 
 @property (nonatomic, strong) NSString *followersText;
-@property (nonatomic, assign, readwrite) BOOL hasReposted;
 @property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
