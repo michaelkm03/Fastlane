@@ -9,13 +9,39 @@
 #import "VTrendingTagCell.h"
 #import "VThemeManager.h"
 #import "VHashTags.h"
+#import "VConstants.h"
+
+static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
+
+IB_DESIGNABLE
+@interface VHashtagLabel : UILabel
+
+@property (nonatomic, assign) UIEdgeInsets edgeInsets;
+
+@end
+
+@implementation VHashtagLabel
+
+- (void)drawTextInRect:(CGRect)rect
+{
+    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, kHashtagLabelEdgeInsets)];
+}
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [super intrinsicContentSize];
+    size.width  += kHashtagLabelEdgeInsets.left + kHashtagLabelEdgeInsets.right;
+    size.height += kHashtagLabelEdgeInsets.top + kHashtagLabelEdgeInsets.bottom;
+    return size;
+}
+
+@end
 
 static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @interface VTrendingTagCell()
 
-@property (strong, nonatomic) UITextView *hashTagTextView;
-@property (nonatomic, strong) NSMutableArray *textViewContraints;
+@property (weak, nonatomic) IBOutlet VHashtagLabel *hashTagLabel;
 
 @end
 
@@ -26,60 +52,11 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return kTrendingTagCellRowHeight;
 }
 
-- (void)awakeFromNib
-{
-    self.textViewContraints = [[NSMutableArray alloc] init];
-    
-    self.hashTagTextView = [[UITextView alloc] init];
-    self.hashTagTextView.scrollEnabled = NO;
-    self.hashTagTextView.selectable = NO;
-    self.hashTagTextView.userInteractionEnabled = NO;
-    self.hashTagTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.hashTagTextView.backgroundColor = [UIColor clearColor];
-    self.hashTagTextView.textColor = [UIColor whiteColor];
-    self.hashTagTextView.textContainer.lineFragmentPadding = 0;
-    self.hashTagTextView.textContainerInset = UIEdgeInsetsMake( 4.0f, 6.0f, 4.0f, 8.0f );
-    [self addSubview:self.hashTagTextView];
-}
-
-- (void)applyConstraints
-{
-    if ( ![self.hashTagTextView.superview isEqual:self] )
-    {
-        return;
-    }
-    
-    [self removeConstraints:self.textViewContraints];
-    [self.textViewContraints removeAllObjects];
-    
-    CGSize textRect = [self.hashTagTextView.text sizeWithAttributes:@{ NSFontAttributeName : self.hashTagTextView.font }];
-    textRect.width += self.hashTagTextView.textContainerInset.right + self.hashTagTextView.textContainerInset.left;
-    textRect.height += self.hashTagTextView.textContainerInset.top + self.hashTagTextView.textContainerInset.bottom;
-    
-    NSDictionary *views = @{ @"textView" : self.hashTagTextView };
-    NSDictionary *metrics = @{ @"height" : @(textRect.height),
-                               @"width" : @(textRect.width),
-                               @"topSpacing" : @0.0f,
-                               @"leftSpacing" : @17.0,
-                               @"rightSpacing" : @12.0f };
-    self.hashTagTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leftSpacing-[textView]-(>=rightSpacing)-|"
-                                                                                  options:0
-                                                                                  metrics:metrics
-                                                                                    views:views]];
-    [self.textViewContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topSpacing-[textView(==height)]"
-                                                                                  options:0
-                                                                                  metrics:metrics
-                                                                                    views:views]];
-    
-    [self addConstraints:[NSArray arrayWithArray:self.textViewContraints]];
-}
-
 - (void)applyTheme
 {
-    self.hashTagTextView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.hashTagTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.hashTagLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.hashTagLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.hashTagLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)setHashtag:(VHashtag *)hashtag
@@ -87,13 +64,9 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     // Make sure there's a # at the beginning of the text
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
-    // Remove any excess padding
-    self.hashTagTextView.textContainer.lineFragmentPadding = 0;
+    [self.hashTagLabel setText:text];
     
-    [self.hashTagTextView setText:text];
     [self applyTheme];
-    
-    [self applyConstraints];
 }
 
 @end
