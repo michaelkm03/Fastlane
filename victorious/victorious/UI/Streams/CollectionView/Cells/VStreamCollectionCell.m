@@ -121,7 +121,7 @@ static const CGFloat kDescriptionBuffer = 15.0;
     
     [self setupActionBar];
     
-    self.bottomGradient.hidden = ([VMemeCategories() containsObject:sequence.category]);
+    self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
 }
 
 - (void)setupActionBar
