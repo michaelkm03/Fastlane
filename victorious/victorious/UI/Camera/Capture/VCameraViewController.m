@@ -777,14 +777,22 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         return;
     }
     
-    if (self.captureController.currentDevice.flashAvailable && self.captureController.currentDevice.hasFlash)
+    if (self.captureController.currentDevice.hasFlash)
     {
         self.flashButton.alpha = 1.0f;
-        self.flashButton.selected = self.captureController.currentDevice.flashMode != AVCaptureFlashModeOff;
     }
     else
     {
         self.flashButton.alpha = 0.0f;
+    }
+    
+    if (self.captureController.currentDevice.flashAvailable)
+    {
+        self.flashButton.selected = self.captureController.currentDevice.flashMode != AVCaptureFlashModeOff;
+    }
+    else
+    {
+        self.flashButton.selected = NO;
     }
 }
 
