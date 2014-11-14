@@ -90,6 +90,11 @@
 
 - (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence
 {
+    [self imageRemixActionFromViewController:viewController previewImage:previewImage sequence:sequence completion:nil];
+}
+
+- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+{
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
     if (![VObjectManager sharedManager].authorized)
     {
@@ -101,10 +106,17 @@
     publishViewController.parentSequenceID = [sequence.remoteId integerValue];
     publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
     publishViewController.previewImage = previewImage;
-    publishViewController.completion = ^(BOOL complete)
+    if ( completion == nil )
     {
-        [viewController dismissViewControllerAnimated:YES completion:nil];
-    };
+        publishViewController.completion = ^(BOOL complete)
+        {
+            [viewController dismissViewControllerAnimated:YES completion:nil];
+        };
+    }
+    else
+    {
+        publishViewController.completion = completion;
+    }
     
     UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
     
@@ -167,8 +179,9 @@
     
     [[VObjectManager sharedManager] repostNode:node
                                       withName:nil
-                                  successBlock:nil
-                                     failBlock:nil];
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+                                      node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+                                  } failBlock:nil];
     return YES;
 }
 

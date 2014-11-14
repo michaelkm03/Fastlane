@@ -50,6 +50,7 @@ static const char kSequenceActionControllerKey;
 @interface VNewContentViewController (ActionsPrivate)
 
 @property VSequenceActionController *sequenceActionController;
+- (void)onRemixPublished:(NSNotification *)notification;
 
 @end
 
@@ -128,7 +129,16 @@ static const char kSequenceActionControllerKey;
                  }
                  else
                  {
-                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
+                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence completion:^(BOOL didPublish) {
+                         if ( !didPublish )
+                         {
+                             [self dismissViewControllerAnimated:YES completion:nil];
+                         }
+                         else
+                         {
+                             [self onRemixPublished:nil];
+                         }
+                     }];
                  }
              }];
         };
