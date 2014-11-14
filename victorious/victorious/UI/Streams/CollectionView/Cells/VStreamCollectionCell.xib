@@ -102,6 +102,7 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
+                <outlet property="bottomGradient" destination="ANb-iR-hwm" id="lWl-Jc-DFX"/>
                 <outlet property="captionTextView" destination="Ijd-Vg-9fv" id="4bk-Tz-fIr"/>
                 <outlet property="lowerGradientView" destination="ANb-iR-hwm" id="44h-v9-vf4"/>
                 <outlet property="overlayView" destination="3gM-g0-IBc" id="5Fn-60-Yd9"/>
