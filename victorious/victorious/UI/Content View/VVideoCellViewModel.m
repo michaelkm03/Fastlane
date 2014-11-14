@@ -12,15 +12,15 @@
 
 @property (nonatomic, strong, readwrite) NSURL *itemURL;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
-@property (nonatomic, strong, readwrite) NSDictionary *monetizationOptions;
+@property (nonatomic, strong, readwrite) NSArray *monetizationDetails;
 
 @end
 
 @implementation VVideoCellViewModel
 
-+ (instancetype)videoCelViewModelWithItemURL:(NSURL *)itemURL
++ (instancetype)videoCellViewModelWithItemURL:(NSURL *)itemURL
                                  withAdSystem:(VMonetizationPartner)monetizationPartner
-                                 withOptions:(NSDictionary *)options
+                                 withDetails:(NSArray *)details
 {
     if (![itemURL isKindOfClass:[NSURL class]])
     {
@@ -30,7 +30,7 @@
     VVideoCellViewModel *videoCellViewModel = [[VVideoCellViewModel alloc] init];
     videoCellViewModel.itemURL = itemURL;
     videoCellViewModel.monetizationPartner = monetizationPartner;
-    videoCellViewModel.monetizationOptions = options;
+    videoCellViewModel.monetizationDetails = details;
     
     return videoCellViewModel;
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -8,7 +8,7 @@
     </entity>
     <entity name="AdBreak" representedClassName="VAdBreak" syncable="YES">
         <attribute name="startPosition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="fallbacks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdBreakFallback" inverseName="adbreak" inverseEntity="AdBreakFallback" syncable="YES"/>
+        <relationship name="fallbacks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreakFallback" inverseName="adbreak" inverseEntity="AdBreakFallback" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreaks" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="AdBreakFallback" representedClassName="VAdBreakFallback" syncable="YES">
@@ -152,14 +152,14 @@
         <attribute name="nameEmbeddedInContent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="permissions" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remixCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
-        <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
+        <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
@@ -253,7 +253,7 @@
     </entity>
     <elements>
         <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="88"/>
+        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
         <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="120"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
@@ -269,9 +269,7 @@
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-531" width="128" height="403"/>
-        <element name="Tracking" positionX="918" positionY="-522" width="128" height="315"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="433"/>
+        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>

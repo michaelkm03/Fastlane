@@ -2,7 +2,7 @@
 //  VAdBreakFallback.m
 //  victorious
 //
-//  Created by Lawrence Leach on 11/3/14.
+//  Created by Lawrence Leach on 11/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,8 +14,8 @@
 
 @dynamic adSystem;
 @dynamic adTag;
-@dynamic timeout;
 @dynamic publisherId;
+@dynamic timeout;
 @dynamic adbreak;
 
 @end

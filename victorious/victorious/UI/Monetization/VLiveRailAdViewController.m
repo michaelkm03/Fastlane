@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, assign) BOOL adPlaying;
+@property (nonatomic, strong) NSString *pubID;
 
 @end
 
@@ -51,7 +52,7 @@
         [self addNotificationObservers];
         
         // Grab the publisher id from the monetization options and init the ad manager with it
-        NSString *pubID = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
+        NSString *pubID = [[self.adServerMonetizationDetails valueForKey:@"0"] valueForKey:@"publisherId"];
         
         // Check if the publisher id is blank or nil
         if ([pubID isEqualToString:@""] || [pubID isKindOfClass:[NSNull class]] || pubID == nil)
@@ -124,6 +125,11 @@
     return self.adPlaying;
 }
 
+- (void)setPubID:(NSString *)pubID
+{
+    _pubID = pubID;
+}
+
 #pragma mark - Ad Methods
 
 - (void)destroyAdInstance
@@ -152,7 +158,7 @@
 #endif
     
     self.adManager = [[LiveRailAdManager alloc] init];
-    NSString *pubId = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"publisherId"];
+    NSString *pubId = [[self.adServerMonetizationDetails valueForKey:@"0"] valueForKey:@"publisherId"];
     if ([pubId isEqualToString:@""] || [pubId isKindOfClass:[NSNull class]] || pubId == nil)
     {
         [self adDidFinish:nil];

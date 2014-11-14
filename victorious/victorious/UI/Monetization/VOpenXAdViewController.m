@@ -10,6 +10,7 @@
 #import "OpenXMSDK.h"
 #import "VSettingManager.h"
 #import "VAdPlayerView.h"
+#import "VAdBreakFallback.h"
 
 #define EnableOpenXLogging 0 // Set to "1" to see OpenX ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -17,10 +18,10 @@
 
 @property (nonatomic, strong) OXMVideoAdManager *adManager;
 @property (nonatomic, strong) VAdPlayerView *playerView;
-@property (nonatomic, strong) NSMutableArray *adBreaks;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, assign) BOOL adPlaying;
+@property (nonatomic, strong) NSString *vastTag;
 
 @end
 
@@ -65,6 +66,8 @@
     VLog(@"OpenX VastTag: %@", vastTag);
 #endif
     
+    _vastTag = vastTag;
+    
     if ([vastTag isEqualToString:@""] || [vastTag isKindOfClass:[NSNull class]] || vastTag == nil)
     {
         [self videoInFeedCompelete];
@@ -83,7 +86,7 @@
     [self.adManager setVideoContainer:self.view];
     self.adManager.autoPlayConfig = AlwaysAutoPlay;
     self.adManager.isInFeed = YES;
-    self.adManager.hideControls = NO;
+    self.adManager.hideControls = YES;
     
     //VLog(@"%@", self.view.frame);
     
@@ -100,8 +103,8 @@
 #endif
         
         // Initialize ad manager and push it onto view stack
-        NSString *tagString = [[self.adServerMonetizationParameters valueForKey:@"0"] valueForKey:@"adTag"];
-        self.vastTag = tagString;
+        VAdBreakFallback *adBreak = [self.adServerMonetizationDetails objectAtIndex:0];
+        self.vastTag = adBreak.adTag;
     }
 }
 
