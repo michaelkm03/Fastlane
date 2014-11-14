@@ -66,6 +66,8 @@
 // Experiments
 #import "VSettingManager.h"
 
+#import "VCameraPublishViewController.h"
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -351,8 +353,8 @@
                                                  name:VExperienceEnhancerBarDidRequiredLoginNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDidPublish:)
-                                                 name:VUploadManagerTaskFinishedNotification
+                                             selector:@selector(onRemixPublished:)
+                                                 name:VCameraPublishViewControllerDidPublishNotification
                                                object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
@@ -523,12 +525,10 @@
     [self.viewModel reloadData];
 }
 
-- (void)contentDidPublish:(NSNotification *)notification
+- (void)onRemixPublished:(NSNotification *)notification
 {
-    // If content publication has occurred while content view is open,
-    // we should assume that this content is being remixed or reposted and
-    // the remix and repost counts needs updating:
-    [self.viewModel fetchSequenceData];
+    // Dismiss the content view and return to stream
+    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - IBActions

@@ -8,6 +8,9 @@
 
 #import "VConstants.h"
 
+NSString * const VCameraPublishViewControllerDidPublishNotification;
+NSString * const VCameraPublishViewControllerDidCancelhNotification;
+
 @interface VCameraPublishViewController : UIViewController
 
 @property (nonatomic, strong)   UIImage        *previewImage;

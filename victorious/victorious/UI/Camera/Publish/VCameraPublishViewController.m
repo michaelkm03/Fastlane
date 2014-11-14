@@ -42,6 +42,9 @@
 
 @import AssetsLibrary;
 
+NSString * const VCameraPublishViewControllerDidPublishNotification = @"VCameraPublishViewControllerDidPublishNotification";
+NSString * const VCameraPublishViewControllerDidCancelhNotification = @"VCameraPublishViewControllerDidCancelhNotification";
+
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
 static const CGFloat kPublishQuoteFontSize = 23.0f;
@@ -540,7 +543,7 @@ static const CGFloat kShareMargin = 34.0f;
                                   {
                                       [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraPublishDidCancel];
                                       [self.view endEditing:YES];
-                                      [self didComplete];
+                                      [self didComplete:NO];
                                   }
                                            otherButtonTitlesAndBlocks:nil];
     [actionSheet showInView:self.view];
@@ -615,7 +618,7 @@ static const CGFloat kShareMargin = 34.0f;
     {
         if ( self.navigationController.viewControllers.count == 1 )
         {
-            [self didComplete];
+            [self didComplete:NO];
         }
         else if ( self.navigationController.viewControllers.count > 1 )
         {
@@ -624,7 +627,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     else
     {
-        [self didComplete];
+        [self didComplete:NO];
     }
 }
 
@@ -816,14 +819,17 @@ static const CGFloat kShareMargin = 34.0f;
         cleanup();
     }
     
-    [self didComplete];
+    [self didComplete:YES];
 }
 
-- (void)didComplete
+- (void)didComplete:(BOOL)didPublish
 {
+    NSString *notificationName = didPublish ? VCameraPublishViewControllerDidPublishNotification : VCameraPublishViewControllerDidCancelhNotification;
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+    
     if (self.completion)
     {
-        self.completion(YES);
+        self.completion( didPublish );
     }
     else if ( self.navigationController == nil )
     {
