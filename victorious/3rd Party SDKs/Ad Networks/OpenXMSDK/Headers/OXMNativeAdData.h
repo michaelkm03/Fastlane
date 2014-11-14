@@ -15,8 +15,6 @@
 @property (nonatomic, readonly) NSString* imgurl;
 @property (nonatomic, readonly) NSString* objectstoreurl;
 @property (nonatomic, readonly) NSString* body;
-@property (nonatomic, readonly) NSString* impr;
-@property (nonatomic, readonly) NSString* clickurl;
 @property (nonatomic, readonly) NSString* actorname;
 @property (nonatomic, readonly) NSString* actorimage;
 @property (nonatomic, readonly) NSString* videourl;

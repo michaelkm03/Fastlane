@@ -67,7 +67,7 @@
 /** @name Customizing ad controller behavior */
 
 /** Main delegate which will handle methods from _OXMAdBannerControllerDelegate_  protocol. */
-@property (nonatomic,weak) NSObject<OXMAdBannerControllerDelegate>* adControllerDelegate;
+@property (nonatomic,assign) id<OXMAdBannerControllerDelegate> adControllerDelegate;
 
 /** By accessing the request object you can set optional targeting data which will be sent with the ad requests. This is also how
  you would disable the location auto-detection feature, which currently is on by default.

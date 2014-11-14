@@ -83,6 +83,10 @@
     [self.adManager setVideoContainer:self.view];
     self.adManager.autoPlayConfig = AlwaysAutoPlay;
     self.adManager.isInFeed = YES;
+    self.adManager.hideControls = NO;
+    
+    //VLog(@"%@", self.view.frame);
+    
     [self.adManager startAdManager];
 }
 

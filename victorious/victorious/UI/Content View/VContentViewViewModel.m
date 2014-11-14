@@ -169,6 +169,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
     self.monetizationPartner = adSystemPartner;
     self.monetizationOptions = self.adChain;
+    VLog(@"%@", self.adChain);
     
     self.hasCreatedAdChain = YES;
     
