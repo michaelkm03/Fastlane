@@ -16,6 +16,11 @@
 
 + (NSAttributedString *)formatRTCUserName:(NSString *)username
 {
+    if (username == nil)
+    {
+        return nil;
+    }
+    
     NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:username
                                                                                    attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     [nameString addAttribute:NSForegroundColorAttributeName
@@ -32,6 +37,11 @@
 + (NSAttributedString *)formattedRTCUserPostedAtStringWithUserName:(NSString *)username
                                                      andPostedTime:(NSNumber *)postedTime
 {
+    if (username == nil)
+    {
+        return nil;
+    }
+    
     VElapsedTimeFormatter *timeFormatter = [[VElapsedTimeFormatter alloc] init];
     NSString *timeText = [timeFormatter stringForSeconds:postedTime.floatValue];
 
