@@ -186,7 +186,7 @@
                                       withName:nil
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         if ( completion )
+         if ( completion != nil )
          {
              node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
              completion( YES );
@@ -194,7 +194,7 @@
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
-         if ( completion )
+         if ( completion != nil )
          {
              completion( NO );
          }
