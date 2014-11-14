@@ -12,6 +12,8 @@
 
 #import "VFacebookManager.h"
 
+#import "VConstants.h"
+
 static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
 @implementation VFacebookActivity
@@ -28,7 +30,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
 - (UIImage *)activityImage
 {
-    return [UIImage imageNamed:@"uiactivity-facebook"];
+    return UI_IS_IOS8_AND_HIGHER ? [UIImage imageNamed:@"uiactivity-facebook-color"] : [UIImage imageNamed:@"uiactivity-facebook"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
