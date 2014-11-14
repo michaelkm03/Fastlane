@@ -40,15 +40,6 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 
-#import <Crashlytics/Crashlytics.h>
-
-
-/**
- This will log some extra data to Crashlytics in an attempt to debug a sporratic
- crash that occurs in textView:shouldChangeTextInRange:replacementText:
- */
-#define LOG_TEXT_INPUT_CRASH_DATA 1
-
 @import AssetsLibrary;
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
@@ -860,48 +851,20 @@ static const CGFloat kShareMargin = 34.0f;
     [self updateUI];
 }
 
-- (void)__crashLogTextView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSString *message = [NSString stringWithFormat:@"\n\n>>>> CRASH IMMIMNENT <<<<\ntextView:(text=%@) shouldChangeTextInRange:([%lu,%lu]) replacementText:(%@)\n",
-                         textView.text == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", textView.text],
-                         (unsigned long)range.location,
-                         (unsigned long)range.length,
-                         text == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", text]];
-    
-    if ( range.location > self.userEnteredText.length )
-    {
-        CLS_LOG( @"%@range.location(%lu) >= self.userEnteredText(%@).length(%lu)\n",
-                message,
-                (unsigned long)range.location,
-                self.userEnteredText == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", self.userEnteredText],
-                (unsigned long)self.userEnteredText.length );
-    }
-    
-    else if ( range.location + range.length > self.userEnteredText.length )
-    {
-        CLS_LOG( @"%@range.location(%lu) + range.length(%lu) >= self.userEnteredText(%@).length(%lu)\n\n",
-                message,
-                (unsigned long)range.location,
-                (unsigned long)range.length,
-                self.userEnteredText == nil ? @"nil" : [NSString stringWithFormat:@"\"%@\"", self.userEnteredText],
-                (unsigned long)self.userEnteredText.length );
-    }
-}
-
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-#if LOG_TEXT_INPUT_CRASH_DATA
-    [self __crashLogTextView:textView shouldChangeTextInRange:range replacementText:text];
-#endif
-    
-    NSString *newString = [self.userEnteredText stringByReplacingCharactersInRange:range
-                                                                        withString:text];
-    
     if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
     }
+    
+    if ( range.location > self.userEnteredText.length )
+    {
+        return NO;
+    }
+    
+    NSString *newString = [self.userEnteredText stringByReplacingCharactersInRange:range withString:text];
     
     if (newString.length > self.memeInputAccessoryView.maxCharacterLength)
     {
