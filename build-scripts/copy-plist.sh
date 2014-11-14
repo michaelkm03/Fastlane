@@ -57,6 +57,7 @@ copyPListValue 'VictoriousAppID'
 copyPListValue 'StagingAppID'
 copyPListValue 'QAAppID'
 copyPListValue 'GAID'
+copyPListValue 'FlurryAPIKey'
 
 ########### Copy URL schemes
 
