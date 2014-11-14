@@ -35,6 +35,8 @@
 	<integer>28</integer>
 	<key>QAAppID</key>
 	<integer>0</integer>
+	<key>FlurryAPIKey</key>
+	<string>6X35D8W7BJY4KRF8NNWK</string>
 	<key>GAID</key>
 	<string>UA-51702806-4</string>
 </dict>

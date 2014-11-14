@@ -150,5 +150,7 @@
 	<integer>1</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
 </dict>
 </plist>

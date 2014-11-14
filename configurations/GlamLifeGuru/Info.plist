@@ -35,6 +35,8 @@
 	<integer>14</integer>
 	<key>StagingAppID</key>
 	<integer>30</integer>
+	<key>FlurryAPIKey</key>
+	<string>XTJ4RY2KVKC3KKD9P7GH</string>
 	<key>QAAppID</key>
 	<integer>0</integer>
 </dict>

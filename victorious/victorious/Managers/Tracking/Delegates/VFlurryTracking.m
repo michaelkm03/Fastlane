@@ -15,7 +15,12 @@
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
-static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
+@interface VFlurryTracking()
+
+@property (nonatomic, readonly) NSString *appVersionString;
+@property (nonatomic, readonly) NSString *apiKey;
+
+@end
 
 @implementation VFlurryTracking
 
@@ -24,15 +29,46 @@ static NSString * const kVFlurryAPIKey = @"YOUR_API_KEY";
     self = [super init];
     if (self)
     {
-        [Flurry startSession:kVFlurryAPIKey];
+        NSString *apiKey = self.apiKey;
+        if ( apiKey )
+        {
+            NSString *appVersion = self.appVersionString;
+            if ( appVersion )
+            {
+                // Call this before startSession:
+                [Flurry setAppVersion:appVersion];
+            }
+            
+            [Flurry startSession:apiKey];
+            _enabled = YES;
+        }
     }
     return self;
+}
+
+- (NSString *)appVersionString
+{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *buildNumber = [infoDictionary objectForKey:@"CFBundleVersion"];
+    return [NSString stringWithFormat:@"%@ (%@)", appVersion, buildNumber];
+}
+
+- (NSString *)apiKey
+{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    return [infoDictionary objectForKey:@"FlurryAPIKey"];
 }
 
 #pragma mark - VTrackingDelegate protocol
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    if ( !self.enabled )
+    {
+        return;
+    }
+    
     [Flurry logEvent:eventName withParameters:parameters];
     
 #if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
