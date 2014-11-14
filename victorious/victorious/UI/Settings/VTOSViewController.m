@@ -7,12 +7,7 @@
 //
 
 #import "VTOSViewController.h"
-
 #import "VObjectManager+Websites.h"
-
-@interface VTOSViewController ()    <UIWebViewDelegate>
-
-@end
 
 @implementation VTOSViewController
 
@@ -27,17 +22,18 @@
 {
     [super viewDidLoad];
     
-    [self.activitiyIndicator startAnimating];
-    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error) {
-        [self.activitiyIndicator stopAnimating];
-        if (error)
+    self.shouldShowLoadingState = YES;
+    
+    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
+    {
+        if ( !error )
         {
-            [self webView:self.webView didFailLoadWithError:error];
-            return;
+            [self.webView loadHTMLString:htmlString baseURL:nil];
         }
-        
-        [self.webView loadHTMLString:htmlString
-                             baseURL:nil];
+        else
+        {
+            [self setFailureWithError:error];
+        }
     }];
 }
 

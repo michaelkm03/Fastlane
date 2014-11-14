@@ -60,10 +60,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.videoPlayerViewController.delegate = self;
     [MBProgressHUD showHUDAddedTo:self.previewParentView animated:YES];
     self.waitingForVideoPlayerToStart = YES;
     [self.videoPlayerViewController.player play];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.videoPlayerViewController.delegate = nil;
 }
 
 - (BOOL)shouldAutorotate
@@ -212,8 +219,10 @@
          }
                                   completion:^(BOOL finished)
          {
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                 [self firstAnimation];
+             __weak typeof(self) welf = self;
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+             {
+                 [welf firstAnimation];
              });
          }];
     }

@@ -11,28 +11,27 @@
 #import "VHashTags.h"
 #import "VConstants.h"
 
+static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
+
+IB_DESIGNABLE
 @interface VHashtagLabel : UILabel
+
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
 
 @end
 
 @implementation VHashtagLabel
 
-- (void)awakeFromNib
-{
-    self.edgeInsets = UIEdgeInsetsMake(0, 6, 0, 7);
-}
-
 - (void)drawTextInRect:(CGRect)rect
 {
-    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, self.edgeInsets)];
+    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, kHashtagLabelEdgeInsets)];
 }
 
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
-    size.width  += self.edgeInsets.left + self.edgeInsets.right;
-    size.height += self.edgeInsets.top + self.edgeInsets.bottom;
+    size.width  += kHashtagLabelEdgeInsets.left + kHashtagLabelEdgeInsets.right;
+    size.height += kHashtagLabelEdgeInsets.top + kHashtagLabelEdgeInsets.bottom;
     return size;
 }
 

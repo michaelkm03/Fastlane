@@ -38,7 +38,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 {
     NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
-    filter.perPageNumber = @500;
+    
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)

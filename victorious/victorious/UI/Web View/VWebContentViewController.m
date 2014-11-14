@@ -7,15 +7,14 @@
 //
 
 #import "VWebContentViewController.h"
-#import "VThemeManager.h"
-
 #import "UIViewController+VNavMenu.h"
+#import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VWebViewFactory.h"
 
-@interface VWebContentViewController () <VNavigationHeaderDelegate>
+@interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
-@property (nonatomic, weak, readwrite) IBOutlet UIWebView *webView;
-@property (nonatomic, strong, readwrite) UIActivityIndicatorView *activitiyIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -27,15 +26,48 @@
 {
     [super viewDidLoad];
     
+    self.webView = [VWebViewFactory createWebView];
+    
+    self.webView.asView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.webView.asView];
+    self.webView.delegate = self;
+    
+    self.urlToView = self.urlToView;
+    
+    [self addHeader];
+}
+
+- (void)setFailureWithError:(NSError *)error
+{
+    [self webView:self.webView didFailLoadWithError:error];
+}
+
+- (void)addHeader
+{
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
+    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.navHeaderView];
+}
+
+- (void)addConstraintsToWebView:(UIWebView *)webView withHeaderView:(UIView *)headerView
+{
+    NSParameterAssert( webView.superview != nil );
+    NSParameterAssert( headerView.superview != nil );
+    NSParameterAssert( [webView.superview isEqual:headerView.superview] );
     
-    if (!self.activitiyIndicator)
-    {
-        self.activitiyIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.activitiyIndicator.center = self.view.center;
-        [self.view addSubview:self.activitiyIndicator];
-    }
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *viewsDict = @{ @"webView" : webView };
+    CGFloat headerHeight = CGRectGetHeight(headerView.frame);
+    CGFloat statusBarHeight = CGRectGetHeight( [[UIApplication sharedApplication] statusBarFrame] );
+    NSDictionary *metrics = @{ @"headerViewHeight" : @( headerHeight - statusBarHeight ) };
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-headerViewHeight-[webView]-0-|"
+                                                                              options:kNilOptions
+                                                                              metrics:metrics
+                                                                                views:viewsDict]];
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:viewsDict]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -47,13 +79,37 @@
     self.navigationController.navigationBar.translucent = NO;
     
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
-    
-    self.webView.delegate = self;
-    
-    if (self.urlToView)
+}
+
+- (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState
+{
+    _shouldShowLoadingState = shouldShowLoadingState;
+    if ( _shouldShowLoadingState )
     {
-        NSURLRequest *requestWithURL = [NSURLRequest requestWithURL:self.urlToView];
-        [self.webView loadRequest:requestWithURL];
+        [self.activityIndicator startAnimating];
+    }
+    else
+    {
+        [self.activityIndicator stopAnimating];
+    }
+}
+
+- (void)setUrlToView:(NSURL *)urlToView
+{
+    _urlToView = urlToView;
+    
+    if ( _urlToView != nil )
+    {
+        [self.webView loadRequest:[NSURLRequest requestWithURL:_urlToView]];
+        
+        if ( !self.activityIndicator )
+        {
+            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self.webView.asView.superview addSubview:self.activityIndicator];
+            self.activityIndicator.hidesWhenStopped = YES;
+        }
+        self.activityIndicator.center = self.webView.asView.superview.center;
+        [self.activityIndicator startAnimating];
     }
 }
 
@@ -88,28 +144,28 @@
     : UIStatusBarStyleDefault;
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self.activitiyIndicator startAnimating];
+    [self.activityIndicator stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activitiyIndicator stopAnimating];
+    [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activitiyIndicator stopAnimating];
-    
-    // report the error inside the webview
-    NSString *errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
-    [self.webView loadHTMLString:errorString baseURL:nil];
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+{
 }
 
 @end

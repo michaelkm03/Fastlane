@@ -37,7 +37,7 @@
             <connections>
                 <outlet property="hashTagLabel" destination="R24-gj-ok1" id="aJJ-Lh-drP"/>
             </connections>
-            <point key="canvasLocation" x="519" y="198"/>
+            <point key="canvasLocation" x="351" y="391"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
