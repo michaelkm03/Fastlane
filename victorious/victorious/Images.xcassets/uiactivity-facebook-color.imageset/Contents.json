@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "FB-f-Logo__blue_36.png"
+      "filename" : "FB-f-Logo__blue_60.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "FB-f-Logo__blue_72.png"
+      "filename" : "FB-f-Logo__blue_120.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "FB-f-Logo__blue_108.png"
+      "filename" : "FB-f-Logo__blue_180.png"
     }
   ],
   "info" : {
