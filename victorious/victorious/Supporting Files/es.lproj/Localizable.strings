@@ -30,6 +30,13 @@
 "Meme" = "Meme";
 "Share" = "Compartir";
 "Discover" = "Descubrir";
+"Share" = "Compartir";
+"Settings" = "Configuración";
+"Save" = "Guardar";
+
+"Featured" = "Destacado";
+"Recent" = "Reciente";
+"Following" = "Siguiente";
 
 "TimeSeparator" = ":";
 "InvalidTimePlaceholder" = "-:--";
@@ -44,6 +51,7 @@
 "PollAlreadyAnswered" = "El resultado de la encuesta ya se respondió";
 "LoginFail" = "Falló el inicio de sesión";
 "LoginFailMessage" = "Algo salió mal.";
+"NotLoggedInMessage" = "¡Ups! Parece que no iniciaste sesión.";
 "SignupFail" = "No se pudo crear la cuenta";
 "AccountUpdateFail" = "No se pudo actualizar la cuenta";
 "ProfileSaveFail" = "No se pudo guardar la información de tu perfil debido a un error en el servidor";
@@ -69,6 +77,10 @@
 
 "Missing Content" = "¡Vaya!";
 "Missing Content Message" = "¡No podemos encontrar lo que buscas!";
+
+"MissingMedia" = "Debes tener 2 fotografías.";
+"QuestionTextToShort" = "Tu pregunta debe tener al menos 2 caracteres de longitud.";
+"AnswerTextToShort" = "Tu respuesta debe tener al menos 2 caracteres de longitud.";
 
 "NoMessagesTitle" = "NO HAY MENSAJES TODAVÍA";
 "NoMessagesMessage" = "¡Puedes enviar mensajes a cualquiera en la aplicación! Solo ve a su perfil y haz clic en el icono de redactar en la esquina superior derecha.";
@@ -245,6 +257,7 @@
 "JustAMoment" = "Un momento";
 "LocatingVideo" = "Localizando video...";
 "DownloadingVideo" = "Descargando video...";
+"Stitching" = "Cosiendo...";
 
 "SegmentDownloadFail" = "No se pudo obtener el video";
 
@@ -263,6 +276,7 @@
 "ResetPasswordPrompt" = "Por favor ingresa tu dirección de email";
 "ResetPasswordPlaceholder" = "Dirección de email";
 
+"PasswordError" = "Error de contraseña";
 "ResetPasswordErrorExpiredTitle" = "Venció el código para restablecer.";
 "ResetPasswordErrorExpiredMessage" = "Venció el código para restablecer.";
 
@@ -271,6 +285,9 @@
 
 "ResetPasswordErrorFailTitle" = "Error al restablecer la contraseña";
 "ResetPasswordErrorFailMessage" = "No pudimos restablecer tu contraseña en este momento. Por favor vuelve a intentarlo más tarde.";
+
+"ResetPasswordNewEqualsCurrentTitle" = "Nueva contraseña inválida.";
+"ResetPasswordNewEqualsCurrentMessage" = "Por favor ingresa una contraseña diferente de tu contraseña actual.";
 
 "EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña";
 "EnterCodeTitle" = "INGRESAR CÓDIGO";
@@ -371,18 +388,21 @@
 "DiscoverTrendingTagsError" = "Lo sentimos, no pudimos cargar las etiquetas de tendencia.";
 "Suggested People" = "Personas sugeridas";
 "Trending Tags" = "Etiquetas de tendencia";
+"Voters" = "Votantes";
 
 "Device:" = "Dispositivo:";
 "OS Version:" = "Versión de SO:";
 "App Version:" = "Versión de Aplicación:";
 "AreYouSureYouWantToDelete" = "¿Estás seguro de que quieres borrar?";
 
+"ITEMS" = "ARTÍCULOS";
+
+"ShareFacebook" = "Compartir en Facebook";
+"ShareTwitter" = "Compartir en Twitter";
+"OpenSafari" = "Abrir en Safari";
+"ShareSMS" = "Enviar como texto";
 "CheckOutContent" = "!Checa esta asombrosa publicación!";
 "FacebookDeniedTitle" = "No se puede acceder a tu cuenta de Facebook";
 "FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
 "IncorrectOldPassword" = "La contraseña actual no es correcta.";
 "comments" = "comentarios";
-
-"Suggested People" = "Personas sugeridas";
-"Trending Tags" = "Etiquetas de tendencia";
-"Voters" = "Votantes";

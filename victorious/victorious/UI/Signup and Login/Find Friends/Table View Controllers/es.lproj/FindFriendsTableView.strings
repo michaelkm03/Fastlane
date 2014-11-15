@@ -1,5 +1,5 @@
 /* Class = "IBUILabel"; text = "Find friends from your contacts"; ObjectID = "7dw-z9-qes"; */
-"7dw-z9-qes.text" = "Encuentra amigos entre tus contactos";
+"7dw-z9-qes.text" = "Encuentra a tus amigos en tus contactos";
 
 /* Class = "IBUIButton"; normalTitle = "Retry"; ObjectID = "F5x-Zn-Qdu"; */
 "F5x-Zn-Qdu.normalTitle" = "Reintentar";
@@ -14,7 +14,7 @@
 "hgn-BR-Oom.text" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.";
 
 /* Class = "IBUILabel"; text = "Sorry, there was a problem accessing your friends list!"; ObjectID = "mIW-p6-1ZK"; */
-"mIW-p6-1ZK.text" = "¡Lo sentimos, hubo un problema al accesar a tu lista de amigos!";
+"mIW-p6-1ZK.text" = "¡Lo sentimos, hubo un problema para acceder a tu lista de amigos!";
 
 /* Class = "IBUIButton"; normalTitle = "Access Your Contacts"; ObjectID = "tbC-61-nna"; */
 "tbC-61-nna.normalTitle" = "Ten acceso a tus contactos";
