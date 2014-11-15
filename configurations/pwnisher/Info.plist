@@ -39,5 +39,7 @@
 	<integer>0</integer>
 	<key>GAID</key>
 	<string>UA-51702806-3</string>
+	<key>FlurryAPIKey</key>
+	<string>D2FNJ87GGV4VBQRN57WY</string>
 </dict>
 </plist>

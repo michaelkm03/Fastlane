@@ -13,4 +13,6 @@
 
 @interface VFlurryTracking : NSObject <VTrackingDelegate>
 
+@property (nonatomic, readonly) BOOL enabled;
+
 @end

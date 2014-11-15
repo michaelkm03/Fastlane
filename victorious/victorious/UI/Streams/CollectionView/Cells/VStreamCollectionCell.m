@@ -45,6 +45,7 @@
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *captionTextView;
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
+@property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
 @end
 
@@ -119,6 +120,8 @@ static const CGFloat kDescriptionBuffer = 15.0;
     self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
     
     [self setupActionBar];
+    
+    self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
 }
 
 - (void)setupActionBar

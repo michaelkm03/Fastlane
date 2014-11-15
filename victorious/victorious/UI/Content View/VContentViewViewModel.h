@@ -139,7 +139,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
 
-@property (nonatomic, readonly) BOOL hasReposted;
+@property (nonatomic, assign) BOOL hasReposted;
 
 @property (nonatomic, readonly) NSString *remixCountText;
 

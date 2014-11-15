@@ -359,7 +359,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             self.recordButton.userInteractionEnabled = YES;
         }
         self.capturePhotoButton.userInteractionEnabled = YES;
-        self.flashButton.enabled = YES;
+        self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
         self.switchCameraButton.enabled = YES;
         self.switchCameraModeButton.enabled = YES;
         self.openAlbumButton.enabled = YES;
@@ -777,14 +777,24 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         return;
     }
     
-    if (self.captureController.currentDevice.flashAvailable)
+    if (self.captureController.currentDevice.hasFlash)
     {
         self.flashButton.alpha = 1.0f;
-        self.flashButton.selected = self.captureController.currentDevice.flashMode != AVCaptureFlashModeOff;
     }
     else
     {
         self.flashButton.alpha = 0.0f;
+    }
+    
+    if (self.captureController.currentDevice.flashAvailable)
+    {
+        self.flashButton.enabled = YES;
+        self.flashButton.selected = self.captureController.currentDevice.flashMode != AVCaptureFlashModeOff;
+    }
+    else
+    {
+        self.flashButton.enabled = NO;
+        self.flashButton.selected = NO;
     }
 }
 

@@ -50,6 +50,7 @@ static const char kSequenceActionControllerKey;
 @interface VNewContentViewController (ActionsPrivate)
 
 @property VSequenceActionController *sequenceActionController;
+- (void)onRemixPublished:(NSNotification *)notification;
 
 @end
 
@@ -128,7 +129,16 @@ static const char kSequenceActionControllerKey;
                  }
                  else
                  {
-                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence];
+                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence completion:^(BOOL didPublish) {
+                         if ( !didPublish )
+                         {
+                             [self dismissViewControllerAnimated:YES completion:nil];
+                         }
+                         else
+                         {
+                             [self onRemixPublished:nil];
+                         }
+                     }];
                  }
              }];
         };
@@ -155,11 +165,17 @@ static const char kSequenceActionControllerKey;
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 if (contentViewController.viewModel.hasReposted)
+                 if ( !contentViewController.viewModel.hasReposted)
                  {
-                     return;
+                     [self.sequenceActionController repostActionFromViewController:contentViewController
+                                                                              node:contentViewController.viewModel.currentNode completion:^(BOOL didSucceed)
+                      {
+                          if ( didSucceed )
+                          {
+                              contentViewController.viewModel.hasReposted = YES;
+                          }
+                      }];
                  }
-                 [self.sequenceActionController repostActionFromViewController:contentViewController node:contentViewController.viewModel.currentNode];
              }];
         };
         repostItem.detailSelectionHandler = ^(void)
