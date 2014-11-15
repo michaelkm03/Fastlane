@@ -11,6 +11,7 @@
 #import "VAdViewController.h"
 #import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
+#import "VSettingManager.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -38,6 +39,8 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
+
     [self.adViewController startAdManager];
 }
 

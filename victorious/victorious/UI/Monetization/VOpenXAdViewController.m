@@ -88,8 +88,6 @@
     self.adManager.isInFeed = YES;
     self.adManager.hideControls = YES;
     
-    //VLog(@"%@", self.view.frame);
-    
     [self.adManager startAdManager];
 }
 
