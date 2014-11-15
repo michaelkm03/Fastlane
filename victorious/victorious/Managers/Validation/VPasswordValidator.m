@@ -60,7 +60,7 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
     {
         if ( outError != nil )
         {
-            NSString *errorString = NSLocalizedString( @"PasswordNewEqualsCurrent", @"" );
+            NSString *errorString = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"" );
             *outError = [[NSError alloc] initWithDomain:errorString
                                                    code:VErrorCodeInvalidPasswordsNewEqualsCurrent
                                                userInfo:nil];
