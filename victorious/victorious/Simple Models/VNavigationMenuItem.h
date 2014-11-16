@@ -16,8 +16,8 @@
 
 @property (nonatomic, copy, readonly) NSString *label; ///< The text to display in the menu
 @property (nonatomic, strong, readonly) UIImage *icon; ///< An icon to display next to the label in the menu
-@property (nonatomic, strong, readonly) UIViewController *destination; ///< The view controller that will be displayed when this menu item is selected
+@property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
 
-- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(UIViewController *)destination NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(id)destination NS_DESIGNATED_INITIALIZER;
 
 @end

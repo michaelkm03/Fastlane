@@ -7,6 +7,7 @@
 //
 
 #import "VMenuController.h"
+#import "VNavigationDestination.h"
 #import "VSideMenuViewController.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
@@ -258,6 +259,35 @@
     [self.contentViewController.view addSubview:self.contentButton];
 }
 
+- (void)navigateToViewController:(id)destination
+{
+    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    {
+        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self transitionToNavStack:@[vc]];
+    };
+    
+    if ([destination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        UIViewController *alternateDestination = nil;
+        if ([destination shouldNavigateWithAlternateDestination:&alternateDestination])
+        {
+            if (alternateDestination == nil)
+            {
+                goTo(destination);
+            }
+            else
+            {
+                [self navigateToViewController:alternateDestination];
+            }
+        }
+    }
+    else
+    {
+        goTo(destination);
+    }
+}
+
 - (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
@@ -399,11 +429,12 @@
 
 - (void)menuControllerDidSelectRow:(NSNotification *)notification
 {
-    UIViewController *viewController = notification.userInfo[VMenuControllerDestinationViewControllerKey];
+    [self hideMenuViewController];
+
+    id viewController = notification.userInfo[VMenuControllerDestinationViewControllerKey];
     if (viewController)
     {
-        [self transitionToNavStack:@[viewController]];
-        [self hideMenuViewController];
+        [self navigateToViewController:viewController];
     }
 }
 

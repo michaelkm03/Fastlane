@@ -10,7 +10,7 @@
 
 @implementation VNavigationMenuItem
 
-- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(UIViewController *)destination
+- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(id)destination
 {
     self = [super init];
     if (self)

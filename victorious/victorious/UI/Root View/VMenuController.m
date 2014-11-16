@@ -21,7 +21,7 @@
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"
-#import "VUserProfileViewController.h"
+#import "VUserProfileNavigationDestination.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
@@ -112,7 +112,7 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
         ],
         @[
             [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Inbox", @"") icon:nil destination:[VInboxContainerViewController inboxContainer]],
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Profile", @"") icon:nil destination:[VUserProfileViewController userProfileWithUser:[VObjectManager sharedManager].mainUser]],
+            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Profile", @"") icon:nil destination:[[VUserProfileNavigationDestination alloc] initWithObjectManager:[VObjectManager sharedManager]]],
             [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Settings", @"") icon:nil destination:[VSettingsViewController settingsContainer]]
         ]
     ];

@@ -238,6 +238,7 @@
 		037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB73B19CFE8550084BBED /* VMultipartFormDataWriter.m */; };
 		037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74119CFE8B20084BBED /* VUploadManager.m */; };
 		037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */; };
+		037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -1005,6 +1006,9 @@
 		037CB74119CFE8B20084BBED /* VUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadManager.m; sourceTree = "<group>"; };
 		037CB74319CFE8D20084BBED /* VUploadTaskInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskInformation.h; sourceTree = "<group>"; };
 		037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskInformation.m; sourceTree = "<group>"; };
+		037D2D561A1961F400947A22 /* VNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestination.h; sourceTree = "<group>"; };
+		037D2D571A196B9800947A22 /* VUserProfileNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserProfileNavigationDestination.h; sourceTree = "<group>"; };
+		037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserProfileNavigationDestination.m; sourceTree = "<group>"; };
 		03811D2F193533D0005687FF /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		03811D30193533D0005687FF /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
@@ -1707,6 +1711,7 @@
 				030931891A18425B004E9781 /* VMenuCollectionViewCell.m */,
 				0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */,
 				0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */,
+				037D2D561A1961F400947A22 /* VNavigationDestination.h */,
 				0309318C1A18425B004E9781 /* VNavigationMenuItemCell.h */,
 			);
 			path = Menu;
@@ -2160,6 +2165,8 @@
 				0314D3CB19B46B5E00FA363C /* VUserProfileHeaderView.h */,
 				0314D3CC19B46B5E00FA363C /* VUserProfileHeaderView.m */,
 				DB2A494119DF44A500CB687B /* VUserProfileHeaderView.xib */,
+				037D2D571A196B9800947A22 /* VUserProfileNavigationDestination.h */,
+				037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */,
 				0314D3CE19B46B5E00FA363C /* VUserProfileViewController.h */,
 				0314D3CF19B46B5E00FA363C /* VUserProfileViewController.m */,
 			);
@@ -4317,6 +4324,7 @@
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
+				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A73AFB7A19F1F6930005A9EA /* VFollowersTextFormatter.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
