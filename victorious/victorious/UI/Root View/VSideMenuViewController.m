@@ -59,6 +59,13 @@
     _parallaxContentMaximumRelativeValue = @(25);
     
     _bouncesHorizontally = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)awakeFromNib
@@ -385,6 +392,18 @@
     else
     {
         return nil;
+    }
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)menuControllerDidSelectRow:(NSNotification *)notification
+{
+    UIViewController *viewController = notification.userInfo[VMenuControllerDestinationViewControllerKey];
+    if (viewController)
+    {
+        [self transitionToNavStack:@[viewController]];
+        [self hideMenuViewController];
     }
 }
 
