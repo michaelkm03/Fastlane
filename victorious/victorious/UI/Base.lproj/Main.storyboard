@@ -569,7 +569,6 @@
                         <constraints>
                             <constraint firstItem="zIR-tO-iN5" firstAttribute="top" secondItem="kK4-Mz-83T" secondAttribute="topMargin" id="41b-mV-YFU"/>
                             <constraint firstItem="zIR-tO-iN5" firstAttribute="leading" secondItem="kK4-Mz-83T" secondAttribute="leading" id="JQv-RD-xH9"/>
-                            <constraint firstAttribute="centerY" secondItem="zIR-tO-iN5" secondAttribute="centerY" id="U79-iP-cAO"/>
                             <constraint firstAttribute="trailing" secondItem="zIR-tO-iN5" secondAttribute="trailing" constant="82" id="box-hC-UG2"/>
                             <constraint firstAttribute="bottomMargin" secondItem="zIR-tO-iN5" secondAttribute="bottom" id="pwe-5A-CSn"/>
                         </constraints>
