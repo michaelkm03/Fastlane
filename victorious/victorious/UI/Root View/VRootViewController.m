@@ -205,10 +205,6 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 #pragma mark - NSNotifications
 
-- (void)loadingCompleted:(NSNotification *)notification
-{
-}
-
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
     [self showViewController:nil animated:NO];
