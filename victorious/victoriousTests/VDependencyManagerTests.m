@@ -42,6 +42,7 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 @interface VTestViewControllerWithNewMethod : UIViewController <VHasManagedDependancies>
 
 @property (nonatomic) BOOL calledNewMethod;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -51,6 +52,7 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 {
     VTestViewControllerWithNewMethod *vc = [[VTestViewControllerWithNewMethod alloc] init];
     vc.calledNewMethod = YES;
+    vc.dependencyManager = dependencyManager;
     return vc;
 }
 
@@ -148,7 +150,7 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 
 - (void)testNumber
 {
-    NSNumber *expected = [NSNumber numberWithBool:YES];
+    NSNumber *expected = @YES;
     NSNumber *actual = [self.dependencyManager numberForKey:@"experiments.require_profile_image"];
     XCTAssertNotNil(actual);
     XCTAssertEqualObjects(expected, actual);
@@ -156,10 +158,35 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 
 - (void)testChildNumber
 {
-    NSNumber *expected = [NSNumber numberWithBool:NO];
+    NSNumber *expected = @NO;
     NSNumber *actual = [self.childDependencyManager numberForKey:@"experiments.histogram_enabled"];
     XCTAssertNotNil(actual);
     XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testArray
+{
+    NSArray *expected = @[ @"red", @"fish", @"blue", @"fish" ];
+    NSArray *actual = [self.dependencyManager arrayForKey:@"arrayOfStrings"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildArray
+{
+    NSArray *expected = @[ @"red", @"fish", @"blue", @"fish" ];
+    NSArray *actual = [self.childDependencyManager arrayForKey:@"arrayOfStrings"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testObjectFromDictionary
+{
+    NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
+    
+    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectFromDictionary:configuration];
+    XCTAssertNotNil(vc);
+    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
+    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);
+    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"experiments.require_profile_image"], @YES);
 }
 
 @end

@@ -151,6 +151,16 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
     return [self objectOfClass:[UIViewController class] forKeyPath:key];
 }
 
+- (NSArray *)arrayForKey:(NSString *)key
+{
+    return [self templateValueOfType:[NSArray class] forKeyPath:key];
+}
+
+- (NSObject *)objectFromDictionary:(NSDictionary *)configurationDictionary
+{
+    return [self objectOfClass:[NSObject class] fromDictionary:configurationDictionary];
+}
+
 #pragma mark - Internal dependency getter primatives
 
 /**
@@ -161,13 +171,23 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 - (id)objectOfClass:(Class)expectedClass forKeyPath:(NSString *)keyPath
 {
     NSDictionary *dependencyDictionary = [self templateValueOfType:[NSDictionary class] forKeyPath:keyPath];
-    Class templateClass = [self classWithTemplateName:dependencyDictionary[kClassNameKey]];
+    
+    if (dependencyDictionary == nil)
+    {
+        return nil;
+    }
+    return [self objectOfClass:expectedClass fromDictionary:dependencyDictionary];
+}
+
+- (id)objectOfClass:(Class)expectedClass fromDictionary:(NSDictionary *)configurationDictionary
+{
+    Class templateClass = [self classWithTemplateName:configurationDictionary[kClassNameKey]];
     
     if ([templateClass isSubclassOfClass:expectedClass])
     {
         id object;
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self
-                                                                                    configuration:dependencyDictionary
+                                                                                    configuration:configurationDictionary
                                                                 dictionaryOfClassesByTemplateName:self.classesByTemplateName];
         
         if ([templateClass instancesRespondToSelector:@selector(initWithDependencyManager:)])

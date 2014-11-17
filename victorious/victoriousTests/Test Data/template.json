@@ -33,5 +33,6 @@
         "histogram_enabled": false,
         "require_profile_image": true,
         "template_c_enabled": false
-    }
+    },
+    "arrayOfStrings": [ "red", "fish", "blue", "fish"]
 }

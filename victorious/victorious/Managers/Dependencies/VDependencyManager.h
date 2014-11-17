@@ -85,4 +85,17 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
  */
 - (UIViewController *)viewControllerForKey:(NSString *)key;
 
+/**
+ Returns the NSArray with the specified key. If the array
+ elements contain configuration dictionaries for dependant
+ objects, those configuration dictionaries can be passed
+ into -objectFromDictionary to instantiate a new object.
+ */
+- (NSArray *)arrayForKey:(NSString *)key;
+
+/**
+ Returns a new object defined by the given configuration dictionary
+ */
+- (NSObject *)objectFromDictionary:(NSDictionary *)configurationDictionary;
+
 @end
