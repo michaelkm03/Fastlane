@@ -7,6 +7,7 @@
 //
 
 #import "VMenuController.h"
+#import "VNavigationDestination.h"
 #import "VSideMenuViewController.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
@@ -59,6 +60,13 @@
     _parallaxContentMaximumRelativeValue = @(25);
     
     _bouncesHorizontally = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)awakeFromNib
@@ -251,6 +259,35 @@
     [self.contentViewController.view addSubview:self.contentButton];
 }
 
+- (void)navigateToViewController:(id)destination
+{
+    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    {
+        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self transitionToNavStack:@[vc]];
+    };
+    
+    if ([destination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        UIViewController *alternateDestination = nil;
+        if ([destination shouldNavigateWithAlternateDestination:&alternateDestination])
+        {
+            if (alternateDestination == nil)
+            {
+                goTo(destination);
+            }
+            else
+            {
+                [self navigateToViewController:alternateDestination];
+            }
+        }
+    }
+    else
+    {
+        goTo(destination);
+    }
+}
+
 - (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
@@ -385,6 +422,19 @@
     else
     {
         return nil;
+    }
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)menuControllerDidSelectRow:(NSNotification *)notification
+{
+    [self hideMenuViewController];
+
+    id viewController = notification.userInfo[VMenuControllerDestinationViewControllerKey];
+    if (viewController)
+    {
+        [self navigateToViewController:viewController];
     }
 }
 

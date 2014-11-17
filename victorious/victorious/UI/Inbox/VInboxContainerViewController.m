@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAuthorizationViewControllerFactory.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
-
+#import "VObjectManager.h"
+#import "VRootViewController.h"
 #import "VConstants.h"
 
 #import "UIViewController+VNavMenu.h"
@@ -56,7 +58,19 @@ typedef enum {
 - (IBAction)changedFilterControls:(id)sender
 {
     [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
-    
+}
+
+#pragma mark - VNavigationDestination methods
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    if (authorizationViewController)
+    {
+        [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
+        return NO;
+    }
+    return YES;
 }
 
 @end

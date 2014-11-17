@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VNavigationDestination.h"
 #import "VTableContainerViewController.h"
 
-@interface VInboxContainerViewController : VTableContainerViewController
+@interface VInboxContainerViewController : VTableContainerViewController <VNavigationDestination>
 
 + (instancetype)inboxContainer;
 

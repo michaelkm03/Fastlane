@@ -6,25 +6,22 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VMenuCollectionViewCell.h"
+#import "VMenuCollectionViewDataSource.h"
 #import "VMenuController.h"
-#import "VSideMenuViewController.h"
-#import "UIViewController+VSideMenuViewController.h"
-#import "VBadgeLabel.h"
+#import "VNavigationMenuItem.h"
 
 #import "VThemeManager.h"
-#import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+Login.h"
+#import "VObjectManager.h"
 #import "VSettingManager.h"
 
 #import "VStream+Fetcher.h"
-#import "VUser+RestKit.h"
-#import "VUnreadConversation+RestKit.h"
 
 #import "VLoginViewController.h"
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"
-#import "VUserProfileViewController.h"
+#import "VUserProfileNavigationDestination.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
@@ -32,24 +29,16 @@
 #import "VStreamCollectionViewController.h"
 #import "VMultipleStreamViewController.h"
 
-typedef NS_ENUM(NSUInteger, VMenuControllerRow)
-{
-    VMenuRowHome                =   0,
-    VMenuRowOwnerChannel        =   1,
-    VMenuRowCommunityChannel    =   2,
-    VMenuRowDiscover            =   3,
-    VMenuRowInbox               =   0,
-    VMenuRowProfile             =   1,
-    VMenuRowSettings            =   2
-};
+NSString * const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
+NSString * const VMenuControllerDestinationViewControllerKey = @"VMenuControllerDestinationViewControllerKey";
 
-NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
+static NSString * const kSectionHeaderReuseID = @"SectionHeaderView";
+static const CGFloat kSectionHeaderHeight = 36.0f;
 
-@interface VMenuController ()
+@interface VMenuController () <UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) VMenuCollectionViewDataSource *collectionViewDataSource;
 
 @end
 
@@ -59,45 +48,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [super viewDidLoad];
     
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
-
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-     {
-         UIFont     *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-         label.font = [font fontWithSize:22.0];
-         label.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-     }];
-
-    NSUInteger count = [VObjectManager sharedManager].mainUser.unreadConversation.count.unsignedIntegerValue;
-    if (count < 1)
-    {
-        [self.inboxBadgeLabel setHidden:YES];
-    }
-    else
-    {
-        if (count < 1000)
-        {
-            self.inboxBadgeLabel.text = [NSNumberFormatter localizedStringFromNumber:@(count) numberStyle:NSNumberFormatterDecimalStyle];
-        }
-        else
-        {
-            self.inboxBadgeLabel.text = @"+999";
-        }
-        
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        [self.inboxBadgeLabel setHidden:NO];
-    }
-    
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
-    {
-        self.nameLabel.text = NSLocalizedString(@"Channels", nil);
-    }
-    else
-    {
-        self.nameLabel.text = NSLocalizedString(@"Channel", nil);
-    }
+    self.collectionViewDataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:[VMenuCollectionViewCell suggestedReuseIdentifier] sectionsOfMenuItems:[self menuSections]];
+    self.collectionViewDataSource.sectionHeaderReuseID = kSectionHeaderReuseID;
+    self.collectionView.dataSource = self.collectionViewDataSource;
     
     if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
@@ -106,171 +59,91 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     else
     {
         self.view.backgroundColor = [UIColor clearColor];
-        self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
     }
-
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
-- (void)viewWillLayoutSubviews
+- (void)viewDidLayoutSubviews
 {
-    [super viewWillLayoutSubviews];
-
-    self.view.frame = self.view.superview.bounds;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UINavigationController *navigationController = self.sideMenuViewController.contentViewController;
-    UIViewController *currentViewController = [navigationController.viewControllers lastObject];
+    CGFloat extraSpace = CGRectGetHeight(self.view.bounds) - self.collectionView.contentSize.height;
+    UIEdgeInsets desiredInsets = UIEdgeInsetsZero;
     
-    if (0 == indexPath.section)
+    if (extraSpace > 0)
     {
-        switch (indexPath.row)
-        {
-            case VMenuRowHome:
-            {
-                BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-                navigationController.viewControllers = @[homeVC];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-                break;
-            case VMenuRowOwnerChannel:
-            {
-                if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
-                {
-                    navigationController.viewControllers = @[[VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]]];
-                }
-                else
-                {
-                    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                    UIViewController *ownerVC = isTemplateC ? [VMultipleStreamViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
-                    navigationController.viewControllers = @[ownerVC];
-                }
-                [self.sideMenuViewController hideMenuViewController];
-            }
-                break;
-            
-            case VMenuRowCommunityChannel:
-            {
-                BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-                UIViewController *communityVC = isTemplateC ? [VMultipleStreamViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
-                navigationController.viewControllers = @[communityVC];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-                break;
-                
-            case VMenuRowDiscover:
-            {
-                VDiscoverContainerViewController *discoverViewController = [VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"];
-                navigationController.viewControllers = @[ discoverViewController ];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-            break;
-                
-            default:
-                break;
-        }
-    }
-    else if (1 == indexPath.section)
-    {
-        switch (indexPath.row)
-        {
-            case VMenuRowInbox:
-                if ( ![VObjectManager sharedManager].authorized )
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-                else
-                {
-                    navigationController.viewControllers = @[[VInboxContainerViewController inboxContainer]];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-            break;
-            
-            case VMenuRowProfile:
-                if (![VObjectManager sharedManager].authorized)
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-                else
-                {
-                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithUser:[VObjectManager sharedManager].mainUser]];
-                    [self.sideMenuViewController hideMenuViewController];
-                }
-            break;
-                
-            case VMenuRowSettings:
-                navigationController.viewControllers = @[[VSettingsViewController settingsContainer]];
-                [self.sideMenuViewController hideMenuViewController];
-            break;
-            
-            default:
-                break;
-        }
+        desiredInsets = UIEdgeInsetsMake(extraSpace * 0.5f, 0.0f, extraSpace * 0.5f, 0.0);
     }
     
-    //If the view controllers aren't the same notify everything a change is about to happen
-    if (currentViewController!=[navigationController.viewControllers lastObject])
+    if ( !UIEdgeInsetsEqualToEdgeInsets(desiredInsets, self.collectionView.contentInset) )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:nil];
+        self.collectionView.contentInset = desiredInsets;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (BOOL)prefersStatusBarHidden
 {
-    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
-        sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-        return sectionHeader;
-    }
+    return YES;
+}
+
+- (NSArray *)menuSections
+{
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     
-    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
-}
-
- - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (1 == section && ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    NSString *ownerChannelName;
+    UIViewController *ownerChannelVC;
+    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
     {
-        return 1.0;
-    }
-    else if (1 ==section)
-    {
-        return 0.01f;
+        ownerChannelName = NSLocalizedString(@"Channels", nil);
+        ownerChannelVC = [VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]];
     }
     else
     {
-        return 100.0;
+        ownerChannelName = NSLocalizedString(@"Channel", nil);
+        ownerChannelVC = isTemplateC ? [VMultipleStreamViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
+    }
+    
+    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
+    UIViewController *communityVC = isTemplateC ? [VMultipleStreamViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
+    
+    NSArray *menuSections = @[
+        @[
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Home", @"") icon:nil destination:homeVC],
+            [[VNavigationMenuItem alloc] initWithTitle:ownerChannelName icon:nil destination:ownerChannelVC],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Community", @"") icon:nil destination:communityVC],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Discover", @"") icon:nil destination:[VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"]]
+        ],
+        @[
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Inbox", @"") icon:nil destination:[VInboxContainerViewController inboxContainer]],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Profile", @"") icon:nil destination:[[VUserProfileNavigationDestination alloc] initWithObjectManager:[VObjectManager sharedManager]]],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") icon:nil destination:[VSettingsViewController settingsContainer]]
+        ]
+    ];
+    return menuSections;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [VMenuCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return CGSizeZero;
+    }
+    else
+    {
+        return CGSizeMake(CGRectGetHeight(collectionView.bounds), kSectionHeaderHeight);
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
-}
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return .01f;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIView *customColorView = [[UIView alloc] init];
-    customColorView.backgroundColor = [UIColor blackColor];
-    cell.selectedBackgroundView =  customColorView;
+    VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:indexPath];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:self userInfo:@{ VMenuControllerDestinationViewControllerKey: menuItem.destination }];
 }
 
 @end
