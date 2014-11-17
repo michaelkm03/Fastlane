@@ -232,6 +232,7 @@
 		036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */; };
 		036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */; };
 		036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */; };
+		036F4E781A1302E600F9E721 /* VTemplateGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036F4E771A1302E600F9E721 /* VTemplateGenerator.m */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
 		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
@@ -239,6 +240,8 @@
 		037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74119CFE8B20084BBED /* VUploadManager.m */; };
 		037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */; };
 		037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */; };
+		037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */; };
+		037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -260,11 +263,13 @@
 		0390088819F3A7CC00FD7EDF /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
-		039D02B41A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */; };
 		039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 039D02A81A1043D300DB9236 /* TemplateClasses.plist */; };
 		039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02AA1A1043D300DB9236 /* VDependencyManager.m */; };
 		039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */; };
 		039D02B11A10443200DB9236 /* template.json in Resources */ = {isa = PBXBuildFile; fileRef = 039D02B01A10443200DB9236 /* template.json */; };
+		039D02B41A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */; };
+		039D02B91A10946300DB9236 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = 039D02B81A10946300DB9236 /* init.json */; };
+		039D02BB1A109CA800DB9236 /* VTemplateGeneratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D02BA1A109CA800DB9236 /* VTemplateGeneratorTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED27D19C563B700305987 /* VCameraVideoEncoder.m */; };
 		039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */; };
@@ -1000,6 +1005,8 @@
 		036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Regular.ttf"; sourceTree = "<group>"; };
 		036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Bold.ttf"; sourceTree = "<group>"; };
 		036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Regular.ttf"; sourceTree = "<group>"; };
+		036F4E761A1302E600F9E721 /* VTemplateGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateGenerator.h; sourceTree = "<group>"; };
+		036F4E771A1302E600F9E721 /* VTemplateGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateGenerator.m; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
 		037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -1013,6 +1020,10 @@
 		037D2D561A1961F400947A22 /* VNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestination.h; sourceTree = "<group>"; };
 		037D2D571A196B9800947A22 /* VUserProfileNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserProfileNavigationDestination.h; sourceTree = "<group>"; };
 		037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserProfileNavigationDestination.m; sourceTree = "<group>"; };
+		037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VObjectManager.h"; sourceTree = "<group>"; };
+		037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VObjectManager.m"; sourceTree = "<group>"; };
+		037D2D5D1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VNavigationMenuItem.h"; sourceTree = "<group>"; };
+		037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VNavigationMenuItem.m"; sourceTree = "<group>"; };
 		03811D2F193533D0005687FF /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		03811D30193533D0005687FF /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
@@ -1065,14 +1076,16 @@
 		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
-		039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+VMainStoryboard.h"; sourceTree = "<group>"; };
-		039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+VMainStoryboard.m"; sourceTree = "<group>"; };
 		039D02A81A1043D300DB9236 /* TemplateClasses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemplateClasses.plist; sourceTree = "<group>"; };
 		039D02A91A1043D300DB9236 /* VDependencyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDependencyManager.h; sourceTree = "<group>"; };
 		039D02AA1A1043D300DB9236 /* VDependencyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManager.m; sourceTree = "<group>"; };
 		039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHasManagedDependencies.h; sourceTree = "<group>"; };
 		039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManagerTests.m; sourceTree = "<group>"; };
 		039D02B01A10443200DB9236 /* template.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = template.json; sourceTree = "<group>"; };
+		039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+VMainStoryboard.h"; sourceTree = "<group>"; };
+		039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+VMainStoryboard.m"; sourceTree = "<group>"; };
+		039D02B81A10946300DB9236 /* init.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = init.json; sourceTree = "<group>"; };
+		039D02BA1A109CA800DB9236 /* VTemplateGeneratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateGeneratorTests.m; sourceTree = "<group>"; };
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		039ED27C19C563B700305987 /* VCameraVideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraVideoEncoder.h; sourceTree = "<group>"; };
 		039ED27D19C563B700305987 /* VCameraVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraVideoEncoder.m; sourceTree = "<group>"; };
@@ -2618,6 +2631,15 @@
 			path = Volkhov;
 			sourceTree = "<group>";
 		};
+		036F4E751A1302E600F9E721 /* Template Generator */ = {
+			isa = PBXGroup;
+			children = (
+				036F4E761A1302E600F9E721 /* VTemplateGenerator.h */,
+				036F4E771A1302E600F9E721 /* VTemplateGenerator.m */,
+			);
+			path = "Template Generator";
+			sourceTree = "<group>";
+		};
 		037CB73919CFE8550084BBED /* Upload */ = {
 			isa = PBXGroup;
 			children = (
@@ -2656,9 +2678,14 @@
 		039D02A71A1043D300DB9236 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				036F4E751A1302E600F9E721 /* Template Generator */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
 				039D02AA1A1043D300DB9236 /* VDependencyManager.m */,
+				037D2D5D1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.h */,
+				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
+				037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */,
+				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 			);
 			path = Dependencies;
@@ -2672,6 +2699,7 @@
 				A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */,
 				A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */,
 				A7CFC1C819FEE17B00726772 /* front_portrait.m4v */,
+				039D02B81A10946300DB9236 /* init.json */,
 				A7CFC1B619FAF64700726772 /* landscape_left.m4v */,
 				A7CFC1B719FAF64700726772 /* landscape_right.m4v */,
 				A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */,
@@ -3218,6 +3246,7 @@
 				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
 				A75FAEFA19E8A6D600EB87C1 /* VSettingManagerTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
+				039D02BA1A109CA800DB9236 /* VTemplateGeneratorTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,
 				BE9674FE19E335060072E87A /* VUploadManagerTests.m */,
@@ -4123,6 +4152,7 @@
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
+				039D02B91A10946300DB9236 /* init.json in Resources */,
 				A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
@@ -4315,6 +4345,7 @@
 				0314D4E019B46B5E00FA363C /* VFindFriendsTableView.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
+				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */,
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
@@ -4395,6 +4426,7 @@
 				0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */,
+				036F4E781A1302E600F9E721 /* VTemplateGenerator.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
@@ -4499,6 +4531,7 @@
 				0314D48019B46B5E00FA363C /* VCommentCell.m in Sources */,
 				DBDBE6F11A16766400DA1BB2 /* VSequence.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
+				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
 				BE9C262319D48B6200E43AFE /* VMarqueeTableViewCell.m in Sources */,
@@ -4611,6 +4644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				039D02BB1A109CA800DB9236 /* VTemplateGeneratorTests.m in Sources */,
 				A720052E1A03073B00285A9C /* VPhotoFilterSerializationTests.m in Sources */,
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,

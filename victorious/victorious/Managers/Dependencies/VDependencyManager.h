@@ -105,11 +105,11 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
 /**
  Returns a new object defined by the given configuration dictionary
  
- @param expectedClass The type of object you expect to get back
+ @param expectedType The type of object you expect to get back
  @param configurationDictionary A dictionary of configuration attributes that describes the object
  @return An object described by the configurationDictionary,
  or nil if no such key exists or is of the wrong type.
  */
-- (id)objectOfClass:(Class)expectedClass fromDictionary:(NSDictionary *)configurationDictionary;
+- (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
 
 @end

@@ -196,7 +196,7 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 {
     NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
     
-    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectOfClass:[UIViewController class] fromDictionary:configuration];
+    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectOfType:[UIViewController class] fromDictionary:configuration];
     XCTAssertNotNil(vc);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);

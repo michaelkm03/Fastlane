@@ -172,17 +172,17 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
     }
     else if ([value isKindOfClass:[NSDictionary class]])
     {
-        return [self objectOfClass:expectedType fromDictionary:value];
+        return [self objectOfType:expectedType fromDictionary:value];
     }
     
     return nil;
 }
 
-- (id)objectOfClass:(Class)expectedClass fromDictionary:(NSDictionary *)configurationDictionary
+- (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
 {
     Class templateClass = [self classWithTemplateName:configurationDictionary[kClassNameKey]];
     
-    if ([templateClass isSubclassOfClass:expectedClass])
+    if ([templateClass isSubclassOfClass:expectedType])
     {
         id object;
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self

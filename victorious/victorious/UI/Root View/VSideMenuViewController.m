@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VDependencyManager.h"
 #import "VMenuController.h"
 #import "VMultipleStreamViewController.h"
 #import "VNavigationDestination.h"
@@ -17,8 +18,12 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VSideMenuViewController.h"
 
+// Keys for managed dependencies
+static NSString * const kMenuKey = @"menu";
+
 @interface VSideMenuViewController () <UINavigationControllerDelegate>
 
+@property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
@@ -31,6 +36,7 @@
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VSideMenuViewController *sideMenuViewController = (VSideMenuViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
+    sideMenuViewController.dependencyManager = dependencyManager;
     return sideMenuViewController;
 }
 
@@ -79,22 +85,19 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                             applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
     
     
-    self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
+    self.menuViewController = [self.dependencyManager viewControllerForKey:kMenuKey];
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
     
     NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
     self.contentViewController.delegate = self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -130,7 +133,7 @@
     }
     
     [self addMenuViewControllerMotionEffects];
-    
+
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
     [self transitionToNavStack:@[homeVC]];

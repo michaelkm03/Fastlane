@@ -9,11 +9,13 @@
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "VConstants.h"
+#import "VTemplateGenerator.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
@@ -48,14 +50,6 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 }
 
 #pragma mark - View Lifecycle
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    NSDictionary *dependencyConfiguration = @{ @"scaffold": @{ @"name": @"hamburger.scaffold" } };
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:dependencyConfiguration dictionaryOfClassesByTemplateName:nil];
-}
 
 - (void)viewDidLoad
 {
@@ -143,8 +137,16 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     [self showViewController:loadingViewController animated:NO];
 }
 
-- (void)showHomeStream
+- (void)startAppWithInitData:(NSDictionary *)initData
 {
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:basicDependencies
+                                                                 configuration:[VTemplateGenerator templateWithInitData:initData]
+                                             dictionaryOfClassesByTemplateName:nil];
+    
     UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
     [self showViewController:scaffold animated:YES];
 }
@@ -221,7 +223,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse
 {
-    [self showHomeStream];
+    [self startAppWithInitData:initResponse];
 }
 
 @end

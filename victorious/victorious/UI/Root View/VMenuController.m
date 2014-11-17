@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIStoryboard+VMainStoryboard.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VMenuCollectionViewCell.h"
 #import "VMenuCollectionViewDataSource.h"
 #import "VMenuController.h"
@@ -39,16 +41,25 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VMenuCollectionViewDataSource *collectionViewDataSource;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VMenuController
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VMenuController *menuController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
+    menuController.dependencyManager = dependencyManager;
+    return menuController;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.collectionViewDataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:[VMenuCollectionViewCell suggestedReuseIdentifier] sectionsOfMenuItems:[self menuSections]];
+    self.collectionViewDataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:[VMenuCollectionViewCell suggestedReuseIdentifier]
+                                                                           sectionsOfMenuItems:[self.dependencyManager menuItemSections]];
     self.collectionViewDataSource.sectionHeaderReuseID = kSectionHeaderReuseID;
     self.collectionView.dataSource = self.collectionViewDataSource;
     
@@ -81,42 +92,6 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
-}
-
-- (NSArray *)menuSections
-{
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    
-    NSString *ownerChannelName;
-    UIViewController *ownerChannelVC;
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsChannelsEnabled])
-    {
-        ownerChannelName = NSLocalizedString(@"Channels", nil);
-        ownerChannelVC = [VDirectoryViewController streamDirectoryForStream:[VStream streamForChannelsDirectory]];
-    }
-    else
-    {
-        ownerChannelName = NSLocalizedString(@"Channel", nil);
-        ownerChannelVC = isTemplateC ? [VMultipleStreamViewController ownerStream] : [VStreamCollectionViewController ownerStreamCollection];
-    }
-    
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    UIViewController *communityVC = isTemplateC ? [VMultipleStreamViewController communityStream] : [VStreamCollectionViewController communityStreamCollection];
-    
-    NSArray *menuSections = @[
-        @[
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Home", @"") icon:nil destination:homeVC],
-            [[VNavigationMenuItem alloc] initWithTitle:ownerChannelName icon:nil destination:ownerChannelVC],
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Community", @"") icon:nil destination:communityVC],
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Discover", @"") icon:nil destination:[VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"]]
-        ],
-        @[
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Inbox", @"") icon:nil destination:[VInboxContainerViewController inboxContainer]],
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Profile", @"") icon:nil destination:[[VUserProfileNavigationDestination alloc] initWithObjectManager:[VObjectManager sharedManager]]],
-            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") icon:nil destination:[VSettingsViewController settingsContainer]]
-        ]
-    ];
-    return menuSections;
 }
 
 #pragma mark - UICollectionViewDelegate

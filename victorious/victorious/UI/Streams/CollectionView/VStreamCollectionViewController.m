@@ -34,12 +34,14 @@
 #import "VNode+Fetcher.h"
 
 //Managers
+#import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
 //Categories
+#import "NSArray+VMap.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIViewController+VNavMenu.h"
@@ -47,6 +49,10 @@
 #import "VConstants.h"
 #import "VTracking.h"
 
+static NSString * const kStreamsKey = @"streams";
+static NSString * const kInitialKey = @"initial";
+static NSString * const kURLPathKey = @"urlPath";
+static NSString * const kTitleKey = @"title";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
@@ -66,6 +72,32 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @implementation VStreamCollectionViewController
 
 #pragma mark - Factory methods
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
+    __block VStream *defaultStream = nil;
+    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
+    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
+    {
+        VStream *stream = [VStream streamForPath:streamConfig[kURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+        stream.name = streamConfig[kTitleKey];
+        if ([streamConfig[kInitialKey] boolValue])
+        {
+            defaultStream = stream;
+        }
+        return stream;
+    }];
+    
+    if (defaultStream == nil && allStreams.count > 0)
+    {
+        defaultStream = allStreams[0];
+    }
+    
+    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
+    return streamCollectionVC;
+}
 
 + (instancetype)homeStreamCollection
 {
