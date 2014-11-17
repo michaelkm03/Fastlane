@@ -192,6 +192,15 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                                       object:self];
               }];
          }
+         else
+         {
+             self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                         withAdSystem:VMonetizationPartnerNone
+                                                                          withDetails:nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                 object:self];
+
+         }
     }
                                             failBlock:nil];
 }
